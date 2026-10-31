@@ -130,6 +130,8 @@ jobs:
           [ -n "$VSDIR" ] && python3 tools/ci_extract.py "$VSDIR/assets" analysis || echo "no game assets" > analysis/extract-errors.txt
           echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
+          # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
+          [ -n "$EXTRA_MODS" ] && python3 tools/ci_mod_grep.py data/Mods "${VSDIR:+$VSDIR/assets}" tools/ci_mod_grep.txt analysis/mod-grep.txt || true
           ls -la analysis
 
       - name: Push results to the ci-analysis branch

@@ -1,0 +1,7 @@
+# Patterns tools/ci_mod_grep.py looks for in other mods' (and the game's) .json files during the server test.
+# One regular expression per line. Results: mod-grep.txt on the results branch.
+fishraw
+taxidermy
+dilutedborax
+sulfate-full
+GroundStoredProcessable
