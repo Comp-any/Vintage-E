@@ -1,7 +1,7 @@
 {
   "name": "Butchering",
   "requiresMod": "butchering",
-  "//": "Carcasses and what comes off them: blood, offal, sinew, prime meat, ivory, bones. Anchored on the base game: red meat 32, fat 16, a bone 24, a carcass 32, milk 10 a litre. A carcass is worth roughly what it yields (babies 16, small 48, medium 96, large 192). Only used when nothing else values the item.",
+  "//": "Carcasses and what comes off them: blood, offal, sinew, prime meat, ivory, bones. Anchored on the base game: red meat 32, fat 16, a bone 24, a carcass 32, milk 10 a litre. A carcass is worth roughly what it yields (babies 16, small 48, medium 96, large 192). Blood dough, bread and pie are worth 1.25x the base game's. Only used when nothing else values the item.",
   "defaultValues": {
     "butchering:dead*": 64,
     "butchering:deadchicken-*": 32,
@@ -33,10 +33,26 @@
     "butchering:*bone*": 24,
     "butchering:tinybone*": 8,
     "butchering:strongbone*": 32,
-    "butchering:bloodbait*": 4,
-    "butchering:blood*": 4
+    "butchering:bloodbait*": 4
   },
   "litreValues": {
     "butchering:bloodportion": 4
-  }
+  },
+  "relativeValues": [
+    {
+      "code": "butchering:blooddough-*",
+      "of": "game:dough-*",
+      "ratio": 1.25
+    },
+    {
+      "code": "butchering:bloodbread-*",
+      "of": "game:bread-*",
+      "ratio": 1.25
+    },
+    {
+      "code": "butchering:bloodpie-*",
+      "of": "game:pie-*",
+      "ratio": 1.25
+    }
+  ]
 }

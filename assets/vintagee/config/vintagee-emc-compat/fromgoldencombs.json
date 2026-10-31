@@ -1,17 +1,42 @@
 {
   "name": "From Golden Combs",
   "requiresMod": "fromgoldencombs",
-  "//": "Hives and frames full of honeycomb, and the trader plushies. A full frame or hive is the empty one plus the honeycomb in it (32); a populated brood box is the empty one plus a wild hive (48). Only used when nothing else values the item.",
+  "//": "Hives and frames full of honeycomb, and the trader plushies. A full frame or hive is the empty one plus the honeycomb in it (32); an empty brood box is 1.25x a super of the same woods; a populated brood box is the empty one plus a wild hive (48). Only used when nothing else values the item.",
   "defaultValues": {
     "fromgoldencombs:plushy-*": 64,
     "fromgoldencombs:framerack-*": 48,
     "fromgoldencombs:langstrothstack-*": 0
   },
   "relativeValues": [
-    { "code": "fromgoldencombs:beeframe-*-harvestable", "of": "fromgoldencombs:beeframe-*-lined", "ratio": 1.5 },
-    { "code": "fromgoldencombs:hivetop-*-harvestable", "of": "fromgoldencombs:hivetop-*-fired", "ratio": 1.5 },
-    { "code": "fromgoldencombs:ceramicbroodpot-*-withtop", "of": "fromgoldencombs:ceramicbroodpot-*-notop", "ratio": 1.5 },
-    { "code": "fromgoldencombs:langstrothbrood-populated-*", "of": "fromgoldencombs:langstrothbrood-empty-*", "ratio": 1.5 },
-    { "code": "fromgoldencombs:langstrothsuper-closed-*", "of": "fromgoldencombs:langstrothsuper-open-*", "ratio": 1 }
+    {
+      "code": "fromgoldencombs:langstrothbrood-empty-*",
+      "of": "fromgoldencombs:langstrothsuper-open-*",
+      "ratio": 1.25
+    },
+    {
+      "code": "fromgoldencombs:beeframe-*-harvestable",
+      "of": "fromgoldencombs:beeframe-*-lined",
+      "ratio": 1.5
+    },
+    {
+      "code": "fromgoldencombs:hivetop-*-harvestable",
+      "of": "fromgoldencombs:hivetop-*-fired",
+      "ratio": 1.5
+    },
+    {
+      "code": "fromgoldencombs:ceramicbroodpot-*-withtop",
+      "of": "fromgoldencombs:ceramicbroodpot-*-notop",
+      "ratio": 1.5
+    },
+    {
+      "code": "fromgoldencombs:langstrothbrood-populated-*",
+      "of": "fromgoldencombs:langstrothbrood-empty-*",
+      "ratio": 1.5
+    },
+    {
+      "code": "fromgoldencombs:langstrothsuper-closed-*",
+      "of": "fromgoldencombs:langstrothsuper-open-*",
+      "ratio": 1
+    }
   ]
 }
