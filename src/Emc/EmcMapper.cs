@@ -320,6 +320,18 @@ namespace VintageE
             }
             solver = Stage(solver);
 
+            // Ratio rules once more, now that variants and defaultValues may have valued what they're relative to (a
+            // live fish of a raw fish whose processing gives another mod's fish eggs, valued only by a default).
+            int relativeLate = 0;
+            foreach (var kv in RelativeValues(index, Known(), noGuess, extraOrigin))
+            {
+                if (extra.ContainsKey(kv.Key) || solver.Values.ContainsKey(kv.Key)) continue;
+                extra[kv.Key] = kv.Value;
+                relativeLate++;
+            }
+            report.RelativeCount += relativeLate;
+            solver = Stage(solver);
+
             if (config.InferFromVariantSiblings && rules.CopyAcrossOtherGroups)
             {
                 Take(guesser.Guess(index, Known(), Skip, extraOrigin, otherGroups: true), ref guessed);

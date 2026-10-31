@@ -2,6 +2,15 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.12.1 — 2026-11-01
+
+### Fixed
+- **Fish with Primitive Survival.** Primitive Survival adds fish eggs to what adult fish are processed into, and the eggs only get a value from its compatibility file, so adult fish (and their taxidermy) were copied from the juvenile's value (a largemouth bass 24 instead of about 118) and 25 live fish had no value at all. Raw and taxidermied fish no longer copy values across ages (`fishraw:age`, `taxidermy:age` in `neverAcross`), and ratio rules run once more after `defaultValues`, so live fish follow their raw fish again.
+- **Borax with Expanded Matter.** Its zinc sulfate taxidermy recipe made diluted borax, and through it borax powder and ore, worth over seven times as much (borax ore 304 instead of 40). Borax powder now has a base value of 20, what it already worked out to without other mods.
+
+### Changed
+- Ratio rules (`relativeValues`) also apply to things that only got their value from variants or `defaultValues`, e.g. full bee frames with From Golden Combs (1.5× the lined frame instead of the empty frame's value).
+
 ## 1.12.0 — 2026-11-01
 
 ### Added

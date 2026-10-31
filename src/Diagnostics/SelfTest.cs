@@ -181,8 +181,10 @@ namespace VintageE
 
         void CheckValues()
         {
+            // Primitive Survival adds fish eggs (0.2 + 0.2, worth 16 each) to what an adult fish is processed into.
+            double bass = sapi.ModLoader.IsModEnabled("primitivesurvival") ? 118.4 : 112.0;
             foreach (var (code, expectMin, expectMax) in new[] { ("game:fat", 1.0, 64.0), ("game:fat-rendered", 1.0, 64.0), ("game:gem-emerald-rough", 2048.0, 2048.0), ("game:gem-diamond-rough", 8192.0, 8192.0),
-                ("game:creature-fish-freshwater-bass-largemouth-adult", 112.0, 112.0), ("game:jonasparts-tank01", 1024.0, 1024.0),
+                ("game:creature-fish-freshwater-bass-largemouth-adult", bass - 0.01, bass + 0.01), ("game:jonasparts-tank01", 1024.0, 1024.0),
                 ("game:creature-trader-female-artisan-cold", 0.0, 0.0), ("game:locatormap-treasures", 0.0, 0.0),
                 ("game:lore-paper", 0.0, 0.0), ("game:metal-parts", 1.0, 1000.0), ("game:nightvisiondevice", 4096.0, 4096.0),
                 ("game:ore-fluorite", 32.0, 32.0), ("game:ore-fluorite-limestone", 1.0, 1000.0) })
