@@ -13,9 +13,9 @@
   "relativeValues": [
     {
       "code": "fromgoldencombs:langstrothbrood-empty-*",
-      "of": "fromgoldencombs:langstrothsuper-open-*",
+      "of": "fromgoldencombs:langstrothsuper-closed-*",
       "ratio": 1.25,
-      "//": "a brood box is a super of the same woods with a bit more wood"
+      "//": "a brood box is a super of the same woods with a bit more wood (the closed super: it has the recipe, the open one only borrows its value later)"
     },
     {
       "code": "fromgoldencombs:beeframe-*-harvestable",
