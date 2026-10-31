@@ -267,6 +267,34 @@ namespace VintageE
         [ProtoMember(3)] public bool Reset;
     }
 
+    /// <summary>Server → client: opens (or refreshes) the /emc compat window: every compatibility value file and its state.</summary>
+    [ProtoContract]
+    public class EmcCompatListPacket
+    {
+        /// <summary>Asset locations ("vintagee:config/vintagee-emc-compat/primitivesurvival.json"), the keys <see cref="EmcCompatSetPacket"/> uses.</summary>
+        [ProtoMember(1)] public string[] Keys;
+        [ProtoMember(2)] public string[] Names;
+        [ProtoMember(3)] public string[] Descriptions;
+        /// <summary>The mod ids each file needs, comma-separated.</summary>
+        [ProtoMember(4)] public string[] Mods;
+        /// <summary>The first required mod that isn't loaded ("" when they all are).</summary>
+        [ProtoMember(5)] public string[] MissingMods;
+        [ProtoMember(6)] public bool[] Disabled;
+        [ProtoMember(7, IsPacked = true)] public int[] RuleCounts;
+        /// <summary>How many items each file valued in the last mapping.</summary>
+        [ProtoMember(8, IsPacked = true)] public int[] UsedCounts;
+        [ProtoMember(9)] public string Message;
+        [ProtoMember(10)] public bool Error;
+    }
+
+    /// <summary>Client → server: disable or enable a compatibility value file from the /emc compat window (admins only); the server remaps.</summary>
+    [ProtoContract]
+    public class EmcCompatSetPacket
+    {
+        [ProtoMember(1)] public string Key;
+        [ProtoMember(2)] public bool Disabled;
+    }
+
     /// <summary>Server → client: the Watch of Flowing Time's current world time speed modifier (0 = none).</summary>
     [ProtoContract]
     public class WatchSpeedPacket

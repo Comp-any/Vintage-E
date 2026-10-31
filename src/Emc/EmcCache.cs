@@ -30,6 +30,8 @@ namespace VintageE
         public List<List<string>> Loops = new List<List<string>>();
         public List<List<string>> SettledLoops = new List<List<string>>();
         public SortedDictionary<string, string> MissingWhy = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        /// <summary>Items valued by each compatibility file (asset location → count).</summary>
+        public SortedDictionary<string, int> CompatUsed = new SortedDictionary<string, int>(StringComparer.Ordinal);
     }
 
     public class CachedVariant
@@ -91,7 +93,7 @@ namespace VintageE
             foreach (string a in mod.Rules.GrayList) sb.Append("gray=").Append(a).Append('\n');
             foreach (string a in mod.Rules.Recipes) sb.Append("recipe=").Append(a).Append('\n');
             foreach (string a in mod.Rules.TraderCurrency) sb.Append("currency=").Append(a).Append('\n');
-            foreach (EmcValueRule r in mod.Rules.Defaults) sb.Append("default=").Append(r.Source).Append('|').Append(r.Pattern).Append('=').Append(r.Value.ToString("R")).Append('\n');
+            foreach (EmcValueRule r in mod.Rules.Defaults) sb.Append("default=").Append(r.Source).Append('|').Append(r.Pattern).Append(r.PerLitre ? "/L=" : "=").Append(r.Value.ToString("R")).Append('\n');
             foreach (RelativeValueRule r in mod.Rules.Relative) sb.Append("rel=").Append(r.Source).Append('|').Append(r.Code).Append('=').Append(r.Of).Append('*').Append(r.Ratio.ToString("R")).Append('\n');
             sb.Append("hoursPerDay=").Append(sapi.World.Calendar?.HoursPerDay).Append('\n');
             Flush();
@@ -330,7 +332,8 @@ namespace VintageE
                     FuelCount = report.FuelCount,
                     FoodCount = report.FoodCount,
                     OtherModCount = report.OtherModCount,
-                    GuessCount = report.GuessCount
+                    GuessCount = report.GuessCount,
+                    CompatUsed = new SortedDictionary<string, int>(report.CompatUsed ?? new SortedDictionary<string, int>(StringComparer.Ordinal), StringComparer.Ordinal)
                 };
                 foreach (var kv in report.Variants)
                 {
@@ -381,6 +384,7 @@ namespace VintageE
             to.OtherModCount = from.OtherModCount;
             to.GuessCount = from.GuessCount;
             to.CachedAt = from.CreatedUtc;
+            to.CompatUsed = from.CompatUsed ?? new SortedDictionary<string, int>(StringComparer.Ordinal);
         }
 
         /// <summary>Loops and missing reasons from the cache file (the recipes behind them aren't cached).</summary>

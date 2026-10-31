@@ -1,0 +1,24 @@
+{
+  "name": "Wildcraft: Fruits and Nuts",
+  "requiresMod": "wildcraftfruit",
+  "//": "Fruits, nuts, berries and the bushes and trees they grow on. Anchored on the base game: a fruit 16, a nut 8, seeds 4, a bush 32, a cutting 16, a sapling 32. Only used when nothing else values the item.",
+  "defaultValues": {
+    "wildcraftfruit:fruit-*": 16,
+    "wildcraftfruit:nut-*": 8,
+    "wildcraftfruit:*nut-*": 8,
+    "wildcraftfruit:berry-*": 12,
+    "wildcraftfruit:seeds-*": 4,
+    "wildcraftfruit:seed-*": 4,
+    "wildcraftfruit:fruitingbush-*": 32,
+    "wildcraftfruit:*bush-*": 32,
+    "wildcraftfruit:*cutting-*": 16,
+    "wildcraftfruit:sapling-*": 32,
+    "wildcraftfruit:fruittree-*": 16,
+    "wildcraftfruit:log-*": 32,
+    "wildcraftfruit:leaves-*": 1,
+    "wildcraftfruit:vine-*": 2,
+    "wildcraftfruit:flower-*": 16,
+    "wildcraftfruit:vegetable-*": 16,
+    "wildcraftfruit:spice-*": 8
+  }
+}

@@ -81,9 +81,62 @@ namespace VintageE
         /// <summary>"stackData": code/wildcard → "item" / "full" / "itemprice", the built-in modes for items that carry contents or a material.</summary>
         public List<KeyValuePair<string, string>> StackData = new List<KeyValuePair<string, string>>();
 
-        public static EmcRuleSet Load(ICoreAPI api, ILogger logger)
+        /// <summary>
+        /// A compatibility value file: <c>assets/vintagee/config/vintagee-emc-compat/&lt;modid&gt;.json</c> (or any value
+        /// file with a <c>"requiresMod"</c> key). It only loads when every mod it names is loaded and the server hasn't
+        /// disabled it, and its values are a last resort (see <see cref="CompatPath"/>).
+        /// </summary>
+        public class CompatFile
         {
-            var set = new EmcRuleSet();
+            /// <summary>The asset location ("vintagee:config/vintagee-emc-compat/primitivesurvival.json"): the key the DisabledCompat setting uses.</summary>
+            public string Source;
+            /// <summary>From the file's "name" key, or the file name.</summary>
+            public string Name;
+            /// <summary>From the file's "//" key.</summary>
+            public string Description = "";
+            public List<string> RequiredMods = new List<string>();
+            /// <summary>The first required mod that isn't loaded, or null when they all are.</summary>
+            public string MissingMod;
+            /// <summary>Disabled in the server config (DisabledCompat).</summary>
+            public bool Disabled;
+            /// <summary>How many rules the file holds (values, defaults, litre values and ratio rules).</summary>
+            public int RuleCount;
+            public bool Loaded => MissingMod == null && !Disabled;
+        }
+
+        /// <summary>Every compatibility file found, loaded or not.</summary>
+        public List<CompatFile> Compat = new List<CompatFile>();
+        /// <summary>The DisabledCompat setting these rules were loaded with, so a change to it reloads them.</summary>
+        public string DisabledKey = "";
+
+        /// <summary>
+        /// Compatibility files: <c>assets/vintagee/config/vintagee-emc-compat/&lt;modid&gt;.json</c>, each with a
+        /// <c>"requiresMod"</c> key (one mod id or a list). A file only loads when every mod it names is loaded, and its
+        /// values are a last resort: <c>values</c> and <c>litreValues</c> are treated as <c>defaultValues</c>, so a recipe,
+        /// trader price, ratio rule or variant that values the item always wins over the file.
+        /// </summary>
+        public const string CompatPath = "config/vintagee-emc-compat/";
+
+        public static string DisabledKeyOf(IEnumerable<string> disabled) => string.Join("|", (disabled ?? Enumerable.Empty<string>()).Select(d => d.Trim().ToLowerInvariant()).OrderBy(d => d, StringComparer.Ordinal));
+
+        /// <summary>True if <paramref name="source"/> (an asset location) is on the DisabledCompat list, which may also name just the file ("primitivesurvival" or "primitivesurvival.json").</summary>
+        public static bool IsDisabled(string source, IEnumerable<string> disabled)
+        {
+            if (disabled == null) return false;
+            string file = source.Substring(source.LastIndexOf('/') + 1);
+            string bare = file.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ? file.Substring(0, file.Length - 5) : file;
+            foreach (string d in disabled)
+            {
+                string t = d?.Trim();
+                if (string.IsNullOrEmpty(t)) continue;
+                if (t.Equals(source, StringComparison.OrdinalIgnoreCase) || t.Equals(file, StringComparison.OrdinalIgnoreCase) || t.Equals(bare, StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
+
+        public static EmcRuleSet Load(ICoreAPI api, ILogger logger, IEnumerable<string> disabledCompat = null)
+        {
+            var set = new EmcRuleSet { DisabledKey = DisabledKeyOf(disabledCompat) };
             List<IAsset> assets;
             try
             {
@@ -95,31 +148,86 @@ namespace VintageE
                 return set;
             }
 
-            // Our own defaults first, everybody else afterwards (stable, alphabetical) so they can override.
-            var ordered = assets
-                .Where(a => a.Location.Path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
-                .OrderBy(a => a.Location.Domain == VintageEModSystem.ModId ? 0 : 1)
-                .ThenBy(a => a.Location.Domain, StringComparer.Ordinal)
-                .ThenBy(a => a.Location.Path, StringComparer.Ordinal);
-
-            foreach (IAsset asset in ordered)
+            // Parse first, so the load order can take the files' own keys into account.
+            var parsed = new List<(IAsset asset, JObject root, bool compat)>();
+            foreach (IAsset asset in assets)
             {
+                if (!asset.Location.Path.EndsWith(".json", StringComparison.OrdinalIgnoreCase)) continue;
                 try
                 {
                     JObject root = JObject.Parse(asset.ToText());
-                    set.Merge(root, asset.Location.ToString());
-                    set.LoadedFiles.Add(asset.Location.ToString());
+                    List<string> required = RequiredMods(root);
+                    bool compat = required.Count > 0 || asset.Location.Path.StartsWith(CompatPath, StringComparison.OrdinalIgnoreCase);
+                    if (compat)
+                    {
+                        string source = asset.Location.ToString();
+                        string file = asset.Location.Path.Substring(asset.Location.Path.LastIndexOf('/') + 1);
+                        var info = new CompatFile
+                        {
+                            Source = source,
+                            Name = (string)root["name"] ?? file.Substring(0, file.Length - 5),
+                            Description = (string)root["//"] ?? "",
+                            RequiredMods = required,
+                            MissingMod = required.FirstOrDefault(id => !api.ModLoader.IsModEnabled(id)),
+                            Disabled = IsDisabled(source, disabledCompat),
+                            RuleCount = CountRules(root)
+                        };
+                        set.Compat.Add(info);
+                        if (!info.Loaded)
+                        {
+                            logger.VerboseDebug("EMC: not loading {0}: {1}", source, info.Disabled ? "disabled in the server config" : "its mod '" + info.MissingMod + "' isn't loaded");
+                            continue;
+                        }
+                    }
+                    parsed.Add((asset, root, compat));
                 }
                 catch (Exception e)
                 {
                     logger.Error("Skipping malformed EMC file {0}: {1}", asset.Location, e.Message);
                 }
             }
-            logger.Notification("Loaded {0} EMC base value rules from {1} file(s): {2}", set.Values.Count, set.LoadedFiles.Count, string.Join(", ", set.LoadedFiles));
+
+            // Our own defaults first, then our compatibility files, then everybody else (stable, alphabetical) so they can override.
+            var ordered = parsed
+                .OrderBy(p => p.asset.Location.Domain == VintageEModSystem.ModId ? (p.compat ? 1 : 0) : 2)
+                .ThenBy(p => p.asset.Location.Domain, StringComparer.Ordinal)
+                .ThenBy(p => p.asset.Location.Path, StringComparer.Ordinal);
+
+            foreach (var (asset, root, compat) in ordered)
+            {
+                set.Merge(root, asset.Location.ToString(), lastResort: compat);
+                set.LoadedFiles.Add(asset.Location.ToString());
+            }
+            set.Compat.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            logger.Notification("Loaded {0} EMC base value rules and {1} last-resort rules from {2} file(s): {3}", set.Values.Count, set.Defaults.Count, set.LoadedFiles.Count, string.Join(", ", set.LoadedFiles));
+            var skipped = set.Compat.Where(c => !c.Loaded).ToList();
+            if (skipped.Count > 0) logger.Notification("EMC: {0} compatibility file(s) not loaded: {1}", skipped.Count, string.Join(", ", skipped.Select(c => c.Name + (c.Disabled ? " (disabled)" : " (" + c.MissingMod + " isn't loaded)"))));
             return set;
         }
 
-        void Merge(JObject root, string source)
+        static int CountRules(JObject root)
+        {
+            int n = 0;
+            foreach (string key in new[] { "values", "defaultValues", "litreValues" })
+            {
+                if (root[key] is JObject o) n += o.Properties().Count(p => p.Value.Type == JTokenType.Integer || p.Value.Type == JTokenType.Float);
+            }
+            if (root["relativeValues"] is JArray rel) n += rel.Count;
+            return n;
+        }
+
+        /// <summary>The "requiresMod" key: a mod id, or a list of them.</summary>
+        static List<string> RequiredMods(JObject root)
+        {
+            var ids = new List<string>();
+            JToken tok = root["requiresMod"];
+            if (tok == null) return ids;
+            if (tok.Type == JTokenType.String) ids.Add((string)tok);
+            else if (tok is JArray arr) ids.AddRange(arr.Values<string>());
+            return ids.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim().ToLowerInvariant()).ToList();
+        }
+
+        void Merge(JObject root, string source, bool lastResort = false)
         {
             if (root["values"] is JObject values)
             {
@@ -127,7 +235,7 @@ namespace VintageE
                 {
                     if (prop.Value.Type == JTokenType.Integer || prop.Value.Type == JTokenType.Float)
                     {
-                        Values.Add(new EmcValueRule { Pattern = prop.Name, Value = prop.Value.Value<double>(), Source = source });
+                        (lastResort ? Defaults : Values).Add(new EmcValueRule { Pattern = prop.Name, Value = prop.Value.Value<double>(), Source = source });
                     }
                 }
             }
@@ -147,7 +255,7 @@ namespace VintageE
                 {
                     if (prop.Value.Type == JTokenType.Integer || prop.Value.Type == JTokenType.Float)
                     {
-                        Values.Add(new EmcValueRule { Pattern = prop.Name, Value = prop.Value.Value<double>(), Source = source, PerLitre = true });
+                        (lastResort ? Defaults : Values).Add(new EmcValueRule { Pattern = prop.Name, Value = prop.Value.Value<double>(), Source = source, PerLitre = true });
                     }
                 }
             }

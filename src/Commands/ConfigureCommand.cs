@@ -33,7 +33,7 @@ namespace VintageE
         {
             "BaseValues", "FixedValues", "Blacklist", "Allow", "DisableBuiltInBaseValues", "InferValuesFromProcessing", "InferValuesFromCrafting",
             "InferFromVariantSiblings", "EstimateFuelAndFood", "UseTraderPrices", "FallbackValue", "TransitionEmcPerDay", "MaxMappingPasses", "FreeIngredients",
-            "GrayList", "CustomRecipes"
+            "GrayList", "CustomRecipes", "DisabledCompat"
         };
 
         static IEnumerable<FieldInfo> Settings => typeof(VintageEConfig).GetFields(BindingFlags.Public | BindingFlags.Instance);

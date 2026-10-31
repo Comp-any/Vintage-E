@@ -100,7 +100,9 @@ namespace VintageE
                 .RegisterMessageType<EmcItemStatePacket>()
                 .RegisterMessageType<EmcItemEditPacket>()
                 .RegisterMessageType<EmcReportPacket>()
-                .RegisterMessageType<EmcDumpRequestPacket>();
+                .RegisterMessageType<EmcDumpRequestPacket>()
+                .RegisterMessageType<EmcCompatListPacket>()
+                .RegisterMessageType<EmcCompatSetPacket>();
         }
 
         #region Server
@@ -109,7 +111,7 @@ namespace VintageE
         {
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
-            Rules = EmcRuleSet.Load(api, Mod.Logger);
+            Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat);
             // ProjectE's textures have to be in the block/item definitions before they're sent to players. The config is
             // only loaded properly in StartServerSide, which comes later, so peek at that one setting here.
             if (PeekConfig(api as ICoreServerAPI)?.ProjectETextures == true) LookResult = ProjectELook.Apply(api, Mod.Logger);
@@ -146,6 +148,7 @@ namespace VintageE
             serverChannel.SetMessageHandler<EmcItemStateRequestPacket>(OnItemStateRequest);
             serverChannel.SetMessageHandler<EmcItemEditPacket>(OnItemEditRequest);
             serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
+            serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
 
             // Every mod has registered its recipes by the time the game starts running, so map then.
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
@@ -237,9 +240,9 @@ namespace VintageE
         public EmcMappingReport RecalculateEmc(string reason, bool allowCache = false)
         {
             var sw = Stopwatch.StartNew();
-            if (Rules.LoadedFiles.Count == 0)
+            if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(Config.DisabledCompat))
             {
-                Rules = EmcRuleSet.Load(Sapi, Mod.Logger);
+                Rules = EmcRuleSet.Load(Sapi, Mod.Logger, Config.DisabledCompat);
                 worldTransmutation = null;
             }
             var mapper = new EmcMapper(Sapi, Config, Rules, Mod.Logger);
@@ -297,6 +300,11 @@ namespace VintageE
             {
                 Mod.Logger.Notification("EMC: items with no recipe path: {0} valued by relativeValues rules, {1} from trader prices, {2} from a variant that only looks or sits differently, {3} other mods' variants of base-game families, {4} as fuel, {5} as food, {6} guessed from other variants, {7} from defaultValues, {8} got the configured FallbackValue.",
                     report.RelativeCount, report.TraderCount, report.SiblingCount, report.OtherModCount, report.FuelCount, report.FoodCount, report.GuessCount, report.DefaultCount, report.FallbackCount);
+            }
+            if (report.CompatUsed.Count > 0)
+            {
+                Mod.Logger.Notification("EMC: compatibility values in use for {0}. /emc compat lists every compatibility file and can switch them off.",
+                    string.Join(", ", report.CompatUsed.Select(kv => CompatName(kv.Key) + " (" + kv.Value + " items)")));
             }
             var data = Emc.StackData;
             Mod.Logger.Notification("EMC: {0} blocks/items hold contents or keep a material ({1} item only, {2} item + contents, {3} item price only); {4} have material-specific values.",
@@ -412,6 +420,13 @@ namespace VintageE
             try
             {
                 player.SendMessage(GlobalConstants.GeneralChatGroup, AnnouncementText(report, player.LanguageCode), EnumChatType.Notification);
+                if (report.CompatUsed.Count > 0)
+                {
+                    string list = string.Join(", ", report.CompatUsed.Select(kv => Lang.GetL(player.LanguageCode, "vintagee:announce-compat-one", CompatName(kv.Key), kv.Value)));
+                    string line = Lang.GetL(player.LanguageCode, "vintagee:announce-compat", list);
+                    if (player.HasPrivilege(Privilege.controlserver)) line += " " + Lang.GetL(player.LanguageCode, "vintagee:announce-compat-admin");
+                    player.SendMessage(GlobalConstants.GeneralChatGroup, line, EnumChatType.Notification);
+                }
                 // Admins joining are told the settings can be changed in game.
                 if (joining && player.HasPrivilege(Privilege.controlserver))
                 {
@@ -912,6 +927,65 @@ namespace VintageE
             player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
         }
 
+        /// <summary>A compatibility file's display name, from the rules (or its file name when it isn't known).</summary>
+        public string CompatName(string source)
+        {
+            EmcRuleSet.CompatFile f = Rules?.Compat?.FirstOrDefault(c => c.Source == source);
+            if (f != null) return f.Name;
+            string file = source.Substring(source.LastIndexOf('/') + 1);
+            return file.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ? file.Substring(0, file.Length - 5) : file;
+        }
+
+        /// <summary>Opens (or refreshes) the /emc compat window: every compatibility value file, whether its mod is loaded, whether it's disabled, and how many items it valued.</summary>
+        public void SendCompatList(IServerPlayer player, string message = null, bool error = false)
+        {
+            var files = Rules?.Compat ?? new List<EmcRuleSet.CompatFile>();
+            var used = LastReport?.CompatUsed ?? new SortedDictionary<string, int>(StringComparer.Ordinal);
+            serverChannel.SendPacket(new EmcCompatListPacket
+            {
+                Keys = files.Select(f => f.Source).ToArray(),
+                Names = files.Select(f => f.Name).ToArray(),
+                Descriptions = files.Select(f => f.Description ?? "").ToArray(),
+                Mods = files.Select(f => string.Join(", ", f.RequiredMods)).ToArray(),
+                MissingMods = files.Select(f => f.MissingMod ?? "").ToArray(),
+                Disabled = files.Select(f => f.Disabled).ToArray(),
+                RuleCounts = files.Select(f => f.RuleCount).ToArray(),
+                UsedCounts = files.Select(f => used.TryGetValue(f.Source, out int n) ? n : 0).ToArray(),
+                Message = message ?? "",
+                Error = error
+            }, player);
+        }
+
+        /// <summary>Disables or enables a compatibility file (DisabledCompat in the server config) and remaps. Returns the message for the player.</summary>
+        public string SetCompatDisabled(string key, bool disabled, string lang, out bool error)
+        {
+            error = true;
+            EmcRuleSet.CompatFile f = Rules?.Compat?.FirstOrDefault(c => c.Source.Equals(key, StringComparison.OrdinalIgnoreCase)
+                || c.Name.Equals(key, StringComparison.OrdinalIgnoreCase) || EmcRuleSet.IsDisabled(c.Source, new[] { key }));
+            if (f == null) return Lang.GetL(lang, "vintagee:compat-unknown", key);
+            if (f.Disabled == disabled) { error = false; return Lang.GetL(lang, disabled ? "vintagee:compat-alreadyoff" : "vintagee:compat-alreadyon", f.Name); }
+            Config.DisabledCompat.RemoveAll(d => EmcRuleSet.IsDisabled(f.Source, new[] { d }));
+            if (disabled) Config.DisabledCompat.Add(f.Source.Substring(f.Source.LastIndexOf('/') + 1).Replace(".json", ""));
+            SaveConfig();
+            EmcMappingReport report = RecalculateEmc(disabled ? "/emc compat disable" : "/emc compat enable");
+            if (report == null) return Lang.GetL(lang, "vintagee:compat-failed");
+            error = false;
+            int n = report.CompatUsed.TryGetValue(f.Source, out int used) ? used : 0;
+            return Lang.GetL(lang, disabled ? "vintagee:compat-disabled" : "vintagee:compat-enabled", f.Name, n);
+        }
+
+        void OnCompatSetRequest(IServerPlayer player, EmcCompatSetPacket packet)
+        {
+            if (packet?.Key == null) return;
+            if (!player.HasPrivilege(Privilege.controlserver))
+            {
+                player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:error-noprivilege"), EnumChatType.CommandError);
+                return;
+            }
+            string message = SetCompatDisabled(packet.Key, packet.Disabled, player.LanguageCode, out bool error);
+            SendCompatList(player, message, error);
+        }
+
         /// <summary>Opens (or refreshes) the /emc recipe window for a player.</summary>
         public void SendRecipeList(IServerPlayer player, string message = null, bool error = false)
         {
@@ -1199,6 +1273,7 @@ namespace VintageE
             capi.Input.RegisterHotKey(SetValueHotkey, Lang.Get("vintagee:hotkey-setvalue"), GlKeys.K, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
             capi.Input.SetHotKeyHandler(SetValueHotkey, _ => OpenSetValueBox());
             clientChannel.SetMessageHandler<EmcRecipeListPacket>(OnRecipeList);
+            clientChannel.SetMessageHandler<EmcCompatListPacket>(OnCompatList);
             clientChannel.SetMessageHandler<EmcItemStatePacket>(OnItemState);
             clientChannel.SetMessageHandler<EmcReportPacket>(OnReport);
 
@@ -1418,6 +1493,19 @@ namespace VintageE
             recipeDialog = new GuiDialogEmcRecipe(Capi, packet, (line, replaces) => clientChannel?.SendPacket(new EmcRecipeEditPacket { Line = line, Replaces = replaces }),
                 line => clientChannel?.SendPacket(new EmcRecipeEditPacket { Line = line, Remove = true }));
             recipeDialog.TryOpen();
+        }
+
+        GuiDialogEmcCompat compatDialog;
+
+        void OnCompatList(EmcCompatListPacket packet)
+        {
+            if (compatDialog != null && compatDialog.IsOpened())
+            {
+                compatDialog.Update(packet);
+                return;
+            }
+            compatDialog = new GuiDialogEmcCompat(Capi, packet, (key, disabled) => clientChannel?.SendPacket(new EmcCompatSetPacket { Key = key, Disabled = disabled }));
+            compatDialog.TryOpen();
         }
 
         GuiDialogEmcMissing missingDialog;

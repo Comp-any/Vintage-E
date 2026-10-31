@@ -30,6 +30,10 @@ namespace VintageE
         [System.ComponentModel.Description("Ignore the default value file shipped with this mod (assets/vintagee/config/vintagee-emc.json). Other mods' files still load.")]
         public bool DisableBuiltInBaseValues = false;
 
+        /// <summary>Compatibility value files to leave out, by file name ("primitivesurvival") or asset location. These files give other mods' raw materials last-resort values; /emc compat lists them and switches them here.</summary>
+        [System.ComponentModel.Description("Compatibility value files to leave out, by file name (\"primitivesurvival\") or asset location. These files give other mods' raw materials last-resort values; /emc compat lists them and switches them here.")]
+        public List<string> DisabledCompat = new List<string>();
+
         /// <summary>When an ore, raw food etc. has no value but what it smelts/grinds/crushes/dries into does, work the input value out backwards.</summary>
         [System.ComponentModel.Description("When an ore, raw food etc. has no value but what it smelts/grinds/crushes/dries into does, work the input value out backwards.")]
         public bool InferValuesFromProcessing = true;

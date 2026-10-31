@@ -5,6 +5,11 @@ name: Test on a real server
 # still missing, the server log). Results are pushed to the "ci-analysis" branch, alongside small summaries of
 # vanilla tool/board data used while developing the mod. Run it from the Actions tab.
 on:
+  # A push to a ci/** branch runs it too (with the compatibility mods listed below), for sessions that can't
+  # dispatch workflows; the results go to ci-analysis-<run number>.
+  push:
+    branches:
+      - "ci/**"
   workflow_dispatch:
     inputs:
       gameVersion:
@@ -25,7 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
-      VS_VERSION: ${{ inputs.gameVersion }}
+      VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
+      EXTRA_MODS: ${{ inputs.extraMods || (github.event_name == 'push' && 'primitivesurvival,wildcrafttree,herbarium,wildcraftfruit,butchering,fromgoldencombs,em' || '') }}
+      RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-analysis-{0}', github.run_number) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,8 +74,8 @@ jobs:
           mkdir -p "$data/Mods" "$data/ModConfig"
           cp -r bin/Release/Mods/vintagee "$data/Mods/"
           # Other mods to test alongside (latest release of each that fits this game version).
-          if [ -n "${{ inputs.extraMods }}" ]; then
-            ids=$(echo "${{ inputs.extraMods }}" | tr -d ' ')
+          if [ -n "$EXTRA_MODS" ]; then
+            ids=$(echo "$EXTRA_MODS" | tr -d ' ')
             curl -fsSL "https://mods.vintagestory.at/api/v2/mods/install-information?ids=${ids}&gv=${VS_VERSION}" -o extra.json || echo '{}' > extra.json
             cat extra.json; echo
             python3 - "$data/Mods" <<'PY'
@@ -121,7 +128,7 @@ jobs:
           cp data/Logs/*crash* analysis/ 2>/dev/null || true
           for f in data/Logs/server-main.log data/Logs/server-debug.log; do [ -f "$f" ] && grep -iE "vintagee|vintage-e|EMC|error|exception" "$f" | head -3000 > "analysis/$(basename "$f" .log)-filtered.log"; done
           [ -n "$VSDIR" ] && python3 tools/ci_extract.py "$VSDIR/assets" analysis || echo "no game assets" > analysis/extract-errors.txt
-          echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${{ inputs.extraMods }}" > analysis/README.txt
+          echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           ls -la analysis
 
@@ -129,7 +136,7 @@ jobs:
         if: always()
         run: |
           cd analysis
-          branch="${{ inputs.resultsBranch }}"; branch="${branch:-ci-analysis}"
+          branch="$RESULTS_BRANCH"; branch="${branch:-ci-analysis}"
           git init -q -b "$branch"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

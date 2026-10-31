@@ -102,6 +102,13 @@ namespace VintageE
                     .WithArgs(parsers.OptionalWordRange("mode", "item", "full", "itemprice", "default"))
                     .HandleWith(Safe(args => Contents(mod, args, args[0] as string)))
                 .EndSubCommand()
+                .BeginSubCommand("compat")
+                    .WithAlias("compatibility")
+                    .WithDescription("Open a window of the compatibility value files (last-resort values for other mods' raw materials): which are active, and switch them off or on; or: /emc compat disable|enable <name>")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(parsers.OptionalWordRange("action", "disable", "enable", "off", "on", "list"), parsers.OptionalWord("name"))
+                    .HandleWith(Safe(args => Compat(mod, args, args[0] as string, args[1] as string)))
+                .EndSubCommand()
                 .BeginSubCommand("configure")
                     .WithAlias("config")
                     .WithDescription("Show or change the server settings (ModConfig/vintagee.json) in game")
@@ -179,6 +186,8 @@ namespace VintageE
             ("/emc graylist add|remove", "cmdhelp-graylistset", true),
             ("/emc recipe", "cmdhelp-recipe", true),
             ("/emc recipe add|remove <output = ingredients>", "cmdhelp-recipeset", true),
+            ("/emc compat", "cmdhelp-compat", true),
+            ("/emc compat disable|enable <name>", "cmdhelp-compatset", true),
             ("/emc add <amount> [player]", "cmdhelp-add", true),
             ("/emc remove <amount> [player]", "cmdhelp-remove", true),
             ("/emc learn [hand]", "cmdhelp-learn", false),
@@ -352,6 +361,35 @@ namespace VintageE
             var lines = mod.Config.CustomRecipes;
             if (lines.Count == 0) return TextCommandResult.Success(Lang.GetL(lang, "vintagee:recipe-none"));
             return TextCommandResult.Success(string.Join("\n", lines.Select((l, i) => (i + 1) + ". " + l)));
+        }
+
+        /// <summary>/emc compat: the window; /emc compat disable|enable &lt;name&gt;: switch one file (and remap); /emc compat list: text.</summary>
+        static TextCommandResult Compat(VintageEModSystem mod, TextCommandCallingArgs args, string action, string name)
+        {
+            string lang = args.LanguageCode;
+            if (action == "disable" || action == "enable" || action == "off" || action == "on")
+            {
+                if (string.IsNullOrWhiteSpace(name)) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:compat-needname"));
+                string msg = mod.SetCompatDisabled(name.Trim(), action == "disable" || action == "off", lang, out bool error);
+                if (args.Caller.Player is IServerPlayer sp && !error) mod.SendCompatList(sp, msg, false);
+                return error ? TextCommandResult.Error(msg) : TextCommandResult.Success(msg);
+            }
+            if (action != "list" && args.Caller.Player is IServerPlayer player)
+            {
+                mod.SendCompatList(player);
+                return TextCommandResult.Success();
+            }
+            var files = mod.Rules?.Compat ?? new List<EmcRuleSet.CompatFile>();
+            if (files.Count == 0) return TextCommandResult.Success(Lang.GetL(lang, "vintagee:compat-none"));
+            var used = mod.LastReport?.CompatUsed;
+            return TextCommandResult.Success(string.Join("\n", files.Select(f =>
+            {
+                int n = used != null && used.TryGetValue(f.Source, out int u) ? u : 0;
+                string state = f.Disabled ? Lang.GetL(lang, "vintagee:compat-state-disabled")
+                    : f.MissingMod != null ? Lang.GetL(lang, "vintagee:compat-state-notloaded", f.MissingMod)
+                    : Lang.GetL(lang, "vintagee:compat-state-active", n);
+                return f.Name + " (" + string.Join(", ", f.RequiredMods) + "): " + state;
+            })));
         }
 
         static TextCommandResult Blacklist(VintageEModSystem mod, TextCommandCallingArgs args)

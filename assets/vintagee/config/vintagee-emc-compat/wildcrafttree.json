@@ -1,0 +1,37 @@
+{
+  "name": "Wildcraft: Trees and Shrubs",
+  "requiresMod": "wildcrafttree",
+  "//": "New trees' logs, leaves, saplings, seeds, stumps and saps. Most of them borrow the base game's values for the same family already (logs 32, leaves 1, saplings 32); this fills what's left. Only used when nothing else values the item.",
+  "defaultValues": {
+    "wildcrafttree:log-*": 32,
+    "wildcrafttree:logsection-*": 32,
+    "wildcrafttree:lognarrow-*": 16,
+    "wildcrafttree:stump-*": 32,
+    "wildcrafttree:leaves-*": 1,
+    "wildcrafttree:leavesbranchy-*": 2,
+    "item:wildcrafttree:leaves-*": 2,
+    "wildcrafttree:driedleaves": 1,
+    "wildcrafttree:sapling-*": 32,
+    "wildcrafttree:treeseed-*": 4,
+    "wildcrafttree:mulch": 2,
+    "wildcrafttree:eucalyptussap": 16,
+    "wildcrafttree:latex": 16,
+    "wildcrafttree:chlorociboria": 16,
+    "wildcrafttree:poultice-*": 24,
+    "wildcrafttree:wildbeehive-*": 48,
+    "wildcrafttree:table-petrified": 64,
+    "wildcrafttree:wattlebasket-*": 16,
+    "wildcrafttree:beam-*": 16,
+    "wildcrafttree:supportbeam-*": 128
+  },
+  "relativeValues": [
+    { "code": "wildcrafttree:plankstairs-*", "of": "game:plankstairs-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:ladder-wood-*", "of": "game:ladder-wood-*", "ratio": 1 },
+    { "code": "wildcrafttree:woodenfence-*", "of": "game:woodenfence-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:woodenfencegate-*", "of": "game:woodenfencegate-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:roughhewnfence-*", "of": "game:roughhewnfence-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:roughhewnfencegate-*", "of": "game:roughhewnfencegate-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:glasspane-leaded-*", "of": "game:glasspane-leaded-oak-*", "ratio": 1 },
+    { "code": "wildcrafttree:waterwheel-*", "of": "game:waterwheel-*", "ratio": 1 }
+  ]
+}

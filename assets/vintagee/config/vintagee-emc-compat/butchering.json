@@ -1,0 +1,42 @@
+{
+  "name": "Butchering",
+  "requiresMod": "butchering",
+  "//": "Carcasses and what comes off them: blood, offal, sinew, prime meat, ivory, bones. Anchored on the base game: red meat 32, fat 16, a bone 24, a carcass 32, milk 10 a litre. A carcass is worth roughly what it yields (babies 16, small 48, medium 96, large 192). Only used when nothing else values the item.",
+  "defaultValues": {
+    "butchering:dead*": 64,
+    "butchering:deadchicken-*": 32,
+    "butchering:deadhare-*": 24,
+    "butchering:deadfox-*": 32,
+    "butchering:deadraccoon-*": 32,
+    "butchering:deadwolf-*": 64,
+    "butchering:deadhyena-*": 64,
+    "butchering:deadpig-*": 96,
+    "butchering:deadsheep-*": 96,
+    "butchering:deadgoat-*": 96,
+    "butchering:deaddeer-*": 96,
+    "butchering:deadmoose-*": 192,
+    "butchering:deadbear-*": 192,
+    "butchering:deadelephantidae-*": 256,
+    "butchering:deadrhinocerotidae-*": 256,
+    "butchering:dead*-baby-*": 16,
+    "butchering:dead*-rotten": 4,
+    "butchering:primemeat-*": 48,
+    "butchering:healingprimemeat-*": 96,
+    "butchering:*primemeat*": 48,
+    "butchering:fat*": 16,
+    "butchering:renderedfat*": 16,
+    "butchering:offal-*": 8,
+    "butchering:offal-clean": 12,
+    "butchering:sinew*": 16,
+    "butchering:ivory*": 64,
+    "butchering:ivoryblock*": 512,
+    "butchering:*bone*": 24,
+    "butchering:tinybone*": 8,
+    "butchering:strongbone*": 32,
+    "butchering:bloodbait*": 4,
+    "butchering:blood*": 4
+  },
+  "litreValues": {
+    "butchering:bloodportion": 4
+  }
+}

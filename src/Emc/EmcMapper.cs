@@ -34,6 +34,8 @@ namespace VintageE
         public int OtherModCount, GuessCount;
         /// <summary>For each block/item still without a value: whether anything makes it, and which ingredient has no value.</summary>
         public Dictionary<CollectibleObject, string> MissingWhy = new Dictionary<CollectibleObject, string>();
+        /// <summary>Items valued by each compatibility file (asset location → count), i.e. by its last-resort rules; only files that valued something.</summary>
+        public SortedDictionary<string, int> CompatUsed = new SortedDictionary<string, int>(StringComparer.Ordinal);
         /// <summary>Every way the mod knows of making each unvalued item (missing ones and the unvalued things they need). Not cached.</summary>
         public Dictionary<CollectibleObject, List<Conversion>> MissingRecipes = new Dictionary<CollectibleObject, List<Conversion>>();
         /// <summary>Value loops: rings of unvalued items each only made from the next (see <see cref="MissingAnalysis"/>).</summary>
@@ -115,6 +117,8 @@ namespace VintageE
         HashSet<CollectibleObject> free = new HashSet<CollectibleObject>();
         /// <summary>The gray list (see <see cref="EmcMappingReport.Gray"/>), set by Seed.</summary>
         HashSet<CollectibleObject> gray = new HashSet<CollectibleObject>();
+        /// <summary>Which value file's rule valued each item (defaultValues and relativeValues), for the compatibility counts.</summary>
+        readonly Dictionary<CollectibleObject, string> ruleSourceOf = new Dictionary<CollectibleObject, string>();
 
         public EmcMapper(ICoreServerAPI sapi, VintageEConfig config, EmcRuleSet rules, ILogger logger)
         {
@@ -299,8 +303,13 @@ namespace VintageE
                 foreach (CollectibleObject c in index.Match(rule.Pattern))
                 {
                     if (solver.Values.ContainsKey(c) || noGuess.Contains(c) || extra.ContainsKey(c)) continue;
-                    if (rule.Value > 0) defaults[c] = (rule.Value, rule.Pattern);
-                    else defaults.Remove(c);
+                    if (rule.Value > 0)
+                    {
+                        double itemsPerLitre = rule.PerLitre ? EmcRegistry.ItemsPerLitre(c) : 0;
+                        defaults[c] = (itemsPerLitre > 0 ? rule.Value / itemsPerLitre : rule.Value, rule.Pattern);
+                        ruleSourceOf[c] = rule.Source;
+                    }
+                    else { defaults.Remove(c); ruleSourceOf.Remove(c); }
                 }
             }
             foreach (var kv in defaults)
@@ -356,6 +365,12 @@ namespace VintageE
             MissingAnalysis.Run(report, collector.Conversions, solver.Frozen);
             report.Sources = collector.SourceCounts;
             report.SourceCount = collector.SourceCounts.Count(s => s.Value > 0);
+            var compatSources = new HashSet<string>(rules.Compat.Select(f => f.Source), StringComparer.Ordinal);
+            foreach (var kv in ruleSourceOf)
+            {
+                if (!compatSources.Contains(kv.Value) || !report.Values.ContainsKey(kv.Key)) continue;
+                report.CompatUsed[kv.Value] = report.CompatUsed.TryGetValue(kv.Value, out int n) ? n + 1 : 1;
+            }
             report.UnstableRemoved = solver.Unstable.Count;
             report.KeptAtFirstValue = solver.KeptAtFirstValue.Count;
             report.LoopFrozen = solver.Frozen.Count;
@@ -607,6 +622,7 @@ namespace VintageE
                     {
                         result[c] = best * rule.Ratio;
                         origin[c] = $"relativeValues rule: {rule.Ratio} x {target}";
+                        ruleSourceOf[c] = rule.Source;
                     }
                 }
             }
