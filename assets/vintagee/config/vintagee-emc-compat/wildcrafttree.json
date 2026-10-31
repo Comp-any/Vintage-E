@@ -1,37 +1,97 @@
 {
   "name": "Wildcraft: Trees and Shrubs",
   "requiresMod": "wildcrafttree",
-  "//": "New trees' logs, leaves, saplings, seeds, stumps and saps. Most of them borrow the base game's values for the same family already (logs 32, leaves 1, saplings 32); this fills what's left. Only used when nothing else values the item.",
+  "//": "New trees' logs, leaves, saplings, seeds, stumps and saps. The base game's values for the same families (logs 32, leaves 1, saplings 32) are copied, since these are the same things from more species; most already borrow them through variant guessing and this fills what's left. Only used when nothing else values the item; the '//' lines say why each number was chosen.",
   "defaultValues": {
+    "//log-*": "like the game's logs (32)",
     "wildcrafttree:log-*": 32,
+    "//logsection-*": "like the game's log sections (32)",
     "wildcrafttree:logsection-*": 32,
+    "//lognarrow-*": "a thin log: half a log",
     "wildcrafttree:lognarrow-*": 16,
+    "//stump-*": "a stump is a log's worth of wood",
     "wildcrafttree:stump-*": 32,
+    "//leaves-*": "like the game's leaves (1)",
     "wildcrafttree:leaves-*": 1,
+    "//leavesbranchy-*": "like the game's branchy leaves (2)",
     "wildcrafttree:leavesbranchy-*": 2,
+    "//wildcrafttree:leaves-*": "edible leaves: two leaf blocks' worth",
     "item:wildcrafttree:leaves-*": 2,
+    "//driedleaves": "dried leaves are still leaves (1)",
     "wildcrafttree:driedleaves": 1,
+    "//sapling-*": "like the game's saplings (32)",
     "wildcrafttree:sapling-*": 32,
+    "//treeseed-*": "like the game's seeds (4)",
     "wildcrafttree:treeseed-*": 4,
+    "//mulch": "ground-up leaves, between leaves (1) and soil (4)",
     "wildcrafttree:mulch": 2,
+    "//eucalyptussap": "tapped sap: like resin (16)",
     "wildcrafttree:eucalyptussap": 16,
+    "//latex": "tapped sap: like resin (16)",
     "wildcrafttree:latex": 16,
+    "//chlorociboria": "a fungus: like the game's mushrooms (16)",
     "wildcrafttree:chlorociboria": 16,
+    "//poultice-*": "a cloth (about 8) plus the sap (16); normally made by its recipe",
     "wildcrafttree:poultice-*": 24,
+    "//wildbeehive-*": "like the game's wild beehive (48)",
     "wildcrafttree:wildbeehive-*": 48,
+    "//table-petrified": "a petrified wood table: like an altar block (64)",
     "wildcrafttree:table-petrified": 64,
+    "//wattlebasket-*": "a woven basket: four sticks' worth (4 each)",
     "wildcrafttree:wattlebasket-*": 16,
+    "//beam-*": "like the game's beams (16)",
     "wildcrafttree:beam-*": 16,
+    "//supportbeam-*": "like the game's support beams (128)",
     "wildcrafttree:supportbeam-*": 128
   },
   "relativeValues": [
-    { "code": "wildcrafttree:plankstairs-*", "of": "game:plankstairs-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:ladder-wood-*", "of": "game:ladder-wood-*", "ratio": 1 },
-    { "code": "wildcrafttree:woodenfence-*", "of": "game:woodenfence-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:woodenfencegate-*", "of": "game:woodenfencegate-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:roughhewnfence-*", "of": "game:roughhewnfence-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:roughhewnfencegate-*", "of": "game:roughhewnfencegate-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:glasspane-leaded-*", "of": "game:glasspane-leaded-oak-*", "ratio": 1 },
-    { "code": "wildcrafttree:waterwheel-*", "of": "game:waterwheel-*", "ratio": 1 }
+    {
+      "code": "wildcrafttree:plankstairs-*",
+      "of": "game:plankstairs-oak-*",
+      "ratio": 1,
+      "//": "the same stairs in another wood"
+    },
+    {
+      "code": "wildcrafttree:ladder-wood-*",
+      "of": "game:ladder-wood-*",
+      "ratio": 1,
+      "//": "the same ladder in another wood"
+    },
+    {
+      "code": "wildcrafttree:woodenfence-*",
+      "of": "game:woodenfence-oak-*",
+      "ratio": 1,
+      "//": "the same fence in another wood"
+    },
+    {
+      "code": "wildcrafttree:woodenfencegate-*",
+      "of": "game:woodenfencegate-oak-*",
+      "ratio": 1,
+      "//": "the same gate in another wood"
+    },
+    {
+      "code": "wildcrafttree:roughhewnfence-*",
+      "of": "game:roughhewnfence-oak-*",
+      "ratio": 1,
+      "//": "the same fence in another wood"
+    },
+    {
+      "code": "wildcrafttree:roughhewnfencegate-*",
+      "of": "game:roughhewnfencegate-oak-*",
+      "ratio": 1,
+      "//": "the same gate in another wood"
+    },
+    {
+      "code": "wildcrafttree:glasspane-leaded-*",
+      "of": "game:glasspane-leaded-oak-*",
+      "ratio": 1,
+      "//": "the same pane in another wood"
+    },
+    {
+      "code": "wildcrafttree:waterwheel-*",
+      "of": "game:waterwheel-*",
+      "ratio": 1,
+      "//": "the same wheel in another wood"
+    }
   ]
 }

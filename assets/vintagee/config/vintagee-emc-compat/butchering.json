@@ -1,58 +1,93 @@
 {
   "name": "Butchering",
   "requiresMod": "butchering",
-  "//": "Carcasses and what comes off them: blood, offal, sinew, prime meat, ivory, bones. Anchored on the base game: red meat 32, fat 16, a bone 24, a carcass 32, milk 10 a litre. A carcass is worth roughly what it yields (babies 16, small 48, medium 96, large 192). Blood dough, bread and pie are worth 1.25x the base game's. Only used when nothing else values the item.",
+  "//": "Carcasses and what comes off them: blood, offal, sinew, prime meat, ivory, bones. Pegged to the base game: red meat 32, fat 16, a bone 24, a carcass 32, milk 10 a litre. A carcass is worth roughly what it yields when butchered (meat + hide + bones + sinew + offal), by the mod's own size tiers. Blood dough, bread and pie are 1.25x the base game's. Only used when nothing else values the item; the '//' lines say why each number was chosen.",
   "defaultValues": {
+    "//dead*": "any carcass not listed below: a medium animal, two red meat's worth",
     "butchering:dead*": 64,
+    "//deadchicken-*": "a chicken: poultry (24) plus feathers",
     "butchering:deadchicken-*": 32,
+    "//deadhare-*": "a hare: bush meat (16) plus a small hide (16), halved for its size",
     "butchering:deadhare-*": 24,
+    "//deadfox-*": "a fox: bush meat plus a small hide",
     "butchering:deadfox-*": 32,
+    "//deadraccoon-*": "a raccoon: bush meat plus a small hide",
     "butchering:deadraccoon-*": 32,
+    "//deadwolf-*": "a wolf: red meat plus a medium hide",
     "butchering:deadwolf-*": 64,
+    "//deadhyena-*": "a hyena: red meat plus a medium hide",
     "butchering:deadhyena-*": 64,
+    "//deadpig-*": "a pig: two red meat (64) plus a medium hide (32)",
     "butchering:deadpig-*": 96,
+    "//deadsheep-*": "a sheep: two red meat plus a medium hide",
     "butchering:deadsheep-*": 96,
+    "//deadgoat-*": "a goat: two red meat plus a medium hide",
     "butchering:deadgoat-*": 96,
+    "//deaddeer-*": "a deer: two red meat plus a medium hide",
     "butchering:deaddeer-*": 96,
+    "//deadmoose-*": "a moose: three or four red meat plus a huge hide (80)",
     "butchering:deadmoose-*": 192,
+    "//deadbear-*": "a bear: as a moose",
     "butchering:deadbear-*": 192,
+    "//deadelephantidae-*": "an elephant: a bear's worth plus ivory (64)",
     "butchering:deadelephantidae-*": 256,
+    "//deadrhinocerotidae-*": "a rhino: as an elephant",
     "butchering:deadrhinocerotidae-*": 256,
+    "//dead*-baby-*": "any baby: the mod gives babies no rewards beyond a little blood, so one bush meat",
     "butchering:dead*-baby-*": 16,
+    "//dead*-rotten": "any rotten carcass: mostly rot (0.5 each)",
     "butchering:dead*-rotten": 4,
+    "//primemeat-*": "prime meat: half again a red meat (32)",
     "butchering:primemeat-*": 48,
+    "//healingprimemeat-*": "the healing kind: twice prime meat",
     "butchering:healingprimemeat-*": 96,
+    "//*primemeat*": "any other prime meat variant: as prime meat",
     "butchering:*primemeat*": 48,
+    "//fat*": "like the game's fat (16)",
     "butchering:fat*": 16,
+    "//renderedfat*": "rendered fat is still fat (16)",
     "butchering:renderedfat*": 16,
+    "//offal-*": "offal: half a bush meat",
     "butchering:offal-*": 8,
+    "//offal-clean": "washed offal: offal plus the work",
     "butchering:offal-clean": 12,
+    "//sinew*": "sinew: like fat (16), a material in the same amounts",
     "butchering:sinew*": 16,
+    "//ivory*": "ivory: a rare material, like an altar block (64)",
     "butchering:ivory*": 64,
+    "//ivoryblock*": "a block of ivory: eight pieces",
     "butchering:ivoryblock*": 512,
+    "//*bone*": "any bone item: like the game's bone (24)",
     "butchering:*bone*": 24,
+    "//tinybone*": "a tiny bone: a third of a bone",
     "butchering:tinybone*": 8,
+    "//strongbone*": "a strong bone: a bone and a third",
     "butchering:strongbone*": 32,
+    "//bloodbait*": "bait: like the game's fishing bait (4)",
     "butchering:bloodbait*": 4
   },
   "litreValues": {
+    "//bloodportion": "blood per litre: between water (1) and milk (10)",
     "butchering:bloodportion": 4
   },
   "relativeValues": [
     {
       "code": "butchering:blooddough-*",
       "of": "game:dough-*",
-      "ratio": 1.25
+      "ratio": 1.25,
+      "//": "the game's dough of the same grain, plus a quarter for the blood"
     },
     {
       "code": "butchering:bloodbread-*",
       "of": "game:bread-*",
-      "ratio": 1.25
+      "ratio": 1.25,
+      "//": "the game's bread of the same grain, plus a quarter for the blood"
     },
     {
       "code": "butchering:bloodpie-*",
       "of": "game:pie-*",
-      "ratio": 1.25
+      "ratio": 1.25,
+      "//": "the game's pie, plus a quarter for the blood"
     }
   ]
 }

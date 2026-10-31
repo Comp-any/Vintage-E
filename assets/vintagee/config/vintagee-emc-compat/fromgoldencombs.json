@@ -1,42 +1,51 @@
 {
   "name": "From Golden Combs",
   "requiresMod": "fromgoldencombs",
-  "//": "Hives and frames full of honeycomb, and the trader plushies. A full frame or hive is the empty one plus the honeycomb in it (32); an empty brood box is 1.25x a super of the same woods; a populated brood box is the empty one plus a wild hive (48). Only used when nothing else values the item.",
+  "//": "Hives and frames full of honeycomb, and the trader plushies. 2.x adds no new bee products, so these are mostly ratios: a full frame, hive top or brood pot is the empty one plus the honeycomb in it (32 on a roughly 64 item, so 1.5x); an empty brood box is 1.25x a super of the same woods; a populated one is the empty one plus a wild hive (48). Only used when nothing else values the item; the '//' lines say why each number was chosen.",
   "defaultValues": {
+    "//plushy-*": "a trader plushy: like a painting (64)",
     "fromgoldencombs:plushy-*": 64,
+    "//framerack-*": "a frame rack: a log and a half of wood; normally made by its recipe",
     "fromgoldencombs:framerack-*": 48,
+    "//langstrothstack-*": "no value: the stacked-hive helper blocks aren't items you can hold",
     "fromgoldencombs:langstrothstack-*": 0
   },
   "relativeValues": [
     {
       "code": "fromgoldencombs:langstrothbrood-empty-*",
       "of": "fromgoldencombs:langstrothsuper-open-*",
-      "ratio": 1.25
+      "ratio": 1.25,
+      "//": "a brood box is a super of the same woods with a bit more wood"
     },
     {
       "code": "fromgoldencombs:beeframe-*-harvestable",
       "of": "fromgoldencombs:beeframe-*-lined",
-      "ratio": 1.5
+      "ratio": 1.5,
+      "//": "a lined frame plus the honeycomb (32) the bees filled it with"
     },
     {
       "code": "fromgoldencombs:hivetop-*-harvestable",
       "of": "fromgoldencombs:hivetop-*-fired",
-      "ratio": 1.5
+      "ratio": 1.5,
+      "//": "a fired hive top plus the honeycomb in it"
     },
     {
       "code": "fromgoldencombs:ceramicbroodpot-*-withtop",
       "of": "fromgoldencombs:ceramicbroodpot-*-notop",
-      "ratio": 1.5
+      "ratio": 1.5,
+      "//": "a brood pot plus its top"
     },
     {
       "code": "fromgoldencombs:langstrothbrood-populated-*",
       "of": "fromgoldencombs:langstrothbrood-empty-*",
-      "ratio": 1.5
+      "ratio": 1.5,
+      "//": "an empty brood box plus the bees in it (a wild hive is 48)"
     },
     {
       "code": "fromgoldencombs:langstrothsuper-closed-*",
       "of": "fromgoldencombs:langstrothsuper-open-*",
-      "ratio": 1
+      "ratio": 1,
+      "//": "the same super, closed"
     }
   ]
 }
