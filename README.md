@@ -24,7 +24,7 @@ Burn items into **EMC**, learn them, and transmute your EMC back into anything y
 | **More tools** | Dark/Red Matter Shears, Red Matter Katar, Red Matter Morning Star. |
 | **Storage and machines** | Alchemical Chest (104 slots), Alchemical Bags (32-slot backpack bags; upgrade with dark matter for 48 slots and red matter for 64, keeping what's inside), fuel blocks, Dark/Red Matter Furnaces (hotter, faster firepits that can run on EMC), Anti-Matter Relays MK1–3, Dark and Red Matter Pedestals (the item floats above them; red: twice the reach and effect), Nova Catalyst/Cataclysm (lit with a torch or firestarter, like the game's bombs), Interdiction Torch. |
 
-Hover any item to see its EMC in the tooltip. Tooltips are kept to a line; the full details of each Vintage-E item are on its handbook page under **How it works**. Liquids show EMC **per litre** (1 L of water = 1 EMC), and buckets, bags and pots also show what their contents are worth.
+Hover any item to see its EMC in the tooltip. Tooltips are kept to a line; the full details of each Vintage-E item are on its handbook page under **How it works**. Liquids show EMC **per litre** (1 L of water = 1 EMC), and buckets, bags and pots also show what their contents are worth. Worn tools are worth their remaining durability and clothes their condition (`DurabilityScalesEmc`); anything made from EMC comes out new. EMC numbers show up to two decimals, cut off rather than rounded.
 
 When you join, chat shows a summary in the form `Vintage-E version <version>: calculated <n> EMC values, <n> missing, <n> value loops (/emc loop).` (turn off with `AnnounceInChat`).
 
@@ -88,7 +88,7 @@ Some items carry data on the item itself: buckets, jugs, pots, bowls, crocks, ba
 
 | Mode | Burning gives | Learning and creating |
 |---|---|---|
-| **Item only** | the plain item's value (a container that still holds something won't burn) | the plain item |
+| **Item only** | the plain item's value (a container that still holds something won't burn while `ProtectContainersWithContents` is on; with it off, it burns and gives its contents' EMC too) | the plain item |
 | **Item + contents** | the item plus what it holds or is made of (a gold round shield is worth more than a tin bronze one; a chiseled block is worth its voxels of each material) | exactly that version |
 | **Item price only** | the item and its material, not what it holds | exactly that version, for the item's price: contents are free |
 
@@ -110,7 +110,7 @@ Values come from these sources, later ones winning:
 1. `assets/vintagee/config/vintagee-emc.json` (this mod's defaults).
 2. Any other mod's `assets/<modid>/config/vintagee-emc.json` — same format; ship one with your mod, or JSON-patch ours.
 3. An `emcValue` attribute on any item or block: `"attributes": { "emcValue": 256 }` (0 = no EMC).
-4. `ModConfig/vintagee.json` on the server (or change it in game with `/emc configure`): `BaseValues` and `FixedValues` (code or wildcard → value), `Blacklist`, and settings like `TransitionEmcPerDay`, `InferValuesFromProcessing`, `InferValuesFromCrafting`, `UseTraderPrices`, `InferFromVariantSiblings`, `FallbackValue`, `CacheEmcValues`, `DumpValuesOnStart`, `AnnounceInChat`, `DurabilityScalesEmc`, `EstimateFuelAndFood`, `StackDataModes`, `MaxExactKnowledge`, `MachineSpeedMultiplier`, `CollectorsChargePlayers`, `TableUseRange`, and the Repair Talisman's clothing settings (`RepairTalismanRepairsClothing`, `RepairTalismanClothingPercentPerMinute`, `RepairTalismanClothingMinCondition`, `RepairTalismanClothingMaxCondition`), `ProjectETextures` / `ProjectESounds` (see below), `FreeIngredients` (no value of their own, free in recipes), `NoTransmute` (keep their value, but can't be burned, learned or created), `GrayList` (no guessed value and not listed as missing, but valued by recipes) and `CustomRecipes` (hand-written recipes, `output = ingredients`).
+4. `ModConfig/vintagee.json` on the server (or change it in game with `/emc configure`): `BaseValues` and `FixedValues` (code or wildcard → value), `Blacklist`, and settings like `TransitionEmcPerDay`, `InferValuesFromProcessing`, `InferValuesFromCrafting`, `UseTraderPrices`, `InferFromVariantSiblings`, `FallbackValue`, `CacheEmcValues`, `DumpValuesOnStart`, `AnnounceInChat`, `DurabilityScalesEmc`, `EstimateFuelAndFood`, `StackDataModes`, `MaxExactKnowledge`, `ProtectContainersWithContents`, `MachineSpeedMultiplier`, `CollectorDarkFactor`, `CollectorsChargePlayers`, `TableUseRange`, `TrinketCostMultiplier`, `HostileCreatures` (what the Ignition Ring burns, the Interdiction Torch repels and Archangel's Smite targets), `WatchChangesWorldTime`, `WatchSpeedUp`, `WatchSlowDown`, and the Repair Talisman's clothing settings (`RepairTalismanRepairsClothing`, `RepairTalismanClothingPercentPerMinute`, `RepairTalismanClothingMinCondition`, `RepairTalismanClothingMaxCondition`), `ProjectETextures` / `ProjectESounds` (see below), `FreeIngredients` (no value of their own, free in recipes), `NoTransmute` (keep their value, but can't be burned, learned or created), `GrayList` (no guessed value and not listed as missing, but valued by recipes) and `CustomRecipes` (hand-written recipes, `output = ingredients`).
 
 Keys accept wildcards and an optional type prefix: `"game:rock-*"`, `"item:game:stick"`, `"block:*:log-*"`.
 
