@@ -312,19 +312,46 @@ namespace VintageE
             if (InferFromCrafting && proposals.Count == 0)
             {
                 // Only once processing has nothing more to say, so the more direct evidence always wins.
-                // Ingredients that something else makes wait until nothing else can be worked out: their own recipe may
-                // still value them, and another recipe for the same output says little about them (zinc sulfate isn't
-                // worth what the borax it can replace in a taxidermy barrel is).
-                if (producible == null)
-                {
-                    producible = new HashSet<T>();
-                    foreach (Edge e in Edges) producible.Add(e.Output);
-                    foreach (JointEdge j in JointEdges) foreach (T o in j.Outputs) producible.Add(o);
-                }
                 var craftProposals = new Dictionary<T, double>();
                 var craftVia = new Dictionary<T, object>();
-                CraftingProposals(craftProposals, craftVia, allowProducible: false);
-                if (craftProposals.Count == 0) CraftingProposals(craftProposals, craftVia, allowProducible: true);
+                foreach (Edge e in Edges)
+                {
+                    if (!Values.TryGetValue(e.Output, out double outValue)) continue;
+                    int unknownSlot = -1;
+                    double known = 0;
+                    bool usable = true;
+                    for (int i = 0; i < e.Choices.Length && usable; i++)
+                    {
+                        double best = double.PositiveInfinity;
+                        bool anyOpen = false;
+                        foreach (T c in e.Choices[i])
+                        {
+                            if (Free.Contains(c)) { best = 0; break; }
+                            if (Excluded.Contains(c) || Unstable.Contains(c)) continue;
+                            if (Values.TryGetValue(c, out double v)) { if (v < best) best = v; }
+                            else if (Open(c)) anyOpen = true;
+                        }
+                        if (!double.IsPositiveInfinity(best)) known += best * e.Quantities[i];
+                        else if (anyOpen && unknownSlot < 0) unknownSlot = i;
+                        else usable = false; // a second unknown slot, or a slot nothing can fill
+                    }
+                    if (!usable || unknownSlot < 0) continue;
+                    double total = outValue * e.OutputQuantity - e.ExtraCost - known;
+                    if (e.Returned != null)
+                    {
+                        for (int j = 0; j < e.Returned.Length; j++)
+                        {
+                            if (Values.TryGetValue(e.Returned[j], out double rv)) total += rv * e.ReturnedQuantities[j];
+                        }
+                    }
+                    double each = total / e.Quantities[unknownSlot];
+                    if (each < MinValue || double.IsNaN(each) || double.IsInfinity(each)) continue;
+                    foreach (T c in e.Choices[unknownSlot])
+                    {
+                        if (!Open(c)) continue;
+                        if (!craftProposals.TryGetValue(c, out double prev) || each > prev) { craftProposals[c] = each; craftVia[c] = e; }
+                    }
+                }
                 foreach (var kv in craftProposals) { proposals[kv.Key] = kv.Value; proposalVia[kv.Key] = craftVia[kv.Key]; }
             }
 
@@ -336,51 +363,6 @@ namespace VintageE
                 Via[kv.Key] = proposalVia[kv.Key];
             }
             return proposals.Count;
-        }
-
-        HashSet<T> producible;
-
-        void CraftingProposals(Dictionary<T, double> craftProposals, Dictionary<T, object> craftVia, bool allowProducible)
-        {
-            bool Open(T item) => !Values.ContainsKey(item) && !Excluded.Contains(item) && !Unstable.Contains(item) && !Fixed.ContainsKey(item);
-            foreach (Edge e in Edges)
-            {
-                if (!Values.TryGetValue(e.Output, out double outValue)) continue;
-                int unknownSlot = -1;
-                double known = 0;
-                bool usable = true;
-                for (int i = 0; i < e.Choices.Length && usable; i++)
-                {
-                    double best = double.PositiveInfinity;
-                    bool anyOpen = false;
-                    foreach (T c in e.Choices[i])
-                    {
-                        if (Free.Contains(c)) { best = 0; break; }
-                        if (Excluded.Contains(c) || Unstable.Contains(c)) continue;
-                        if (Values.TryGetValue(c, out double v)) { if (v < best) best = v; }
-                        else if (Open(c)) anyOpen = true;
-                    }
-                    if (!double.IsPositiveInfinity(best)) known += best * e.Quantities[i];
-                    else if (anyOpen && unknownSlot < 0) unknownSlot = i;
-                    else usable = false; // a second unknown slot, or a slot nothing can fill
-                }
-                if (!usable || unknownSlot < 0) continue;
-                double total = outValue * e.OutputQuantity - e.ExtraCost - known;
-                if (e.Returned != null)
-                {
-                    for (int j = 0; j < e.Returned.Length; j++)
-                    {
-                        if (Values.TryGetValue(e.Returned[j], out double rv)) total += rv * e.ReturnedQuantities[j];
-                    }
-                }
-                double each = total / e.Quantities[unknownSlot];
-                if (each < MinValue || double.IsNaN(each) || double.IsInfinity(each)) continue;
-                foreach (T c in e.Choices[unknownSlot])
-                {
-                    if (!Open(c) || (!allowProducible && producible.Contains(c))) continue;
-                    if (!craftProposals.TryGetValue(c, out double prev) || each > prev) { craftProposals[c] = each; craftVia[c] = e; }
-                }
-            }
         }
     }
 }
