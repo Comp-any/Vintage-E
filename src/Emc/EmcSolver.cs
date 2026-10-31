@@ -247,6 +247,32 @@ namespace VintageE
         }
 
         /// <summary>
+        /// True if the recipe that gave e's output its value is the same recipe as e with only the given ingredient
+        /// swapped (a taxidermy barrel with zinc sulfate instead of borax, a hide soaked in washing soda instead of
+        /// borax). The output's value then only says what the other ingredient costs, not what this one is worth.
+        /// </summary>
+        bool IsSubstitute(Edge e, int slot)
+        {
+            if (!Via.TryGetValue(e.Output, out object via) || !(via is Edge other) || ReferenceEquals(other, e)) return false;
+            if (!ReferenceEquals(other.Output, e.Output) || other.Choices.Length != e.Choices.Length) return false;
+            // Every other slot must match one of the other recipe's slots (same choices, same quantity).
+            var used = new bool[other.Choices.Length];
+            int unmatched = 0;
+            for (int i = 0; i < e.Choices.Length; i++)
+            {
+                if (i == slot) continue;
+                bool found = false;
+                for (int k = 0; k < other.Choices.Length && !found; k++)
+                {
+                    if (used[k] || Math.Abs(other.Quantities[k] - e.Quantities[i]) > 1e-9) continue;
+                    if (new HashSet<T>(other.Choices[k]).SetEquals(e.Choices[i])) { used[k] = true; found = true; }
+                }
+                if (!found) unmatched++;
+            }
+            return unmatched == 0;
+        }
+
+        /// <summary>
         /// Works values out backwards for items that are still unvalued. Returns how many were added.
         /// <list type="bullet">
         /// <item>Joint processing (one input, several outputs): unvalued outputs share what the input is worth beyond the valued outputs;
@@ -336,6 +362,7 @@ namespace VintageE
                         else usable = false; // a second unknown slot, or a slot nothing can fill
                     }
                     if (!usable || unknownSlot < 0) continue;
+                    if (IsSubstitute(e, unknownSlot)) continue;
                     double total = outValue * e.OutputQuantity - e.ExtraCost - known;
                     if (e.Returned != null)
                     {
