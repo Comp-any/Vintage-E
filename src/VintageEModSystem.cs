@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -136,12 +137,26 @@ namespace VintageE
                 // ones are what players are sent, and a dedicated server frees their textures soon after).
                 foreach (string look in new[] { ProjectELook.LookOriginal, ProjectELook.LookNew })
                 {
-                    var copies = api.World.Collectibles.Where(c => c?.Code?.Domain == ModId)
-                        .Select(c => c is Block b ? (CollectibleObject)b.Clone() : c is Item i ? i.Clone() : null).Where(c => c != null).ToList();
-                    var types = api.World.EntityTypes.Where(t => t?.Code?.Domain == ModId).Select(t => t.Clone()).ToList();
+                    // Plain copies (the game's Block.Clone fails on some blocks): a look only ever replaces a definition's
+                    // fields, dictionaries and arrays, never changes them in place, so the real ones stay as they were.
+                    var copies = api.World.Collectibles.Where(c => c?.Code?.Domain == ModId).Select(c => ShallowCopy(c)).Where(c => c != null).ToList();
+                    var types = new List<EntityProperties>();
+                    foreach (EntityProperties t in api.World.EntityTypes.Where(t => t?.Code?.Domain == ModId))
+                    {
+                        EntityProperties copy = ShallowCopy(t);
+                        if (copy == null) continue;
+                        if (copy.Client != null) copy.Client = ShallowCopy(copy.Client);
+                        types.Add(copy);
+                    }
                     TestLooks[look] = ProjectELook.Apply(api, Mod.Logger, look, false, copies, types);
                 }
             }
+        }
+
+        static T ShallowCopy<T>(T obj) where T : class
+        {
+            try { return (T)typeof(object).GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(obj, null); }
+            catch { return null; }
         }
 
         /// <summary>
