@@ -6,3 +6,5 @@ release/
 .idea/
 .vscode/
 /preview.png
+__pycache__/
+*.pyc
