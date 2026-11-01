@@ -498,6 +498,18 @@ namespace VintageE
             string reset = RunCommand("/emc configure TableUseRange default");
             Check(Math.Abs(mod.Config.TableUseRange - defaultRange) < 1e-9, "/emc configure <setting> default resets it: " + reset);
             Check(ConfigureCommand.DefaultTexts().Length == ConfigureCommand.Snapshot(mod.Config).names.Length, "every setting has a default for the window");
+
+            // Look is a drop-down in the window; typed, it only takes its choices.
+            Check(ConfigureCommand.KindOf(ConfigureCommand.Field("Look")) == "choice" && ConfigureCommand.ChoicesOf("Look")?.Length == 4, "Look is a drop-down of its four choices");
+            string lookBefore = mod.Config.Look;
+            string bad = RunCommand("/emc configure Look banana");
+            Check(mod.Config.Look == lookBefore, "/emc configure Look refuses a word that isn't a choice: " + bad);
+            RunCommand("/emc configure Look middle");
+            Check(mod.Config.Look == ProjectELook.LookMiddle, "/emc configure Look middle sets Middle: " + mod.Config.Look);
+            ConfigureCommand.SetFromText(mod, "Look", "Original", "en");
+            Check(mod.Config.Look == ProjectELook.LookOriginal, "the window's drop-down value Original is saved: " + mod.Config.Look);
+            RunCommand("/emc configure Look " + lookBefore);
+            Check(mod.Config.Look == lookBefore, "Look put back to " + lookBefore);
         }
 
         /// <summary>

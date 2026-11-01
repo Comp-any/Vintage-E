@@ -16,5 +16,5 @@ version=$(python3 -c "import json;print(json.load(open('modinfo.json'))['version
 out="release/vintagee_${version}.zip"
 mkdir -p release
 rm -f "$out"
-(cd bin/Release/Mods/vintagee && zip -qr "../../../../$out" modinfo.json modicon.png VintageE.dll THIRD-PARTY-NOTICES.md assets)
+(cd bin/Release/Mods/vintagee && zip -qr "../../../../$out" modinfo.json moddb.json modicon.png VintageE.dll THIRD-PARTY-NOTICES.md assets)
 echo "Built $out"

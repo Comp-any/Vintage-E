@@ -160,6 +160,7 @@ namespace VintageE
             if (isList) y += 36;
             double editorTop = y;
             double editorHeight = kind == "bool" ? 40 : kind == "list" || kind == "table" ? AreaHeight : 30;
+            string[] options = kind == "choice" ? ConfigureCommand.ChoicesOf(selected) : null;
             y += editorHeight + 10;
 
             double statusHeight = Math.Max(20, GuiLayout.TextHeight(capi, detail, status, PaneWidth));
@@ -227,6 +228,20 @@ namespace VintageE
                  .AddVerticalScrollbar(v2 => Scroll("area", v2), areaBar, "areabar");
                 bgBounds.WithChildren(areaInset, areaClip, areaBar);
             }
+            else if (options != null)
+            {
+                // A drop-down of the setting's words, each with a short explanation (vintagee:cfg-choice-<setting>-<word>).
+                ElementBounds dropBounds = ElementBounds.Fixed(x, editorTop, 320, 30);
+                string[] labels = options.Select(o =>
+                {
+                    string key = "vintagee:cfg-choice-" + selected.ToLowerInvariant() + "-" + o.ToLowerInvariant();
+                    string label = Lang.Get(key);
+                    return label == key ? o : label;
+                }).ToArray();
+                int index = Math.Max(0, Array.FindIndex(options, o => string.Equals(o, shownText, StringComparison.OrdinalIgnoreCase)));
+                c.AddDropDown(options, labels, index, (code, on) => { if (!composing && on) draft = code; }, dropBounds, "dropdown");
+                bgBounds.WithChildren(dropBounds);
+            }
             else
             {
                 ElementBounds inputBounds = ElementBounds.Fixed(x, editorTop, 220, 30);
@@ -254,7 +269,7 @@ namespace VintageE
                 findInput?.SetPlaceHolderText(Lang.Get("vintagee:cfg-find"));
                 if (find.Length > 0) findInput?.SetValue(find, false);
             }
-            else SingleComposer.GetTextInput("input")?.SetValue(shownText, false);
+            else if (options == null) SingleComposer.GetTextInput("input")?.SetValue(shownText, false);
             composing = false;
             if (kind == "list" || kind == "table")
             {

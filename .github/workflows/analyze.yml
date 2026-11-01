@@ -129,7 +129,7 @@ jobs:
           # The mod built against the real game DLLs, zipped for release.
           version=$(python3 -c "import json;print(json.load(open('modinfo.json'))['version'])")
           if [ -f bin/Release/Mods/vintagee/VintageE.dll ]; then
-            (cd bin/Release/Mods/vintagee && zip -qr "$GITHUB_WORKSPACE/analysis/vintagee_${version}.zip" modinfo.json modicon.png VintageE.dll THIRD-PARTY-NOTICES.md assets)
+            (cd bin/Release/Mods/vintagee && zip -qr "$GITHUB_WORKSPACE/analysis/vintagee_${version}.zip" modinfo.json moddb.json modicon.png VintageE.dll THIRD-PARTY-NOTICES.md assets)
           fi
           cp server-console.log build.log analysis/ || true
           cp data/Logs/*crash* analysis/ 2>/dev/null || true

@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.13.1 — 2026-11-02
+
+### Changed
+- **`Look` is a drop-down in the `/emc configure` window**: Auto, New, Middle or Original, each with a short explanation. Typed (`/emc configure Look ...`), it now refuses anything that isn't one of them instead of quietly using Auto.
+- The release zip carries `moddb.json` with the mod's Mod DB page number.
+
 ## 1.13.0 — 2026-11-01
 
 ### Added

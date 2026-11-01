@@ -150,9 +150,33 @@ namespace VintageE
             }
         }
 
-        /// <summary>The kind of editor a setting needs: "bool", "number", "text", "list" or "table".</summary>
+        /// <summary>Settings that take one of a few words: shown as a drop-down in the window, checked when typed.</summary>
+        static readonly Dictionary<string, string[]> choices = new Dictionary<string, string[]>
+        {
+            ["Look"] = new[] { ProjectELook.LookAuto, ProjectELook.LookNew, ProjectELook.LookMiddle, ProjectELook.LookOriginal },
+        };
+
+        /// <summary>The words a setting can be set to, or null if it isn't one of those settings.</summary>
+        public static string[] ChoicesOf(string name) => name != null && choices.TryGetValue(name, out string[] c) ? c : null;
+
+        /// <summary>One of a choice setting's words, written properly (any case, and the Look setting's other names), or a FormatException.</summary>
+        static string Choice(FieldInfo field, string text, string lang)
+        {
+            string[] allowed = ChoicesOf(field.Name);
+            string t = (text ?? "").Trim();
+            string match = allowed.FirstOrDefault(a => string.Equals(a, t, StringComparison.OrdinalIgnoreCase));
+            if (match == null && field.Name == "Look")
+            {
+                string normal = ProjectELook.NormalizeLook(t);
+                if (normal != ProjectELook.LookAuto || t.Length == 0 || t.Equals("default", StringComparison.OrdinalIgnoreCase)) match = normal;
+            }
+            return match ?? throw new FormatException(Lang.GetL(lang, "vintagee:cfg-badchoice", t, string.Join(", ", allowed)));
+        }
+
+        /// <summary>The kind of editor a setting needs: "bool", "number", "text", "choice", "list" or "table".</summary>
         public static string KindOf(FieldInfo f)
         {
+            if (ChoicesOf(f.Name) != null) return "choice";
             Type t = f.FieldType;
             if (t == typeof(bool)) return "bool";
             if (t == typeof(double) || t == typeof(int) || t == typeof(float)) return "number";
@@ -195,7 +219,7 @@ namespace VintageE
             }
             else
             {
-                field.SetValue(mod.Config, Parse(text, field.FieldType, lang));
+                field.SetValue(mod.Config, ChoicesOf(field.Name) != null ? Choice(field, text, lang) : Parse(text, field.FieldType, lang));
             }
             mod.Config.Normalize();
             mod.SaveConfig();
@@ -311,7 +335,7 @@ namespace VintageE
                         throw new FormatException(Lang.GetL(lang, "vintagee:cfg-howto-list", field.Name));
                 }
             }
-            object parsed = Parse(rest, field.FieldType, lang);
+            object parsed = ChoicesOf(field.Name) != null ? Choice(field, rest, lang) : Parse(rest, field.FieldType, lang);
             field.SetValue(config, parsed);
             return Lang.GetL(lang, "vintagee:cfg-changed", field.Name, Show(parsed));
         }
