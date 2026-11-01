@@ -800,6 +800,16 @@ namespace VintageE
                 if (other == ProjectELook.LookNew) Check(dry.Models >= 50, $"New look: {dry.Models} blocks and items get a model");
             }
 
+            // Players' games apply their look as the game loads shapes: the methods patched for that are there, with the
+            // parameter names the patch binds to (the same game library runs the server).
+            Type stm = HarmonyLib.AccessTools.TypeByName("Vintagestory.Client.NoObf.ShapeTesselatorManager");
+            foreach (var (name, param) in new[] { ("LoadBlockShapes", "blocks"), ("LoadItemShapes", "items"), ("LoadEntityShapes", "entities") })
+            {
+                var m = stm == null ? null : HarmonyLib.AccessTools.GetDeclaredMethods(stm).FirstOrDefault(x => x.Name == name);
+                Check(m != null && m.GetParameters().Any(pi => pi.Name == param), $"the game's {name}({param}) is there for the look to hook into");
+            }
+            Check(stm != null && HarmonyLib.AccessTools.Field(stm, "game") != null, "the shape loader tells a player's game from a server (its game field)");
+
             CheckNewLook();
 
             // Original, as a player's game applies it (here to copies made at start-up).

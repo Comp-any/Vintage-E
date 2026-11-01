@@ -113,11 +113,6 @@ namespace VintageE
 
         public override void AssetsFinalize(ICoreAPI api)
         {
-            if (api is ICoreClientAPI capi)
-            {
-                ApplyClientLook(capi);
-                return;
-            }
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
             Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat);
@@ -159,25 +154,50 @@ namespace VintageE
             catch { return null; }
         }
 
+        readonly object clientLookLock = new object();
+        string clientLook;
+
         /// <summary>
-        /// Player side: applies this player's look (their .vintagee choice, or the server's default) to the blocks, items
-        /// and projectiles the server sent, before the game builds their textures and models. Changing it needs a rejoin.
+        /// Player side: this player's look (their .vintagee choice, or the server's default from the world settings),
+        /// worked out once, then applied to each kind of definition (blocks, items, entity types) just before the game
+        /// loads their shapes and textures (see <see cref="ClientLookPatches"/>). Changing it needs a rejoin.
         /// </summary>
-        void ApplyClientLook(ICoreClientAPI capi)
+        internal void ApplyClientLookTo(string kind, IEnumerable<CollectibleObject> collectibles, List<EntityProperties> entityTypes)
         {
+            ICoreClientAPI capi = Capi;
+            if (capi == null) return;
             try
             {
-                ClientConfig ??= VintageEClientConfig.Load(capi);
-                string serverLook = capi.World?.Config?.GetString(WorldLookKey, null);
-                string mine = ClientConfig.Look;
-                ActiveLook = mine == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(serverLook ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(mine);
-                Mod.Logger.Notification("Look: {0} ({1}; the server's default is {2}).", ActiveLook,
-                    mine == VintageEClientConfig.LookServer ? "the server's" : "picked in .vintagee", serverLook ?? "not sent, so New");
-                if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(capi, Mod.Logger, ActiveLook, false);
+                lock (clientLookLock)
+                {
+                    if (clientLook == null)
+                    {
+                        ClientConfig ??= VintageEClientConfig.Load(capi);
+                        string serverLook = capi.World?.Config?.GetString(WorldLookKey, null);
+                        string mine = ClientConfig.Look;
+                        clientLook = mine == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(serverLook ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(mine);
+                        ActiveLook = clientLook;
+                        Mod.Logger.Notification("Look: {0} ({1}; the server's default is {2}).", clientLook,
+                            mine == VintageEClientConfig.LookServer ? "the server's" : "picked in .vintagee", serverLook ?? "not sent, so New");
+                    }
+                }
+                if (ProjectELook.MapFor(clientLook) == null) return;
+                var mine2 = (collectibles ?? Enumerable.Empty<CollectibleObject>()).Where(c => c?.Code?.Domain == ModId).ToList();
+                var types = (entityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
+                if (mine2.Count == 0 && types.Count == 0) return;
+                ProjectELook.Result r = ProjectELook.Apply(capi, Mod.Logger, clientLook, false, mine2, types);
+                lock (clientLookLock)
+                {
+                    LookResult ??= new ProjectELook.Result { Look = clientLook };
+                    LookResult.Models += r.Models;
+                    LookResult.Textures += r.Textures;
+                    LookResult.Collectibles += r.Collectibles;
+                    LookResult.Entities += r.Entities;
+                }
             }
             catch (Exception e)
             {
-                Mod.Logger.Error("Could not apply the look: {0}", e);
+                Mod.Logger.Error("Could not apply the look to {0}: {1}", kind, e);
             }
         }
 
@@ -1301,6 +1321,9 @@ namespace VintageE
         public override void StartClientSide(ICoreClientAPI capi)
         {
             Capi = capi;
+            // The look is applied as the game loads shapes for what the server sent, which comes after this.
+            ClientLookPatches.Mod = this;
+            ClientLookPatches.Patch(Mod.Logger);
             clientChannel = capi.Network.GetChannel(ChannelName);
             clientChannel.SetMessageHandler<EmcTablePacket>(OnEmcTableReceived);
             clientChannel.SetMessageHandler<TransmuteResultPacket>(OnTransmuteResult);
@@ -1652,7 +1675,11 @@ namespace VintageE
             windSound?.Stop();
             windSound?.Dispose();
             windSound = null;
-            if (Capi != null) ProjectELook.DisposeMeshes();
+            if (Capi != null)
+            {
+                ProjectELook.DisposeMeshes();
+                ClientLookPatches.Unpatch();
+            }
             try { (Sapi?.World ?? (IWorldAccessor)Capi?.World)?.Calendar?.RemoveTimeSpeedModifier(TrinketEffects.TimeModifierName); }
             catch { /* world already gone */ }
             base.Dispose();
