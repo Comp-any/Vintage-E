@@ -768,6 +768,21 @@ namespace VintageE
             Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
             string lookFile = VintageEModSystem.WorldLookFile(sapi, sapi.WorldManager.CurrentWorldName);
             Check(File.Exists(lookFile) && File.ReadAllText(lookFile).StartsWith(ProjectELook.LookNew), "the world's look is remembered in " + Path.GetFileName(lookFile));
+            // The next start of this world finds it remembered; a world that already existed (its save file is there
+            // now) on a server that had Vintage-E, with nothing remembered, gets Middle.
+            string again = mod.WorldLook(sapi, true, out string why2);
+            Check(again == ProjectELook.LookNew && why2.StartsWith("remembered"), "the next start keeps this world's look: " + again + ", " + why2);
+            string saved = File.Exists(lookFile) ? File.ReadAllText(lookFile) : null;
+            try
+            {
+                File.Delete(lookFile);
+                string old = mod.WorldLook(sapi, true, out string why3);
+                Check(old == ProjectELook.LookMiddle && why3.StartsWith("a world that already had Vintage-E"), "an existing world that had Vintage-E keeps the Middle look: " + old + ", " + why3);
+            }
+            finally
+            {
+                if (saved != null) File.WriteAllText(lookFile, saved);
+            }
             foreach (string s in new[] { PESounds.Charge, PESounds.Uncharge, PESounds.Heal, PESounds.Destruct, PESounds.Power, PESounds.Transmute, PESounds.WaterMagic, PESounds.WindMagic })
             {
                 Check(sapi.Assets.Exists(PESounds.Location(s).WithPathAppendixOnce(".ogg")), "ProjectE sound " + s + " is there");

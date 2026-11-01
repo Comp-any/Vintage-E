@@ -140,7 +140,7 @@ namespace VintageE
         /// It's remembered in ModData/vintagee/looks/ (by the save file's path), because the world's own data isn't
         /// loaded yet when blocks and items are set up, so it never changes by itself.
         /// </summary>
-        string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
+        internal string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
         {
             string file = null;
             try
