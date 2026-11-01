@@ -321,7 +321,7 @@ namespace VintageE
                         mt.GetType().GetMethod("EnsureDefaultValues", Type.EmptyTypes)?.Invoke(mt, null);
                         switch (kv.Key)
                         {
-                            case "guiTransform": item.GuiTransform = mt; result.Swapped[c.Code + "#guirotx"] = mt.Rotation?.X.ToString(System.Globalization.CultureInfo.InvariantCulture); break;
+                            case "guiTransform": item.GuiTransform = mt; result.Swapped[c.Code + "#guirotx"] = mt.Rotation.X.ToString(System.Globalization.CultureInfo.InvariantCulture); break;
                             case "fpHandTransform": item.FpHandTransform = mt; break;
                             case "tpHandTransform": item.TpHandTransform = mt; break;
                             case "tpOffHandTransform": item.TpOffHandTransform = mt; break;
