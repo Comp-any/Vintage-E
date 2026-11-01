@@ -32,13 +32,10 @@ namespace VintageE
 
         /// <summary>
         /// The setting's default: each world uses the look it was given the first time it ran 1.13.0 or later, New for
-        /// new worlds and Middle for worlds that already had Vintage-E (see VintageEModSystem.WorldLook).
+        /// new worlds and Middle for worlds that already had Vintage-E (see VintageEModSystem.WorldLook, remembered in ModData/vintagee/looks/).
         /// </summary>
         public const string LookAuto = "Auto";
         public const string LookDefault = LookAuto;
-
-        /// <summary>The world data key that remembers a world's look.</summary>
-        public const string WorldLookKey = "vintageeLook";
 
         /// <summary>The Look setting's value written properly (Auto for empty, "default" or anything it doesn't know).</summary>
         public static string NormalizeLook(string look)

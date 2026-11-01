@@ -766,7 +766,8 @@ namespace VintageE
             Line("Look: " + mod.ActiveLook + ", this world's own look " + mod.WorldLookChoice + " (" + mod.WorldLookReason + "), ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
             // The server test starts a brand-new world, which gets New and keeps it.
             Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
-            Check(sapi.WorldManager.SaveGame.GetData<string>(ProjectELook.WorldLookKey, null) == ProjectELook.LookNew, "the world remembers its look");
+            string lookFile = VintageEModSystem.WorldLookFile(sapi, sapi.WorldManager.CurrentWorldName);
+            Check(File.Exists(lookFile) && File.ReadAllText(lookFile).StartsWith(ProjectELook.LookNew), "the world's look is remembered in " + Path.GetFileName(lookFile));
             foreach (string s in new[] { PESounds.Charge, PESounds.Uncharge, PESounds.Heal, PESounds.Destruct, PESounds.Power, PESounds.Transmute, PESounds.WaterMagic, PESounds.WindMagic })
             {
                 Check(sapi.Assets.Exists(PESounds.Location(s).WithPathAppendixOnce(".ogg")), "ProjectE sound " + s + " is there");

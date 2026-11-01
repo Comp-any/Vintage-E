@@ -118,7 +118,7 @@ What the **New** look changes:
 
 In every look, worn rings and Klein Stars keep Vintage-E's look, and projectiles keep their own.
 
-To use one look everywhere, `/emc configure Look New` (or `Middle`, `Original`, or `Auto` to go back to each world's own), in the `/emc configure` window, or in `ModConfig/vintagee.json`. It takes effect the next time the server starts; players don't need to set anything, because the server sends them the models and textures. A server that had the old `ProjectETextures` switch on gets `Look` = `Original`. A world tells it already had Vintage-E from the EMC cache Vintage-E keeps for it (or, if that was switched off, from the server already having Vintage-E's config). The look a world was given is saved in it as `vintageeLook`.
+To use one look everywhere, `/emc configure Look New` (or `Middle`, `Original`, or `Auto` to go back to each world's own), in the `/emc configure` window, or in `ModConfig/vintagee.json`. It takes effect the next time the server starts; players don't need to set anything, because the server sends them the models and textures. A server that had the old `ProjectETextures` switch on gets `Look` = `Original`. A world counts as new if its save file doesn't exist yet when the server starts; an existing world on a server that already had Vintage-E's config keeps Middle. The look each world was given is remembered in `ModData/vintagee/looks/` (one small file per world; delete it to have the world decided again).
 
 Which texture or model replaces which is listed in `assets/vintagee/config/vintagee-projecte-look.json` (Original) and `assets/vintagee/config/vintagee-new-look.json` (New, written by `tools/gen_newlook.py`; `tools/render_look.py` draws a preview sheet of it).
 

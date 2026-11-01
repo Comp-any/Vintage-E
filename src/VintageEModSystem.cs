@@ -135,44 +135,57 @@ namespace VintageE
         public string WorldLookReason { get; private set; } = "";
 
         /// <summary>
-        /// This world's look: the one saved with it, or, the first time it runs 1.13.0 or later, New for a new world and
-        /// Middle for a world that already had Vintage-E (it left an EMC cache for the world, or the server already had
-        /// Vintage-E's config), which is then saved with the world so it never changes by itself.
+        /// This world's look: the one remembered for it, or, the first time it runs 1.13.0 or later, New for a new world
+        /// (its save file doesn't exist yet) and Middle for a world that already existed on a server that had Vintage-E.
+        /// It's remembered in ModData/vintagee/looks/ (by the save file's path), because the world's own data isn't
+        /// loaded yet when blocks and items are set up, so it never changes by itself.
         /// </summary>
         string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
         {
+            string file = null;
             try
             {
-                ISaveGame save = sapi?.WorldManager?.SaveGame;
-                if (save != null)
+                string world = sapi?.WorldManager?.CurrentWorldName;
+                if (!string.IsNullOrEmpty(world))
                 {
-                    string stored = save.GetData<string>(ProjectELook.WorldLookKey, null);
-                    if (!string.IsNullOrEmpty(stored) && ProjectELook.NormalizeLook(stored) != ProjectELook.LookAuto)
+                    file = WorldLookFile(sapi, world);
+                    if (System.IO.File.Exists(file))
                     {
-                        why = "saved with this world";
-                        return ProjectELook.NormalizeLook(stored);
-                    }
-                    bool isNew = false;
-                    foreach (string name in new[] { "IsNewWorld", "IsNew" })
-                    {
-                        if (save.GetType().GetProperty(name)?.GetValue(save) is bool b) { isNew = b; break; }
+                        string stored = ProjectELook.NormalizeLook(System.IO.File.ReadAllText(file));
+                        if (stored != ProjectELook.LookAuto)
+                        {
+                            why = "remembered for this world";
+                            return stored;
+                        }
                     }
                     string look;
-                    if (isNew) { look = ProjectELook.LookNew; why = "a new world"; }
-                    else if (System.IO.File.Exists(EmcCache.FilePath(sapi))) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
-                    else if (configExisted) { look = ProjectELook.LookMiddle; why = "an existing world on a server that already had Vintage-E"; }
+                    bool existed = System.IO.File.Exists(world);
+                    if (!existed) { look = ProjectELook.LookNew; why = "a new world"; }
+                    else if (configExisted) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
                     else { look = ProjectELook.LookNew; why = "a world new to Vintage-E"; }
-                    save.StoreData(ProjectELook.WorldLookKey, look);
-                    why += ", now saved with it";
+                    System.IO.File.WriteAllText(file, look + "\n" + world + "\n");
+                    why += ", now remembered";
                     return look;
                 }
             }
             catch (Exception e)
             {
-                Mod.Logger.Warning("Could not read this world's look: {0}", e.Message);
+                Mod.Logger.Warning("Could not work out this world's look ({0}): {1}", file, e.Message);
             }
-            why = "the world couldn't be read yet, so going by whether the server already had Vintage-E";
+            why = "the world's file is unknown, so going by whether the server already had Vintage-E";
             return configExisted ? ProjectELook.LookMiddle : ProjectELook.LookNew;
+        }
+
+        /// <summary>ModData/vintagee/looks/&lt;world file name&gt;-&lt;hash of its path&gt;.txt: the look remembered for a world.</summary>
+        public static string WorldLookFile(ICoreAPI api, string worldFile)
+        {
+            string dir = System.IO.Path.Combine(DataFolder(api), "looks");
+            System.IO.Directory.CreateDirectory(dir);
+            string name = System.IO.Path.GetFileNameWithoutExtension(worldFile);
+            foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) name = name.Replace(ch, '_');
+            using var sha = System.Security.Cryptography.SHA256.Create();
+            byte[] h = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(System.IO.Path.GetFullPath(worldFile)));
+            return System.IO.Path.Combine(dir, name + "-" + BitConverter.ToString(h, 0, 4).Replace("-", "").ToLowerInvariant() + ".txt");
         }
 
         /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
