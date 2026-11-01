@@ -771,8 +771,8 @@ namespace VintageE
             Check(PESounds.On(sapi.World) == mod.Config.ProjectESounds, "ProjectE sounds follow the setting");
 
             bool Tex(string path) => sapi.Assets.Exists(new AssetLocation(path).WithPathPrefixOnce("textures/").WithPathAppendixOnce(".png"));
-            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Default",
-                "the Look setting accepts its three choices");
+            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Middle" && ProjectELook.NormalizeLook("default") == "New" && new VintageEConfig().Look == "New",
+                "the Look setting accepts its three choices, and New is the default");
 
             // Both looks' maps, whichever is in use: every texture and model they name is there (the game's own textures
             // can't be seen by a dedicated server; the server test checks those against the game client).
@@ -791,7 +791,7 @@ namespace VintageE
             }
             if (mod.ActiveLook != ProjectELook.LookOriginal)
             {
-                Check(mod.LookResult == null, "with the default look nothing is swapped");
+                Check(mod.LookResult == null, "with the Middle look nothing is swapped");
                 return;
             }
 

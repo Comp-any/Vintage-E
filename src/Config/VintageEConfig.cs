@@ -213,8 +213,8 @@ namespace VintageE
         [System.ComponentModel.Description("Recipes of your own, for things the mapper can't see being made (another mod's boats built on the spot, say). One per entry: \"output = ingredients\", like \"item:shipwright:longship-oak = 40 game:plank-oak + 8 game:rope\"; a number before a code is how many (2 game:stick), and an ingredient may be a wildcard (the cheapest match counts). Easiest made with the /emc recipe window.")]
         public List<string> CustomRecipes = new List<string>();
 
-        /// <summary>How Vintage-E's blocks and items look. "Default": Vintage-E's own textures. "Original": ProjectE's original textures wherever ProjectE has one (rings and stones also light up while switched on, like in ProjectE). "New": models in Vintage Story's own style, built from the game's planks, metals, stone and gems. Takes effect the next time the server starts; players don't need to change anything.</summary>
-        [System.ComponentModel.Description("How Vintage-E's blocks and items look: Default (Vintage-E's own textures), Original (ProjectE's original textures; rings and stones light up while switched on) or New (models in Vintage Story's own style, built from the game's planks, metals, stone and gems). Takes effect the next time the server starts; players don't need to change anything.")]
+        /// <summary>How Vintage-E's blocks and items look. "New" (the default): models in Vintage Story's own style, built from the game's planks, metals, stone and gems. "Middle": Vintage-E's own flat textures. "Original": ProjectE's original textures wherever ProjectE has one (rings and stones also light up while switched on, like in ProjectE). Takes effect the next time the server starts; players don't need to change anything.</summary>
+        [System.ComponentModel.Description("How Vintage-E's blocks and items look: New (the default: models in Vintage Story's own style, built from the game's planks, metals, stone and gems), Middle (Vintage-E's own flat textures) or Original (ProjectE's original textures; rings and stones light up while switched on). Takes effect the next time the server starts; players don't need to change anything.")]
         public string Look = ProjectELook.LookDefault;
 
         /// <summary>Before 1.13.0 the look was the switch ProjectETextures; true there means Look = Original. Read once, then dropped from the file.</summary>
@@ -242,7 +242,7 @@ namespace VintageE
             RepairTalismanClothingPercentPerMinute = Math.Max(0, RepairTalismanClothingPercentPerMinute);
             RepairTalismanClothingMinCondition = Math.Clamp(RepairTalismanClothingMinCondition, 0, 100);
             RepairTalismanClothingMaxCondition = Math.Clamp(RepairTalismanClothingMaxCondition, RepairTalismanClothingMinCondition, 100);
-            if (legacyProjectETextures == true && ProjectELook.NormalizeLook(Look) == ProjectELook.LookDefault) Look = ProjectELook.LookOriginal;
+            if (legacyProjectETextures == true) Look = ProjectELook.LookOriginal;
             legacyProjectETextures = null;
             Look = ProjectELook.NormalizeLook(Look);
             if (TrinketCostMultiplier < 0) TrinketCostMultiplier = 0;

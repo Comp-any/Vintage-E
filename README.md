@@ -4,7 +4,7 @@
 
 Burn items into **EMC**, learn them, and transmute your EMC back into anything you've learned. Every block and item gets its EMC value **worked out automatically from the recipes loaded in your game** when the server starts — so items added by other mods get values too, without anyone writing a compatibility patch.
 
-![Textures](docs/preview.png)
+![The New look](docs/preview-new.png)
 
 ## What's in it
 
@@ -94,17 +94,19 @@ Some items carry data on the item itself: buckets, jugs, pots, bowls, crocks, ba
 
 Built-in defaults: containers are **item only**; items whose material or type lives on the item, and chiseled blocks, are **item + contents** (a plain copy of those would be the wrong or default version). Admins change them with **`/emc contents`**, a window listing every such block/item with its mode (search, filter by mod, kind and mode, select several, then pick a mode or *Default*), or `/emc contents <item|full|itemprice|default>` for the held item. Changes are saved to `StackDataModes` in the server config and apply straight away. Copies never include wear, freshness or clothing condition: they come out new. Condensers follow the same modes for their target. Each player can know up to `MaxExactKnowledge` (500) exact versions.
 
-## Looks: Default, Original and New
+## Looks: New, Middle and Original
 
 A server picks how Vintage-E's blocks and items look with the **`Look`** setting. There are three:
 
 | `Look` | What it looks like |
 |---|---|
-| **`Default`** (the middle one, and what you get unless you change it) | Vintage-E's own flat pixel-art textures (the picture at the top). |
+| **`New`** (the default: what you get unless you change it) | **Models made to blend in with Vintage Story.** Instead of flat icons and plain cubes, things get 3D models built mostly from the game's own materials (its planks, metal plates, polished stone, gems, linen, leather, paper and candles), with muted textures in the game's style for the rest. See below. |
+| **`Middle`** | Vintage-E's own flat pixel-art textures (the default before 1.13.0; pictured below). |
 | **`Original`** | **ProjectE's original textures** wherever ProjectE has one: rings, stones, amulets, gadgets, matter, fuels, covalence dust, alchemical bags, matter blocks, fuel blocks, collectors, relays, condensers, the alchemical chest, the transmutation table, nova catalysts, the interdiction torch, the projectiles, and the dark/red matter look of tools, armour, the pedestal and the furnaces. Rings and stones light up while switched on, and the Ring of Arcana and Swiftwolf's Rending Gale show their mode, as in ProjectE. Condensers and the alchemical chest use faces cut from ProjectE's chest textures; bags are drawn as ProjectE's flat bags. |
-| **`New`** | **Models made to blend in with Vintage Story.** Instead of flat icons and plain cubes, things get 3D models built mostly from the game's own materials (its planks, metal plates, polished stone, gems, linen, leather, paper and candles), with muted textures in the game's style for the rest. See below. |
 
-![The New look, drawn with the game's textures by tools/render_look.py](docs/preview-new.png)
+The Middle look:
+
+![The Middle look](docs/preview.png)
 
 What the **New** look changes:
 
@@ -116,7 +118,7 @@ What the **New** look changes:
 
 In every look, worn rings and Klein Stars keep Vintage-E's look, and projectiles keep their own.
 
-Change it with `/emc configure Look New` (or `Original`, or `Default`), in the `/emc configure` window, or in `ModConfig/vintagee.json`. It takes effect the next time the server starts; players don't need to set anything, because the server sends them the models and textures. A server that had the old `ProjectETextures` switch on gets `Look` = `Original`.
+Change it with `/emc configure Look Middle` (or `Original`, or back to `New`), in the `/emc configure` window, or in `ModConfig/vintagee.json`. It takes effect the next time the server starts; players don't need to set anything, because the server sends them the models and textures. A server that had the old `ProjectETextures` switch on gets `Look` = `Original`; every other server gets `New` when it updates, so set `Middle` to keep the flat textures.
 
 Which texture or model replaces which is listed in `assets/vintagee/config/vintagee-projecte-look.json` (Original) and `assets/vintagee/config/vintagee-new-look.json` (New, written by `tools/gen_newlook.py`; `tools/render_look.py` draws a preview sheet of it).
 

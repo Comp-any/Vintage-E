@@ -11,10 +11,11 @@ using Vintagestory.API.Util;
 namespace VintageE
 {
     /// <summary>
-    /// The Look setting. "Default" is Vintage-E's own textures. "Original" swaps them for ProjectE's originals
+    /// The Look setting. "New" (the default) gives blocks and items models in Vintage Story's own style, built mostly
+    /// from the game's materials (config/vintagee-new-look.json, written by tools/gen_newlook.py). "Middle" is
+    /// Vintage-E's own flat textures. "Original" swaps them for ProjectE's originals
     /// (assets/vintagee/textures/projecte, copied by tools/import_projecte_assets.py), following
-    /// config/vintagee-projecte-look.json. "New" gives blocks and items models in Vintage Story's own style, built
-    /// mostly from the game's materials (config/vintagee-new-look.json, written by tools/gen_newlook.py).
+    /// config/vintagee-projecte-look.json.
     /// <para>The swap is done on the server while assets are finalised. Clients get block, item and entity definitions
     /// (textures, shapes, transforms) from the server, so players see ProjectE's look without setting anything, and the
     /// client can tell it's on because the item textures it received live under <see cref="PathPrefix"/>.</para>
@@ -27,16 +28,19 @@ namespace VintageE
         public const string NewMapFile = "config/vintagee-new-look.json";
 
         /// <summary>The Look setting's three choices.</summary>
-        public const string LookDefault = "Default", LookOriginal = "Original", LookNew = "New";
+        public const string LookMiddle = "Middle", LookOriginal = "Original", LookNew = "New";
 
-        /// <summary>The Look setting's value written properly ("Default" for anything it doesn't know).</summary>
+        /// <summary>The look a server gets unless it picks another.</summary>
+        public const string LookDefault = LookNew;
+
+        /// <summary>The Look setting's value written properly (the default, New, for anything it doesn't know).</summary>
         public static string NormalizeLook(string look)
         {
             switch ((look ?? "").Trim().ToLowerInvariant())
             {
                 case "original": case "projecte": case "old": return LookOriginal;
-                case "new": case "vintage": case "vintagestory": return LookNew;
-                default: return LookDefault;
+                case "middle": case "flat": case "classic": case "vintagee": return LookMiddle;
+                default: return LookNew;
             }
         }
 

@@ -121,7 +121,7 @@ namespace VintageE
             if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(api, Mod.Logger, ActiveLook, false);
         }
 
-        /// <summary>The look in use since start-up ("Default", "Original" or "New"); changing the setting needs a restart.</summary>
+        /// <summary>The look in use since start-up ("New", "Middle" or "Original"); changing the setting needs a restart.</summary>
         public string ActiveLook { get; private set; } = ProjectELook.LookDefault;
 
         /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
