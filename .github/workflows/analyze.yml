@@ -128,8 +128,20 @@ jobs:
           cp data/Logs/*crash* analysis/ 2>/dev/null || true
           for f in data/Logs/server-main.log data/Logs/server-debug.log; do [ -f "$f" ] && grep -iE "vintagee|vintage-e|EMC|error|exception" "$f" | head -3000 > "analysis/$(basename "$f" .log)-filtered.log"; done
           [ -n "$VSDIR" ] && python3 tools/ci_extract.py "$VSDIR/assets" analysis || echo "no game assets" > analysis/extract-errors.txt
-          # The game's texture and shape lists (paths, sizes, average colours), for the "New" look's models.
-          [ -n "$VSDIR" ] && python3 tools/ci_textures.py "$VSDIR/assets" analysis || true
+          # The "New" look uses the game's own textures, which only the client has: list them (paths, sizes, average
+          # colours) and draw the New look's models with them (look-new-preview.png, look-new-missing.txt).
+          if [ ! -d vsclient ]; then
+            curl -fsSL -o client.tar.gz "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_${VS_VERSION}.tar.gz" \
+              && mkdir -p vsclient && tar -xzf client.tar.gz -C vsclient && rm client.tar.gz || true
+          fi
+          clientassets=$(dirname "$(find vsclient -type d -name survival -path '*assets/survival' | head -1)" 2>/dev/null)
+          if [ -n "$clientassets" ] && [ -d "$clientassets" ]; then
+            python3 tools/ci_textures.py "$clientassets" analysis || true
+            python3 tools/render_look.py assets/vintagee/config/vintagee-new-look.json analysis/look-new-preview.png \
+              --game-assets "$clientassets" --missing analysis/look-new-missing.txt || true
+          else
+            echo "no client assets" > analysis/look-new-missing.txt
+          fi
           echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
