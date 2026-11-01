@@ -1,0 +1,379 @@
+{
+ "textureWidth": 16,
+ "textureHeight": 16,
+ "textures": {
+  "metal": "game:block/metal/plate/gold",
+  "gem": "game:block/stone/gem/quartz"
+ },
+ "elements": [
+  {
+   "name": "core",
+   "from": [
+    6,
+    5,
+    6
+   ],
+   "to": [
+    10,
+    9,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gem",
+     "uv": [
+      10,
+      7,
+      6,
+      11
+     ],
+     "glow": 70
+    },
+    "east": {
+     "texture": "#gem",
+     "uv": [
+      10,
+      7,
+      6,
+      11
+     ],
+     "glow": 70
+    },
+    "south": {
+     "texture": "#gem",
+     "uv": [
+      6,
+      7,
+      10,
+      11
+     ],
+     "glow": 70
+    },
+    "west": {
+     "texture": "#gem",
+     "uv": [
+      6,
+      7,
+      10,
+      11
+     ],
+     "glow": 70
+    },
+    "up": {
+     "texture": "#gem",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ],
+     "glow": 70
+    },
+    "down": {
+     "texture": "#gem",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ],
+     "glow": 70
+    }
+   }
+  },
+  {
+   "name": "spike-x",
+   "from": [
+    3,
+    6.1,
+    7.1
+   ],
+   "to": [
+    13,
+    7.9,
+    8.9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gem",
+     "uv": [
+      13,
+      8.1,
+      3,
+      9.9
+     ],
+     "glow": 70
+    },
+    "east": {
+     "texture": "#gem",
+     "uv": [
+      8.9,
+      8.1,
+      7.1,
+      9.9
+     ],
+     "glow": 70
+    },
+    "south": {
+     "texture": "#gem",
+     "uv": [
+      3,
+      8.1,
+      13,
+      9.9
+     ],
+     "glow": 70
+    },
+    "west": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      8.1,
+      8.9,
+      9.9
+     ],
+     "glow": 70
+    },
+    "up": {
+     "texture": "#gem",
+     "uv": [
+      3,
+      7.1,
+      13,
+      8.9
+     ],
+     "glow": 70
+    },
+    "down": {
+     "texture": "#gem",
+     "uv": [
+      3,
+      7.1,
+      13,
+      8.9
+     ],
+     "glow": 70
+    }
+   }
+  },
+  {
+   "name": "spike-y",
+   "from": [
+    7.1,
+    2,
+    7.1
+   ],
+   "to": [
+    8.9,
+    12,
+    8.9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gem",
+     "uv": [
+      8.9,
+      4,
+      7.1,
+      14
+     ],
+     "glow": 70
+    },
+    "east": {
+     "texture": "#gem",
+     "uv": [
+      8.9,
+      4,
+      7.1,
+      14
+     ],
+     "glow": 70
+    },
+    "south": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      4,
+      8.9,
+      14
+     ],
+     "glow": 70
+    },
+    "west": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      4,
+      8.9,
+      14
+     ],
+     "glow": 70
+    },
+    "up": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      7.1,
+      8.9,
+      8.9
+     ],
+     "glow": 70
+    },
+    "down": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      7.1,
+      8.9,
+      8.9
+     ],
+     "glow": 70
+    }
+   }
+  },
+  {
+   "name": "spike-z",
+   "from": [
+    7.1,
+    6.1,
+    3
+   ],
+   "to": [
+    8.9,
+    7.9,
+    13
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gem",
+     "uv": [
+      8.9,
+      8.1,
+      7.1,
+      9.9
+     ],
+     "glow": 70
+    },
+    "east": {
+     "texture": "#gem",
+     "uv": [
+      13,
+      8.1,
+      3,
+      9.9
+     ],
+     "glow": 70
+    },
+    "south": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      8.1,
+      8.9,
+      9.9
+     ],
+     "glow": 70
+    },
+    "west": {
+     "texture": "#gem",
+     "uv": [
+      3,
+      8.1,
+      13,
+      9.9
+     ],
+     "glow": 70
+    },
+    "up": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      3,
+      8.9,
+      13
+     ],
+     "glow": 70
+    },
+    "down": {
+     "texture": "#gem",
+     "uv": [
+      7.1,
+      3,
+      8.9,
+      13
+     ],
+     "glow": 70
+    }
+   }
+  },
+  {
+   "name": "band",
+   "from": [
+    5.5,
+    6.6,
+    5.5
+   ],
+   "to": [
+    10.5,
+    7.4,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      10.5,
+      8.6,
+      5.5,
+      9.4
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      10.5,
+      8.6,
+      5.5,
+      9.4
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      5.5,
+      8.6,
+      10.5,
+      9.4
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      5.5,
+      8.6,
+      10.5,
+      9.4
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ]
+    }
+   }
+  }
+ ]
+}

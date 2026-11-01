@@ -135,6 +135,24 @@ for o in look.get("overrides") or []:
     for ref in list((o.get("textures") or {}).values()) + [o[k] for k in ("sprite",) if k in o]:
         if not tex_exists(ref): errors.append(f"projecte look: {o['code']} texture {ref} doesn't exist")
     if "shape" in o and not os.path.exists(os.path.join(A, "shapes", local(o["shape"]) + ".json")): errors.append(f"projecte look: shape {o['shape']} doesn't exist")
+# Look = New: every override names real codes, its model is there and every texture code the model uses has a texture;
+# Vintage-E textures must exist (the game's are checked by the server test against the game client).
+newlook = load(os.path.join(A, "config", "vintagee-new-look.json")) or {}
+for ours, theirs in (newlook.get("textures") or {}).items():
+    if not tex_exists(ours): errors.append(f"new look: Vintage-E texture {ours} doesn't exist")
+    if not theirs.startswith("game:") and not tex_exists(theirs): errors.append(f"new look: texture {theirs} doesn't exist")
+for o in newlook.get("overrides") or []:
+    if not any(wild(o["code"], c) for c in known): errors.append(f"new look: override {o['code']} matches nothing")
+    texs = o.get("textures") or {}
+    for ref in texs.values():
+        if not ref.startswith("game:") and not tex_exists(ref): errors.append(f"new look: {o['code']} texture {ref} doesn't exist")
+    if "shape" in o:
+        sp = os.path.join(A, "shapes", local(o["shape"]) + ".json")
+        if not os.path.exists(sp):
+            errors.append(f"new look: shape {o['shape']} doesn't exist"); continue
+        used = set(re.findall(r'"texture":\s*"#([^"]+)"', open(sp).read()))
+        for code in used - set(texs):
+            errors.append(f"new look: {o['code']} model uses #{code} but names no texture for it")
 for s in ("charge", "uncharge", "heal", "destruct", "power", "transmute", "watermagic", "windmagic"):
     if not os.path.exists(os.path.join(A, "sounds", "projecte", s + ".ogg")): errors.append(f"projecte sound {s}.ogg is missing")
 

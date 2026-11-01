@@ -1,0 +1,254 @@
+{
+ "textureWidth": 16,
+ "textureHeight": 16,
+ "textures": {
+  "fuel": "vintagee:newlook/block/fuel-alchemicalcoal"
+ },
+ "elements": [
+  {
+   "name": "chunk-1",
+   "from": [
+    4,
+    0,
+    5
+   ],
+   "to": [
+    9,
+    4,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#fuel",
+     "uv": [
+      9,
+      12,
+      4,
+      16
+     ],
+     "glow": 20
+    },
+    "east": {
+     "texture": "#fuel",
+     "uv": [
+      10,
+      12,
+      5,
+      16
+     ],
+     "glow": 20
+    },
+    "south": {
+     "texture": "#fuel",
+     "uv": [
+      4,
+      12,
+      9,
+      16
+     ],
+     "glow": 20
+    },
+    "west": {
+     "texture": "#fuel",
+     "uv": [
+      5,
+      12,
+      10,
+      16
+     ],
+     "glow": 20
+    },
+    "up": {
+     "texture": "#fuel",
+     "uv": [
+      4,
+      5,
+      9,
+      10
+     ],
+     "glow": 20
+    },
+    "down": {
+     "texture": "#fuel",
+     "uv": [
+      4,
+      5,
+      9,
+      10
+     ],
+     "glow": 20
+    }
+   },
+   "rotationOrigin": [
+    6.5,
+    2.0,
+    7.5
+   ],
+   "rotationY": 20
+  },
+  {
+   "name": "chunk-2",
+   "from": [
+    8,
+    0,
+    6
+   ],
+   "to": [
+    12,
+    3,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#fuel",
+     "uv": [
+      12,
+      13,
+      8,
+      16
+     ],
+     "glow": 20
+    },
+    "east": {
+     "texture": "#fuel",
+     "uv": [
+      10,
+      13,
+      6,
+      16
+     ],
+     "glow": 20
+    },
+    "south": {
+     "texture": "#fuel",
+     "uv": [
+      8,
+      13,
+      12,
+      16
+     ],
+     "glow": 20
+    },
+    "west": {
+     "texture": "#fuel",
+     "uv": [
+      6,
+      13,
+      10,
+      16
+     ],
+     "glow": 20
+    },
+    "up": {
+     "texture": "#fuel",
+     "uv": [
+      8,
+      6,
+      12,
+      10
+     ],
+     "glow": 20
+    },
+    "down": {
+     "texture": "#fuel",
+     "uv": [
+      8,
+      6,
+      12,
+      10
+     ],
+     "glow": 20
+    }
+   },
+   "rotationOrigin": [
+    10.0,
+    1.5,
+    8.0
+   ],
+   "rotationY": -25,
+   "rotationZ": 8
+  },
+  {
+   "name": "chunk-3",
+   "from": [
+    6,
+    2.5,
+    6.5
+   ],
+   "to": [
+    10,
+    6,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#fuel",
+     "uv": [
+      10,
+      10,
+      6,
+      13.5
+     ],
+     "glow": 20
+    },
+    "east": {
+     "texture": "#fuel",
+     "uv": [
+      10.5,
+      10,
+      6.5,
+      13.5
+     ],
+     "glow": 20
+    },
+    "south": {
+     "texture": "#fuel",
+     "uv": [
+      6,
+      10,
+      10,
+      13.5
+     ],
+     "glow": 20
+    },
+    "west": {
+     "texture": "#fuel",
+     "uv": [
+      6.5,
+      10,
+      10.5,
+      13.5
+     ],
+     "glow": 20
+    },
+    "up": {
+     "texture": "#fuel",
+     "uv": [
+      6,
+      6.5,
+      10,
+      10.5
+     ],
+     "glow": 20
+    },
+    "down": {
+     "texture": "#fuel",
+     "uv": [
+      6,
+      6.5,
+      10,
+      10.5
+     ],
+     "glow": 20
+    }
+   },
+   "rotationOrigin": [
+    8.0,
+    4.25,
+    8.5
+   ],
+   "rotationX": 12,
+   "rotationY": 40
+  }
+ ]
+}

@@ -1,0 +1,309 @@
+{
+ "textureWidth": 16,
+ "textureHeight": 16,
+ "textures": {
+  "matter": "vintagee:newlook/material/darkmatter"
+ },
+ "elements": [
+  {
+   "name": "orb",
+   "from": [
+    5,
+    3,
+    5
+   ],
+   "to": [
+    11,
+    9,
+    11
+   ],
+   "faces": {
+    "north": {
+     "texture": "#matter",
+     "uv": [
+      11,
+      7,
+      5,
+      13
+     ],
+     "glow": 50
+    },
+    "east": {
+     "texture": "#matter",
+     "uv": [
+      11,
+      7,
+      5,
+      13
+     ],
+     "glow": 50
+    },
+    "south": {
+     "texture": "#matter",
+     "uv": [
+      5,
+      7,
+      11,
+      13
+     ],
+     "glow": 50
+    },
+    "west": {
+     "texture": "#matter",
+     "uv": [
+      5,
+      7,
+      11,
+      13
+     ],
+     "glow": 50
+    },
+    "up": {
+     "texture": "#matter",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "glow": 50
+    },
+    "down": {
+     "texture": "#matter",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "glow": 50
+    }
+   }
+  },
+  {
+   "name": "orb-x",
+   "from": [
+    4.5,
+    4,
+    5.5
+   ],
+   "to": [
+    11.5,
+    8,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#matter",
+     "uv": [
+      11.5,
+      8,
+      4.5,
+      12
+     ],
+     "glow": 50
+    },
+    "east": {
+     "texture": "#matter",
+     "uv": [
+      10.5,
+      8,
+      5.5,
+      12
+     ],
+     "glow": 50
+    },
+    "south": {
+     "texture": "#matter",
+     "uv": [
+      4.5,
+      8,
+      11.5,
+      12
+     ],
+     "glow": 50
+    },
+    "west": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      8,
+      10.5,
+      12
+     ],
+     "glow": 50
+    },
+    "up": {
+     "texture": "#matter",
+     "uv": [
+      4.5,
+      5.5,
+      11.5,
+      10.5
+     ],
+     "glow": 50
+    },
+    "down": {
+     "texture": "#matter",
+     "uv": [
+      4.5,
+      5.5,
+      11.5,
+      10.5
+     ],
+     "glow": 50
+    }
+   }
+  },
+  {
+   "name": "orb-y",
+   "from": [
+    5.5,
+    2.5,
+    5.5
+   ],
+   "to": [
+    10.5,
+    9.5,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#matter",
+     "uv": [
+      10.5,
+      6.5,
+      5.5,
+      13.5
+     ],
+     "glow": 50
+    },
+    "east": {
+     "texture": "#matter",
+     "uv": [
+      10.5,
+      6.5,
+      5.5,
+      13.5
+     ],
+     "glow": 50
+    },
+    "south": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      6.5,
+      10.5,
+      13.5
+     ],
+     "glow": 50
+    },
+    "west": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      6.5,
+      10.5,
+      13.5
+     ],
+     "glow": 50
+    },
+    "up": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ],
+     "glow": 50
+    },
+    "down": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ],
+     "glow": 50
+    }
+   }
+  },
+  {
+   "name": "orb-z",
+   "from": [
+    5.5,
+    4,
+    4.5
+   ],
+   "to": [
+    10.5,
+    8,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#matter",
+     "uv": [
+      10.5,
+      8,
+      5.5,
+      12
+     ],
+     "glow": 50
+    },
+    "east": {
+     "texture": "#matter",
+     "uv": [
+      11.5,
+      8,
+      4.5,
+      12
+     ],
+     "glow": 50
+    },
+    "south": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      8,
+      10.5,
+      12
+     ],
+     "glow": 50
+    },
+    "west": {
+     "texture": "#matter",
+     "uv": [
+      4.5,
+      8,
+      11.5,
+      12
+     ],
+     "glow": 50
+    },
+    "up": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      4.5,
+      10.5,
+      11.5
+     ],
+     "glow": 50
+    },
+    "down": {
+     "texture": "#matter",
+     "uv": [
+      5.5,
+      4.5,
+      10.5,
+      11.5
+     ],
+     "glow": 50
+    }
+   }
+  }
+ ]
+}

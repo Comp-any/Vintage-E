@@ -1,0 +1,582 @@
+{
+ "textureWidth": 16,
+ "textureHeight": 16,
+ "textures": {
+  "metal": "game:block/metal/plate/tinbronze",
+  "trim": "game:block/metal/plate/brass",
+  "gem": "game:block/stone/gem/quartz",
+  "cord": "game:block/leather/plain"
+ },
+ "elements": [
+  {
+   "name": "disc",
+   "from": [
+    5,
+    2.5,
+    7.5
+   ],
+   "to": [
+    11,
+    9.5,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      11,
+      6.5,
+      5,
+      13.5
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      8.5,
+      6.5,
+      7.5,
+      13.5
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      5,
+      6.5,
+      11,
+      13.5
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      7.5,
+      6.5,
+      8.5,
+      13.5
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      5,
+      7.5,
+      11,
+      8.5
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      5,
+      7.5,
+      11,
+      8.5
+     ]
+    }
+   }
+  },
+  {
+   "name": "disc-x",
+   "from": [
+    4,
+    3.5,
+    7.55
+   ],
+   "to": [
+    12,
+    8.5,
+    8.45
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      12,
+      7.5,
+      4,
+      12.5
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      8.45,
+      7.5,
+      7.55,
+      12.5
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      4,
+      7.5,
+      12,
+      12.5
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      7.55,
+      7.5,
+      8.45,
+      12.5
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      4,
+      7.55,
+      12,
+      8.45
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      4,
+      7.55,
+      12,
+      8.45
+     ]
+    }
+   }
+  },
+  {
+   "name": "disc-y",
+   "from": [
+    6,
+    1.5,
+    7.55
+   ],
+   "to": [
+    10,
+    10.5,
+    8.45
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      10,
+      5.5,
+      6,
+      14.5
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      8.45,
+      5.5,
+      7.55,
+      14.5
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      6,
+      5.5,
+      10,
+      14.5
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      7.55,
+      5.5,
+      8.45,
+      14.5
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      6,
+      7.55,
+      10,
+      8.45
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      6,
+      7.55,
+      10,
+      8.45
+     ]
+    }
+   }
+  },
+  {
+   "name": "rim",
+   "from": [
+    5.5,
+    3,
+    7.3
+   ],
+   "to": [
+    10.5,
+    9,
+    7.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#trim",
+     "uv": [
+      10.5,
+      7,
+      5.5,
+      13
+     ]
+    },
+    "east": {
+     "texture": "#trim",
+     "uv": [
+      7.5,
+      7,
+      7.3,
+      13
+     ]
+    },
+    "south": {
+     "texture": "#trim",
+     "uv": [
+      5.5,
+      7,
+      10.5,
+      13
+     ]
+    },
+    "west": {
+     "texture": "#trim",
+     "uv": [
+      7.3,
+      7,
+      7.5,
+      13
+     ]
+    },
+    "up": {
+     "texture": "#trim",
+     "uv": [
+      5.5,
+      7.3,
+      10.5,
+      7.5
+     ]
+    },
+    "down": {
+     "texture": "#trim",
+     "uv": [
+      5.5,
+      7.3,
+      10.5,
+      7.5
+     ]
+    }
+   }
+  },
+  {
+   "name": "gem",
+   "from": [
+    7,
+    5,
+    7.0
+   ],
+   "to": [
+    9,
+    7,
+    7.3
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gem",
+     "uv": [
+      9,
+      9,
+      7,
+      11
+     ],
+     "glow": 60
+    },
+    "east": {
+     "texture": "#gem",
+     "uv": [
+      7.3,
+      9,
+      7.0,
+      11
+     ],
+     "glow": 60
+    },
+    "south": {
+     "texture": "#gem",
+     "uv": [
+      7,
+      9,
+      9,
+      11
+     ],
+     "glow": 60
+    },
+    "west": {
+     "texture": "#gem",
+     "uv": [
+      7.0,
+      9,
+      7.3,
+      11
+     ],
+     "glow": 60
+    },
+    "up": {
+     "texture": "#gem",
+     "uv": [
+      7,
+      7.0,
+      9,
+      7.3
+     ],
+     "glow": 60
+    },
+    "down": {
+     "texture": "#gem",
+     "uv": [
+      7,
+      7.0,
+      9,
+      7.3
+     ],
+     "glow": 60
+    }
+   }
+  },
+  {
+   "name": "bail",
+   "from": [
+    7.3,
+    10.5,
+    7.6
+   ],
+   "to": [
+    8.7,
+    11.75,
+    8.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      8.7,
+      4.25,
+      7.3,
+      5.5
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      8.4,
+      4.25,
+      7.6,
+      5.5
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      7.3,
+      4.25,
+      8.7,
+      5.5
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      7.6,
+      4.25,
+      8.4,
+      5.5
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      7.3,
+      7.6,
+      8.7,
+      8.4
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      7.3,
+      7.6,
+      8.7,
+      8.4
+     ]
+    }
+   }
+  },
+  {
+   "name": "cord-l",
+   "from": [
+    5.5,
+    11,
+    7.75
+   ],
+   "to": [
+    6.1,
+    16,
+    8.25
+   ],
+   "faces": {
+    "north": {
+     "texture": "#cord",
+     "uv": [
+      6.1,
+      0,
+      5.5,
+      5
+     ]
+    },
+    "east": {
+     "texture": "#cord",
+     "uv": [
+      8.25,
+      0,
+      7.75,
+      5
+     ]
+    },
+    "south": {
+     "texture": "#cord",
+     "uv": [
+      5.5,
+      0,
+      6.1,
+      5
+     ]
+    },
+    "west": {
+     "texture": "#cord",
+     "uv": [
+      7.75,
+      0,
+      8.25,
+      5
+     ]
+    },
+    "up": {
+     "texture": "#cord",
+     "uv": [
+      5.5,
+      7.75,
+      6.1,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#cord",
+     "uv": [
+      5.5,
+      7.75,
+      6.1,
+      8.25
+     ]
+    }
+   },
+   "rotationOrigin": [
+    5.8,
+    11,
+    8
+   ],
+   "rotationZ": -15
+  },
+  {
+   "name": "cord-r",
+   "from": [
+    9.9,
+    11,
+    7.75
+   ],
+   "to": [
+    10.5,
+    16,
+    8.25
+   ],
+   "faces": {
+    "north": {
+     "texture": "#cord",
+     "uv": [
+      10.5,
+      0,
+      9.9,
+      5
+     ]
+    },
+    "east": {
+     "texture": "#cord",
+     "uv": [
+      8.25,
+      0,
+      7.75,
+      5
+     ]
+    },
+    "south": {
+     "texture": "#cord",
+     "uv": [
+      9.9,
+      0,
+      10.5,
+      5
+     ]
+    },
+    "west": {
+     "texture": "#cord",
+     "uv": [
+      7.75,
+      0,
+      8.25,
+      5
+     ]
+    },
+    "up": {
+     "texture": "#cord",
+     "uv": [
+      9.9,
+      7.75,
+      10.5,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#cord",
+     "uv": [
+      9.9,
+      7.75,
+      10.5,
+      8.25
+     ]
+    }
+   },
+   "rotationOrigin": [
+    10.2,
+    11,
+    8
+   ],
+   "rotationZ": 15
+  }
+ ]
+}

@@ -361,7 +361,7 @@ namespace VintageE
                     mod.RefreshStackData(); // sends the table, and with it the setting, to everyone
                     break;
                 case "SelfTestOnStart":
-                case "ProjectETextures":
+                case "Look":
                     return Lang.GetL(lang, "vintagee:cfg-restart");
             }
             return Lang.GetL(lang, "vintagee:cfg-applied");

@@ -21,6 +21,9 @@ on:
       resultsBranch:
         description: Branch the results are pushed to
         default: ci-analysis
+      look:
+        description: The Look setting to test (Default, Original or New)
+        default: Original
 
 permissions:
   contents: write
@@ -33,6 +36,7 @@ jobs:
       VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
       EXTRA_MODS: ${{ inputs.extraMods || (github.event_name == 'push' && 'primitivesurvival,wildcrafttree,herbarium,wildcraftfruit,butchering,fromgoldencombs,em' || '') }}
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-analysis-{0}', github.run_number) }}
+      LOOK: ${{ inputs.look || (github.event_name == 'push' && 'New' || 'Original') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -91,8 +95,10 @@ jobs:
           PY
             ls -la "$data/Mods"
           fi
-          # ProjectE textures and sounds on, so the self-test can check the swap (the default look needs no checking).
-          echo '{ "DumpValuesOnStart": true, "CacheEmcValues": false, "SelfTestOnStart": true, "ProjectETextures": true, "ProjectESounds": true }' > "$data/ModConfig/vintagee.json"
+          # A look other than the default, so the self-test can check it: ProjectE's originals for runs started by hand
+          # (with ProjectE's sounds), the New look for pushes to ci/** (or set it with the "look" input).
+          echo "{ \"DumpValuesOnStart\": true, \"CacheEmcValues\": false, \"SelfTestOnStart\": true, \"Look\": \"${LOOK}\", \"ProjectESounds\": true }" > "$data/ModConfig/vintagee.json"
+          cat "$data/ModConfig/vintagee.json"
           cd "$VSDIR"
           dotnet VintagestoryServer.dll --dataPath "$data" > "$GITHUB_WORKSPACE/server-console.log" 2>&1 &
           pid=$!

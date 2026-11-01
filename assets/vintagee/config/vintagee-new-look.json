@@ -1,0 +1,3840 @@
+{
+ "//": "Written by tools/gen_newlook.py. Used when the server setting Look is \"New\": 'textures' swaps one texture for another everywhere; each override gives a block or item a new model (shape), adds or replaces the textures it names, and for items sets how they're held and shown. 'label', 'kind', 'preview' and 'preview_only' are only for tools/render_look.py.",
+ "textures": {
+  "vintagee:item/tool/material/darkmatter": "vintagee:newlook/material/darkmatter",
+  "vintagee:item/tool/material/redmatter": "vintagee:newlook/material/redmatter",
+  "vintagee:item/tool/material/gem": "vintagee:newlook/material/gem",
+  "vintagee:block/matterblock-dark": "vintagee:newlook/block/matterblock-dark",
+  "vintagee:block/matterblock-red": "vintagee:newlook/block/matterblock-red",
+  "vintagee:block/alchemicalfuelblock-alchemicalcoal": "vintagee:newlook/block/fuel-alchemicalcoal",
+  "vintagee:block/alchemicalfuelblock-mobiusfuel": "vintagee:newlook/block/fuel-mobiusfuel",
+  "vintagee:block/alchemicalfuelblock-aeternalisfuel": "vintagee:newlook/block/fuel-aeternalisfuel",
+  "vintagee:item/bag/alchemicalbag-white": "game:block/cloth/linen/white",
+  "vintagee:item/bag/alchemicalbag-plain": "game:block/cloth/linen/plain",
+  "vintagee:item/bag/alchemicalbag-gray": "game:block/cloth/linen/gray",
+  "vintagee:item/bag/alchemicalbag-black": "game:block/cloth/linen/black",
+  "vintagee:item/bag/alchemicalbag-brown": "game:block/cloth/linen/brown",
+  "vintagee:item/bag/alchemicalbag-red": "game:block/cloth/linen/red",
+  "vintagee:item/bag/alchemicalbag-orange": "game:block/cloth/linen/orange",
+  "vintagee:item/bag/alchemicalbag-yellow": "game:block/cloth/linen/yellow",
+  "vintagee:item/bag/alchemicalbag-green": "game:block/cloth/linen/green",
+  "vintagee:item/bag/alchemicalbag-blue": "game:block/cloth/linen/blue",
+  "vintagee:item/bag/alchemicalbag-purple": "game:block/cloth/linen/purple",
+  "vintagee:item/bag/alchemicalbag-pink": "game:block/cloth/linen/pink",
+  "vintagee:item/bag/alchemicalbag-top": "game:block/cloth/reedrope"
+ },
+ "overrides": [
+  {
+   "code": "vintagee:transmutationtable",
+   "label": "transmutation table",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/transmutationtable",
+   "textures": {
+    "frame": "game:block/wood/planks/ebony1",
+    "stone": "game:block/stone/polishedrock/slate",
+    "top": "vintagee:newlook/block/transmutation-circle",
+    "trim": "game:block/metal/plate/brass",
+    "candle": "game:block/candle",
+    "wick": "game:block/wood/charred"
+   },
+   "drawtype": "JSON"
+  },
+  {
+   "code": "vintagee:pedestal-*",
+   "label": "dark matter pedestal",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/pedestal",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/basalt",
+    "matter": "vintagee:newlook/material/darkmatter",
+    "trim": "game:block/metal/plate/brass"
+   },
+   "drawtype": "JSON"
+  },
+  {
+   "code": "vintagee:redmatterpedestal-*",
+   "label": "red matter pedestal",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/pedestal",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/chert",
+    "matter": "vintagee:newlook/material/redmatter",
+    "trim": "game:block/metal/plate/gold"
+   },
+   "drawtype": "JSON"
+  },
+  {
+   "code": "vintagee:interdictiontorch*",
+   "label": "interdiction torch",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/interdictiontorch",
+   "textures": {
+    "metal": "game:block/metal/plate/iron",
+    "wood": "game:block/wood/debarked/ebony",
+    "glow": "game:block/stone/gem/amethyst"
+   },
+   "drawtype": "JSON"
+  },
+  {
+   "code": "vintagee:furnace-dark-lit*",
+   "label": "dark matter furnace (lit)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-lit",
+   "textures": {
+    "stone": "game:block/stone/cobblestone/obsidian1",
+    "body": "vintagee:newlook/material/darkmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": true
+  },
+  {
+   "code": "vintagee:furnace-dark-extinct*",
+   "label": "dark matter furnace (extinct)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-cold",
+   "textures": {
+    "stone": "game:block/stone/cobblestone/obsidian1",
+    "body": "vintagee:newlook/material/darkmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": false
+  },
+  {
+   "code": "vintagee:furnace-dark-cold*",
+   "label": "dark matter furnace (cold)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-cold",
+   "textures": {
+    "stone": "game:block/stone/cobblestone/obsidian1",
+    "body": "vintagee:newlook/material/darkmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": true
+  },
+  {
+   "code": "vintagee:furnace-red-lit*",
+   "label": "red matter furnace (lit)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-lit",
+   "textures": {
+    "stone": "game:block/stone/brick/bauxite1",
+    "body": "vintagee:newlook/material/redmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": true
+  },
+  {
+   "code": "vintagee:furnace-red-extinct*",
+   "label": "red matter furnace (extinct)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-cold",
+   "textures": {
+    "stone": "game:block/stone/brick/bauxite1",
+    "body": "vintagee:newlook/material/redmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": false
+  },
+  {
+   "code": "vintagee:furnace-red-cold*",
+   "label": "red matter furnace (cold)",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/furnace-cold",
+   "textures": {
+    "stone": "game:block/stone/brick/bauxite1",
+    "body": "vintagee:newlook/material/redmatter",
+    "ash": "game:block/wood/charred",
+    "ember": "game:block/coal/ember",
+    "charred": "game:block/wood/charred"
+   },
+   "drawtype": "JSON",
+   "preview": true
+  },
+  {
+   "code": "vintagee:alchemicalchest",
+   "label": "alchemical chest",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/alchemicalchest",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "metal": "game:block/metal/plate/brass",
+    "gem": "game:block/stone/gem/amethyst"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:energycollector-mk1",
+   "label": "collector mk1",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/energycollector",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "frame": "game:block/wood/debarked/ebony",
+    "metal": "game:block/metal/plate/brass",
+    "glow": "game:block/stone/gem/citrine",
+    "glass": "game:block/stone/gem/citrine"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:energycollector-mk2",
+   "label": "collector mk2",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/energycollector",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "frame": "game:block/wood/debarked/ebony",
+    "metal": "game:block/metal/plate/silver",
+    "glow": "game:block/stone/gem/amethyst",
+    "glass": "game:block/stone/gem/amethyst"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:energycollector-mk3",
+   "label": "collector mk3",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/energycollector",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "frame": "game:block/wood/debarked/ebony",
+    "metal": "game:block/metal/plate/gold",
+    "glow": "game:block/stone/gem/ruby",
+    "glass": "game:block/stone/gem/ruby"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:antimatterrelay-mk1",
+   "label": "relay mk1",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/antimatterrelay",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/granite",
+    "matter": "vintagee:newlook/material/darkmatter",
+    "metal": "game:block/metal/plate/copper",
+    "glow": "game:block/stone/gem/citrine"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:antimatterrelay-mk2",
+   "label": "relay mk2",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/antimatterrelay",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/granite",
+    "matter": "vintagee:newlook/material/darkmatter",
+    "metal": "game:block/metal/plate/silver",
+    "glow": "game:block/stone/gem/amethyst"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:antimatterrelay-mk3",
+   "label": "relay mk3",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/antimatterrelay",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/granite",
+    "matter": "vintagee:newlook/material/darkmatter",
+    "metal": "game:block/metal/plate/gold",
+    "glow": "game:block/stone/gem/ruby"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:energycondenser-mk1",
+   "label": "condenser mk1",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/energycondenser",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/basalt",
+    "metal": "game:block/metal/plate/brass",
+    "matter": "vintagee:newlook/material/darkmatter",
+    "glow": "game:block/stone/gem/quartz"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:energycondenser-mk2",
+   "label": "condenser mk2",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/energycondenser",
+   "textures": {
+    "stone": "game:block/stone/polishedrock/chert",
+    "metal": "game:block/metal/plate/gold",
+    "matter": "vintagee:newlook/material/redmatter",
+    "glow": "game:block/stone/gem/ruby"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:novaexplosive-catalyst",
+   "label": "nova catalyst",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/novaexplosive",
+   "textures": {
+    "wood": "game:block/wood/planks/oak1",
+    "metal": "game:block/metal/plate/iron",
+    "glow": "vintagee:newlook/material/darkmatter",
+    "fuse": "game:block/cloth/reedrope"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:novaexplosive-cataclysm",
+   "label": "nova cataclysm",
+   "kind": "block",
+   "shape": "vintagee:newlook/block/novaexplosive",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "metal": "game:block/metal/plate/gold",
+    "glow": "vintagee:newlook/material/redmatter",
+    "fuse": "game:block/cloth/reedrope"
+   },
+   "drawtype": "JSON",
+   "sideopaque": false,
+   "set": {
+    "LightAbsorption": 0
+   }
+  },
+  {
+   "code": "vintagee:matterblock-dark",
+   "label": "dark matter block",
+   "cube": true,
+   "preview_only": true,
+   "textures": {
+    "north": "vintagee:newlook/block/matterblock-dark",
+    "east": "vintagee:newlook/block/matterblock-dark",
+    "south": "vintagee:newlook/block/matterblock-dark",
+    "west": "vintagee:newlook/block/matterblock-dark",
+    "up": "vintagee:newlook/block/matterblock-dark",
+    "down": "vintagee:newlook/block/matterblock-dark"
+   }
+  },
+  {
+   "code": "vintagee:matterblock-red",
+   "label": "red matter block",
+   "cube": true,
+   "preview_only": true,
+   "textures": {
+    "north": "vintagee:newlook/block/matterblock-red",
+    "east": "vintagee:newlook/block/matterblock-red",
+    "south": "vintagee:newlook/block/matterblock-red",
+    "west": "vintagee:newlook/block/matterblock-red",
+    "up": "vintagee:newlook/block/matterblock-red",
+    "down": "vintagee:newlook/block/matterblock-red"
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuelblock-alchemicalcoal",
+   "label": "alchemicalcoal block",
+   "cube": true,
+   "preview_only": true,
+   "textures": {
+    "north": "vintagee:newlook/block/fuel-alchemicalcoal",
+    "east": "vintagee:newlook/block/fuel-alchemicalcoal",
+    "south": "vintagee:newlook/block/fuel-alchemicalcoal",
+    "west": "vintagee:newlook/block/fuel-alchemicalcoal",
+    "up": "vintagee:newlook/block/fuel-alchemicalcoal",
+    "down": "vintagee:newlook/block/fuel-alchemicalcoal"
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuelblock-mobiusfuel",
+   "label": "mobiusfuel block",
+   "cube": true,
+   "preview_only": true,
+   "textures": {
+    "north": "vintagee:newlook/block/fuel-mobiusfuel",
+    "east": "vintagee:newlook/block/fuel-mobiusfuel",
+    "south": "vintagee:newlook/block/fuel-mobiusfuel",
+    "west": "vintagee:newlook/block/fuel-mobiusfuel",
+    "up": "vintagee:newlook/block/fuel-mobiusfuel",
+    "down": "vintagee:newlook/block/fuel-mobiusfuel"
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuelblock-aeternalisfuel",
+   "label": "aeternalisfuel block",
+   "cube": true,
+   "preview_only": true,
+   "textures": {
+    "north": "vintagee:newlook/block/fuel-aeternalisfuel",
+    "east": "vintagee:newlook/block/fuel-aeternalisfuel",
+    "south": "vintagee:newlook/block/fuel-aeternalisfuel",
+    "west": "vintagee:newlook/block/fuel-aeternalisfuel",
+    "up": "vintagee:newlook/block/fuel-aeternalisfuel",
+    "down": "vintagee:newlook/block/fuel-aeternalisfuel"
+   }
+  },
+  {
+   "code": "vintagee:trinket-blackholeband",
+   "label": "blackholeband",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/blackbronze",
+    "gem": "game:block/stone/gem/lapislazuli"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-swiftwolfsrendinggale",
+   "label": "swiftwolfsrendinggale",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/diamond"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-harvestgoddessband",
+   "label": "harvestgoddessband",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/emerald"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-ignitionring",
+   "label": "ignitionring",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/copper",
+    "gem": "game:block/stone/gem/ruby"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-zeroring",
+   "label": "zeroring",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/aquamarine"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-ringofarcana",
+   "label": "ringofarcana",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/amethyst"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-voidring",
+   "label": "voidring",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/ring",
+   "textures": {
+    "metal": "game:block/metal/plate/blackbronze",
+    "gem": "game:block/stone/gem/onyx"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.12
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.5,
+     "z": 0.5
+    },
+    "scale": 1.5
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.58
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.0
+   }
+  },
+  {
+   "code": "vintagee:ironband",
+   "label": "iron band",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/band",
+   "textures": {
+    "metal": "game:block/metal/plate/iron"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.406,
+     "z": 0.5
+    },
+    "scale": 1.69
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.406,
+     "z": 0.5
+    },
+    "scale": 2.25
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 0.88
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 3.0
+   }
+  },
+  {
+   "code": "vintagee:trinket-bodystone",
+   "label": "bodystone",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/stone",
+   "textures": {
+    "metal": "game:block/metal/plate/brass",
+    "gem": "game:block/stone/gem/topaz"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.48
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.98
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 0.77
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 2.64
+   }
+  },
+  {
+   "code": "vintagee:trinket-soulstone",
+   "label": "soulstone",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/stone",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/sapphire"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.48
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.98
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 0.77
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 2.64
+   }
+  },
+  {
+   "code": "vintagee:trinket-lifestone",
+   "label": "lifestone",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/stone",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/ruby"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.48
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.98
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 0.77
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 2.64
+   }
+  },
+  {
+   "code": "vintagee:trinket-evertideamulet",
+   "label": "evertide amulet",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/amulet",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/aquamarine",
+    "cord": "game:block/leather/plain"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 0.96
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 1.29
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 0.5
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 1.71
+   }
+  },
+  {
+   "code": "vintagee:trinket-volcaniteamulet",
+   "label": "volcanite amulet",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/amulet",
+   "textures": {
+    "metal": "game:block/metal/plate/copper",
+    "gem": "game:block/stone/gem/topaz",
+    "cord": "game:block/leather/plain"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 0.96
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 1.29
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 0.5
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 1.71
+   }
+  },
+  {
+   "code": "vintagee:trinket-repairtalisman",
+   "label": "repair talisman",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/talisman",
+   "textures": {
+    "metal": "game:block/metal/plate/tinbronze",
+    "trim": "game:block/metal/plate/brass",
+    "gem": "game:block/stone/gem/quartz",
+    "cord": "game:block/leather/plain"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.547,
+     "z": 0.484
+    },
+    "scale": 0.93
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.547,
+     "z": 0.484
+    },
+    "scale": 1.24
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.484
+    },
+    "scale": 0.48
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.484
+    },
+    "scale": 1.66
+   }
+  },
+  {
+   "code": "vintagee:trinket-gemofeternaldensity",
+   "label": "gem of eternal density",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/densegem",
+   "textures": {
+    "metal": "game:block/metal/plate/iron",
+    "gem": "game:block/stone/gem/diamond"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.453,
+     "z": 0.5
+    },
+    "scale": 1.08
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.453,
+     "z": 0.5
+    },
+    "scale": 1.44
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.062,
+     "z": 0.5
+    },
+    "scale": 0.56
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.062,
+     "z": 0.5
+    },
+    "scale": 1.92
+   }
+  },
+  {
+   "code": "vintagee:trinket-watchofflowingtime",
+   "label": "watch of flowing time",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/watch",
+   "textures": {
+    "metal": "game:block/metal/plate/brass",
+    "face": "game:block/cloth/paper/blank-small",
+    "hand": "game:block/metal/plate/blackbronze",
+    "gem": "game:block/stone/gem/citrine"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.516,
+     "z": 0.5
+    },
+    "scale": 1.08
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.516,
+     "z": 0.5
+    },
+    "scale": 1.44
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.56
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 1.92
+   }
+  },
+  {
+   "code": "vintagee:gadget-archangelssmite",
+   "label": "archangel's smite",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/wingedamulet",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/diamond",
+    "cord": "game:block/leather/plain",
+    "feather": "game:block/cloth/linen/white"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 0.79
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.562,
+     "z": 0.491
+    },
+    "scale": 1.06
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 0.41
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.491
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-hyperkineticlens",
+   "label": "hyperkinetic lens",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/lens",
+   "textures": {
+    "metal": "game:block/metal/plate/brass",
+    "wood": "game:block/wood/debarked/ebony",
+    "glass": "game:block/stone/gem/quartz"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 0.87
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 1.16
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.45
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-catalyticlens",
+   "label": "catalytic lens",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/lens",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "wood": "game:block/wood/debarked/ebony",
+    "glass": "game:block/stone/gem/ruby"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 0.87
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 1.16
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.45
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-destructioncatalyst",
+   "label": "destruction catalyst",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/catalyst",
+   "textures": {
+    "metal": "game:block/metal/plate/blackbronze",
+    "wood": "game:block/wood/debarked/ebony",
+    "gem": "game:block/stone/gem/ruby"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 0.9
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 1.2
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.47
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-mercurialeye",
+   "label": "mercurial eye",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/eye",
+   "textures": {
+    "metal": "game:block/metal/plate/brass",
+    "white": "game:block/stone/polishedrock/whitemarble",
+    "gem": "game:block/stone/gem/ruby",
+    "pupil": "game:block/stone/gem/onyx"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.319,
+     "z": 0.5
+    },
+    "scale": 1.32
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.319,
+     "z": 0.5
+    },
+    "scale": 1.76
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.69
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 2.35
+   }
+  },
+  {
+   "code": "vintagee:gadget-tomeofknowledge",
+   "label": "tome of knowledge",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/book",
+   "textures": {
+    "leather": "game:block/leather/plain",
+    "paper": "game:block/cloth/paper/blank-small",
+    "metal": "game:block/metal/plate/brass",
+    "gem": "game:block/stone/gem/amethyst"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.494,
+     "y": 0.469,
+     "z": 0.562
+    },
+    "scale": 1.04
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.494,
+     "y": 0.469,
+     "z": 0.562
+    },
+    "scale": 1.38
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.494,
+     "y": 0.062,
+     "z": 0.562
+    },
+    "scale": 0.54
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.494,
+     "y": 0.062,
+     "z": 0.562
+    },
+    "scale": 1.85
+   }
+  },
+  {
+   "code": "vintagee:gadget-diviningrodlow",
+   "label": "diviningrodlow",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/rod",
+   "textures": {
+    "wood": "game:block/wood/debarked/oak",
+    "cord": "game:block/leather/plain",
+    "metal": "game:block/metal/plate/copper"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 0.87
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 1.16
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.45
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-diviningrodmedium",
+   "label": "diviningrodmedium",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/rod",
+   "textures": {
+    "wood": "game:block/wood/debarked/oak",
+    "cord": "game:block/leather/plain",
+    "metal": "game:block/metal/plate/silver"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 0.87
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 1.16
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.45
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:gadget-diviningrodhigh",
+   "label": "diviningrodhigh",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/rod",
+   "textures": {
+    "wood": "game:block/wood/debarked/oak",
+    "cord": "game:block/leather/plain",
+    "metal": "game:block/metal/plate/gold"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 0.87
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.484,
+     "z": 0.5
+    },
+    "scale": 1.16
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.45
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:transmutationtablet",
+   "label": "transmutation tablet",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/tablet",
+   "textures": {
+    "wood": "game:block/wood/planks/ebony1",
+    "top": "vintagee:newlook/block/transmutation-circle",
+    "stone": "game:block/stone/polishedrock/slate"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 0.9
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 1.2
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 0.47
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.6
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-ein",
+   "label": "klein star ein",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/copper",
+    "gem": "game:block/stone/gem/quartz"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-zwei",
+   "label": "klein star zwei",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/brass",
+    "gem": "game:block/stone/gem/citrine"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-drei",
+   "label": "klein star drei",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/topaz"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-vier",
+   "label": "klein star vier",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/emerald"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-sphere",
+   "label": "klein star sphere",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/sapphire"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:kleinstar-omega",
+   "label": "klein star omega",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/star",
+   "textures": {
+    "metal": "game:block/metal/plate/gold",
+    "gem": "game:block/stone/gem/amethyst"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.438,
+     "z": 0.5
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:philosophersstone",
+   "label": "philosopher's stone",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/gem",
+   "textures": {
+    "gem": "game:block/stone/gem/ruby"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.331,
+     "z": 0.5
+    },
+    "scale": 1.93
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.331,
+     "z": 0.5
+    },
+    "scale": 2.57
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 1.0
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.125,
+     "z": 0.5
+    },
+    "scale": 3.2
+   }
+  },
+  {
+   "code": "vintagee:matter-dark",
+   "label": "dark matter",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/orb",
+   "textures": {
+    "matter": "vintagee:newlook/material/darkmatter"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.375,
+     "z": 0.5
+    },
+    "scale": 1.93
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.375,
+     "z": 0.5
+    },
+    "scale": 2.57
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 1.0
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 3.2
+   }
+  },
+  {
+   "code": "vintagee:matter-red",
+   "label": "red matter",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/orb",
+   "textures": {
+    "matter": "vintagee:newlook/material/redmatter"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.375,
+     "z": 0.5
+    },
+    "scale": 1.93
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.375,
+     "z": 0.5
+    },
+    "scale": 2.57
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 1.0
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.156,
+     "z": 0.5
+    },
+    "scale": 3.2
+   }
+  },
+  {
+   "code": "vintagee:covalencedust-low",
+   "label": "covalence dust low",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/dust",
+   "textures": {
+    "dust": "vintagee:newlook/item/covalencedust-low"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:covalencedust-medium",
+   "label": "covalence dust medium",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/dust",
+   "textures": {
+    "dust": "vintagee:newlook/item/covalencedust-medium"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:covalencedust-high",
+   "label": "covalence dust high",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/dust",
+   "textures": {
+    "dust": "vintagee:newlook/item/covalencedust-high"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.35
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.117,
+     "z": 0.516
+    },
+    "scale": 1.8
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 0.7
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.531,
+     "y": 0.0,
+     "z": 0.516
+    },
+    "scale": 2.4
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuel-alchemicalcoal",
+   "label": "alchemicalcoal",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/lump",
+   "textures": {
+    "fuel": "vintagee:newlook/block/fuel-alchemicalcoal"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 1.69
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 2.25
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 0.88
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 3.0
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuel-mobiusfuel",
+   "label": "mobiusfuel",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/lump",
+   "textures": {
+    "fuel": "vintagee:newlook/block/fuel-mobiusfuel"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 1.69
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 2.25
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 0.88
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 3.0
+   }
+  },
+  {
+   "code": "vintagee:alchemicalfuel-aeternalisfuel",
+   "label": "aeternalisfuel",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/lump",
+   "textures": {
+    "fuel": "vintagee:newlook/block/fuel-aeternalisfuel"
+   },
+   "guiTransform": {
+    "rotate": true,
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": -22.6,
+     "y": -45.3,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 1.69
+   },
+   "fpHandTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0.2,
+     "z": 0.3
+    },
+    "rotation": {
+     "x": 0,
+     "y": -50,
+     "z": 10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.188,
+     "z": 0.484
+    },
+    "scale": 2.25
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.4,
+     "z": -0.6
+    },
+    "rotation": {
+     "x": 0,
+     "y": 45,
+     "z": -10
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 0.88
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 30,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.484
+    },
+    "scale": 3.0
+   }
+  }
+ ]
+}

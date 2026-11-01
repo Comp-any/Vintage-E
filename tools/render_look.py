@@ -39,6 +39,10 @@ class Textures:
                 parts = line.split()
                 if len(parts) >= 3 and parts[2].startswith("#"):
                     self.avg[parts[0]] = parts[2]
+                    # The game's "survival" and "creative" folders are both the "game" domain in code.
+                    dom, path = parts[0].split(":", 1)
+                    if dom in ("survival", "creative"):
+                        self.avg.setdefault("game:" + path, parts[2])
 
     def get(self, loc):
         if loc in self.cache:

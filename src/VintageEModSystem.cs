@@ -112,12 +112,19 @@ namespace VintageE
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
             Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat);
-            // ProjectE's textures have to be in the block/item definitions before they're sent to players. The config is
-            // only loaded properly in StartServerSide, which comes later, so peek at that one setting here.
-            if (PeekConfig(api as ICoreServerAPI)?.ProjectETextures == true) LookResult = ProjectELook.Apply(api, Mod.Logger);
+            // The look (ProjectE's textures, or the New models) has to be in the block/item definitions before they're
+            // sent to players. The config is only loaded properly in StartServerSide, which comes later, so peek at that
+            // one setting here.
+            VintageEConfig peek = PeekConfig(api as ICoreServerAPI);
+            peek?.Normalize();
+            ActiveLook = peek?.Look ?? ProjectELook.LookDefault;
+            if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(api, Mod.Logger, ActiveLook, false);
         }
 
-        /// <summary>What the ProjectETextures setting changed at start-up (null when it's off).</summary>
+        /// <summary>The look in use since start-up ("Default", "Original" or "New"); changing the setting needs a restart.</summary>
+        public string ActiveLook { get; private set; } = ProjectELook.LookDefault;
+
+        /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
         public ProjectELook.Result LookResult { get; private set; }
 
         /// <summary>VintagestoryData/ModData/vintagee: where the CSV files, dumps, self-test and cache go (created if needed).</summary>

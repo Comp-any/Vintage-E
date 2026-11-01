@@ -3,3 +3,10 @@ contentItemCode
 craftingResults
 path:churn
 path:recipes/grid/cheese
+path:itemtypes/resource/gem
+path:itemtypes/resource/coal
+path:itemtypes/resource/nugget
+path:itemtypes/resource/gear
+path:itemtypes/resource/crystal
+path:itemtypes/resource/clearquartz
+path:itemtypes/resource/powder
