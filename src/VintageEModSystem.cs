@@ -135,55 +135,27 @@ namespace VintageE
         public string WorldLookReason { get; private set; } = "";
 
         /// <summary>
-        /// This world's look: the one remembered for it, or, the first time it runs 1.13.0 or later, New for a new world
-        /// (its save file doesn't exist yet) and Middle for a world that already existed on a server that had Vintage-E.
-        /// It's remembered in ModData/vintagee/looks/ (by the save file's path), because the world's own data isn't
-        /// loaded yet when blocks and items are set up, so it never changes by itself.
+        /// This world's look: the one remembered for it, or, the first time it runs 1.13.0 or later, Middle for a world
+        /// that already had Vintage-E and New for any other. A world had Vintage-E if Vintage-E left an EMC cache for it
+        /// (it does by default, named after the world's id), or, with the cache switched off, if it's a world that has
+        /// been played (its save file is more than a fresh one) on a server that already had Vintage-E's config. It's
+        /// remembered in ModData/vintagee/looks/ (the world's own data can't be relied on this early), so it never changes
+        /// by itself.
         /// </summary>
-        /// <summary>What the game says about the world (for finding a reliable "new world" sign; logged at start-up).</summary>
-        internal static string WorldFacts(ICoreServerAPI sapi)
-        {
-            var sb = new System.Text.StringBuilder();
-            try
-            {
-                string world = sapi?.WorldManager?.CurrentWorldName;
-                sb.Append("file=").Append(world);
-                if (!string.IsNullOrEmpty(world) && System.IO.File.Exists(world))
-                {
-                    var fi = new System.IO.FileInfo(world);
-                    sb.Append(" size=").Append(fi.Length).Append(" written=").Append(fi.LastWriteTimeUtc.ToString("O")).Append(" now=").Append(DateTime.UtcNow.ToString("O"));
-                }
-                object save = sapi?.WorldManager?.SaveGame;
-                if (save != null)
-                {
-                    foreach (var p in save.GetType().GetProperties())
-                    {
-                        if (p.GetIndexParameters().Length > 0) continue;
-                        Type t = p.PropertyType;
-                        if (!(t.IsPrimitive || t == typeof(string) || t.IsEnum)) continue;
-                        object v; try { v = p.GetValue(save); } catch { v = "?"; }
-                        sb.Append(' ').Append(p.Name).Append('=').Append(v);
-                    }
-                }
-                sb.Append(" ident=").Append(sapi?.World?.SavegameIdentifier);
-            }
-            catch (Exception e) { sb.Append(" error ").Append(e.Message); }
-            return sb.ToString();
-        }
-
         internal string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
         {
-            Mod.Logger.Notification("World facts at look time: {0}", WorldFacts(sapi));
             string file = null;
             try
             {
+                string id = sapi?.World?.SavegameIdentifier;
                 string world = sapi?.WorldManager?.CurrentWorldName;
-                if (!string.IsNullOrEmpty(world))
+                if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(world))
                 {
-                    file = WorldLookFile(sapi, world);
+                    file = WorldLookFile(sapi);
                     if (System.IO.File.Exists(file))
                     {
-                        string stored = ProjectELook.NormalizeLook(System.IO.File.ReadAllText(file));
+                        string first = System.IO.File.ReadAllLines(file).FirstOrDefault();
+                        string stored = ProjectELook.NormalizeLook(first);
                         if (stored != ProjectELook.LookAuto)
                         {
                             why = "remembered for this world";
@@ -191,11 +163,11 @@ namespace VintageE
                         }
                     }
                     string look;
-                    bool existed = System.IO.File.Exists(world);
-                    if (!existed) { look = ProjectELook.LookNew; why = "a new world"; }
-                    else if (configExisted) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
-                    else { look = ProjectELook.LookNew; why = "a world new to Vintage-E"; }
-                    System.IO.File.WriteAllText(file, look + "\n" + world + "\n");
+                    long size = !string.IsNullOrEmpty(world) && System.IO.File.Exists(world) ? new System.IO.FileInfo(world).Length : 0;
+                    if (!string.IsNullOrEmpty(id) && System.IO.File.Exists(EmcCache.FilePath(sapi))) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
+                    else if (configExisted && size > 256 * 1024) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E (a played world on a server that had it)"; }
+                    else { look = ProjectELook.LookNew; why = "a new world"; }
+                    System.IO.File.WriteAllText(file, look + "\n" + id + "\n" + world + "\n");
                     why += ", now remembered";
                     return look;
                 }
@@ -204,21 +176,21 @@ namespace VintageE
             {
                 Mod.Logger.Warning("Could not work out this world's look ({0}): {1}", file, e.Message);
             }
-            why = "the world's file is unknown, so going by whether the server already had Vintage-E";
+            why = "the world is unknown, so going by whether the server already had Vintage-E";
             return configExisted ? ProjectELook.LookMiddle : ProjectELook.LookNew;
         }
 
-        /// <summary>ModData/vintagee/looks/&lt;world file name&gt;-&lt;hash of its path&gt;.txt: the look remembered for a world.</summary>
-        public static string WorldLookFile(ICoreAPI api, string worldFile)
+        /// <summary>ModData/vintagee/looks/look-&lt;world id&gt;.txt: the look remembered for a world.</summary>
+        public static string WorldLookFile(ICoreServerAPI sapi)
         {
-            string dir = System.IO.Path.Combine(DataFolder(api), "looks");
+            string dir = System.IO.Path.Combine(DataFolder(sapi), "looks");
             System.IO.Directory.CreateDirectory(dir);
-            string name = System.IO.Path.GetFileNameWithoutExtension(worldFile);
-            foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) name = name.Replace(ch, '_');
-            using var sha = System.Security.Cryptography.SHA256.Create();
-            byte[] h = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(System.IO.Path.GetFullPath(worldFile)));
-            return System.IO.Path.Combine(dir, name + "-" + BitConverter.ToString(h, 0, 4).Replace("-", "").ToLowerInvariant() + ".txt");
+            string id = sapi.World?.SavegameIdentifier;
+            if (string.IsNullOrEmpty(id)) id = System.IO.Path.GetFileNameWithoutExtension(sapi.WorldManager?.CurrentWorldName ?? "default");
+            foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) id = id.Replace(ch, '_');
+            return System.IO.Path.Combine(dir, "look-" + id + ".txt");
         }
+
 
         /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
         public ProjectELook.Result LookResult { get; private set; }

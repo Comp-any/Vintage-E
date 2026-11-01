@@ -764,24 +764,31 @@ namespace VintageE
         void CheckProjectELook()
         {
             Line("Look: " + mod.ActiveLook + ", this world's own look " + mod.WorldLookChoice + " (" + mod.WorldLookReason + "), ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
-            Line("World facts now: " + VintageEModSystem.WorldFacts(sapi));
             // The server test starts a brand-new world, which gets New and keeps it.
             Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
-            string lookFile = VintageEModSystem.WorldLookFile(sapi, sapi.WorldManager.CurrentWorldName);
+            string lookFile = VintageEModSystem.WorldLookFile(sapi);
             Check(File.Exists(lookFile) && File.ReadAllText(lookFile).StartsWith(ProjectELook.LookNew), "the world's look is remembered in " + Path.GetFileName(lookFile));
-            // The next start of this world finds it remembered; a world that already existed (its save file is there
-            // now) on a server that had Vintage-E, with nothing remembered, gets Middle.
+            // The next start of this world finds it remembered. With nothing remembered, a world gets New unless an
+            // older Vintage-E left its EMC cache for it, then Middle.
             string again = mod.WorldLook(sapi, true, out string why2);
             Check(again == ProjectELook.LookNew && why2.StartsWith("remembered"), "the next start keeps this world's look: " + again + ", " + why2);
             string saved = File.Exists(lookFile) ? File.ReadAllText(lookFile) : null;
+            string cache = EmcCache.FilePath(sapi);
+            bool madeCache = !File.Exists(cache);
             try
             {
                 File.Delete(lookFile);
+                string fresh = mod.WorldLook(sapi, true, out string whyFresh);
+                Check(fresh == ProjectELook.LookNew || !madeCache, "a world without Vintage-E's EMC cache gets New: " + fresh + ", " + whyFresh);
+                // Now as if this world had run an older Vintage-E (which leaves its EMC cache).
+                File.Delete(lookFile);
+                if (madeCache) File.WriteAllText(cache, "{}");
                 string old = mod.WorldLook(sapi, true, out string why3);
-                Check(old == ProjectELook.LookMiddle && why3.StartsWith("a world that already had Vintage-E"), "an existing world that had Vintage-E keeps the Middle look: " + old + ", " + why3);
+                Check(old == ProjectELook.LookMiddle && why3.StartsWith("a world that already had Vintage-E"), "a world with Vintage-E's EMC cache keeps the Middle look: " + old + ", " + why3);
             }
             finally
             {
+                if (madeCache && File.Exists(cache)) File.Delete(cache);
                 if (saved != null) File.WriteAllText(lookFile, saved);
             }
             foreach (string s in new[] { PESounds.Charge, PESounds.Uncharge, PESounds.Heal, PESounds.Destruct, PESounds.Power, PESounds.Transmute, PESounds.WaterMagic, PESounds.WindMagic })
