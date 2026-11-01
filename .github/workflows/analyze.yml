@@ -115,7 +115,7 @@ jobs:
       - name: Collect results
         if: always()
         run: |
-          pip install json5 >/dev/null
+          pip install json5 pillow >/dev/null
           mkdir -p analysis
           find data -name 'emc-*.csv' -exec cp {} analysis/ \;
           find data -name 'selftest.txt' -exec cp {} analysis/ \;
@@ -128,6 +128,8 @@ jobs:
           cp data/Logs/*crash* analysis/ 2>/dev/null || true
           for f in data/Logs/server-main.log data/Logs/server-debug.log; do [ -f "$f" ] && grep -iE "vintagee|vintage-e|EMC|error|exception" "$f" | head -3000 > "analysis/$(basename "$f" .log)-filtered.log"; done
           [ -n "$VSDIR" ] && python3 tools/ci_extract.py "$VSDIR/assets" analysis || echo "no game assets" > analysis/extract-errors.txt
+          # The game's texture and shape lists (paths, sizes, average colours), for the "New" look's models.
+          [ -n "$VSDIR" ] && python3 tools/ci_textures.py "$VSDIR/assets" analysis || true
           echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
