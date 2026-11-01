@@ -764,6 +764,7 @@ namespace VintageE
         void CheckProjectELook()
         {
             Line("Look: " + mod.ActiveLook + ", this world's own look " + mod.WorldLookChoice + " (" + mod.WorldLookReason + "), ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
+            Line("World facts now: " + VintageEModSystem.WorldFacts(sapi));
             // The server test starts a brand-new world, which gets New and keeps it.
             Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
             string lookFile = VintageEModSystem.WorldLookFile(sapi, sapi.WorldManager.CurrentWorldName);

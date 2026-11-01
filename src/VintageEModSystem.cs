@@ -140,8 +140,40 @@ namespace VintageE
         /// It's remembered in ModData/vintagee/looks/ (by the save file's path), because the world's own data isn't
         /// loaded yet when blocks and items are set up, so it never changes by itself.
         /// </summary>
+        /// <summary>What the game says about the world (for finding a reliable "new world" sign; logged at start-up).</summary>
+        internal static string WorldFacts(ICoreServerAPI sapi)
+        {
+            var sb = new System.Text.StringBuilder();
+            try
+            {
+                string world = sapi?.WorldManager?.CurrentWorldName;
+                sb.Append("file=").Append(world);
+                if (!string.IsNullOrEmpty(world) && System.IO.File.Exists(world))
+                {
+                    var fi = new System.IO.FileInfo(world);
+                    sb.Append(" size=").Append(fi.Length).Append(" written=").Append(fi.LastWriteTimeUtc.ToString("O")).Append(" now=").Append(DateTime.UtcNow.ToString("O"));
+                }
+                object save = sapi?.WorldManager?.SaveGame;
+                if (save != null)
+                {
+                    foreach (var p in save.GetType().GetProperties())
+                    {
+                        if (p.GetIndexParameters().Length > 0) continue;
+                        Type t = p.PropertyType;
+                        if (!(t.IsPrimitive || t == typeof(string) || t.IsEnum)) continue;
+                        object v; try { v = p.GetValue(save); } catch { v = "?"; }
+                        sb.Append(' ').Append(p.Name).Append('=').Append(v);
+                    }
+                }
+                sb.Append(" ident=").Append(sapi?.World?.SavegameIdentifier);
+            }
+            catch (Exception e) { sb.Append(" error ").Append(e.Message); }
+            return sb.ToString();
+        }
+
         internal string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
         {
+            Mod.Logger.Notification("World facts at look time: {0}", WorldFacts(sapi));
             string file = null;
             try
             {
