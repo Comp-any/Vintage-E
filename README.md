@@ -108,6 +108,10 @@ The Middle look:
 
 ![The Middle look](docs/preview.png)
 
+The Original look (ProjectE's textures; rings and stones shown switched on):
+
+![The Original look](docs/preview-original.png)
+
 What the **New** look changes:
 
 - **Rings** are metal bands with a set gem (Zero Ring: silver and aquamarine, Ignition Ring: copper and ruby, Ring of Arcana: gold and amethyst...), and the **Iron Band** a plain iron band. **Body, Soul and Life Stones** are polished gemstones on a wire loop; the **Evertide and Volcanite Amulets** gems in a bezel on a leather cord; **Archangel's Smite** the same with white wings; the **Repair Talisman** a bronze charm; the **Gem of Eternal Density** crystals in an iron claw; the **Watch of Flowing Time** a brass pocket watch.
