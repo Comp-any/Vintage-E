@@ -5,11 +5,11 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.13.0 — 2026-11-01
 
 ### Added
-- **A new look, `New`, now the default: models that blend in with Vintage Story.** Rings, stones, amulets, gadgets, Klein Stars, the Philosopher's Stone, matter, fuels, covalence dust and the tablet become 3D models, and the transmutation table, pedestals, interdiction torch, matter furnaces, alchemical chest, collectors, relays, condensers and nova catalysts get models of their own, built mostly from the game's own planks, metal plates, polished stone, gems, linen, leather, paper and candles. Crystals glow; alchemical bags are the game's linen; dark and red matter (on tools, armour, blocks, pedestals and furnaces), fuel blocks and covalence dust get new textures in the game's style. See the README for what each looks like.
+- **A new look, `New`: models that blend in with Vintage Story.** Rings, stones, amulets, gadgets, Klein Stars, the Philosopher's Stone, matter, fuels, covalence dust and the tablet become 3D models, and the transmutation table, pedestals, interdiction torch, matter furnaces, alchemical chest, collectors, relays, condensers and nova catalysts get models of their own, built mostly from the game's own planks, metal plates, polished stone, gems, linen, leather, paper and candles. Crystals glow; alchemical bags are the game's linen; dark and red matter (on tools, armour, blocks, pedestals and furnaces), fuel blocks and covalence dust get new textures in the game's style. See the README for what each looks like.
 
 ### Changed
-- **New is the default look.** Servers updating to 1.13.0 switch to it on their next start; set `Look` to `Middle` to keep Vintage-E's flat textures.
-- **The `ProjectETextures` switch is now the `Look` setting**, with three choices: **`New`** (the default), **`Middle`** (Vintage-E's own flat textures, the look until now) and **`Original`** (ProjectE's original textures, what `ProjectETextures` did). A server that had `ProjectETextures` on gets `Original`. Change it with `/emc configure Look Middle` (or `Original`, `New`); it takes effect the next time the server starts.
+- **New worlds get the New look; worlds that already had Vintage-E keep the flat look (now called Middle).** Each world remembers its look the first time it runs 1.13.0, so nothing changes in a world you're already playing.
+- **The `ProjectETextures` switch is now the `Look` setting**, whose default, **`Auto`**, uses each world's own look; **`New`**, **`Middle`** (Vintage-E's own flat textures, the look until now) or **`Original`** (ProjectE's original textures, what `ProjectETextures` did) use that look in every world. A server that had `ProjectETextures` on gets `Original`. Change it with `/emc configure Look New` (or `Middle`, `Original`, `Auto`); it takes effect the next time the server starts.
 
 ## 1.12.1 — 2026-11-01
 

@@ -763,7 +763,10 @@ namespace VintageE
 
         void CheckProjectELook()
         {
-            Line("Look: " + mod.ActiveLook + ", ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
+            Line("Look: " + mod.ActiveLook + ", this world's own look " + mod.WorldLookChoice + " (" + mod.WorldLookReason + "), ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
+            // The server test starts a brand-new world, which gets New and keeps it.
+            Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
+            Check(sapi.WorldManager.SaveGame.GetData<string>(ProjectELook.WorldLookKey, null) == ProjectELook.LookNew, "the world remembers its look");
             foreach (string s in new[] { PESounds.Charge, PESounds.Uncharge, PESounds.Heal, PESounds.Destruct, PESounds.Power, PESounds.Transmute, PESounds.WaterMagic, PESounds.WindMagic })
             {
                 Check(sapi.Assets.Exists(PESounds.Location(s).WithPathAppendixOnce(".ogg")), "ProjectE sound " + s + " is there");
@@ -771,8 +774,8 @@ namespace VintageE
             Check(PESounds.On(sapi.World) == mod.Config.ProjectESounds, "ProjectE sounds follow the setting");
 
             bool Tex(string path) => sapi.Assets.Exists(new AssetLocation(path).WithPathPrefixOnce("textures/").WithPathAppendixOnce(".png"));
-            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Middle" && ProjectELook.NormalizeLook("default") == "New" && new VintageEConfig().Look == "New",
-                "the Look setting accepts its three choices, and New is the default");
+            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Middle" && ProjectELook.NormalizeLook("default") == "Auto" && new VintageEConfig().Look == "Auto",
+                "the Look setting accepts its three looks, and Auto (per world) is the default");
 
             // Both looks' maps, whichever is in use: every texture and model they name is there (the game's own textures
             // can't be seen by a dedicated server; the server test checks those against the game client).

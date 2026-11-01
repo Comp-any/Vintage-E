@@ -115,14 +115,65 @@ namespace VintageE
             // The look (ProjectE's textures, or the New models) has to be in the block/item definitions before they're
             // sent to players. The config is only loaded properly in StartServerSide, which comes later, so peek at that
             // one setting here.
-            VintageEConfig peek = PeekConfig(api as ICoreServerAPI);
+            var sapi = api as ICoreServerAPI;
+            VintageEConfig peek = PeekConfig(sapi);
             peek?.Normalize();
-            ActiveLook = peek?.Look ?? ProjectELook.LookDefault;
+            WorldLookChoice = WorldLook(sapi, peek != null, out string why);
+            WorldLookReason = why;
+            string setting = peek?.Look ?? ProjectELook.LookAuto;
+            ActiveLook = setting == ProjectELook.LookAuto ? WorldLookChoice : setting;
+            Mod.Logger.Notification("Look: {0} ({1}).", ActiveLook,
+                setting == ProjectELook.LookAuto ? "this world's look: " + why : "set for every world by the Look setting");
             if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(api, Mod.Logger, ActiveLook, false);
         }
 
         /// <summary>The look in use since start-up ("New", "Middle" or "Original"); changing the setting needs a restart.</summary>
-        public string ActiveLook { get; private set; } = ProjectELook.LookDefault;
+        public string ActiveLook { get; private set; } = ProjectELook.LookNew;
+
+        /// <summary>This world's own look (used while the Look setting is Auto), and why it's that one.</summary>
+        public string WorldLookChoice { get; private set; } = ProjectELook.LookNew;
+        public string WorldLookReason { get; private set; } = "";
+
+        /// <summary>
+        /// This world's look: the one saved with it, or, the first time it runs 1.13.0 or later, New for a new world and
+        /// Middle for a world that already had Vintage-E (it left an EMC cache for the world, or the server already had
+        /// Vintage-E's config), which is then saved with the world so it never changes by itself.
+        /// </summary>
+        string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
+        {
+            try
+            {
+                ISaveGame save = sapi?.WorldManager?.SaveGame;
+                if (save != null)
+                {
+                    string stored = save.GetData<string>(ProjectELook.WorldLookKey, null);
+                    if (!string.IsNullOrEmpty(stored) && ProjectELook.NormalizeLook(stored) != ProjectELook.LookAuto)
+                    {
+                        why = "saved with this world";
+                        return ProjectELook.NormalizeLook(stored);
+                    }
+                    bool isNew = false;
+                    foreach (string name in new[] { "IsNewWorld", "IsNew" })
+                    {
+                        if (save.GetType().GetProperty(name)?.GetValue(save) is bool b) { isNew = b; break; }
+                    }
+                    string look;
+                    if (isNew) { look = ProjectELook.LookNew; why = "a new world"; }
+                    else if (System.IO.File.Exists(EmcCache.FilePath(sapi))) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
+                    else if (configExisted) { look = ProjectELook.LookMiddle; why = "an existing world on a server that already had Vintage-E"; }
+                    else { look = ProjectELook.LookNew; why = "a world new to Vintage-E"; }
+                    save.StoreData(ProjectELook.WorldLookKey, look);
+                    why += ", now saved with it";
+                    return look;
+                }
+            }
+            catch (Exception e)
+            {
+                Mod.Logger.Warning("Could not read this world's look: {0}", e.Message);
+            }
+            why = "the world couldn't be read yet, so going by whether the server already had Vintage-E";
+            return configExisted ? ProjectELook.LookMiddle : ProjectELook.LookNew;
+        }
 
         /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
         public ProjectELook.Result LookResult { get; private set; }

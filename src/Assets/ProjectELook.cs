@@ -30,17 +30,25 @@ namespace VintageE
         /// <summary>The Look setting's three choices.</summary>
         public const string LookMiddle = "Middle", LookOriginal = "Original", LookNew = "New";
 
-        /// <summary>The look a server gets unless it picks another.</summary>
-        public const string LookDefault = LookNew;
+        /// <summary>
+        /// The setting's default: each world uses the look it was given the first time it ran 1.13.0 or later, New for
+        /// new worlds and Middle for worlds that already had Vintage-E (see VintageEModSystem.WorldLook).
+        /// </summary>
+        public const string LookAuto = "Auto";
+        public const string LookDefault = LookAuto;
 
-        /// <summary>The Look setting's value written properly (the default, New, for anything it doesn't know).</summary>
+        /// <summary>The world data key that remembers a world's look.</summary>
+        public const string WorldLookKey = "vintageeLook";
+
+        /// <summary>The Look setting's value written properly (Auto for empty, "default" or anything it doesn't know).</summary>
         public static string NormalizeLook(string look)
         {
             switch ((look ?? "").Trim().ToLowerInvariant())
             {
                 case "original": case "projecte": case "old": return LookOriginal;
                 case "middle": case "flat": case "classic": case "vintagee": return LookMiddle;
-                default: return LookNew;
+                case "new": case "vintage": case "vintagestory": return LookNew;
+                default: return LookAuto;
             }
         }
 
