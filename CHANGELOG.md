@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.14.1 — 2026-11-02
+
+### Fixed
+- **The New look's blocks and items were invisible** (only their outline showed). A player's game loads block and item shapes as soon as it receives them from the server, before mods get their usual chance to change things, so the New models were never loaded. The look is now applied right as the game loads those shapes. Middle and Original (textures only) weren't affected.
+
 ## 1.14.0 — 2026-11-02
 
 ### Changed
