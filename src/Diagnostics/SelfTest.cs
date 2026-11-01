@@ -869,9 +869,8 @@ namespace VintageE
             Check(zero?.Shape?.Base?.ToString() == "vintagee:newlook/item/ring", "Zero Ring has the ring model: " + zero?.Shape?.Base);
             Expect("vintagee:trinket-zeroring#gem", "game:block/stone/gem/aquamarine", "Zero Ring's gem is the game's aquamarine");
             Expect("vintagee:trinket-zeroring#metal", "game:block/metal/plate/silver", "Zero Ring's band is the game's silver");
-            Check(zero?.Textures != null && zero.Textures.ContainsKey("all"), "Zero Ring keeps its own texture for wearing");
-            Check(zero?.GuiTransform != null && zero.GuiTransform.Rotation != null && Math.Abs(zero.GuiTransform.Rotation.Y + 45.3f) < 0.01f,
-                "Zero Ring is turned like a block in the inventory: " + zero?.GuiTransform?.Rotation);
+            Check(Got("vintagee:trinket-zeroring#keptall") == "yes", "Zero Ring keeps its own texture for wearing");
+            Check(Got("vintagee:trinket-zeroring#guirotx") == "150", "Zero Ring is turned over like the game's gems in the inventory: " + Got("vintagee:trinket-zeroring#guirotx"));
             Item star = sapi.World.GetItem(new AssetLocation("vintagee:kleinstar-omega"));
             Check(star?.Shape?.Base?.ToString() == "vintagee:newlook/item/star", "Klein Star Omega has the star model");
             Block collector = sapi.World.GetBlock(new AssetLocation("vintagee:energycollector-mk3"));

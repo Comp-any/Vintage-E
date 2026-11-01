@@ -434,15 +434,14 @@
     "gem": "game:block/stone/gem/lapislazuli"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -450,43 +449,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -496,7 +477,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -504,7 +485,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -517,15 +498,14 @@
     "gem": "game:block/stone/gem/diamond"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -533,43 +513,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -579,7 +541,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -587,7 +549,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -600,15 +562,14 @@
     "gem": "game:block/stone/gem/emerald"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -616,43 +577,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -662,7 +605,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -670,7 +613,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -683,15 +626,14 @@
     "gem": "game:block/stone/gem/ruby"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -699,43 +641,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -745,7 +669,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -753,7 +677,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -766,15 +690,14 @@
     "gem": "game:block/stone/gem/aquamarine"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -782,43 +705,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -828,7 +733,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -836,7 +741,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -849,15 +754,14 @@
     "gem": "game:block/stone/gem/amethyst"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -865,43 +769,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -911,7 +797,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -919,7 +805,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -932,15 +818,14 @@
     "gem": "game:block/stone/gem/onyx"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -948,43 +833,25 @@
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.12
+    "scale": 1.25
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.5,
      "z": 0.5
     },
-    "scale": 1.5
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.58
+    "scale": 0.38
    },
    "groundTransform": {
     "translation": {
@@ -994,7 +861,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1002,7 +869,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.0
+    "scale": 1.33
    }
   },
   {
@@ -1014,15 +881,14 @@
     "metal": "game:block/metal/plate/iron"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1030,43 +896,25 @@
      "y": 0.406,
      "z": 0.5
     },
-    "scale": 1.69
+    "scale": 1.88
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.406,
      "z": 0.5
     },
-    "scale": 2.25
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.156,
-     "z": 0.5
-    },
-    "scale": 0.88
+    "scale": 0.56
    },
    "groundTransform": {
     "translation": {
@@ -1076,7 +924,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1084,7 +932,7 @@
      "y": 0.156,
      "z": 0.5
     },
-    "scale": 3.0
+    "scale": 2.0
    }
   },
   {
@@ -1097,15 +945,14 @@
     "gem": "game:block/stone/gem/topaz"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1113,43 +960,25 @@
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.48
+    "scale": 1.65
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.98
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.094,
-     "z": 0.5
-    },
-    "scale": 0.77
+    "scale": 0.49
    },
    "groundTransform": {
     "translation": {
@@ -1159,7 +988,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1167,7 +996,7 @@
      "y": 0.094,
      "z": 0.5
     },
-    "scale": 2.64
+    "scale": 1.76
    }
   },
   {
@@ -1180,15 +1009,14 @@
     "gem": "game:block/stone/gem/sapphire"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1196,43 +1024,25 @@
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.48
+    "scale": 1.65
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.98
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.094,
-     "z": 0.5
-    },
-    "scale": 0.77
+    "scale": 0.49
    },
    "groundTransform": {
     "translation": {
@@ -1242,7 +1052,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1250,7 +1060,7 @@
      "y": 0.094,
      "z": 0.5
     },
-    "scale": 2.64
+    "scale": 1.76
    }
   },
   {
@@ -1263,15 +1073,14 @@
     "gem": "game:block/stone/gem/ruby"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1279,43 +1088,25 @@
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.48
+    "scale": 1.65
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.378,
      "z": 0.5
     },
-    "scale": 1.98
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.094,
-     "z": 0.5
-    },
-    "scale": 0.77
+    "scale": 0.49
    },
    "groundTransform": {
     "translation": {
@@ -1325,7 +1116,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1333,7 +1124,7 @@
      "y": 0.094,
      "z": 0.5
     },
-    "scale": 2.64
+    "scale": 1.76
    }
   },
   {
@@ -1347,15 +1138,14 @@
     "cord": "game:block/leather/plain"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1363,43 +1153,25 @@
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 0.96
+    "scale": 1.07
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 1.29
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.491
-    },
-    "scale": 0.5
+    "scale": 0.32
    },
    "groundTransform": {
     "translation": {
@@ -1409,7 +1181,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1417,7 +1189,7 @@
      "y": 0.125,
      "z": 0.491
     },
-    "scale": 1.71
+    "scale": 1.2
    }
   },
   {
@@ -1431,15 +1203,14 @@
     "cord": "game:block/leather/plain"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1447,43 +1218,25 @@
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 0.96
+    "scale": 1.07
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 1.29
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.491
-    },
-    "scale": 0.5
+    "scale": 0.32
    },
    "groundTransform": {
     "translation": {
@@ -1493,7 +1246,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1501,7 +1254,7 @@
      "y": 0.125,
      "z": 0.491
     },
-    "scale": 1.71
+    "scale": 1.2
    }
   },
   {
@@ -1516,15 +1269,14 @@
     "cord": "game:block/leather/plain"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1532,43 +1284,25 @@
      "y": 0.547,
      "z": 0.484
     },
-    "scale": 0.93
+    "scale": 1.03
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.547,
      "z": 0.484
     },
-    "scale": 1.24
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.094,
-     "z": 0.484
-    },
-    "scale": 0.48
+    "scale": 0.31
    },
    "groundTransform": {
     "translation": {
@@ -1578,7 +1312,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1586,7 +1320,7 @@
      "y": 0.094,
      "z": 0.484
     },
-    "scale": 1.66
+    "scale": 1.2
    }
   },
   {
@@ -1599,15 +1333,14 @@
     "gem": "game:block/stone/gem/diamond"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1615,43 +1348,25 @@
      "y": 0.453,
      "z": 0.5
     },
-    "scale": 1.08
+    "scale": 1.2
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.453,
      "z": 0.5
     },
-    "scale": 1.44
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.062,
-     "z": 0.5
-    },
-    "scale": 0.56
+    "scale": 0.36
    },
    "groundTransform": {
     "translation": {
@@ -1661,7 +1376,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1669,7 +1384,7 @@
      "y": 0.062,
      "z": 0.5
     },
-    "scale": 1.92
+    "scale": 1.28
    }
   },
   {
@@ -1684,15 +1399,14 @@
     "gem": "game:block/stone/gem/citrine"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1700,43 +1414,25 @@
      "y": 0.516,
      "z": 0.5
     },
-    "scale": 1.08
+    "scale": 1.2
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.516,
      "z": 0.5
     },
-    "scale": 1.44
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.56
+    "scale": 0.36
    },
    "groundTransform": {
     "translation": {
@@ -1746,7 +1442,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1754,7 +1450,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 1.92
+    "scale": 1.28
    }
   },
   {
@@ -1769,15 +1465,14 @@
     "feather": "game:block/cloth/linen/white"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1785,43 +1480,25 @@
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 0.79
+    "scale": 0.88
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.562,
      "z": 0.491
     },
-    "scale": 1.06
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.491
-    },
-    "scale": 0.41
+    "scale": 0.26
    },
    "groundTransform": {
     "translation": {
@@ -1831,7 +1508,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1839,7 +1516,7 @@
      "y": 0.125,
      "z": 0.491
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -1853,15 +1530,14 @@
     "glass": "game:block/stone/gem/quartz"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1869,43 +1545,25 @@
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 0.87
+    "scale": 0.97
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 1.16
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.45
+    "scale": 0.29
    },
    "groundTransform": {
     "translation": {
@@ -1915,7 +1573,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -1923,7 +1581,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -1937,15 +1595,14 @@
     "glass": "game:block/stone/gem/ruby"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -1953,43 +1610,25 @@
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 0.87
+    "scale": 0.97
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 1.16
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.45
+    "scale": 0.29
    },
    "groundTransform": {
     "translation": {
@@ -1999,7 +1638,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2007,7 +1646,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2021,15 +1660,14 @@
     "gem": "game:block/stone/gem/ruby"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2037,43 +1675,25 @@
      "y": 0.469,
      "z": 0.5
     },
-    "scale": 0.9
+    "scale": 1.0
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.469,
      "z": 0.5
     },
-    "scale": 1.2
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.47
+    "scale": 0.3
    },
    "groundTransform": {
     "translation": {
@@ -2083,7 +1703,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2091,7 +1711,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2106,15 +1726,14 @@
     "pupil": "game:block/stone/gem/onyx"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2122,43 +1741,25 @@
      "y": 0.319,
      "z": 0.5
     },
-    "scale": 1.32
+    "scale": 1.47
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.319,
      "z": 0.5
     },
-    "scale": 1.76
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.69
+    "scale": 0.44
    },
    "groundTransform": {
     "translation": {
@@ -2168,7 +1769,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2176,7 +1777,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 2.35
+    "scale": 1.57
    }
   },
   {
@@ -2191,15 +1792,14 @@
     "gem": "game:block/stone/gem/amethyst"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2207,43 +1807,25 @@
      "y": 0.469,
      "z": 0.562
     },
-    "scale": 1.04
+    "scale": 1.15
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.494,
      "y": 0.469,
      "z": 0.562
     },
-    "scale": 1.38
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.494,
-     "y": 0.062,
-     "z": 0.562
-    },
-    "scale": 0.54
+    "scale": 0.35
    },
    "groundTransform": {
     "translation": {
@@ -2253,7 +1835,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2261,7 +1843,7 @@
      "y": 0.062,
      "z": 0.562
     },
-    "scale": 1.85
+    "scale": 1.23
    }
   },
   {
@@ -2275,15 +1857,14 @@
     "metal": "game:block/metal/plate/copper"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2291,43 +1872,25 @@
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 0.87
+    "scale": 0.97
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 1.16
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.45
+    "scale": 0.29
    },
    "groundTransform": {
     "translation": {
@@ -2337,7 +1900,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2345,7 +1908,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2359,15 +1922,14 @@
     "metal": "game:block/metal/plate/silver"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2375,43 +1937,25 @@
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 0.87
+    "scale": 0.97
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 1.16
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.45
+    "scale": 0.29
    },
    "groundTransform": {
     "translation": {
@@ -2421,7 +1965,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2429,7 +1973,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2443,15 +1987,14 @@
     "metal": "game:block/metal/plate/gold"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2459,43 +2002,25 @@
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 0.87
+    "scale": 0.97
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.484,
      "z": 0.5
     },
-    "scale": 1.16
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.45
+    "scale": 0.29
    },
    "groundTransform": {
     "translation": {
@@ -2505,7 +2030,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2513,7 +2038,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2527,15 +2052,14 @@
     "stone": "game:block/stone/polishedrock/slate"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2543,43 +2067,25 @@
      "y": 0.469,
      "z": 0.5
     },
-    "scale": 0.9
+    "scale": 1.0
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.469,
      "z": 0.5
     },
-    "scale": 1.2
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.5
-    },
-    "scale": 0.47
+    "scale": 0.3
    },
    "groundTransform": {
     "translation": {
@@ -2589,7 +2095,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2597,7 +2103,7 @@
      "y": 0.0,
      "z": 0.5
     },
-    "scale": 1.6
+    "scale": 1.2
    }
   },
   {
@@ -2610,15 +2116,14 @@
     "gem": "game:block/stone/gem/quartz"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2626,43 +2131,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -2672,7 +2159,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2680,7 +2167,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -2693,15 +2180,14 @@
     "gem": "game:block/stone/gem/citrine"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2709,43 +2195,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -2755,7 +2223,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2763,7 +2231,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -2776,15 +2244,14 @@
     "gem": "game:block/stone/gem/topaz"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2792,43 +2259,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -2838,7 +2287,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2846,7 +2295,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -2859,15 +2308,14 @@
     "gem": "game:block/stone/gem/emerald"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2875,43 +2323,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -2921,7 +2351,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -2929,7 +2359,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -2942,15 +2372,14 @@
     "gem": "game:block/stone/gem/sapphire"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -2958,43 +2387,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -3004,7 +2415,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3012,7 +2423,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -3025,15 +2436,14 @@
     "gem": "game:block/stone/gem/amethyst"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3041,43 +2451,25 @@
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.438,
      "z": 0.5
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -3087,7 +2479,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3095,7 +2487,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -3107,15 +2499,14 @@
     "gem": "game:block/stone/gem/ruby"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3123,43 +2514,25 @@
      "y": 0.331,
      "z": 0.5
     },
-    "scale": 1.93
+    "scale": 2.14
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.331,
      "z": 0.5
     },
-    "scale": 2.57
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.125,
-     "z": 0.5
-    },
-    "scale": 1.0
+    "scale": 0.64
    },
    "groundTransform": {
     "translation": {
@@ -3169,7 +2542,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3177,7 +2550,7 @@
      "y": 0.125,
      "z": 0.5
     },
-    "scale": 3.2
+    "scale": 2.29
    }
   },
   {
@@ -3189,15 +2562,14 @@
     "matter": "vintagee:newlook/material/darkmatter"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3205,43 +2577,25 @@
      "y": 0.375,
      "z": 0.5
     },
-    "scale": 1.93
+    "scale": 2.14
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.375,
      "z": 0.5
     },
-    "scale": 2.57
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.156,
-     "z": 0.5
-    },
-    "scale": 1.0
+    "scale": 0.64
    },
    "groundTransform": {
     "translation": {
@@ -3251,7 +2605,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3259,7 +2613,7 @@
      "y": 0.156,
      "z": 0.5
     },
-    "scale": 3.2
+    "scale": 2.29
    }
   },
   {
@@ -3271,15 +2625,14 @@
     "matter": "vintagee:newlook/material/redmatter"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3287,43 +2640,25 @@
      "y": 0.375,
      "z": 0.5
     },
-    "scale": 1.93
+    "scale": 2.14
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.375,
      "z": 0.5
     },
-    "scale": 2.57
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.156,
-     "z": 0.5
-    },
-    "scale": 1.0
+    "scale": 0.64
    },
    "groundTransform": {
     "translation": {
@@ -3333,7 +2668,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3341,7 +2676,7 @@
      "y": 0.156,
      "z": 0.5
     },
-    "scale": 3.2
+    "scale": 2.29
    }
   },
   {
@@ -3353,15 +2688,14 @@
     "dust": "vintagee:newlook/item/covalencedust-low"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3369,43 +2703,25 @@
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.531,
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.531,
-     "y": 0.0,
-     "z": 0.516
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -3415,7 +2731,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3423,7 +2739,7 @@
      "y": 0.0,
      "z": 0.516
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -3435,15 +2751,14 @@
     "dust": "vintagee:newlook/item/covalencedust-medium"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3451,43 +2766,25 @@
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.531,
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.531,
-     "y": 0.0,
-     "z": 0.516
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -3497,7 +2794,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3505,7 +2802,7 @@
      "y": 0.0,
      "z": 0.516
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -3517,15 +2814,14 @@
     "dust": "vintagee:newlook/item/covalencedust-high"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3533,43 +2829,25 @@
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.35
+    "scale": 1.5
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.531,
      "y": 0.117,
      "z": 0.516
     },
-    "scale": 1.8
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.531,
-     "y": 0.0,
-     "z": 0.516
-    },
-    "scale": 0.7
+    "scale": 0.45
    },
    "groundTransform": {
     "translation": {
@@ -3579,7 +2857,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3587,7 +2865,7 @@
      "y": 0.0,
      "z": 0.516
     },
-    "scale": 2.4
+    "scale": 1.6
    }
   },
   {
@@ -3599,15 +2877,14 @@
     "fuel": "vintagee:newlook/block/fuel-alchemicalcoal"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3615,43 +2892,25 @@
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 1.69
+    "scale": 1.88
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 2.25
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.484
-    },
-    "scale": 0.88
+    "scale": 0.56
    },
    "groundTransform": {
     "translation": {
@@ -3661,7 +2920,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3669,7 +2928,7 @@
      "y": 0.0,
      "z": 0.484
     },
-    "scale": 3.0
+    "scale": 2.0
    }
   },
   {
@@ -3681,15 +2940,14 @@
     "fuel": "vintagee:newlook/block/fuel-mobiusfuel"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3697,43 +2955,25 @@
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 1.69
+    "scale": 1.88
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 2.25
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.484
-    },
-    "scale": 0.88
+    "scale": 0.56
    },
    "groundTransform": {
     "translation": {
@@ -3743,7 +2983,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3751,7 +2991,7 @@
      "y": 0.0,
      "z": 0.484
     },
-    "scale": 3.0
+    "scale": 2.0
    }
   },
   {
@@ -3763,15 +3003,14 @@
     "fuel": "vintagee:newlook/block/fuel-aeternalisfuel"
    },
    "guiTransform": {
-    "rotate": true,
     "translation": {
      "x": 0,
      "y": 0,
      "z": 0
     },
     "rotation": {
-     "x": -22.6,
-     "y": -45.3,
+     "x": 150,
+     "y": 45,
      "z": 0
     },
     "origin": {
@@ -3779,43 +3018,25 @@
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 1.69
+    "scale": 1.88
    },
-   "fpHandTransform": {
+   "tpHandTransform": {
     "translation": {
-     "x": 0,
-     "y": 0.2,
-     "z": 0.3
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
     },
     "rotation": {
-     "x": 0,
-     "y": -50,
-     "z": 10
+     "x": 5,
+     "y": 82,
+     "z": 16
     },
     "origin": {
      "x": 0.5,
      "y": 0.188,
      "z": 0.484
     },
-    "scale": 2.25
-   },
-   "tpHandTransform": {
-    "translation": {
-     "x": -0.8,
-     "y": -0.4,
-     "z": -0.6
-    },
-    "rotation": {
-     "x": 0,
-     "y": 45,
-     "z": -10
-    },
-    "origin": {
-     "x": 0.5,
-     "y": 0.0,
-     "z": 0.484
-    },
-    "scale": 0.88
+    "scale": 0.56
    },
    "groundTransform": {
     "translation": {
@@ -3825,7 +3046,7 @@
     },
     "rotation": {
      "x": 0,
-     "y": 30,
+     "y": 0,
      "z": 0
     },
     "origin": {
@@ -3833,7 +3054,7 @@
      "y": 0.0,
      "z": 0.484
     },
-    "scale": 3.0
+    "scale": 2.0
    }
   }
  ]

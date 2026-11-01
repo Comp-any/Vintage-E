@@ -299,6 +299,7 @@ namespace VintageE
                 }
                 block.Shape = shape;
                 block.ShapeInventory = null;
+                result.Swapped[c.Code + "#drawtype"] = model.DrawType ?? "";
                 block.Textures = textures;
                 block.TexturesInventory = null;
                 if (model.DrawType != null) SetField(block, "DrawType", model.DrawType, result);
@@ -308,6 +309,8 @@ namespace VintageE
             {
                 item.Shape = shape;
                 item.Textures = textures;
+                // A dedicated server frees item textures and transforms once they're sent, so note what was set.
+                if (textures.ContainsKey("all")) result.Swapped[c.Code + "#keptall"] = "yes";
                 foreach (var kv in model.Transforms)
                 {
                     try
@@ -318,7 +321,7 @@ namespace VintageE
                         mt.GetType().GetMethod("EnsureDefaultValues", Type.EmptyTypes)?.Invoke(mt, null);
                         switch (kv.Key)
                         {
-                            case "guiTransform": item.GuiTransform = mt; break;
+                            case "guiTransform": item.GuiTransform = mt; result.Swapped[c.Code + "#guirotx"] = mt.Rotation?.X.ToString(System.Globalization.CultureInfo.InvariantCulture); break;
                             case "fpHandTransform": item.FpHandTransform = mt; break;
                             case "tpHandTransform": item.TpHandTransform = mt; break;
                             case "tpOffHandTransform": item.TpOffHandTransform = mt; break;

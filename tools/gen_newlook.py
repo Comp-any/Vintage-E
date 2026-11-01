@@ -111,7 +111,7 @@ def bevel(img, light=1.18, dark=0.7, width=2):
     return img
 
 
-def lumps(seed, stops, size=32, cells=6, crack=(20, 16, 14)):
+def lumps(seed, stops, size=32, cells=6, crack=None):
     """Packed chunks, like the game's coal blocks: cellular pieces with dark gaps between them."""
     r = rng(seed)
     pts = r.random((cells * cells, 2)) * size
@@ -127,7 +127,8 @@ def lumps(seed, stops, size=32, cells=6, crack=(20, 16, 14)):
     n = fractal(size, seed + 3)
     img = ramp(0.55 * shade + 0.45 * n, stops)
     gap = edge < 0.9
-    img[gap] = crack
+    # The gaps are a darker shade of the fuel itself, not black, like the game's coal blocks.
+    img[gap] = np.array(crack or stops[0][1], float) * 0.75 + img[gap] * 0.15
     return img
 
 
@@ -727,14 +728,14 @@ def item_transforms(shape_loc):
         return {"x": x, "y": y, "z": z}
 
     r2 = lambda x: round(x, 2)
+    # Like the game's own small items (gems, nuggets, coal): turned over and tilted in the inventory (the GUI's
+    # y axis points down), lying flat on the ground, held in the hand at a fixed small size; first person is left
+    # to the game's default, as for those items.
     return {
-        "guiTransform": {"rotate": True, "translation": v(0, 0, 0), "rotation": v(-22.6, -45.3, 0), "origin": v(*c),
-                         "scale": r2(min(2.6, 13.5 / ext))},
-        "fpHandTransform": {"translation": v(0, 0.2, 0.3), "rotation": v(0, -50, 10), "origin": v(*c), "scale": r2(min(2.6, 18 / ext))},
-        "tpHandTransform": {"translation": v(-0.8, -0.4, -0.6), "rotation": v(0, 45, -10), "origin": v(c[0], round(lo[1] / 16, 3), c[2]),
-                            "scale": r2(min(1.0, 7 / ext))},
-        "groundTransform": {"translation": v(0, 0, 0), "rotation": v(0, 30, 0), "origin": v(c[0], round(lo[1] / 16, 3), c[2]),
-                            "scale": r2(min(3.2, max(1.6, 24 / ext)))},
+        "guiTransform": {"translation": v(0, 0, 0), "rotation": v(150, 45, 0), "origin": v(*c), "scale": r2(min(4.0, 15 / ext))},
+        "tpHandTransform": {"translation": v(-0.8, -0.1, -0.7), "rotation": v(5, 82, 16), "origin": v(*c), "scale": r2(min(0.75, 4.5 / ext))},
+        "groundTransform": {"translation": v(0, 0, 0), "rotation": v(0, 0, 0), "origin": v(c[0], round(lo[1] / 16, 3), c[2]),
+                            "scale": r2(min(4.0, max(1.2, 16 / ext)))},
     }
 
 
