@@ -104,7 +104,7 @@ A server picks how Vintage-E's blocks and items look with the **`Look`** setting
 | **`Original`** | **ProjectE's original textures** wherever ProjectE has one: rings, stones, amulets, gadgets, matter, fuels, covalence dust, alchemical bags, matter blocks, fuel blocks, collectors, relays, condensers, the alchemical chest, the transmutation table, nova catalysts, the interdiction torch, the projectiles, and the dark/red matter look of tools, armour, the pedestal and the furnaces. Rings and stones light up while switched on, and the Ring of Arcana and Swiftwolf's Rending Gale show their mode, as in ProjectE. Condensers and the alchemical chest use faces cut from ProjectE's chest textures; bags are drawn as ProjectE's flat bags. |
 | **`New`** | **Models made to blend in with Vintage Story.** Instead of flat icons and plain cubes, things get 3D models built mostly from the game's own materials (its planks, metal plates, polished stone, gems, linen, leather, paper and candles), with muted textures in the game's style for the rest. See below. |
 
-![The New look](docs/preview-new.png)
+![The New look, drawn with the game's textures by tools/render_look.py](docs/preview-new.png)
 
 What the **New** look changes:
 
