@@ -2,10 +2,13 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
-## 1.13.1 — 2026-11-02
+## 1.14.0 — 2026-11-02
 
 ### Changed
-- **`Look` is a drop-down in the `/emc configure` window**: Auto, New, Middle or Original, each with a short explanation. Typed (`/emc configure Look ...`), it now refuses anything that isn't one of them instead of quietly using Auto.
+- **Each player picks their own look.** Looks are now applied on each player's own computer: open **`.vintagee`** and pick **New**, **Middle**, **Original** or **the server's default** from the Look drop-down, then leave the world and come back (single player and multiplayer alike; no server restart). The server's `Look` setting is the default for players who haven't picked one, and changing it reaches players the next time they join.
+- **New is the default look everywhere**, including worlds that already had Vintage-E, unless the server's `Look` setting or a player's own choice says otherwise. (1.13.0's per-world `Auto` is gone; a config that says `Auto` means New.)
+- **Outlines fit the models**: in the New look, a block's selection outline is sized to its model (the torch, chest, pedestals, table and fire pits no longer show a box that doesn't match). Collision stays the same in every look, so everyone bumps into the same thing whatever they see.
+- **`Look` is a drop-down in the `/emc configure` window**: New, Middle or Original, each with a short explanation. Typed (`/emc configure Look ...`), it now refuses anything that isn't one of them.
 - The release zip carries `moddb.json` with the mod's Mod DB page number.
 
 ## 1.13.0 — 2026-11-01

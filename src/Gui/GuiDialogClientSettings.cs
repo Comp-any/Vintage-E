@@ -37,6 +37,14 @@ namespace VintageE
             CairoFont label = CairoFont.WhiteSmallText();
             CairoFont detail = CairoFont.WhiteDetailText();
             double y = 30;
+            // The look (applied when joining a world).
+            ElementBounds lookHeading = ElementBounds.Fixed(0, y, Width, 24);
+            y += 30;
+            ElementBounds lookDrop = ElementBounds.Fixed(0, y, Width, 30);
+            y += 36;
+            string lookNote = Lang.Get("vintagee:clientcfg-look-note", ProjectELook.NormalizeLook(capi.World?.Config?.GetString(VintageEModSystem.WorldLookKey, null) ?? ProjectELook.LookDefault), mod.ActiveLook);
+            ElementBounds lookNoteBounds = ElementBounds.Fixed(0, y, Width, GuiLayout.TextHeight(capi, detail, lookNote, Width));
+            y += lookNoteBounds.fixedHeight + 14;
             ElementBounds heading = ElementBounds.Fixed(0, y, Width, 24);
             y += 30;
             ElementBounds iconSwitch = ElementBounds.Fixed(0, y, 30, 30);
@@ -68,7 +76,7 @@ namespace VintageE
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(heading, iconSwitch, iconLabel, sizeLabel, sizeSlider, posLabel, posDrop, offLabel, offXLabel, offX, offYLabel, offY,
+            bgBounds.WithChildren(lookHeading, lookDrop, lookNoteBounds, heading, iconSwitch, iconLabel, sizeLabel, sizeSlider, posLabel, posDrop, offLabel, offXLabel, offX, offYLabel, offY,
                 glowSwitch, glowLabel, colorLabel, colorDrop, colorText, noteBounds, doneBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
@@ -79,6 +87,9 @@ namespace VintageE
             int colorIndex = Array.FindIndex(Colors, c => c.hex != null && c.hex.Equals(Cfg.WatchGlowColor, StringComparison.OrdinalIgnoreCase));
             if (colorIndex < 0) colorIndex = Colors.Length - 1;
 
+            string[] lookNames = VintageEClientConfig.Looks.Select(l => Lang.Get("vintagee:clientcfg-look-" + l.ToLowerInvariant())).ToArray();
+            int lookIndex = Math.Max(0, Array.IndexOf(VintageEClientConfig.Looks, Cfg.Look));
+
             composing = true;
             SingleComposer?.Dispose();
             SingleComposer = capi.Gui
@@ -86,6 +97,9 @@ namespace VintageE
                 .AddShadedDialogBG(bgBounds)
                 .AddDialogTitleBar(Lang.Get("vintagee:clientcfg-title"), () => TryClose())
                 .BeginChildElements(bgBounds)
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-look"), CairoFont.WhiteSmallishText(), lookHeading)
+                    .AddDropDown(VintageEClientConfig.Looks, lookNames, lookIndex, (code, sel) => { if (!composing && sel) { Cfg.Look = code; Changed(); } }, lookDrop, "look")
+                    .AddStaticText(lookNote, detail, lookNoteBounds)
                     .AddStaticText(Lang.Get("vintagee:clientcfg-watch"), CairoFont.WhiteSmallishText(), heading)
                     .AddSwitch(on => { Cfg.WatchIcon = on; Changed(); }, iconSwitch, "icon")
                     .AddStaticText(Lang.Get("vintagee:clientcfg-icon"), label, iconLabel)

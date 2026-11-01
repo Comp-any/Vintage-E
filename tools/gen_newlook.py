@@ -704,8 +704,8 @@ def make_shapes(t):
 
 # ---------------------------------------------------------------------------------------------- the map
 
-def item_transforms(shape_loc):
-    """Hand, inventory and ground placement worked out from the model's size, so small and large items look alike."""
+def shape_bounds(shape_loc):
+    """The box (in 0-16 units) around every element of a model, children included."""
     path = os.path.join(SHAPES, shape_loc.split("newlook/", 1)[1] + ".json")
     els = json.load(open(path))["elements"]
     pts = []
@@ -721,6 +721,12 @@ def item_transforms(shape_loc):
         walk(e, [0, 0, 0])
     lo = [min(p[i] for p in pts) for i in range(3)]
     hi = [max(p[i] for p in pts) for i in range(3)]
+    return lo, hi
+
+
+def item_transforms(shape_loc):
+    """Hand, inventory and ground placement worked out from the model's size, so small and large items look alike."""
+    lo, hi = shape_bounds(shape_loc)
     ext = max(h - l for h, l in zip(hi, lo))
     c = [round((h + l) / 2 / 16, 3) for h, l in zip(hi, lo)]
 
@@ -755,8 +761,13 @@ def item(code, shape_loc, textures, label=None):
 
 
 def block(code, shape_loc, textures, label=None, cube_before=True):
+    """A block's model. Its outline (selection box) fits the model. Its collision box stays the same in every look:
+    looks are picked per player, and everyone has to bump into the same thing."""
     o = {"code": "vintagee:" + code, "label": label or code, "kind": "block", "shape": shape_loc,
          "textures": full_textures(shape_loc, textures), "drawtype": "JSON"}
+    lo, hi = shape_bounds(shape_loc)
+    box = {k: round(min(16.0, max(0.0, v)) / 16, 4) for k, v in zip(("x1", "y1", "z1", "x2", "y2", "z2"), lo + hi)}
+    o["selectionbox"] = box
     if cube_before:
         # It was a full cube: its neighbours must now draw the faces next to it, and it shouldn't darken them.
         o["sideopaque"] = False

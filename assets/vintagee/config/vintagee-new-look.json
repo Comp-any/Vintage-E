@@ -37,7 +37,15 @@
     "candle": "game:block/candle",
     "wick": "game:block/wood/charred"
    },
-   "drawtype": "JSON"
+   "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 0.4375,
+    "z2": 1.0
+   }
   },
   {
    "code": "vintagee:pedestal-*",
@@ -49,7 +57,15 @@
     "matter": "vintagee:newlook/material/darkmatter",
     "trim": "game:block/metal/plate/brass"
    },
-   "drawtype": "JSON"
+   "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0938,
+    "y1": 0.0,
+    "z1": 0.0938,
+    "x2": 0.9062,
+    "y2": 0.7812,
+    "z2": 0.9062
+   }
   },
   {
    "code": "vintagee:redmatterpedestal-*",
@@ -61,7 +77,15 @@
     "matter": "vintagee:newlook/material/redmatter",
     "trim": "game:block/metal/plate/gold"
    },
-   "drawtype": "JSON"
+   "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0938,
+    "y1": 0.0,
+    "z1": 0.0938,
+    "x2": 0.9062,
+    "y2": 0.7812,
+    "z2": 0.9062
+   }
   },
   {
    "code": "vintagee:interdictiontorch*",
@@ -73,7 +97,15 @@
     "wood": "game:block/wood/debarked/ebony",
     "glow": "game:block/stone/gem/amethyst"
    },
-   "drawtype": "JSON"
+   "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.2812,
+    "y1": 0.0,
+    "z1": 0.2812,
+    "x2": 0.7188,
+    "y2": 0.9219,
+    "z2": 0.7188
+   }
   },
   {
    "code": "vintagee:furnace-dark-lit*",
@@ -88,6 +120,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": true
   },
   {
@@ -103,6 +143,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": false
   },
   {
@@ -118,6 +166,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": true
   },
   {
@@ -133,6 +189,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": true
   },
   {
@@ -148,6 +212,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": false
   },
   {
@@ -163,6 +235,14 @@
     "charred": "game:block/wood/charred"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.2188,
+    "z2": 0.9688
+   },
    "preview": true
   },
   {
@@ -176,6 +256,14 @@
     "gem": "game:block/stone/gem/amethyst"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0469,
+    "y1": 0.0,
+    "z1": 0.0219,
+    "x2": 0.9531,
+    "y2": 0.8875,
+    "z2": 0.9781
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -194,6 +282,14 @@
     "glass": "game:block/stone/gem/citrine"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -212,6 +308,14 @@
     "glass": "game:block/stone/gem/amethyst"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -230,6 +334,14 @@
     "glass": "game:block/stone/gem/ruby"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -247,6 +359,14 @@
     "glow": "game:block/stone/gem/citrine"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -264,6 +384,14 @@
     "glow": "game:block/stone/gem/amethyst"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -281,6 +409,14 @@
     "glow": "game:block/stone/gem/ruby"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0,
+    "y1": 0.0,
+    "z1": 0.0,
+    "x2": 1.0,
+    "y2": 1.0,
+    "z2": 1.0
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -298,6 +434,14 @@
     "glow": "game:block/stone/gem/quartz"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.9844,
+    "z2": 0.9688
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -315,6 +459,14 @@
     "glow": "game:block/stone/gem/ruby"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0312,
+    "y1": 0.0,
+    "z1": 0.0312,
+    "x2": 0.9688,
+    "y2": 0.9844,
+    "z2": 0.9688
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -332,6 +484,14 @@
     "fuse": "game:block/cloth/reedrope"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0375,
+    "y1": 0.0,
+    "z1": 0.0375,
+    "x2": 0.9625,
+    "y2": 1.0,
+    "z2": 0.9625
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0
@@ -349,6 +509,14 @@
     "fuse": "game:block/cloth/reedrope"
    },
    "drawtype": "JSON",
+   "selectionbox": {
+    "x1": 0.0375,
+    "y1": 0.0,
+    "z1": 0.0375,
+    "x2": 0.9625,
+    "y2": 1.0,
+    "z2": 0.9625
+   },
    "sideopaque": false,
    "set": {
     "LightAbsorption": 0

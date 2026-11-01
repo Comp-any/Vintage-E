@@ -96,12 +96,12 @@ Built-in defaults: containers are **item only**; items whose material or type li
 
 ## Looks: New, Middle and Original
 
-Vintage-E's blocks and items come in three looks. **New worlds get New; worlds that already had Vintage-E before 1.13.0 keep Middle**, the look they had. Each world remembers its look the first time it runs 1.13.0 or later, so it never changes by itself. A server can pick one look for every world with the **`Look`** setting (its default, `Auto`, means "each world's own").
+Vintage-E's blocks and items come in three looks, and **each player picks their own**: type **`.vintagee`** and choose from the **Look** drop-down (New, Middle, Original, or the server's default), then leave the world and come back. That works the same in single player and multiplayer; nothing needs restarting. **New is the default** everywhere unless the server or the player picks another.
 
 | `Look` | What it looks like |
 |---|---|
-| **`New`** (new worlds) | **Models made to blend in with Vintage Story.** Instead of flat icons and plain cubes, things get 3D models built mostly from the game's own materials (its planks, metal plates, polished stone, gems, linen, leather, paper and candles), with muted textures in the game's style for the rest. See below. |
-| **`Middle`** (worlds that already had Vintage-E) | Vintage-E's own flat pixel-art textures, the only look before 1.13.0 apart from Original (pictured below). |
+| **`New`** (the default) | **Models made to blend in with Vintage Story.** Instead of flat icons and plain cubes, things get 3D models built mostly from the game's own materials (its planks, metal plates, polished stone, gems, linen, leather, paper and candles), with muted textures in the game's style for the rest. See below. |
+| **`Middle`** | Vintage-E's own flat pixel-art textures, the only look before 1.13.0 apart from Original (pictured below). |
 | **`Original`** | **ProjectE's original textures** wherever ProjectE has one: rings, stones, amulets, gadgets, matter, fuels, covalence dust, alchemical bags, matter blocks, fuel blocks, collectors, relays, condensers, the alchemical chest, the transmutation table, nova catalysts, the interdiction torch, the projectiles, and the dark/red matter look of tools, armour, the pedestal and the furnaces. Rings and stones light up while switched on, and the Ring of Arcana and Swiftwolf's Rending Gale show their mode, as in ProjectE. Condensers and the alchemical chest use faces cut from ProjectE's chest textures; bags are drawn as ProjectE's flat bags. |
 
 The Middle look:
@@ -118,7 +118,7 @@ What the **New** look changes:
 
 In every look, worn rings and Klein Stars keep Vintage-E's look, and projectiles keep their own.
 
-To use one look everywhere, `/emc configure Look New` (or `Middle`, `Original`, or `Auto` to go back to each world's own), pick it from the **Look** drop-down in the `/emc configure` window, or set it in `ModConfig/vintagee.json`. It takes effect the next time the server starts; players don't need to set anything, because the server sends them the models and textures. A server that had the old `ProjectETextures` switch on gets `Look` = `Original`. A world counts as already having Vintage-E if Vintage-E left its EMC cache for it (`ModData/vintagee/cache/emc-<world id>.json`, kept by default), or, with that cache switched off, if it's a played world on a server that already had Vintage-E's config. The look each world was given is remembered in `ModData/vintagee/looks/look-<world id>.txt` (delete it to have the world decided again, or write `New`, `Middle` or `Original` in it).
+The server's **`Look`** setting is the default for players who haven't picked their own: `/emc configure Look New` (or `Middle`, `Original`), the **Look** drop-down in the `/emc configure` window, or `ModConfig/vintagee.json`. Players see a change the next time they join. A server that had the old `ProjectETextures` switch on gets `Original`. In the New look a block's outline fits its model; collision boxes stay the same in every look, so everyone bumps into the same thing whatever they see.
 
 Which texture or model replaces which is listed in `assets/vintagee/config/vintagee-projecte-look.json` (Original) and `assets/vintagee/config/vintagee-new-look.json` (New, written by `tools/gen_newlook.py`; `tools/render_look.py` draws a preview sheet of it).
 

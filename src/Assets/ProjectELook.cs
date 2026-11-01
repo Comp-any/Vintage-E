@@ -30,22 +30,17 @@ namespace VintageE
         /// <summary>The Look setting's three choices.</summary>
         public const string LookMiddle = "Middle", LookOriginal = "Original", LookNew = "New";
 
-        /// <summary>
-        /// The setting's default: each world uses the look it was given the first time it ran 1.13.0 or later, New for
-        /// new worlds and Middle for worlds that already had Vintage-E (see VintageEModSystem.WorldLook, remembered in ModData/vintagee/looks/).
-        /// </summary>
-        public const string LookAuto = "Auto";
-        public const string LookDefault = LookAuto;
+        /// <summary>The look every world gets unless the Look setting says otherwise.</summary>
+        public const string LookDefault = LookNew;
 
-        /// <summary>The Look setting's value written properly (Auto for empty, "default" or anything it doesn't know).</summary>
+        /// <summary>The Look setting's value written properly (New, the default, for empty, "auto", "default" or anything it doesn't know).</summary>
         public static string NormalizeLook(string look)
         {
             switch ((look ?? "").Trim().ToLowerInvariant())
             {
                 case "original": case "projecte": case "old": return LookOriginal;
                 case "middle": case "flat": case "classic": case "vintagee": return LookMiddle;
-                case "new": case "vintage": case "vintagestory": return LookNew;
-                default: return LookAuto;
+                default: return LookNew;
             }
         }
 
@@ -73,6 +68,8 @@ namespace VintageE
             public string DrawType;
             /// <summary>New look: false when a model no longer fills the whole block, so neighbours draw the faces next to it.</summary>
             public bool? SideOpaque;
+            /// <summary>New look: the block's outline, fitted to its model (collision stays the same in every look).</summary>
+            public Cuboidf SelectionBox;
             /// <summary>New look: other block/item fields to set by name (LightAbsorption, say).</summary>
             public JObject Set;
             /// <summary>New look: how an item with a model is held and shown (guiTransform, fpHandTransform, tpHandTransform, groundTransform).</summary>
@@ -91,6 +88,8 @@ namespace VintageE
             public int Models;
             /// <summary>Models named in the map that aren't there (the block/item keeps its own).</summary>
             public List<string> MissingShapes = new List<string>();
+            /// <summary>The copies a look was applied to, by code (the self-test's; null for the real ones).</summary>
+            public Dictionary<string, CollectibleObject> Objects;
             /// <summary>Things that could not be changed (a field this game version doesn't have, say).</summary>
             public List<string> Problems = new List<string>();
             public List<string> MissingFiles = new List<string>();
@@ -109,7 +108,8 @@ namespace VintageE
         /// type. Server side, from AssetsFinalize: players get the changed definitions from the server. With
         /// <paramref name="dryRun"/> nothing is changed; the result only says what would be and what's missing (the self-test).
         /// </summary>
-        public static Result Apply(ICoreAPI api, ILogger logger, string look, bool dryRun)
+        public static Result Apply(ICoreAPI api, ILogger logger, string look, bool dryRun,
+            IEnumerable<CollectibleObject> collectibles = null, IEnumerable<EntityProperties> entityTypes = null)
         {
             look = NormalizeLook(look);
             var result = new Result { Look = look };
@@ -156,6 +156,11 @@ namespace VintageE
                     o.DrawType = (string)t["drawtype"];
                     if (t["sideopaque"]?.Type == JTokenType.Boolean) o.SideOpaque = (bool)t["sideopaque"];
                     o.Set = t["set"] as JObject;
+                    if (t["selectionbox"] is JObject sb)
+                    {
+                        float F(string k) => (float?)sb[k] ?? 0;
+                        o.SelectionBox = new Cuboidf(F("x1"), F("y1"), F("z1"), F("x2"), F("y2"), F("z2"));
+                    }
                     foreach (string tf in new[] { "guiTransform", "fpHandTransform", "tpHandTransform", "tpOffHandTransform", "groundTransform" })
                     {
                         if (t[tf] is JObject j) o.Transforms[tf] = j;
@@ -182,7 +187,8 @@ namespace VintageE
                 return false;
             }
 
-            foreach (CollectibleObject c in api.World.Collectibles)
+            if (collectibles != null) result.Objects = collectibles.Where(c => c?.Code != null).GroupBy(c => c.Code.ToString()).ToDictionary(g => g.Key, g => g.First());
+            foreach (CollectibleObject c in collectibles ?? api.World.Collectibles)
             {
                 if (c?.Code == null || c.Code.Domain != VintageEModSystem.ModId) continue;
                 Override[] mine = overrides.Where(o => WildcardUtil.Match(o.Code, c.Code)).ToArray();
@@ -259,7 +265,7 @@ namespace VintageE
                 if (result.Textures > before) result.Collectibles++;
             }
 
-            foreach (EntityProperties type in api.World.EntityTypes)
+            foreach (EntityProperties type in entityTypes ?? api.World.EntityTypes)
             {
                 if (dryRun) break;
                 if (type?.Code == null || type.Code.Domain != VintageEModSystem.ModId || type.Client == null) continue;
@@ -313,6 +319,11 @@ namespace VintageE
                 block.TexturesInventory = null;
                 if (model.DrawType != null) SetField(block, "DrawType", model.DrawType, result);
                 if (model.SideOpaque.HasValue) SetSides(block, "SideOpaque", model.SideOpaque.Value, result);
+                if (model.SelectionBox != null)
+                {
+                    block.SelectionBoxes = new[] { model.SelectionBox.Clone() };
+                    result.Swapped[c.Code + "#selection"] = model.SelectionBox.Y2.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
+                }
             }
             else if (c is Item item)
             {

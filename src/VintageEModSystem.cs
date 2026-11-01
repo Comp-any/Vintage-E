@@ -107,93 +107,73 @@ namespace VintageE
 
         #region Server
 
+        /// <summary>The world setting that tells players' games the server's default look.</summary>
+        public const string WorldLookKey = "vintageeLook";
+
         public override void AssetsFinalize(ICoreAPI api)
         {
+            if (api is ICoreClientAPI capi)
+            {
+                ApplyClientLook(capi);
+                return;
+            }
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
             Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat);
-            // The look (ProjectE's textures, or the New models) has to be in the block/item definitions before they're
-            // sent to players. The config is only loaded properly in StartServerSide, which comes later, so peek at that
-            // one setting here.
+            // Looks are applied on each player's own computer (see ApplyClientLook). The server only tells them its default,
+            // through the world's settings, which reach a player's game before its blocks and items are set up. The config
+            // is only loaded properly in StartServerSide, which comes later, so peek at that one setting here.
             var sapi = api as ICoreServerAPI;
             VintageEConfig peek = PeekConfig(sapi);
             peek?.Normalize();
-            WorldLookChoice = WorldLook(sapi, peek != null, out string why);
-            WorldLookReason = why;
-            string setting = peek?.Look ?? ProjectELook.LookAuto;
-            ActiveLook = setting == ProjectELook.LookAuto ? WorldLookChoice : setting;
-            Mod.Logger.Notification("Look: {0} ({1}).", ActiveLook,
-                setting == ProjectELook.LookAuto ? "this world's look: " + why : "set for every world by the Look setting");
-            if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(api, Mod.Logger, ActiveLook, false);
+            ActiveLook = ProjectELook.NormalizeLook(peek?.Look ?? ProjectELook.LookDefault);
+            try { sapi.World.Config?.SetString(WorldLookKey, ActiveLook); }
+            catch (Exception e) { Mod.Logger.Warning("Could not tell players the default look: {0}", e.Message); }
+            Mod.Logger.Notification("Look: players get {0} unless they pick their own (.vintagee).", ActiveLook);
+            if (peek?.SelfTestOnStart == true)
+            {
+                // For the self-test: both looks applied to copies of Vintage-E's blocks, items and projectiles (the real
+                // ones are what players are sent, and a dedicated server frees their textures soon after).
+                foreach (string look in new[] { ProjectELook.LookOriginal, ProjectELook.LookNew })
+                {
+                    var copies = api.World.Collectibles.Where(c => c?.Code?.Domain == ModId)
+                        .Select(c => c is Block b ? (CollectibleObject)b.Clone() : c is Item i ? i.Clone() : null).Where(c => c != null).ToList();
+                    var types = api.World.EntityTypes.Where(t => t?.Code?.Domain == ModId).Select(t => t.Clone()).ToList();
+                    TestLooks[look] = ProjectELook.Apply(api, Mod.Logger, look, false, copies, types);
+                }
+            }
         }
 
-        /// <summary>The look in use since start-up ("New", "Middle" or "Original"); changing the setting needs a restart.</summary>
-        public string ActiveLook { get; private set; } = ProjectELook.LookNew;
-
-        /// <summary>This world's own look (used while the Look setting is Auto), and why it's that one.</summary>
-        public string WorldLookChoice { get; private set; } = ProjectELook.LookNew;
-        public string WorldLookReason { get; private set; } = "";
-
         /// <summary>
-        /// This world's look: the one remembered for it, or, the first time it runs 1.13.0 or later, Middle for a world
-        /// that already had Vintage-E and New for any other. A world had Vintage-E if Vintage-E left an EMC cache for it
-        /// (it does by default, named after the world's id), or, with the cache switched off, if it's a world that has
-        /// been played (its save file is more than a fresh one) on a server that already had Vintage-E's config. It's
-        /// remembered in ModData/vintagee/looks/ (the world's own data can't be relied on this early), so it never changes
-        /// by itself.
+        /// Player side: applies this player's look (their .vintagee choice, or the server's default) to the blocks, items
+        /// and projectiles the server sent, before the game builds their textures and models. Changing it needs a rejoin.
         /// </summary>
-        internal string WorldLook(ICoreServerAPI sapi, bool configExisted, out string why)
+        void ApplyClientLook(ICoreClientAPI capi)
         {
-            string file = null;
             try
             {
-                string id = sapi?.World?.SavegameIdentifier;
-                string world = sapi?.WorldManager?.CurrentWorldName;
-                if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(world))
-                {
-                    file = WorldLookFile(sapi);
-                    if (System.IO.File.Exists(file))
-                    {
-                        string first = System.IO.File.ReadAllLines(file).FirstOrDefault();
-                        string stored = ProjectELook.NormalizeLook(first);
-                        if (stored != ProjectELook.LookAuto)
-                        {
-                            why = "remembered for this world";
-                            return stored;
-                        }
-                    }
-                    string look;
-                    long size = !string.IsNullOrEmpty(world) && System.IO.File.Exists(world) ? new System.IO.FileInfo(world).Length : 0;
-                    if (!string.IsNullOrEmpty(id) && System.IO.File.Exists(EmcCache.FilePath(sapi))) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E"; }
-                    else if (configExisted && size > 256 * 1024) { look = ProjectELook.LookMiddle; why = "a world that already had Vintage-E (a played world on a server that had it)"; }
-                    else { look = ProjectELook.LookNew; why = "a new world"; }
-                    System.IO.File.WriteAllText(file, look + "\n" + id + "\n" + world + "\n");
-                    why += ", now remembered";
-                    return look;
-                }
+                ClientConfig ??= VintageEClientConfig.Load(capi);
+                string serverLook = capi.World?.Config?.GetString(WorldLookKey, null);
+                string mine = ClientConfig.Look;
+                ActiveLook = mine == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(serverLook ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(mine);
+                Mod.Logger.Notification("Look: {0} ({1}; the server's default is {2}).", ActiveLook,
+                    mine == VintageEClientConfig.LookServer ? "the server's" : "picked in .vintagee", serverLook ?? "not sent, so New");
+                if (ProjectELook.MapFor(ActiveLook) != null) LookResult = ProjectELook.Apply(capi, Mod.Logger, ActiveLook, false);
             }
             catch (Exception e)
             {
-                Mod.Logger.Warning("Could not work out this world's look ({0}): {1}", file, e.Message);
+                Mod.Logger.Error("Could not apply the look: {0}", e);
             }
-            why = "the world is unknown, so going by whether the server already had Vintage-E";
-            return configExisted ? ProjectELook.LookMiddle : ProjectELook.LookNew;
         }
 
-        /// <summary>ModData/vintagee/looks/look-&lt;world id&gt;.txt: the look remembered for a world.</summary>
-        public static string WorldLookFile(ICoreServerAPI sapi)
-        {
-            string dir = System.IO.Path.Combine(DataFolder(sapi), "looks");
-            System.IO.Directory.CreateDirectory(dir);
-            string id = sapi.World?.SavegameIdentifier;
-            if (string.IsNullOrEmpty(id)) id = System.IO.Path.GetFileNameWithoutExtension(sapi.WorldManager?.CurrentWorldName ?? "default");
-            foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) id = id.Replace(ch, '_');
-            return System.IO.Path.Combine(dir, "look-" + id + ".txt");
-        }
+        /// <summary>The look in use: on the server its default for players, on a player's computer the one they see.</summary>
+        public string ActiveLook { get; private set; } = ProjectELook.LookNew;
 
-
-        /// <summary>What the Look setting changed at start-up (null for the default look).</summary>
+        /// <summary>What the look changed at start-up on this player's computer (null for the Middle look).</summary>
         public ProjectELook.Result LookResult { get; private set; }
+
+        /// <summary>Server self-test only: each look applied to copies of Vintage-E's blocks and items at start-up.</summary>
+        public Dictionary<string, ProjectELook.Result> TestLooks { get; } = new Dictionary<string, ProjectELook.Result>();
 
         /// <summary>VintagestoryData/ModData/vintagee: where the CSV files, dumps, self-test and cache go (created if needed).</summary>
         public static string DataFolder(ICoreAPI api) => api.GetOrCreateDataPath(System.IO.Path.Combine("ModData", ModId));
@@ -1319,10 +1299,10 @@ namespace VintageE
                 watchHud?.Update();
             });
 
-            // This computer's settings (the watch's icon and glow), and the .vintagee command that opens them.
-            ClientConfig = VintageEClientConfig.Load(capi);
+            // This computer's settings (the look, the watch's icon and glow), and the .vintagee command that opens them.
+            ClientConfig ??= VintageEClientConfig.Load(capi);
             capi.ChatCommands.Create("vintagee")
-                .WithDescription("Vintage-E settings for this computer (how the Watch of Flowing Time shows it's on)")
+                .WithDescription("Vintage-E settings for this computer (the look of its blocks and items, how the Watch of Flowing Time shows it's on)")
                 .HandleWith(_ =>
                 {
                     clientSettingsDialog?.TryClose();

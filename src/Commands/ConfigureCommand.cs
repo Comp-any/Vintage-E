@@ -153,7 +153,7 @@ namespace VintageE
         /// <summary>Settings that take one of a few words: shown as a drop-down in the window, checked when typed.</summary>
         static readonly Dictionary<string, string[]> choices = new Dictionary<string, string[]>
         {
-            ["Look"] = new[] { ProjectELook.LookAuto, ProjectELook.LookNew, ProjectELook.LookMiddle, ProjectELook.LookOriginal },
+            ["Look"] = new[] { ProjectELook.LookNew, ProjectELook.LookMiddle, ProjectELook.LookOriginal },
         };
 
         /// <summary>The words a setting can be set to, or null if it isn't one of those settings.</summary>
@@ -167,8 +167,8 @@ namespace VintageE
             string match = allowed.FirstOrDefault(a => string.Equals(a, t, StringComparison.OrdinalIgnoreCase));
             if (match == null && field.Name == "Look")
             {
-                string normal = ProjectELook.NormalizeLook(t);
-                if (normal != ProjectELook.LookAuto || t.Length == 0 || t.Equals("default", StringComparison.OrdinalIgnoreCase)) match = normal;
+                // The looks' other names (projecte, flat, classic...), and 1.13.0's "Auto" (now simply New).
+                if (new[] { "projecte", "old", "flat", "classic", "vintagee", "vintage", "vintagestory", "auto", "default" }.Contains(t.ToLowerInvariant())) match = ProjectELook.NormalizeLook(t);
             }
             return match ?? throw new FormatException(Lang.GetL(lang, "vintagee:cfg-badchoice", t, string.Join(", ", allowed)));
         }
@@ -384,8 +384,11 @@ namespace VintageE
                     mod.Emc.ProjectESounds = mod.Config.ProjectESounds;
                     mod.RefreshStackData(); // sends the table, and with it the setting, to everyone
                     break;
-                case "SelfTestOnStart":
                 case "Look":
+                    // Players' games read the default from the world's settings when they join.
+                    mod.Sapi?.World?.Config?.SetString(VintageEModSystem.WorldLookKey, ProjectELook.NormalizeLook(mod.Config.Look));
+                    return Lang.GetL(lang, "vintagee:cfg-rejoin");
+                case "SelfTestOnStart":
                     return Lang.GetL(lang, "vintagee:cfg-restart");
             }
             return Lang.GetL(lang, "vintagee:cfg-applied");

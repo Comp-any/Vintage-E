@@ -500,7 +500,7 @@ namespace VintageE
             Check(ConfigureCommand.DefaultTexts().Length == ConfigureCommand.Snapshot(mod.Config).names.Length, "every setting has a default for the window");
 
             // Look is a drop-down in the window; typed, it only takes its choices.
-            Check(ConfigureCommand.KindOf(ConfigureCommand.Field("Look")) == "choice" && ConfigureCommand.ChoicesOf("Look")?.Length == 4, "Look is a drop-down of its four choices");
+            Check(ConfigureCommand.KindOf(ConfigureCommand.Field("Look")) == "choice" && ConfigureCommand.ChoicesOf("Look")?.Length == 3, "Look is a drop-down of its three choices");
             string lookBefore = mod.Config.Look;
             string bad = RunCommand("/emc configure Look banana");
             Check(mod.Config.Look == lookBefore, "/emc configure Look refuses a word that isn't a choice: " + bad);
@@ -775,34 +775,11 @@ namespace VintageE
 
         void CheckProjectELook()
         {
-            Line("Look: " + mod.ActiveLook + ", this world's own look " + mod.WorldLookChoice + " (" + mod.WorldLookReason + "), ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
-            // The server test starts a brand-new world, which gets New and keeps it.
-            Check(mod.WorldLookChoice == ProjectELook.LookNew && mod.WorldLookReason.StartsWith("a new world"), "a new world gets the New look: " + mod.WorldLookReason);
-            string lookFile = VintageEModSystem.WorldLookFile(sapi);
-            Check(File.Exists(lookFile) && File.ReadAllText(lookFile).StartsWith(ProjectELook.LookNew), "the world's look is remembered in " + Path.GetFileName(lookFile));
-            // The next start of this world finds it remembered. With nothing remembered, a world gets New unless an
-            // older Vintage-E left its EMC cache for it, then Middle.
-            string again = mod.WorldLook(sapi, true, out string why2);
-            Check(again == ProjectELook.LookNew && why2.StartsWith("remembered"), "the next start keeps this world's look: " + again + ", " + why2);
-            string saved = File.Exists(lookFile) ? File.ReadAllText(lookFile) : null;
-            string cache = EmcCache.FilePath(sapi);
-            bool madeCache = !File.Exists(cache);
-            try
-            {
-                File.Delete(lookFile);
-                string fresh = mod.WorldLook(sapi, true, out string whyFresh);
-                Check(fresh == ProjectELook.LookNew || !madeCache, "a world without Vintage-E's EMC cache gets New: " + fresh + ", " + whyFresh);
-                // Now as if this world had run an older Vintage-E (which leaves its EMC cache).
-                File.Delete(lookFile);
-                if (madeCache) File.WriteAllText(cache, "{}");
-                string old = mod.WorldLook(sapi, true, out string why3);
-                Check(old == ProjectELook.LookMiddle && why3.StartsWith("a world that already had Vintage-E"), "a world with Vintage-E's EMC cache keeps the Middle look: " + old + ", " + why3);
-            }
-            finally
-            {
-                if (madeCache && File.Exists(cache)) File.Delete(cache);
-                if (saved != null) File.WriteAllText(lookFile, saved);
-            }
+            Line("Look: players get " + mod.ActiveLook + " unless they pick their own; ProjectE sounds " + (mod.Config.ProjectESounds ? "on" : "off"));
+            Check(sapi.World.Config.GetString(VintageEModSystem.WorldLookKey, null) == ProjectELook.NormalizeLook(mod.Config.Look),
+                "players are told the server's default look through the world settings: " + sapi.World.Config.GetString(VintageEModSystem.WorldLookKey, null));
+            Check(sapi.World.GetItem(new AssetLocation("vintagee:trinket-zeroring"))?.Shape == null && mod.LookResult == null,
+                "the server sends Vintage-E's own blocks and items (each player's game applies their look)");
             foreach (string s in new[] { PESounds.Charge, PESounds.Uncharge, PESounds.Heal, PESounds.Destruct, PESounds.Power, PESounds.Transmute, PESounds.WaterMagic, PESounds.WindMagic })
             {
                 Check(sapi.Assets.Exists(PESounds.Location(s).WithPathAppendixOnce(".ogg")), "ProjectE sound " + s + " is there");
@@ -810,8 +787,8 @@ namespace VintageE
             Check(PESounds.On(sapi.World) == mod.Config.ProjectESounds, "ProjectE sounds follow the setting");
 
             bool Tex(string path) => sapi.Assets.Exists(new AssetLocation(path).WithPathPrefixOnce("textures/").WithPathAppendixOnce(".png"));
-            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Middle" && ProjectELook.NormalizeLook("default") == "Auto" && new VintageEConfig().Look == "Auto",
-                "the Look setting accepts its three looks, and Auto (per world) is the default");
+            Check(ProjectELook.NormalizeLook("original") == "Original" && ProjectELook.NormalizeLook("NEW") == "New" && ProjectELook.NormalizeLook("middle") == "Middle" && ProjectELook.NormalizeLook("auto") == "New" && new VintageEConfig().Look == "New",
+                "the Look setting accepts its three looks, and New is the default");
 
             // Both looks' maps, whichever is in use: every texture and model they name is there (the game's own textures
             // can't be seen by a dedicated server; the server test checks those against the game client).
@@ -823,19 +800,11 @@ namespace VintageE
                 if (other == ProjectELook.LookNew) Check(dry.Models >= 50, $"New look: {dry.Models} blocks and items get a model");
             }
 
-            if (mod.ActiveLook == ProjectELook.LookNew)
-            {
-                CheckNewLook();
-                return;
-            }
-            if (mod.ActiveLook != ProjectELook.LookOriginal)
-            {
-                Check(mod.LookResult == null, "with the Middle look nothing is swapped");
-                return;
-            }
+            CheckNewLook();
 
-            ProjectELook.Result r = mod.LookResult;
-            Check(r != null && r.Textures > 60, $"ProjectE textures swapped at start-up ({r?.Textures ?? 0} textures, {r?.Collectibles ?? 0} blocks/items, {r?.Entities ?? 0} entity types)");
+            // Original, as a player's game applies it (here to copies made at start-up).
+            ProjectELook.Result r = mod.TestLooks.TryGetValue(ProjectELook.LookOriginal, out var ro) ? ro : null;
+            Check(r != null && r.Textures > 60, $"Original look: ProjectE textures swapped ({r?.Textures ?? 0} textures, {r?.Collectibles ?? 0} blocks/items, {r?.Entities ?? 0} entity types)");
             if (r == null) return;
             Check(r.MissingFiles.Count == 0, "every ProjectE texture in the swap list is there" + (r.MissingFiles.Count == 0 ? "" : ": missing " + string.Join(", ", r.MissingFiles)));
             // A dedicated server frees block/item textures once they're sent to players, so check what the swap recorded.
@@ -852,7 +821,7 @@ namespace VintageE
             Expect("vintagee:transmutationtable#top", "vintagee:projecte/block/transmutation_stone/top", "transmutation table top is ProjectE's");
             Expect("vintagee:interdictiontorch#glow", "vintagee:projecte/derived/interdiction_torch-glow", "interdiction torch flame is ProjectE's");
             Expect("vintagee:alchemicalbag-red#sprite", "vintagee:projecte/item/alchemy_bags/red", "red alchemical bag is ProjectE's flat bag");
-            Item bag = sapi.World.GetItem(new AssetLocation("vintagee:alchemicalbag-red"));
+            Item bag = r.Objects?.GetValueOrDefault("vintagee:alchemicalbag-red") as Item;
             Check(bag != null && bag.Shape == null, "red alchemical bag has no sack model");
             string pickHead = r.Swapped.Where(kv => kv.Key.StartsWith("vintagee:") && kv.Key.Contains("dark") && kv.Key.Contains("pickaxe#")).Select(kv => kv.Value).FirstOrDefault();
             Check(pickHead == "vintagee:projecte/block/dark_matter_block", "dark matter pickaxe head is ProjectE's dark matter: " + pickHead);
@@ -897,36 +866,45 @@ namespace VintageE
         /// <summary>Look = New: blocks and items really got their models, textures and transforms.</summary>
         void CheckNewLook()
         {
-            ProjectELook.Result r = mod.LookResult;
-            Check(r != null && r.Models >= 50, $"New look applied at start-up ({r?.Models ?? 0} models, {r?.Textures ?? 0} textures)");
+            ProjectELook.Result r = mod.TestLooks.TryGetValue(ProjectELook.LookNew, out var rn) ? rn : null;
+            Check(r != null && r.Models >= 50, $"New look applied (to copies) ({r?.Models ?? 0} models, {r?.Textures ?? 0} textures)");
             if (r == null) return;
             Check(r.Problems.Count == 0, "New look: nothing failed to apply" + (r.Problems.Count == 0 ? "" : ": " + string.Join("; ", r.Problems.Take(5))));
             string Got(string key) => r.Swapped.TryGetValue(key, out string v) ? v : null;
             void Expect(string key, string want, string what) => Check(Got(key) == want, what + ": " + (Got(key) ?? "unchanged"));
 
-            Item zero = sapi.World.GetItem(new AssetLocation("vintagee:trinket-zeroring"));
+            CollectibleObject Obj(string code) => r.Objects?.GetValueOrDefault(code);
+            Item zero = Obj("vintagee:trinket-zeroring") as Item;
             Check(zero?.Shape?.Base?.ToString() == "vintagee:newlook/item/ring", "Zero Ring has the ring model: " + zero?.Shape?.Base);
             Expect("vintagee:trinket-zeroring#gem", "game:block/stone/gem/aquamarine", "Zero Ring's gem is the game's aquamarine");
             Expect("vintagee:trinket-zeroring#metal", "game:block/metal/plate/silver", "Zero Ring's band is the game's silver");
             Check(Got("vintagee:trinket-zeroring#keptall") == "yes", "Zero Ring keeps its own texture for wearing");
             Check(Got("vintagee:trinket-zeroring#guirotx") == "150", "Zero Ring is turned over like the game's gems in the inventory: " + Got("vintagee:trinket-zeroring#guirotx"));
-            Item star = sapi.World.GetItem(new AssetLocation("vintagee:kleinstar-omega"));
+            Item star = Obj("vintagee:kleinstar-omega") as Item;
             Check(star?.Shape?.Base?.ToString() == "vintagee:newlook/item/star", "Klein Star Omega has the star model");
-            Block collector = sapi.World.GetBlock(new AssetLocation("vintagee:energycollector-mk3"));
+            Block collector = Obj("vintagee:energycollector-mk3") as Block;
             Check(collector?.DrawType == Vintagestory.API.Client.EnumDrawType.JSON && collector.Shape?.Base?.ToString() == "vintagee:newlook/block/energycollector",
                 "collector MK3 is drawn from its model: " + collector?.DrawType + " " + collector?.Shape?.Base);
             Expect("vintagee:energycollector-mk3#glow", "game:block/stone/gem/ruby", "collector MK3's crystal is a ruby");
-            Block table = sapi.World.GetBlock(new AssetLocation("vintagee:transmutationtable"));
+            Block table = Obj("vintagee:transmutationtable") as Block;
             Check(table?.Shape?.Base?.ToString() == "vintagee:newlook/block/transmutationtable", "transmutation table has the new model");
-            Block furnace = sapi.World.GetBlock(new AssetLocation("vintagee:furnace-red-lit"));
+            Block furnace = Obj("vintagee:furnace-red-lit") as Block;
             Check(furnace?.Shape?.Base?.ToString() == "vintagee:newlook/block/furnace-lit", "lit red matter furnace has the lit fire pit model");
             Expect("vintagee:furnace-red-lit#body", "vintagee:newlook/material/redmatter", "red matter furnace burns red matter");
-            Block mblock = sapi.World.GetBlock(new AssetLocation("vintagee:matterblock-dark"));
+            Block mblock = Obj("vintagee:matterblock-dark") as Block;
             Check(mblock?.DrawType == Vintagestory.API.Client.EnumDrawType.Cube, "matter blocks stay cubes");
             string pickHead = r.Swapped.Where(kv => kv.Key.StartsWith("vintagee:") && kv.Key.Contains("dark") && kv.Key.Contains("pickaxe#")).Select(kv => kv.Value).FirstOrDefault();
             Check(pickHead == "vintagee:newlook/material/darkmatter", "dark matter pickaxe head uses the new dark matter: " + pickHead);
             Check(Got("vintagee:alchemicalbag-red#linen") == "game:block/cloth/linen/red", "red alchemical bag is the game's red linen: " + Got("vintagee:alchemicalbag-red#linen"));
             Check(Got("vintagee:projectile-fire#shape") == null, "projectiles keep Vintage-E's look");
+            // Outlines fit the models; collision is the same in every look.
+            Block torch = Obj("vintagee:interdictiontorch") as Block;
+            Block realTorch = sapi.World.GetBlock(new AssetLocation("vintagee:interdictiontorch"));
+            Check(torch?.SelectionBoxes?.Length == 1 && Math.Abs(torch.SelectionBoxes[0].Y2 - 14.75f / 16) < 0.01f && Math.Abs(torch.SelectionBoxes[0].X1 - 4.5f / 16) < 0.01f,
+                "the interdiction torch's outline fits its model: " + torch?.SelectionBoxes?.FirstOrDefault());
+            Check(torch?.CollisionBoxes?.FirstOrDefault()?.Y2 == realTorch?.CollisionBoxes?.FirstOrDefault()?.Y2, "the torch's collision box is unchanged");
+            Block chest = Obj("vintagee:alchemicalchest") as Block;
+            Check(chest?.SelectionBoxes?.FirstOrDefault()?.Y2 < 0.9f, "the alchemical chest's outline fits its lid: " + chest?.SelectionBoxes?.FirstOrDefault());
         }
 
         /// <summary>/emc configure: a number, a list entry and a table entry can be changed, then put back.</summary>

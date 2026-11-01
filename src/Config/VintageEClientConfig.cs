@@ -7,11 +7,18 @@ namespace VintageE
 {
     /// <summary>
     /// Settings for this computer only (ModConfig/vintagee-client.json), changed in the window the <c>.vintagee</c>
-    /// command opens. Today: how the Watch of Flowing Time shows that it's on.
+    /// command opens: the look of Vintage-E's blocks and items, and how the Watch of Flowing Time shows that it's on.
     /// </summary>
     public class VintageEClientConfig
     {
         public const string FileName = "vintagee-client.json";
+
+        /// <summary>Look = Server: whatever the server's Look setting says.</summary>
+        public const string LookServer = "Server";
+        public static readonly string[] Looks = { LookServer, ProjectELook.LookNew, ProjectELook.LookMiddle, ProjectELook.LookOriginal };
+
+        /// <summary>How Vintage-E's blocks and items look on this computer: Server (the server's default), New, Middle or Original. Applied when joining a world.</summary>
+        public string Look = LookServer;
 
         /// <summary>Show an icon on screen while the watch is on (or time runs faster or slower because of one).</summary>
         public bool WatchIcon = true;
@@ -50,6 +57,8 @@ namespace VintageE
 
         public void Normalize()
         {
+            int li = Array.FindIndex(Looks, l => l.Equals((Look ?? "").Trim(), StringComparison.OrdinalIgnoreCase));
+            Look = li >= 0 ? Looks[li] : LookServer;
             WatchIconSize = GameMath.Clamp(WatchIconSize, 16, 128);
             WatchIconOffsetX = GameMath.Clamp(WatchIconOffsetX, -2000, 2000);
             WatchIconOffsetY = GameMath.Clamp(WatchIconOffsetY, -2000, 2000);
