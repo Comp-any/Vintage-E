@@ -7,7 +7,7 @@ These files are ProjectE's own artwork and sounds, used under its MIT licence (b
 
 - the Klein Star item textures, `assets/vintagee/textures/item/kleinstar-*.png`;
 - ProjectE's textures in `assets/vintagee/textures/projecte/` and sounds in `assets/vintagee/sounds/projecte/`,
-  used when the server turns on the `ProjectETextures` / `ProjectESounds` settings. They are copied unchanged by
+  used when the server sets `Look` to `Original` or turns on `ProjectESounds`. They are copied unchanged by
   `tools/import_projecte_assets.py`, except the files in `textures/projecte/derived/`, which that script cuts out of
   ProjectE's condenser, alchemical chest and interdiction torch textures to fit Vintage-E's block models. The sounds
   are renamed after the ProjectE sound events that play them (`peheal.ogg` is `heal.ogg`, and so on).

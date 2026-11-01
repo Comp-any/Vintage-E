@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.13.0 — 2026-11-01
+
+### Added
+- **A third look, `New`: models that blend in with Vintage Story.** Rings, stones, amulets, gadgets, Klein Stars, the Philosopher's Stone, matter, fuels, covalence dust and the tablet become 3D models, and the transmutation table, pedestals, interdiction torch, matter furnaces, alchemical chest, collectors, relays, condensers and nova catalysts get models of their own, built mostly from the game's own planks, metal plates, polished stone, gems, linen, leather, paper and candles. Crystals glow; alchemical bags are the game's linen; dark and red matter (on tools, armour, blocks, pedestals and furnaces), fuel blocks and covalence dust get new textures in the game's style. See the README for what each looks like.
+
+### Changed
+- **The `ProjectETextures` switch is now the `Look` setting**, with three choices: **`Default`** (Vintage-E's own textures, as before), **`Original`** (ProjectE's original textures, what `ProjectETextures` did) and **`New`**. A server that had `ProjectETextures` on gets `Original`. Change it with `/emc configure Look New`; it takes effect the next time the server starts.
+
 ## 1.12.1 — 2026-11-01
 
 ### Fixed

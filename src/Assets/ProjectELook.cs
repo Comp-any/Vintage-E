@@ -186,15 +186,15 @@ namespace VintageE
                     // keep using the old ones), and for items how they're held.
                     result.Models++;
                     result.Swapped[c.Code + "#shape"] = model.Shape.ToString();
-                    var textures = new Dictionary<string, CompositeTexture>(c is Block bl0 ? bl0.Textures ?? new Dictionary<string, CompositeTexture>() : ((Item)c).Textures ?? new Dictionary<string, CompositeTexture>());
+                    var modelTextures = new Dictionary<string, CompositeTexture>(c is Block bl0 ? bl0.Textures ?? new Dictionary<string, CompositeTexture>() : ((Item)c).Textures ?? new Dictionary<string, CompositeTexture>());
                     foreach (var kv in model.Textures)
                     {
                         if (!Exists(kv.Value)) continue;
-                        textures[kv.Key] = new CompositeTexture(kv.Value);
+                        modelTextures[kv.Key] = new CompositeTexture(kv.Value);
                         result.Textures++;
                         result.Swapped[c.Code + "#" + kv.Key] = kv.Value.ToString();
                     }
-                    if (!dryRun) ApplyModel(c, model, textures, result);
+                    if (!dryRun) ApplyModel(c, model, modelTextures, result);
                     result.Collectibles++;
                     continue;
                 }

@@ -67,6 +67,7 @@ jobs:
 
       - name: Compile against the real game
         run: |
+          set -o pipefail
           export VINTAGE_STORY="$VSDIR"
           dotnet build VintageE.csproj -c Release 2>&1 | tee build.log
           ls -la bin/Release/Mods/vintagee
@@ -121,7 +122,7 @@ jobs:
       - name: Collect results
         if: always()
         run: |
-          pip install json5 pillow >/dev/null
+          pip install json5 pillow numpy >/dev/null
           mkdir -p analysis
           find data -name 'emc-*.csv' -exec cp {} analysis/ \;
           find data -name 'selftest.txt' -exec cp {} analysis/ \;
