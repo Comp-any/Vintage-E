@@ -22,7 +22,7 @@ on:
         description: Branch the results are pushed to
         default: ci-analysis
       look:
-        description: The Look setting to test (Default, Original or New)
+        description: The Look setting to test (Auto, New, Middle or Original)
         default: Original
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
       VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
       EXTRA_MODS: ${{ inputs.extraMods || (github.event_name == 'push' && 'primitivesurvival,wildcrafttree,herbarium,wildcraftfruit,butchering,fromgoldencombs,em' || '') }}
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-analysis-{0}', github.run_number) }}
-      LOOK: ${{ inputs.look || (github.event_name == 'push' && 'New' || 'Original') }}
+      LOOK: ${{ inputs.look || (github.event_name == 'push' && 'Auto' || 'Original') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -97,7 +97,7 @@ jobs:
             ls -la "$data/Mods"
           fi
           # A look other than the default, so the self-test can check it: ProjectE's originals for runs started by hand
-          # (with ProjectE's sounds), the New look for pushes to ci/** (or set it with the "look" input).
+          # (with ProjectE's sounds), Auto for pushes to ci/** (a new world, so New; or set it with the "look" input).
           echo "{ \"DumpValuesOnStart\": true, \"CacheEmcValues\": false, \"SelfTestOnStart\": true, \"Look\": \"${LOOK}\", \"ProjectESounds\": true }" > "$data/ModConfig/vintagee.json"
           cat "$data/ModConfig/vintagee.json"
           cd "$VSDIR"
