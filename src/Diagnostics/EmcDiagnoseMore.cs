@@ -579,6 +579,8 @@ namespace VintageE
                 Patches(ix, true);
                 Outliers(ix, true);
             }
+            // Lines that are only a link ("see the deeper checks") mean nothing on paper.
+            inner.Lines.RemoveAll(l => EmcReport.ActionToken.Replace(l.Text, "").Trim().Length == 0);
             foreach (string line in inner.PlainText(x.Sapi.World, labelsOnly: true).Split('\n'))
             {
                 // Fix links read as bare labels once the token is gone; the verdict repeats what's above.
