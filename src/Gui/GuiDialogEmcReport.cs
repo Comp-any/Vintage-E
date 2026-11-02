@@ -342,7 +342,8 @@ namespace VintageE
         /// <summary>An answer in a diagnose report: a button-like link that asks the server for the next report.</summary>
         void AddAction(List<RichTextComponentBase> comps, string action, string arg, string label, CairoFont font)
         {
-            CairoFont actionFont = font.Clone().WithColor(new double[] { 1, 0.9, 0.55, 1 }).WithWeight(Cairo.FontWeight.Bold);
+            // Questions and reports to open: the same blue as item links. Fixes (things that change the server): green.
+            CairoFont actionFont = font.Clone().WithColor(new double[] { 0.55, 0.8, 1, 1 }).WithWeight(Cairo.FontWeight.Bold);
             bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
             if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
             comps.Add(Coloured(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)), actionFont));
