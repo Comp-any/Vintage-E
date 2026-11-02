@@ -287,11 +287,14 @@ namespace VintageE
         void AddAction(List<RichTextComponentBase> comps, string action, string arg, string label, CairoFont font)
         {
             CairoFont actionFont = font.Clone().WithColor(new double[] { 1, 0.9, 0.55, 1 }).WithWeight(Cairo.FontWeight.Bold);
-            comps.Add(new LinkTextComponent(capi, "\u25b8 " + label, actionFont, _ => Diagnose(action, arg)) { VerticalAlign = EnumVerticalAlign.Middle });
+            bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
+            if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
+            comps.Add(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)) { VerticalAlign = EnumVerticalAlign.Middle });
         }
 
         void Diagnose(string action, string arg)
         {
+            if (action == "setvalue") { onSetValue?.Invoke(arg); return; }
             if (onDiagnose == null) return;
             SetStatus(Lang.Get("vintagee:reportgui-asking"));
             onDiagnose(action ?? "", arg ?? "");

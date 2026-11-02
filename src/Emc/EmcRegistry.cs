@@ -31,6 +31,21 @@ namespace VintageE
 
         public int Count => values.Count;
 
+        /// <summary>A number that changes whenever any value does (the same on server and client for the same table), for /emc diagnose.</summary>
+        public long Fingerprint()
+        {
+            unchecked
+            {
+                long h = 1469598103934665603L;
+                foreach (var kv in values.Where(k => k.Key?.Code != null).OrderBy(k => k.Key.Code.ToString(), StringComparer.Ordinal))
+                {
+                    foreach (char ch in kv.Key.Code.ToString()) h = (h ^ ch) * 1099511628211L;
+                    h = (h ^ (long)Math.Round(kv.Value * 1000)) * 1099511628211L;
+                }
+                return h;
+            }
+        }
+
         public IReadOnlyDictionary<CollectibleObject, double> All => values;
 
         public void Replace(Dictionary<CollectibleObject, double> newValues)

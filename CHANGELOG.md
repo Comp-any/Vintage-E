@@ -2,6 +2,22 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.1 — 2026-11-02
+
+### Added
+- **`/emc diagnose` sees much more, and can fix what it finds.**
+  - **Your game:** every click in the window carries your game's Vintage-E version, its copy of the EMC table (count and fingerprint), whether the look patches applied and whether the held item has the value tooltip. A version mismatch, a missing or stale table (with a one-click **Resend**) and a missing tooltip are each reported with their fix.
+  - **Server log:** the Vintage-E errors and warnings in `server-main.log`, each with what it means in plain words.
+  - **Other mods' patches:** which mods patch recipes, item processing (ground storage, squeezing, burning, drying), `emcValue` or Vintage-E's own files, and which ship their own value files.
+  - **Values out of line:** items worked out backwards or guessed that sit more than 8× from the middle of their family, with the recipe that pulled them there.
+  - **A mapping without other mods** (`/emc diagnose clean`): maps once more with only the base game's and Vintage-E's recipes and lists every base-game value that differs, grouped by the mod it comes through.
+  - **Players** (`/emc diagnose players`, `player <name>`): EMC, items learned against the exact-knowledge limit, game mode, privilege, and whether they've learned what you hold.
+  - **One-click fixes** (green ⚒ links): allow, unpin, remove a dead settings entry, take off the gray or no-transmute list, switch a compatibility file on, change a setting, map afresh, resend the table, learn the held item, or open the value editor. Each does its work and shows the report you were on again, with what happened at the top.
+  - **Bug report** (`/emc diagnose bugreport`): versions, the mod list, the check-up, other mods' patches, outliers, the log lines and your settings in one text, saved to `ModData/vintagee/bug-report.txt` and ready to copy, with addresses, player ids and user folders taken out.
+  - **Symptoms** (`/emc diagnose symptom`): ten sentences ("the tooltip shows a value but the table won't burn it", "it worked, then after a restart it didn't", "it works for another player but not me"...), each running just the checks for that situation.
+  - **What changed** (`/emc diagnose changes`): the previous mapping's values are kept (`emc-snapshot.json`, also across restarts) and compared with the current ones: what gained, lost or changed a value, by family, with each value's origin.
+  - **Next steps:** when a mod's items are missing because nothing the mapper reads makes them, the report says to post a comment on Vintage-E's Mod DB page asking for them to be covered, with the text and item codes to paste, how the other mod's author can help (`emcValue` attributes), and what to do meanwhile.
+
 ## 1.15.0 — 2026-11-02
 
 ### Added

@@ -18,6 +18,8 @@ namespace VintageE
     {
         const string HarmonyId = "vintagee.clientlook";
         static Harmony harmony;
+        /// <summary>How many of the three loader methods were patched (0 before Patch runs), for /emc diagnose.</summary>
+        public static int PatchedCount { get; private set; }
 
         /// <summary>The mod system on this player's side (null on a dedicated server).</summary>
         internal static VintageEModSystem Mod;
@@ -50,6 +52,7 @@ namespace VintageE
             var target = AccessTools.GetDeclaredMethods(type).FirstOrDefault(m => m.Name == method);
             if (target == null) { logger.Warning("Look: the game has no {0}; that kind keeps the Middle look.", method); return false; }
             h.Patch(target, prefix: new HarmonyMethod(typeof(ClientLookPatches), prefix));
+            PatchedCount++;
             return true;
         }
 

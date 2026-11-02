@@ -170,6 +170,15 @@ namespace VintageE
         [ProtoMember(2)] public string Arg;
         /// <summary>What the player holds (ItemStack.ToBytes), so "hand" and "sporadic" can look at the exact stack.</summary>
         [ProtoMember(3)] public byte[] Stack;
+        /// <summary>The player's game: Vintage-E version there, its EMC table (count and fingerprint, see EmcRegistry.Fingerprint),
+        /// how many of the look patches applied, and whether the held item has the value tooltip behavior.</summary>
+        [ProtoMember(4)] public string ClientVersion;
+        [ProtoMember(5)] public int ClientTableCount;
+        [ProtoMember(6)] public long ClientTableHash;
+        [ProtoMember(7)] public int ClientPatched;
+        [ProtoMember(8)] public bool ClientHeldHasTooltip;
+        [ProtoMember(9)] public bool HasClientInfo;
+        [ProtoMember(10)] public int ClientTableVersion;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

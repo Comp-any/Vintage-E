@@ -58,14 +58,17 @@ namespace VintageE
         public static readonly Regex RefToken = new Regex(@"\[\[([^\[\]]+)\]\]", RegexOptions.Compiled);
 
         /// <summary>A question's answer in a diagnose report: {{action|arg|label}}. The window shows the label as a link that asks the server for that report.</summary>
-        public static readonly Regex ActionToken = new Regex(@"\{\{([a-z]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
+        public static readonly Regex ActionToken = new Regex(@"\{\{([a-z-]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
 
         /// <summary>Both kinds of token, so a line can be cut into text, item refs and answer links in order.</summary>
-        public static readonly Regex AnyToken = new Regex(@"\[\[([^\[\]]+)\]\]|\{\{([a-z]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
+        public static readonly Regex AnyToken = new Regex(@"\[\[([^\[\]]+)\]\]|\{\{([a-z-]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
 
         /// <summary>An answer link as text: its label and the command that does the same.</summary>
         public static string PlainAction(string action, string arg, string label)
-            => label + " (/emc diagnose" + (action.Length > 0 && action != EmcDiagnose.ActionOverview ? " " + action : "") + (arg.Length > 0 ? " " + arg : "") + ")";
+        {
+            if (action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue") return label + " (" + (action == "setvalue" ? "/emc set, holding it" : "in the window") + ")";
+            return label + " (/emc diagnose" + (action.Length > 0 && action != EmcDiagnose.ActionOverview ? " " + action : "") + (arg.Length > 0 ? " " + arg : "") + ")";
+        }
 
         /// <summary>The text with each [[key]] written out as "Name (code)".</summary>
         public static string Plain(IWorldAccessor world, string text)

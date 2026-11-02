@@ -704,6 +704,8 @@ namespace VintageE
             {
                 ("", ""), ("mapping", ""), ("mods", ""), ("mod", "game"), ("mod", "nosuchmod"), ("sporadic", ""),
                 ("item", "game:ingot-copper"), ("item", "game:creature-trader-female-artisan-cold"), ("item", "game:nosuchitem"),
+                ("log", ""), ("patches", ""), ("outliers", ""), ("clean", ""), ("players", ""), ("player", "nobody"), ("bugreport", ""), ("changes", ""),
+                ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
             };
             if (missing != null) cases.Add(("item", missing.Code.ToString()));
             foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(2)) cases.Add(("mod", m));
@@ -721,6 +723,11 @@ namespace VintageE
                     if (action == "mod" && arg == "nosuchmod") Check(text.Contains("is neither a block/item code nor a loaded mod id") || text.Contains("No mod with the id"), "diagnose: an unknown mod id is reported");
                     if (action == "mod" && arg == "game") Check(text.Contains("of its") && text.Contains("have a value"), "diagnose: the base game's coverage is reported");
                     if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("It has no value."), "diagnose: " + missing.Code + " is reported as having no value");
+                    if (action == "clean") Check(text.Contains("base-game value"), "diagnose: the clean mapping compared base-game values (" + Line1(text, "base-game value") + ")");
+                    if (action == "patches") Check(text.Contains("patch"), "diagnose: other mods' patches were scanned (" + Line1(text, "patch") + ")");
+                    if (action == "bugreport") Check(text.Contains("== Mods ==") && text.Contains("DisableBuiltInBaseValues"), "diagnose: the bug report has the mod list and the settings");
+                    if (action == "symptom" && arg == "") Check(text.Split('\n').Count(l => l.Contains("/emc diagnose symptom ")) >= 10, "diagnose: ten symptoms are offered");
+                    if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("Next steps") && text.Contains("mods.vintagestory.at"), "diagnose: next steps point to the Mod DB page");
                     File.WriteAllText(Path.Combine(dir, "diagnose-" + (action.Length == 0 ? "overview" : action) + (arg.Length > 0 ? "-" + arg.Replace(':', '_') : "") + ".txt"), text);
                 }
                 catch (Exception e) { Check(false, $"diagnose {action} {arg} threw {e}"); }

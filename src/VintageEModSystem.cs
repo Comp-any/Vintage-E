@@ -20,6 +20,8 @@ namespace VintageE
         public const string ModId = "vintagee";
         public const string ChannelName = "vintagee";
         public const string ConfigFile = "vintagee.json";
+        /// <summary>The mod's page on the Mod DB, where /emc diagnose sends people to ask for another mod to be covered.</summary>
+        public const string ModDbUrl = "https://mods.vintagestory.at/show/mod/74355";
 
         public ICoreAPI Api { get; private set; }
         public ICoreServerAPI Sapi { get; private set; }
@@ -388,6 +390,7 @@ namespace VintageE
             sw.Stop();
             report.Milliseconds = sw.ElapsedMilliseconds;
             report.MappedAt = DateTime.Now;
+            SnapshotValues(report);
             if (report.FromCache)
             {
                 Mod.Logger.Notification("EMC values loaded from cache ({0}) in {1} ms: {2} valued collectibles. Nothing that affects them has changed since they were mapped ({3}); /emc recalc forces a fresh mapping.",
@@ -980,15 +983,76 @@ namespace VintageE
                 catch { held = null; }
             }
             held ??= player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
-            SendDiagnosis(player, packet.Action, packet.Arg, held);
+            string action = packet.Action ?? "", arg = packet.Arg ?? "";
+            if (action.StartsWith("fix-", StringComparison.Ordinal))
+            {
+                // "target;then-action;then-arg": do the fix, then show the report the player came from, with what happened at the top.
+                string[] parts = arg.Split(';');
+                string target = parts.Length > 0 ? parts[0] : "";
+                string then = parts.Length > 1 ? parts[1] : "", thenArg = parts.Length > 2 ? parts[2] : "";
+                string outcome = EmcDiagnose.ApplyFix(this, player, action.Substring(4), target, player.LanguageCode);
+                SendDiagnosis(player, then, thenArg, held, packet, outcome);
+                return;
+            }
+            SendDiagnosis(player, action, arg, held, packet);
         }
 
-        /// <summary>Builds an /emc diagnose report for a player and opens it in their window (saved to ModData too).</summary>
-        public void SendDiagnosis(IServerPlayer player, string action, string arg, ItemStack held)
+        /// <summary>The values of the mapping before this one (key → value), for /emc diagnose changes; null until a second mapping.</summary>
+        public Dictionary<string, double> PreviousValues { get; private set; }
+        public DateTime PreviousValuesAt { get; private set; }
+
+        /// <summary>Keeps the last two mappings' values on disk (emc-snapshot.json, emc-snapshot-previous.json) so "what changed" works across restarts.</summary>
+        void SnapshotValues(EmcMappingReport report)
         {
             try
             {
-                EmcReport report = EmcDiagnose.Run(this, Sapi, player, player.LanguageCode, action, arg, held);
+                string dir = DataFolder(Sapi);
+                string last = System.IO.Path.Combine(dir, "emc-snapshot.json"), prev = System.IO.Path.Combine(dir, "emc-snapshot-previous.json");
+                if (LastReport != null)
+                {
+                    PreviousValues = LastReport.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv.Value);
+                    PreviousValuesAt = LastReport.MappedAt;
+                }
+                else if (System.IO.File.Exists(last))
+                {
+                    PreviousValues = LoadSnapshot(last, out PreviousValuesAt);
+                }
+                if (System.IO.File.Exists(last)) System.IO.File.Copy(last, prev, true);
+                var sb = new System.Text.StringBuilder();
+                sb.Append("{\"at\":\"").Append(report.MappedAt.ToString("yyyy-MM-dd HH:mm:ss")).Append("\",\"values\":{");
+                bool first = true;
+                foreach (var kv in report.Values)
+                {
+                    if (kv.Key?.Code == null) continue;
+                    if (!first) sb.Append(',');
+                    first = false;
+                    sb.Append('"').Append(PlayerEmc.KeyOf(kv.Key)).Append("\":").Append(kv.Value.ToString("R", System.Globalization.CultureInfo.InvariantCulture));
+                }
+                sb.Append("}}");
+                System.IO.File.WriteAllText(last, sb.ToString());
+            }
+            catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not save the value snapshot: {0}", e.Message); }
+        }
+
+        static Dictionary<string, double> LoadSnapshot(string file, out DateTime at)
+        {
+            at = DateTime.MinValue;
+            var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(file));
+            DateTime.TryParse((string)o["at"], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out at);
+            var result = new Dictionary<string, double>();
+            if (o["values"] is Newtonsoft.Json.Linq.JObject values)
+            {
+                foreach (var kv in values) result[kv.Key] = (double)kv.Value;
+            }
+            return result;
+        }
+
+        /// <summary>Builds an /emc diagnose report for a player and opens it in their window (saved to ModData too).</summary>
+        public void SendDiagnosis(IServerPlayer player, string action, string arg, ItemStack held, EmcDiagnoseRequestPacket client = null, string outcome = null)
+        {
+            try
+            {
+                EmcReport report = EmcDiagnose.Run(this, Sapi, player, player.LanguageCode, action, arg, held, client, outcome);
                 SaveReport(report, "emc-diagnose.txt");
                 SendReport(player, report);
             }
@@ -1097,6 +1161,9 @@ namespace VintageE
         }
 
         /// <summary>Disables or enables a compatibility file (DisabledCompat in the server config) and remaps. Returns the message for the player.</summary>
+        /// <summary>Sends this player the EMC table again (the diagnosis found their copy differs).</summary>
+        public void ResendTable(IServerPlayer player) => serverChannel?.SendPacket(Emc.ToPacket(), player);
+
         public string SetCompatDisabled(string key, bool disabled, string lang, out bool error)
         {
             error = true;
@@ -1617,6 +1684,24 @@ namespace VintageE
             catch { return null; }
         }
 
+        /// <summary>A diagnose request with everything the server can't see on its own: this game's Vintage-E, its table and patches.</summary>
+        EmcDiagnoseRequestPacket DiagnoseRequest(string action, string arg)
+        {
+            var p = new EmcDiagnoseRequestPacket { Action = action, Arg = arg, Stack = HeldStackBytes(), HasClientInfo = true };
+            try
+            {
+                p.ClientVersion = Version;
+                p.ClientTableCount = Emc.Count;
+                p.ClientTableHash = Emc.Fingerprint();
+                p.ClientTableVersion = TableVersion;
+                p.ClientPatched = ClientLookPatches.PatchedCount;
+                CollectibleObject held = Capi?.World?.Player?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.Collectible;
+                p.ClientHeldHasTooltip = held?.CollectibleBehaviors?.Any(b => b is CollectibleBehaviorEmcTooltip) ?? false;
+            }
+            catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not gather client details for the diagnosis: {0}", e.Message); }
+            return p;
+        }
+
         void OnReport(EmcReportPacket packet)
         {
             if (reportDialog != null && reportDialog.IsOpened())
@@ -1628,7 +1713,7 @@ namespace VintageE
                 (key, stack) => clientChannel?.SendPacket(new EmcDumpRequestPacket { Key = key, Stack = stack }),
                 () => clientChannel?.SendPacket(new EmcDumpRequestPacket { Loops = true }),
                 OpenSetValueFor,
-                (action, arg) => clientChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action, Arg = arg, Stack = HeldStackBytes() }));
+                (action, arg) => clientChannel?.SendPacket(DiagnoseRequest(action, arg)));
             reportDialog.TryOpen();
         }
 

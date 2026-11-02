@@ -17,7 +17,7 @@ namespace VintageE
     /// <para>Actions: "" (check-up and questions), "hand"/"item" (the held or named block/item), "mod" (one mod, or the
     /// list of mods), "sporadic" (values that differ between stacks or players), "mapping" (every mapping check).</para>
     /// </summary>
-    public static class EmcDiagnose
+    public static partial class EmcDiagnose
     {
         public const string ActionItem = "item", ActionHand = "hand", ActionMod = "mod", ActionMods = "mods", ActionSporadic = "sporadic", ActionMapping = "mapping", ActionOverview = "overview";
 
@@ -30,6 +30,9 @@ namespace VintageE
             public string LangCode;
             public EmcReport R;
             public IServerPlayer Player;
+            public ItemStack Held;
+            /// <summary>The report a fix link returns to (this report's action and argument).</summary>
+            public string ThenAction = ActionOverview, ThenArg = "";
             public string L(string key, params object[] args) => Lang.GetL(LangCode, "vintagee:" + key, args);
             public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Total);
             public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Warn);
@@ -56,33 +59,43 @@ namespace VintageE
         static string Link(string action, string arg, string label) => "{{" + action + "|" + (arg ?? "") + "|" + label.Replace("{", "").Replace("}", "").Replace("|", "/") + "}}";
 
         /// <summary>Builds the report for one action. <paramref name="held"/> is the player's held stack (may be null).</summary>
-        public static EmcReport Run(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held)
+        public static EmcReport Run(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held,
+            EmcDiagnoseRequestPacket client = null, string outcome = null)
         {
             action = (action ?? "").Trim().ToLowerInvariant();
             arg = (arg ?? "").Trim();
             var r = new EmcReport { Kind = EmcReport.DiagnoseKind, Key = action + "|" + arg };
-            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Player = player, Report = mod.LastReport };
+            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Player = player, Report = mod.LastReport, Held = held, ThenAction = action.Length == 0 ? ActionOverview : action, ThenArg = arg };
             r.Title = x.L("diag-title");
+            if (!string.IsNullOrEmpty(outcome)) r.Add(outcome, outcome.StartsWith("\u26a0") ? EmcLineStyle.Warn : EmcLineStyle.Total);
             try { x.Index = new CollectibleIndex(sapi.World.Collectibles); }
             catch (Exception e) { sapi.Logger.Warning("Vintage-E: /emc diagnose could not index the collectibles: {0}", e.Message); }
 
             // An item code or a mod id given straight: "/emc diagnose game:ingot-copper", "/emc diagnose primitivesurvival".
-            if (action.Length > 0 && action != ActionItem && action != ActionHand && action != ActionMod && action != ActionMods && action != ActionSporadic && action != ActionMapping && action != ActionOverview)
+            if (action.Length > 0 && !AllActions.Contains(action))
             {
                 if (Find(x, action) != null) { arg = action; action = ActionItem; }
                 else if (sapi.ModLoader.IsModEnabled(action) || (x.Index?.All.Any(c => c.Code.Domain == action) ?? false)) { arg = action; action = ActionMod; }
                 else { r.Add(x.L("diag-unknown", action), EmcLineStyle.Warn); action = ActionOverview; }
                 r.Key = action + "|" + arg;
+                x.ThenAction = action; x.ThenArg = arg;
             }
+
+            if (action == ActionBugReport) { BugReport(x); return r; }
+            if (action == ActionLog) { Log(x, true); Back(x); return r; }
+            if (action == ActionClient) { Client(x, client, true); Back(x); return r; }
+            if (action == ActionPlayers) { Players(x); return r; }
+            if (action == ActionPlayer) { if (arg.Length == 0) Players(x); else PlayerReport(x, arg); return r; }
 
             if (!MappingState(x, action == ActionMapping || action == ActionOverview || action == ""))
             {
-                Questions(x, held);
+                Log(x, false);
+                Questions(x, held, client);
                 return r;
             }
 
             // Cached values come without the recipes behind them; item and mod reports need those, so map once more.
-            if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic) && x.Report.FromCache)
+            if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges) && x.Report.FromCache)
             {
                 EmcMappingReport fresh = mod.RecalculateEmc("/emc diagnose");
                 if (fresh != null) { x.Report = fresh; r.Add(x.L("diag-remapped"), EmcLineStyle.Note); }
@@ -96,13 +109,19 @@ namespace VintageE
                     if (arg.Length > 0)
                     {
                         CollectibleObject c = Find(x, arg);
-                        if (c == null) { r.Add(x.L("diag-item-notfound", arg), EmcLineStyle.Warn); Questions(x, held); return r; }
+                        if (c == null) { r.Add(x.L("diag-item-notfound", arg), EmcLineStyle.Warn); Questions(x, held, client); return r; }
                         stack = held?.Collectible == c ? held : new ItemStack(c);
                     }
-                    if (stack?.Collectible?.Code == null) { r.Add(x.L("diag-item-holdit"), EmcLineStyle.Warn); Questions(x, null); return r; }
+                    if (stack?.Collectible?.Code == null) { r.Add(x.L("diag-item-holdit"), EmcLineStyle.Warn); Questions(x, null, client); return r; }
                     r.Key = ActionItem + "|" + stack.Collectible.Code;
+                    x.ThenAction = ActionItem; x.ThenArg = stack.Collectible.Code.ToString();
                     Item(x, stack, held != null && held.Collectible == stack.Collectible);
                     break;
+                case ActionPatches: Patches(x, true); Back(x); break;
+                case ActionOutliers: Outliers(x, true); Back(x); break;
+                case ActionClean: Clean(x); break;
+                case ActionSymptom: Symptom(x, arg, client); break;
+                case ActionChanges: Changes(x); break;
                 case ActionMod:
                     if (arg.Length == 0) { Mods(x); break; }
                     ModReport(x, arg);
@@ -115,11 +134,18 @@ namespace VintageE
                     break;
                 case ActionMapping:
                     Mapping(x, full: true);
-                    Questions(x, held);
+                    Client(x, client, true);
+                    Log(x, true);
+                    Patches(x, true);
+                    Outliers(x, true);
+                    Questions(x, held, client);
                     break;
                 default:
                     Mapping(x, full: false);
-                    Questions(x, held);
+                    Client(x, client, true);
+                    Log(x, false);
+                    Patches(x, false);
+                    Questions(x, held, client);
                     break;
             }
             return r;
@@ -185,6 +211,7 @@ namespace VintageE
                 problems++;
                 x.Warn(x.L("diag-nobuiltin", report.BaseCount));
                 x.Fix(x.L("diag-nobuiltin-fix"));
+                r.Add(FixLink(x, "setting", "DisableBuiltInBaseValues=false", x.L("diag-fix-setting", "DisableBuiltInBaseValues", "false")), EmcLineStyle.Text, 1);
             }
             if (!cfg.InferValuesFromProcessing || !cfg.InferValuesFromCrafting || !cfg.InferFromVariantSiblings || !cfg.EstimateFuelAndFood || !cfg.UseTraderPrices)
             {
@@ -210,7 +237,7 @@ namespace VintageE
                 {
                     problems++;
                     x.Warn(x.L("diag-deadkeys", dead.Count, VintageEModSystem.ConfigFile));
-                    foreach (string key in dead.Take(15)) r.Add(key + Suggest(x, key), EmcLineStyle.Text, 2);
+                    foreach (string key in dead.Take(15)) r.Add(key + Suggest(x, key) + "  " + FixLink(x, "removekey", key, x.L("diag-fix-removekey")), EmcLineStyle.Text, 2);
                     if (dead.Count > 15) x.Note(x.L("diag-more", dead.Count - 15), 2);
                     x.Fix(x.L("diag-deadkeys-fix"));
                 }
@@ -242,6 +269,7 @@ namespace VintageE
             {
                 x.Warn(x.L("diag-compat-disabled", string.Join(", ", disabled.Select(f => f.Name))));
                 x.Fix(x.L("diag-compat-disabled-fix"));
+                foreach (var f in disabled) r.Add(FixLink(x, "compat", f.Source, x.L("diag-fix-compat", f.Name)), EmcLineStyle.Text, 1);
             }
             if (loaded.Count > 0) x.Ok(x.L("diag-compat-loaded", string.Join(", ", loaded.Select(f => f.Name + " (" + (report.CompatUsed.TryGetValue(f.Source, out int n) ? n : 0) + ")"))));
             if (full && notLoaded.Count > 0) x.Note(x.L("diag-compat-notloaded", string.Join(", ", notLoaded.Select(f => f.Name))), 0);
@@ -285,7 +313,7 @@ namespace VintageE
             else x.Ok(x.L("diag-missing-none"));
 
             // Cache.
-            if (report.FromCache) x.Note(x.L("diag-cache", report.CachedAt ?? "?"), 0);
+            if (report.FromCache) { x.Note(x.L("diag-cache", report.CachedAt ?? "?"), 0); r.Add(FixLink(x, "recalc", "", x.L("diag-fix-recalc")), EmcLineStyle.Text, 1); }
             if (full)
             {
                 x.Note(x.L("diag-stats", report.ConversionCount, report.SourceCount, report.DerivedCount, report.InferredCount, report.RelativeCount, report.TraderCount, report.SiblingCount + report.GuessCount + report.OtherModCount, report.DefaultCount, report.FuelCount + report.FoodCount), 0);
@@ -465,6 +493,7 @@ namespace VintageE
                 x.Fix(x.L("diag-loops-fix"));
             }
 
+            NextSteps(x, domain, noRecipe.Count > 0 ? noRecipe : missing);
             r.Section(x.L("diag-sec-missinglist", missing.Count));
             r.Add(x.L("diag-missinglist-help"), EmcLineStyle.Note);
             foreach (CollectibleObject c in missing.OrderBy(c => c.Code.ToString(), StringComparer.Ordinal).Take(60))
@@ -496,6 +525,7 @@ namespace VintageE
             {
                 x.Warn(x.L("diag-compat-filedisabled", file.Name));
                 x.Fix(x.L("diag-compat-filedisabled-fix", file.Name));
+                x.R.Add(FixLink(x, "compat", file.Source, x.L("diag-fix-compat", file.Name)), EmcLineStyle.Text, 1);
             }
             else if (file.MissingMod != null) x.Note(x.L("diag-compat-filewaiting", file.Name, file.MissingMod), 0);
             else x.Ok(x.L("diag-compat-fileactive", file.Name, x.Report.CompatUsed.TryGetValue(file.Source, out int n) ? n : 0, file.RuleCount));
@@ -530,11 +560,13 @@ namespace VintageE
                 string listed = cfg.Blacklist.LastOrDefault(p => CollectibleIndex.Matches(p, c));
                 string file = x.Mod.Rules.Blacklist.LastOrDefault(p => CollectibleIndex.Matches(p, c));
                 JsonObject attr = c.Attributes?["emcValue"];
-                if (zero != null) { r.Add(x.L("diag-bl-zero", zero, VintageEModSystem.ConfigFile), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-zero-fix")); }
-                else if (listed != null) { r.Add(x.L("diag-bl-config", listed, VintageEModSystem.ConfigFile), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-config-fix", listed)); }
+                string cfgKey = VintageEModSystem.ConfigKey(c);
+                if (zero != null) { r.Add(x.L("diag-bl-zero", zero, VintageEModSystem.ConfigFile), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-zero-fix")); r.Add(FixLink(x, "unpin", zero, x.L("diag-fix-unpin")), EmcLineStyle.Text, 1); }
+                else if (listed != null) { r.Add(x.L("diag-bl-config", listed, VintageEModSystem.ConfigFile), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-config-fix", listed)); r.Add(FixLink(x, "allow", listed == cfgKey ? cfgKey : cfgKey, x.L("diag-fix-allow")), EmcLineStyle.Text, 1); }
                 else if (attr != null && attr.Exists && attr.AsDouble(-1) == 0) { r.Add(x.L("diag-bl-attribute"), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-attribute-fix")); }
-                else if (file != null) { r.Add(x.L("diag-bl-file", file), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-file-fix", VintageEModSystem.ConfigKey(c))); }
+                else if (file != null) { r.Add(x.L("diag-bl-file", file), EmcLineStyle.Text, 1); x.Fix(x.L("diag-bl-file-fix", cfgKey)); r.Add(FixLink(x, "allow", cfgKey, x.L("diag-fix-allow")), EmcLineStyle.Text, 1); }
                 else x.Fix(x.L("diag-bl-fix-generic"));
+                r.Add(Link("setvalue", PlayerEmc.KeyOf(c), x.L("diag-fix-setvalue")), EmcLineStyle.Text, 1);
             }
             else if (!report.Values.ContainsKey(c))
             {
@@ -545,8 +577,11 @@ namespace VintageE
                     r.Add(x.L("diag-item-gray"), EmcLineStyle.Text, 1);
                     string g = cfg.GrayList.LastOrDefault(p => CollectibleIndex.Matches(p, c)) ?? x.Mod.Rules.GrayList.LastOrDefault(p => CollectibleIndex.Matches(p, c));
                     if (g != null) x.Note(x.L("diag-item-gray-pattern", g), 2);
+                    if (cfg.GrayList.Contains(VintageEModSystem.ConfigKey(c))) r.Add(FixLink(x, "ungray", VintageEModSystem.ConfigKey(c), x.L("diag-fix-ungray")), EmcLineStyle.Text, 1);
                 }
                 MissingItem(x, c);
+                r.Add(Link("setvalue", PlayerEmc.KeyOf(c), x.L("diag-fix-setvalue")), EmcLineStyle.Text, 1);
+                NextSteps(x, c.Code.Domain, new[] { c });
             }
             else
             {
@@ -563,10 +598,12 @@ namespace VintageE
                     x.Warn(x.L("diag-item-notransmute"));
                     string p = cfg.NoTransmute.LastOrDefault(q => CollectibleIndex.Matches(q, c));
                     x.Fix(p != null ? x.L("diag-item-notransmute-fix-config", p) : x.L("diag-item-notransmute-fix-file"));
+                    if (p != null) r.Add(FixLink(x, "notransmute", p, x.L("diag-fix-notransmute")), EmcLineStyle.Text, 1);
                 }
                 if (x.Player != null && !PlayerEmc.Knows(x.Player, PlayerEmc.KeyOf(c)))
                 {
                     x.Note(x.L("diag-item-unknown"), 0);
+                    r.Add(FixLink(x, "learn", PlayerEmc.KeyOf(c), x.L("diag-fix-learn", EmcExplain.NameOf(c))), EmcLineStyle.Text, 1);
                 }
                 r.Add(x.L("diag-item-seems-fine"), EmcLineStyle.Note);
                 r.Add(x.L("diag-item-clientcheck"), EmcLineStyle.Note);
@@ -604,6 +641,7 @@ namespace VintageE
             r.Add(x.L("diag-item-full") + " " + EmcReport.Ref(c), EmcLineStyle.Text);
             r.Add(Link(ActionMod, c.Code.Domain, x.L("diag-q-thismod", ModName(x, c.Code.Domain))));
             r.Add(Link(ActionSporadic, "", x.L("diag-q-sporadic")));
+            r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
             r.Add(Link(ActionOverview, "", x.L("diag-q-back")));
         }
 
@@ -763,11 +801,42 @@ namespace VintageE
         }
 
         /// <summary>What the player can look into next, as links; the held item is named so "this one" is unambiguous.</summary>
-        static void Questions(Ctx x, ItemStack held)
+        /// <summary>
+        /// What to do beyond this server when a mod's items can't be valued automatically: a comment on the Mod DB page
+        /// asking for the mod to be covered, with the codes to paste, and a report to the other mod if it hides its recipes.
+        /// </summary>
+        static void NextSteps(Ctx x, string domain, IList<CollectibleObject> items)
+        {
+            if (items == null || items.Count == 0) return;
+            EmcReport r = x.R;
+            r.Section(x.L("diag-sec-nextsteps"));
+            string modName = ModName(x, domain);
+            string codes = string.Join(", ", items.Take(12).Select(c => c.Code.ToString())) + (items.Count > 12 ? ", ... (" + items.Count + ")" : "");
+            if (domain == "game" || domain == "vintagee")
+            {
+                r.Add(x.L("diag-next-game"), EmcLineStyle.Text);
+                r.Add(x.L("diag-next-comment", VintageEModSystem.ModDbUrl), EmcLineStyle.Text, 1);
+                x.Note(x.L("diag-next-paste-game", x.Mod.Version ?? "?", codes), 2);
+            }
+            else
+            {
+                r.Add(x.L("diag-next-mod", modName), EmcLineStyle.Text);
+                r.Add(x.L("diag-next-comment", VintageEModSystem.ModDbUrl), EmcLineStyle.Text, 1);
+                string version = "?";
+                try { version = x.Sapi.ModLoader.GetMod(domain)?.Info?.Version ?? "?"; } catch { }
+                x.Note(x.L("diag-next-paste-mod", x.Mod.Version ?? "?", modName, version, codes), 2);
+                r.Add(x.L("diag-next-modauthor"), EmcLineStyle.Text, 1);
+                r.Add(x.L("diag-next-meanwhile"), EmcLineStyle.Text, 1);
+            }
+            r.Add(Link(ActionBugReport, "", x.L("diag-q-bugreport")), EmcLineStyle.Text, 1);
+        }
+
+        static void Questions(Ctx x, ItemStack held, EmcDiagnoseRequestPacket client = null)
         {
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-questions"));
             r.Add(x.L("diag-questions-help"), EmcLineStyle.Note);
+            r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
             if (held?.Collectible?.Code != null)
             {
                 r.Add(Link(ActionHand, "", x.L("diag-q-held", EmcExplain.NameOf(held.Collectible))));
@@ -776,6 +845,10 @@ namespace VintageE
             r.Add(Link(ActionMods, "", x.L("diag-q-mods")));
             r.Add(Link(ActionSporadic, "", x.L("diag-q-sporadic")));
             r.Add(Link(ActionMapping, "", x.L("diag-q-mapping")));
+            r.Add(Link(ActionChanges, "", x.L("diag-q-changes")));
+            r.Add(Link(ActionClean, "", x.L("diag-q-clean")));
+            r.Add(Link(ActionPlayers, "", x.L("diag-q-players")));
+            r.Add(Link(ActionBugReport, "", x.L("diag-q-bugreport")));
             if (x.Report != null && x.Report.Missing.Count > 0) r.Add(x.L("diag-q-missinglist"), EmcLineStyle.Note);
             r.Add(x.L("diag-q-console"), EmcLineStyle.Note);
         }

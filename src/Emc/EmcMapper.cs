@@ -121,6 +121,8 @@ namespace VintageE
         HashSet<CollectibleObject> gray = new HashSet<CollectibleObject>();
         /// <summary>Which value file's rule valued each item (defaultValues and relativeValues), for the compatibility counts.</summary>
         readonly Dictionary<CollectibleObject, string> ruleSourceOf = new Dictionary<CollectibleObject, string>();
+        /// <summary>When set, only conversions it accepts are used (/emc diagnose clean maps without other mods' recipes).</summary>
+        public Func<Conversion, bool> ConversionFilter;
 
         public EmcMapper(ICoreServerAPI sapi, VintageEConfig config, EmcRuleSet rules, ILogger logger)
         {
@@ -144,6 +146,7 @@ namespace VintageE
                 CustomRecipes = rules.Recipes.Concat(config.CustomRecipes ?? new List<string>()).ToList()
             };
             collector.CollectAll();
+            if (ConversionFilter != null) collector.Conversions.RemoveAll(c => !ConversionFilter(c));
             report.SkippedRecipes = collector.SkippedRecipes;
             report.CustomRecipeProblems = collector.CustomRecipeProblems;
 
