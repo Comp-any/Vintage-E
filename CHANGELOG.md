@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.1 — 2026-11-03
+
+### Fixed
+- **Doctor window:** cards open and close again (the window now rebuilds itself a frame after the click, not during it); the check's text no longer runs into its status dot; the header is plain text that opens the card when clicked anywhere on it.
+
+### Added
+- **Doctor window:** click the Passed, Warnings or Failed chip at the top to hide or show the checks of that kind.
+
 ## 1.16.0 — 2026-11-03
 
 ### Changed

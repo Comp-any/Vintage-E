@@ -57,6 +57,21 @@ namespace VintageE
         }
     }
 
+    /// <summary>An invisible area that runs an action when clicked, so a whole card header can open the card without being a link.</summary>
+    public class GuiElementHotspot : GuiElement
+    {
+        readonly Action onClick;
+        public GuiElementHotspot(ICoreClientAPI capi, ElementBounds bounds, Action onClick) : base(capi, bounds) { this.onClick = onClick; }
+        public override void ComposeElements(Context ctx, ImageSurface surface) => Bounds.CalcWorldBounds();
+        public override void RenderInteractiveElements(float deltaTime) { }
+        public override void OnMouseDownOnElement(ICoreClientAPI api, MouseEvent args)
+        {
+            base.OnMouseDownOnElement(api, args);
+            args.Handled = true;
+            onClick();
+        }
+    }
+
     public class GuiDialogEmcDoctor : GuiDialog
     {
         const double Width = 740;
@@ -80,6 +95,8 @@ namespace VintageE
         readonly Stack<EmcReportPacket> history = new Stack<EmcReportPacket>();
         EmcReportPacket current;
         readonly HashSet<int> expanded = new HashSet<int>();
+        /// <summary>Check states hidden by clicking their chip at the top.</summary>
+        readonly HashSet<State> hidden = new HashSet<State>();
         bool busy;
         string busyText;
         DateTime receivedAt = DateTime.Now;
@@ -257,13 +274,21 @@ namespace VintageE
                 .BeginChildElements(bgBounds);
 
             // Summary chips and the progress bar.
-            foreach (var chip in chips)
+            var chipStates = new[] { State.Ok, State.Warn, State.Fail };
+            for (int i = 0; i < chips.Count; i++)
             {
+                var chip = chips[i];
+                State state = chipStates[i];
+                bool off = hidden.Contains(state);
                 ElementBounds cb = ElementBounds.Fixed(chip.x, top, chip.w, 26);
                 bgBounds.WithChild(cb);
-                double[] colour = chip.colour;
+                double[] colour = off ? new[] { chip.colour[0], chip.colour[1], chip.colour[2], 0.35 } : chip.colour;
                 Canvas(c, cb, (ctx, b) => DrawChip(ctx, b, colour));
                 c.AddStaticText(chip.text, chipFont.Clone().WithColor(colour), ElementBounds.Fixed(chip.x + 11, top + 4, chip.w, 24).WithParent(bgBounds));
+                // Click a chip to hide or show the checks of that kind.
+                ElementBounds hb = ElementBounds.Fixed(chip.x, top, chip.w, 26);
+                bgBounds.WithChild(hb);
+                c.AddInteractiveElement(new GuiElementHotspot(capi, hb, () => ToggleFilter(state)));
             }
             c.AddSmallButton(busy ? Lang.Get("vintagee:doctor-scanning") : Lang.Get("vintagee:doctor-run"), OnRun, runBounds, EnumButtonStyle.Normal, "run");
             Canvas(c, barBounds, (ctx, b) => DrawBar(ctx, b, busy ? 0.55 : 1));
@@ -272,7 +297,11 @@ namespace VintageE
             ElementBounds content = ElementBounds.Fixed(0, 0, Width, 10);
             c.BeginClip(clipBounds).BeginChildElements(content);
             double y = 0;
-            foreach (Entry e in entries) y = AddEntry(c, content, e, y);
+            foreach (Entry e in entries)
+            {
+                if (e.Kind == Kind.Check && hidden.Contains(e.State)) continue;
+                y = AddEntry(c, content, e, y);
+            }
             if (entries.Count == 0) y = AddRow(c, content, Lang.Get("vintagee:missing-nomatch"), CairoFont.WhiteSmallText(), 0, y);
             content.fixedHeight = Math.Max(y + 4, ListHeight);
             c.EndChildElements().EndClip()
@@ -387,23 +416,21 @@ namespace VintageE
             double hh = headH;
             Canvas(c, box, (ctx, b) => DrawCheckCard(ctx, b, colour, hh, open));
 
-            // Arrow + title as one link that opens and closes the card.
-            string arrow = canOpen ? (open ? "▾  " : "▸  ") : "    ";
+            // The arrow left of the dot, the title right of it; the whole header (but not the badge) opens and closes the card.
+            if (canOpen)
+            {
+                CairoFont arrowFont = titleFont.Clone().WithColor(new double[] { 0.85, 0.8, 0.7, 1 });
+                c.AddRichtext(new RichTextComponentBase[] { new RichTextComponent(capi, open ? "\u25be" : "\u25b8", arrowFont) { VerticalAlign = EnumVerticalAlign.Middle } },
+                    In(parent, ElementBounds.Fixed(CardX + 14, y + (headH - 20) / 2, 20, 22)));
+            }
             var comps = new List<RichTextComponentBase>();
+            AddRichParts(comps, e.Title, titleFont, -1);
+            c.AddRichtext(comps.ToArray(), In(parent, ElementBounds.Fixed(CardX + TitleX, y + (headH - titleH) / 2 + 1, titleW, titleH + 4)));
             if (canOpen)
             {
                 int index = e.Index;
-                var link = new LinkTextComponent(capi, arrow, titleFont, _ => Toggle(index)) { VerticalAlign = EnumVerticalAlign.Middle };
-                link.Font = titleFont.Clone().WithColor(new double[] { 0.85, 0.8, 0.7, 1 });
-                comps.Add(link);
-                AddRichParts(comps, e.Title, titleFont, index);
+                c.AddInteractiveElement(new GuiElementHotspot(capi, In(parent, ElementBounds.Fixed(CardX, y, CardW - BadgeW - 24, headH)), () => Toggle(index)));
             }
-            else
-            {
-                comps.Add(new RichTextComponent(capi, arrow, titleFont) { VerticalAlign = EnumVerticalAlign.Middle });
-                AddRichParts(comps, e.Title, titleFont, -1);
-            }
-            c.AddRichtext(comps.ToArray(), In(parent, ElementBounds.Fixed(CardX + 22, y + (headH - titleH) / 2 + 1, titleW + 30, titleH + 4)));
 
             // The badge.
             string badge = e.State == State.Ok ? Lang.Get("vintagee:doctor-badge-ok") : e.State == State.Warn ? Lang.Get("vintagee:doctor-badge-warn") : e.State == State.Fail ? Lang.Get("vintagee:doctor-badge-fail") : Lang.Get("vintagee:doctor-badge-info");
@@ -570,10 +597,31 @@ namespace VintageE
         void Toggle(int index)
         {
             if (!expanded.Remove(index)) expanded.Add(index);
+            Recompose();
+        }
+
+        void ToggleFilter(State state)
+        {
+            if (!hidden.Remove(state)) hidden.Add(state);
+            Recompose();
+        }
+
+        /// <summary>Rebuilds the window on the next frame, keeping the scroll position: rebuilding inside the click that asked for it tears down the element being clicked.</summary>
+        void Recompose()
+        {
             float scroll = SingleComposer?.GetScrollbar("scrollbar")?.CurrentYPosition ?? 0;
-            Compose();
-            GuiElementScrollbar bar = SingleComposer?.GetScrollbar("scrollbar");
-            if (bar != null) { bar.CurrentYPosition = scroll; OnScroll(scroll); }
+            capi.Event.EnqueueMainThreadTask(() =>
+            {
+                if (!IsOpened()) return;
+                Compose();
+                GuiElementScrollbar bar = SingleComposer?.GetScrollbar("scrollbar");
+                if (bar != null)
+                {
+                    float max = (float)Math.Max(0, (scrollContent?.fixedHeight ?? 0) - ListHeight);
+                    bar.CurrentYPosition = Math.Min(scroll, max);
+                    OnScroll(bar.CurrentYPosition);
+                }
+            }, "vintagee-doctor");
         }
 
         void Act(string action, string arg)
