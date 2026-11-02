@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.7 — 2026-11-03
+
+### Changed
+- `modinfo.json` gives the mod's current GitHub address (github.com/Comp-any/Vintage-E) as its website instead of the old demonic69 one, so tools that read it (such as Vintage Auto Update) go straight to its releases. Nothing else changes.
+
 ## 1.15.6 — 2026-11-03
 
 ### Added
