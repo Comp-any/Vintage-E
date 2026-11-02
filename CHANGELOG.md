@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.0 — 2026-11-03
+
+### Changed
+- **The EMC doctor has its own window.** A checklist instead of a wall of text: how many checks passed, need a look or failed, "Run checks again" and a progress bar at the top; one card per check with a coloured bar and dot, the check in words and an OK / Look / Problem badge; a card opens to show what was found, what to do, and buttons for the fixes and the reports it links to (green ⚒ for things that change the server). Sections and the questions sit between the cards; clicking an item opens its value breakdown in the text window. Back, Copy and Close as before. Ctrl+H opens and closes it.
+
 ## 1.15.9 — 2026-11-03
 
 ### Fixed

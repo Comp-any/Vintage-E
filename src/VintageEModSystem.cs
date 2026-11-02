@@ -1674,9 +1674,9 @@ namespace VintageE
         {
             IClientPlayer player = Capi?.World?.Player;
             if (player == null) return false;
-            if (reportDialog != null && reportDialog.IsOpened() && reportDialog.IsDiagnose)
+            if (doctorDialog != null && doctorDialog.IsOpened())
             {
-                reportDialog.TryClose();
+                doctorDialog.TryClose();
                 return true;
             }
             if (!player.HasPrivilege(Privilege.controlserver))
@@ -1775,8 +1775,26 @@ namespace VintageE
             return p;
         }
 
+        GuiDialogEmcDoctor doctorDialog;
+
         void OnReport(EmcReportPacket packet)
         {
+            if (packet?.Kind == EmcReport.DiagnoseKind)
+            {
+                // The doctor has its own window (a checklist); the text window closes if it's open.
+                if (reportDialog != null && reportDialog.IsOpened()) reportDialog.TryClose();
+                if (doctorDialog != null && doctorDialog.IsOpened())
+                {
+                    doctorDialog.Show(packet);
+                    return;
+                }
+                doctorDialog = new GuiDialogEmcDoctor(Capi, packet,
+                    (action, arg) => clientChannel?.SendPacket(DiagnoseRequest(action, arg)),
+                    (key, stack) => clientChannel?.SendPacket(new EmcDumpRequestPacket { Key = key, Stack = stack }),
+                    OpenSetValueFor);
+                doctorDialog.TryOpen();
+                return;
+            }
             if (reportDialog != null && reportDialog.IsOpened())
             {
                 reportDialog.Show(packet);
