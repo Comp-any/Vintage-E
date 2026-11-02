@@ -1525,6 +1525,11 @@ namespace VintageE
             // Admins: set the EMC value of whatever is under the mouse (inventory, handbook, any window).
             capi.Input.RegisterHotKey(SetValueHotkey, Lang.Get("vintagee:hotkey-setvalue"), GlKeys.K, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
             capi.Input.SetHotKeyHandler(SetValueHotkey, _ => OpenSetValueBox());
+            // Admins: the EMC doctor (/emc diagnose). Ctrl is part of the key, so the plain letter keeps doing what the game
+            // binds it to (H opens the handbook); the game only fires a hotkey whose modifiers match exactly, and the handler
+            // reports the press as handled.
+            capi.Input.RegisterHotKey(DiagnoseHotkey, Lang.Get("vintagee:hotkey-diagnose"), GlKeys.H, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
+            capi.Input.SetHotKeyHandler(DiagnoseHotkey, _ => ToggleDiagnose());
             clientChannel.SetMessageHandler<EmcRecipeListPacket>(OnRecipeList);
             clientChannel.SetMessageHandler<EmcCompatListPacket>(OnCompatList);
             clientChannel.SetMessageHandler<EmcItemStatePacket>(OnItemState);
@@ -1614,6 +1619,7 @@ namespace VintageE
         public void SendTransmuteRequest(TransmuteRequestPacket packet) => clientChannel?.SendPacket(packet);
 
         public const string SetValueHotkey = "vintagee-setvalue";
+        public const string DiagnoseHotkey = "vintagee-diagnose";
 
         /// <summary>Client: this computer's settings (ModConfig/vintagee-client.json).</summary>
         public VintageEClientConfig ClientConfig { get; private set; }
@@ -1662,6 +1668,25 @@ namespace VintageE
         }
 
         GuiDialogEmcSetValue setValueDialog;
+
+        /// <summary>Ctrl+H: opens the EMC doctor's check-up (the server builds it; admins only), or closes it when it's the window on top.</summary>
+        bool ToggleDiagnose()
+        {
+            IClientPlayer player = Capi?.World?.Player;
+            if (player == null) return false;
+            if (reportDialog != null && reportDialog.IsOpened() && reportDialog.IsDiagnose)
+            {
+                reportDialog.TryClose();
+                return true;
+            }
+            if (!player.HasPrivilege(Privilege.controlserver))
+            {
+                Capi.TriggerIngameError(this, "noprivilege", Lang.Get("vintagee:error-noprivilege"));
+                return true;
+            }
+            clientChannel?.SendPacket(DiagnoseRequest("", ""));
+            return true;
+        }
 
         bool OpenSetValueBox()
         {

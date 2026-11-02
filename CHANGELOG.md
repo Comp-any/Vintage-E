@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.8 — 2026-11-03
+
+### Added
+- **Ctrl+H opens the EMC doctor** (`/emc diagnose`; admins), and closes it again when its window is on top. The key can be changed in the game's Controls under "Vintage-E: open the EMC doctor". Ctrl is part of the binding, so H on its own still opens the handbook. (Written for 1.15.5, but that release went out from another branch without it.)
+
 ## 1.15.7 — 2026-11-03
 
 ### Changed

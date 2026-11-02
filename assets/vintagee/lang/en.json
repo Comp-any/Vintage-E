@@ -588,6 +588,7 @@
   "missing-modmissinghint-pick": "Pick a mod in the mod filter to blacklist only its missing blocks/items.",
   "missing-modmissinghint": "Only the {0} missing from {1}, by their own codes: everything of it that has a value keeps it.",
   "hotkey-setvalue": "Vintage-E: set the EMC value of the hovered block/item (admins)",
+  "hotkey-diagnose": "Vintage-E: open the EMC doctor (/emc diagnose; admins)",
   "setvalue-title": "Set EMC value",
   "setvalue-now": "Now: {0} EMC",
   "setvalue-none": "No EMC value now",
