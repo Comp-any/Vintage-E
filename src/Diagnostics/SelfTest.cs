@@ -72,6 +72,7 @@ namespace VintageE
                 Check1100();
                 Check1101();
                 Check1110();
+                CheckDiagnose();
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
@@ -690,6 +691,48 @@ namespace VintageE
         /// plain item give their contents' EMC too when ProtectContainersWithContents is off; EMC numbers keep two decimals;
         /// thatch has a value; the table only takes what it can burn from hoppers.
         /// </summary>
+        /// <summary>
+        /// 1.15.0: /emc diagnose builds every kind of report without throwing, says the right thing about a valued item,
+        /// a missing one and a mod, and writes each text to ModData/vintagee/diagnose-<action>.txt for reading.
+        /// </summary>
+        void CheckDiagnose()
+        {
+            EmcMappingReport report = mod.LastReport;
+            if (report == null) { Check(false, "diagnose: EMC not mapped"); return; }
+            CollectibleObject missing = report.Missing.FirstOrDefault(c => c.Code.Domain == "game") ?? report.Missing.FirstOrDefault();
+            var cases = new List<(string action, string arg)>
+            {
+                ("", ""), ("mapping", ""), ("mods", ""), ("mod", "game"), ("mod", "nosuchmod"), ("sporadic", ""),
+                ("item", "game:ingot-copper"), ("item", "game:creature-trader-female-artisan-cold"), ("item", "game:nosuchitem"),
+            };
+            if (missing != null) cases.Add(("item", missing.Code.ToString()));
+            foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(2)) cases.Add(("mod", m));
+            string dir = VintageEModSystem.DataFolder(sapi);
+            foreach (var (action, arg) in cases)
+            {
+                try
+                {
+                    EmcReport r = EmcDiagnose.Run(mod, sapi, null, "en", action, arg, null);
+                    string text = r.PlainText(sapi.World);
+                    Check(r.Lines.Count >= 3 && !text.Contains("vintagee:diag-"), $"diagnose {action} {arg}: {r.Lines.Count} lines, every lang key found");
+                    if (action == "item" && arg == "game:ingot-copper") Check(text.Contains("It has a value: 128"), "diagnose: copper ingot has a value of 128 (" + Line1(text, "value") + ")");
+                    if (action == "item" && arg.Contains("trader")) Check(text.Contains("blacklisted"), "diagnose: the trader is reported as blacklisted");
+                    if (action == "item" && arg == "game:nosuchitem") Check(text.Contains("No block or item has the code"), "diagnose: an unknown code is reported");
+                    if (action == "mod" && arg == "nosuchmod") Check(text.Contains("is neither a block/item code nor a loaded mod id") || text.Contains("No mod with the id"), "diagnose: an unknown mod id is reported");
+                    if (action == "mod" && arg == "game") Check(text.Contains("of its") && text.Contains("have a value"), "diagnose: the base game's coverage is reported");
+                    if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("It has no value."), "diagnose: " + missing.Code + " is reported as having no value");
+                    File.WriteAllText(Path.Combine(dir, "diagnose-" + (action.Length == 0 ? "overview" : action) + (arg.Length > 0 ? "-" + arg.Replace(':', '_') : "") + ".txt"), text);
+                }
+                catch (Exception e) { Check(false, $"diagnose {action} {arg} threw {e}"); }
+            }
+        }
+
+        static string Line1(string text, string word)
+        {
+            foreach (string line in text.Split('\n')) if (line.Contains(word)) return line.Trim();
+            return "";
+        }
+
         void Check1110()
         {
             CollectibleObject coat = sapi.World.Collectibles.Where(c => c?.Code != null && c.Attributes?["warmth"].AsFloat(0) > 0 && mod.Emc.GetValue(c) > 0)

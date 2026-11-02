@@ -126,6 +126,7 @@ jobs:
           mkdir -p analysis
           find data -name 'emc-*.csv' -exec cp {} analysis/ \;
           find data -name 'selftest.txt' -exec cp {} analysis/ \;
+          find data -name 'diagnose-*.txt' -exec cp {} analysis/ \;
           # The mod built against the real game DLLs, zipped for release.
           version=$(python3 -c "import json;print(json.load(open('modinfo.json'))['version'])")
           if [ -f bin/Release/Mods/vintagee/VintageE.dll ]; then
