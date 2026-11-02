@@ -19,7 +19,20 @@ namespace VintageE
     {
         public const string ActionChecks = "checks", ActionBaseline = "baseline", ActionProfit = "profit", ActionSkipped = "skipped";
 
-        static readonly string[] MetalTiers = { "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" };
+        static readonly string[] MetalNames = { "copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel", "gold", "silver", "lead", "tin", "zinc", "nickel", "chromium", "titanium", "platinum", "stainlesssteel", "electrum", "brass", "cupronickel", "molybdochalkos", "leadsolder", "silversolder" };
+
+        /// <summary>The metals in order of their ingot's value on this server: the order every tool and armour family should follow.</summary>
+        static string[] MetalTiersFor(Ctx x)
+        {
+            var known = new List<(string metal, double v)>();
+            foreach (string m in MetalNames)
+            {
+                CollectibleObject ingot = x.Sapi.World.GetItem(new AssetLocation("game:ingot-" + m));
+                double v = x.V(ingot);
+                if (v > 0) known.Add((m, v));
+            }
+            return known.OrderBy(k => k.v).Select(k => k.metal).ToArray();
+        }
 
         /// <summary>Every deeper check, each in its own section, with the fixes.</summary>
         static void Checks(Ctx x, EmcDiagnoseRequestPacket client)
@@ -59,7 +72,7 @@ namespace VintageE
             if (tiers.Count > 0) { found++; x.Warn(x.L("diag-tiers-summary", tiers.Count) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
             if (x.Report.Skipped.Count > 0) x.Note(x.L("diag-skipped-summary", x.Report.SkippedRecipes) + "  " + Link(ActionSkipped, "", x.L("diag-q-skipped")), 0);
             var drift = CompatDriftList(x);
-            if (drift.Any(d => d.dead.Count + d.fresh.Count > 0)) { found++; x.Warn(x.L("diag-drift-summary", drift.Count(d => d.dead.Count + d.fresh.Count > 0)) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
+            if (drift.Any(d => d.fresh.Count > 0)) { found++; x.Warn(x.L("diag-drift-summary", drift.Count(d => d.fresh.Count > 0)) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
             var dups = DuplicateList(x);
             if (dups.Count > 0) { found++; x.Warn(x.L("diag-dups-summary", dups.Count) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
             if (found == 0) x.Ok(x.L("diag-checks-clean") + "  " + Link(ActionChecks, "", x.L("diag-q-checks")));
@@ -111,7 +124,7 @@ namespace VintageE
                 // A hair of rounding is nothing; a quarter of the cost, or more than 4 EMC, is a real gain.
                 if (profit > Math.Max(4, cost * 0.25)) result.Add(new ProfitEntry { Conv = conv, profit = profit, cost = cost, gain = gain, processing = conv.Kind == ConversionKind.Processing });
             }
-            return result.OrderByDescending(p => p.profit).ToList();
+            return result.OrderByDescending(p => p.profit).GroupBy(p => (p.Conv.Output ?? p.Conv.JointOutputs?.FirstOrDefault().Key, EmcMapper.Describe(p.Conv))).Select(g => g.First()).ToList();
         }
 
         static void Profit(Ctx x, bool full)
@@ -214,11 +227,14 @@ namespace VintageE
         {
             var result = new List<(string, string, double, string, double)>();
             if (x.Index == null) return result;
+            string[] MetalTiers = MetalTiersFor(x);
+            if (MetalTiers.Length < 2) return result;
             var byFamily = new Dictionary<string, Dictionary<string, double>>();
             foreach (var kv in x.Report.Values)
             {
                 CollectibleObject c = kv.Key;
                 if (c?.Code == null || c.VariantStrict == null || !c.VariantStrict.TryGetValue("metal", out string metal) || Array.IndexOf(MetalTiers, metal) < 0) continue;
+                if (c.Code.Path.StartsWith("ingot-", StringComparison.Ordinal)) continue; // the ingots define the order
                 // The family without the metal part, so "axe-copper" and "axe-steel" compare.
                 string family = c.Code.Domain + ":" + c.Code.Path.Replace("-" + metal, "").Replace(metal + "-", "");
                 if (!byFamily.TryGetValue(family, out var tiers)) byFamily[family] = tiers = new Dictionary<string, double>();
@@ -447,10 +463,10 @@ namespace VintageE
             foreach (var (file, dead, fresh) in list)
             {
                 if (dead.Count + fresh.Count == 0) { x.Ok(x.L("diag-drift-ok", file.Name)); continue; }
-                any = true;
                 string version = "?";
                 try { version = x.Sapi.ModLoader.GetMod(file.RequiredMods.FirstOrDefault() ?? "")?.Info?.Version ?? "?"; } catch { }
-                x.Warn(x.L("diag-drift-file", file.Name, version, dead.Count, fresh.Count));
+                if (fresh.Count > 0) { any = true; x.Warn(x.L("diag-drift-file", file.Name, version, dead.Count, fresh.Count)); }
+                else x.Note(x.L("diag-drift-deadonly", file.Name, version, dead.Count), 0);
                 foreach (string d in dead.Take(8)) x.Note(x.L("diag-drift-dead", d), 1);
                 foreach (CollectibleObject c in fresh.Take(8)) r.Add(x.L("diag-drift-fresh", EmcReport.Ref(c)), EmcLineStyle.Text, 1);
                 if (fresh.Count > 0 && file.RequiredMods.Count > 0) r.Add(Link(ActionDraft, file.RequiredMods[0], x.L("diag-q-draft", fresh.Count)), EmcLineStyle.Text, 1);
