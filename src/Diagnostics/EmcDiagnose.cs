@@ -214,7 +214,11 @@ namespace VintageE
                     if (dead.Count > 15) x.Note(x.L("diag-more", dead.Count - 15), 2);
                     x.Fix(x.L("diag-deadkeys-fix"));
                 }
-                else x.Ok(x.L("diag-keys-ok", cfg.BaseValues.Count + cfg.FixedValues.Count + cfg.Blacklist.Count));
+                else
+                {
+                    int n = cfg.BaseValues.Count + cfg.FixedValues.Count + cfg.Blacklist.Count + cfg.Allow.Count + cfg.NoTransmute.Count + cfg.GrayList.Count + cfg.FreeIngredients.Count;
+                    x.Ok(n == 0 ? x.L("diag-keys-none", VintageEModSystem.ConfigFile) : x.L("diag-keys-ok", n));
+                }
             }
             if (report.UnmatchedRules > 0) x.Note(x.L("diag-unmatchedrules", report.UnmatchedRules), 0);
             if (report.CustomRecipeProblems.Count > 0)
@@ -257,6 +261,7 @@ namespace VintageE
             // Loops.
             if (report.Loops.Count > 0)
             {
+                problems++;
                 x.Warn(x.L("diag-loops", report.Loops.Count, report.Loops.Sum(l => l.Count)));
                 foreach (var loop in report.Loops.Take(3)) r.Add(string.Join(" → ", loop.Take(6).Select(EmcReport.Ref)) + (loop.Count > 6 ? " → ..." : ""), EmcLineStyle.Text, 2);
                 x.Fix(x.L("diag-loops-fix"));
@@ -348,13 +353,14 @@ namespace VintageE
 
         static string ModName(Ctx x, string domain)
         {
+            if (domain == "game" || domain == "survival" || domain == "creative") return x.L("diag-basegame") + " (" + domain + ")";
             try
             {
                 Mod m = x.Sapi.ModLoader.GetMod(domain);
                 if (m?.Info?.Name != null) return m.Info.Name + " (" + domain + ")";
             }
             catch { /* unknown domain */ }
-            return domain == "game" ? x.L("diag-basegame") + " (game)" : domain;
+            return domain;
         }
 
         /// <summary>Every mod with content, with its coverage, each a link to its own report.</summary>
@@ -393,8 +399,11 @@ namespace VintageE
                 {
                     x.Warn(x.L("diag-mod-disabled", domain));
                 }
-                else x.Note(x.L("diag-mod-noitems", domain), 0);
-                CompatFor(x, domain);
+                else
+                {
+                    x.Note(x.L("diag-mod-noitems", domain), 0);
+                    CompatFor(x, domain);
+                }
                 Back(x);
                 return;
             }
@@ -422,7 +431,7 @@ namespace VintageE
                 r.Add(x.L("diag-mod-norecipe-why"), EmcLineStyle.Note, 1);
                 Families(x, noRecipe, 8);
                 x.Fix(x.L("diag-mod-norecipe-fix1"));
-                x.Fix(x.L("diag-mod-norecipe-fix2", domain));
+                if (domain != "game") x.Fix(x.L("diag-mod-norecipe-fix2", domain));
                 x.Fix(x.L("diag-mod-norecipe-fix3"));
             }
             if (waiting.Count > 0)
@@ -442,8 +451,11 @@ namespace VintageE
                 r.Add(x.L("diag-mod-waiting-why"), EmcLineStyle.Note, 1);
                 foreach (var kv in blockers.OrderByDescending(kv => kv.Value).Take(10))
                 {
-                    string why = report.MissingWhy.TryGetValue(kv.Key, out string w) && w == MissingAnalysis.NoRecipe ? " " + x.L("diag-blocker-norecipe") : report.Blacklisted.Contains(kv.Key) ? " " + x.L("diag-blocker-blacklisted") : "";
-                    r.Add(x.L("diag-blocker", EmcReport.Ref(kv.Key), kv.Value) + why, EmcLineStyle.Text, 2);
+                    string why = report.Blacklisted.Contains(kv.Key) ? x.L("diag-blocker-blacklisted")
+                        : report.LoopOf.ContainsKey(kv.Key) ? x.L("diag-blocker-loop")
+                        : report.MissingWhy.TryGetValue(kv.Key, out string w) && w == MissingAnalysis.NoRecipe ? x.L("diag-blocker-norecipe")
+                        : x.L("diag-blocker-waiting");
+                    r.Add(x.L("diag-blocker", EmcReport.Ref(kv.Key), kv.Value) + " " + why + "  " + Link(ActionItem, kv.Key.Code.ToString(), x.L("diag-why-link")), EmcLineStyle.Text, 2);
                 }
                 x.Fix(x.L("diag-mod-waiting-fix"));
             }
