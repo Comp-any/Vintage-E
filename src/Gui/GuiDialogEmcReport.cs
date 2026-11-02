@@ -34,6 +34,9 @@ namespace VintageE
         int pages = 1;
         bool composing;
         string status;
+        /// <summary>Check lines (✓/⚠/•) whose details are shown; details are hidden until the line is clicked.</summary>
+        readonly HashSet<int> expanded = new HashSet<int>();
+        bool expandAll;
 
         public override string ToggleKeyCombinationCode => null;
         /// <summary>Above the handbook (0.2), below the hovered-item value box (0.3) it can open.</summary>
@@ -63,6 +66,8 @@ namespace VintageE
             current = packet;
             page = 0;
             status = null;
+            expanded.Clear();
+            expandAll = false;
             Compose();
         }
 
@@ -72,6 +77,7 @@ namespace VintageE
             double top = GuiStyle.TitleBarHeight + 6;
             ElementBounds backBounds = ElementBounds.Fixed(0, top, 70, 30);
             ElementBounds searchBounds = ElementBounds.Fixed(80, top, 240, 30);
+            ElementBounds expandBounds = ElementBounds.Fixed(330, top, 120, 30);
             ElementBounds refreshBounds = ElementBounds.Fixed(ListWidth - 100, top, 100, 30);
 
             ElementBounds listBounds = ElementBounds.Fixed(0, top + 42, ListWidth, ListHeight);
@@ -98,6 +104,7 @@ namespace VintageE
             bgBounds.BothSizing = ElementSizing.FitToChildren;
             bgBounds.WithChildren(backBounds, searchBounds, refreshBounds, clipBounds, prevBounds, countBounds, nextBounds, closeBounds, copyBounds, fileBounds, statusBounds);
             if (IsDump) bgBounds.WithChildren(handbookBounds, setBounds);
+            if (IsDiagnose) bgBounds.WithChildren(expandBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             composing = true;
@@ -126,6 +133,10 @@ namespace VintageE
                 c.AddSmallButton(Lang.Get("vintagee:reportgui-setvalue"), OnSetValue, setBounds)
                  .AddSmallButton(Lang.Get("vintagee:reportgui-handbook"), OnHandbook, handbookBounds);
             }
+            if (IsDiagnose)
+            {
+                c.AddSmallButton(Lang.Get(expandAll ? "vintagee:reportgui-collapse" : "vintagee:reportgui-expand"), OnExpandAll, expandBounds, EnumButtonStyle.Normal, "expand");
+            }
             SingleComposer = c.EndChildElements().Compose();
             composing = false;
             SingleComposer.GetTextInput("search")?.SetPlaceHolderText(Lang.Get(IsDump ? "vintagee:reportgui-search" : IsDiagnose ? "vintagee:reportgui-searchdiag" : "vintagee:reportgui-searchloops"));
@@ -138,12 +149,17 @@ namespace VintageE
 
         sealed class Line
         {
+            public int Index;
             public string Text;
             public int Indent;
             public EmcLineStyle Style;
             public int Block;
             public string Plain;
             public int Refs;
+            /// <summary>The check line this one is a detail of (its index), or -1.</summary>
+            public int Header = -1;
+            /// <summary>For a check line: how many detail lines follow it.</summary>
+            public int Details;
         }
 
         List<Line> cachedLines;
@@ -159,6 +175,7 @@ namespace VintageE
                 string t = texts[i] ?? "";
                 lines.Add(new Line
                 {
+                    Index = i,
                     Text = t,
                     Indent = current.Indents != null && i < current.Indents.Length ? current.Indents[i] : 0,
                     Style = current.Styles != null && i < current.Styles.Length ? (EmcLineStyle)current.Styles[i] : EmcLineStyle.Text,
@@ -166,6 +183,19 @@ namespace VintageE
                     Plain = EmcReport.Plain(capi.World, t),
                     Refs = EmcReport.AnyToken.Matches(t).Count
                 });
+            }
+            // A check line (✓ / ⚠ / •) owns the indented lines and notes that follow it, until the next check, heading
+            // or plain line at the margin: those are its details, hidden until it's clicked.
+            Line header = null;
+            foreach (Line line in lines)
+            {
+                if (line.Style == EmcLineStyle.Check && line.Indent == 0) { header = line; continue; }
+                if (header != null && line.Block == header.Block && line.Style != EmcLineStyle.Heading && (line.Indent > 0 || line.Style == EmcLineStyle.Note))
+                {
+                    line.Header = header.Index;
+                    header.Details++;
+                }
+                else header = null;
             }
             cachedFor = current;
             cachedLines = lines;
@@ -183,14 +213,16 @@ namespace VintageE
             int weight = 0;
             foreach (var block in keep)
             {
-                int w = block.Sum(l => 1 + l.Refs);
+                // Details stay hidden behind their check line unless it's expanded, or they're what the search found.
+                var shown = block.Where(l => l.Header < 0 || expandAll || expanded.Contains(l.Header) || (needle.Length > 0 && l.Plain.ToLowerInvariant().Contains(needle))).ToList();
+                int w = shown.Sum(l => 1 + l.Refs);
                 if (pageLines.Count > 0 && weight + w > PageWeight)
                 {
                     result.Add(pageLines);
                     pageLines = new List<Line>();
                     weight = 0;
                 }
-                pageLines.AddRange(block);
+                pageLines.AddRange(shown);
                 weight += w;
             }
             if (pageLines.Count > 0 || result.Count == 0) result.Add(pageLines);
@@ -234,10 +266,14 @@ namespace VintageE
             }
         }
 
-        static CairoFont FontFor(EmcLineStyle style)
+        static CairoFont FontFor(EmcLineStyle style, string text = null)
         {
             switch (style)
             {
+                case EmcLineStyle.Check:
+                    if (text != null && text.StartsWith("\u2713", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
+                    if (text != null && text.StartsWith("\u26a0", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.6, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
+                    return CairoFont.WhiteSmallText().WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Heading: return CairoFont.WhiteSmallishText().WithColor(new double[] { 1, 0.85, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Total: return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Note: return CairoFont.WhiteDetailText().WithColor(new double[] { 0.72, 0.72, 0.72, 1 });
@@ -249,13 +285,22 @@ namespace VintageE
         /// <summary>One line: its text, with each [[key]] as an item icon and a name to click.</summary>
         void AddLine(List<RichTextComponentBase> comps, Line line)
         {
-            CairoFont font = FontFor(line.Style);
+            CairoFont font = FontFor(line.Style, line.Text);
             CairoFont linkFont = font.Clone().WithColor(new double[] { 0.55, 0.8, 1, 1 });
             int first = comps.Count;
             if (line.Style == EmcLineStyle.Heading && first > 0) comps.Add(new RichTextComponent(capi, "\n", CairoFont.WhiteDetailText()));
             int start = comps.Count;
             string text = line.Text;
             int pos = 0;
+            if (line.Style == EmcLineStyle.Check && line.Details > 0)
+            {
+                // The arrow opens and closes the details; the whole line is the link.
+                bool open = expandAll || expanded.Contains(line.Index);
+                int index = line.Index;
+                comps.Add(new LinkTextComponent(capi, (open ? "\u25be " : "\u25b8 ") + line.Plain, font, _ => Toggle(index)) { VerticalAlign = EnumVerticalAlign.Middle });
+                comps.Add(new RichTextComponent(capi, "\n", font));
+                return;
+            }
             foreach (System.Text.RegularExpressions.Match m in EmcReport.AnyToken.Matches(text))
             {
                 if (m.Index > pos) comps.Add(new RichTextComponent(capi, text.Substring(pos, m.Index - pos), font) { VerticalAlign = EnumVerticalAlign.Middle });
@@ -290,6 +335,28 @@ namespace VintageE
             bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
             if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
             comps.Add(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)) { VerticalAlign = EnumVerticalAlign.Middle });
+        }
+
+        void Toggle(int index)
+        {
+            if (!expanded.Remove(index)) expanded.Add(index);
+            if (expandAll)
+            {
+                // Closing one line while everything is open: keep the others open and drop back to per-line state.
+                expandAll = false;
+                foreach (Line l in Lines()) if (l.Details > 0 && l.Index != index) expanded.Add(l.Index);
+                Compose();
+                return;
+            }
+            Refill();
+        }
+
+        bool OnExpandAll()
+        {
+            expandAll = !expandAll;
+            expanded.Clear();
+            Compose(); // the button's label changes with it
+            return true;
         }
 
         void Diagnose(string action, string arg)

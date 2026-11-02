@@ -10,7 +10,11 @@ using Vintagestory.API.Server;
 
 namespace VintageE
 {
-    public enum EmcLineStyle : byte { Text = 0, Heading = 1, Total = 2, Note = 3, Warn = 4 }
+    /// <summary>
+    /// Check: the one-line result of a test ("✓ ...", "⚠ ..." or "• ..."). In the window the lines after it that are
+    /// indented or notes are its details, hidden until the line is clicked; the file and the console show everything.
+    /// </summary>
+    public enum EmcLineStyle : byte { Text = 0, Heading = 1, Total = 2, Note = 3, Warn = 4, Check = 5 }
 
     public sealed class EmcReportLine
     {
@@ -70,11 +74,11 @@ namespace VintageE
             return label + " (/emc diagnose" + (action.Length > 0 && action != EmcDiagnose.ActionOverview ? " " + action : "") + (arg.Length > 0 ? " " + arg : "") + ")";
         }
 
-        /// <summary>The text with each [[key]] written out as "Name (code)".</summary>
-        public static string Plain(IWorldAccessor world, string text)
+        /// <summary>The text with each [[key]] written out as "Name (code)". With <paramref name="labelsOnly"/>, answer links keep just their label (for a bug report).</summary>
+        public static string Plain(IWorldAccessor world, string text, bool labelsOnly = false)
         {
             if (string.IsNullOrEmpty(text) || (text.IndexOf("[[", StringComparison.Ordinal) < 0 && text.IndexOf("{{", StringComparison.Ordinal) < 0)) return text ?? "";
-            text = ActionToken.Replace(text, m => PlainAction(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value));
+            text = ActionToken.Replace(text, m => labelsOnly ? m.Groups[3].Value : PlainAction(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value));
             return RefToken.Replace(text, m =>
             {
                 CollectibleObject c = world == null ? null : PlayerEmc.Resolve(world, m.Groups[1].Value);
@@ -83,14 +87,14 @@ namespace VintageE
         }
 
         /// <summary>The whole report as plain text, for the file and the console.</summary>
-        public string PlainText(IWorldAccessor world)
+        public string PlainText(IWorldAccessor world, bool labelsOnly = false)
         {
             var sb = new StringBuilder();
             foreach (EmcReportLine line in Lines)
             {
                 if (line.Style == EmcLineStyle.Heading && sb.Length > 0) sb.Append('\n');
                 sb.Append(' ', line.Indent * 2);
-                string text = Plain(world, line.Text);
+                string text = Plain(world, line.Text, labelsOnly);
                 sb.Append(line.Style == EmcLineStyle.Heading ? "== " + text + " ==" : text).Append('\n');
             }
             return sb.ToString().TrimEnd();

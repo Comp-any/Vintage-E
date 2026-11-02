@@ -63,19 +63,19 @@ namespace VintageE
             EmcReport r = x.R;
             int found = 0;
             var profit = ProfitList(x);
-            if (profit.Count > 0) { found++; x.Warn(x.L("diag-profit-summary", profit.Count, F(profit[0].profit)) + "  " + Link(ActionProfit, "", x.L("diag-q-profit"))); }
+            if (profit.Count > 0) { found++; x.Warn(x.L("diag-profit-summary", profit.Count, F(profit[0].profit))); r.Add(Link(ActionProfit, "", x.L("diag-q-profit")), EmcLineStyle.Text, 1); }
             var blockers = BlacklistBlockerList(x);
-            if (blockers.Count > 0) { found++; x.Warn(x.L("diag-blblockers-summary", blockers.Count, blockers.Sum(b => b.held)) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
+            if (blockers.Count > 0) { found++; x.Warn(x.L("diag-blblockers-summary", blockers.Count, blockers.Sum(b => b.held))); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
             var modes = ContainerModeList(x);
-            if (modes.Count > 0) { found++; x.Warn(x.L("diag-modes-summary", modes.Count) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
+            if (modes.Count > 0) { found++; x.Warn(x.L("diag-modes-summary", modes.Count)); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
             var tiers = TierViolations(x);
-            if (tiers.Count > 0) { found++; x.Warn(x.L("diag-tiers-summary", tiers.Count) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
-            if (x.Report.Skipped.Count > 0) x.Note(x.L("diag-skipped-summary", x.Report.SkippedRecipes) + "  " + Link(ActionSkipped, "", x.L("diag-q-skipped")), 0);
+            if (tiers.Count > 0) { found++; x.Warn(x.L("diag-tiers-summary", tiers.Count)); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
+            if (x.Report.Skipped.Count > 0) { x.Info(x.L("diag-skipped-summary", x.Report.SkippedRecipes)); r.Add(Link(ActionSkipped, "", x.L("diag-q-skipped")), EmcLineStyle.Text, 1); }
             var drift = CompatDriftList(x);
-            if (drift.Any(d => d.fresh.Count > 0)) { found++; x.Warn(x.L("diag-drift-summary", drift.Count(d => d.fresh.Count > 0)) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
+            if (drift.Any(d => d.fresh.Count > 0)) { found++; x.Warn(x.L("diag-drift-summary", drift.Count(d => d.fresh.Count > 0))); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
             var dups = DuplicateList(x);
-            if (dups.Count > 0) { found++; x.Warn(x.L("diag-dups-summary", dups.Count) + "  " + Link(ActionChecks, "", x.L("diag-q-checks"))); }
-            if (found == 0) x.Ok(x.L("diag-checks-clean") + "  " + Link(ActionChecks, "", x.L("diag-q-checks")));
+            if (dups.Count > 0) { found++; x.Warn(x.L("diag-dups-summary", dups.Count)); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
+            if (found == 0) { x.Ok(x.L("diag-checks-clean")); x.Explain(x.L("diag-checks-clean-why")); r.Add(Link(ActionChecks, "", x.L("diag-q-checks")), EmcLineStyle.Text, 1); }
             return found;
         }
 

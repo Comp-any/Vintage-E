@@ -33,12 +33,20 @@ namespace VintageE
             public ItemStack Held;
             /// <summary>The report a fix link returns to (this report's action and argument).</summary>
             public string ThenAction = ActionOverview, ThenArg = "";
+            /// <summary>For the bug report: results and facts only, no advice (→ lines) and no explanations.</summary>
+            public bool Compact;
             public string L(string key, params object[] args) => Lang.GetL(LangCode, "vintagee:" + key, args);
             public double V(CollectibleObject c) => c != null && Report?.Values != null && Report.Values.TryGetValue(c, out double v) ? v : 0;
-            public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Total);
-            public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Warn);
-            public void Fix(string text) => R.Add("→ " + text, EmcLineStyle.Text, 1);
+            /// <summary>A test that passed: one line, which the window shows collapsed with its details behind it.</summary>
+            public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Check);
+            /// <summary>A test that found something: one line; the window shows its details and fixes when clicked.</summary>
+            public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Check);
+            /// <summary>A neutral finding (neither good nor bad) with details behind it.</summary>
+            public void Info(string text) => R.Add("• " + text, EmcLineStyle.Check);
+            public void Fix(string text) { if (!Compact) R.Add("→ " + text, EmcLineStyle.Text, 1); }
             public void Note(string text, int indent = 1) => R.Add(text, EmcLineStyle.Note, indent);
+            /// <summary>Background that helps a reader but not a bug report.</summary>
+            public void Explain(string text, int indent = 1) { if (!Compact) R.Add(text, EmcLineStyle.Note, indent); }
         }
 
         static string F(double v) => EmcFormat.Format(v);
@@ -205,10 +213,11 @@ namespace VintageE
             if (heading)
             {
                 int valued = x.Report.CreativeTotal - x.Report.Missing.Count;
-                x.Ok(x.Report.FromCache
+                string mapped = x.Report.FromCache
                     ? x.L("diag-mapped-cached", x.Report.Values.Count, x.Report.CachedAt ?? "?")
-                    : x.L("diag-mapped", x.Report.Values.Count, x.Report.Milliseconds));
-                r.Add(x.L("diag-coverage", valued, x.Report.CreativeTotal, Pct(valued, x.Report.CreativeTotal)), valued * 10 < x.Report.CreativeTotal * 9 ? EmcLineStyle.Warn : EmcLineStyle.Text);
+                    : x.L("diag-mapped", x.Report.Values.Count, x.Report.Milliseconds);
+                if (valued * 10 < x.Report.CreativeTotal * 9) x.Warn(mapped); else x.Ok(mapped);
+                r.Add(x.L("diag-coverage", valued, x.Report.CreativeTotal, Pct(valued, x.Report.CreativeTotal)), valued * 10 < x.Report.CreativeTotal * 9 ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
             }
             return true;
         }
@@ -227,6 +236,7 @@ namespace VintageE
             {
                 problems++;
                 x.Warn(x.L("diag-nobuiltin", report.BaseCount));
+                x.Explain(x.L("diag-nobuiltin-why"));
                 x.Fix(x.L("diag-nobuiltin-fix"));
                 r.Add(FixLink(x, "setting", "DisableBuiltInBaseValues=false", x.L("diag-fix-setting", "DisableBuiltInBaseValues", "false")), EmcLineStyle.Text, 1);
             }
@@ -238,9 +248,11 @@ namespace VintageE
                 if (!cfg.InferFromVariantSiblings) off.Add("InferFromVariantSiblings");
                 if (!cfg.EstimateFuelAndFood) off.Add("EstimateFuelAndFood");
                 if (!cfg.UseTraderPrices) off.Add("UseTraderPrices");
-                x.Note(x.L("diag-guessing-off", string.Join(", ", off)), 0);
+                x.Info(x.L("diag-guessing-off", off.Count));
+                x.Note(string.Join(", ", off));
+                x.Explain(x.L("diag-guessing-off-why"));
             }
-            if (cfg.FallbackValue > 0) x.Note(x.L("diag-fallback", F(cfg.FallbackValue)), 0);
+            if (cfg.FallbackValue > 0) { x.Info(x.L("diag-fallback", F(cfg.FallbackValue))); x.Explain(x.L("diag-fallback-why")); }
 
             // Value files and config entries that match nothing (a typo in a code, or a mod that isn't loaded).
             if (x.Index != null)
@@ -264,7 +276,6 @@ namespace VintageE
                     x.Ok(n == 0 ? x.L("diag-keys-none", VintageEModSystem.ConfigFile) : x.L("diag-keys-ok", n));
                 }
             }
-            if (report.UnmatchedRules > 0) x.Note(x.L("diag-unmatchedrules", report.UnmatchedRules), 0);
             if (report.CustomRecipeProblems.Count > 0)
             {
                 problems++;
@@ -275,7 +286,8 @@ namespace VintageE
 
             // Value files.
             x.Ok(x.L("diag-files", x.Mod.Rules.LoadedFiles.Count, report.BaseCount));
-            if (report.SkippedRecipes > 0) x.Note(x.L("diag-skippedrecipes", report.SkippedRecipes), 0);
+            if (report.UnmatchedRules > 0) x.Note(x.L("diag-unmatchedrules", report.UnmatchedRules));
+            if (report.SkippedRecipes > 0) x.Note(x.L("diag-skippedrecipes", report.SkippedRecipes));
 
             // Compatibility files.
             var compat = x.Mod.Rules.Compat;
@@ -285,11 +297,16 @@ namespace VintageE
             if (disabled.Count > 0)
             {
                 x.Warn(x.L("diag-compat-disabled", string.Join(", ", disabled.Select(f => f.Name))));
+                x.Explain(x.L("diag-compat-disabled-why"));
                 x.Fix(x.L("diag-compat-disabled-fix"));
                 foreach (var f in disabled) r.Add(FixLink(x, "compat", f.Source, x.L("diag-fix-compat", f.Name)), EmcLineStyle.Text, 1);
             }
-            if (loaded.Count > 0) x.Ok(x.L("diag-compat-loaded", string.Join(", ", loaded.Select(f => f.Name + " (" + (report.CompatUsed.TryGetValue(f.Source, out int n) ? n : 0) + ")"))));
-            if (full && notLoaded.Count > 0) x.Note(x.L("diag-compat-notloaded", string.Join(", ", notLoaded.Select(f => f.Name))), 0);
+            if (loaded.Count > 0)
+            {
+                x.Ok(x.L("diag-compat-loaded", loaded.Count, loaded.Sum(f => report.CompatUsed.TryGetValue(f.Source, out int n) ? n : 0)));
+                foreach (var f in loaded) x.Note(f.Name + ": " + (report.CompatUsed.TryGetValue(f.Source, out int n) ? n : 0));
+            }
+            if (full && notLoaded.Count > 0) x.Note(x.L("diag-compat-notloaded", string.Join(", ", notLoaded.Select(f => f.Name))));
 
             // Mods with poor coverage.
             var mods = ModCoverage(x);
@@ -308,6 +325,7 @@ namespace VintageE
             {
                 problems++;
                 x.Warn(x.L("diag-loops", report.Loops.Count, report.Loops.Sum(l => l.Count)));
+                x.Explain(x.L("diag-loops-why"));
                 foreach (var loop in report.Loops.Take(3)) r.Add(string.Join(" → ", loop.Take(6).Select(EmcReport.Ref)) + (loop.Count > 6 ? " → ..." : ""), EmcLineStyle.Text, 2);
                 x.Fix(x.L("diag-loops-fix"));
             }
@@ -319,7 +337,9 @@ namespace VintageE
                 int noRecipe = report.Missing.Count(c => report.MissingWhy.TryGetValue(c, out string w) && w == MissingAnalysis.NoRecipe);
                 int inLoop = report.Missing.Count(c => report.LoopOf.ContainsKey(c));
                 int waiting = report.Missing.Count - noRecipe - inLoop;
-                r.Add(x.L("diag-missing", report.Missing.Count, noRecipe, Math.Max(0, waiting), inLoop), report.Missing.Count * 10 > report.CreativeTotal ? EmcLineStyle.Warn : EmcLineStyle.Text);
+                string missing = x.L("diag-missing", report.Missing.Count, noRecipe, Math.Max(0, waiting), inLoop);
+                if (report.Missing.Count * 10 > report.CreativeTotal) x.Warn(missing); else x.Info(missing);
+                x.Note(x.L("diag-missing-families"));
                 foreach (var fam in VintageEModSystem.MissingFamilies(report).Take(full ? 15 : 6))
                 {
                     CollectibleObject sample = report.Missing.FirstOrDefault(c => c.Code.Domain + ":" + c.Code.Path.Split('-')[0] == fam.Key);
@@ -330,11 +350,12 @@ namespace VintageE
             else x.Ok(x.L("diag-missing-none"));
 
             // Cache.
-            if (report.FromCache) { x.Note(x.L("diag-cache", report.CachedAt ?? "?"), 0); r.Add(FixLink(x, "recalc", "", x.L("diag-fix-recalc")), EmcLineStyle.Text, 1); }
+            if (report.FromCache) { x.Info(x.L("diag-cache", report.CachedAt ?? "?")); x.Explain(x.L("diag-cache-why")); r.Add(FixLink(x, "recalc", "", x.L("diag-fix-recalc")), EmcLineStyle.Text, 1); }
             if (full)
             {
-                x.Note(x.L("diag-stats", report.ConversionCount, report.SourceCount, report.DerivedCount, report.InferredCount, report.RelativeCount, report.TraderCount, report.SiblingCount + report.GuessCount + report.OtherModCount, report.DefaultCount, report.FuelCount + report.FoodCount), 0);
-                if (report.UnstableRemoved > 0 || report.LoopFrozen > 0) x.Note(x.L("diag-unstable", report.LoopFrozen, report.UnstableRemoved), 0);
+                x.Info(x.L("diag-stats-head", report.ConversionCount, report.SourceCount));
+                x.Note(x.L("diag-stats", report.DerivedCount, report.InferredCount, report.RelativeCount, report.TraderCount, report.SiblingCount + report.GuessCount + report.OtherModCount, report.DefaultCount, report.FuelCount + report.FoodCount));
+                if (report.UnstableRemoved > 0 || report.LoopFrozen > 0) x.Note(x.L("diag-unstable", report.LoopFrozen, report.UnstableRemoved));
             }
 
             problems += ChecksSummary(x);

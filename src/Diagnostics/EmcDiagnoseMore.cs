@@ -63,6 +63,7 @@ namespace VintageE
             if (client.ClientTableCount == 0)
             {
                 x.Warn(x.L("diag-client-notable"));
+                x.Explain(x.L("diag-client-notable-why"));
                 x.Fix(x.L("diag-client-notable-fix"));
                 r.Add(FixLink(x, "resend", "", x.L("diag-fix-resend")));
             }
@@ -141,7 +142,7 @@ namespace VintageE
             if (error != null) { x.Note(error, 0); return; }
             if (lines.Count == 0) { x.Ok(x.L("diag-log-clean")); return; }
             x.Warn(x.L("diag-log-found", lines.Count));
-            foreach (string l in lines) r.Add(Explain(x, l), EmcLineStyle.Text, 1);
+            foreach (string l in lines) r.Add(x.Compact ? l : Explain(x, l), EmcLineStyle.Text, 1);
             if (!heading) r.Add(Link(ActionLog, "", x.L("diag-q-log")));
             x.Fix(x.L("diag-log-fix"));
         }
@@ -222,9 +223,9 @@ namespace VintageE
             var mods = OtherModsPatches(x);
             var relevant = mods.Where(m => m.Recipes + m.Processing + m.EmcValue + m.Ours > 0).ToList();
             var otherFiles = x.Mod.Rules.LoadedFiles.Where(f => !f.StartsWith("vintagee:", StringComparison.Ordinal)).ToList();
-            if (otherFiles.Count > 0) x.Note(x.L("diag-patches-valuefiles", string.Join(", ", otherFiles)), 0);
-            if (relevant.Count == 0) { x.Ok(x.L("diag-patches-none", mods.Count)); return; }
-            r.Add(x.L("diag-patches-found", relevant.Count), EmcLineStyle.Text);
+            if (relevant.Count == 0) { x.Ok(x.L("diag-patches-none", mods.Count)); if (otherFiles.Count > 0) x.Note(x.L("diag-patches-valuefiles", string.Join(", ", otherFiles))); return; }
+            x.Info(x.L("diag-patches-found", relevant.Count));
+            if (otherFiles.Count > 0) x.Note(x.L("diag-patches-valuefiles", string.Join(", ", otherFiles)));
             foreach (ModPatches m in relevant.Take(heading ? 30 : 8))
             {
                 var parts = new List<string>();
@@ -233,9 +234,9 @@ namespace VintageE
                 if (m.EmcValue > 0) parts.Add(x.L("diag-patches-emcvalue", m.EmcValue));
                 if (m.Ours > 0) parts.Add(x.L("diag-patches-ours", m.Ours));
                 r.Add(Link(ActionMod, m.Domain, ModName(x, m.Domain)) + ": " + string.Join(", ", parts), m.Ours > 0 ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
-                if (heading) foreach (string ex in m.Examples) x.Note(ex, 2);
+                if (heading && !x.Compact) foreach (string ex in m.Examples) x.Note(ex, 2);
             }
-            x.Note(x.L("diag-patches-why"), 0);
+            x.Explain(x.L("diag-patches-why"));
             if (!heading) r.Add(Link(ActionPatches, "", x.L("diag-q-patches")));
         }
 
@@ -269,11 +270,15 @@ namespace VintageE
             found = found.OrderByDescending(f => Math.Max(f.v / f.median, f.median / f.v)).ToList();
             if (found.Count == 0) { x.Ok(x.L("diag-outliers-none")); return; }
             x.Warn(x.L("diag-outliers-found", found.Count));
-            r.Add(x.L("diag-outliers-help"), EmcLineStyle.Note, 1);
+            x.Explain(x.L("diag-outliers-help"));
             foreach (var f in found.Take(heading ? 25 : 6))
             {
-                r.Add(EmcReport.Ref(f.c) + " " + F(f.v) + " " + x.L("diag-outliers-vs", F(f.median)), EmcLineStyle.Text, 1);
-                x.Note(Linkify(x, f.origin), 2);
+                if (x.Compact) r.Add(EmcReport.Ref(f.c) + " " + F(f.v) + " " + x.L("diag-outliers-vs", F(f.median)) + " <- " + f.origin, EmcLineStyle.Text, 1);
+                else
+                {
+                    r.Add(EmcReport.Ref(f.c) + " " + F(f.v) + " " + x.L("diag-outliers-vs", F(f.median)), EmcLineStyle.Text, 1);
+                    x.Note(Linkify(x, f.origin), 2);
+                }
             }
             if (found.Count > (heading ? 25 : 6)) x.Note(x.L("diag-more", found.Count - (heading ? 25 : 6)));
             x.Fix(x.L("diag-outliers-fix"));
@@ -545,33 +550,66 @@ namespace VintageE
             r.Section(x.L("diag-sec-bugreport"));
             r.Add(x.L("diag-bugreport-help"), EmcLineStyle.Note);
             var sb = new StringBuilder();
-            sb.Append("Vintage-E bug report, ").Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)).Append('\n');
-            sb.Append("Vintage-E ").Append(x.Mod.Version ?? "?").Append(", Vintage Story ").Append(GameVersion.LongGameVersion).Append('\n');
-            sb.Append("Server: ").Append(x.Sapi.Server.IsDedicated ? "dedicated" : "single player / hosted").Append(", ").Append((x.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>()).Length).Append(" players online\n");
-            sb.Append("\n== Mods ==\n");
-            foreach (Mod m in x.Sapi.ModLoader.Mods.OrderBy(m => m.Info?.ModID, StringComparer.Ordinal))
+            sb.Append("Vintage-E ").Append(x.Mod.Version ?? "?").Append(" on Vintage Story ").Append(GameVersion.LongGameVersion)
+              .Append(", ").Append(x.Sapi.Server.IsDedicated ? "dedicated server" : "single player / hosted")
+              .Append(", ").Append((x.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>()).Length).Append(" online, ")
+              .Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)).Append('\n');
+
+            // The mod list, wrapped, so 60 mods take a few lines instead of 60.
+            var mods = x.Sapi.ModLoader.Mods.Where(m => m.Info?.ModID != null && m.Info.ModID != "game" && m.Info.ModID != "survival" && m.Info.ModID != "creative")
+                .OrderBy(m => m.Info.ModID, StringComparer.Ordinal)
+                .Select(m => m.Info.ModID + " " + m.Info.Version + (x.Sapi.ModLoader.IsModEnabled(m.Info.ModID) ? "" : " (disabled)")).ToList();
+            sb.Append("\n== Mods (").Append(mods.Count).Append(") ==\n");
+            int col = 0;
+            foreach (string m in mods)
             {
-                if (m.Info == null) continue;
-                sb.Append(m.Info.ModID).Append(' ').Append(m.Info.Version).Append(x.Sapi.ModLoader.IsModEnabled(m.Info.ModID) ? "" : " (disabled)").Append('\n');
+                if (col > 0 && col + m.Length + 2 > 110) { sb.Append('\n'); col = 0; }
+                if (col > 0) { sb.Append(", "); col += 2; }
+                sb.Append(m); col += m.Length;
             }
+            sb.Append('\n');
+
+            // The check-up, facts only: no advice, no explanations, one line per patching mod and per outlier.
             sb.Append("\n== Diagnosis ==\n");
             var inner = new EmcReport { Kind = EmcReport.DiagnoseKind };
-            var ix = new Ctx { Mod = x.Mod, Sapi = x.Sapi, LangCode = "en", R = inner, Report = x.Report, Index = x.Index, Player = null, Held = x.Held, ThenAction = ActionBugReport };
+            var ix = new Ctx { Mod = x.Mod, Sapi = x.Sapi, LangCode = "en", R = inner, Report = x.Report, Index = x.Index, Player = null, Held = x.Held, ThenAction = ActionBugReport, Compact = true };
             if (MappingState(ix, true))
             {
                 Mapping(ix, true);
                 Patches(ix, true);
                 Outliers(ix, true);
             }
-            sb.Append(inner.PlainText(x.Sapi.World)).Append('\n');
+            foreach (string line in inner.PlainText(x.Sapi.World, labelsOnly: true).Split('\n'))
+            {
+                // Fix links read as bare labels once the token is gone; the verdict repeats what's above.
+                string t = line.TrimEnd();
+                if (t.Length == 0 || t.Contains("worth fixing") || t.Contains("Nothing wrong with the mapping")) continue;
+                sb.Append(t).Append('\n');
+            }
+
             sb.Append("\n== Server log (Vintage-E errors and warnings, addresses and ids removed) ==\n");
-            List<string> logLines = LogLines(x, 60, out string err);
+            List<string> logLines = LogLines(x, 40, out string err);
+            if (logLines.Count == 0 && err == null) sb.Append("(none)\n");
             foreach (string l in logLines) sb.Append(l).Append('\n');
             if (err != null) sb.Append(err).Append('\n');
-            sb.Append("\n== ModConfig/").Append(VintageEModSystem.ConfigFile).Append(" ==\n");
-            try { sb.Append(Newtonsoft.Json.JsonConvert.SerializeObject(x.Mod.Config, Newtonsoft.Json.Formatting.Indented)); }
+
+            // Only settings that differ from the defaults; the rest is implied.
+            sb.Append("\n== ModConfig/").Append(VintageEModSystem.ConfigFile).Append(" (settings that differ from the defaults) ==\n");
+            try
+            {
+                var live = JObject.FromObject(x.Mod.Config);
+                var defaults = JObject.FromObject(new VintageEConfig());
+                var changed = new JObject();
+                foreach (JProperty prop in live.Properties())
+                {
+                    JToken def = defaults[prop.Name];
+                    if (def == null || !JToken.DeepEquals(def, prop.Value)) changed[prop.Name] = prop.Value;
+                }
+                sb.Append(changed.Count == 0 ? "(all defaults)" : changed.ToString(Newtonsoft.Json.Formatting.Indented));
+            }
             catch (Exception e) { sb.Append("(could not serialize: ").Append(e.Message).Append(')'); }
             sb.Append('\n');
+
             string text = HomePath.Replace(Ip.Replace(sb.ToString(), "<address>"), "$1<user>");
             string file = null;
             try
