@@ -89,7 +89,7 @@ namespace VintageE
             else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));
             if (client.Stack != null && client.Stack.Length > 0)
             {
-                if (!client.ClientHeldHasTooltip
+                if (!client.ClientHeldHasTooltip)
                 {
                     x.Warn(x.L("diag-client-notooltip"));
                     x.Fix(x.L("diag-client-notooltip-fix"));
