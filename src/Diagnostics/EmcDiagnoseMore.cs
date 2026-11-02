@@ -523,7 +523,8 @@ namespace VintageE
             }
             sb.Append(inner.PlainText(x.Sapi.World)).Append('\n');
             sb.Append("\n== Server log (Vintage-E errors and warnings, addresses and ids removed) ==\n");
-            foreach (string l in LogLines(x, 60, out string err)) sb.Append(l).Append('\n');
+            List<string> logLines = LogLines(x, 60, out string err);
+            foreach (string l in logLines) sb.Append(l).Append('\n');
             if (err != null) sb.Append(err).Append('\n');
             sb.Append("\n== ModConfig/").Append(VintageEModSystem.ConfigFile).Append(" ==\n");
             try { sb.Append(Newtonsoft.Json.JsonConvert.SerializeObject(x.Mod.Config, Newtonsoft.Json.Formatting.Indented)); }

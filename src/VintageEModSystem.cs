@@ -1015,7 +1015,8 @@ namespace VintageE
                 }
                 else if (System.IO.File.Exists(last))
                 {
-                    PreviousValues = LoadSnapshot(last, out PreviousValuesAt);
+                    PreviousValues = LoadSnapshot(last, out DateTime at);
+                    PreviousValuesAt = at;
                 }
                 if (System.IO.File.Exists(last)) System.IO.File.Copy(last, prev, true);
                 var sb = new System.Text.StringBuilder();
