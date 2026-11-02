@@ -131,10 +131,13 @@ namespace VintageE
             }
             else problems = 1;
             x.R.Section(x.L("diag-sec-short"));
-            x.R.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-verdict-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
+            x.R.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-short-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
+            bool lastWasWarn = false;
             foreach (EmcReportLine line in full.Lines)
             {
-                if (line.Style == EmcLineStyle.Warn || line.Text.StartsWith("→", StringComparison.Ordinal) || line.Text.Contains("{{fix-")) x.R.Add(line.Text, line.Style, Math.Min(line.Indent, 1));
+                if (line.Style == EmcLineStyle.Warn && !line.Text.Contains("worth fixing")) { x.R.Add(line.Text, line.Style, 0); lastWasWarn = true; }
+                else if (lastWasWarn && (line.Text.StartsWith("\u2192", StringComparison.Ordinal) || line.Text.Contains("{{fix-"))) x.R.Add(line.Text, line.Style, 1);
+                else if (line.Style != EmcLineStyle.Note) lastWasWarn = false;
             }
             x.R.Add(Link(ActionOverview, "", x.L("diag-q-full")), EmcLineStyle.Text);
         }

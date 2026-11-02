@@ -840,6 +840,7 @@
   "diag-sec-trace-suspicious": "Weak links ({0})",
   "diag-trace-suspicious-help": "These were worked out backwards from a recipe with several ingredients, which prices an item by what it replaces, not by what it is. If the final value looks wrong, one of these is the likely cause; pinning it fixes the whole chain.",
   "diag-sec-short": "In short",
+  "diag-short-problems": "{0} thing(s) worth fixing, each with its fix:",
   "diag-lesson-backwards": "Before the pin, its value came from a recipe that uses it ({0}), which priced it by what it replaces there. {1} other items are valued that way on this server; if several look wrong, the general fix is in the mapper, not in pins: the bug report (/emc diagnose bugreport) is the way to ask for it.",
   "diag-lesson-guess": "Before the pin, its value was copied from a variant ({0}). If the variant group it was copied across changes what the item is, that group belongs in neverAcross in the value file; worth mentioning in a bug report.",
   "diag-lesson-default": "Before the pin, its value was a last-resort one ({0}). If your pin is a better number, the compatibility file could carry it for everyone; /emc diagnose draftcompat makes a file to post.",
