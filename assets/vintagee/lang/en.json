@@ -861,7 +861,7 @@
   "diag-sec-outliers": "Values out of line with their family",
   "diag-q-outliers": "Values that look wrong next to their family",
   "diag-outliers-none": "No worked-backwards value stands out from its family.",
-  "diag-outliers-found": "{0} values are more than 8x away from the middle of their family and were worked out backwards or guessed:",
+  "diag-outliers-found": "{0} values sit more than 8x from the middle of their family and were worked out backwards from a recipe with several ingredients:",
   "diag-outliers-help": "Worked backwards means: nothing makes the item, so its value was taken from a recipe that uses it. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.",
   "diag-outliers-vs": "(its family's middle value is {0})",
   "diag-outliers-fix": "If one is wrong, pin it: hold it and /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' below shows which mod moved it.",

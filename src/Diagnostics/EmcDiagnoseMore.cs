@@ -114,7 +114,7 @@ namespace VintageE
                 while ((line = reader.ReadLine()) != null)
                 {
                     bool ours = line.IndexOf("vintagee", StringComparison.OrdinalIgnoreCase) >= 0 || line.IndexOf("Vintage-E", StringComparison.OrdinalIgnoreCase) >= 0 || line.IndexOf("VintageE", StringComparison.Ordinal) >= 0;
-                    bool bad = line.Contains("[Error]") || line.Contains("[Fatal]") || line.Contains("[Warning]") || line.Contains("Exception");
+                    bool bad = LogLevel.IsMatch(line) || (ours && line.Contains("Exception") && !line.Contains("[Notification]"));
                     if (ours && bad) { all.Add(line); after = true; }
                     else if (after && (line.StartsWith("   at ", StringComparison.Ordinal) || line.StartsWith("  at ", StringComparison.Ordinal))) { all.Add("    " + line.Trim()); }
                     else after = false;
@@ -153,8 +153,10 @@ namespace VintageE
             return line;
         }
 
+        /// <summary>A log line whose own level is Error, Warning or Fatal (not one that merely quotes "[Error]").</summary>
+        static readonly Regex LogLevel = new Regex(@"^\S+ \S+ \[(Error|Warning|Fatal)\]", RegexOptions.Compiled);
         static readonly Regex Ip = new Regex(@"\b\d{1,3}(\.\d{1,3}){3}(:\d+)?\b", RegexOptions.Compiled);
-        static readonly Regex Uid = new Regex(@"\b[A-Za-z0-9+/_-]{20,}\b", RegexOptions.Compiled);
+        static readonly Regex Uid = new Regex(@"\b(?=[A-Za-z0-9+/_-]*\d)(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z])[A-Za-z0-9+/_-]{20,}\b", RegexOptions.Compiled);
         static readonly Regex HomePath = new Regex(@"(/home/|/Users/|[A-Z]:\\Users\\)[^/\\\s]+", RegexOptions.Compiled);
 
         /// <summary>Addresses, player ids and user folders taken out of a line before it goes into a report someone may post.</summary>
@@ -252,8 +254,9 @@ namespace VintageE
                     double ratio = kv.Value / median;
                     if (ratio < 8 && ratio > 1.0 / 8) continue;
                     report.Origins.TryGetValue(kv.Key, out string origin);
-                    // Variants that differ by design (sizes, metals, gems) are only suspicious when worked backwards from another recipe.
-                    if (origin == null || !(origin.StartsWith("worked backwards", StringComparison.Ordinal) || origin.StartsWith("guessed", StringComparison.Ordinal))) continue;
+                    // Only values taken from a recipe with several ingredients are suspect: "1 crown -> 20 gold bits" is the item's own
+                    // worth, but "100 zinc sulfate + 1 fish -> taxidermy" prices the sulfate by what the borax it replaces costs.
+                    if (origin == null || !origin.StartsWith("worked backwards", StringComparison.Ordinal) || !origin.Contains(" + ")) continue;
                     found.Add((kv.Key, kv.Value, median, origin));
                 }
             }
@@ -530,7 +533,7 @@ namespace VintageE
             try { sb.Append(Newtonsoft.Json.JsonConvert.SerializeObject(x.Mod.Config, Newtonsoft.Json.Formatting.Indented)); }
             catch (Exception e) { sb.Append("(could not serialize: ").Append(e.Message).Append(')'); }
             sb.Append('\n');
-            string text = Anonymise(sb.ToString());
+            string text = HomePath.Replace(Ip.Replace(sb.ToString(), "<address>"), "$1<user>");
             string file = null;
             try
             {
@@ -581,7 +584,7 @@ namespace VintageE
                         double each = x.Mod.Emc.GetValue(x.Held);
                         if (each <= 0 && x.Mod.Emc.GetValue(held) > 0) { x.Warn(x.L("diag-item-stackdiffers", F(each), F(x.Mod.Emc.GetValue(held)))); StackReasons(x, x.Held, x.Mod.Emc.GetValue(held), each); }
                     }
-                    else x.Note(x.L("diag-sporadic-holdit"), 0);
+                    else x.Note(x.L("diag-item-holdit"), 0);
                     x.Note(x.L("diag-sym-tooltipnoburn-also"), 0);
                     r.Add(Link(ActionHand, "", x.L("diag-q-item")));
                     break;
@@ -609,7 +612,7 @@ namespace VintageE
                     break;
                 case "somevariants":
                     if (held != null) Item(x, x.Held, true);
-                    else { x.Note(x.L("diag-sporadic-holdit"), 0); r.Add(Link(ActionHand, "", x.L("diag-q-item"))); }
+                    else { x.Note(x.L("diag-item-holdit"), 0); r.Add(Link(ActionHand, "", x.L("diag-q-item"))); }
                     x.Note(x.L("diag-sym-somevariants-also"), 0);
                     break;
                 case "wrongvalue":

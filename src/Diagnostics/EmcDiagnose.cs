@@ -581,7 +581,6 @@ namespace VintageE
                 }
                 MissingItem(x, c);
                 r.Add(Link("setvalue", PlayerEmc.KeyOf(c), x.L("diag-fix-setvalue")), EmcLineStyle.Text, 1);
-                NextSteps(x, c.Code.Domain, new[] { c });
             }
             else
             {
@@ -637,6 +636,7 @@ namespace VintageE
                 }
             }
 
+            if (!report.Values.ContainsKey(c) && !blacklisted && !free && !report.LoopOf.ContainsKey(c)) NextSteps(x, c.Code.Domain, new[] { c });
             r.Section(x.L("diag-sec-next"));
             r.Add(x.L("diag-item-full") + " " + EmcReport.Ref(c), EmcLineStyle.Text);
             r.Add(Link(ActionMod, c.Code.Domain, x.L("diag-q-thismod", ModName(x, c.Code.Domain))));
