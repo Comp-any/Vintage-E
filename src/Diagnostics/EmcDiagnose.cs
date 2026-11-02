@@ -118,6 +118,8 @@ namespace VintageE
                     Item(x, stack, held != null && held.Collectible == stack.Collectible);
                     break;
                 case ActionPatches: Patches(x, true); Back(x); break;
+                case ActionWatch: Watch(x, arg); break;
+                case ActionDraft: DraftCompat(x, arg); break;
                 case ActionOutliers: Outliers(x, true); Back(x); break;
                 case ActionClean: Clean(x); break;
                 case ActionSymptom: Symptom(x, arg, client); break;
@@ -493,6 +495,12 @@ namespace VintageE
                 x.Fix(x.L("diag-loops-fix"));
             }
 
+            if (noRecipe.Count > 0 && domain != "game")
+            {
+                r.Add(Link(ActionDraft, domain, x.L("diag-q-draft", noRecipe.Count)), EmcLineStyle.Text);
+            }
+            int suggestible = missing.Count(m => SuggestValue(x, m).value > 0);
+            if (suggestible > 0) r.Add(FixLink(x, "pinall", domain, x.L("diag-fix-pinall", suggestible)), EmcLineStyle.Text);
             NextSteps(x, domain, noRecipe.Count > 0 ? noRecipe : missing);
             r.Section(x.L("diag-sec-missinglist", missing.Count));
             r.Add(x.L("diag-missinglist-help"), EmcLineStyle.Note);
@@ -580,6 +588,7 @@ namespace VintageE
                     if (cfg.GrayList.Contains(VintageEModSystem.ConfigKey(c))) r.Add(FixLink(x, "ungray", VintageEModSystem.ConfigKey(c), x.L("diag-fix-ungray")), EmcLineStyle.Text, 1);
                 }
                 MissingItem(x, c);
+                SuggestPin(x, c);
                 r.Add(Link("setvalue", PlayerEmc.KeyOf(c), x.L("diag-fix-setvalue")), EmcLineStyle.Text, 1);
             }
             else
@@ -837,6 +846,7 @@ namespace VintageE
             r.Section(x.L("diag-sec-questions"));
             r.Add(x.L("diag-questions-help"), EmcLineStyle.Note);
             r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
+            r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
             if (held?.Collectible?.Code != null)
             {
                 r.Add(Link(ActionHand, "", x.L("diag-q-held", EmcExplain.NameOf(held.Collectible))));

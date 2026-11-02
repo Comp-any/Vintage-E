@@ -295,6 +295,8 @@ namespace VintageE
 
         void Fail(IServerPlayer player, string code, params string[] args)
         {
+            try { EmcDiagnose.RecordRefusal(player, code, args, player?.InventoryManager?.MouseItemSlot?.Itemstack); }
+            catch { /* diagnostics never get in the way */ }
             mod.SendResult(player, new TransmuteResultPacket { ErrorCode = code, Args = args });
         }
     }

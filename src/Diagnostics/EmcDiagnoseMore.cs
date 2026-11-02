@@ -25,7 +25,7 @@ namespace VintageE
         static readonly string[] AllActions =
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
-            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges
+            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -481,6 +481,27 @@ namespace VintageE
                             string msg = ConfigureCommand.SetFromText(mod, target.Substring(0, eq), target.Substring(eq + 1), lang);
                             return msg ?? L("diag-done-setting", target.Substring(0, eq), target.Substring(eq + 1));
                         }
+                    case "pin":
+                        {
+                            int eq = target.IndexOf('=');
+                            if (eq <= 0 || !double.TryParse(target.Substring(eq + 1), NumberStyles.Float, CultureInfo.InvariantCulture, out double v) || v < 0) return L("diag-done-nothing", target);
+                            string key = target.Substring(0, eq);
+                            mod.Config.FixedValues[key] = v;
+                            if (v > 0) mod.Config.Blacklist.Remove(key);
+                            mod.SaveConfig();
+                            mod.RecalculateEmc("/emc diagnose pin");
+                            return L("diag-done-pin", key, EmcFormat.Format(v));
+                        }
+                    case "pinall":
+                        {
+                            var x = new Ctx { Mod = mod, Sapi = mod.Sapi, LangCode = lang, R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(mod.Sapi.World.Collectibles) };
+                            if (x.Report == null) return L("diag-notmapped");
+                            int n = PinSuggested(mod, x, target, out int skipped);
+                            return L("diag-done-pinall", n, skipped);
+                        }
+                    case "clearwatch":
+                        ClearRefusals();
+                        return L("diag-done-clearwatch");
                     case "learn":
                         {
                             CollectibleObject c = PlayerEmc.Resolve(mod.Sapi.World, target);
@@ -576,6 +597,7 @@ namespace VintageE
             switch (id)
             {
                 case "tooltipnoburn":
+                    r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
                     if (held != null)
                     {
                         if (x.Mod.Emc.IsNoTransmute(held)) { x.Warn(x.L("diag-item-notransmute")); r.Add(FixLink(x, "notransmute", VintageEModSystem.ConfigKey(held), x.L("diag-fix-notransmute"))); }
@@ -628,6 +650,7 @@ namespace VintageE
                     else x.Note(x.L("diag-sporadic-holdit"), 0);
                     break;
                 case "cantcreate":
+                    r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
                     if (x.Player != null) PlayerReportInline(x);
                     if (held != null)
                     {

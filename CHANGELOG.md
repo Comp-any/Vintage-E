@@ -2,6 +2,13 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.2 — 2026-11-02
+
+### Added
+- **`/emc diagnose watch`:** every refusal the transmutation table or tablet makes is kept (the last 300, always on), and this lists the recent ones grouped by reason - no value, no-transmute, contents, not learned, not enough EMC, too many exact versions... - each with what it means, which items and players, and the fix (pin, allow, learn, change the setting). Linked from the "won't burn or create" symptoms.
+- **Suggested pins:** where the diagnosis says "give it a value", it now suggests one - the middle value of the item's valued variants, or of related items of the same mod - as a one-click pin, saying where the number comes from. A mod's report can pin every missing item that has a suggestion at once.
+- **`/emc diagnose draftcompat <mod id>`:** writes a compatibility file for a mod whose raw materials have no value, `ModData/vintagee/vintagee-emc-compat-<modid>.json`: `requiresMod`, every raw material (a wildcard where a whole family is missing) with a suggested value and a `//` line saying where it came from, ready to adjust and post on the Mod DB page so it can ship with Vintage-E. The same values can be pinned on the server right away.
+
 ## 1.15.1 — 2026-11-02
 
 ### Added
