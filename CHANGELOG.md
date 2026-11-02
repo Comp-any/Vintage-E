@@ -10,6 +10,9 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ### Added
 - **Doctor window:** click the Passed, Warnings or Failed chip at the top to hide or show the checks of that kind.
 
+### Changed
+- **Doctor window:** no Close button at the bottom; the title bar's X (or Ctrl+H) closes it.
+
 ## 1.16.0 — 2026-11-03
 
 ### Changed

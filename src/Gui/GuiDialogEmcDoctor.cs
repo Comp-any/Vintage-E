@@ -259,12 +259,11 @@ namespace VintageE
             double bottom = listTop + ListHeight + 12;
             ElementBounds backBounds = ElementBounds.Fixed(0, bottom, 80, 30);
             ElementBounds lastBounds = ElementBounds.Fixed(90, bottom + 6, 360, 24);
-            ElementBounds copyBounds = ElementBounds.Fixed(Width - 190, bottom, 90, 30);
-            ElementBounds closeBounds = ElementBounds.Fixed(Width - 90, bottom, 90, 30);
+            ElementBounds copyBounds = ElementBounds.Fixed(Width - 90, bottom, 90, 30);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(runBounds, barBounds, clipBounds, scrollbarBounds, backBounds, lastBounds, copyBounds, closeBounds);
+            bgBounds.WithChildren(runBounds, barBounds, clipBounds, scrollbarBounds, backBounds, lastBounds, copyBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             composing = true;
@@ -308,8 +307,7 @@ namespace VintageE
                 .AddVerticalScrollbar(OnScroll, scrollbarBounds, "scrollbar")
                 .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                 .AddDynamicText(busy ? (busyText ?? "") : Lang.Get("vintagee:doctor-lastrun", receivedAt.ToString("HH:mm:ss"), checks), CairoFont.WhiteDetailText().WithColor(new double[] { 0.72, 0.72, 0.72, 1 }), lastBounds, "last")
-                .AddSmallButton(Lang.Get("vintagee:reportgui-copy"), OnCopy, copyBounds)
-                .AddSmallButton(Lang.Get("vintagee:missing-close"), () => TryClose(), closeBounds);
+                .AddSmallButton(Lang.Get("vintagee:reportgui-copy"), OnCopy, copyBounds);
             SingleComposer = c.EndChildElements().Compose();
             composing = false;
             SingleComposer.GetButton("back").Enabled = history.Count > 0;
