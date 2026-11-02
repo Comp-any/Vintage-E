@@ -82,6 +82,23 @@ The full list is written to `VintagestoryData/ModData/vintagee/emc-missing.csv`,
 
 Deliberately left without a value (so they can't be duplicated or burned): creative/debug/technical blocks, work-in-progress items, loot containers, liquid blocks, and story-progression devices (the return-base items, etc.), creatures and NPCs from any mod (live butterflies and fish excepted, since you can catch them), and maps. The list is the `blacklist` in the default value file.
 
+## Troubleshooting: an item shows no EMC value
+
+Work down this list; most cases end at step 2.
+
+1. **Does the tooltip say anything at all?** Hover the item. "No EMC value" (or a value) means Vintage-E is running on your side and the question is only why that item has none: go to step 2. If there's no EMC line at all, your game hasn't got the values: rejoin the server (the table is sent on join and after every remap). If that doesn't help, an admin can run `/emc diagnose` and click anything in the window: the **Your game** section says whether your version matches the server's and whether your table is missing or stale, with a one-click **Resend**.
+2. **Ask the mod why.** An admin holds the item and runs `/emc diagnose` (or `/emc diagnose <code>` from the console). The report says which of these it is and offers the fix:
+   - **Blacklisted.** Creative, technical and loot blocks, creatures, maps and story items are left without a value on purpose so they can't be duplicated or burned. If this one shouldn't be, the report offers **Allow it**; `/emc blacklist` lists everything on the list.
+   - **Nothing makes it** (a raw material, or an item another mod gives you by other means). The report suggests a value (the middle of its variants or relatives) with a one-click **Pin it**; otherwise `/emc set <value>` while holding it, or `BaseValues` in `ModConfig/vintagee.json`. For a whole mod, see step 4.
+   - **Waiting on an ingredient.** The item has a recipe but one ingredient has no value yet. Each is a **why?** link: fix the ingredient and everything made from it follows.
+   - **In a loop.** It and some other items are only made from each other, so none can start. Pin one of them; `/emc loop` lists every loop.
+   - **Gray-listed** (`/emc graylist`): left out on purpose until a recipe makes it. Take it off the list if you want a guessed value.
+3. **Values are there but not for this exact one.** The tooltip of a worn, filled or differently made version (a half-used tool, a filled bucket, a gold round shield) can differ from the plain item's: `/emc dump hand` explains the held stack's number. Only some variants missing (one colour, one wood) is `/emc diagnose symptom somevariants`.
+4. **A whole mod has no values.** `/emc diagnose mod <modid>` shows its coverage, the raw materials that would fix the most items at once, and can write a compatibility file for it (`/emc diagnose draftcompat <modid>`) that you can adjust and post on the Mod DB page so it ships with Vintage-E. The report also names the `emcValue` attribute the other mod's author could add.
+5. **It had a value before.** After a mod update or a settings change the values are mapped again (or loaded from the cache when nothing relevant changed). `/emc diagnose changes` lists what the last mapping lost, changed and gained; `/emc recalc` forces a fresh mapping.
+6. **It has a value but the table won't take it.** That's knowledge, not value: you learn an item by burning one (or `/emc learn` while holding it), and each player knows up to `MaxExactKnowledge` exact versions of items that keep their contents or material. `/emc diagnose watch` shows every refusal the table made recently and why.
+7. **Still stuck.** `/emc diagnose bugreport` writes a short report (versions, mods, the check-up, changed settings, the server log's Vintage-E lines) to `ModData/vintagee/bug-report.txt` and puts it on the clipboard. Post it on the Mod DB page or as a GitHub issue with the item's code and what you expected.
+
 ## Items that hold things or keep their material
 
 Some items carry data on the item itself: buckets, jugs, pots, bowls, crocks, barrels and bags hold things; round shields keep their metal and wood, lanterns their metal, lining and glass, chests and clutter their type, chiseled blocks their design. Each of these uses one of three modes:
