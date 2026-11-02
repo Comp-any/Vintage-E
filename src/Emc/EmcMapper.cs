@@ -122,7 +122,7 @@ namespace VintageE
         /// <summary>Which value file's rule valued each item (defaultValues and relativeValues), for the compatibility counts.</summary>
         readonly Dictionary<CollectibleObject, string> ruleSourceOf = new Dictionary<CollectibleObject, string>();
         /// <summary>When set, only conversions it accepts are used (/emc diagnose clean maps without other mods' recipes).</summary>
-        public Func<Conversion, bool> ConversionFilter;
+        public System.Func<Conversion, bool> ConversionFilter;
 
         public EmcMapper(ICoreServerAPI sapi, VintageEConfig config, EmcRuleSet rules, ILogger logger)
         {
