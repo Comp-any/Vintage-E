@@ -227,7 +227,7 @@ namespace VintageE
             foreach (var (n, word, colour) in new[] { (ok, Lang.Get("vintagee:doctor-passed"), Green), (warn, Lang.Get("vintagee:doctor-warnings"), Orange), (fail, Lang.Get("vintagee:doctor-failed"), Red) })
             {
                 string text = n + " " + word;
-                double w = capi.Gui.Text.GetTextWidth(chipFont, text) / Math.Max(RuntimeEnv.GUIScale, 0.01) + 22;
+                double w = TextWidth(chipFont, text) + 22;
                 chips.Add((text, colour, cx, w));
                 cx += w + 10;
             }
@@ -291,6 +291,13 @@ namespace VintageE
         }
 
         ElementBounds scrollContent;
+
+        /// <summary>Width (unscaled GUI units) of one line of text in a font.</summary>
+        double TextWidth(CairoFont font, string text)
+        {
+            double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
+            return font.GetTextExtents(text ?? "").Width / scale;
+        }
 
         /// <summary>Bounds inside the scrolling content, registered as its child so they move when it scrolls.</summary>
         static ElementBounds In(ElementBounds parent, ElementBounds bounds)
@@ -401,7 +408,7 @@ namespace VintageE
             // The badge.
             string badge = e.State == State.Ok ? Lang.Get("vintagee:doctor-badge-ok") : e.State == State.Warn ? Lang.Get("vintagee:doctor-badge-warn") : e.State == State.Fail ? Lang.Get("vintagee:doctor-badge-fail") : Lang.Get("vintagee:doctor-badge-info");
             CairoFont badgeFont = CairoFont.WhiteDetailText().WithColor(colour);
-            double bw = capi.Gui.Text.GetTextWidth(badgeFont, badge) / Math.Max(RuntimeEnv.GUIScale, 0.01) + 18;
+            double bw = TextWidth(badgeFont, badge) + 18;
             ElementBounds bb = In(parent, ElementBounds.Fixed(CardX + CardW - bw - 12, y + (headH - 22) / 2, bw, 22));
             Canvas(c, bb, (ctx, b) => DrawChip(ctx, b, colour));
             c.AddRichtext(new RichTextComponentBase[] { new RichTextComponent(capi, badge, badgeFont) }, In(parent, ElementBounds.Fixed(CardX + CardW - bw - 12 + 9, y + (headH - 22) / 2 + 3, bw, 20)));
@@ -483,7 +490,7 @@ namespace VintageE
             {
                 bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
                 string text = (fix ? "⚒ " : "") + label;
-                double w = Math.Min(width, capi.Gui.Text.GetTextWidth(f, text) / Math.Max(RuntimeEnv.GUIScale, 0.01) + 24);
+                double w = Math.Min(width, TextWidth(f, text) + 24);
                 if (bx > x && bx + w > x + width) { bx = x; rowY += 32; }
                 string a = action, g = arg;
                 c.AddSmallButton(text, () => { Act(a, g); return true; }, In(parent, ElementBounds.Fixed(bx, rowY, w, 28)), EnumButtonStyle.Small);
