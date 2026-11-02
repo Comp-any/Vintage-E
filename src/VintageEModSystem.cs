@@ -41,6 +41,11 @@ namespace VintageE
 
         /// <summary>Result of the most recent mapping run (server only).</summary>
         public EmcMappingReport LastReport { get; private set; }
+        /// <summary>The last mapping that threw (its message) and when, for /emc diagnose; null if none has.</summary>
+        public string LastMappingError { get; private set; }
+        public DateTime LastMappingErrorAt { get; private set; }
+        /// <summary>Why ModConfig/vintagee.json couldn't be read at start (defaults are in use), or null.</summary>
+        public string ConfigLoadError { get; private set; }
         WorldTransmutation worldTransmutation;
         /// <summary>Server-side philosopher's stone rules, built on first use from the merged rule files.</summary>
         public WorldTransmutation WorldTransmutation => worldTransmutation ??= new WorldTransmutation(Api, Rules.WorldTransmutation);
@@ -103,7 +108,8 @@ namespace VintageE
                 .RegisterMessageType<EmcReportPacket>()
                 .RegisterMessageType<EmcDumpRequestPacket>()
                 .RegisterMessageType<EmcCompatListPacket>()
-                .RegisterMessageType<EmcCompatSetPacket>();
+                .RegisterMessageType<EmcCompatSetPacket>()
+                .RegisterMessageType<EmcDiagnoseRequestPacket>();
         }
 
         #region Server
@@ -239,6 +245,7 @@ namespace VintageE
             serverChannel.SetMessageHandler<EmcItemEditPacket>(OnItemEditRequest);
             serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
             serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
+            serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(OnDiagnoseRequest);
 
             // Every mod has registered its recipes by the time the game starts running, so map then.
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
@@ -289,6 +296,7 @@ namespace VintageE
             catch (Exception e)
             {
                 broken = true;
+                ConfigLoadError = e.Message;
                 Mod.Logger.Error("Could not read ModConfig/{0}, using defaults for this session (the file is left untouched so you can fix it): {1}", ConfigFile, e.Message);
             }
             cfg ??= new VintageEConfig();
@@ -365,6 +373,8 @@ namespace VintageE
                 }
                 catch (Exception e)
                 {
+                    LastMappingError = e.GetType().Name + ": " + e.Message;
+                    LastMappingErrorAt = DateTime.Now;
                     Mod.Logger.Error("EMC mapping failed ({0}): {1}", reason, e);
                     return null;
                 }
@@ -377,6 +387,7 @@ namespace VintageE
             BuildStackData(report);
             sw.Stop();
             report.Milliseconds = sw.ElapsedMilliseconds;
+            report.MappedAt = DateTime.Now;
             if (report.FromCache)
             {
                 Mod.Logger.Notification("EMC values loaded from cache ({0}) in {1} ms: {2} valued collectibles. Nothing that affects them has changed since they were mapped ({3}); /emc recalc forces a fresh mapping.",
@@ -946,6 +957,45 @@ namespace VintageE
             {
                 Mod.Logger.Error("Vintage-E: explaining {0} failed: {1}", packet.Loops ? "the loops" : packet.Key, e);
                 player.SendMessage(GlobalConstants.GeneralChatGroup, "Vintage-E: that failed (" + e.Message + "), see the server log.", EnumChatType.CommandError);
+            }
+        }
+
+        /// <summary>/emc diagnose from the window: an answer link clicked, or Refresh.</summary>
+        void OnDiagnoseRequest(IServerPlayer player, EmcDiagnoseRequestPacket packet)
+        {
+            if (packet == null) return;
+            if (!player.HasPrivilege(Privilege.controlserver))
+            {
+                player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:error-noprivilege"), EnumChatType.CommandError);
+                return;
+            }
+            ItemStack held = null;
+            if (packet.Stack != null && packet.Stack.Length > 0)
+            {
+                try
+                {
+                    held = new ItemStack(packet.Stack);
+                    if (!held.ResolveBlockOrItem(Sapi.World)) held = null;
+                }
+                catch { held = null; }
+            }
+            held ??= player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
+            SendDiagnosis(player, packet.Action, packet.Arg, held);
+        }
+
+        /// <summary>Builds an /emc diagnose report for a player and opens it in their window (saved to ModData too).</summary>
+        public void SendDiagnosis(IServerPlayer player, string action, string arg, ItemStack held)
+        {
+            try
+            {
+                EmcReport report = EmcDiagnose.Run(this, Sapi, player, player.LanguageCode, action, arg, held);
+                SaveReport(report, "emc-diagnose.txt");
+                SendReport(player, report);
+            }
+            catch (Exception e)
+            {
+                Mod.Logger.Error("Vintage-E: /emc diagnose failed: {0}", e);
+                player.SendMessage(GlobalConstants.GeneralChatGroup, "Vintage-E: the diagnosis failed (" + e.Message + "), see the server log.", EnumChatType.CommandError);
             }
         }
 
@@ -1560,6 +1610,13 @@ namespace VintageE
 
         GuiDialogEmcReport reportDialog;
 
+        /// <summary>What this player holds right now, for diagnose requests ("hold it, then click").</summary>
+        byte[] HeldStackBytes()
+        {
+            try { return Capi?.World?.Player?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.ToBytes(); }
+            catch { return null; }
+        }
+
         void OnReport(EmcReportPacket packet)
         {
             if (reportDialog != null && reportDialog.IsOpened())
@@ -1570,7 +1627,8 @@ namespace VintageE
             reportDialog = new GuiDialogEmcReport(Capi, packet,
                 (key, stack) => clientChannel?.SendPacket(new EmcDumpRequestPacket { Key = key, Stack = stack }),
                 () => clientChannel?.SendPacket(new EmcDumpRequestPacket { Loops = true }),
-                OpenSetValueFor);
+                OpenSetValueFor,
+                (action, arg) => clientChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action, Arg = arg, Stack = HeldStackBytes() }));
             reportDialog.TryOpen();
         }
 

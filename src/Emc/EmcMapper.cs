@@ -63,6 +63,8 @@ namespace VintageE
         public List<string> CustomRecipeProblems = new List<string>();
         /// <summary>True when the values were loaded from the on-disk cache instead of being mapped.</summary>
         public bool FromCache;
+        /// <summary>When this mapping (or cache load) finished, for /emc diagnose.</summary>
+        public DateTime MappedAt = DateTime.Now;
         public string CachedAt;
         /// <summary>Why each item has its value ("base value", "grid: 1 game:log-... -> 12", ...). Empty when loaded from cache.</summary>
         public Dictionary<CollectibleObject, string> Origins = new Dictionary<CollectibleObject, string>();

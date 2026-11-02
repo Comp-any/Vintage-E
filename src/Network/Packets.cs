@@ -160,6 +160,18 @@ namespace VintageE
         [ProtoMember(3)] public byte[] Stack;
     }
 
+    /// <summary>Client → server: an /emc diagnose report (the command, a Refresh, or an answer link clicked in the window). Admins only.</summary>
+    [ProtoContract]
+    public class EmcDiagnoseRequestPacket
+    {
+        /// <summary>See <see cref="EmcDiagnose"/>: "", "hand", "item", "mod", "mods", "sporadic", "mapping".</summary>
+        [ProtoMember(1)] public string Action;
+        /// <summary>A block/item code or a mod id, for "item" and "mod".</summary>
+        [ProtoMember(2)] public string Arg;
+        /// <summary>What the player holds (ItemStack.ToBytes), so "hand" and "sporadic" can look at the exact stack.</summary>
+        [ProtoMember(3)] public byte[] Stack;
+    }
+
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>
     [ProtoContract]
     public class EmcItemEditPacket

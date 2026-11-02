@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.0 — 2026-11-02
+
+### Added
+- **`/emc diagnose`: finds out why EMC isn't working and says what to do.** It opens a window with a check-up of the whole mapping (is it mapped at all, did the last mapping fail and why, is the settings file readable, settings that switch most of the mapping off, settings entries that match no block or item - with the code they probably meant - unreadable custom recipes, compatibility files switched off, mods with poor coverage, value loops, the missing items by family and by reason) and then asks what you're seeing. Each answer is a link that opens a report for just that: **the block or item you hold** (blacklisted and by what, pinned to 0, gray-listed, nothing makes it, waiting on which ingredients - each with its own 'why?' - in a loop, other variants that do have values, settings entries that nearly match its code, and for an item that does have a value, why the exact stack you hold is worth something else: wear, contents without a value, a material without a value, Klein star contents, no-transmute, not yet learned), **everything from one mod** (its coverage, the compatibility file for it and its state, how many items nothing makes, how many wait on an ingredient and which ingredients hold back the most items, the loops, and every missing item with a 'why?' link), **values that come and go** (every reason a value can differ between stacks or players, how this server is set for each, and a comparison of the stack you hold with the plain item), or **every mapping check**. Every problem is marked ⚠ and followed by a → line saying how to fix it, with the exact code or command to use. Back returns to the previous report, Refresh asks again, Copy puts the text on the clipboard; the server also writes it to `ModData/vintagee/emc-diagnose.txt`. From the console: `/emc diagnose [hand|<code>|<mod id>|mods|sporadic|mapping]`, with the answers written as the commands that open them. Admins only. `/emc diag`, `/emc doctor` and `/emc selftest` are the same command.
+
 ## 1.14.1 — 2026-11-02
 
 ### Fixed

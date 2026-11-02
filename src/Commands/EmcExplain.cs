@@ -28,7 +28,7 @@ namespace VintageE
     /// </summary>
     public sealed class EmcReport
     {
-        public const string DumpKind = "dump", LoopsKind = "loops";
+        public const string DumpKind = "dump", LoopsKind = "loops", DiagnoseKind = "diagnose";
 
         public string Kind = DumpKind;
         public string Title = "";
@@ -57,10 +57,21 @@ namespace VintageE
 
         public static readonly Regex RefToken = new Regex(@"\[\[([^\[\]]+)\]\]", RegexOptions.Compiled);
 
+        /// <summary>A question's answer in a diagnose report: {{action|arg|label}}. The window shows the label as a link that asks the server for that report.</summary>
+        public static readonly Regex ActionToken = new Regex(@"\{\{([a-z]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
+
+        /// <summary>Both kinds of token, so a line can be cut into text, item refs and answer links in order.</summary>
+        public static readonly Regex AnyToken = new Regex(@"\[\[([^\[\]]+)\]\]|\{\{([a-z]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
+
+        /// <summary>An answer link as text: its label and the command that does the same.</summary>
+        public static string PlainAction(string action, string arg, string label)
+            => label + " (/emc diagnose" + (action.Length > 0 && action != EmcDiagnose.ActionOverview ? " " + action : "") + (arg.Length > 0 ? " " + arg : "") + ")";
+
         /// <summary>The text with each [[key]] written out as "Name (code)".</summary>
         public static string Plain(IWorldAccessor world, string text)
         {
-            if (string.IsNullOrEmpty(text) || text.IndexOf("[[", StringComparison.Ordinal) < 0) return text ?? "";
+            if (string.IsNullOrEmpty(text) || (text.IndexOf("[[", StringComparison.Ordinal) < 0 && text.IndexOf("{{", StringComparison.Ordinal) < 0)) return text ?? "";
+            text = ActionToken.Replace(text, m => PlainAction(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value));
             return RefToken.Replace(text, m =>
             {
                 CollectibleObject c = world == null ? null : PlayerEmc.Resolve(world, m.Groups[1].Value);

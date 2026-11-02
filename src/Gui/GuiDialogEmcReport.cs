@@ -24,6 +24,7 @@ namespace VintageE
         readonly Action<string, byte[]> onOpenItem;
         readonly Action onOpenLoops;
         readonly Action<string> onSetValue;
+        readonly Action<string, string> onDiagnose;
         readonly Stack<EmcReportPacket> history = new Stack<EmcReportPacket>();
         EmcReportPacket current;
         /// <summary>The next report replaces this one instead of going on top of it (Refresh).</summary>
@@ -39,13 +40,15 @@ namespace VintageE
         public override double DrawOrder => 0.25;
         public override double InputOrder => 0.25;
 
-        public bool IsDump => current?.Kind != EmcReport.LoopsKind;
+        public bool IsDump => current?.Kind != EmcReport.LoopsKind && current?.Kind != EmcReport.DiagnoseKind;
+        public bool IsDiagnose => current?.Kind == EmcReport.DiagnoseKind;
 
-        public GuiDialogEmcReport(ICoreClientAPI capi, EmcReportPacket packet, Action<string, byte[]> onOpenItem, Action onOpenLoops, Action<string> onSetValue) : base(capi)
+        public GuiDialogEmcReport(ICoreClientAPI capi, EmcReportPacket packet, Action<string, byte[]> onOpenItem, Action onOpenLoops, Action<string> onSetValue, Action<string, string> onDiagnose = null) : base(capi)
         {
             this.onOpenItem = onOpenItem;
             this.onOpenLoops = onOpenLoops;
             this.onSetValue = onSetValue;
+            this.onDiagnose = onDiagnose;
             current = packet;
             Compose();
         }
@@ -101,7 +104,7 @@ namespace VintageE
             GuiComposer c = capi.Gui
                 .CreateCompo("vintagee-report", dialogBounds)
                 .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:loopgui-title") : current.Title, () => TryClose())
+                .AddDialogTitleBar(string.IsNullOrEmpty(current?.Title) ? Lang.Get(IsDiagnose ? "vintagee:diag-title" : "vintagee:loopgui-title") : current.Title, () => TryClose())
                 .BeginChildElements(bgBounds)
                     .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                     .AddTextInput(searchBounds, OnSearch, CairoFont.WhiteSmallText(), "search")
@@ -125,7 +128,7 @@ namespace VintageE
             }
             SingleComposer = c.EndChildElements().Compose();
             composing = false;
-            SingleComposer.GetTextInput("search")?.SetPlaceHolderText(Lang.Get(IsDump ? "vintagee:reportgui-search" : "vintagee:reportgui-searchloops"));
+            SingleComposer.GetTextInput("search")?.SetPlaceHolderText(Lang.Get(IsDump ? "vintagee:reportgui-search" : IsDiagnose ? "vintagee:reportgui-searchdiag" : "vintagee:reportgui-searchloops"));
             if (search.Length > 0) SingleComposer.GetTextInput("search")?.SetValue(search, false);
             SingleComposer.GetButton("back").Enabled = history.Count > 0;
             Refill();
@@ -161,7 +164,7 @@ namespace VintageE
                     Style = current.Styles != null && i < current.Styles.Length ? (EmcLineStyle)current.Styles[i] : EmcLineStyle.Text,
                     Block = current.Blocks != null && i < current.Blocks.Length ? current.Blocks[i] : 0,
                     Plain = EmcReport.Plain(capi.World, t),
-                    Refs = EmcReport.RefToken.Matches(t).Count
+                    Refs = EmcReport.AnyToken.Matches(t).Count
                 });
             }
             cachedFor = current;
@@ -253,10 +256,11 @@ namespace VintageE
             int start = comps.Count;
             string text = line.Text;
             int pos = 0;
-            foreach (System.Text.RegularExpressions.Match m in EmcReport.RefToken.Matches(text))
+            foreach (System.Text.RegularExpressions.Match m in EmcReport.AnyToken.Matches(text))
             {
                 if (m.Index > pos) comps.Add(new RichTextComponent(capi, text.Substring(pos, m.Index - pos), font) { VerticalAlign = EnumVerticalAlign.Middle });
-                AddRef(comps, m.Groups[1].Value, linkFont);
+                if (m.Groups[1].Success) AddRef(comps, m.Groups[1].Value, linkFont);
+                else AddAction(comps, m.Groups[2].Value, m.Groups[3].Value, m.Groups[4].Value, font);
                 pos = m.Index + m.Length;
             }
             if (pos < text.Length) comps.Add(new RichTextComponent(capi, text.Substring(pos), font) { VerticalAlign = EnumVerticalAlign.Middle });
@@ -277,6 +281,20 @@ namespace VintageE
             catch { /* no icon */ }
             if (stack != null) comps.Add(new ItemstackTextComponent(capi, stack, 26, 3, EnumFloat.Inline, _ => Open(key)) { VerticalAlign = EnumVerticalAlign.Middle });
             comps.Add(new LinkTextComponent(capi, EmcExplain.NameOf(c), linkFont, _ => Open(key)) { VerticalAlign = EnumVerticalAlign.Middle });
+        }
+
+        /// <summary>An answer in a diagnose report: a button-like link that asks the server for the next report.</summary>
+        void AddAction(List<RichTextComponentBase> comps, string action, string arg, string label, CairoFont font)
+        {
+            CairoFont actionFont = font.Clone().WithColor(new double[] { 1, 0.9, 0.55, 1 }).WithWeight(Cairo.FontWeight.Bold);
+            comps.Add(new LinkTextComponent(capi, "\u25b8 " + label, actionFont, _ => Diagnose(action, arg)) { VerticalAlign = EnumVerticalAlign.Middle });
+        }
+
+        void Diagnose(string action, string arg)
+        {
+            if (onDiagnose == null) return;
+            SetStatus(Lang.Get("vintagee:reportgui-asking"));
+            onDiagnose(action ?? "", arg ?? "");
         }
 
         void Open(string key)
@@ -309,7 +327,13 @@ namespace VintageE
         {
             replaceNext = true;
             SetStatus(Lang.Get("vintagee:reportgui-asking"));
-            if (IsDump) onOpenItem?.Invoke(current?.Key, current?.Stack);
+            if (IsDiagnose)
+            {
+                string key = current?.Key ?? "";
+                int bar = key.IndexOf('|');
+                Diagnose(bar < 0 ? key : key.Substring(0, bar), bar < 0 ? "" : key.Substring(bar + 1));
+            }
+            else if (IsDump) onOpenItem?.Invoke(current?.Key, current?.Stack);
             else onOpenLoops?.Invoke();
             return true;
         }

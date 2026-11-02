@@ -22,6 +22,7 @@ namespace VintageE
     /// /emc remove &lt;amount&gt; [player] – (admin) take personal EMC from a player
     /// /emc give &lt;amount&gt;  – (admin) old name for /emc add on yourself
     /// /emc learn           – (admin) learn the held item without burning it
+    /// /emc diagnose [what] – (admin) why EMC isn't working: a check-up with questions, or the held item, a code, a mod id, "mods", "sporadic", "mapping"
     /// </summary>
     public static class EmcCommands
     {
@@ -102,6 +103,13 @@ namespace VintageE
                     .WithArgs(parsers.OptionalWordRange("mode", "item", "full", "itemprice", "default"))
                     .HandleWith(Safe(args => Contents(mod, args, args[0] as string)))
                 .EndSubCommand()
+                .BeginSubCommand("diagnose")
+                    .WithAlias("diag", "selftest", "doctor")
+                    .WithDescription("Work out why EMC isn't working: a check-up that asks what you're seeing, or straight away for what you hold ('hand'), a block/item code, a mod id, 'mods', 'sporadic' or 'mapping'")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(parsers.OptionalWord("what"), parsers.OptionalWord("which"))
+                    .HandleWith(Safe(args => Diagnose(mod, sapi, args, args[0] as string, args[1] as string)))
+                .EndSubCommand()
                 .BeginSubCommand("compat")
                     .WithAlias("compatibility")
                     .WithDescription("Open a window of the compatibility value files (last-resort values for other mods' raw materials): which are active, and switch them off or on; or: /emc compat disable|enable <name>")
@@ -169,6 +177,7 @@ namespace VintageE
         {
             ("/emc", "cmdhelp-emc", false),
             ("/emc help", "cmdhelp-help", false),
+            ("/emc diagnose [hand|<code>|<mod id>|mods|sporadic|mapping]", "cmdhelp-diagnose", true),
             ("/emc missing", "cmdhelp-missing", true),
             ("/emc blacklist", "cmdhelp-blacklist", true),
             ("/emc contents", "cmdhelp-contents", true),
@@ -390,6 +399,28 @@ namespace VintageE
                     : Lang.GetL(lang, "vintagee:compat-state-active", n);
                 return f.Name + " (" + string.Join(", ", f.RequiredMods) + "): " + state;
             })));
+        }
+
+        /// <summary>/emc diagnose: the window for a player; the same text for the console (answers shown as commands).</summary>
+        static TextCommandResult Diagnose(VintageEModSystem mod, ICoreServerAPI sapi, TextCommandCallingArgs args, string what, string which)
+        {
+            string lang = args.LanguageCode;
+            try
+            {
+                if (args.Caller.Player is IServerPlayer player)
+                {
+                    mod.SendDiagnosis(player, what, which, player.InventoryManager?.ActiveHotbarSlot?.Itemstack);
+                    return TextCommandResult.Success();
+                }
+                EmcReport report = EmcDiagnose.Run(mod, sapi, null, lang, what, which, null);
+                string file = mod.SaveReport(report, "emc-diagnose.txt");
+                return TextCommandResult.Success(report.PlainText(sapi.World) + "\n" + FileLine(lang, file));
+            }
+            catch (Exception e)
+            {
+                sapi.Logger.Error("Vintage-E: /emc diagnose failed: {0}", e);
+                return TextCommandResult.Error("/emc diagnose failed: " + e.Message + " (the server log has the details)");
+            }
         }
 
         static TextCommandResult Blacklist(VintageEModSystem mod, TextCommandCallingArgs args)
