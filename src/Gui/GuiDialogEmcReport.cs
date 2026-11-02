@@ -297,7 +297,7 @@ namespace VintageE
                 // The arrow opens and closes the details; the whole line is the link.
                 bool open = expandAll || expanded.Contains(line.Index);
                 int index = line.Index;
-                comps.Add(new LinkTextComponent(capi, (open ? "\u25be " : "\u25b8 ") + line.Plain, font, _ => Toggle(index)) { VerticalAlign = EnumVerticalAlign.Middle });
+                comps.Add(Coloured(new LinkTextComponent(capi, (open ? "\u25be " : "\u25b8 ") + line.Plain, font, _ => Toggle(index)), font));
                 comps.Add(new RichTextComponent(capi, "\n", font));
                 return;
             }
@@ -313,6 +313,17 @@ namespace VintageE
             if (line.Indent > 0 && comps.Count > start) comps[start].PaddingLeft += line.Indent * 18;
         }
 
+        /// <summary>
+        /// The game paints every link in its own orange, whatever font it was given, so a green ✓ line or a red ⚠ line
+        /// that can be expanded came out orange. This puts the meant colour back after the link is made.
+        /// </summary>
+        static LinkTextComponent Coloured(LinkTextComponent link, CairoFont font)
+        {
+            link.Font = font.Clone();
+            link.VerticalAlign = EnumVerticalAlign.Middle;
+            return link;
+        }
+
         void AddRef(List<RichTextComponentBase> comps, string key, CairoFont linkFont)
         {
             CollectibleObject c = PlayerEmc.Resolve(capi.World, key);
@@ -325,7 +336,7 @@ namespace VintageE
             try { stack = new ItemStack(c); }
             catch { /* no icon */ }
             if (stack != null) comps.Add(new ItemstackTextComponent(capi, stack, 26, 3, EnumFloat.Inline, _ => Open(key)) { VerticalAlign = EnumVerticalAlign.Middle });
-            comps.Add(new LinkTextComponent(capi, EmcExplain.NameOf(c), linkFont, _ => Open(key)) { VerticalAlign = EnumVerticalAlign.Middle });
+            comps.Add(Coloured(new LinkTextComponent(capi, EmcExplain.NameOf(c), linkFont, _ => Open(key)), linkFont));
         }
 
         /// <summary>An answer in a diagnose report: a button-like link that asks the server for the next report.</summary>
@@ -334,7 +345,7 @@ namespace VintageE
             CairoFont actionFont = font.Clone().WithColor(new double[] { 1, 0.9, 0.55, 1 }).WithWeight(Cairo.FontWeight.Bold);
             bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
             if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
-            comps.Add(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)) { VerticalAlign = EnumVerticalAlign.Middle });
+            comps.Add(Coloured(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)), actionFont));
         }
 
         void Toggle(int index)

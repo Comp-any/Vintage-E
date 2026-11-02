@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.9 — 2026-11-03
+
+### Fixed
+- **The doctor's check lines showed orange whatever they said.** Lines that can be expanded are links, and the game paints every link in its own orange; the meant colour is now kept, so a passed check (✓) is green, a problem (⚠) red-orange, item links blue and fixes green.
+
 ## 1.15.8 — 2026-11-03
 
 ### Added
