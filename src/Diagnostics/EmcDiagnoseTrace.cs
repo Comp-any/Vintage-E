@@ -137,7 +137,7 @@ namespace VintageE
             {
                 if (line.Style == EmcLineStyle.Warn && !line.Text.Contains("worth fixing")) { x.R.Add(line.Text, line.Style, 0); lastWasWarn = true; }
                 else if (lastWasWarn && (line.Text.StartsWith("\u2192", StringComparison.Ordinal) || line.Text.Contains("{{fix-"))) x.R.Add(line.Text, line.Style, 1);
-                else if (line.Style != EmcLineStyle.Note) lastWasWarn = false;
+                else if (line.Style == EmcLineStyle.Heading || line.Style == EmcLineStyle.Total) lastWasWarn = false;
             }
             x.R.Add(Link(ActionOverview, "", x.L("diag-q-full")), EmcLineStyle.Text);
         }
