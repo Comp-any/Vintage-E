@@ -1,0 +1,24 @@
+<h2>Troubleshooting: an item shows no EMC value</h2>
+<p>Work down this list; most cases end at step 2.</p>
+<ol>
+<li><strong>Does the tooltip say anything at all?</strong> Hover the item. "No EMC value" (or a value) means Vintage-E is running on your side and the question is only why that item has none: go to step 2. If there's no EMC line at all, your game hasn't got the values: rejoin the server (the table is sent on join and after every remap). If that doesn't help, an admin can run <code>/emc diagnose</code> and click anything in the window: the <strong>Your game</strong> section says whether your version matches the server's and whether your table is missing or stale, with a one-click <strong>Resend</strong>.
+</li>
+<li><strong>Ask the mod why.</strong> An admin holds the item and runs <code>/emc diagnose</code> (or <code>/emc diagnose &lt;code&gt;</code> from the console). The report says which of these it is and offers the fix:
+<ul>
+<li><strong>Blacklisted.</strong> Creative, technical and loot blocks, creatures, maps and story items are left without a value on purpose so they can't be duplicated or burned. If this one shouldn't be, the report offers <strong>Allow it</strong>; <code>/emc blacklist</code> lists everything on the list.</li>
+<li><strong>Nothing makes it</strong> (a raw material, or an item another mod gives you by other means). The report suggests a value (the middle of its variants or relatives) with a one-click <strong>Pin it</strong>; otherwise <code>/emc set &lt;value&gt;</code> while holding it, or <code>BaseValues</code> in <code>ModConfig/vintagee.json</code>. For a whole mod, see step 4.</li>
+<li><strong>Waiting on an ingredient.</strong> The item has a recipe but one ingredient has no value yet. Each is a <strong>why?</strong> link: fix the ingredient and everything made from it follows.</li>
+<li><strong>In a loop.</strong> It and some other items are only made from each other, so none can start. Pin one of them; <code>/emc loop</code> lists every loop.</li>
+<li><strong>Gray-listed</strong> (<code>/emc graylist</code>): left out on purpose until a recipe makes it. Take it off the list if you want a guessed value.</li>
+</ul>
+</li>
+<li><strong>Values are there but not for this exact one.</strong> The tooltip of a worn, filled or differently made version (a half-used tool, a filled bucket, a gold round shield) can differ from the plain item's: <code>/emc dump hand</code> explains the held stack's number. Only some variants missing (one colour, one wood) is <code>/emc diagnose symptom somevariants</code>.
+</li>
+<li><strong>A whole mod has no values.</strong> <code>/emc diagnose mod &lt;modid&gt;</code> shows its coverage, the raw materials that would fix the most items at once, and can write a compatibility file for it (<code>/emc diagnose draftcompat &lt;modid&gt;</code>) that you can adjust and post on the Mod DB page so it ships with Vintage-E. The report also names the <code>emcValue</code> attribute the other mod's author could add.
+</li>
+<li><strong>It had a value before.</strong> After a mod update or a settings change the values are mapped again (or loaded from the cache when nothing relevant changed). <code>/emc diagnose changes</code> lists what the last mapping lost, changed and gained; <code>/emc recalc</code> forces a fresh mapping.
+</li>
+<li><strong>It has a value but the table won't take it.</strong> That's knowledge, not value: you learn an item by burning one (or <code>/emc learn</code> while holding it), and each player knows up to <code>MaxExactKnowledge</code> exact versions of items that keep their contents or material. <code>/emc diagnose watch</code> shows every refusal the table made recently and why.
+</li>
+<li><strong>Still stuck.</strong> <code>/emc diagnose bugreport</code> writes a short report (versions, mods, the check-up, changed settings, the server log's Vintage-E lines) to <code>ModData/vintagee/bug-report.txt</code> and puts it on the clipboard. Post it on the Mod DB page or as a GitHub issue with the item's code and what you expected.
+</li></ol>
