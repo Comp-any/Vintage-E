@@ -24,6 +24,9 @@ on:
       look:
         description: The server's default Look to test (New, Middle or Original)
         default: Original
+      topMods:
+        description: Run with this many of the Mod DB's most-downloaded content mods (libraries and APIs left out, plus the libraries they may need) instead of extraMods
+        default: ""
 
 permissions:
   contents: write
@@ -31,12 +34,13 @@ permissions:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     env:
       VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
       EXTRA_MODS: ${{ inputs.extraMods || (github.event_name == 'push' && 'primitivesurvival,wildcrafttree,herbarium,wildcraftfruit,butchering,fromgoldencombs,em' || '') }}
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-analysis-{0}', github.run_number) }}
       LOOK: ${{ inputs.look || (github.event_name == 'push' && 'New' || 'Original') }}
+      TOP_MODS: ${{ inputs.topMods || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -78,6 +82,14 @@ jobs:
           data="$PWD/data"
           mkdir -p "$data/Mods" "$data/ModConfig"
           cp -r bin/Release/Mods/vintagee "$data/Mods/"
+          # The Mod DB's most-downloaded content mods, when asked for.
+          if [ -n "$TOP_MODS" ]; then
+            python3 tools/ci_top_mods.py "$TOP_MODS" "$VS_VERSION" topmods.txt
+            cat topmods.txt.txt
+            EXTRA_MODS=$(cat topmods.txt)
+            echo "EXTRA_MODS=$EXTRA_MODS" >> "$GITHUB_ENV"
+            mkdir -p analysis && cp topmods.txt.txt analysis/top-mods.txt
+          fi
           # Other mods to test alongside (latest release of each that fits this game version).
           if [ -n "$EXTRA_MODS" ]; then
             ids=$(echo "$EXTRA_MODS" | tr -d ' ')
@@ -103,7 +115,8 @@ jobs:
           cd "$VSDIR"
           dotnet VintagestoryServer.dll --dataPath "$data" > "$GITHUB_WORKSPACE/server-console.log" 2>&1 &
           pid=$!
-          for i in $(seq 1 240); do
+          waits=240; [ -n "$TOP_MODS" ] && waits=400
+          for i in $(seq 1 $waits); do
             if [ -n "$(find "$data" -name emc-values.csv 2>/dev/null | head -1)" ]; then
               echo "values written after $((i*5))s"
               for j in $(seq 1 30); do
@@ -127,6 +140,8 @@ jobs:
           find data -name 'emc-*.csv' -exec cp {} analysis/ \;
           find data -name 'selftest.txt' -exec cp {} analysis/ \;
           find data -name 'diagnose-*.txt' -exec cp {} analysis/ \;
+          find data -name 'bug-report.txt' -exec cp {} analysis/ \;
+          cp data/Logs/server-main.log analysis/server-main-full.log 2>/dev/null || true
           # The mod built against the real game DLLs, zipped for release.
           version=$(python3 -c "import json;print(json.load(open('modinfo.json'))['version'])")
           if [ -f bin/Release/Mods/vintagee/VintageE.dll ]; then
