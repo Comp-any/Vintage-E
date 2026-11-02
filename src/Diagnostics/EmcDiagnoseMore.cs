@@ -25,7 +25,7 @@ namespace VintageE
         static readonly string[] AllActions =
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
-            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort
+            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort, ActionChecks, ActionBaseline, ActionProfit, ActionSkipped
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -505,6 +505,15 @@ namespace VintageE
                             if (x.Report == null) return L("diag-notmapped");
                             int n = PinSuggested(mod, x, target, out int skipped);
                             return L("diag-done-pinall", n, skipped);
+                        }
+                    case "contentsmode":
+                        {
+                            int eq = target.IndexOf('=');
+                            if (eq <= 0 || !StackDataTable.TryParseMode(target.Substring(eq + 1), out StackDataMode mode)) return L("diag-done-nothing", target);
+                            var items = new CollectibleIndex(mod.Sapi.World.Collectibles).Match(target.Substring(0, eq)).ToList();
+                            if (items.Count == 0) return L("diag-done-nothing", target);
+                            mod.SetStackDataModes(items, mode);
+                            return L("diag-done-contentsmode", target.Substring(0, eq), StackDataTable.ModeName(mode));
                         }
                     case "safe":
                         return ApplySafeFixes(mod, player, lang);

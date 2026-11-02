@@ -708,6 +708,7 @@ namespace VintageE
                 ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
                 ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"),
                 ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("short", ""),
+                ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""),
             };
             foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(1)) cases.Add(("draftcompat", m));
             EmcDiagnose.RecordRefusal(null, "novalue", new[] { "test" }, new ItemStack(sapi.World.GetItem(new AssetLocation("game:ingot-copper"))));
@@ -729,6 +730,8 @@ namespace VintageE
                     if (action == "mod" && arg == "game") Check(text.Contains("of its") && text.Contains("have a value"), "diagnose: the base game's coverage is reported");
                     if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("It has no value."), "diagnose: " + missing.Code + " is reported as having no value");
                     if (action == "trace" && arg == "game:ingot-tinbronze") Check(text.Contains("Copper ingot") && text.Contains("raw materials"), "diagnose: the trace of tin bronze reaches copper (" + Line1(text, "raw materials") + ")");
+                    if (action == "checks") Check(text.Contains("Metal tiers") && text.Contains("Skipped recipes") && text.Contains("Values defined twice"), "diagnose: the deeper checks all ran");
+                    if (action == "baseline") Check(text.Contains("fresh install") || text.Contains("Your settings change"), "diagnose: the baseline compared (" + Line1(text, "settings") + ")");
                     if (action == "short") Check(text.Contains("In short"), "diagnose: the short form");
                     if (action == "watch" && arg == "") Check(text.Contains("2 refusals") && text.Contains("Copper ingot"), "diagnose: the watch lists the recorded refusals (" + Line1(text, "refusals") + ")");
                     if (action == "draftcompat" && arg == "game") Check(text.Contains("nothing to draft"), "diagnose: no draft for the base game");

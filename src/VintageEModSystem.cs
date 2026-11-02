@@ -390,6 +390,8 @@ namespace VintageE
             sw.Stop();
             report.Milliseconds = sw.ElapsedMilliseconds;
             report.MappedAt = DateTime.Now;
+            MappingHistory.Add((report.MappedAt, reason, report.Milliseconds, report.FromCache));
+            if (MappingHistory.Count > 50) MappingHistory.RemoveAt(0);
             SnapshotValues(report);
             if (report.FromCache)
             {
@@ -1062,6 +1064,9 @@ namespace VintageE
         /// <summary>The mods (id → version) loaded for the previous and the current mapping, so "what changed" can name a mod added, removed or updated.</summary>
         public Dictionary<string, string> PreviousMods { get; private set; }
         public Dictionary<string, string> CurrentMods { get; private set; }
+
+        /// <summary>When each mapping ran, why, how long it took and whether it was the cache (the last 50), for /emc diagnose.</summary>
+        public List<(DateTime at, string reason, long ms, bool cached)> MappingHistory { get; } = new List<(DateTime, string, long, bool)>();
 
         /// <summary>The check-up's count of things worth fixing after the last mapping (−1 = not run), for the join message.</summary>
         public int CheckupProblems { get; private set; } = -1;
@@ -1736,6 +1741,10 @@ namespace VintageE
                 CollectibleObject held = Capi?.World?.Player?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.Collectible;
                 p.ClientHeldHasTooltip = held?.CollectibleBehaviors?.Any(b => b is CollectibleBehaviorEmcTooltip) ?? false;
                 p.ClientLog = EmcDiagnose.ClientLogLines(Capi, 25);
+                lock (CollectibleBehaviorEmcTooltip.Failures)
+                {
+                    p.ClientTooltipFailures = CollectibleBehaviorEmcTooltip.Failures.OrderByDescending(kv => kv.Value.count).Take(10).Select(kv => kv.Key + ": " + kv.Value.count + ": " + kv.Value.last).ToArray();
+                }
             }
             catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not gather client details for the diagnosis: {0}", e.Message); }
             return p;

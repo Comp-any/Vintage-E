@@ -53,6 +53,13 @@ namespace VintageE
         /// <summary>Human-readable name of every recipe list found → number of conversions it produced.</summary>
         public readonly SortedDictionary<string, int> SourceCounts = new SortedDictionary<string, int>();
         public int SkippedRecipes;
+        /// <summary>The first 300 skipped recipes, for /emc diagnose: "label: recipe (reason)".</summary>
+        public readonly List<string> Skipped = new List<string>();
+        void NoteSkipped(string label, string what, string reason)
+        {
+            SkippedRecipes++;
+            if (Skipped.Count < 300) Skipped.Add(label + ": " + what + " (" + reason + ")");
+        }
 
         public ConversionCollector(ICoreServerAPI sapi, CollectibleIndex index, ILogger logger, VintageEConfig config = null)
         {
@@ -204,7 +211,7 @@ namespace VintageE
                     try { AddRecipe(recipe, label); }
                     catch (Exception e)
                     {
-                        SkippedRecipes++;
+                        NoteSkipped(label, recipe.Name?.ToString() ?? "?", e.Message);
                         logger.VerboseDebug("EMC: skipped recipe {0} from {1}: {2}", recipe.Name, label, e.Message);
                     }
                 }
@@ -257,7 +264,11 @@ namespace VintageE
                 if (!consume.Consume) continue; // tools and catalysts (e.g. the philosopher's stone) cost nothing
 
                 CollectibleObject[] choices = ResolveChoices(ing);
-                if (choices.Length == 0) return; // unresolvable ingredient → recipe unusable
+                if (choices.Length == 0) // unresolvable ingredient → recipe unusable
+                {
+                    NoteSkipped(label, (recipe.Name?.ToString() ?? "?") + " -> " + output.Collectible.Code, "the ingredient '" + (ing.Code?.ToString() ?? "?") + "' matches no block or item");
+                    return;
+                }
 
                 // A bucket/bowl/jug of liquid in a crafting recipe: the game only takes the liquid out and hands the
                 // container back (unless the recipe says consumeContainer), so cost the liquid, not the container.
@@ -466,7 +477,7 @@ namespace VintageE
                 }
                 catch (Exception e)
                 {
-                    SkippedRecipes++;
+                    NoteSkipped(label, "cooking recipe", e.Message);
                     logger.VerboseDebug("EMC: skipped cooking recipe from {0}: {1}", label, e.Message);
                 }
             }

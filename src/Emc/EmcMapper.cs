@@ -21,6 +21,8 @@ namespace VintageE
         public int LoopFrozen;
         public int UnmatchedRules;
         public int SkippedRecipes;
+        /// <summary>The skipped recipes with their reasons (first 300), for /emc diagnose.</summary>
+        public List<string> Skipped = new List<string>();
         public int SiblingCount;
         public int RelativeCount;
         public int FallbackCount;
@@ -148,6 +150,7 @@ namespace VintageE
             collector.CollectAll();
             if (ConversionFilter != null) collector.Conversions.RemoveAll(c => !ConversionFilter(c));
             report.SkippedRecipes = collector.SkippedRecipes;
+            report.Skipped = collector.Skipped;
             report.CustomRecipeProblems = collector.CustomRecipeProblems;
 
             // 4. Propagate.

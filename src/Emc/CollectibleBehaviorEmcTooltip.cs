@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -20,7 +21,24 @@ namespace VintageE
 
         public override bool ClientSideOptional => true;
 
+        /// <summary>Tooltips that threw, by item family, for /emc diagnose (the exception itself is swallowed so the tooltip still shows).</summary>
+        public static readonly System.Collections.Generic.Dictionary<string, (int count, string last)> Failures = new System.Collections.Generic.Dictionary<string, (int, string)>();
+
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            try { Info(inSlot, dsc); }
+            catch (Exception e)
+            {
+                string family = inSlot?.Itemstack?.Collectible?.Code == null ? "?" : inSlot.Itemstack.Collectible.Code.Domain + ":" + inSlot.Itemstack.Collectible.Code.Path.Split('-')[0];
+                lock (Failures)
+                {
+                    Failures.TryGetValue(family, out var f);
+                    Failures[family] = (f.count + 1, e.GetType().Name + ": " + e.Message);
+                }
+            }
+        }
+
+        void Info(ItemSlot inSlot, StringBuilder dsc)
         {
             ItemStack stack = inSlot?.Itemstack;
             if (stack == null) return;

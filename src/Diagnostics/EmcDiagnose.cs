@@ -96,7 +96,8 @@ namespace VintageE
             }
 
             // Cached values come without the recipes behind them; item and mod reports need those, so map once more.
-            if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges) && x.Report.FromCache)
+            if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges
+                || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace) && x.Report.FromCache)
             {
                 EmcMappingReport fresh = mod.RecalculateEmc("/emc diagnose");
                 if (fresh != null) { x.Report = fresh; r.Add(x.L("diag-remapped"), EmcLineStyle.Note); }
@@ -129,6 +130,10 @@ namespace VintageE
                         break;
                     }
                 case ActionShort: Short(x, client); break;
+                case ActionChecks: Checks(x, client); break;
+                case ActionBaseline: Baseline(x); break;
+                case ActionProfit: Profit(x, full: true); Back(x); break;
+                case ActionSkipped: SkippedRecipes(x, full: true); Back(x); break;
                 case ActionDraft: DraftCompat(x, arg); break;
                 case ActionOutliers: Outliers(x, true); Back(x); break;
                 case ActionClean: Clean(x); break;
@@ -332,6 +337,7 @@ namespace VintageE
                 if (report.UnstableRemoved > 0 || report.LoopFrozen > 0) x.Note(x.L("diag-unstable", report.LoopFrozen, report.UnstableRemoved), 0);
             }
 
+            problems += ChecksSummary(x);
             r.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-verdict-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
             if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);
             return problems;
@@ -879,6 +885,7 @@ namespace VintageE
             r.Add(Link(ActionMods, "", x.L("diag-q-mods")));
             r.Add(Link(ActionSporadic, "", x.L("diag-q-sporadic")));
             r.Add(Link(ActionMapping, "", x.L("diag-q-mapping")));
+            r.Add(Link(ActionChecks, "", x.L("diag-q-checks")));
             r.Add(Link(ActionChanges, "", x.L("diag-q-changes")));
             r.Add(Link(ActionClean, "", x.L("diag-q-clean")));
             r.Add(Link(ActionPlayers, "", x.L("diag-q-players")));

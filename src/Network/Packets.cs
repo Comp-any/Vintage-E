@@ -181,6 +181,8 @@ namespace VintageE
         [ProtoMember(10)] public int ClientTableVersion;
         /// <summary>Vintage-E error and warning lines from the player's client-main.log (the last few), for the server-side report.</summary>
         [ProtoMember(11)] public string[] ClientLog;
+        /// <summary>Tooltips that threw in the player's game: "family: count: last error".</summary>
+        [ProtoMember(12)] public string[] ClientTooltipFailures;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>
