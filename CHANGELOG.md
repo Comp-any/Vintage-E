@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.4 — 2026-11-03
+
+### Fixed
+- **Values driven to nothing by a loop that makes more than it takes.** With a mod that lets a copper shingle block be taken apart into 15 plates (the base game makes 4 blocks from 3 plates), every round of the mapping found copper plates cheaper, past the point where the loop guard looks, until they settled at a millionth - shown as 0 - and copper bits, sheets and blocks followed. A recipe that would push a value below the floor now counts as a loop, as does a value falling a thousandfold from its first derivation, so plates keep the value their ingot gives them. Found by the 50-mod server test.
+
+### Changed
+- The server test can run with the Mod DB's most-downloaded content mods (`topMods` input; `tools/ci_top_mods.py` leaves out libraries and APIs and adds the libraries those mods may need).
+
 ## 1.15.3 — 2026-11-02
 
 ### Added

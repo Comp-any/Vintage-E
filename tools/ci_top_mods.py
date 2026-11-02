@@ -28,8 +28,8 @@ def is_library(mod):
     ids = [i.lower() for i in (mod.get("modidstrs") or [])]
     if mod.get("type") != "mod":
         return "not a mod (" + str(mod.get("type")) + ")"
-    if any(t in ("library", "api", "utility", "tool") for t in tags):
-        return "tagged " + ", ".join(t for t in tags if t in ("library", "api", "utility", "tool"))
+    if any(t in ("library", "api") for t in tags):
+        return "tagged " + ", ".join(t for t in tags if t in ("library", "api"))
     if any(i in KNOWN_LIBS for i in ids) or any(i.endswith("lib") or i.endswith("api") for i in ids):
         return "a known library id"
     text = (mod.get("name") or "") + " " + (mod.get("summary") or "")

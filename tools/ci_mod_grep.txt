@@ -5,3 +5,6 @@ taxidermy
 dilutedborax
 sulfate-full
 GroundStoredProcessable
+shingleblock
+gear-temporal
+metalplate-copper

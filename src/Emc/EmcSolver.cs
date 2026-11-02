@@ -167,9 +167,16 @@ namespace VintageE
                     double cost = Cost(e);
                     if (double.IsNaN(cost)) continue;
                     double per = cost / e.OutputQuantity;
-                    if (per < MinValue || double.IsInfinity(per)) continue;
-
+                    if (double.IsInfinity(per)) continue;
                     bool had = Values.TryGetValue(e.Output, out double current);
+                    if (per < MinValue)
+                    {
+                        // A recipe that would push a value below the floor: a loop that makes more than it takes (3 plates ->
+                        // 4 shingle blocks, 1 block -> 15 plates) ends here, so it counts as a loop and the value is frozen
+                        // at the first one it got, rather than settling at a millionth.
+                        if (had && current > MinValue) suspects.Add(e.Output);
+                        continue;
+                    }
                     if (!had || per < current * (1 - 1e-9))
                     {
                         if (had)
@@ -177,6 +184,8 @@ namespace VintageE
                             lowered.TryGetValue(e.Output, out int n);
                             lowered[e.Output] = ++n;
                             if (n > LoopLowerLimit) suspects.Add(e.Output);
+                            // Falling a thousandfold from the first derivation is a loop too, however few steps it took.
+                            if (firstValue.TryGetValue(e.Output, out double first) && per * 1000 < first) suspects.Add(e.Output);
                         }
                         Values[e.Output] = per;
                         Via[e.Output] = e;
