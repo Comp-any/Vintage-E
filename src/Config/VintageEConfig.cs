@@ -173,6 +173,10 @@ namespace VintageE
         [System.ComponentModel.Description("How many times slower time runs while a Watch of Flowing Time is on in \"slower\" mode.")]
         public double WatchSlowDown = 3;
 
+        /// <summary>After every mapping, run the /emc diagnose check-up and tell admins who join how many things it found worth fixing (0 = nothing said).</summary>
+        [System.ComponentModel.Description("After every mapping, run the /emc diagnose check-up and tell admins who join how many things it found worth fixing (nothing is said when it finds none).")]
+        public bool CheckupOnStart = true;
+
         /// <summary>Development only: builds a few test furnaces/projectiles near spawn after start-up and writes ModData/vintagee/selftest.txt. Used by the GitHub server test.</summary>
         [System.ComponentModel.Description("Development only: builds a few test furnaces/projectiles near spawn after start-up and writes ModData/vintagee/selftest.txt. Used by the GitHub server test.")]
         public bool SelfTestOnStart = false;

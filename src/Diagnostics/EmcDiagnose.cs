@@ -119,6 +119,15 @@ namespace VintageE
                     break;
                 case ActionPatches: Patches(x, true); Back(x); break;
                 case ActionWatch: Watch(x, arg); break;
+                case ActionTrace:
+                    {
+                        CollectibleObject tc = arg.Length > 0 ? Find(x, arg) : held?.Collectible;
+                        if (tc == null) { r.Add(arg.Length > 0 ? x.L("diag-item-notfound", arg) : x.L("diag-item-holdit"), EmcLineStyle.Warn); Questions(x, held, client); break; }
+                        x.ThenAction = ActionTrace; x.ThenArg = tc.Code.ToString(); r.Key = ActionTrace + "|" + tc.Code;
+                        Trace(x, tc);
+                        break;
+                    }
+                case ActionShort: Short(x, client); break;
                 case ActionDraft: DraftCompat(x, arg); break;
                 case ActionOutliers: Outliers(x, true); Back(x); break;
                 case ActionClean: Clean(x); break;
@@ -199,7 +208,7 @@ namespace VintageE
         }
 
         /// <summary>The check-up: every known way the mapping can go wrong, each with what it means and what to do.</summary>
-        static void Mapping(Ctx x, bool full)
+        static int Mapping(Ctx x, bool full)
         {
             EmcReport r = x.R;
             EmcMappingReport report = x.Report;
@@ -323,6 +332,19 @@ namespace VintageE
             }
 
             r.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-verdict-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
+            if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);
+            return problems;
+        }
+
+        /// <summary>The check-up's count of things worth fixing, for the start-up log and the join message (no report shown).</summary>
+        public static int CountProblems(VintageEModSystem mod, ICoreServerAPI sapi)
+        {
+            if (mod.LastReport == null) return 1;
+            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = "en", R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(sapi.World.Collectibles) };
+            int n = Mapping(x, full: false);
+            if (mod.ConfigLoadError != null) n++;
+            if (mod.LastMappingError != null && mod.LastMappingErrorAt > mod.LastReport.MappedAt) n++;
+            return n;
         }
 
         /// <summary>A config key that matches nothing: the closest real code, if there is one.</summary>
@@ -648,6 +670,7 @@ namespace VintageE
             if (!report.Values.ContainsKey(c) && !blacklisted && !free && !report.LoopOf.ContainsKey(c)) NextSteps(x, c.Code.Domain, new[] { c });
             r.Section(x.L("diag-sec-next"));
             r.Add(x.L("diag-item-full") + " " + EmcReport.Ref(c), EmcLineStyle.Text);
+            if (report.Values.ContainsKey(c)) r.Add(Link(ActionTrace, c.Code.ToString(), x.L("diag-q-trace")));
             r.Add(Link(ActionMod, c.Code.Domain, x.L("diag-q-thismod", ModName(x, c.Code.Domain))));
             r.Add(Link(ActionSporadic, "", x.L("diag-q-sporadic")));
             r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));

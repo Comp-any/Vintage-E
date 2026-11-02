@@ -416,6 +416,15 @@ namespace VintageE
                 data.Kinds.Keys.Count(c => data.ModeOf(c) == StackDataMode.ItemPrice), data.Variants.Count);
             LogCoverage(report);
             LastReport = report;
+            if (Config.CheckupOnStart)
+            {
+                try
+                {
+                    CheckupProblems = EmcDiagnose.CountProblems(this, Sapi);
+                    if (CheckupProblems > 0) Mod.Logger.Notification("EMC check-up: {0} thing(s) worth fixing. /emc diagnose lists them with their fixes.", CheckupProblems);
+                }
+                catch (Exception e) { Mod.Logger.Warning("EMC check-up failed: {0}", e.Message); }
+            }
             if (Config.DumpValuesOnStart)
             {
                 string file = WriteValuesFile(report);
@@ -531,10 +540,14 @@ namespace VintageE
                     if (player.HasPrivilege(Privilege.controlserver)) line += " " + Lang.GetL(player.LanguageCode, "vintagee:announce-compat-admin");
                     player.SendMessage(GlobalConstants.GeneralChatGroup, line, EnumChatType.Notification);
                 }
-                // Admins joining are told the settings can be changed in game.
+                // Admins joining are told the settings can be changed in game, and what the check-up found.
                 if (joining && player.HasPrivilege(Privilege.controlserver))
                 {
                     player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:announce-configure"), EnumChatType.Notification);
+                }
+                if (player.HasPrivilege(Privilege.controlserver) && CheckupProblems > 0)
+                {
+                    player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:announce-checkup", CheckupProblems), EnumChatType.Notification);
                 }
             }
             catch (Exception e)
@@ -1012,15 +1025,25 @@ namespace VintageE
                 {
                     PreviousValues = LastReport.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv.Value);
                     PreviousValuesAt = LastReport.MappedAt;
+                    PreviousMods = CurrentMods;
                 }
                 else if (System.IO.File.Exists(last))
                 {
-                    PreviousValues = LoadSnapshot(last, out DateTime at);
+                    PreviousValues = LoadSnapshot(last, out DateTime at, out PreviousMods);
                     PreviousValuesAt = at;
                 }
+                CurrentMods = Sapi.ModLoader.Mods.Where(m => m.Info?.ModID != null && Sapi.ModLoader.IsModEnabled(m.Info.ModID)).GroupBy(m => m.Info.ModID).ToDictionary(g => g.Key, g => g.First().Info.Version ?? "");
                 if (System.IO.File.Exists(last)) System.IO.File.Copy(last, prev, true);
                 var sb = new System.Text.StringBuilder();
-                sb.Append("{\"at\":\"").Append(report.MappedAt.ToString("yyyy-MM-dd HH:mm:ss")).Append("\",\"values\":{");
+                sb.Append("{\"at\":\"").Append(report.MappedAt.ToString("yyyy-MM-dd HH:mm:ss")).Append("\",\"mods\":{");
+                bool firstMod = true;
+                foreach (Mod m in Sapi.ModLoader.Mods.Where(m => m.Info?.ModID != null && Sapi.ModLoader.IsModEnabled(m.Info.ModID)).OrderBy(m => m.Info.ModID, StringComparer.Ordinal))
+                {
+                    if (!firstMod) sb.Append(',');
+                    firstMod = false;
+                    sb.Append(Newtonsoft.Json.JsonConvert.ToString(m.Info.ModID)).Append(':').Append(Newtonsoft.Json.JsonConvert.ToString(m.Info.Version ?? ""));
+                }
+                sb.Append("},\"values\":{");
                 bool first = true;
                 foreach (var kv in report.Values)
                 {
@@ -1035,11 +1058,24 @@ namespace VintageE
             catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not save the value snapshot: {0}", e.Message); }
         }
 
-        static Dictionary<string, double> LoadSnapshot(string file, out DateTime at)
+        /// <summary>The mods (id → version) loaded for the previous and the current mapping, so "what changed" can name a mod added, removed or updated.</summary>
+        public Dictionary<string, string> PreviousMods { get; private set; }
+        public Dictionary<string, string> CurrentMods { get; private set; }
+
+        /// <summary>The check-up's count of things worth fixing after the last mapping (−1 = not run), for the join message.</summary>
+        public int CheckupProblems { get; private set; } = -1;
+
+        static Dictionary<string, double> LoadSnapshot(string file, out DateTime at, out Dictionary<string, string> mods)
         {
             at = DateTime.MinValue;
+            mods = null;
             var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(file));
             DateTime.TryParse((string)o["at"], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out at);
+            if (o["mods"] is Newtonsoft.Json.Linq.JObject ms)
+            {
+                mods = new Dictionary<string, string>();
+                foreach (var kv in ms) mods[kv.Key] = (string)kv.Value ?? "";
+            }
             var result = new Dictionary<string, double>();
             if (o["values"] is Newtonsoft.Json.Linq.JObject values)
             {
@@ -1698,6 +1734,7 @@ namespace VintageE
                 p.ClientPatched = ClientLookPatches.PatchedCount;
                 CollectibleObject held = Capi?.World?.Player?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.Collectible;
                 p.ClientHeldHasTooltip = held?.CollectibleBehaviors?.Any(b => b is CollectibleBehaviorEmcTooltip) ?? false;
+                p.ClientLog = EmcDiagnose.ClientLogLines(Capi, 25);
             }
             catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not gather client details for the diagnosis: {0}", e.Message); }
             return p;

@@ -25,7 +25,7 @@ namespace VintageE
         static readonly string[] AllActions =
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
-            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft
+            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -81,9 +81,15 @@ namespace VintageE
             }
             else x.Ok(x.L("diag-client-patches-ok"));
 
+            if (client.ClientLog != null && client.ClientLog.Length > 0)
+            {
+                x.Warn(x.L("diag-client-log", client.ClientLog.Length));
+                foreach (string l in client.ClientLog) r.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
+            }
+            else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));
             if (client.Stack != null && client.Stack.Length > 0)
             {
-                if (!client.ClientHeldHasTooltip)
+                if (!client.ClientHeldHasTooltip
                 {
                     x.Warn(x.L("diag-client-notooltip"));
                     x.Fix(x.L("diag-client-notooltip-fix"));
@@ -486,11 +492,12 @@ namespace VintageE
                             int eq = target.IndexOf('=');
                             if (eq <= 0 || !double.TryParse(target.Substring(eq + 1), NumberStyles.Float, CultureInfo.InvariantCulture, out double v) || v < 0) return L("diag-done-nothing", target);
                             string key = target.Substring(0, eq);
+                            string lesson = Lesson(mod, key, lang);
                             mod.Config.FixedValues[key] = v;
                             if (v > 0) mod.Config.Blacklist.Remove(key);
                             mod.SaveConfig();
                             mod.RecalculateEmc("/emc diagnose pin");
-                            return L("diag-done-pin", key, EmcFormat.Format(v));
+                            return L("diag-done-pin", key, EmcFormat.Format(v)) + lesson;
                         }
                     case "pinall":
                         {
@@ -499,6 +506,8 @@ namespace VintageE
                             int n = PinSuggested(mod, x, target, out int skipped);
                             return L("diag-done-pinall", n, skipped);
                         }
+                    case "safe":
+                        return ApplySafeFixes(mod, player, lang);
                     case "clearwatch":
                         ClearRefusals();
                         return L("diag-done-clearwatch");
@@ -700,6 +709,7 @@ namespace VintageE
                 return;
             }
             r.Add(x.L("diag-changes-help", x.Mod.PreviousValuesAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), x.Report.MappedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)), EmcLineStyle.Note);
+            ModListChanges(x);
             var now = x.Report.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv);
             var gained = new List<(CollectibleObject c, double v)>();
             var lost = new List<(string key, double v)>();

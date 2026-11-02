@@ -179,6 +179,8 @@ namespace VintageE
         [ProtoMember(8)] public bool ClientHeldHasTooltip;
         [ProtoMember(9)] public bool HasClientInfo;
         [ProtoMember(10)] public int ClientTableVersion;
+        /// <summary>Vintage-E error and warning lines from the player's client-main.log (the last few), for the server-side report.</summary>
+        [ProtoMember(11)] public string[] ClientLog;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

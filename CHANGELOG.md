@@ -2,6 +2,17 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.15.3 — 2026-11-02
+
+### Added
+- **`/emc diagnose trace <code>` (or hold it):** a value's whole chain, each item with where its value came from and, under it, the ingredients of the recipe that made it, down to the raw materials it rests on; the weak links (values worked out backwards from a recipe with several ingredients) are marked, with a suggested pin for each.
+- **`/emc diagnose short`:** only the ⚠ lines and their fixes, for the console.
+- **Apply all safe fixes** in one click: dead settings entries removed, disabled compatibility files switched on, the EMC table resent.
+- **The check-up runs after every mapping** (`CheckupOnStart`, on by default): the server log says how many things are worth fixing, and admins who join are told too, when there are any.
+- **Your game's log** travels with each click in the window: Vintage-E errors and warnings from `client-main.log` show in the "Your game" section.
+- **What changed** now also says which mods were added, removed or updated between the two mappings (the mod list is kept with each snapshot).
+- **Pins teach:** when a pin replaces a value that had been worked out backwards from a recipe, copied from a variant or taken from a compatibility file, the outcome says so, how many other items are valued the same way, and where the general fix belongs (the mapper, `neverAcross`, or the compatibility file), so the same problem isn't pinned item by item.
+
 ## 1.15.2 — 2026-11-02
 
 ### Added
