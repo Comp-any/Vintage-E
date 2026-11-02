@@ -80,6 +80,7 @@ namespace VintageE
             try { x.Index = new CollectibleIndex(sapi.World.Collectibles); }
             catch (Exception e) { sapi.Logger.Warning("Vintage-E: /emc diagnose could not index the collectibles: {0}", e.Message); }
 
+            if (action == "troubleshoot" || action == "help" || action == "guide") action = ActionNoValue;
             // An item code or a mod id given straight: "/emc diagnose game:ingot-copper", "/emc diagnose primitivesurvival".
             if (action.Length > 0 && !AllActions.Contains(action))
             {
@@ -146,6 +147,7 @@ namespace VintageE
                 case ActionOutliers: Outliers(x, true); Back(x); break;
                 case ActionClean: Clean(x); break;
                 case ActionSymptom: Symptom(x, arg, client); break;
+                case ActionNoValue: NoValueGuide(x, client); break;
                 case ActionChanges: Changes(x); break;
                 case ActionMod:
                     if (arg.Length == 0) { Mods(x); break; }
@@ -896,6 +898,7 @@ namespace VintageE
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-questions"));
             r.Add(x.L("diag-questions-help"), EmcLineStyle.Note);
+            r.Add(Link(ActionNoValue, "", x.L("diag-q-novalue")));
             r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
             r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
             if (held?.Collectible?.Code != null)

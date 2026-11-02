@@ -20,12 +20,13 @@ namespace VintageE
     public static partial class EmcDiagnose
     {
         public const string ActionClient = "client", ActionLog = "log", ActionPatches = "patches", ActionOutliers = "outliers", ActionClean = "clean",
-            ActionPlayer = "player", ActionPlayers = "players", ActionBugReport = "bugreport", ActionSymptom = "symptom", ActionChanges = "changes";
+            ActionPlayer = "player", ActionPlayers = "players", ActionBugReport = "bugreport", ActionSymptom = "symptom", ActionChanges = "changes", ActionNoValue = "novalue";
 
         static readonly string[] AllActions =
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
-            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort, ActionChecks, ActionBaseline, ActionProfit, ActionSkipped
+            ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort, ActionChecks, ActionBaseline, ActionProfit, ActionSkipped,
+            ActionNoValue
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -628,6 +629,77 @@ namespace VintageE
                 if (line.StartsWith("== ", StringComparison.Ordinal)) r.Add(line.Trim('=', ' '), EmcLineStyle.Heading);
                 else r.Add(line.Replace("[[", "").Replace("]]", "").Replace("{{", "").Replace("}}", ""), EmcLineStyle.Note);
             }
+            r.Section(x.L("diag-sec-next"));
+            r.Add(Link(ActionOverview, "", x.L("diag-q-back")));
+        }
+
+        // ---------------------------------------------------------------- troubleshooting: an item shows no EMC value
+
+        /// <summary>
+        /// The README's troubleshooting list as a guided walk: each step says what to look at and links to the report or
+        /// fix that does it, using what's known already (the held item, the player's game).
+        /// </summary>
+        static void NoValueGuide(Ctx x, EmcDiagnoseRequestPacket client)
+        {
+            EmcReport r = x.R;
+            CollectibleObject held = x.Held?.Collectible;
+            r.Section(x.L("diag-sec-novalue"));
+            r.Add(x.L("diag-novalue-help"), EmcLineStyle.Note);
+
+            // 1. Does the tooltip say anything at all?
+            x.Info(x.L("diag-novalue-1"));
+            x.Note(x.L("diag-novalue-1-text"));
+            if (x.Player == null) x.Note(x.L("diag-client-console"));
+            else if (client == null || !client.HasClientInfo) r.Add(Link(ActionClient, "", x.L("diag-q-client")), EmcLineStyle.Text, 1);
+            else
+            {
+                bool ok = client.ClientTableCount > 0 && client.ClientTableHash == x.Mod.Emc.Fingerprint() && client.ClientTableCount == x.Mod.Emc.Count
+                          && (string.IsNullOrEmpty(client.ClientVersion) || client.ClientVersion == (x.Mod.Version ?? client.ClientVersion));
+                x.Note(ok ? x.L("diag-novalue-1-ok") : x.L("diag-novalue-1-bad"));
+                if (!ok) { r.Add(FixLink(x, "resend", "", x.L("diag-fix-resend")), EmcLineStyle.Text, 1); r.Add(Link(ActionClient, "", x.L("diag-q-client")), EmcLineStyle.Text, 1); }
+            }
+
+            // 2. Ask the mod why.
+            x.Info(x.L("diag-novalue-2"));
+            x.Note(x.L("diag-novalue-2-text"));
+            if (held?.Code != null)
+            {
+                bool valued = x.Report != null && x.Report.Values.ContainsKey(held);
+                x.Note(valued ? x.L("diag-novalue-2-heldvalued", EmcExplain.NameOf(held), F(x.V(held))) : x.L("diag-novalue-2-heldnone", EmcExplain.NameOf(held)));
+                r.Add(Link(ActionHand, "", x.L("diag-q-held", EmcExplain.NameOf(held))), EmcLineStyle.Text, 1);
+            }
+            else r.Add(Link(ActionHand, "", x.L("diag-q-item")), EmcLineStyle.Text, 1);
+            foreach (string reason in new[] { "blacklisted", "norecipe", "waiting", "loop", "gray" }) x.Note("- " + x.L("diag-novalue-2-" + reason));
+
+            // 3. The exact stack, or some variants.
+            x.Info(x.L("diag-novalue-3"));
+            x.Note(x.L("diag-novalue-3-text"));
+            r.Add(Link(ActionSymptom, "somevariants", x.L("diag-sym-somevariants")), EmcLineStyle.Text, 1);
+            r.Add(Link(ActionSporadic, "", x.L("diag-q-sporadic")), EmcLineStyle.Text, 1);
+
+            // 4. A whole mod.
+            x.Info(x.L("diag-novalue-4"));
+            x.Note(x.L("diag-novalue-4-text"));
+            if (held?.Code != null && held.Code.Domain != "game" && held.Code.Domain != "vintagee") r.Add(Link(ActionMod, held.Code.Domain, x.L("diag-q-thismod", ModName(x, held.Code.Domain))), EmcLineStyle.Text, 1);
+            r.Add(Link(ActionMods, "", x.L("diag-q-mods")), EmcLineStyle.Text, 1);
+
+            // 5. It had a value before.
+            x.Info(x.L("diag-novalue-5"));
+            x.Note(x.L("diag-novalue-5-text"));
+            r.Add(Link(ActionChanges, "", x.L("diag-q-changes")), EmcLineStyle.Text, 1);
+            r.Add(FixLink(x, "recalc", "", x.L("diag-fix-recalc")), EmcLineStyle.Text, 1);
+
+            // 6. Knowledge, not value.
+            x.Info(x.L("diag-novalue-6"));
+            x.Note(x.L("diag-novalue-6-text", x.Mod.Config.MaxExactKnowledge));
+            if (held?.Code != null && x.Player != null && x.V(held) > 0) r.Add(FixLink(x, "learn", PlayerEmc.KeyOf(held), x.L("diag-fix-learn", EmcExplain.NameOf(held))), EmcLineStyle.Text, 1);
+            r.Add(Link(ActionWatch, "", x.L("diag-q-watch")), EmcLineStyle.Text, 1);
+
+            // 7. Still stuck.
+            x.Info(x.L("diag-novalue-7"));
+            x.Note(x.L("diag-novalue-7-text"));
+            r.Add(Link(ActionBugReport, "", x.L("diag-q-bugreport")), EmcLineStyle.Text, 1);
+
             r.Section(x.L("diag-sec-next"));
             r.Add(Link(ActionOverview, "", x.L("diag-q-back")));
         }

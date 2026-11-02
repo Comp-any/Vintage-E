@@ -4,6 +4,9 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ## 1.15.5 — 2026-11-03
 
+### Added
+- **`/emc diagnose troubleshoot`** (also `novalue`, `help`, and the first question in the window): the seven-step walkthrough for "an item shows no EMC value", using what's known already (your game's table, the item you hold) and linking each step to the report or fix that does it. The README has the same list.
+
 ### Changed
 - **The check-up is a list of checks.** Each test is one line in the window (✓ passed, ⚠ found something, • a fact), and clicking it shows what it found and the fix; **Expand all** opens them all. The headers say the result in a few words ("Mod coverage: 4 mods have a value for less than three quarters of their content") and the explanations sit behind them. The file and the console still show everything.
 - **A shorter bug report.** Results and facts only: no advice lines, no explanations, the mod list wrapped instead of one per line, one line per patching mod and per value out of line, the log without its plain-words meanings, and only the settings that differ from the defaults (a fresh install's report is a third of the length).

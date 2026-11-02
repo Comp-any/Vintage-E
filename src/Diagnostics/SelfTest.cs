@@ -708,7 +708,7 @@ namespace VintageE
                 ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
                 ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"),
                 ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("short", ""),
-                ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""),
+                ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""), ("novalue", ""), ("troubleshoot", ""),
             };
             foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(1)) cases.Add(("draftcompat", m));
             EmcDiagnose.RecordRefusal(null, "novalue", new[] { "test" }, new ItemStack(sapi.World.GetItem(new AssetLocation("game:ingot-copper"))));
@@ -739,6 +739,7 @@ namespace VintageE
                     if (action == "patches") Check(text.Contains("patch"), "diagnose: other mods' patches were scanned (" + Line1(text, "patch") + ")");
                     if (action == "bugreport") Check(text.Contains("Mods (") && text.Contains("settings that differ from the defaults") && !text.Split('\n').Any(l => l.TrimStart().StartsWith("\u2192 ")) && text.Split('\n').Length < 400, "diagnose: the bug report has the mod list and the changed settings, no advice, and stays short (" + text.Split('\n').Length + " lines)");
                     if (action == "overview" || action == "") Check(r.Lines.Count(l => l.Style == EmcLineStyle.Check) >= 8, "diagnose: the overview is a list of checks (" + r.Lines.Count(l => l.Style == EmcLineStyle.Check) + ")");
+                    if (action == "novalue" || action == "troubleshoot") Check(text.Contains("Step 7") && text.Contains("Step 1") && !text.Contains("vintagee:diag-novalue"), "diagnose: the no-value walkthrough has its seven steps");
                     if (action == "symptom" && arg == "") Check(text.Split('\n').Count(l => l.Contains("/emc diagnose symptom ")) >= 10, "diagnose: ten symptoms are offered");
                     if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("Next steps") && text.Contains("mods.vintagestory.at"), "diagnose: next steps point to the Mod DB page");
                     File.WriteAllText(Path.Combine(dir, "diagnose-" + (action.Length == 0 ? "overview" : action) + (arg.Length > 0 ? "-" + arg.Replace(':', '_') : "") + ".txt"), text);
