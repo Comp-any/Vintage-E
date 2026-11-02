@@ -1029,8 +1029,9 @@ namespace VintageE
                 }
                 else if (System.IO.File.Exists(last))
                 {
-                    PreviousValues = LoadSnapshot(last, out DateTime at, out PreviousMods);
+                    PreviousValues = LoadSnapshot(last, out DateTime at, out Dictionary<string, string> mods);
                     PreviousValuesAt = at;
+                    PreviousMods = mods;
                 }
                 CurrentMods = Sapi.ModLoader.Mods.Where(m => m.Info?.ModID != null && Sapi.ModLoader.IsModEnabled(m.Info.ModID)).GroupBy(m => m.Info.ModID).ToDictionary(g => g.Key, g => g.First().Info.Version ?? "");
                 if (System.IO.File.Exists(last)) System.IO.File.Copy(last, prev, true);

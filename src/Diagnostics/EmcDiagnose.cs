@@ -34,6 +34,7 @@ namespace VintageE
             /// <summary>The report a fix link returns to (this report's action and argument).</summary>
             public string ThenAction = ActionOverview, ThenArg = "";
             public string L(string key, params object[] args) => Lang.GetL(LangCode, "vintagee:" + key, args);
+            public double V(CollectibleObject c) => c != null && Report?.Values != null && Report.Values.TryGetValue(c, out double v) ? v : 0;
             public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Total);
             public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Warn);
             public void Fix(string text) => R.Add("→ " + text, EmcLineStyle.Text, 1);
