@@ -669,7 +669,7 @@ namespace VintageE
             sb.Append('\n');
 
             string text = HomePath.Replace(Ip.Replace(sb.ToString(), "<address>"), "$1<user>");
-            text = Regex.Replace(text, @"\n{3,}", "\n\n").Replace("== Diagnosis ==\n\n== Is EMC mapped at all? ==", "== Diagnosis ==");
+            text = Regex.Replace(text, @"\n{3,}", "\n\n"); text = Regex.Replace(text, @"== Diagnosis ==\n+== Is EMC mapped at all\? ==", "== Diagnosis ==");
             string file = null;
             try
             {
