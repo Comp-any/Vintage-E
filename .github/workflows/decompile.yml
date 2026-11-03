@@ -1,0 +1,67 @@
+name: Decompile game classes
+
+# Decompiles the named types from the game's assemblies (for reading how a mechanic works) and pushes the C# to a
+# branch. The game's code is the game's; the branch is for reading, and gets deleted afterwards.
+
+on:
+  workflow_dispatch:
+    inputs:
+      types:
+        description: Regex of full type names to decompile (e.g. "Clutter|Glue|Repair")
+        required: true
+      gameVersion:
+        description: Game version
+        default: "1.22.7"
+      resultsBranch:
+        description: Branch to push the sources to
+        default: ""
+
+jobs:
+  decompile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
+      TYPES: ${{ inputs.types }}
+      RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-decompile-{0}', github.run_number) }}
+    steps:
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Download the game server
+        run: |
+          set -e
+          for name in "vs_server_linux-x64_${VS_VERSION}.tar.gz" "vs_server_${VS_VERSION}.tar.gz"; do
+            if curl -fsSL -o server.tar.gz "https://cdn.vintagestory.at/gamefiles/stable/$name"; then echo "got $name"; break; fi
+          done
+          mkdir -p vs && tar -xzf server.tar.gz -C vs
+          vsdir=$(dirname "$(find "$PWD/vs" -name VintagestoryServer.dll | head -1)")
+          echo "VSDIR=$vsdir" >> "$GITHUB_ENV"
+
+      - name: Decompile
+        run: |
+          set -e
+          dotnet tool install -g ilspycmd
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          mkdir -p out
+          for dll in VSSurvivalMod VSEssentials VintagestoryAPI VintagestoryLib; do
+            f="$VSDIR/$dll.dll"; [ -f "$f" ] || f="$VSDIR/Mods/$dll.dll"; [ -f "$f" ] || continue
+            ilspycmd -l t "$f" 2>/dev/null | grep -E "$TYPES" | sort -u > "types-$dll.txt" || true
+            while read -r t; do
+              [ -z "$t" ] && continue
+              ilspycmd -t "$t" -r "$VSDIR" -r "$VSDIR/Lib" -r "$VSDIR/Mods" "$f" > "out/$dll.$t.cs" 2>/dev/null || echo "failed: $t" >> out/failed.txt
+            done < "types-$dll.txt"
+            cp "types-$dll.txt" out/
+          done
+          ls out | head -50
+
+      - name: Push to the branch
+        run: |
+          cd out
+          git init -q -b "$RESULTS_BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Decompiled $TYPES from Vintage Story $VS_VERSION"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" "$RESULTS_BRANCH"
