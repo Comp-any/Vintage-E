@@ -120,7 +120,16 @@ namespace VintageE
                     return StackDataUtil.ChiseledValue(World, stack, GetValue);
                 case StackDataKind.Material:
                     VariantValue variant = StackData.FindVariant(World, stack);
-                    return variant?.Value ?? PlainValue(stack);
+                    if (variant != null) return variant.Value;
+                    double plain = PlainValue(stack);
+                    // No value for this version and none for the plain block (a tapestry pattern no trader sells):
+                    // priced like its priced siblings, the middle of them.
+                    if (plain <= 0 && StackData.Variants.TryGetValue(c, out var siblings) && siblings.Count > 0)
+                    {
+                        var sorted = siblings.Select(v => v.Value).Where(v => v > 0).OrderBy(v => v).ToList();
+                        if (sorted.Count > 0) return sorted[sorted.Count / 2];
+                    }
+                    return plain;
                 default:
                     return PlainValue(stack);
             }

@@ -238,6 +238,8 @@ namespace VintageE
                         try { if (js.Resolve(world, "Vintage-E stack data", false)) st = js.ResolvedItemstack; } catch { st = null; }
                     }
                     if (st?.Collectible != c) continue;
+                    // Things that hold other things (pies, baskets) are contents, handled by the contents modes, not typed blocks.
+                    if (StackContents.HasNestedStacks(st)) return false;
                     versions++;
                     if (KeptData(st) == null) return false; // a plain version exists
                 }
