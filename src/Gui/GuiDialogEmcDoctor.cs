@@ -257,7 +257,7 @@ namespace VintageE
             // Run, Back and Copy are all the same width: the widest label plus padding (the game's button grows
             // past a narrower fixed width, which is what made them differ).
             CairoFont buttonFont = CairoFont.SmallButtonText(EnumButtonStyle.Normal);
-            double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:doctor-home"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:reportgui-copy") }
+            double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:doctor-home"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:doctor-copy") }
                 .Max(t => TextWidth(buttonFont, t)) + 30);
             ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, top - 2, ButtonW, 30);
             ElementBounds barBounds = ElementBounds.Fixed(0, top + 38, Width, 6);
@@ -343,7 +343,7 @@ namespace VintageE
                 .AddSmallButton(Lang.Get("vintagee:doctor-home"), OnHome, homeBounds, EnumButtonStyle.Normal, "home")
                 .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                 .AddDynamicText(busy ? (busyText ?? "") : Lang.Get("vintagee:doctor-lastrun", receivedAt.ToString("HH:mm:ss"), checks), CairoFont.WhiteDetailText().WithColor(new double[] { 0.72, 0.72, 0.72, 1 }), lastBounds, "last")
-                .AddSmallButton(Lang.Get("vintagee:reportgui-copy"), OnCopy, copyBounds);
+                .AddSmallButton(Lang.Get("vintagee:doctor-copy"), OnCopy, copyBounds);
             SingleComposer = c.EndChildElements().Compose();
             composing = false;
             SingleComposer.GetButton("back").Enabled = history.Count > 0;

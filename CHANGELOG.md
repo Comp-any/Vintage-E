@@ -10,7 +10,8 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ### Added
 - **Doctor:** "Remove all N entries that match nothing and remap" under the settings-file check, next to the per-entry links.
-- **Doctor window:** a Check-up button left of Back that returns to the doctor's first page.
+- **Doctor window:** a Check-up button left of Back that returns to the doctor's first page; the Copy button says what it copies ("Copy this report").
+- **Wording:** 269 of the doctor's texts rewritten in plainer words: one idea per sentence, "priced from a recipe that uses it" instead of "worked backwards", "fallback value" instead of "last-resort value", "copied from a look-alike variant" instead of "copied from variants", and every check header as "Topic: result".
 
 ## 1.17.1 — 2026-11-03
 
