@@ -4,6 +4,9 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ## 1.17.2 — 2026-11-03
 
+### Fixed
+- **Doctor window:** lines that show an item icon are given the icon's height, so they no longer run into the buttons under them (seen under the blacklisted-ingredients check).
+
 ### Changed
 - **The doctor no longer pauses the game.** Reports are built on a worker thread and the remapping a fix triggers runs there too; the world keeps ticking and the window shows "Scanning…" until the answer arrives.
 - **Free-EMC check:** one line per item instead of one per recipe (18 kinds of fish all filleting into the same raw fillet were 18 lines); the line shows the recipe with the biggest gain and says how many more there are.

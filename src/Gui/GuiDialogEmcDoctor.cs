@@ -494,6 +494,18 @@ namespace VintageE
         {
             string plain = EmcReport.Plain(capi.World, text);
             double h = GuiLayout.TextHeight(capi, font, plain, width);
+            // An item reference draws a 24 px icon before its name: taller than a text line, and wider than the plain
+            // name the height was measured on. Count the lines with the icons' width added, then give each line the
+            // icon's height, or the text would run into whatever sits below it.
+            int refs = EmcReport.RefToken.Matches(text).Count;
+            if (refs > 0)
+            {
+                double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
+                double lineH = font.GetFontExtents().Height / scale;
+                double measured = GuiLayout.TextHeight(capi, font, plain + new string('W', 4 * refs), width) - 4;
+                int lines = Math.Max(1, (int)Math.Round(measured / Math.Max(1, lineH)));
+                h = lines * Math.Max(lineH, 30) + 4;
+            }
             var comps = new List<RichTextComponentBase>();
             AddRichParts(comps, text, font, -1);
             c.AddRichtext(comps.ToArray(), In(parent, ElementBounds.Fixed(x, y, width, h + 2)));
