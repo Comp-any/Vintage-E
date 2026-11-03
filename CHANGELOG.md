@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.13 — 2026-11-04
+
+### Fixed
+- **Crash at join in 1.17.12 (NullReferenceException in TextureSource, TesselateBlocksForInventory_ASync).** The after-load reload ran at BlockTexturesLoaded, while the game's own start-up tesselation was still running on its thread pool; the reload swapped textures under it. The reload now waits until the game reports that tesselation finished.
+
 ## 1.17.12 — 2026-11-04
 
 ### Fixed

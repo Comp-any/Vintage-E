@@ -356,6 +356,34 @@ namespace VintageE
             else { LookEvent("shapes reloaded through .reload shapes (no event manager found)"); Capi.TriggerChatMessage(".reload shapes"); }
         }
 
+        /// <summary>
+        /// Runs the action once the game's start-up block tesselation (two thread-pool tasks) has finished, checked
+        /// every 200 ms through the tesselator's own counter; at once if that can't be read.
+        /// </summary>
+        void WhenTesselationDone(Action action)
+        {
+            System.Reflection.FieldInfo field = null; object manager = null;
+            try
+            {
+                manager = Capi.World.GetType().GetProperty("TesselatorManager", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(Capi.World)
+                    ?? Capi.World.GetType().GetField("TesselatorManager", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(Capi.World);
+                field = manager?.GetType().GetField("finishedAsyncBlockTesselation", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+            catch { }
+            if (field == null) { LookEvent("tesselation counter not readable; going ahead at once"); action(); return; }
+            long id = 0; int waited = 0;
+            id = Capi.Event.RegisterGameTickListener(dt =>
+            {
+                bool done = false;
+                try { done = (int)field.GetValue(manager) >= 2; } catch { done = true; }
+                waited += 200;
+                if (!done && waited < 120000) return;
+                Capi.Event.UnregisterGameTickListener(id);
+                LookEvent("start-up tesselation {0} after {1} ms", done ? "finished" : "not reported finished, going ahead anyway", waited);
+                action();
+            }, 200);
+        }
+
         /// <summary>True once the world is in: the game's texture atlases exist, so textures a look adds later can be baked into them.</summary>
         bool atlasesReady;
 
@@ -1881,7 +1909,9 @@ namespace VintageE
                     {
                         lookReloadTried = true;
                         Mod.Logger.Notification("Look: {0} was picked but nothing was applied while loading (hook calls: {1}); reloading shapes once to apply it.", look, ClientLookPatches.RawCalls);
-                        ChangeLookNow("nothing applied while loading, hook calls: " + ClientLookPatches.RawCalls);
+                        // BlockTexturesLoaded fires while the game's start-up tesselation can still be running on its
+                        // thread pool; a reload then swaps textures under it and the game crashes (TextureSource).
+                        WhenTesselationDone(() => ChangeLookNow("nothing applied while loading, hook calls: " + ClientLookPatches.RawCalls));
                     }
                     else LookEvent("textures loaded: {0}, {1} models and {2} textures applied{3}", look, LookResult?.Models ?? 0, LookResult?.Textures ?? 0, wanted ? ", no reload needed" : "");
                 }
