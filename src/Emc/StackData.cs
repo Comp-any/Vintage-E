@@ -224,6 +224,10 @@ namespace VintageE
         {
             if (c == null) return false;
             if (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTreeBranch")) return true;
+            // Things that hold other things (pies, bowls, baskets) are contents, handled by the contents modes, not typed blocks.
+            StackDataKind? kind = null;
+            try { kind = Detect(c, world); } catch { kind = null; }
+            if (kind == StackDataKind.Contents || kind == StackDataKind.Chiseled) return false;
             // Anything whose every creative version carries data (fruit tree cuttings, typed storage): there is no plain one to be.
             if (c.CreativeInventoryStacks == null || c.CreativeInventoryStacks.Length == 0) return false;
             int versions = 0;
@@ -280,7 +284,7 @@ namespace VintageE
                 return StackDataKind.Contents;
             }
             // Blocks whose kind lives on the stack (tapestries, typed chests, lanterns...): their creative stacks carry the data.
-            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockTapestry")) return StackDataKind.Material;
+            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockFruitTreeBranch")) return StackDataKind.Material;
             if (c.CreativeInventoryStacks != null)
             {
                 foreach (var tab in c.CreativeInventoryStacks)
