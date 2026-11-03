@@ -259,13 +259,18 @@ namespace VintageE
             CairoFont buttonFont = CairoFont.SmallButtonText(EnumButtonStyle.Normal);
             double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:doctor-home"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:doctor-copy") }
                 .Max(t => TextWidth(buttonFont, t)) + 30);
-            ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, top - 2, ButtonW, 30);
-            // "Deeper checks" sits between the chips and Run checks again, right-aligned next to Run.
+            // "Deeper checks" sits between the chips and Run checks again, right-aligned next to Run. With big counts
+            // the chips grow into them, so then the two buttons go on a row of their own under the chips.
             double deeperW = TextWidth(buttonFont, Lang.Get("vintagee:doctor-deeper")) + 30;
-            ElementBounds deeperBounds = ElementBounds.Fixed(Width - ButtonW - 8 - deeperW, top - 2, deeperW, 30);
-            ElementBounds barBounds = ElementBounds.Fixed(0, top + 38, Width, 6);
+            double chipsEnd = chips.Count == 0 ? 0 : chips[chips.Count - 1].x + chips[chips.Count - 1].w;
+            bool secondRow = chipsEnd + 12 > Width - ButtonW - 8 - deeperW;
+            double buttonTop = secondRow ? top + 34 : top - 2;
+            ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, buttonTop, ButtonW, 30);
+            ElementBounds deeperBounds = ElementBounds.Fixed(Width - ButtonW - 8 - deeperW, buttonTop, deeperW, 30);
+            double barTop = buttonTop + 40;
+            ElementBounds barBounds = ElementBounds.Fixed(0, barTop, Width, 6);
 
-            double listTop = top + 56;
+            double listTop = barTop + 18;
             ElementBounds listBounds = ElementBounds.Fixed(0, listTop, Width, ListHeight);
             ElementBounds clipBounds = listBounds.ForkBoundingParent();
             ElementBounds scrollbarBounds = ElementBounds.Fixed(Width + 4, listTop, 20, ListHeight);

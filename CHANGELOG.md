@@ -6,6 +6,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ### Fixed
 - **Blocks that are nothing without their data no longer count toward `MaxExactKnowledge`.** Clutter, tapestry patterns, fruit tree cuttings and the like are only ever known as an exact version, so they are the plain items of their kind; the Tome of Knowledge teaches thousands of them, which put every reader "over the limit of 500" in the doctor's players check and would have had the table refuse new exact versions. The limit now counts only filled containers, material versions and chiseled blocks, as it was meant to.
+- **Doctor window: with big counts the filter chips grew into the "Deeper checks" and "Run checks again" buttons.** When they would, the two buttons move to a row of their own under the chips.
 - **A player trying to burn something worth nothing** (the Tome, say) was logged as a warning, which the doctor then reported under the server log. It's a notification now; the watch still records the refusal.
 
 ## 1.17.18 — 2026-11-04
