@@ -1781,6 +1781,24 @@ namespace VintageE
             // The look is applied as the game loads shapes for what the server sent, which comes after this.
             ClientLookPatches.Mod = this;
             ClientLookPatches.Patch(Mod.Logger);
+            // Safety net: once the world is in, if the picked look never got applied (the loaders ran before the hook
+            // could see them), load the shapes once more; that pass goes through the hook.
+            capi.Event.LevelFinalize += () =>
+            {
+                try
+                {
+                    string look = clientLook ?? (ClientConfig?.Look == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(capi.World?.Config?.GetString(WorldLookKey, null) ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(ClientConfig?.Look));
+                    bool wanted = ProjectELook.MapFor(look) != null;
+                    bool applied = (LookResult?.Models ?? 0) + (LookResult?.Textures ?? 0) > 0;
+                    if (wanted && !applied && !lookReloadTried)
+                    {
+                        lookReloadTried = true;
+                        Mod.Logger.Notification("Look: {0} was picked but nothing was applied while loading (hook calls: {1}); reloading shapes once to apply it.", look, ClientLookPatches.RawCalls);
+                        ChangeLookNow();
+                    }
+                }
+                catch (Exception e) { Mod.Logger.Warning("Look: the after-join check failed: {0}", e.Message); }
+            };
             clientChannel = capi.Network.GetChannel(ChannelName);
             clientChannel.SetMessageHandler<EmcTablePacket>(OnEmcTableReceived);
             clientChannel.SetMessageHandler<TransmuteResultPacket>(OnTransmuteResult);
@@ -1930,6 +1948,7 @@ namespace VintageE
 
         /// <summary>The client settings changed in their window: save them and show the change.</summary>
         string lastLookSetting;
+        bool lookReloadTried;
 
         public void OnClientConfigChanged()
         {
@@ -2246,7 +2265,7 @@ namespace VintageE
             if (Capi != null)
             {
                 ProjectELook.DisposeMeshes();
-                ClientLookPatches.Unpatch();
+                ClientLookPatches.Forget(this);
             }
             try { (Sapi?.World ?? (IWorldAccessor)Capi?.World)?.Calendar?.RemoveTimeSpeedModifier(TrinketEffects.TimeModifierName); }
             catch { /* world already gone */ }

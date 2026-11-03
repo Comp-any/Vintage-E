@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.8 — 2026-11-03
+
+### Fixed
+- **Looks: the hook that applies them could be gone while the doctor said it was in place.** Vintage-E removed its shape-loader patches when a client instance was disposed; when the game disposed the previous world's instance after the next one had started, the patches vanished and the look stayed Middle, while the "all applied" count never went down. The patches now stay for the life of the game (they do nothing without a live instance), they are verified as really present every time a client starts (and re-applied if not), and if a picked look still hasn't been applied by the time the world is in, the shapes are reloaded once through the hook. The client log says "Look: N of 3 shape-loader hooks in place".
+
 ## 1.17.7 — 2026-11-03
 
 ### Fixed

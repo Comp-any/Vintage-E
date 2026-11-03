@@ -30,17 +30,21 @@ namespace VintageE
 
         public static bool Patch(ILogger logger)
         {
-            if (harmony != null) return true;
+            // Checked every time a client starts, not just once: a patch can have been removed since (an earlier
+            // instance of this mod unpatching on its way out, say), and the count must say what is really in place.
             try
             {
                 Type manager = AccessTools.TypeByName("Vintagestory.Client.NoObf.ShapeTesselatorManager");
                 if (manager == null) { PatchError = "ShapeTesselatorManager not found"; logger.Warning("Look: the game's shape loader wasn't found; using the Middle look."); return false; }
-                var h = new Harmony(HarmonyId);
+                var h = harmony ?? new Harmony(HarmonyId);
+                PatchedCount = 0;
+                PatchError = null;
                 bool all = true;
                 all &= PatchOne(h, manager, "LoadBlockShapes", nameof(BlocksPrefix), logger);
                 all &= PatchOne(h, manager, "LoadItemShapes", nameof(ItemsPrefix), logger);
                 all &= PatchOne(h, manager, "LoadEntityShapes", nameof(EntitiesPrefix), logger);
                 harmony = h;
+                logger.Notification("Look: {0} of 3 shape-loader hooks in place{1}.", PatchedCount, PatchError == null ? "" : " (" + PatchError + ")");
                 return all;
             }
             catch (Exception e)
@@ -55,11 +59,28 @@ namespace VintageE
         {
             var target = AccessTools.GetDeclaredMethods(type).FirstOrDefault(m => m.Name == method);
             if (target == null) { PatchError = (PatchError == null ? "" : PatchError + "; ") + "no " + method; logger.Warning("Look: the game has no {0}; that kind keeps the Middle look.", method); return false; }
-            h.Patch(target, prefix: new HarmonyMethod(typeof(ClientLookPatches), prefix));
+            // Already there from an earlier start? Then don't stack a second copy.
+            Patches info = Harmony.GetPatchInfo(target);
+            bool present = info?.Prefixes?.Any(p => p.owner == HarmonyId) ?? false;
+            if (!present) h.Patch(target, prefix: new HarmonyMethod(typeof(ClientLookPatches), prefix));
+            info = Harmony.GetPatchInfo(target);
+            present = info?.Prefixes?.Any(p => p.owner == HarmonyId) ?? false;
+            if (!present) { PatchError = (PatchError == null ? "" : PatchError + "; ") + method + " not patched"; return false; }
             PatchedCount++;
             return true;
         }
 
+        /// <summary>
+        /// Forgets this client's mod instance. The patches stay for the life of the game: they do nothing without an
+        /// instance, and removing them here used to take them away from the next world's instance when the game
+        /// disposed this one late.
+        /// </summary>
+        public static void Forget(object instance)
+        {
+            if (ReferenceEquals(Mod, instance)) Mod = null;
+        }
+
+        /// <summary>Removes the patches outright (not used at run time; kept for tests).</summary>
         public static void Unpatch()
         {
             harmony?.UnpatchAll(HarmonyId);
