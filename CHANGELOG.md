@@ -5,6 +5,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.17.6 — 2026-11-03
 
 ### Fixed
+- **Matter armour tooltips** say what the durability bar means: 10,000 that never drops (hits don't wear it; the game only lets armour protect while its durability is above 0, so it has to have some).
 - **Clutter (aged chairs, barrels, paintings...):** the plain clutter block was priced from a trader's typed stack (998 EMC for every kind of clutter) and typeless clutter could be learned and created, showing as "game:clutter-" and placing a nameless block. Traders' typed stacks now price that version only (a material-specific value), the plain block falls back to the clutter default (32), a typeless clutter or tapestry is never offered or created, the Tome of Knowledge learns each creative version instead of the plain block, and the "learned" message names the version learned.
 
 ### Added
