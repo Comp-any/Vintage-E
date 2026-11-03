@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.12 — 2026-11-04
+
+### Fixed
+- **Looks: the after-load reload works again.** It used the `.reload shapes` chat command, which threw before the player was in the world (so a game whose first shape load misses the hook kept the Middle look). The reload now goes through the game's own reload event.
+
+### Changed
+- **Doctor: the look trail also shows when the client side started, when the game's assets were in, and which thread each step ran on**, to pin down why some games load their shapes without going through the hook.
+
 ## 1.17.11 — 2026-11-03
 
 ### Fixed

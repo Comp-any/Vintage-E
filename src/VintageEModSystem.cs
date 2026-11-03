@@ -129,7 +129,8 @@ namespace VintageE
         /// </summary>
         public override void AssetsLoaded(ICoreAPI api)
         {
-            if (api.Side != EnumAppSide.Client || Capi == null) return;
+            if (api.Side != EnumAppSide.Client) return;
+            if (Capi == null) { Mod.Logger.Notification("Look: AssetsLoaded ran before the client side started; the early pass is skipped."); return; }
             try
             {
                 var blocks = (api.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
@@ -137,7 +138,7 @@ namespace VintageE
                 var types = (api.World?.EntityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
                 Mod.Logger.Notification("Look: at AssetsLoaded the game already holds {0} of this mod's blocks, {1} items and {2} entity types; applying the look to them now (the shape-loader hook covers what arrives later).", blocks.Count, items.Count, types.Count);
                 LookAppliedEarly = blocks.Count + items.Count;
-                LookEvent("early pass: {0} blocks, {1} items, {2} entity types held by the game", blocks.Count, items.Count, types.Count);
+                LookEvent("assets loaded: the game holds {0} blocks, {1} items, {2} entity types (thread {3})", blocks.Count, items.Count, types.Count, System.Threading.Thread.CurrentThread.Name ?? "?");
                 if (blocks.Count > 0) ApplyClientLookTo("blocks (early)", blocks, new List<EntityProperties>());
                 if (items.Count > 0) ApplyClientLookTo("items (early)", items, new List<EntityProperties>());
                 if (types.Count > 0) ApplyClientLookTo("entities (early)", Array.Empty<CollectibleObject>(), types);
@@ -239,7 +240,7 @@ namespace VintageE
                 // does, so a later pass (a look switch, a shape reload) has to put them into the atlases itself, or the
                 // block is drawn invisible with an "Unable to initialize TextureSource" error.
                 int baked = atlasesReady ? BakeLookTextures(mine2) : 0;
-                LookEvent("{0}: {1} of ours, {2} models, {3} textures{4}", kind, mine2.Count, r.Models, r.Textures, atlasesReady ? ", " + baked + " baked into the atlases" : "");
+                LookEvent("{0}: {1} of ours, {2} models, {3} textures{4} (thread {5})", kind, mine2.Count, r.Models, r.Textures, atlasesReady ? ", " + baked + " baked into the atlases" : "", System.Threading.Thread.CurrentThread.Name ?? "?");
             }
             catch (Exception e)
             {
@@ -336,9 +337,23 @@ namespace VintageE
                 // atlases exist, bakes the look's textures into them (ApplyClientLookTo). Applying here as well would
                 // be undone by the hook, which always builds fresh texture entries.
                 Mod.Logger.Notification("Look: switching ({0}); reloading shapes.", why);
-                Capi.TriggerChatMessage(".reload shapes");
+                ReloadShapes();
             }
             catch (Exception e) { Mod.Logger.Error("Could not switch the look: {0}", e); }
+        }
+
+        /// <summary>
+        /// Has the game load its block and item shapes again and tesselate them (what ".reload shapes" does), through
+        /// the game's own event, so it works before the player is in the world and chat commands run (the chat route
+        /// threw at BlockTexturesLoaded).
+        /// </summary>
+        void ReloadShapes()
+        {
+            object events = null;
+            try { events = Capi.World.GetType().GetField("eventManager", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(Capi.World); } catch { }
+            var trigger = events?.GetType().GetMethod("TriggerReloadShapes", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (trigger != null) { trigger.Invoke(events, null); LookEvent("shapes reloaded through the game's event"); }
+            else { LookEvent("shapes reloaded through .reload shapes (no event manager found)"); Capi.TriggerChatMessage(".reload shapes"); }
         }
 
         /// <summary>True once the world is in: the game's texture atlases exist, so textures a look adds later can be baked into them.</summary>
@@ -1844,6 +1859,7 @@ namespace VintageE
         public override void StartClientSide(ICoreClientAPI capi)
         {
             Capi = capi;
+            LookEvent("client start: the game holds {0} blocks and {1} items so far (thread {2})", capi.World?.Blocks?.Count ?? 0, capi.World?.Items?.Count ?? 0, System.Threading.Thread.CurrentThread.Name ?? "?");
             // The look is applied as the game loads shapes for what the server sent, which comes after this.
             ClientLookPatches.Mod = this;
             ClientLookPatches.Capi = capi;
