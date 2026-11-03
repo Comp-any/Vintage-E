@@ -191,9 +191,12 @@ namespace VintageE
                             mine == VintageEClientConfig.LookServer ? "the server's" : "picked in .vintagee", serverLook ?? "not sent, so New");
                     }
                 }
-                if (ProjectELook.MapFor(clientLook) == null) return;
                 var mine2 = (collectibles ?? Enumerable.Empty<CollectibleObject>()).Where(c => c?.Code?.Domain == ModId).ToList();
                 var types = (entityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
+                lock (clientLookLock) { LookPrefixCalls++; LookPrefixCollectibles += mine2.Count; }
+                // Remember how the game sent each block and item, so a look change can put it back and apply another.
+                SnapshotLookOriginals(mine2);
+                if (ProjectELook.MapFor(clientLook) == null) return;
                 if (mine2.Count == 0 && types.Count == 0) return;
                 ProjectELook.Result r = ProjectELook.Apply(capi, Mod.Logger, clientLook, false, mine2, types);
                 lock (clientLookLock)
@@ -213,6 +216,92 @@ namespace VintageE
 
         /// <summary>The look in use: on the server its default for players, on a player's computer the one they see.</summary>
         public string ActiveLook { get; private set; } = ProjectELook.LookNew;
+
+        /// <summary>How often the game's shape loaders ran through the look hook on this computer, and how many of this mod's blocks/items they carried (the doctor shows them).</summary>
+        public int LookPrefixCalls { get; private set; }
+        public int LookPrefixCollectibles { get; private set; }
+
+        /// <summary>Each block and item as the server sent it, before any look touched it.</summary>
+        sealed class LookOriginal
+        {
+            public CompositeShape Shape, ShapeInventory;
+            public Dictionary<string, CompositeTexture> Textures, TexturesInventory;
+            public EnumDrawType DrawType;
+            public bool[] SideOpaque;
+            public Cuboidf[] SelectionBoxes;
+            public ModelTransform Gui, Fp, Tp, TpOff, Ground;
+        }
+        readonly Dictionary<CollectibleObject, LookOriginal> lookOriginals = new Dictionary<CollectibleObject, LookOriginal>();
+
+        void SnapshotLookOriginals(IEnumerable<CollectibleObject> collectibles)
+        {
+            lock (lookOriginals)
+            {
+                foreach (CollectibleObject c in collectibles)
+                {
+                    if (c == null || lookOriginals.ContainsKey(c)) continue;
+                    var o = new LookOriginal
+                    {
+                        Gui = c.GuiTransform?.Clone(), Fp = c.FpHandTransform?.Clone(), Tp = c.TpHandTransform?.Clone(), TpOff = c.TpOffHandTransform?.Clone(), Ground = c.GroundTransform?.Clone()
+                    };
+                    if (c is Block b)
+                    {
+                        o.Shape = b.Shape?.Clone(); o.ShapeInventory = b.ShapeInventory?.Clone();
+                        o.Textures = b.Textures == null ? null : new Dictionary<string, CompositeTexture>(b.Textures);
+                        o.TexturesInventory = b.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(b.TexturesInventory);
+                        o.DrawType = b.DrawType; o.SideOpaque = (bool[])b.SideOpaque?.Clone(); o.SelectionBoxes = b.SelectionBoxes?.Select(x => x.Clone()).ToArray();
+                    }
+                    else if (c is Item it)
+                    {
+                        o.Shape = it.Shape?.Clone();
+                        o.Textures = it.Textures == null ? null : new Dictionary<string, CompositeTexture>(it.Textures);
+                    }
+                    lookOriginals[c] = o;
+                }
+            }
+        }
+
+        void RestoreLookOriginals()
+        {
+            lock (lookOriginals)
+            {
+                foreach (var kv in lookOriginals)
+                {
+                    CollectibleObject c = kv.Key; LookOriginal o = kv.Value;
+                    c.GuiTransform = o.Gui?.Clone(); c.FpHandTransform = o.Fp?.Clone(); c.TpHandTransform = o.Tp?.Clone(); c.TpOffHandTransform = o.TpOff?.Clone(); c.GroundTransform = o.Ground?.Clone();
+                    if (c is Block b)
+                    {
+                        b.Shape = o.Shape?.Clone(); b.ShapeInventory = o.ShapeInventory?.Clone();
+                        b.Textures = o.Textures == null ? null : new Dictionary<string, CompositeTexture>(o.Textures);
+                        b.TexturesInventory = o.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(o.TexturesInventory);
+                        b.DrawType = o.DrawType; b.SideOpaque = (bool[])o.SideOpaque?.Clone(); b.SelectionBoxes = o.SelectionBoxes?.Select(x => x.Clone()).ToArray();
+                    }
+                    else if (c is Item it)
+                    {
+                        it.Shape = o.Shape?.Clone();
+                        it.Textures = o.Textures == null ? null : new Dictionary<string, CompositeTexture>(o.Textures);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Client: the look picked in .vintagee changed. Puts every block and item back as the server sent it, forgets
+        /// the look worked out at join, and has the game load its shapes again (the same path as at join, through the
+        /// look hook), so the new look shows at once instead of after a rejoin. Entities keep their look until a rejoin.
+        /// </summary>
+        public void ChangeLookNow()
+        {
+            if (Capi == null) return;
+            try
+            {
+                RestoreLookOriginals();
+                lock (clientLookLock) { clientLook = null; LookResult = null; }
+                ProjectELook.DisposeMeshes();
+                Capi.TriggerChatMessage(".reload shapes");
+            }
+            catch (Exception e) { Mod.Logger.Error("Could not switch the look: {0}", e); }
+        }
 
         /// <summary>What the look changed at start-up on this player's computer (null for the Middle look).</summary>
         public ProjectELook.Result LookResult { get; private set; }
@@ -1681,6 +1770,7 @@ namespace VintageE
 
             // This computer's settings (the look, the watch's icon and glow), and the .vintagee command that opens them.
             ClientConfig ??= VintageEClientConfig.Load(capi);
+            lastLookSetting = ClientConfig?.Look;
             capi.ChatCommands.Create("vintagee")
                 .WithDescription("Vintage-E settings for this computer (the look of its blocks and items, how the Watch of Flowing Time shows it's on)")
                 .HandleWith(_ =>
@@ -1813,10 +1903,15 @@ namespace VintageE
         string watchGlowColor;
 
         /// <summary>The client settings changed in their window: save them and show the change.</summary>
+        string lastLookSetting;
+
         public void OnClientConfigChanged()
         {
             ClientConfig?.Save(Capi);
             watchHud?.Update(true);
+            string look = ClientConfig?.Look;
+            if (look != null && lastLookSetting != null && look != lastLookSetting) ChangeLookNow();
+            lastLookSetting = look;
         }
 
         /// <summary>
@@ -1969,6 +2064,13 @@ namespace VintageE
                 p.ClientHeldHasTooltip = held?.CollectibleBehaviors?.Any(b => b is CollectibleBehaviorEmcTooltip) ?? false;
                 p.ClientLog = EmcDiagnose.ClientLogLines(Capi, 25);
                 p.ClientHotkeyConflicts = EmcDiagnose.HotkeyConflicts(Capi, new[] { FireHotkey, SetValueHotkey, DiagnoseHotkey });
+                p.ClientLookInfo = string.Join("|", new[]
+                {
+                    ActiveLook ?? "?", ClientConfig?.Look ?? "?", Capi?.World?.Config?.GetString(WorldLookKey, null) ?? "",
+                    LookPrefixCalls.ToString(), LookPrefixCollectibles.ToString(),
+                    (LookResult?.Models ?? 0).ToString(), (LookResult?.Textures ?? 0).ToString(), (LookResult?.Collectibles ?? 0).ToString(), (LookResult?.MissingShapes?.Count ?? 0).ToString(),
+                    ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? ""
+                });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
                 lock (CollectibleBehaviorEmcTooltip.Failures)
                 {

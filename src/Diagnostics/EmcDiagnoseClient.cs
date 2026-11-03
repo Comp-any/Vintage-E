@@ -93,6 +93,7 @@ namespace VintageE
         static void ClientEnvironment(Ctx x, EmcDiagnoseRequestPacket client)
         {
             if (client == null || !client.HasClientInfo) return;
+            ClientLook(x, client);
             var keys = client.ClientHotkeyConflicts ?? Array.Empty<string>();
             if (keys.Length == 0) x.Ok(x.L("diag-hotkeys-ok"));
             else
@@ -110,6 +111,46 @@ namespace VintageE
                 foreach (string p in patches) x.Note(p);
                 x.Explain(x.L("diag-harmony-why"));
                 x.Fix(x.L("diag-harmony-fix"));
+            }
+        }
+
+        /// <summary>The look on the player's computer: which one, where it came from, and whether the game's shape loading went through the hook that applies it.</summary>
+        static void ClientLook(Ctx x, EmcDiagnoseRequestPacket client)
+        {
+            string[] f = (client.ClientLookInfo ?? "").Split('|');
+            if (f.Length < 11) return;
+            string active = f[0], setting = f[1], serverDefault = f[2].Length == 0 ? x.L("diag-look-nodefault") : f[2];
+            int.TryParse(f[3], out int calls); int.TryParse(f[4], out int hooked); int.TryParse(f[5], out int models); int.TryParse(f[6], out int textures);
+            int.TryParse(f[8], out int missing); int.TryParse(f[9], out int patched);
+            string patchError = f[10];
+            string serverSetting = x.Mod.Config.Look;
+            if (patched < 3 || patchError.Length > 0)
+            {
+                x.Warn(x.L("diag-look-nohook", patched, patchError.Length == 0 ? "?" : patchError));
+                x.Explain(x.L("diag-look-nohook-why"));
+                x.Fix(x.L("diag-look-nohook-fix"));
+                return;
+            }
+            if (calls == 0)
+            {
+                x.Warn(x.L("diag-look-nocalls", active));
+                x.Explain(x.L("diag-look-nocalls-why"));
+                x.Fix(x.L("diag-look-nocalls-fix"));
+                return;
+            }
+            if (hooked == 0)
+            {
+                x.Warn(x.L("diag-look-nothingours", calls));
+                x.Explain(x.L("diag-look-nothingours-why"));
+                return;
+            }
+            string from = setting == "Server" ? x.L("diag-look-from-server", serverDefault, serverSetting) : x.L("diag-look-from-setting", setting);
+            if (active == "Middle") { x.Info(x.L("diag-look-middle", from)); x.Explain(x.L("diag-look-middle-why")); x.Fix(x.L("diag-look-middle-fix")); }
+            else if (models + textures == 0) { x.Warn(x.L("diag-look-noeffect", active, hooked)); x.Explain(x.L("diag-look-noeffect-why")); x.Fix(x.L("diag-look-noeffect-fix")); }
+            else
+            {
+                x.Ok(x.L("diag-look-ok", active, models, textures, from));
+                if (missing > 0) x.Note(x.L("diag-look-missing", missing));
             }
         }
 

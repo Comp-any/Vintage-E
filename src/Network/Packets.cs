@@ -192,6 +192,8 @@ namespace VintageE
         [ProtoMember(13)] public string[] ClientHotkeyConflicts;
         /// <summary>Other mods' Harmony patches on the game methods Vintage-E relies on ("Type.Method ← owner, owner").</summary>
         [ProtoMember(14)] public string[] ClientPatchOwners;
+        /// <summary>The look on this computer: active|setting|server default|hook calls|hooked blocks+items|models|textures|collectibles|missing models|patched methods|patch error.</summary>
+        [ProtoMember(15)] public string ClientLookInfo;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

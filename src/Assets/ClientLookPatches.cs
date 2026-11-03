@@ -25,13 +25,16 @@ namespace VintageE
         internal static VintageEModSystem Mod;
 
         /// <summary>Patches the game's shape loading. False (and logged) if this game version has no such methods.</summary>
+        /// <summary>What went wrong patching, for the doctor (null when all three applied).</summary>
+        public static string PatchError;
+
         public static bool Patch(ILogger logger)
         {
             if (harmony != null) return true;
             try
             {
                 Type manager = AccessTools.TypeByName("Vintagestory.Client.NoObf.ShapeTesselatorManager");
-                if (manager == null) { logger.Warning("Look: the game's shape loader wasn't found; using the Middle look."); return false; }
+                if (manager == null) { PatchError = "ShapeTesselatorManager not found"; logger.Warning("Look: the game's shape loader wasn't found; using the Middle look."); return false; }
                 var h = new Harmony(HarmonyId);
                 bool all = true;
                 all &= PatchOne(h, manager, "LoadBlockShapes", nameof(BlocksPrefix), logger);
@@ -42,6 +45,7 @@ namespace VintageE
             }
             catch (Exception e)
             {
+                PatchError = e.GetType().Name + ": " + e.Message;
                 logger.Error("Look: could not patch the game's shape loading: {0}", e);
                 return false;
             }
@@ -50,7 +54,7 @@ namespace VintageE
         static bool PatchOne(Harmony h, Type type, string method, string prefix, ILogger logger)
         {
             var target = AccessTools.GetDeclaredMethods(type).FirstOrDefault(m => m.Name == method);
-            if (target == null) { logger.Warning("Look: the game has no {0}; that kind keeps the Middle look.", method); return false; }
+            if (target == null) { PatchError = (PatchError == null ? "" : PatchError + "; ") + "no " + method; logger.Warning("Look: the game has no {0}; that kind keeps the Middle look.", method); return false; }
             h.Patch(target, prefix: new HarmonyMethod(typeof(ClientLookPatches), prefix));
             PatchedCount++;
             return true;
