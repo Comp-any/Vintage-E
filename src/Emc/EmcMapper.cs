@@ -386,6 +386,9 @@ namespace VintageE
             // from a variant, an estimate) is seeded as fixed, so a recipe whose ingredients only got values in a later
             // stage could never lower it: blasting powder stayed at its trader price (53.66) although saltpeter,
             // sulfur and coal make six for 25.8 each. Check now, with every value known, and solve once more.
+            // Each guess is raised at most once: where what it yields is itself made from it (a fruit, its pitted
+            // version, its juice), raising it again every round would run away.
+            var raised = new HashSet<CollectibleObject>();
             for (int round = 0; round < 8; round++)
             {
                 // The other way round: a guessed value for something that is processed (one input) into more than
@@ -398,7 +401,7 @@ namespace VintageE
                     // (a strong bone into a bone).
                     if (conv.Inputs.Count != 1 || conv.Inputs[0].Choices.Length != 1 || conv.Returned != null) continue;
                     CollectibleObject i = conv.Inputs[0].Choices[0];
-                    if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i)) continue;
+                    if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i) || raised.Contains(i)) continue;
                     double? y = YieldPer(conv, solver.Values);
                     if (y == null || y.Value <= extra[i] * 1.001) continue;
                     if (!dearer.TryGetValue(i, out var best) || y.Value > best.yield) dearer[i] = (y.Value, conv);
@@ -424,6 +427,7 @@ namespace VintageE
                 }
                 foreach (var kv in dearer)
                 {
+                    raised.Add(kv.Key);
                     extraOrigin.TryGetValue(kv.Key, out string was);
                     double oldValue = extra[kv.Key];
                     extra[kv.Key] = kv.Value.yield;
