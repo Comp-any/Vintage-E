@@ -109,7 +109,7 @@ namespace VintageE
 
             // Cached values come without the recipes behind them; item and mod reports need those, so map once more.
             if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges
-                || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace) && x.Report.FromCache)
+                || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace || action == ActionHealth) && x.Report.FromCache)
             {
                 EmcMappingReport fresh = mod.RecalculateEmc("/emc diagnose");
                 if (fresh != null) { x.Report = fresh; r.Add(x.L("diag-remapped"), EmcLineStyle.Note); }
@@ -117,6 +117,9 @@ namespace VintageE
 
             switch (action)
             {
+                case ActionHealth:
+                    Health(x);
+                    break;
                 case ActionHand:
                 case ActionItem:
                     ItemStack stack = held;
@@ -364,6 +367,7 @@ namespace VintageE
             }
 
             problems += ChecksSummary(x);
+            problems += HealthSummary(x);
             problems += Startup(x, false);
             // No verdict line: the chips at the top of the window count the checks, and each ⚠ card says what to do.
             if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);

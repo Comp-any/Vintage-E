@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.0 — 2026-11-03
+
+### Added
+- **Doctor: health checks** (`/emc diagnose health`, and one line each in the check-up): the game version against the one this build was tested on; whether the mod can write its data, cache and settings folders; what a join costs (table size and send time); the online players' data (EMC a real number, learned items that still exist, the exact-knowledge cap, tablet filters naming missing items); values that moved tenfold since the last mapping with the same mods; recipes whose ingredients all have values but whose output got none (the solver's loop guard or floor); items priced from a trader although a recipe exists; look-only variant groups whose members came out worth different amounts.
+- **Doctor, your game:** hotkeys of other mods or the game bound to the same keys as Vintage-E's; other mods' Harmony patches on the game methods Vintage-E relies on (shape loaders, tooltips, inventories, damage), with their owners; and when client and server versions differ, what that difference breaks.
+
 ## 1.16.7 — 2026-11-03
 
 ### Fixed

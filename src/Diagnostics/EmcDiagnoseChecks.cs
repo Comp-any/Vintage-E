@@ -51,6 +51,7 @@ namespace VintageE
             CompatDrift(x);
             Duplicates(x);
             r.Section(x.L("diag-sec-next"));
+            r.Add(Link(ActionHealth, "", x.L("diag-q-health")));
             r.Add(Link(ActionBaseline, "", x.L("diag-q-baseline")));
             r.Add(Link(ActionProfit, "", x.L("diag-q-profit")));
             r.Add(Link(ActionSkipped, "", x.L("diag-q-skipped")));

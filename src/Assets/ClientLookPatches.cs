@@ -16,7 +16,7 @@ namespace VintageE
     /// </summary>
     public static class ClientLookPatches
     {
-        const string HarmonyId = "vintagee.clientlook";
+        public const string HarmonyId = "vintagee.clientlook";
         static Harmony harmony;
         /// <summary>How many of the three loader methods were patched (0 before Patch runs), for /emc diagnose.</summary>
         public static int PatchedCount { get; private set; }

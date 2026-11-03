@@ -38,6 +38,8 @@ namespace VintageE
         }
 
         /// <summary>The filter as knowledge keys ("i:game:rock-granite"), one per filter slot (null = empty slot).</summary>
+        public static bool IsTablet(ItemStack stack) => stack?.Collectible is ItemTransmutationTablet;
+
         public static string[] GetFilter(ItemStack tablet)
         {
             string[] stored = (tablet?.Attributes as TreeAttribute)?.GetStringArray(FilterKey) ?? Array.Empty<string>();

@@ -26,7 +26,7 @@ namespace VintageE
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
             ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort, ActionChecks, ActionBaseline, ActionProfit, ActionSkipped,
-            ActionNoValue, ActionStartup
+            ActionNoValue, ActionStartup, ActionHealth
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -55,6 +55,7 @@ namespace VintageE
             else if (client.ClientVersion != serverVersion)
             {
                 x.Warn(x.L("diag-client-versiondiff", client.ClientVersion, serverVersion));
+                x.Explain(VersionImpact(x, client.ClientVersion, serverVersion));
                 x.Fix(x.L("diag-client-versiondiff-fix"));
             }
             else x.Ok(x.L("diag-client-version", client.ClientVersion));
@@ -89,6 +90,7 @@ namespace VintageE
                 foreach (string l in client.ClientLog) r.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
             }
             else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));
+            ClientEnvironment(x, client);
             if (client.Stack != null && client.Stack.Length > 0)
             {
                 if (!client.ClientHeldHasTooltip)

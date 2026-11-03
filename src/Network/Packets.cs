@@ -183,6 +183,10 @@ namespace VintageE
         [ProtoMember(11)] public string[] ClientLog;
         /// <summary>Tooltips that threw in the player's game: "family: count: last error".</summary>
         [ProtoMember(12)] public string[] ClientTooltipFailures;
+        /// <summary>Our hotkeys that another hotkey shares a key with ("Ctrl+H (Vintage-E: …) = Some mod: …").</summary>
+        [ProtoMember(13)] public string[] ClientHotkeyConflicts;
+        /// <summary>Other mods' Harmony patches on the game methods Vintage-E relies on ("Type.Method ← owner, owner").</summary>
+        [ProtoMember(14)] public string[] ClientPatchOwners;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

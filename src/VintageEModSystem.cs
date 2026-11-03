@@ -21,6 +21,8 @@ namespace VintageE
         public const string ChannelName = "vintagee";
         public const string ConfigFile = "vintagee.json";
         /// <summary>The mod's page on the Mod DB, where /emc diagnose sends people to ask for another mod to be covered.</summary>
+        /// <summary>The game version this build was made and tested against; the doctor compares it with the running game.</summary>
+        public const string BuiltForGame = "1.22.7";
         public const string ModDbUrl = "https://mods.vintagestory.at/show/mod/74355";
 
         public ICoreAPI Api { get; private set; }
@@ -750,10 +752,15 @@ namespace VintageE
         /// <summary>Sends one player the server's values again (after the server refused something their game showed a value for).</summary>
         public void ResendEmcTable(IServerPlayer player) => SendEmcTable(player);
 
+        /// <summary>How long the last EMC table took to build and hand to the network, for the doctor's join-cost check.</summary>
+        public long LastTableSendMs { get; private set; }
+
         void SendEmcTable(IServerPlayer player)
         {
             if (Emc.Count == 0) return; // mapping not done yet; it broadcasts when finished
+            var sw = Stopwatch.StartNew();
             serverChannel.SendPacket(Emc.ToPacket(), player);
+            LastTableSendMs = sw.ElapsedMilliseconds;
         }
 
         public void SendResult(IServerPlayer player, TransmuteResultPacket result)
@@ -1863,6 +1870,8 @@ namespace VintageE
                 CollectibleObject held = Capi?.World?.Player?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.Collectible;
                 p.ClientHeldHasTooltip = held?.CollectibleBehaviors?.Any(b => b is CollectibleBehaviorEmcTooltip) ?? false;
                 p.ClientLog = EmcDiagnose.ClientLogLines(Capi, 25);
+                p.ClientHotkeyConflicts = EmcDiagnose.HotkeyConflicts(Capi, new[] { FireHotkey, SetValueHotkey, DiagnoseHotkey });
+                p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
                 lock (CollectibleBehaviorEmcTooltip.Failures)
                 {
                     p.ClientTooltipFailures = CollectibleBehaviorEmcTooltip.Failures.OrderByDescending(kv => kv.Value.count).Take(10).Select(kv => kv.Key + ": " + kv.Value.count + ": " + kv.Value.last).ToArray();
