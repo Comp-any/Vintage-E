@@ -5,7 +5,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.16.7 — 2026-11-03
 
 ### Fixed
-- **Doctor window:** Run checks again, Back and Copy are now the same width (the game's button grows past a narrower fixed width, so they differed).
+- **Doctor window:** Run checks again, Back and Copy are now the same width (the game's button grows past a narrower fixed width, so they differed), and the question and next-step buttons under one heading are all the width of the widest, so they line up.
 
 ## 1.16.6 — 2026-11-03
 

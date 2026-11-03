@@ -305,6 +305,27 @@ namespace VintageE
             c.AddSmallButton(busy ? Lang.Get("vintagee:doctor-scanning") : Lang.Get("vintagee:doctor-run"), OnRun, runBounds, EnumButtonStyle.Normal, "run");
             Canvas(c, barBounds, (ctx, b) => DrawBar(ctx, b, busy ? 0.55 : 1));
 
+            // Link-only lines under one heading (the "What are you seeing?" questions, the next steps) become a
+            // column of buttons, all the width of the widest, so they line up.
+            uniformWidth.Clear();
+            var group = new List<Entry>();
+            CairoFont buttonLabel = CairoFont.ButtonText();
+            void EndGroup()
+            {
+                if (group.Count > 1)
+                {
+                    double w = Math.Min(CardW - 8, group.Max(g => g.Actions.Max(a => TextWidth(buttonLabel, (a.action.StartsWith("fix-", StringComparison.Ordinal) || a.action == "setvalue" ? "⚒ " : "") + a.label) + 24)));
+                    foreach (Entry g in group) uniformWidth[g] = w;
+                }
+                group.Clear();
+            }
+            foreach (Entry e in entries)
+            {
+                if (e.Kind == Kind.Text && e.Title.Length == 0 && e.Actions.Count > 0) group.Add(e);
+                else EndGroup();
+            }
+            EndGroup();
+
             // The cards.
             ElementBounds content = ElementBounds.Fixed(0, 0, Width, 10);
             c.BeginClip(clipBounds).BeginChildElements(content);
@@ -384,7 +405,7 @@ namespace VintageE
                             : e.Style == EmcLineStyle.Total ? CairoFont.WhiteSmallText().WithColor(Green).WithWeight(FontWeight.Bold)
                             : CairoFont.WhiteSmallText();
                         if (e.Title.Length > 0) y = AddText(c, parent, e.Title, f, CardX + 4 + e.Indent * 16, y, CardW - 8 - e.Indent * 16);
-                        if (e.Actions.Count > 0) y = AddActions(c, parent, e.Actions, CardX + 4 + e.Indent * 16, y + 2, CardW - 8, dense: e.Title.Length == 0);
+                        if (e.Actions.Count > 0) y = AddActions(c, parent, e.Actions, CardX + 4 + e.Indent * 16, y + 2, CardW - 8, dense: e.Title.Length == 0, uniform: uniformWidth.TryGetValue(e, out double uw) ? uw : (double?)null);
                         return y + 2;
                     }
                 default:
@@ -518,7 +539,10 @@ namespace VintageE
         }
 
         /// <summary>A row of buttons for a line's actions: fixes and the reports it opens. Returns the y below them.</summary>
-        double AddActions(GuiComposer c, ElementBounds parent, List<(string action, string arg, string label)> actions, double x, double y, double width, bool dense)
+        /// <summary>Buttons in one group all get the same width, so a list of questions lines up.</summary>
+        readonly Dictionary<Entry, double> uniformWidth = new Dictionary<Entry, double>();
+
+        double AddActions(GuiComposer c, ElementBounds parent, List<(string action, string arg, string label)> actions, double x, double y, double width, bool dense, double? uniform = null)
         {
             if (actions.Count == 0) return y;
             CairoFont f = CairoFont.ButtonText();
@@ -528,7 +552,7 @@ namespace VintageE
             {
                 bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
                 string text = (fix ? "⚒ " : "") + label;
-                double w = Math.Min(width, TextWidth(f, text) + 24);
+                double w = Math.Min(width, uniform ?? (TextWidth(f, text) + 24));
                 if (bx > x && bx + w > x + width) { bx = x; rowY += 32; }
                 string a = action, g = arg;
                 c.AddSmallButton(text, () => { Act(a, g); return true; }, In(parent, ElementBounds.Fixed(bx, rowY, w, 28)), EnumButtonStyle.Small);
