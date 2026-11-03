@@ -225,13 +225,26 @@ namespace VintageE
             if (report?.Conversions == null || report.Origins == null) return result;
             var traderPriced = new HashSet<CollectibleObject>(report.Origins.Where(kv => kv.Value != null && kv.Value.StartsWith("trader", StringComparison.Ordinal)).Select(kv => kv.Key));
             if (traderPriced.Count == 0) return result;
-            var seen = new HashSet<CollectibleObject>();
+            var best = new Dictionary<CollectibleObject, (Conversion conv, double per)>();
             foreach (Conversion conv in report.Conversions)
             {
-                if (conv.Output == null || !traderPriced.Contains(conv.Output) || !seen.Add(conv.Output)) continue;
-                if (InputsValued(conv, report.Values)) result.Add((conv.Output, conv));
+                if (conv.Output == null || !traderPriced.Contains(conv.Output) || !InputsValued(conv, report.Values)) continue;
+                double per = RecipeCostPer(conv, report.Values);
+                if (!best.TryGetValue(conv.Output, out var b) || per < b.per) best[conv.Output] = (conv, per);
+            }
+            // A trader cheaper than every recipe is the real price (the cheapest way to get the item wins, as everywhere
+            // else in the mapping). Only a trader price above a recipe's cost is wrong: crafting then burning makes EMC.
+            foreach (var kv in best)
+            {
+                if (report.Values.TryGetValue(kv.Key, out double v) && kv.Value.per > 0 && v > kv.Value.per * 1.05) result.Add((kv.Key, kv.Value.conv));
             }
             return result;
+        }
+
+        static double RecipeCostPer(Conversion conv, IReadOnlyDictionary<CollectibleObject, double> values)
+        {
+            double cost = conv.Inputs.Sum(i => i.Quantity * i.Choices.Where(c => c != null && values.ContainsKey(c)).Select(c => values[c]).DefaultIfEmpty(0).Min()) + conv.ExtraCost;
+            return conv.OutputQuantity > 0 ? cost / conv.OutputQuantity : cost;
         }
 
         static void TraderOverRecipe(Ctx x, bool full)
@@ -243,8 +256,7 @@ namespace VintageE
             x.Explain(x.L("diag-traderrecipe-why"));
             foreach (var (item, conv) in list.Take(full ? 40 : 6))
             {
-                double cost = conv.Inputs.Sum(i => i.Quantity * i.Choices.Where(c => c != null && x.Report.Values.ContainsKey(c)).Select(c => x.Report.Values[c]).DefaultIfEmpty(0).Min()) + conv.ExtraCost;
-                double per = conv.OutputQuantity > 0 ? cost / conv.OutputQuantity : cost;
+                double per = RecipeCostPer(conv, x.Report.Values);
                 x.R.Add("[[" + PlayerEmc.KeyOf(item) + "]] " + F(x.Report.Values[item]) + " (" + x.L("diag-traderrecipe-recipe", F(per)) + ") ← " + conv.Source, EmcLineStyle.Text, 1);
             }
             if (list.Count > (full ? 40 : 6)) x.Note(x.L("diag-more", list.Count - (full ? 40 : 6)));
@@ -297,11 +309,17 @@ namespace VintageE
             if (x.Report.FromCache) return;
             var list = VariantSpreadList(x);
             if (list.Count == 0) { x.Ok(x.L("diag-vspread-ok")); return; }
-            x.Warn(x.L("diag-vspread-found", list.Count));
+            // By attribute: one attribute behind many families is the finding ("stage isn't look-only"), not the families.
+            var byAttr = list.GroupBy(l => l.attr).OrderByDescending(g => g.Count()).ToList();
+            x.Warn(x.L("diag-vspread-found", list.Count, byAttr.Count, string.Join(", ", byAttr.Take(6).Select(g => g.Key + " (" + g.Count() + ")"))));
             x.Explain(x.L("diag-vspread-why"));
-            foreach (var (group, attr, min, max, lo, hi) in list.Take(full ? 40 : 6))
-                x.R.Add(group + " (" + attr + "): [[" + PlayerEmc.KeyOf(lo) + "]] " + F(min) + " … [[" + PlayerEmc.KeyOf(hi) + "]] " + F(max), EmcLineStyle.Text, 1);
-            if (list.Count > (full ? 40 : 6)) x.Note(x.L("diag-more", list.Count - (full ? 40 : 6)));
+            foreach (var g in byAttr.Take(full ? 20 : 4))
+            {
+                x.R.Add(x.L("diag-vspread-attr", g.Key, g.Count()), EmcLineStyle.Text, 1);
+                foreach (var (group, attr, min, max, lo, hi) in g.Take(full ? 8 : 2))
+                    x.R.Add(group + ": [[" + PlayerEmc.KeyOf(lo) + "]] " + F(min) + " … [[" + PlayerEmc.KeyOf(hi) + "]] " + F(max), EmcLineStyle.Text, 2);
+                if (g.Count() > (full ? 8 : 2)) x.Note(x.L("diag-more", g.Count() - (full ? 8 : 2)), 2);
+            }
             x.Fix(x.L("diag-vspread-fix"));
         }
 
