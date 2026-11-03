@@ -86,7 +86,10 @@ namespace VintageE
 
             if (client.ClientLog != null && client.ClientLog.Length > 0)
             {
-                x.Warn(x.L("diag-client-log", client.ClientLog.Length));
+                // The look's own progress lines ride along for the trail; only real errors and warnings are a warning here.
+                int bad = client.ClientLog.Count(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]"));
+                if (bad > 0) x.Warn(x.L("diag-client-log", bad));
+                else x.Info(x.L("diag-client-log-info", client.ClientLog.Length));
                 foreach (string l in client.ClientLog) r.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
             }
             else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));

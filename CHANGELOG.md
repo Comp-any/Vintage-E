@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.16 — 2026-11-04
+
+### Changed
+- **Doctor: the client-log check no longer warns about the look's own progress lines.** It warns only when there are real errors or warnings; otherwise it's an info line with the look's lines underneath.
+
 ## 1.17.15 — 2026-11-04
 
 ### Fixed

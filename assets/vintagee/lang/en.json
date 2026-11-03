@@ -932,7 +932,7 @@
   "announce-checkup": "EMC check-up: {0} thing(s) worth fixing. /emc diagnose lists them with their fixes.",
   "diag-fix-safe": "Apply the {0} safe fixes (settings entries that match nothing, switched-off compatibility files, resend my table) and remap",
   "diag-done-safe": "Safe fixes applied: {0} settings entries removed, {1} compatibility files switched on ({2}); the EMC table was sent to you again.",
-  "diag-client-log": "Your game's log: {0} Vintage-E error, warning or look lines in client-main.log:",
+  "diag-client-log": "Your game's log: {0} Vintage-E error or warning lines in client-main.log (the look's own progress lines are listed too):",
   "diag-client-log-clean": "Your game's log: no Vintage-E errors or warnings.",
   "diag-sec-trace": "Where the value of {0} comes from, all the way down",
   "diag-q-trace": "Trace its value down to the raw materials",
@@ -1729,5 +1729,6 @@
   "diag-look-skipped-why": "The hook fired {0} time(s) but did nothing each time ({1}). So the game did call the patched methods; the hook turned them down.",
   "diag-look-early": "The early pass (before shapes load) found {0} of Vintage-E's blocks and items to apply the look to.",
   "diag-look-how": "Applied through the shape-loader hook {0} time(s); the early pass found {1} blocks and items.",
-  "diag-look-trail": "What happened to the look on this computer, in order:"
+  "diag-look-trail": "What happened to the look on this computer, in order:",
+  "diag-client-log-info": "Your game's log: no Vintage-E errors or warnings in client-main.log; the look's {0} progress lines:"
 }
