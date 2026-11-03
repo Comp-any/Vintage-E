@@ -53,7 +53,9 @@ namespace VintageE
                 string line;
                 while ((line = reader.ReadLine()) != null) lines.Add(line);
                 // Only this start: the log can hold earlier runs.
-                int from = lines.FindLastIndex(l => l.Contains("Mods, sorted by dependency") || l.Contains("Found ") && l.Contains(" mods ("));
+                // The dependency errors come right after "Found N mods" and before "Mods, sorted by dependency".
+                int from = lines.FindLastIndex(l => l.Contains("Found ") && l.Contains(" mods ("));
+                if (from < 0) from = lines.FindLastIndex(l => l.Contains("Mods, sorted by dependency"));
                 if (from < 0) from = 0;
                 // Everything after the first player joined is not start-up any more.
                 int to = lines.FindIndex(from, l => l.Contains("[Event] ") && l.Contains(" joins.") || l.Contains("Dedicated server now running") || l.Contains("[Vintage-E self-test]"));

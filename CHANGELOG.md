@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.5 — 2026-11-03
+
+### Fixed
+- **Doctor, start-up check:** mods the game skipped for a missing dependency were missed, because the game reports them before the line the check started reading from. Seen in the 50-mod test: 14 skipped mods went unreported.
+
 ## 1.16.4 — 2026-11-03
 
 ### Added
