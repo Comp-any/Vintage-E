@@ -12,16 +12,23 @@ import sys
 import zipfile
 
 
+FULL = []  # file-name patterns whose whole file is written out ("file:<regex>" lines)
+
+
 def patterns(path):
     out = []
     for line in open(path, encoding="utf-8"):
         line = line.strip()
-        if line and not line.startswith("#"):
+        if line.startswith("file:"):
+            FULL.append(re.compile(line[5:].strip(), re.IGNORECASE))
+        elif line and not line.startswith("#"):
             out.append(re.compile(line, re.IGNORECASE))
     return out
 
 
 def report(name, text, pats, out):
+    if any(p.search(name) for p in FULL):
+        out.write(f"##### FULL {name}\n{text}\n##### END {name}\n")
     lines = text.splitlines()
     hits = [i for i, l in enumerate(lines) if any(p.search(l) for p in pats)]
     if not hits:

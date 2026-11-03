@@ -16,3 +16,11 @@ bonyremains
 crystalizedore
 hide-pelt-bear
 cookedcattailroot
+# Whole files, for reading the game's definitions
+file:itemtypes/resource/hide-species\.json
+file:itemtypes/resource/hide-species-headed\.json
+file:blocktypes/bone/bonyremains
+file:recipes/grid/clothes/
+file:recipes/grid/hide-pelt-divide
+file:itemtypes/resource/crystalizedore-graded
+file:itemtypes/resource/hide\.json

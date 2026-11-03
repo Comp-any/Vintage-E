@@ -270,10 +270,13 @@ namespace VintageE
         {
             var proposals = new Dictionary<T, double>();
             var proposalVia = new Dictionary<T, object>();
+            // Working backwards, an input is worth the most its processing yields: a fish that fillets into 48 of
+            // fillet is worth 48 even if cooking it whole gives 24, or filleting makes EMC out of nothing. (The lowest
+            // yield used to win, which left every item with two uses open to that.)
             void Propose(T item, double v, object via)
             {
                 if (v < MinValue || double.IsInfinity(v) || double.IsNaN(v)) return;
-                if (!proposals.TryGetValue(item, out double prev) || v < prev) { proposals[item] = v; proposalVia[item] = via; }
+                if (!proposals.TryGetValue(item, out double prev) || v > prev) { proposals[item] = v; proposalVia[item] = via; }
             }
             bool Open(T item) => !Values.ContainsKey(item) && !Excluded.Contains(item) && !Unstable.Contains(item) && !Fixed.ContainsKey(item);
 
