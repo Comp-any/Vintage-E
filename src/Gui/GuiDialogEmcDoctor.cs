@@ -640,6 +640,15 @@ namespace VintageE
             onOpenItem?.Invoke(key, null);
         }
 
+        /// <summary>The server didn't answer: stop waiting and say so in the status line.</summary>
+        public void NoAnswer(string text)
+        {
+            busy = false;
+            busyText = null;
+            SingleComposer?.GetDynamicText("last")?.SetNewText(text ?? "");
+            if (SingleComposer?.GetButton("run") is GuiElementTextButton run) run.Enabled = true;
+        }
+
         void SetBusy(string text)
         {
             busy = true;

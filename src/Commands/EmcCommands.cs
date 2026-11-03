@@ -29,6 +29,8 @@ namespace VintageE
         public static void Register(VintageEModSystem mod, ICoreServerAPI sapi)
         {
             var parsers = sapi.ChatCommands.Parsers;
+            // Another mod using /emc too: the doctor tells the player, since one of the two loses.
+            if (sapi.ChatCommands.Get("emc") != null) mod.CommandConflict = true;
             sapi.ChatCommands.Create("emc")
                 .WithDescription("Vintage-E: show and manage EMC values")
                 .RequiresPrivilege(Privilege.chat)

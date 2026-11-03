@@ -2,6 +2,16 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.3 — 2026-11-03
+
+### Added
+- **Doctor: what other mods did at start-up.** A new check reads the game's own start-up messages and reports, in plain words: mods the game skipped because something they need isn't installed (and what that is), other mods' errors while starting (which can stop the game from reaching Vintage-E's start-up step, so no values get mapped), failed JSON patches and recipes naming items that don't exist, each with what it means for the values and what to do. It is the first thing shown when there are no values at all.
+- **Doctor:** reports when Vintage-E's own start-up steps crashed, when the mapping had to start late, and when another mod has taken the /emc command.
+- **Doctor:** if the server doesn't answer in 12 seconds, the window says so (Vintage-E probably isn't running on the server) instead of waiting forever.
+
+### Fixed
+- **Start-up is harder to break from outside.** Each of Vintage-E's start-up steps runs on its own, so one failing no longer takes the rest down. If another mod crashes in the game's start-up step before the game reaches Vintage-E, the mapping now runs on the first game tick or when the first player joins instead of never, and the log and the doctor say why. The whole mapping is caught (not just the solver), so a crash in the value files, the cache, the stack data or the snapshot is reported as a mapping error rather than escaping into the game's start-up.
+
 ## 1.16.2 — 2026-11-03
 
 ### Fixed

@@ -93,12 +93,15 @@ namespace VintageE
 
             if (action == ActionBugReport) { BugReport(x); return r; }
             if (action == ActionLog) { Log(x, true); Back(x); return r; }
+            if (action == ActionStartup) { Startup(x, true); Back(x); return r; }
             if (action == ActionClient) { Client(x, client, true); Back(x); return r; }
             if (action == ActionPlayers) { Players(x); return r; }
             if (action == ActionPlayer) { if (arg.Length == 0) Players(x); else PlayerReport(x, arg); return r; }
 
             if (!MappingState(x, action == ActionMapping || action == ActionOverview || action == ""))
             {
+                // No values at all: what other mods did at start-up is the first place to look.
+                Startup(x, false);
                 Log(x, false);
                 Questions(x, held, client);
                 return r;
@@ -161,6 +164,7 @@ namespace VintageE
                     break;
                 case ActionMapping:
                     Mapping(x, full: true);
+                    Startup(x, false);
                     Client(x, client, true);
                     Log(x, true);
                     Patches(x, true);
@@ -169,6 +173,7 @@ namespace VintageE
                     break;
                 default:
                     Mapping(x, full: false);
+                    Startup(x, false);
                     Client(x, client, true);
                     Log(x, false);
                     Patches(x, false);
@@ -371,7 +376,7 @@ namespace VintageE
         {
             if (mod.LastReport == null) return 1;
             var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = "en", R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(sapi.World.Collectibles) };
-            int n = Mapping(x, full: false);
+            int n = Mapping(x, full: false) + Startup(x, false);
             if (mod.ConfigLoadError != null) n++;
             if (mod.LastMappingError != null && mod.LastMappingErrorAt > mod.LastReport.MappedAt) n++;
             return n;

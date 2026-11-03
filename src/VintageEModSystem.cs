@@ -228,50 +228,103 @@ namespace VintageE
             catch { return null; } // LoadConfig reports a broken file later
         }
 
+        /// <summary>Start-up steps of this mod that threw (each is run on its own, so one failing does not take the rest down). The doctor shows them.</summary>
+        public readonly List<string> StartupErrors = new List<string>();
+        /// <summary>Set when the mapping did not run at the game's normal start-up step and ran later instead; says what triggered it.</summary>
+        public string MappingLateReason { get; private set; }
+        /// <summary>True when another mod had already registered /emc before this one.</summary>
+        public bool CommandConflict { get; set; }
+        bool mappingAttempted;
+
+        /// <summary>Runs one start-up step on its own: a crash in it is logged and remembered for the doctor, and the next step still runs.</summary>
+        void Step(string name, Action action)
+        {
+            try { action(); }
+            catch (Exception e)
+            {
+                StartupErrors.Add(name + ": " + e.GetType().Name + ": " + e.Message);
+                Mod.Logger.Error("Vintage-E start-up step '{0}' failed; the rest of the mod still starts. {1}", name, e);
+            }
+        }
+
         public override void StartServerSide(ICoreServerAPI sapi)
         {
             Sapi = sapi;
             Config = LoadConfig(sapi);
-            Transmutation = new TransmutationService(this, sapi);
-            Trinkets = new TrinketEffects(this, sapi);
-
-            serverChannel = sapi.Network.GetChannel(ChannelName);
-            serverChannel.SetMessageHandler<TransmuteRequestPacket>(Transmutation.OnRequest);
-            serverChannel.SetMessageHandler<EmcSetValuePacket>(OnSetValueRequest);
-            serverChannel.SetMessageHandler<EmcBlacklistPacket>(OnBlacklistRequest);
-            serverChannel.SetMessageHandler<FireProjectilePacket>(OnFireProjectile);
-            serverChannel.SetMessageHandler<EmcContentsSetPacket>(OnContentsSetRequest);
-            serverChannel.SetMessageHandler<EmcConfigSetPacket>(OnConfigSetRequest);
-            serverChannel.SetMessageHandler<EmcRecipeEditPacket>(OnRecipeEditRequest);
-            serverChannel.SetMessageHandler<EmcItemStateRequestPacket>(OnItemStateRequest);
-            serverChannel.SetMessageHandler<EmcItemEditPacket>(OnItemEditRequest);
-            serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
-            serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
-            serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(OnDiagnoseRequest);
-
-            // Every mod has registered its recipes by the time the game starts running, so map then.
-            sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
+            Step("services", () =>
             {
-                RecalculateEmc("server start", allowCache: true);
-                if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(_ => new SelfTest(this, sapi).Start(), 5000);
+                Transmutation = new TransmutationService(this, sapi);
+                Trinkets = new TrinketEffects(this, sapi);
             });
-            sapi.Event.PlayerNowPlaying += player =>
-            {
-                if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
-                {
-                    // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire
-                    // protection has to zero the damage before it gets there.
-                    var bh = new EntityBehaviorVintageE(player.Entity);
-                    player.Entity.SidedProperties.Behaviors.Insert(0, bh);
-                    player.Entity.CacheServerBehaviors();
-                }
-                SendEmcTable(player);
-                if (Trinkets != null && Trinkets.WatchTimeModifier != 0) serverChannel.SendPacket(new WatchSpeedPacket { Modifier = Trinkets.WatchTimeModifier }, player);
-                Announce(player, LastReport, joining: true);
-            };
 
-            EmcCommands.Register(this, sapi);
+            Step("network", () =>
+            {
+                serverChannel = sapi.Network.GetChannel(ChannelName);
+                serverChannel.SetMessageHandler<TransmuteRequestPacket>((p, k) => Transmutation?.OnRequest(p, k));
+                serverChannel.SetMessageHandler<EmcSetValuePacket>(OnSetValueRequest);
+                serverChannel.SetMessageHandler<EmcBlacklistPacket>(OnBlacklistRequest);
+                serverChannel.SetMessageHandler<FireProjectilePacket>(OnFireProjectile);
+                serverChannel.SetMessageHandler<EmcContentsSetPacket>(OnContentsSetRequest);
+                serverChannel.SetMessageHandler<EmcConfigSetPacket>(OnConfigSetRequest);
+                serverChannel.SetMessageHandler<EmcRecipeEditPacket>(OnRecipeEditRequest);
+                serverChannel.SetMessageHandler<EmcItemStateRequestPacket>(OnItemStateRequest);
+                serverChannel.SetMessageHandler<EmcItemEditPacket>(OnItemEditRequest);
+                serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
+                serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
+                serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(OnDiagnoseRequest);
+            });
+
+            // Every mod has registered its recipes by the time the game starts running, so map then. If another mod
+            // crashes in that same start-up step and the game never gets to ours, the first game tick or the first
+            // player to join starts the mapping instead, and the doctor says so.
+            Step("start-up hooks", () =>
+            {
+                sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
+                {
+                    EnsureMapped(null);
+                    if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(_ => new SelfTest(this, sapi).Start(), 5000);
+                });
+                long tick = 0;
+                tick = sapi.Event.RegisterGameTickListener(_ =>
+                {
+                    sapi.Event.UnregisterGameTickListener(tick);
+                    EnsureMapped("the first game tick");
+                }, 1000);
+            });
+            Step("player hooks", () =>
+            {
+                sapi.Event.PlayerNowPlaying += player =>
+                {
+                    EnsureMapped("the first player joining");
+                    if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
+                    {
+                        // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire
+                        // protection has to zero the damage before it gets there.
+                        var bh = new EntityBehaviorVintageE(player.Entity);
+                        player.Entity.SidedProperties.Behaviors.Insert(0, bh);
+                        player.Entity.CacheServerBehaviors();
+                    }
+                    SendEmcTable(player);
+                    if (Trinkets != null && Trinkets.WatchTimeModifier != 0) serverChannel?.SendPacket(new WatchSpeedPacket { Modifier = Trinkets.WatchTimeModifier }, player);
+                    Announce(player, LastReport, joining: true);
+                };
+            });
+
+            Step("commands", () => EmcCommands.Register(this, sapi));
             OnEmcTableUpdated += () => ItemEmcGadget.SetDiviningDurability(sapi.World, Emc);
+        }
+
+        /// <summary>Runs the start-up mapping once. <paramref name="lateTrigger"/> is null for the normal step; anything else means that step was missed.</summary>
+        void EnsureMapped(string lateTrigger)
+        {
+            if (mappingAttempted) return;
+            mappingAttempted = true;
+            if (lateTrigger != null)
+            {
+                MappingLateReason = lateTrigger;
+                Mod.Logger.Warning("EMC mapping did not run at the game's start-up step; running it now ({0}). Another mod most likely crashed during start-up before the game reached Vintage-E. /emc diagnose shows which.", lateTrigger);
+            }
+            RecalculateEmc(lateTrigger == null ? "server start" : "late start (" + lateTrigger + ")", allowCache: true);
         }
 
         readonly Dictionary<string, long> lastShot = new Dictionary<string, long>();
@@ -337,9 +390,28 @@ namespace VintageE
         /// Runs the recipe-graph mapper (or, with <paramref name="allowCache"/>, reuses the saved values if nothing that
         /// affects them has changed) and pushes the result to every connected player.
         /// </summary>
+        /// <summary>What the mapping was doing last, for the error when it fails outside the solver.</summary>
+        string mappingStage;
+
         public EmcMappingReport RecalculateEmc(string reason, bool allowCache = false)
         {
+            try
+            {
+                return RecalculateEmcInner(reason, allowCache);
+            }
+            catch (Exception e)
+            {
+                LastMappingError = (mappingStage ?? "mapping") + ": " + e.GetType().Name + ": " + e.Message;
+                LastMappingErrorAt = DateTime.Now;
+                Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "mapping", e);
+                return null;
+            }
+        }
+
+        EmcMappingReport RecalculateEmcInner(string reason, bool allowCache)
+        {
             var sw = Stopwatch.StartNew();
+            mappingStage = "loading the value files";
             if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(Config.DisabledCompat))
             {
                 Rules = EmcRuleSet.Load(Sapi, Mod.Logger, Config.DisabledCompat);
@@ -348,6 +420,7 @@ namespace VintageE
             var mapper = new EmcMapper(Sapi, Config, Rules, Mod.Logger);
             EmcMappingReport report = null;
             string fingerprint = null;
+            mappingStage = "checking the value cache";
             if (Config.CacheEmcValues)
             {
                 try
@@ -369,6 +442,7 @@ namespace VintageE
             }
             if (report == null)
             {
+                mappingStage = "mapping";
                 try
                 {
                     report = mapper.Run();
@@ -382,6 +456,7 @@ namespace VintageE
                 }
                 if (Config.CacheEmcValues && fingerprint != null) EmcCache.Save(Sapi, fingerprint, report, Mod.Logger);
             }
+            mappingStage = "building the stack data (contents, materials)";
             Emc.Replace(report.Values);
             Emc.DurabilityScales = Config.DurabilityScalesEmc;
             Emc.ProjectESounds = Config.ProjectESounds;
@@ -392,7 +467,9 @@ namespace VintageE
             report.MappedAt = DateTime.Now;
             MappingHistory.Add((report.MappedAt, reason, report.Milliseconds, report.FromCache));
             if (MappingHistory.Count > 50) MappingHistory.RemoveAt(0);
+            mappingStage = "writing the value snapshot";
             SnapshotValues(report);
+            mappingStage = "logging the coverage";
             if (report.FromCache)
             {
                 Mod.Logger.Notification("EMC values loaded from cache ({0}) in {1} ms: {2} valued collectibles. Nothing that affects them has changed since they were mapped ({3}); /emc recalc forces a fresh mapping.",
@@ -1684,8 +1761,28 @@ namespace VintageE
                 Capi.TriggerIngameError(this, "noprivilege", Lang.Get("vintagee:error-noprivilege"));
                 return true;
             }
-            clientChannel?.SendPacket(DiagnoseRequest("", ""));
+            SendDiagnose("", "");
             return true;
+        }
+
+        int diagnoseSent, diagnoseAnswered;
+
+        /// <summary>Asks the server for a doctor report; if no answer comes in 12 s, says so (the usual reason: Vintage-E isn't running on the server).</summary>
+        void SendDiagnose(string action, string arg)
+        {
+            int seq = ++diagnoseSent;
+            clientChannel?.SendPacket(DiagnoseRequest(action, arg));
+            Capi.Event.RegisterCallback(_ =>
+            {
+                if (diagnoseAnswered >= seq || seq != diagnoseSent) return;
+                string text = Lang.Get("vintagee:doctor-noanswer");
+                if (doctorDialog != null && doctorDialog.IsOpened()) doctorDialog.NoAnswer(text);
+                else
+                {
+                    Capi.TriggerIngameError(this, "noanswer", Lang.Get("vintagee:doctor-noanswer-short"));
+                    Capi.ShowChatMessage(text);
+                }
+            }, 12000);
         }
 
         bool OpenSetValueBox()
@@ -1781,6 +1878,7 @@ namespace VintageE
         {
             if (packet?.Kind == EmcReport.DiagnoseKind)
             {
+                diagnoseAnswered = diagnoseSent;
                 // The doctor has its own window (a checklist); the text window closes if it's open.
                 if (reportDialog != null && reportDialog.IsOpened()) reportDialog.TryClose();
                 if (doctorDialog != null && doctorDialog.IsOpened())
@@ -1789,7 +1887,7 @@ namespace VintageE
                     return;
                 }
                 doctorDialog = new GuiDialogEmcDoctor(Capi, packet,
-                    (action, arg) => clientChannel?.SendPacket(DiagnoseRequest(action, arg)),
+                    SendDiagnose,
                     (key, stack) => clientChannel?.SendPacket(new EmcDumpRequestPacket { Key = key, Stack = stack }),
                     OpenSetValueFor);
                 doctorDialog.TryOpen();
@@ -1804,7 +1902,7 @@ namespace VintageE
                 (key, stack) => clientChannel?.SendPacket(new EmcDumpRequestPacket { Key = key, Stack = stack }),
                 () => clientChannel?.SendPacket(new EmcDumpRequestPacket { Loops = true }),
                 OpenSetValueFor,
-                (action, arg) => clientChannel?.SendPacket(DiagnoseRequest(action, arg)));
+                SendDiagnose);
             reportDialog.TryOpen();
         }
 
