@@ -190,7 +190,10 @@ namespace VintageE
                 ("game:lore-paper", 0.0, 0.0), ("game:metal-parts", 1.0, 1000.0), ("game:nightvisiondevice", 4096.0, 4096.0),
                 ("game:ore-fluorite", 32.0, 32.0), ("game:ore-fluorite-limestone", 1.0, 1000.0),
                 // Trader price 53.66, but the grid makes 6 from saltpeter, sulfur and coal for 25.8 each: the recipe wins.
-                ("game:blastingpowder", 1.0, 30.0) })
+                ("game:blastingpowder", 1.0, 30.0),
+                // Free-EMC fixes: a ribcage is worth its 4 bones; crystallized ore its nugget; steel follows blister steel.
+                ("game:bonyremains-ribcage", 96.0, 96.0), ("game:crystalizedore-poor-quartz_nativegold-andesite", 102.0, 103.0),
+                ("game:ingot-steel", 256.0, 400.0), ("game:hide-pelt-bear-brown-head", 1.0, 200.0) })
             {
                 CollectibleObject c = (CollectibleObject)sapi.World.GetItem(new AssetLocation(code)) ?? sapi.World.GetBlock(new AssetLocation(code));
                 double v = c == null ? -1 : mod.Emc.GetValue(c);

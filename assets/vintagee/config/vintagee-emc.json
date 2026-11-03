@@ -77,6 +77,13 @@
     "game:hide-raw-medium": 32,
     "game:hide-raw-large": 48,
     "game:hide-raw-huge": 80,
+    "//game:hide-raw-bear-*": "species hides (1.22) are sized by tag: polar and brown bears huge, black and panda large, sun medium, foxes and raccoons small. The clothing recipes take a species hide of the size and return a plain hide a size down, so a species hide worth only the generic 32 made the clothes free",
+    "game:hide-raw-bear-*": 80,
+    "game:hide-raw-bear-black-*": 48,
+    "game:hide-raw-bear-panda-*": 48,
+    "game:hide-raw-bear-sun-*": 32,
+    "game:hide-raw-fox-*": 16,
+    "game:hide-raw-raccoon-*": 16,
     "//game:rot": "64 rot make 16 compost (4 each) in a barrel, so rot is a quarter of compost; at 0.5 the barrel made 32 EMC out of nothing",
     "game:rot": 1,
     "game:charcoal": 32,
@@ -499,7 +506,8 @@
       "slantedroofing*:material",
       "cheese:part",
       "fishraw:age",
-      "taxidermy:age"
+      "taxidermy:age",
+      "hide:form"
     ],
     "otherGroups": "copy"
   },
