@@ -28,6 +28,8 @@ namespace VintageE
         public int FallbackCount;
         /// <summary>Items valued from trader prices, and the measured EMC per unit of trader currency.</summary>
         public int TraderCount;
+        /// <summary>Guessed values replaced by a recipe that makes the item for less (checked once every value is known).</summary>
+        public int CheaperRecipeCount;
         /// <summary>Items valued by "defaultValues" rules (nothing else could value them).</summary>
         public int DefaultCount;
         /// <summary>Items valued as fuel (burn heat × time) or food (satiety) because nothing else could value them.</summary>
@@ -198,6 +200,7 @@ namespace VintageE
             //    Then, only if the server owner asked for it, a flat fallback value for anything still left.
             var extra = new Dictionary<CollectibleObject, double>();
             var extraOrigin = new Dictionary<CollectibleObject, string>();
+            var currency = new HashSet<CollectibleObject>();
             // The gray list is valued by recipes only: every guessing step below leaves it alone.
             var noGuess = new HashSet<CollectibleObject>(excluded);
             noGuess.UnionWith(gray);
@@ -224,6 +227,7 @@ namespace VintageE
                             {
                                 if (noGuess.Contains(c) || PinnedByConfig(index, c)) continue;
                                 extra[c] = rate;
+                                currency.Add(c);
                                 extraOrigin[c] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "trader currency: {0:0.##} EMC per gear, measured on {1} traded items", rate, samples);
                             }
                         }
@@ -252,9 +256,9 @@ namespace VintageE
             // Every stage below only fills what is still unvalued, and the graph is solved again after it, so anything
             // made from the newly valued things gets its real recipe value before a rougher stage guesses at it.
             int extraBefore = 0;
-            EmcSolver<CollectibleObject> Stage(EmcSolver<CollectibleObject> previous)
+            EmcSolver<CollectibleObject> Stage(EmcSolver<CollectibleObject> previous, bool force = false)
             {
-                if (extra.Count == extraBefore) return previous;
+                if (!force && extra.Count == extraBefore) return previous;
                 extraBefore = extra.Count;
                 var seeded = new Dictionary<CollectibleObject, double>(fixedValues);
                 foreach (var kv in extra) seeded[kv.Key] = kv.Value;
@@ -377,6 +381,33 @@ namespace VintageE
                 }
             }
             solver = Stage(solver);
+
+            // The cheapest real way to get an item is its value. A guessed value (a trader price, a default, a copy
+            // from a variant, an estimate) is seeded as fixed, so a recipe whose ingredients only got values in a later
+            // stage could never lower it: blasting powder stayed at its trader price (53.66) although saltpeter,
+            // sulfur and coal make six for 25.8 each. Check now, with every value known, and solve once more.
+            for (int round = 0; round < 4; round++)
+            {
+                var cheaper = new Dictionary<CollectibleObject, (double per, Conversion conv)>();
+                foreach (Conversion conv in collector.Conversions)
+                {
+                    CollectibleObject o = conv.Output;
+                    if (o == null || conv.JointOutputs != null || !extra.ContainsKey(o) || currency.Contains(o) || PinnedByConfig(index, o)) continue;
+                    double? per = ViableCostPer(conv, solver.Values);
+                    if (per == null || per.Value <= 0 || per.Value >= extra[o] * 0.999) continue;
+                    if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
+                }
+                if (cheaper.Count == 0) break;
+                foreach (var kv in cheaper)
+                {
+                    extraOrigin.TryGetValue(kv.Key, out string was);
+                    double oldValue = extra[kv.Key];
+                    extra[kv.Key] = kv.Value.per;
+                    extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "recipe ({0}), cheaper than its {1} of {2:0.##}", kv.Value.conv.Source, was ?? "guessed value", oldValue);
+                    report.CheaperRecipeCount++;
+                }
+                solver = Stage(solver, force: true);
+            }
 
             report.Values = new Dictionary<CollectibleObject, double>();
             foreach (var kv in solver.Values)
@@ -533,6 +564,36 @@ namespace VintageE
         }
 
         static bool IsListed(CollectibleObject c) => CollectibleIndex.IsListed(c);
+
+        /// <summary>
+        /// What one output of this recipe costs with the given values, or null when a slot has no valued choice (the
+        /// recipe can't be run yet), when the output is among its own inputs, or when something returned is unvalued.
+        /// </summary>
+        double? ViableCostPer(Conversion conv, IReadOnlyDictionary<CollectibleObject, double> values)
+        {
+            if (conv.OutputQuantity <= 0) return null;
+            double cost = conv.ExtraCost;
+            foreach (ConversionInput input in conv.Inputs)
+            {
+                double best = double.MaxValue;
+                foreach (CollectibleObject c in input.Choices)
+                {
+                    if (c == null) continue;
+                    if (c == conv.Output) return null;
+                    double v = free.Contains(c) ? 0 : values.TryGetValue(c, out double x) ? x : double.MaxValue;
+                    if (v < best) best = v;
+                }
+                if (best == double.MaxValue) return null;
+                cost += best * input.Quantity;
+            }
+            if (conv.Returned != null)
+                foreach (var r in conv.Returned)
+                {
+                    if (!values.TryGetValue(r.Key, out double rv)) return null;
+                    cost -= rv * r.Value;
+                }
+            return cost / conv.OutputQuantity;
+        }
 
         EmcSolver<CollectibleObject> Solve(Dictionary<CollectibleObject, double> fixedValues, HashSet<CollectibleObject> excluded, List<EmcSolver<CollectibleObject>.Edge> edges, List<EmcSolver<CollectibleObject>.JointEdge> joints)
         {

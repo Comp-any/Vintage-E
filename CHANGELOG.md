@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.17 — 2026-11-04
+
+### Fixed
+- **A recipe that makes an item for less than its guessed value now wins.** Trader prices, default values, copies from variants and estimates were seeded as fixed values, so a recipe whose ingredients only got values in a later stage could never lower them: blasting powder stayed at its trader price (53.66) although saltpeter, sulfur and coal make six for 25.8 each, so crafting and burning it made EMC. Once every value is known, the mapper checks each guessed value against every recipe that makes the item and takes the cheaper one (pinned values and the trader currency are left alone). The item's value explanation says "recipe (…), cheaper than its trader price of 53.66".
+
 ## 1.17.16 — 2026-11-04
 
 ### Changed
