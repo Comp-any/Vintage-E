@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Vintagestory.API.Server;
 
-namespace VintageE.Diagnostics
+namespace VintageE
 {
     /// <summary>
     /// What other mods did at start-up, from the game's own messages in server-main.log: mods the game skipped for a
