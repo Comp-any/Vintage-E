@@ -50,6 +50,11 @@ namespace VintageE
             api.Render.Render2DTexturePremultipliedAlpha(texture.TextureId, Bounds);
         }
 
+        // A drawing is not clickable: the base element marks every click on it as handled, which would stop
+        // the click reaching the hotspot behind the card or chip.
+        public override void OnMouseDownOnElement(ICoreClientAPI api, MouseEvent args) { }
+        public override void OnMouseUpOnElement(ICoreClientAPI api, MouseEvent args) { }
+
         public override void Dispose()
         {
             base.Dispose();

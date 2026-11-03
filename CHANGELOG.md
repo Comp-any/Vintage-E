@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.2 — 2026-11-03
+
+### Fixed
+- **Doctor window:** cards really open and close now, and the Passed/Warnings/Failed chips really filter. The drawn card background was marking every click on it as handled, so the click never reached the card header underneath.
+
 ## 1.16.1 — 2026-11-03
 
 ### Fixed
