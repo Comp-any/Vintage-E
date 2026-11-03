@@ -227,7 +227,7 @@ namespace VintageE
             public CompositeShape Shape, ShapeInventory;
             public Dictionary<string, CompositeTexture> Textures, TexturesInventory;
             public EnumDrawType DrawType;
-            public bool[] SideOpaque;
+            public SmallBoolArray SideOpaque;
             public Cuboidf[] SelectionBoxes;
             public ModelTransform Gui, Fp, Tp, TpOff, Ground;
         }
@@ -249,7 +249,7 @@ namespace VintageE
                         o.Shape = b.Shape?.Clone(); o.ShapeInventory = b.ShapeInventory?.Clone();
                         o.Textures = b.Textures == null ? null : new Dictionary<string, CompositeTexture>(b.Textures);
                         o.TexturesInventory = b.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(b.TexturesInventory);
-                        o.DrawType = b.DrawType; o.SideOpaque = (bool[])b.SideOpaque?.Clone(); o.SelectionBoxes = b.SelectionBoxes?.Select(x => x.Clone()).ToArray();
+                        o.DrawType = b.DrawType; o.SideOpaque = b.SideOpaque; o.SelectionBoxes = b.SelectionBoxes?.Select(x => x.Clone()).ToArray();
                     }
                     else if (c is Item it)
                     {
@@ -274,7 +274,7 @@ namespace VintageE
                         b.Shape = o.Shape?.Clone(); b.ShapeInventory = o.ShapeInventory?.Clone();
                         b.Textures = o.Textures == null ? null : new Dictionary<string, CompositeTexture>(o.Textures);
                         b.TexturesInventory = o.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(o.TexturesInventory);
-                        b.DrawType = o.DrawType; b.SideOpaque = (bool[])o.SideOpaque?.Clone(); b.SelectionBoxes = o.SelectionBoxes?.Select(x => x.Clone()).ToArray();
+                        b.DrawType = o.DrawType; b.SideOpaque = o.SideOpaque; b.SelectionBoxes = o.SelectionBoxes?.Select(x => x.Clone()).ToArray();
                     }
                     else if (c is Item it)
                     {
