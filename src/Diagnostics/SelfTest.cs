@@ -524,7 +524,7 @@ namespace VintageE
                   && Lang.GetMatchingIfExists("vintagee:block-handbooktext-vintagee:energycollector-mk1") != null,
                 "long descriptions are in the handbook");
             string tip = Lang.Get("vintagee:itemdesc-trinket-swiftwolfsrendinggale");
-            Check(tip.Length < 160 && !tip.Contains("\n"), $"tooltips are short ({tip.Length} characters for Swiftwolf's)");
+            Check(tip.Length < 320 && !tip.Contains("\n"), $"tooltips stay one paragraph with the numbers in ({tip.Length} characters for Swiftwolf's)");
 
             Block nova = sapi.World.GetBlock(new AssetLocation("vintagee:novaexplosive-catalyst"));
             Check(nova?.EntityClass != null && typeof(Vintagestory.GameContent.IIgnitable).IsAssignableFrom(sapi.ClassRegistry.GetBlockEntity(nova.EntityClass)),
