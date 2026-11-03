@@ -262,7 +262,7 @@ namespace VintageE
             ItemStack stack = TransmutationService.Prototype(mod, capi.World, key);
             if (stack == null) { cache[key] = null; return null; }
             // A clutter block or tapestry with no type is a broken thing (learned before 1.17.5, or by the Tome): never offer it.
-            if (StackDataUtil.NeedsData(stack.Collectible) && StackDataUtil.KeptData(stack) == null) { cache[key] = null; return null; }
+            if (StackDataUtil.NeedsData(stack.Collectible, capi.World) && StackDataUtil.KeptData(stack) == null) { cache[key] = null; return null; }
             if (e == null || e.Stack?.Collectible != stack.Collectible)
             {
                 string name;

@@ -149,7 +149,7 @@ namespace VintageE
                     foreach (CollectibleObject c in mod.Emc.All.Keys)
                     {
                         if (!CollectibleIndex.IsListed(c) || !mod.Emc.CanTransmute(c)) continue;
-                        if (StackDataUtil.NeedsData(c))
+                        if (StackDataUtil.NeedsData(c, byEntity.World))
                         {
                             // Clutter, tapestries, typed chests: each creative version, never the typeless block.
                             foreach (ItemStack v in StackDataUtil.CreativeVersions(c, byEntity.World))

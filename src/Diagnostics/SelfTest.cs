@@ -496,6 +496,12 @@ namespace VintageE
                 Check(StackDataUtil.NeedsData(clutter) && mod.Emc.StackData.KindOf(clutter) == StackDataKind.Material, "clutter: needs its type and keeps it (" + typed + " typed values from traders)");
             }
 
+            // Everything that is nothing without its data, listed so the CI output shows them (cuttings, clutter, tapestries...).
+            var needy = sapi.World.Collectibles.Where(c => c?.Code != null && CollectibleIndex.IsListed(c) && StackDataUtil.NeedsData(c, sapi.World)).ToList();
+            var needyPlainValued = needy.Where(c => mod.Emc.GetValue(c) > 0 && mod.Emc.StackData.KindOf(c) != StackDataKind.Material).ToList();
+            Check(needy.Any(c => c.Code.Path == "fruittree-cutting") && needyPlainValued.Count == 0,
+                "typed-only blocks: " + needy.Count + " need their data (" + string.Join(", ", needy.Take(12).Select(c => c.Code.ToShortString())) + (needy.Count > 12 ? ", …" : "") + "); all kept as material kinds");
+
             // The everlasting glue: exists, and a use costs what a litre of pitch glue is worth.
             CollectibleObject glue = C("vintagee:gadget-eternalglue");
             double glueCost = ItemEmcGadget.GlueCost(mod);

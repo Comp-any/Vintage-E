@@ -220,8 +220,30 @@ namespace VintageE
         /// Blocks that are nothing without their data: clutter, tapestries and typed containers take their whole
         /// identity from the "type" on the stack, so a plain stack of them is a broken thing with no name.
         /// </summary>
-        public static bool NeedsData(CollectibleObject c)
-            => c != null && (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer"));
+        public static bool NeedsData(CollectibleObject c, IWorldAccessor world = null)
+        {
+            if (c == null) return false;
+            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTreeBranch")) return true;
+            // Anything whose every creative version carries data (fruit tree cuttings, typed storage): there is no plain one to be.
+            if (c.CreativeInventoryStacks == null || c.CreativeInventoryStacks.Length == 0) return false;
+            int versions = 0;
+            foreach (var tab in c.CreativeInventoryStacks)
+            {
+                foreach (JsonItemStack js in tab?.Stacks ?? Array.Empty<JsonItemStack>())
+                {
+                    if (js == null) continue;
+                    ItemStack st = js.ResolvedItemstack;
+                    if (st == null && world != null)
+                    {
+                        try { if (js.Resolve(world, "Vintage-E stack data", false)) st = js.ResolvedItemstack; } catch { st = null; }
+                    }
+                    if (st?.Collectible != c) continue;
+                    versions++;
+                    if (KeptData(st) == null) return false; // a plain version exists
+                }
+            }
+            return versions > 0;
+        }
 
         /// <summary>Every version of a block that needs data, from its creative stacks (resolving them if the server hasn't).</summary>
         public static IEnumerable<ItemStack> CreativeVersions(CollectibleObject c, IWorldAccessor world)

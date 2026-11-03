@@ -245,7 +245,7 @@ namespace VintageE
                 return;
             }
             // A clutter block or tapestry without its type would be a nameless, broken block: never make one.
-            if (StackDataUtil.NeedsData(proto.Collectible) && StackDataUtil.KeptData(proto) == null)
+            if (StackDataUtil.NeedsData(proto.Collectible, sapi.World) && StackDataUtil.KeptData(proto) == null)
             {
                 Fail(player, "novalue", proto.Collectible.Code.ToString());
                 return;
