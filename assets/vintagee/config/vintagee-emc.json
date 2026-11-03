@@ -19,6 +19,7 @@
     "game:clay-*": 4,
     "game:flint": 4,
     "game:loosestones-*": 1,
+    "game:loosestones-meteorite-iron-*": 192,
     "game:looseflints-*": 4,
     "game:snowblock": 1,
     "game:snowlayer-*": 0.125,
