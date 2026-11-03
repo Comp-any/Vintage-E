@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.14 — 2026-11-04
+
+### Fixed
+- **Looks: the New look is applied during the normal load again, with no reload after join.** The hook on the game's shape loaders was put in place in StartClientSide, which the game runs in its last mod phase, after the world's shapes and textures are already loaded (the doctor showed the client side starting with every block already held). It is now put in place in Start, which runs before the shapes load. The after-load reload stays as a fallback.
+- **Looks: baking a look's textures into the atlases no longer looks for `textures/textures/…`** (the game adds the folder and `.png` itself).
+
 ## 1.17.13 — 2026-11-04
 
 ### Fixed

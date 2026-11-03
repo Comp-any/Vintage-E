@@ -70,6 +70,18 @@ namespace VintageE
         public override void Start(ICoreAPI api)
         {
             Api = api;
+            if (api is ICoreClientAPI startCapi)
+            {
+                // The look hook must be in place before the game loads shapes. Start runs then; StartClientSide does
+                // not: the game runs it in its last mod phase, after the world's shapes and textures are loaded (the
+                // doctor showed the client side starting with every block already held), so a hook put there only ever
+                // saw the reload. Hooking here, the look is applied during the normal load and no reload is needed.
+                Capi = startCapi;
+                ClientLookPatches.Mod = this;
+                ClientLookPatches.Capi = startCapi;
+                ClientLookPatches.Patch(Mod.Logger);
+                LookEvent("start: hook in place, the game holds {0} blocks and {1} items so far", startCapi.World?.Blocks?.Count ?? 0, startCapi.World?.Items?.Count ?? 0);
+            }
 
             api.RegisterItemClass("ItemPhilosophersStone", typeof(ItemPhilosophersStone));
             api.RegisterItemClass("ItemTransmutationTablet", typeof(ItemTransmutationTablet));
@@ -390,7 +402,7 @@ namespace VintageE
         /// <summary>
         /// Puts every texture these blocks and items now use into the game's atlases, including inventory textures and
         /// alternates, the way the game does when a world loads. Returns how many. (CompositeTexture.RuntimeBake can't
-        /// be used: it looks the file up by its bare name, without textures/ and .png, and fails for every texture.)
+        /// be used: it reads the file by its bare name, without textures/ and .png, and fails for every texture.)
         /// </summary>
         int BakeLookTextures(IEnumerable<CollectibleObject> collectibles)
         {
@@ -421,8 +433,8 @@ namespace VintageE
         static bool BakeOne(ITextureAtlasAPI atlas, BakedCompositeTexture btex)
         {
             if (btex?.BakedName == null) return false;
-            AssetLocation file = btex.BakedName.Clone().WithPathPrefixOnce("textures/").WithPathAppendixOnce(".png");
-            if (!atlas.GetOrInsertTexture(file, out int subId, out _)) return false;
+            // GetOrInsertTexture adds textures/ and .png itself (given them, it looked for textures/textures/…).
+            if (!atlas.GetOrInsertTexture(btex.BakedName, out int subId, out _)) return false;
             btex.TextureSubId = subId;
             return true;
         }
@@ -1887,11 +1899,11 @@ namespace VintageE
         public override void StartClientSide(ICoreClientAPI capi)
         {
             Capi = capi;
-            LookEvent("client start: the game holds {0} blocks and {1} items so far (thread {2})", capi.World?.Blocks?.Count ?? 0, capi.World?.Items?.Count ?? 0, System.Threading.Thread.CurrentThread.Name ?? "?");
-            // The look is applied as the game loads shapes for what the server sent, which comes after this.
+            LookEvent("client side started (the game's last mod phase): the game holds {0} blocks and {1} items", capi.World?.Blocks?.Count ?? 0, capi.World?.Items?.Count ?? 0);
+            // The look hook was put in place in Start (see there); this only makes sure it is still there.
             ClientLookPatches.Mod = this;
             ClientLookPatches.Capi = capi;
-            ClientLookPatches.Patch(Mod.Logger);
+            if (ClientLookPatches.PatchedCount < 3) ClientLookPatches.Patch(Mod.Logger);
             // Safety net, run once the game has finished loading shapes and textures (BlockTexturesLoaded: all three
             // atlases are done). LevelFinalize is too early for this: it can fire while the shape loaders are still
             // running on their own threads, so it saw "nothing applied" and ordered a reload the hook was about to make
