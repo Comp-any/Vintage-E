@@ -1619,7 +1619,7 @@
   "doctor-info": "Info",
   "diag-sec-health": "Health: the game, the files, the players, and values that moved",
   "diag-health-help": "Checks around the mapping rather than of it. Each line says what it looked at; open one for what it means and what to do.",
-  "diag-q-health": "Health checks: game version, files, join cost, player data, value swings, solver gaps, trader prices, variants",
+  "diag-q-health": "Health checks: game version, files, join cost, players, value swings, solver, traders, variants",
   "diag-gamever-same": "Game version: {0}, the version this build of Vintage-E was tested on.",
   "diag-gamever-unknown": "Game version: couldn't compare {0} with the tested {1}.",
   "diag-gamever-older": "Game version: {0} is older than the {1} this build was tested on.",
@@ -1730,5 +1730,6 @@
   "diag-look-early": "The early pass (before shapes load) found {0} of Vintage-E's blocks and items to apply the look to.",
   "diag-look-how": "Applied through the shape-loader hook {0} time(s); the early pass found {1} blocks and items.",
   "diag-look-trail": "What happened to the look on this computer, in order:",
-  "diag-client-log-info": "Your game's log: no Vintage-E errors or warnings in client-main.log; the look's {0} progress lines:"
+  "diag-client-log-info": "Your game's log: no Vintage-E errors or warnings in client-main.log; the look's {0} progress lines:",
+  "doctor-deeper": "Deeper checks"
 }

@@ -2,6 +2,16 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.18 — 2026-11-04
+
+### Changed
+- **Doctor window: a "Deeper checks" button** between the filter chips and "Run checks again" opens the deeper checks page (free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates).
+
+### Fixed
+- **Doctor window: fix buttons no longer draw over each other and the line under them.** A card reserved one row for a detail's buttons; when they wrapped onto a second row (the blacklist check's "Allow it" and "Give it a value"), the second row sat on the next line. The reserved height now follows the real rows.
+- **Doctor window: a button whose label is wider than the card is cut with "…"** instead of running out of the window (the "Health checks: …" link under Next). That label is shorter too.
+- **Doctor window: the "Checked at … / N checks" text at the bottom** had its second line cut off.
+
 ## 1.17.17 — 2026-11-04
 
 ### Fixed

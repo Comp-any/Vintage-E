@@ -260,6 +260,9 @@ namespace VintageE
             double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:doctor-home"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:doctor-copy") }
                 .Max(t => TextWidth(buttonFont, t)) + 30);
             ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, top - 2, ButtonW, 30);
+            // "Deeper checks" sits between the chips and Run checks again, right-aligned next to Run.
+            double deeperW = TextWidth(buttonFont, Lang.Get("vintagee:doctor-deeper")) + 30;
+            ElementBounds deeperBounds = ElementBounds.Fixed(Width - ButtonW - 8 - deeperW, top - 2, deeperW, 30);
             ElementBounds barBounds = ElementBounds.Fixed(0, top + 38, Width, 6);
 
             double listTop = top + 56;
@@ -270,12 +273,13 @@ namespace VintageE
             double bottom = listTop + ListHeight + 12;
             ElementBounds homeBounds = ElementBounds.Fixed(0, bottom, ButtonW, 30);
             ElementBounds backBounds = ElementBounds.Fixed(ButtonW + 8, bottom, ButtonW, 30);
-            ElementBounds lastBounds = ElementBounds.Fixed(2 * ButtonW + 18, bottom + 6, Width - 3 * ButtonW - 28, 24);
+            // Two lines ("Checked at …" and "N checks") fit; it was 24 high and the second line was cut off.
+            ElementBounds lastBounds = ElementBounds.Fixed(2 * ButtonW + 18, bottom - 2, Width - 3 * ButtonW - 28, 40);
             ElementBounds copyBounds = ElementBounds.Fixed(Width - ButtonW, bottom, ButtonW, 30);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(runBounds, barBounds, clipBounds, scrollbarBounds, homeBounds, backBounds, lastBounds, copyBounds);
+            bgBounds.WithChildren(runBounds, deeperBounds, barBounds, clipBounds, scrollbarBounds, homeBounds, backBounds, lastBounds, copyBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             composing = true;
@@ -303,6 +307,7 @@ namespace VintageE
                 bgBounds.WithChild(hb);
                 c.AddInteractiveElement(new GuiElementHotspot(capi, hb, () => ToggleFilter(state)));
             }
+            c.AddSmallButton(Lang.Get("vintagee:doctor-deeper"), () => { Act("checks", ""); return true; }, deeperBounds, EnumButtonStyle.Normal, "deeper");
             c.AddSmallButton(busy ? Lang.Get("vintagee:doctor-scanning") : Lang.Get("vintagee:doctor-run"), OnRun, runBounds, EnumButtonStyle.Normal, "run");
             Canvas(c, barBounds, (ctx, b) => DrawBar(ctx, b, busy ? 0.55 : 1));
 
@@ -440,9 +445,10 @@ namespace VintageE
                     string text = d.Fix ? "→ " + EmcReport.Plain(capi.World, d.Text) : EmcReport.Plain(capi.World, d.Text);
                     double h = text.Length > 0 ? GuiLayout.TextHeight(capi, f, text, CardW - TitleX - 20 - Math.Max(0, d.Indent - 1) * 14) : 0;
                     layout.Add((d, dy, h, f));
-                    dy += h + (d.Actions.Count > 0 ? 34 : 0);
+                    double aw = CardW - (TitleX + Math.Max(0, d.Indent - 1) * 14) - 20;
+                    dy += h + (d.Actions.Count > 0 ? ActionsHeight(d.Actions, aw, null) + 4 : 0);
                 }
-                if (e.Actions.Count > 0) dy += 34;
+                if (e.Actions.Count > 0) dy += ActionsHeight(e.Actions, CardW - TitleX - 20, null) + 4;
                 detailH = dy + 6;
             }
             double cardH = headH + detailH;
@@ -484,7 +490,7 @@ namespace VintageE
                     if (text.Length > 0) AddText(c, parent, text, f, x, baseY + dy, CardW - x - 20);
                     if (d.Actions.Count > 0) AddActions(c, parent, d.Actions, x, baseY + dy + h + 2, CardW - x - 20, dense: true);
                 }
-                if (e.Actions.Count > 0) AddActions(c, parent, e.Actions, TitleX, baseY + detailH - 38, CardW - TitleX - 20, dense: true);
+                if (e.Actions.Count > 0) AddActions(c, parent, e.Actions, TitleX, baseY + detailH - ActionsHeight(e.Actions, CardW - TitleX - 20, null) - 8, CardW - TitleX - 20, dense: true);
             }
             return y + cardH + 8;
         }
@@ -564,8 +570,7 @@ namespace VintageE
             double rowY = y;
             foreach (var (action, arg, label) in actions)
             {
-                bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
-                string text = (fix ? "⚒ " : "") + label;
+                string text = ButtonLabel(f, action, label, width);
                 double w = Math.Min(width, uniform ?? (TextWidth(f, text) + 24));
                 if (bx > x && bx + w > x + width) { bx = x; rowY += 32; }
                 string a = action, g = arg;
@@ -573,6 +578,36 @@ namespace VintageE
                 bx += w + 8;
             }
             return rowY + 30;
+        }
+
+        /// <summary>The height AddActions will take for these buttons in this width (they wrap onto more rows).</summary>
+        double ActionsHeight(List<(string action, string arg, string label)> actions, double width, double? uniform)
+        {
+            if (actions.Count == 0) return 0;
+            CairoFont f = CairoFont.ButtonText();
+            double bx = 0, rows = 1;
+            foreach (var (action, arg, label) in actions)
+            {
+                double w = Math.Min(width, uniform ?? (TextWidth(f, ButtonLabel(f, action, label, width)) + 24));
+                if (bx > 0 && bx + w > width) { bx = 0; rows++; }
+                bx += w + 8;
+            }
+            return rows * 32 - 2;
+        }
+
+        /// <summary>
+        /// A button's label: ⚒ before a fix, and cut with … when it wouldn't fit the row, because the game's button
+        /// grows to its label and would run out of the card (seen with the long "Health checks: …" line).
+        /// </summary>
+        string ButtonLabel(CairoFont f, string action, string label, double width)
+        {
+            bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
+            string text = (fix ? "⚒ " : "") + label;
+            double max = width - 24;
+            if (TextWidth(f, text) <= max) return text;
+            int cut = text.Length;
+            while (cut > 4 && TextWidth(f, text.Substring(0, cut) + "…") > max) cut -= Math.Max(1, cut / 20);
+            return text.Substring(0, cut).TrimEnd() + "…";
         }
 
         // ------------------------------------------------------------------ drawing
