@@ -8,3 +8,11 @@ GroundStoredProcessable
 shingleblock
 gear-temporal
 metalplate-copper
+rawhidewrap
+hidetunic
+clothes-head-hide
+returnedStack
+bonyremains
+crystalizedore
+hide-pelt-bear
+cookedcattailroot

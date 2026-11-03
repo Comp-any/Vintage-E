@@ -114,7 +114,7 @@ namespace VintageE
                     if (PlayerEmc.Resolve(x.Sapi.World, k) == null) { dead++; firstDead ??= k; }
                 }
                 if (dead > 0) problems.Add(x.L("diag-pdata-dead", p.PlayerName, dead, known.Length, firstDead));
-                int exact = known.Count(PlayerEmc.IsExact);
+                int exact = PlayerEmc.CountExact(p);
                 if (cap > 0 && exact > cap) problems.Add(x.L("diag-pdata-overcap", p.PlayerName, exact, cap));
                 // Tablet filters naming items that no longer exist.
                 int badFilters = 0;

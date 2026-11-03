@@ -117,7 +117,9 @@ namespace VintageE
                 // The table only offers what the player's game shows a value for; if the server disagrees, say what
                 // it has in the log and send the player the server's values again, in case theirs are out of date.
                 double plain = mod.Emc.GetValue(stack.Collectible);
-                sapi.Logger.Warning("Vintage-E: {0} can't burn {1} ({2}): the server values it at {3} each (the plain item {4}); stack attributes: {5}",
+                // A notification, not a warning: a player trying to burn something worth nothing (the Tome, say) is
+                // expected, and the doctor would otherwise flag every attempt. The watch keeps the refusal.
+                sapi.Logger.Notification("Vintage-E: {0} can't burn {1} ({2}): the server values it at {3} each (the plain item {4}); stack attributes: {5}",
                     player?.PlayerName ?? "?", stack.GetName(), stack.Collectible.Code, each, plain, stack.Attributes?.ToJsonToken() ?? "none");
                 if (player != null) mod.ResendEmcTable(player);
                 args = new[] { stack.GetName() + " (" + stack.Collectible.Code + ")" };

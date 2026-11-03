@@ -132,6 +132,34 @@ namespace VintageE
             return stack;
         }
 
-        public static int CountExact(IPlayer player) => GetKnown(player).Count(IsExact);
+        /// <summary>
+        /// How many exact versions a player knows that count against MaxExactKnowledge: a filled bucket, a gold
+        /// shield, a chiseled block. A block that is nothing without its data (clutter, a tapestry pattern, a fruit
+        /// tree cutting) is only ever known as an exact version, so those don't count: they are the plain items of
+        /// their kind, and with the Tome of Knowledge there are thousands of them.
+        /// </summary>
+        public static int CountExact(IPlayer player)
+        {
+            IWorldAccessor world = player?.Entity?.World;
+            int n = 0;
+            foreach (string key in GetKnown(player))
+            {
+                if (!IsExact(key)) continue;
+                if (world != null && NeedsDataCached(Resolve(world, key), world)) continue;
+                n++;
+            }
+            return n;
+        }
+
+        static readonly Dictionary<CollectibleObject, bool> needsData = new Dictionary<CollectibleObject, bool>();
+        static bool NeedsDataCached(CollectibleObject c, IWorldAccessor world)
+        {
+            if (c == null) return false;
+            lock (needsData)
+            {
+                if (!needsData.TryGetValue(c, out bool v)) needsData[c] = v = StackDataUtil.NeedsData(c, world);
+                return v;
+            }
+        }
     }
 }
