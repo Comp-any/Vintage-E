@@ -249,7 +249,12 @@ namespace VintageE
             {
                 for (int j = 0; j < e.Returned.Length; j++)
                 {
-                    if (Values.TryGetValue(e.Returned[j], out double rv)) sum -= rv * e.ReturnedQuantities[j];
+                    T r = e.Returned[j];
+                    if (Excluded.Contains(r) || Free.Contains(r)) continue;
+                    // Something handed back that has no value yet: the net cost isn't known, so wait (counting it as
+                    // nothing gave a bear's head pelt the whole pelt's value, with the body then worth as much again).
+                    if (!Values.TryGetValue(r, out double rv)) return double.NaN;
+                    sum -= rv * e.ReturnedQuantities[j];
                 }
             }
             return sum > 0 ? sum : double.NaN;

@@ -386,17 +386,8 @@ namespace VintageE
             // from a variant, an estimate) is seeded as fixed, so a recipe whose ingredients only got values in a later
             // stage could never lower it: blasting powder stayed at its trader price (53.66) although saltpeter,
             // sulfur and coal make six for 25.8 each. Check now, with every value known, and solve once more.
-            for (int round = 0; round < 4; round++)
+            for (int round = 0; round < 8; round++)
             {
-                var cheaper = new Dictionary<CollectibleObject, (double per, Conversion conv)>();
-                foreach (Conversion conv in collector.Conversions)
-                {
-                    CollectibleObject o = conv.Output;
-                    if (o == null || conv.JointOutputs != null || !extra.ContainsKey(o) || currency.Contains(o) || PinnedByConfig(index, o)) continue;
-                    double? per = ViableCostPer(conv, solver.Values);
-                    if (per == null || per.Value <= 0 || per.Value >= extra[o] * 0.999) continue;
-                    if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
-                }
                 // The other way round: a guessed value for something that is processed (one input) into more than
                 // it is worth. A guessed input can't be worth less than what it yields, or processing then burning
                 // makes EMC (a compat-file fruit at 16 pressed into 24 of juice). Raise it to the yield.
@@ -407,10 +398,20 @@ namespace VintageE
                     // (a strong bone into a bone).
                     if (conv.Inputs.Count != 1 || conv.Inputs[0].Choices.Length != 1 || conv.Returned != null) continue;
                     CollectibleObject i = conv.Inputs[0].Choices[0];
-                    if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i) || cheaper.ContainsKey(i)) continue;
+                    if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i)) continue;
                     double? y = YieldPer(conv, solver.Values);
                     if (y == null || y.Value <= extra[i] * 1.001) continue;
                     if (!dearer.TryGetValue(i, out var best) || y.Value > best.yield) dearer[i] = (y.Value, conv);
+                }
+                var cheaper = new Dictionary<CollectibleObject, (double per, Conversion conv)>();
+                foreach (Conversion conv in collector.Conversions)
+                {
+                    CollectibleObject o = conv.Output;
+                    // A guess that is also raised to its yield keeps the raise: the burn exploit is the one to close.
+                    if (o == null || conv.JointOutputs != null || !extra.ContainsKey(o) || currency.Contains(o) || PinnedByConfig(index, o) || dearer.ContainsKey(o)) continue;
+                    double? per = ViableCostPer(conv, solver.Values);
+                    if (per == null || per.Value <= 0 || per.Value >= extra[o] * 0.999) continue;
+                    if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
                 }
                 if (cheaper.Count == 0 && dearer.Count == 0) break;
                 foreach (var kv in cheaper)

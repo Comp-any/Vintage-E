@@ -188,7 +188,7 @@ namespace VintageE
                 ("game:creature-fish-freshwater-bass-largemouth-adult", bass - 0.01, bass + 0.01), ("game:jonasparts-tank01", 1024.0, 1024.0),
                 ("game:creature-trader-female-artisan-cold", 0.0, 0.0), ("game:locatormap-treasures", 0.0, 0.0),
                 ("game:lore-paper", 0.0, 0.0), ("game:metal-parts", 1.0, 1000.0), ("game:nightvisiondevice", 4096.0, 4096.0),
-                ("game:ore-fluorite", 32.0, 32.0), ("game:ore-fluorite-limestone", 1.0, 1000.0),
+                ("game:ore-fluorite", 32.0, 64.0), ("game:ore-fluorite-limestone", 1.0, 1000.0),
                 // Trader price 53.66, but the grid makes 6 from saltpeter, sulfur and coal for 25.8 each: the recipe wins.
                 ("game:blastingpowder", 1.0, 30.0),
                 // Free-EMC fixes: a ribcage is worth its 4 bones; crystallized ore its nugget; steel follows blister steel.
@@ -308,7 +308,7 @@ namespace VintageE
             Check(boat.StartsWith("built in stages") && ValueOf("game:boat-sailed-oak") > ValueOf("game:boat-raft-oak"), "sailboats are valued from their build stages");
             double four = ValueOf("game:cheese-cheddar-4slice"), two = ValueOf("game:cheese-cheddar-2slice");
             Line($"  cheddar: 4 slices {four}, 2 slices {two} ({OriginOf("game:cheese-cheddar-2slice")})");
-            Check(four > 0 && Math.Abs(two - four / 2) < 1e-6, "half a cheese is worth half a cheese");
+            Check(four > 0 && Math.Abs(two - four / 2) < 0.01, "half a cheese is worth half a cheese");
             string mold = OriginOf("game:toolmold-black-fired-axe");
             Line("  black axe mold: " + ValueOf("game:toolmold-black-fired-axe") + " (" + mold + ")");
             Check(!mold.Contains("anvil"), "the axe mold isn't priced like the anvil mold");

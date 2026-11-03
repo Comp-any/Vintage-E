@@ -9,6 +9,7 @@
     "game:stone-halite": 8,
     "//game:rock-halite": "drops 2.5 halite stones",
     "game:rock-halite": 20,
+    "game:loosestones-halite-*": 8,
     "game:soil-*": 1,
     "game:soil-low-*": 2,
     "game:soil-medium-*": 4,
