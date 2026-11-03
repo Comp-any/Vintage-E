@@ -118,19 +118,24 @@ namespace VintageE
                 if (cap > 0 && exact > cap) problems.Add(x.L("diag-pdata-overcap", p.PlayerName, exact, cap));
                 // Tablet filters naming items that no longer exist.
                 int badFilters = 0;
-                p.InventoryManager?.Inventories?.Values.ToList().ForEach(inv =>
+                foreach (IInventory inv in p.InventoryManager?.Inventories?.Values.ToList() ?? new List<IInventory>())
                 {
-                    if (inv == null) return;
-                    foreach (ItemSlot slot in inv)
+                    // The creative inventory has no slots on the server (its Count throws); only the real ones can hold a tablet.
+                    if (inv == null || inv.ClassName == null || inv.ClassName.Contains("creative")) continue;
+                    try
                     {
-                        ItemStack s = slot?.Itemstack;
-                        if (s?.Collectible == null || !TabletMagnet.IsTablet(s)) continue;
-                        foreach (string key in TabletMagnet.GetFilter(s))
+                        foreach (ItemSlot slot in inv)
                         {
-                            if (key != null && PlayerEmc.Resolve(x.Sapi.World, key) == null) badFilters++;
+                            ItemStack s = slot?.Itemstack;
+                            if (s?.Collectible == null || !TabletMagnet.IsTablet(s)) continue;
+                            foreach (string key in TabletMagnet.GetFilter(s))
+                            {
+                                if (key != null && PlayerEmc.Resolve(x.Sapi.World, key) == null) badFilters++;
+                            }
                         }
                     }
-                });
+                    catch (Exception) { /* an inventory that can't be read here (creative, remote) holds no tablet of interest */ }
+                }
                 if (badFilters > 0) problems.Add(x.L("diag-pdata-filter", p.PlayerName, badFilters));
             }
             if (problems.Count == 0) { x.Ok(x.L("diag-pdata-ok", players.Length)); x.Explain(x.L("diag-pdata-ok-why")); return; }
@@ -344,17 +349,33 @@ namespace VintageE
         // ---------------------------------------------------------------- all of them, in the check-up and the deeper checks
 
         /// <summary>One line per health check, for the check-up. Returns how many found something.</summary>
+        /// <summary>Runs one health check; if it throws, the report says which one failed instead of losing the whole diagnosis.</summary>
+        static void Guarded(Ctx x, string name, Action check)
+        {
+            try { check(); }
+            catch (Exception e)
+            {
+                x.Sapi.Logger.Warning("Vintage-E: the doctor's {0} check failed: {1}", name, e);
+                x.Info(x.L("diag-check-crashed", name, e.GetType().Name + ": " + e.Message));
+            }
+        }
+
+        static void RunHealthChecks(Ctx x, bool full)
+        {
+            Guarded(x, "game version", () => GameVersionCheck(x));
+            Guarded(x, "files", () => Writable(x));
+            Guarded(x, "join cost", () => JoinCost(x));
+            Guarded(x, "players", () => PlayerData(x));
+            Guarded(x, "value swings", () => Swings(x, full));
+            Guarded(x, "solver", () => SolverSkipped(x, full));
+            Guarded(x, "trader prices", () => TraderOverRecipe(x, full));
+            Guarded(x, "variants", () => VariantSpread(x, full));
+        }
+
         static int HealthSummary(Ctx x)
         {
             int before = x.R.Lines.Count;
-            GameVersionCheck(x);
-            Writable(x);
-            JoinCost(x);
-            PlayerData(x);
-            Swings(x, false);
-            SolverSkipped(x, false);
-            TraderOverRecipe(x, false);
-            VariantSpread(x, false);
+            RunHealthChecks(x, false);
             return x.R.Lines.Skip(before).Count(l => l.Style == EmcLineStyle.Check && l.Text.StartsWith("⚠", StringComparison.Ordinal));
         }
 
@@ -364,14 +385,7 @@ namespace VintageE
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-health"));
             r.Add(x.L("diag-health-help"), EmcLineStyle.Note);
-            GameVersionCheck(x);
-            Writable(x);
-            JoinCost(x);
-            PlayerData(x);
-            Swings(x, true);
-            SolverSkipped(x, true);
-            TraderOverRecipe(x, true);
-            VariantSpread(x, true);
+            RunHealthChecks(x, true);
             r.Section(x.L("diag-sec-next"));
             r.Add(Link(ActionChecks, "", x.L("diag-q-checks")));
             r.Add(Link(ActionOverview, "", x.L("diag-q-back")));

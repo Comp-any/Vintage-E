@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.1 — 2026-11-03
+
+### Fixed
+- **Doctor:** the check-up crashed with a player online (the players check walked the creative inventory, which has no slots on the server). Every health check now runs on its own: one failing is reported as a line, not as a failed diagnosis.
+
 ## 1.17.0 — 2026-11-03
 
 ### Added

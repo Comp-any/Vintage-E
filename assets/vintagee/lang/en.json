@@ -1684,5 +1684,6 @@
   "diag-client-versiondiff-patch": "They differ only in the last number, which carries fixes but no change to what travels between client and server: everything works, the fixes are just missing on one side.",
   "diag-client-versiondiff-unknown": "Could not tell how far apart the versions are.",
   "diag-vspread-attr": "{0}: {1} copied value(s), e.g.",
-  "diag-vspread-range": "the family runs from {0} to {1}"
+  "diag-vspread-range": "the family runs from {0} to {1}",
+  "diag-check-crashed": "The {0} check itself failed ({1}); the rest ran. Please include this in a bug report."
 }
