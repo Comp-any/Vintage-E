@@ -216,6 +216,32 @@ namespace VintageE
         /// Kind detection: chiseled blocks by class; containers by class or bag behaviour; material items when their own
         /// creative inventory lists stacks that differ only by data (that's where the game keeps metal/wood/type for them).
         /// </summary>
+        /// <summary>
+        /// Blocks that are nothing without their data: clutter, tapestries and typed containers take their whole
+        /// identity from the "type" on the stack, so a plain stack of them is a broken thing with no name.
+        /// </summary>
+        public static bool NeedsData(CollectibleObject c)
+            => c != null && (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer"));
+
+        /// <summary>Every version of a block that needs data, from its creative stacks (resolving them if the server hasn't).</summary>
+        public static IEnumerable<ItemStack> CreativeVersions(CollectibleObject c, IWorldAccessor world)
+        {
+            if (c?.CreativeInventoryStacks == null) yield break;
+            foreach (var tab in c.CreativeInventoryStacks)
+            {
+                foreach (JsonItemStack js in tab?.Stacks ?? Array.Empty<JsonItemStack>())
+                {
+                    if (js == null) continue;
+                    ItemStack s = js.ResolvedItemstack;
+                    if (s == null && world != null)
+                    {
+                        try { if (js.Resolve(world, "Vintage-E stack data", false)) s = js.ResolvedItemstack; } catch { s = null; }
+                    }
+                    if (s?.Collectible == c && KeptData(s) != null) yield return s;
+                }
+            }
+        }
+
         public static StackDataKind? Detect(CollectibleObject c, IWorldAccessor world = null)
         {
             if (c == null || c is IEmcStorageItem) return null;

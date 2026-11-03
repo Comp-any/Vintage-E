@@ -125,6 +125,8 @@ namespace VintageE
         readonly Dictionary<CollectibleObject, string> ruleSourceOf = new Dictionary<CollectibleObject, string>();
         /// <summary>When set, only conversions it accepts are used (/emc diagnose clean maps without other mods' recipes).</summary>
         public System.Func<Conversion, bool> ConversionFilter;
+        /// <summary>Material-specific values from traders' typed stacks, merged into the report's variants after the recipe ones.</summary>
+        readonly Dictionary<CollectibleObject, List<VariantValue>> traderVariants = new Dictionary<CollectibleObject, List<VariantValue>>();
 
         public EmcMapper(ICoreServerAPI sapi, VintageEConfig config, EmcRuleSet rules, ILogger logger)
         {
@@ -232,6 +234,13 @@ namespace VintageE
                             extra[c] = kv.Value * rate;
                             extraOrigin[c] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "trader price: {0:0.##} x {1:0.##} EMC per gear", kv.Value, rate);
                             report.TraderCount++;
+                        }
+                        // Typed stacks: the price belongs to that version alone (a trader's painting isn't every clutter block).
+                        foreach (var (c, data, each) in traders.TypedPrices)
+                        {
+                            if (noGuess.Contains(c)) continue;
+                            if (!traderVariants.TryGetValue(c, out var list)) traderVariants[c] = list = new List<VariantValue>();
+                            list.Add(new VariantValue { Attributes = data, Value = each * rate, Origin = string.Format(System.Globalization.CultureInfo.InvariantCulture, "trader price: {0:0.##} x {1:0.##} EMC per gear", each, rate) });
                         }
                     }
                 }
@@ -379,6 +388,14 @@ namespace VintageE
             report.DerivedCount = report.Values.Count - report.BaseCount - report.InferredCount - report.SiblingCount - report.FallbackCount - report.RelativeCount - report.TraderCount - report.DefaultCount
                 - report.FuelCount - report.FoodCount - report.OtherModCount - report.GuessCount;
             report.Variants = VariantValues(collector.Conversions, report.Values, excluded);
+            foreach (var kv in traderVariants)
+            {
+                if (!report.Variants.TryGetValue(kv.Key, out var list)) report.Variants[kv.Key] = list = new List<VariantValue>();
+                foreach (VariantValue v in kv.Value)
+                {
+                    if (!list.Any(e => StackDataUtil.IsSubset(sapi.World, e.Attributes, v.Attributes) && StackDataUtil.IsSubset(sapi.World, v.Attributes, e.Attributes))) list.Add(v);
+                }
+            }
             report.ConversionCount = solver.Edges.Count + solver.JointEdges.Count;
             report.Conversions = collector.Conversions;
             FillCoverage(index, report, excluded);

@@ -145,7 +145,22 @@ namespace VintageE
                         Tell(player, Lang.GetL(player.LanguageCode, "vintagee:tome-creativeonly"));
                         break;
                     }
-                    int n = PlayerEmc.LearnMany(player, mod.Emc.All.Keys.Where(c => CollectibleIndex.IsListed(c) && mod.Emc.CanTransmute(c)).Select(PlayerEmc.KeyOf));
+                    var keys = new System.Collections.Generic.List<string>();
+                    foreach (CollectibleObject c in mod.Emc.All.Keys)
+                    {
+                        if (!CollectibleIndex.IsListed(c) || !mod.Emc.CanTransmute(c)) continue;
+                        if (StackDataUtil.NeedsData(c))
+                        {
+                            // Clutter, tapestries, typed chests: each creative version, never the typeless block.
+                            foreach (ItemStack v in StackDataUtil.CreativeVersions(c, byEntity.World))
+                            {
+                                if (mod.Emc.GetValue(v) > 0) keys.Add(PlayerEmc.ExactKey(c, StackDataUtil.KeptData(v)));
+                            }
+                            continue;
+                        }
+                        keys.Add(PlayerEmc.KeyOf(c));
+                    }
+                    int n = PlayerEmc.LearnMany(player, keys);
                     Tell(player, Lang.GetL(player.LanguageCode, "vintagee:tome-learned", n));
                     break;
                 case "diviningrodlow":

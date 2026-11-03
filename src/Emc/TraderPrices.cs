@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 
@@ -18,6 +19,11 @@ namespace VintageE
     {
         /// <summary>Average price per single item, in trader currency (rusty gears in vanilla). Selling and buying prices averaged.</summary>
         public Dictionary<CollectibleObject, double> PricePerItem { get; } = new Dictionary<CollectibleObject, double>();
+        /// <summary>
+        /// Prices of traded stacks that carry data (a clutter block of one type, a typed chest): the price is that
+        /// version's, not the plain block's, so it becomes a material-specific value instead of pricing every version.
+        /// </summary>
+        public List<(CollectibleObject item, TreeAttribute data, double pricePerItem)> TypedPrices { get; } = new List<(CollectibleObject, TreeAttribute, double)>();
         public int TraderCount { get; private set; }
 
         readonly ICoreServerAPI sapi;
@@ -83,6 +89,22 @@ namespace VintageE
             int size = (int?)Get(entry, "stacksize") ?? (int?)Get(entry, "stackSize") ?? (int?)Get(entry, "quantity") ?? 1;
             if (price <= 0 || size <= 0) return;
             double each = price / size;
+            // A traded stack with data on it (clutter "type", say) is one version of the block, priced on its own.
+            TreeAttribute data = null;
+            try
+            {
+                if (Get(entry, "attributes") is JObject attrs && attrs.Count > 0 && new JsonObject(attrs).ToAttribute() is TreeAttribute tree)
+                {
+                    data = StackDataUtil.SortedCopy(tree, top: true);
+                    if (data.Count == 0) data = null;
+                }
+            }
+            catch { data = null; }
+            if (data != null)
+            {
+                TypedPrices.Add((c, data, each));
+                return;
+            }
             sums[c] = sums.TryGetValue(c, out var prev) ? (prev.sum + each, prev.n + 1) : (each, 1);
         }
 

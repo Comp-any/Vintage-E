@@ -125,6 +125,8 @@ namespace VintageE
         public static string NameOf(CollectibleObject c)
         {
             if (c?.Code == null) return "?";
+            // A block that is nothing without its type (clutter, tapestries) has no name as a plain stack: use the code.
+            if (StackDataUtil.NeedsData(c)) return c.Code.ToShortString();
             try { return c.GetHeldItemName(new ItemStack(c)); }
             catch { return c.Code.ToShortString(); }
         }

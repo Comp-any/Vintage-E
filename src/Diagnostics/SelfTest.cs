@@ -486,6 +486,16 @@ namespace VintageE
                     "tapestry: learned as its exact pattern (kind " + mod.Emc.StackData.KindOf(tapestry) + ", key " + (tPlan?.Key ?? err ?? "?").Substring(0, Math.Min(40, (tPlan?.Key ?? err ?? "?").Length)) + ")");
             }
 
+            // Clutter: the plain block isn't priced from a trader's typed stack, and clutter can't be made typeless.
+            CollectibleObject clutter = C("game:clutter");
+            if (clutter != null && mod.LastReport?.Origins != null)
+            {
+                mod.LastReport.Origins.TryGetValue(clutter, out string clutterOrigin);
+                Check(clutterOrigin == null || !clutterOrigin.StartsWith("trader", StringComparison.Ordinal), "clutter: the plain block isn't priced by a trader's typed stack (" + (clutterOrigin ?? "no value") + ")");
+                int typed = mod.LastReport.Variants != null && mod.LastReport.Variants.TryGetValue(clutter, out var cv) ? cv.Count : 0;
+                Check(StackDataUtil.NeedsData(clutter) && mod.Emc.StackData.KindOf(clutter) == StackDataKind.Material, "clutter: needs its type and keeps it (" + typed + " typed values from traders)");
+            }
+
             // The everlasting glue: exists, and a use costs what a litre of pitch glue is worth.
             CollectibleObject glue = C("vintagee:gadget-eternalglue");
             double glueCost = ItemEmcGadget.GlueCost(mod);

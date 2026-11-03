@@ -193,7 +193,7 @@ namespace VintageE
                 return;
             }
             sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
-            mod.SendResult(player, Result(player, PlayerEmc.KeyOf(mouse.Itemstack.Collectible), learnedKeys));
+            mod.SendResult(player, Result(player, learnedKeys.Length > 0 ? learnedKeys[0] : PlayerEmc.KeyOf(mouse.Itemstack.Collectible), learnedKeys));
         }
 
         void Burn(IServerPlayer player, bool onlyOne)
@@ -242,6 +242,12 @@ namespace VintageE
             if (proto == null || each <= 0)
             {
                 Fail(player, "novalue", proto?.GetName() ?? key);
+                return;
+            }
+            // A clutter block or tapestry without its type would be a nameless, broken block: never make one.
+            if (StackDataUtil.NeedsData(proto.Collectible) && StackDataUtil.KeptData(proto) == null)
+            {
+                Fail(player, "novalue", proto.Collectible.Code.ToString());
                 return;
             }
             CollectibleObject collectible = proto.Collectible;

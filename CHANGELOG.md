@@ -4,6 +4,9 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ## 1.17.6 — 2026-11-03
 
+### Fixed
+- **Clutter (aged chairs, barrels, paintings...):** the plain clutter block was priced from a trader's typed stack (998 EMC for every kind of clutter) and typeless clutter could be learned and created, showing as "game:clutter-" and placing a nameless block. Traders' typed stacks now price that version only (a material-specific value), the plain block falls back to the clutter default (32), a typeless clutter or tapestry is never offered or created, the Tome of Knowledge learns each creative version instead of the plain block, and the "learned" message names the version learned.
+
 ### Added
 - **Everlasting Pitch Glue in the New look:** a 3D model, a wooden bucket full of dark pitch glue with iron bands and a stirring stick, built from the game's bucket, glue and plate textures.
 
