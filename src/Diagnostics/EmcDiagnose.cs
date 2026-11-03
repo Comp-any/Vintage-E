@@ -365,7 +365,7 @@ namespace VintageE
 
             problems += ChecksSummary(x);
             problems += Startup(x, false);
-            r.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-verdict-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
+            // No verdict line: the chips at the top of the window count the checks, and each ⚠ card says what to do.
             if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);
             return problems;
         }

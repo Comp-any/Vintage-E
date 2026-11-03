@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.6 — 2026-11-03
+
+### Changed
+- **Doctor:** the "N things worth fixing, marked ⚠ above" line is gone; the chips at the top count the checks and each card says what to do.
+
 ## 1.16.5 — 2026-11-03
 
 ### Fixed
