@@ -111,7 +111,9 @@ namespace VintageE
             if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges
                 || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace || action == ActionHealth) && x.Report.FromCache)
             {
-                EmcMappingReport fresh = mod.RecalculateEmc("/emc diagnose");
+                // Compute only: the report needs the recipes, the live table needn't change (and this may run off the game thread).
+                EmcMappingReport fresh = null;
+                try { fresh = mod.ComputeMapping("/emc diagnose", false, out _); } catch (Exception e) { sapi.Logger.Warning("Vintage-E: /emc diagnose could not map afresh: {0}", e.Message); }
                 if (fresh != null) { x.Report = fresh; r.Add(x.L("diag-remapped"), EmcLineStyle.Note); }
             }
 
@@ -277,6 +279,7 @@ namespace VintageE
                     foreach (string key in dead.Take(15)) r.Add(key + Suggest(x, key) + "  " + FixLink(x, "removekey", key, x.L("diag-fix-removekey")), EmcLineStyle.Text, 2);
                     if (dead.Count > 15) x.Note(x.L("diag-more", dead.Count - 15), 2);
                     x.Fix(x.L("diag-deadkeys-fix"));
+                    r.Add(FixLink(x, "removekeys", "", x.L("diag-fix-removekeys", dead.Count)), EmcLineStyle.Text, 1);
                 }
                 else
                 {

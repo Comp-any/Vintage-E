@@ -413,6 +413,69 @@ namespace VintageE
         EmcMappingReport RecalculateEmcInner(string reason, bool allowCache)
         {
             var sw = Stopwatch.StartNew();
+            EmcMappingReport report = ComputeMapping(reason, allowCache, out string fingerprint);
+            if (report == null) return null;
+            return ApplyMapping(report, fingerprint, reason, sw);
+        }
+
+        /// <summary>Set by the doctor's fixes instead of remapping on the spot; the request path then maps in the background.</summary>
+        public string PendingRemap { get; private set; }
+        public void RequestRemap(string reason) => PendingRemap = reason;
+
+        bool mappingInFlight;
+        /// <summary>True while a background mapping is running (the doctor's fixes and /emc recalc use it so the game doesn't pause).</summary>
+        public bool MappingInFlight => mappingInFlight;
+
+        /// <summary>
+        /// Maps on a worker thread and applies the result on the game thread, so a long mapping doesn't stop the
+        /// world. <paramref name="then"/> runs on the game thread with the applied report (null if it failed).
+        /// Only one background mapping runs at a time; a second request while one runs waits for it and then runs.
+        /// </summary>
+        public void RecalculateEmcAsync(string reason, Action<EmcMappingReport> then = null, bool allowCache = false)
+        {
+            if (mappingInFlight)
+            {
+                // Wait for the running one, then go: the caller's change (a pin, a removed key) must be in the next mapping.
+                Sapi.Event.RegisterCallback(_ => RecalculateEmcAsync(reason, then, allowCache), 500);
+                return;
+            }
+            mappingInFlight = true;
+            var sw = Stopwatch.StartNew();
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                EmcMappingReport computed = null;
+                string fingerprint = null;
+                try { computed = ComputeMapping(reason, allowCache, out fingerprint); }
+                catch (Exception e)
+                {
+                    LastMappingError = (mappingStage ?? "mapping") + ": " + e.GetType().Name + ": " + e.Message;
+                    LastMappingErrorAt = DateTime.Now;
+                    Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "mapping", e);
+                }
+                Sapi.Event.EnqueueMainThreadTask(() =>
+                {
+                    EmcMappingReport applied = null;
+                    try { if (computed != null) applied = ApplyMapping(computed, fingerprint, reason, sw); }
+                    catch (Exception e)
+                    {
+                        LastMappingError = (mappingStage ?? "applying") + ": " + e.GetType().Name + ": " + e.Message;
+                        LastMappingErrorAt = DateTime.Now;
+                        Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "applying", e);
+                    }
+                    finally { mappingInFlight = false; }
+                    try { then?.Invoke(applied); }
+                    catch (Exception e) { Mod.Logger.Error("Vintage-E: after the mapping ({0}): {1}", reason, e); }
+                }, "vintagee-mapping");
+            });
+        }
+
+        /// <summary>
+        /// The slow half of a mapping: loads the value files if needed, tries the cache, runs the mapper. Touches
+        /// nothing the game is using, so it can run on a worker thread. Null (and LastMappingError set) on failure.
+        /// </summary>
+        public EmcMappingReport ComputeMapping(string reason, bool allowCache, out string fingerprint)
+        {
+            fingerprint = null;
             mappingStage = "loading the value files";
             if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(Config.DisabledCompat))
             {
@@ -421,7 +484,6 @@ namespace VintageE
             }
             var mapper = new EmcMapper(Sapi, Config, Rules, Mod.Logger);
             EmcMappingReport report = null;
-            string fingerprint = null;
             mappingStage = "checking the value cache";
             if (Config.CacheEmcValues)
             {
@@ -458,6 +520,12 @@ namespace VintageE
                 }
                 if (Config.CacheEmcValues && fingerprint != null) EmcCache.Save(Sapi, fingerprint, report, Mod.Logger);
             }
+            return report;
+        }
+
+        /// <summary>The fast half: puts the mapped values into play. Game thread only.</summary>
+        EmcMappingReport ApplyMapping(EmcMappingReport report, string fingerprint, string reason, Stopwatch sw)
+        {
             mappingStage = "building the stack data (contents, materials)";
             Emc.Replace(report.Values);
             Emc.DurabilityScales = Config.DurabilityScalesEmc;
@@ -1089,7 +1157,16 @@ namespace VintageE
                 string[] parts = arg.Split(';');
                 string target = parts.Length > 0 ? parts[0] : "";
                 string then = parts.Length > 1 ? parts[1] : "", thenArg = parts.Length > 2 ? parts[2] : "";
+                PendingRemap = null;
                 string outcome = EmcDiagnose.ApplyFix(this, player, action.Substring(4), target, player.LanguageCode);
+                string remap = PendingRemap;
+                PendingRemap = null;
+                if (remap != null)
+                {
+                    // The fix changed the settings; map in the background and show the report once the new values are in.
+                    RecalculateEmcAsync(remap, applied => SendDiagnosis(player, then, thenArg, held, packet, applied == null ? outcome + "\n⚠ " + (LastMappingError ?? "") : outcome));
+                    return;
+                }
                 SendDiagnosis(player, then, thenArg, held, packet, outcome);
                 return;
             }
@@ -1175,19 +1252,40 @@ namespace VintageE
         }
 
         /// <summary>Builds an /emc diagnose report for a player and opens it in their window (saved to ModData too).</summary>
+        readonly object diagnoseGate = new object();
+
+        /// <summary>
+        /// Builds the doctor's report on a worker thread (the reports only read; the deeper ones map afresh, which can
+        /// take seconds) and sends it from the game thread, so the world keeps running meanwhile. One report at a time.
+        /// </summary>
         public void SendDiagnosis(IServerPlayer player, string action, string arg, ItemStack held, EmcDiagnoseRequestPacket client = null, string outcome = null)
         {
-            try
+            string lang = player.LanguageCode;
+            System.Threading.Tasks.Task.Run(() =>
             {
-                EmcReport report = EmcDiagnose.Run(this, Sapi, player, player.LanguageCode, action, arg, held, client, outcome);
-                SaveReport(report, "emc-diagnose.txt");
-                SendReport(player, report);
-            }
-            catch (Exception e)
-            {
-                Mod.Logger.Error("Vintage-E: /emc diagnose failed: {0}", e);
-                player.SendMessage(GlobalConstants.GeneralChatGroup, "Vintage-E: the diagnosis failed (" + e.Message + "), see the server log.", EnumChatType.CommandError);
-            }
+                EmcReport report = null;
+                Exception failure = null;
+                lock (diagnoseGate)
+                {
+                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, outcome); }
+                    catch (Exception e) { failure = e; }
+                }
+                Sapi.Event.EnqueueMainThreadTask(() =>
+                {
+                    if (failure != null)
+                    {
+                        Mod.Logger.Error("Vintage-E: /emc diagnose failed: {0}", failure);
+                        player.SendMessage(GlobalConstants.GeneralChatGroup, "Vintage-E: the diagnosis failed (" + failure.Message + "), see the server log.", EnumChatType.CommandError);
+                        return;
+                    }
+                    try
+                    {
+                        SaveReport(report, "emc-diagnose.txt");
+                        SendReport(player, report);
+                    }
+                    catch (Exception e) { Mod.Logger.Error("Vintage-E: /emc diagnose could not send the report: {0}", e); }
+                }, "vintagee-diagnose");
+            });
         }
 
         internal EmcItemStatePacket ItemState(CollectibleObject c, string key)

@@ -257,7 +257,7 @@ namespace VintageE
             // Run, Back and Copy are all the same width: the widest label plus padding (the game's button grows
             // past a narrower fixed width, which is what made them differ).
             CairoFont buttonFont = CairoFont.SmallButtonText(EnumButtonStyle.Normal);
-            double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:reportgui-copy") }
+            double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:doctor-home"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:reportgui-copy") }
                 .Max(t => TextWidth(buttonFont, t)) + 30);
             ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, top - 2, ButtonW, 30);
             ElementBounds barBounds = ElementBounds.Fixed(0, top + 38, Width, 6);
@@ -268,13 +268,14 @@ namespace VintageE
             ElementBounds scrollbarBounds = ElementBounds.Fixed(Width + 4, listTop, 20, ListHeight);
 
             double bottom = listTop + ListHeight + 12;
-            ElementBounds backBounds = ElementBounds.Fixed(0, bottom, ButtonW, 30);
-            ElementBounds lastBounds = ElementBounds.Fixed(ButtonW + 10, bottom + 6, Width - 2 * ButtonW - 20, 24);
+            ElementBounds homeBounds = ElementBounds.Fixed(0, bottom, ButtonW, 30);
+            ElementBounds backBounds = ElementBounds.Fixed(ButtonW + 8, bottom, ButtonW, 30);
+            ElementBounds lastBounds = ElementBounds.Fixed(2 * ButtonW + 18, bottom + 6, Width - 3 * ButtonW - 28, 24);
             ElementBounds copyBounds = ElementBounds.Fixed(Width - ButtonW, bottom, ButtonW, 30);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(runBounds, barBounds, clipBounds, scrollbarBounds, backBounds, lastBounds, copyBounds);
+            bgBounds.WithChildren(runBounds, barBounds, clipBounds, scrollbarBounds, homeBounds, backBounds, lastBounds, copyBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             composing = true;
@@ -339,6 +340,7 @@ namespace VintageE
             content.fixedHeight = Math.Max(y + 4, ListHeight);
             c.EndChildElements().EndClip()
                 .AddVerticalScrollbar(OnScroll, scrollbarBounds, "scrollbar")
+                .AddSmallButton(Lang.Get("vintagee:doctor-home"), OnHome, homeBounds, EnumButtonStyle.Normal, "home")
                 .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                 .AddDynamicText(busy ? (busyText ?? "") : Lang.Get("vintagee:doctor-lastrun", receivedAt.ToString("HH:mm:ss"), checks), CairoFont.WhiteDetailText().WithColor(new double[] { 0.72, 0.72, 0.72, 1 }), lastBounds, "last")
                 .AddSmallButton(Lang.Get("vintagee:reportgui-copy"), OnCopy, copyBounds);
@@ -697,6 +699,16 @@ namespace VintageE
             string action = bar < 0 ? key : key.Substring(0, bar), arg = bar < 0 ? "" : key.Substring(bar + 1);
             SetBusy(Lang.Get("vintagee:doctor-scanning"));
             onDiagnose?.Invoke(action, arg);
+            return true;
+        }
+
+        /// <summary>Back to the check-up (the doctor's first page), forgetting the trail of reports.</summary>
+        bool OnHome()
+        {
+            history.Clear();
+            replaceNext = true;
+            SetBusy(Lang.Get("vintagee:doctor-scanning"));
+            onDiagnose?.Invoke("", "");
             return true;
         }
 

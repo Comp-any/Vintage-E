@@ -456,15 +456,16 @@ namespace VintageE
                         mod.ResendTable(player);
                         return L("diag-done-resend");
                     case "recalc":
-                        return mod.RecalculateEmc("/emc diagnose") != null ? L("diag-done-recalc") : L("diag-done-recalc-failed");
+                        mod.RequestRemap("/emc diagnose");
+                        return L("diag-done-recalc");
                     case "allow":
                         mod.SetBlacklistedPattern(target, false);
-                        mod.RecalculateEmc("/emc diagnose allow");
+                        mod.RequestRemap("/emc diagnose allow");
                         return L("diag-done-allow", target);
                     case "unpin":
                         mod.Config.FixedValues.Remove(target);
                         mod.SaveConfig();
-                        mod.RecalculateEmc("/emc diagnose unpin");
+                        mod.RequestRemap("/emc diagnose unpin");
                         return L("diag-done-unpin", target);
                     case "removekey":
                         {
@@ -472,13 +473,29 @@ namespace VintageE
                             int n = (c.BaseValues.Remove(target) ? 1 : 0) + (c.FixedValues.Remove(target) ? 1 : 0) + c.Blacklist.RemoveAll(k => k == target) + c.Allow.RemoveAll(k => k == target)
                                 + c.NoTransmute.RemoveAll(k => k == target) + c.GrayList.RemoveAll(k => k == target) + c.FreeIngredients.RemoveAll(k => k == target);
                             mod.SaveConfig();
-                            if (n > 0) mod.RecalculateEmc("/emc diagnose removekey");
+                            if (n > 0) mod.RequestRemap("/emc diagnose removekey");
                             return n > 0 ? L("diag-done-removekey", target) : L("diag-done-nothing", target);
+                        }
+                    case "removekeys":
+                        {
+                            // Every settings entry that matches nothing, in one go.
+                            VintageEConfig c = mod.Config;
+                            var index = new CollectibleIndex(mod.Sapi.World.Collectibles);
+                            bool Dead(string k) => !string.IsNullOrWhiteSpace(k) && !index.Match(k).Any();
+                            var dead = c.BaseValues.Keys.Concat(c.FixedValues.Keys).Concat(c.Blacklist).Concat(c.Allow).Concat(c.NoTransmute).Concat(c.GrayList).Concat(c.FreeIngredients).Where(Dead).Distinct().ToList();
+                            foreach (string k in dead)
+                            {
+                                c.BaseValues.Remove(k); c.FixedValues.Remove(k);
+                                c.Blacklist.RemoveAll(e => e == k); c.Allow.RemoveAll(e => e == k); c.NoTransmute.RemoveAll(e => e == k); c.GrayList.RemoveAll(e => e == k); c.FreeIngredients.RemoveAll(e => e == k);
+                            }
+                            mod.SaveConfig();
+                            if (dead.Count > 0) mod.RequestRemap("/emc diagnose removekeys");
+                            return dead.Count > 0 ? L("diag-done-removekeys", dead.Count) : L("diag-done-nothing", "settings");
                         }
                     case "ungray":
                         mod.Config.GrayList.RemoveAll(k => k == target);
                         mod.SaveConfig();
-                        mod.RecalculateEmc("/emc diagnose ungray");
+                        mod.RequestRemap("/emc diagnose ungray");
                         return L("diag-done-ungray", target);
                     case "notransmute":
                         mod.SetNoTransmute(new[] { target }, false);
@@ -504,7 +521,7 @@ namespace VintageE
                             mod.Config.FixedValues[key] = v;
                             if (v > 0) mod.Config.Blacklist.Remove(key);
                             mod.SaveConfig();
-                            mod.RecalculateEmc("/emc diagnose pin");
+                            mod.RequestRemap("/emc diagnose pin");
                             return L("diag-done-pin", key, EmcFormat.Format(v)) + lesson;
                         }
                     case "pinall":

@@ -1099,7 +1099,7 @@
   "diag-fix-setvalue": "Give it a value...",
   "diag-fix-learn": "Learn the {0} now",
   "diag-done-resend": "The EMC table was sent to your game again.",
-  "diag-done-recalc": "Mapped afresh.",
+  "diag-done-recalc": "The values have been mapped again.",
   "diag-done-recalc-failed": "The mapping failed; the server log has the error (shown below if it mentions Vintage-E).",
   "diag-done-allow": "{0} is allowed again and values were remapped.",
   "diag-done-unpin": "The pin {0} was removed and values were remapped.",
@@ -1685,5 +1685,8 @@
   "diag-client-versiondiff-unknown": "Could not tell how far apart the versions are.",
   "diag-vspread-attr": "{0}: {1} copied value(s), e.g.",
   "diag-vspread-range": "the family runs from {0} to {1}",
-  "diag-check-crashed": "The {0} check itself failed ({1}); the rest ran. Please include this in a bug report."
+  "diag-check-crashed": "The {0} check itself failed ({1}); the rest ran. Please include this in a bug report.",
+  "diag-fix-removekeys": "Remove all {0} entries that match nothing and remap",
+  "diag-done-removekeys": "Removed {0} settings entries that matched nothing; the values are being mapped again.",
+  "doctor-home": "Check-up"
 }

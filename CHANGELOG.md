@@ -2,6 +2,16 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.2 — 2026-11-03
+
+### Changed
+- **The doctor no longer pauses the game.** Reports are built on a worker thread and the remapping a fix triggers runs there too; the world keeps ticking and the window shows "Scanning…" until the answer arrives.
+- **Carburising charges its fuel:** the stone coffin packs 40 pieces of fuel around 16 iron ingots, so blister steel now costs an iron ingot plus 2.5 of the cheapest coffin fuel (charcoal, coal or coke), not an iron ingot alone.
+
+### Added
+- **Doctor:** "Remove all N entries that match nothing and remap" under the settings-file check, next to the per-entry links.
+- **Doctor window:** a Check-up button left of Back that returns to the doctor's first page.
+
 ## 1.17.1 — 2026-11-03
 
 ### Fixed

@@ -169,7 +169,7 @@ namespace VintageE
                 mod.Config.FixedValues[VintageEModSystem.ConfigKey(c)] = value;
                 n++;
             }
-            if (n > 0) { mod.SaveConfig(); mod.RecalculateEmc("/emc diagnose pin all"); }
+            if (n > 0) { mod.SaveConfig(); mod.RequestRemap("/emc diagnose pin all"); }
             return n;
         }
 

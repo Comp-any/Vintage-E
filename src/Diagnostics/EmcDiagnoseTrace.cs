@@ -178,7 +178,7 @@ namespace VintageE
                 enabled.Add(f.Name);
             }
             mod.SaveConfig();
-            if (removed.Count + enabled.Count > 0) mod.RecalculateEmc("/emc diagnose safe fixes");
+            if (removed.Count + enabled.Count > 0) mod.RequestRemap("/emc diagnose safe fixes");
             if (player != null) mod.ResendTable(player);
             return L("diag-done-safe", removed.Count, enabled.Count, string.Join(", ", removed.Concat(enabled).Take(8)));
         }

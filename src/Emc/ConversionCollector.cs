@@ -1042,12 +1042,22 @@ namespace VintageE
                         }
                     }
 
-                    // Carburizing in the stone coffin (cementation): iron turns into blister steel, one for one.
+                    // Carburizing in the stone coffin (cementation): iron turns into blister steel, one for one, but not
+                    // for free: the coffin is packed with 40 pieces of fuel around its 16 ingots (2.5 per ingot), and
+                    // that fuel is part of the recipe, not the fire under it. The cheapest of the fuels the coffin
+                    // takes (charcoal, coal, coke) is charged, like any ingredient with choices.
                     JsonObject carb = attrs["carburizableProps"]?["carburizedOutput"];
                     if (carb != null && carb.Exists)
                     {
                         var (steel, size) = ResolveStack(carb, c.Code.Domain);
-                        if (steel != null && steel != c && AddProcessing(c, 1, steel, Math.Max(1, size), "carburizing")) carburizing++;
+                        if (steel != null && steel != c)
+                        {
+                            var conv = new Conversion { Output = steel, OutputQuantity = Math.Max(1, size), Kind = ConversionKind.Processing, Source = "carburizing (2.5 fuel per ingot in the coffin)" };
+                            conv.Inputs.Add(new ConversionInput { Choices = new[] { c }, Quantity = 1 });
+                            CollectibleObject[] fuels = CoffinFuels();
+                            if (fuels.Length > 0) conv.Inputs.Add(new ConversionInput { Choices = fuels, Quantity = 2.5 });
+                            if (AddIfSane(conv)) carburizing++;
+                        }
                     }
 
                     JsonObject distill = attrs["distillationProps"];
@@ -1087,6 +1097,21 @@ namespace VintageE
             CollectibleObject block = sapi.World.GetBlock(loc);
             if (block != null && block.Id == 0) block = null;
             return preferred == EnumItemClass.Block ? (block ?? item) : (item ?? block);
+        }
+
+        CollectibleObject[] coffinFuels;
+
+        /// <summary>The fuels a stone coffin accepts (the game's charcoal, coals and coke), whichever of them exist.</summary>
+        CollectibleObject[] CoffinFuels()
+        {
+            if (coffinFuels != null) return coffinFuels;
+            var list = new List<CollectibleObject>();
+            foreach (string code in new[] { "game:charcoal", "game:coke", "game:ore-anthracite", "game:ore-bituminouscoal", "game:ore-lignite", "game:ore-blackcoal", "game:ore-browncoal" })
+            {
+                CollectibleObject item = sapi.World.GetItem(new AssetLocation(code));
+                if (item != null) list.Add(item);
+            }
+            return coffinFuels = list.ToArray();
         }
 
         bool AddProcessing(CollectibleObject input, double inputQty, CollectibleObject output, double outputQty, string label, double extraCost = 0)
