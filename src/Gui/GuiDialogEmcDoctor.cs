@@ -254,7 +254,12 @@ namespace VintageE
                 chips.Add((text, colour, cx, w));
                 cx += w + 10;
             }
-            ElementBounds runBounds = ElementBounds.Fixed(Width - 160, top - 2, 160, 30);
+            // Run, Back and Copy are all the same width: the widest label plus padding (the game's button grows
+            // past a narrower fixed width, which is what made them differ).
+            CairoFont buttonFont = CairoFont.SmallButtonText(EnumButtonStyle.Normal);
+            double ButtonW = Math.Max(110, new[] { Lang.Get("vintagee:doctor-run"), Lang.Get("vintagee:doctor-scanning"), Lang.Get("vintagee:reportgui-back"), Lang.Get("vintagee:reportgui-copy") }
+                .Max(t => TextWidth(buttonFont, t)) + 30);
+            ElementBounds runBounds = ElementBounds.Fixed(Width - ButtonW, top - 2, ButtonW, 30);
             ElementBounds barBounds = ElementBounds.Fixed(0, top + 38, Width, 6);
 
             double listTop = top + 56;
@@ -263,7 +268,6 @@ namespace VintageE
             ElementBounds scrollbarBounds = ElementBounds.Fixed(Width + 4, listTop, 20, ListHeight);
 
             double bottom = listTop + ListHeight + 12;
-            const double ButtonW = 110; // every button in the bottom row is the same width
             ElementBounds backBounds = ElementBounds.Fixed(0, bottom, ButtonW, 30);
             ElementBounds lastBounds = ElementBounds.Fixed(ButtonW + 10, bottom + 6, Width - 2 * ButtonW - 20, 24);
             ElementBounds copyBounds = ElementBounds.Fixed(Width - ButtonW, bottom, ButtonW, 30);
