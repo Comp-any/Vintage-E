@@ -24,3 +24,4 @@ file:recipes/grid/clothes/
 file:recipes/grid/hide-pelt-divide
 file:itemtypes/resource/crystalizedore-graded
 file:itemtypes/resource/hide\.json
+strongbone

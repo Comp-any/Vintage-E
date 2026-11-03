@@ -397,13 +397,36 @@ namespace VintageE
                     if (per == null || per.Value <= 0 || per.Value >= extra[o] * 0.999) continue;
                     if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
                 }
-                if (cheaper.Count == 0) break;
+                // The other way round: a guessed value for something that is processed (one input) into more than
+                // it is worth. A guessed input can't be worth less than what it yields, or processing then burning
+                // makes EMC (a compat-file fruit at 16 pressed into 24 of juice). Raise it to the yield.
+                var dearer = new Dictionary<CollectibleObject, (double yield, Conversion conv)>();
+                foreach (Conversion conv in collector.Conversions)
+                {
+                    // One input, one choice, nothing handed back: processing, or a grid recipe that just converts
+                    // (a strong bone into a bone).
+                    if (conv.Inputs.Count != 1 || conv.Inputs[0].Choices.Length != 1 || conv.Returned != null) continue;
+                    CollectibleObject i = conv.Inputs[0].Choices[0];
+                    if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i) || cheaper.ContainsKey(i)) continue;
+                    double? y = YieldPer(conv, solver.Values);
+                    if (y == null || y.Value <= extra[i] * 1.001) continue;
+                    if (!dearer.TryGetValue(i, out var best) || y.Value > best.yield) dearer[i] = (y.Value, conv);
+                }
+                if (cheaper.Count == 0 && dearer.Count == 0) break;
                 foreach (var kv in cheaper)
                 {
                     extraOrigin.TryGetValue(kv.Key, out string was);
                     double oldValue = extra[kv.Key];
                     extra[kv.Key] = kv.Value.per;
                     extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "recipe ({0}), cheaper than its {1} of {2:0.##}", kv.Value.conv.Source, was ?? "guessed value", oldValue);
+                    report.CheaperRecipeCount++;
+                }
+                foreach (var kv in dearer)
+                {
+                    extraOrigin.TryGetValue(kv.Key, out string was);
+                    double oldValue = extra[kv.Key];
+                    extra[kv.Key] = kv.Value.yield;
+                    extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "what it yields ({0}), more than its {1} of {2:0.##}", kv.Value.conv.Source, was ?? "guessed value", oldValue);
                     report.CheaperRecipeCount++;
                 }
                 solver = Stage(solver, force: true);
@@ -593,6 +616,29 @@ namespace VintageE
                     cost -= rv * r.Value;
                 }
             return cost / conv.OutputQuantity;
+        }
+
+        /// <summary>What one unit of this single-input process's input yields in EMC (every output valued), or null.</summary>
+        static double? YieldPer(Conversion conv, IReadOnlyDictionary<CollectibleObject, double> values)
+        {
+            double inQty = conv.Inputs[0].Quantity;
+            if (inQty <= 0) return null;
+            double sum = 0;
+            if (conv.JointOutputs != null)
+            {
+                foreach (var o in conv.JointOutputs)
+                {
+                    if (o.Key == conv.Inputs[0].Choices[0]) return null;
+                    if (!values.TryGetValue(o.Key, out double v)) return null;
+                    sum += v * o.Value;
+                }
+            }
+            else
+            {
+                if (conv.Output == null || conv.Output == conv.Inputs[0].Choices[0] || !values.TryGetValue(conv.Output, out double v)) return null;
+                sum = v * conv.OutputQuantity;
+            }
+            return (sum - conv.ExtraCost) / inQty;
         }
 
         EmcSolver<CollectibleObject> Solve(Dictionary<CollectibleObject, double> fixedValues, HashSet<CollectibleObject> excluded, List<EmcSolver<CollectibleObject>.Edge> edges, List<EmcSolver<CollectibleObject>.JointEdge> joints)

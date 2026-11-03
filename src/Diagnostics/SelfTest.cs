@@ -754,7 +754,7 @@ namespace VintageE
                 ("log", ""), ("patches", ""), ("outliers", ""), ("clean", ""), ("players", ""), ("player", "nobody"), ("bugreport", ""), ("changes", ""),
                 ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
                 ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"),
-                ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("short", ""),
+                ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("trace", "game:hide-pelt-bear-brown-head"), ("trace", "game:hide-pelt-bear-brown-complete"), ("short", ""),
                 ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""), ("novalue", ""), ("troubleshoot", ""), ("startup", ""), ("health", ""),
             };
             foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(1)) cases.Add(("draftcompat", m));
