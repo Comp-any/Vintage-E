@@ -240,13 +240,14 @@ namespace VintageE
             int ok = entries.Count(e => e.Kind == Kind.Check && e.State == State.Ok);
             int warn = entries.Count(e => e.Kind == Kind.Check && e.State == State.Warn);
             int fail = entries.Count(e => e.Kind == Kind.Check && e.State == State.Fail);
+            int info = entries.Count(e => e.Kind == Kind.Check && e.State == State.Info);
             int checks = entries.Count(e => e.Kind == Kind.Check);
 
             double top = GuiStyle.TitleBarHeight + 8;
             CairoFont chipFont = CairoFont.WhiteSmallText();
             var chips = new List<(string text, double[] colour, double x, double w)>();
             double cx = 0;
-            foreach (var (n, word, colour) in new[] { (ok, Lang.Get("vintagee:doctor-passed"), Green), (warn, Lang.Get("vintagee:doctor-warnings"), Orange), (fail, Lang.Get("vintagee:doctor-failed"), Red) })
+            foreach (var (n, word, colour) in new[] { (ok, Lang.Get("vintagee:doctor-passed"), Green), (warn, Lang.Get("vintagee:doctor-warnings"), Orange), (fail, Lang.Get("vintagee:doctor-failed"), Red), (info, Lang.Get("vintagee:doctor-info"), Blue) })
             {
                 string text = n + " " + word;
                 double w = TextWidth(chipFont, text) + 22;
@@ -278,7 +279,7 @@ namespace VintageE
                 .BeginChildElements(bgBounds);
 
             // Summary chips and the progress bar.
-            var chipStates = new[] { State.Ok, State.Warn, State.Fail };
+            var chipStates = new[] { State.Ok, State.Warn, State.Fail, State.Info };
             for (int i = 0; i < chips.Count; i++)
             {
                 var chip = chips[i];

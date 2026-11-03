@@ -1615,5 +1615,6 @@
   "diag-startup-clean": "Other mods: nothing went wrong at start-up.",
   "diag-startup-clean-why": "No mod was skipped, none crashed while starting, and every JSON patch and recipe the game loaded resolved.",
   "doctor-noanswer": "The server did not answer the doctor in 12 seconds. Vintage-E is probably not installed or enabled on the server (in single player: this world's mod list), or the server is still starting.",
-  "doctor-noanswer-short": "No answer from the server: is Vintage-E running there?"
+  "doctor-noanswer-short": "No answer from the server: is Vintage-E running there?",
+  "doctor-info": "Info"
 }

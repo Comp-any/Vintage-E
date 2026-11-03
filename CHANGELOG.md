@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.16.4 — 2026-11-03
+
+### Added
+- **Doctor window:** an Info chip next to Passed, Warnings and Failed; click it to hide or show the informational checks.
+
 ## 1.16.3 — 2026-11-03
 
 ### Added
