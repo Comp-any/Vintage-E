@@ -223,7 +223,7 @@ namespace VintageE
         public static bool NeedsData(CollectibleObject c, IWorldAccessor world = null)
         {
             if (c == null) return false;
-            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTreeBranch")) return true;
+            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTree")) return true;
             // Things that hold other things (pies, bowls, baskets) are contents, handled by the contents modes, not typed blocks.
             StackDataKind? kind = null;
             try { kind = Detect(c, world); } catch { kind = null; }
@@ -284,7 +284,7 @@ namespace VintageE
                 return StackDataKind.Contents;
             }
             // Blocks whose kind lives on the stack (tapestries, typed chests, lanterns...): their creative stacks carry the data.
-            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockFruitTreeBranch")) return StackDataKind.Material;
+            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockFruitTree")) return StackDataKind.Material;
             if (c.CreativeInventoryStacks != null)
             {
                 foreach (var tab in c.CreativeInventoryStacks)

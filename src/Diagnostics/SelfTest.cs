@@ -499,7 +499,10 @@ namespace VintageE
             // Everything that is nothing without its data, listed so the CI output shows them (cuttings, clutter, tapestries...).
             var needy = sapi.World.Collectibles.Where(c => c?.Code != null && CollectibleIndex.IsListed(c) && StackDataUtil.NeedsData(c, sapi.World)).ToList();
             var needyNotMaterial = needy.Where(c => mod.Emc.StackData.KindOf(c) != StackDataKind.Material).ToList();
-            Check(needy.Any(c => c.Code.Path == "fruittree-cutting") && needyNotMaterial.Count == 0,
+            CollectibleObject cutting = C("game:fruittree-cutting");
+            Check(cutting != null && StackDataUtil.NeedsData(cutting, sapi.World) && needyNotMaterial.Count == 0,
+                "fruit tree cutting: " + (cutting == null ? "not found" : cutting.GetType().Name + (CollectibleIndex.IsListed(cutting) ? ", listed" : ", not in the creative inventory") + ", kind " + mod.Emc.StackData.KindOf(cutting)) + "; needs its type");
+            Check(needyNotMaterial.Count == 0,
                 "typed-only blocks: " + needy.Count + " need their data (" + string.Join(", ", needy.Take(12).Select(c => c.Code.ToShortString())) + (needy.Count > 12 ? ", …" : "") + "); "
                 + (needyNotMaterial.Count == 0 ? "all kept as material kinds" : needyNotMaterial.Count + " not material: " + string.Join(", ", needyNotMaterial.Take(8).Select(c => c.Code.ToShortString()))));
             // A tapestry pattern no trader sells is priced like the patterns traders do sell.
