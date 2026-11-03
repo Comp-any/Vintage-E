@@ -125,6 +125,8 @@ namespace VintageE
             string patchError = f[10];
             int rawCalls = 0, early = 0; string skip = "";
             if (f.Length >= 14) { int.TryParse(f[11], out rawCalls); skip = f[12]; int.TryParse(f[13], out early); }
+            string[] trail = f.Length >= 15 && f[14].Length > 0 ? f[14].Split(';') : Array.Empty<string>();
+            void Trail() { if (trail.Length > 0) { x.Note(x.L("diag-look-trail")); foreach (string t in trail) x.Note("  " + t); } }
             string serverSetting = x.Mod.Config.Look;
             if (patched < 3 || patchError.Length > 0)
             {
@@ -139,12 +141,14 @@ namespace VintageE
                 x.Explain(rawCalls == 0 ? x.L("diag-look-nocalls-why") : x.L("diag-look-skipped-why", rawCalls, skip));
                 x.Note(x.L("diag-look-early", early));
                 x.Fix(x.L("diag-look-nocalls-fix"));
+                Trail();
                 return;
             }
             if (hooked == 0)
             {
                 x.Warn(x.L("diag-look-nothingours", calls));
                 x.Explain(x.L("diag-look-nothingours-why"));
+                Trail();
                 return;
             }
             string from = setting == "Server" ? x.L("diag-look-from-server", serverDefault, serverSetting) : x.L("diag-look-from-setting", setting);
@@ -155,6 +159,7 @@ namespace VintageE
                 x.Ok(x.L("diag-look-ok", active, models, textures, from));
                 x.Note(x.L("diag-look-how", calls, early));
                 if (missing > 0) x.Note(x.L("diag-look-missing", missing));
+                Trail();
             }
         }
 

@@ -137,6 +137,7 @@ namespace VintageE
                 var types = (api.World?.EntityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
                 Mod.Logger.Notification("Look: at AssetsLoaded the game already holds {0} of this mod's blocks, {1} items and {2} entity types; applying the look to them now (the shape-loader hook covers what arrives later).", blocks.Count, items.Count, types.Count);
                 LookAppliedEarly = blocks.Count + items.Count;
+                LookEvent("early pass: {0} blocks, {1} items, {2} entity types held by the game", blocks.Count, items.Count, types.Count);
                 if (blocks.Count > 0) ApplyClientLookTo("blocks (early)", blocks, new List<EntityProperties>());
                 if (items.Count > 0) ApplyClientLookTo("items (early)", items, new List<EntityProperties>());
                 if (types.Count > 0) ApplyClientLookTo("entities (early)", Array.Empty<CollectibleObject>(), types);
@@ -233,6 +234,12 @@ namespace VintageE
                     LookResult.Collectibles += r.Collectibles;
                     LookResult.Entities += r.Entities;
                 }
+                // The look gives each block and item new texture entries. While the world loads, the game collects them
+                // into its atlases right after this (that's why the hook sits on the shape loaders). After that, nothing
+                // does, so a later pass (a look switch, a shape reload) has to put them into the atlases itself, or the
+                // block is drawn invisible with an "Unable to initialize TextureSource" error.
+                int baked = atlasesReady ? BakeLookTextures(mine2) : 0;
+                LookEvent("{0}: {1} of ours, {2} models, {3} textures{4}", kind, mine2.Count, r.Models, r.Textures, atlasesReady ? ", " + baked + " baked into the atlases" : "");
             }
             catch (Exception e)
             {
@@ -316,39 +323,58 @@ namespace VintageE
         /// the look worked out at join, and has the game load its shapes again (the same path as at join, through the
         /// look hook), so the new look shows at once instead of after a rejoin. Entities keep their look until a rejoin.
         /// </summary>
-        public void ChangeLookNow()
+        public void ChangeLookNow(string why)
         {
             if (Capi == null) return;
             try
             {
+                LookEvent("switch ({0})", why);
                 RestoreLookOriginals();
                 lock (clientLookLock) { clientLook = null; LookResult = null; }
                 ProjectELook.DisposeMeshes();
-                // Apply the look now to everything the game holds, then put every texture the look uses into the
-                // atlases: the game only collects textures when a world loads, and a reload of the shapes alone would
-                // leave a block pointing at a texture the atlas never saw (invisible, with an error per block).
-                var blocks = (Capi.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
-                var items = (Capi.World?.Items ?? new List<Item>()).Where(i => i?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
-                ApplyClientLookTo("blocks (switch)", blocks, new List<EntityProperties>());
-                ApplyClientLookTo("items (switch)", items, new List<EntityProperties>());
-                int baked = 0;
-                foreach (CollectibleObject c in blocks.Concat(items))
-                {
-                    var textures = c is Block b ? b.Textures : (c as Item)?.Textures;
-                    if (textures == null) continue;
-                    ITextureAtlasAPI atlas = c is Block ? Capi.BlockTextureAtlas : Capi.ItemTextureAtlas;
-                    foreach (CompositeTexture ct in textures.Values)
+                // The game loads the shapes again, which runs the look hook: it applies the look and, now that the
+                // atlases exist, bakes the look's textures into them (ApplyClientLookTo). Applying here as well would
+                // be undone by the hook, which always builds fresh texture entries.
+                Mod.Logger.Notification("Look: switching ({0}); reloading shapes.", why);
+                Capi.TriggerChatMessage(".reload shapes");
+            }
+            catch (Exception e) { Mod.Logger.Error("Could not switch the look: {0}", e); }
+        }
+
+        /// <summary>True once the world is in: the game's texture atlases exist, so textures a look adds later can be baked into them.</summary>
+        bool atlasesReady;
+
+        /// <summary>Puts every texture these blocks and items now use into the game's atlases (RuntimeBake), including inventory textures. Returns how many.</summary>
+        int BakeLookTextures(IEnumerable<CollectibleObject> collectibles)
+        {
+            int baked = 0;
+            foreach (CollectibleObject c in collectibles)
+            {
+                if (c == null) continue;
+                ITextureAtlasAPI atlas = c is Block ? Capi.BlockTextureAtlas : Capi.ItemTextureAtlas;
+                var sets = new List<Dictionary<string, CompositeTexture>>();
+                if (c is Block b) { if (b.Textures != null) sets.Add(b.Textures); if (b.TexturesInventory != null) sets.Add(b.TexturesInventory); }
+                else if (c is Item it && it.Textures != null) sets.Add(it.Textures);
+                foreach (var set in sets)
+                    foreach (CompositeTexture ct in set.Values)
                     {
                         if (ct?.Base == null) continue;
                         try { ct.RuntimeBake(Capi, atlas); baked++; }
                         catch (Exception e) { Mod.Logger.Warning("Look: could not add {0} to the atlas: {1}", ct.Base, e.Message); }
                     }
-                    if (c is Block bb) bb.TexturesInventory = null;
-                }
-                Mod.Logger.Notification("Look: switching; {0} textures added to the atlases, now reloading shapes.", baked);
-                Capi.TriggerChatMessage(".reload shapes");
             }
-            catch (Exception e) { Mod.Logger.Error("Could not switch the look: {0}", e); }
+            return baked;
+        }
+
+        /// <summary>What happened to the look on this computer, in order (the doctor shows it): the early pass, each hook call, any switch.</summary>
+        public readonly List<string> LookTrail = new List<string>();
+
+        string LookTrailText() { lock (LookTrail) return string.Join(";", LookTrail); }
+
+        void LookEvent(string format, params object[] args)
+        {
+            string line = DateTime.Now.ToString("HH:mm:ss") + " " + string.Format(format, args).Replace('|', '/').Replace(';', ',');
+            lock (LookTrail) { if (LookTrail.Count >= 24) LookTrail.RemoveAt(0); LookTrail.Add(line); }
         }
 
         /// <summary>What the look changed at start-up on this player's computer (null for the Middle look).</summary>
@@ -1808,6 +1834,7 @@ namespace VintageE
             // could see them), load the shapes once more; that pass goes through the hook.
             capi.Event.LevelFinalize += () =>
             {
+                atlasesReady = true;
                 try
                 {
                     string look = clientLook ?? (ClientConfig?.Look == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(capi.World?.Config?.GetString(WorldLookKey, null) ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(ClientConfig?.Look));
@@ -1817,8 +1844,9 @@ namespace VintageE
                     {
                         lookReloadTried = true;
                         Mod.Logger.Notification("Look: {0} was picked but nothing was applied while loading (hook calls: {1}); reloading shapes once to apply it.", look, ClientLookPatches.RawCalls);
-                        ChangeLookNow();
+                        ChangeLookNow("nothing applied while loading, hook calls: " + ClientLookPatches.RawCalls);
                     }
+                    else LookEvent("after join: {0}, {1} models and {2} textures applied, no reload needed", look, LookResult?.Models ?? 0, LookResult?.Textures ?? 0);
                 }
                 catch (Exception e) { Mod.Logger.Warning("Look: the after-join check failed: {0}", e.Message); }
             };
@@ -1978,7 +2006,7 @@ namespace VintageE
             ClientConfig?.Save(Capi);
             watchHud?.Update(true);
             string look = ClientConfig?.Look;
-            if (look != null && lastLookSetting != null && look != lastLookSetting) ChangeLookNow();
+            if (look != null && lastLookSetting != null && look != lastLookSetting) ChangeLookNow("setting changed from " + lastLookSetting + " to " + look);
             lastLookSetting = look;
         }
 
@@ -2138,7 +2166,8 @@ namespace VintageE
                     LookPrefixCalls.ToString(), LookPrefixCollectibles.ToString(),
                     (LookResult?.Models ?? 0).ToString(), (LookResult?.Textures ?? 0).ToString(), (LookResult?.Collectibles ?? 0).ToString(), (LookResult?.MissingShapes?.Count ?? 0).ToString(),
                     ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? "",
-                    ClientLookPatches.RawCalls.ToString(), ClientLookPatches.LastSkipReason ?? "", LookAppliedEarly.ToString()
+                    ClientLookPatches.RawCalls.ToString(), ClientLookPatches.LastSkipReason ?? "", LookAppliedEarly.ToString(),
+                    LookTrailText()
                 });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
                 lock (CollectibleBehaviorEmcTooltip.Failures)

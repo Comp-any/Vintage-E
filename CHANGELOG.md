@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.10 — 2026-11-03
+
+### Fixed
+- **Looks: a shape reload after join no longer makes the New-look blocks invisible.** 1.17.9 baked the look's textures into the atlases before the reload, but the reload runs the look hook again, which builds fresh texture entries, and those were the ones the atlas had never seen. The hook now bakes its own textures whenever the world is already in, so a look switch, the after-join safety reload and `.reload shapes` all leave every block drawn.
+
+### Changed
+- **Doctor: "Your look" lists what happened to the look on this computer, in order** (the early pass, each hook call with what it applied and baked, any switch and why). The client-log check also keeps the mod's own "Look:" progress lines, not just errors and warnings.
+
 ## 1.17.9 — 2026-11-03
 
 ### Fixed

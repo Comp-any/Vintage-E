@@ -248,7 +248,8 @@ namespace VintageE
                 while ((line = reader.ReadLine()) != null)
                 {
                     bool ours = line.IndexOf("vintagee", StringComparison.OrdinalIgnoreCase) >= 0 || line.IndexOf("Vintage-E", StringComparison.OrdinalIgnoreCase) >= 0 || line.IndexOf("VintageE", StringComparison.Ordinal) >= 0;
-                    if (ours && LogLevel.IsMatch(line)) all.Add(line.Length > 400 ? line.Substring(0, 400) : line);
+                    // Errors and warnings, plus the look's own progress lines ("Look: …"): they tell the doctor what the look did.
+                    if (ours && (LogLevel.IsMatch(line) || line.Contains("Look: "))) all.Add(line.Length > 400 ? line.Substring(0, 400) : line);
                 }
                 return all.Skip(Math.Max(0, all.Count - max)).ToArray();
             }
