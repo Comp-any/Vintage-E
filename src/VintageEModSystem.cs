@@ -352,7 +352,7 @@ namespace VintageE
             {
                 if (c == null) continue;
                 ITextureAtlasAPI atlas = c is Block ? Capi.BlockTextureAtlas : Capi.ItemTextureAtlas;
-                var sets = new List<Dictionary<string, CompositeTexture>>();
+                var sets = new List<IDictionary<string, CompositeTexture>>();
                 if (c is Block b) { if (b.Textures != null) sets.Add(b.Textures); if (b.TexturesInventory != null) sets.Add(b.TexturesInventory); }
                 else if (c is Item it && it.Textures != null) sets.Add(it.Textures);
                 foreach (var set in sets)
