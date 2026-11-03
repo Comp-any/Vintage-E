@@ -3,6 +3,8 @@
   "values": {
     "game:rock-*": 1,
     "game:stone-*": 1,
+    "//game:stone-meteorite-iron": "meteorite stones smelt two to one into a meteoric iron ingot (384), so each stone is half an ingot; at the generic 1 the smelting made 382 EMC out of nothing",
+    "game:stone-meteorite-iron": 192,
     "game:soil-*": 1,
     "game:soil-low-*": 2,
     "game:soil-medium-*": 4,
