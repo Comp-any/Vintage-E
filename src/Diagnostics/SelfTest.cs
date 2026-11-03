@@ -486,6 +486,11 @@ namespace VintageE
                     "tapestry: learned as its exact pattern (kind " + mod.Emc.StackData.KindOf(tapestry) + ", key " + (tPlan?.Key ?? err ?? "?").Substring(0, Math.Min(40, (tPlan?.Key ?? err ?? "?").Length)) + ")");
             }
 
+            // The everlasting glue: exists, and a use costs what a litre of pitch glue is worth.
+            CollectibleObject glue = C("vintagee:gadget-eternalglue");
+            double glueCost = ItemEmcGadget.GlueCost(mod);
+            Check(glue != null && glueCost > 0 && glueCost < 1000, "everlasting glue: exists, a use costs " + EmcFormat.Format(glueCost) + " EMC");
+
             // Loops and reasons.
             Line($"  value loops: {report.Loops.Count}, settled loops: {report.SettledLoops.Count}");
             foreach (var loop in report.Loops.Take(5)) Line("    " + MissingAnalysis.LoopText(loop));

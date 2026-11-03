@@ -2177,5 +2177,29 @@
       "code": "vintagee:redmatterpedestal-empty"
     },
     "name": "vintagee:redmatterpedestal"
+  },
+  {
+    "ingredientPattern": "RDR,DAD,RDR",
+    "ingredients": {
+      "R": {
+        "type": "item",
+        "code": "game:resin"
+      },
+      "D": {
+        "type": "item",
+        "code": "vintagee:covalencedust-medium"
+      },
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-alchemicalcoal"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:gadget-eternalglue"
+    },
+    "name": "vintagee:eternalglue"
   }
 ]

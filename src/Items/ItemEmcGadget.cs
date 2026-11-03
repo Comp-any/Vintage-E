@@ -7,6 +7,7 @@ using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 
 namespace VintageE
 {
@@ -133,6 +134,9 @@ namespace VintageE
                 case "archangelssmite":
                     FireArrows(mod, player, 1, 0);
                     break;
+                case "eternalglue":
+                    if (blockSel != null) Glue(mod, player, blockSel);
+                    break;
                 case "tomeofknowledge":
                     // Creative only: learning everything at once is a creative tool. And only what's in the creative
                     // inventory, so technical blocks (and things that are only placed states) don't flood the table.
@@ -154,6 +158,48 @@ namespace VintageE
                     }
                     break;
             }
+        }
+
+        /// <summary>One portion of pitch glue's worth of repair on a clutter block: the game's own repair step, paid in EMC.</summary>
+        const float GlueRepairGain = 0.2f; // the game's repairGain of a glue portion
+
+        /// <summary>What one use costs: a litre of pitch glue at this server's value (32 EMC by default).</summary>
+        public static double GlueCost(VintageEModSystem mod)
+        {
+            CollectibleObject glue = mod.Sapi?.World.GetItem(new AssetLocation("game:glueportion-pitch-cold")) ?? mod.Sapi?.World.GetItem(new AssetLocation("game:glueportion-pitch-hot"));
+            if (glue == null) return 32;
+            double each = mod.Emc.GetValue(glue);
+            double perLitre = EmcRegistry.ItemsPerLitre(glue);
+            return each > 0 ? each * (perLitre > 0 ? perLitre : 100) : 32;
+        }
+
+        void Glue(VintageEModSystem mod, IServerPlayer player, BlockSelection blockSel)
+        {
+            IWorldAccessor world = player.Entity.World;
+            string lang = player.LanguageCode;
+            Block block = world.BlockAccessor.GetBlock(blockSel.Position);
+            if (block == null || !block.HasBehavior<BlockBehaviorReparable>()) { Tell(player, Lang.GetL(lang, "vintagee:glue-notclutter")); return; }
+            if (!world.Claims.TryAccess(player, blockSel.Position, EnumBlockAccessFlags.BuildOrBreak)) return;
+            var bec = block.GetBEBehavior<BEBehaviorShapeFromAttributes>(blockSel.Position);
+            if (bec == null) { Tell(player, Lang.GetL(lang, "vintagee:glue-notclutter")); return; }
+            if (bec.Collected || bec.repairState >= 1f) { Tell(player, Lang.GetL(lang, "vintagee:glue-repaired-already")); return; }
+            if (bec.reparability <= 1) { Tell(player, Lang.GetL(lang, "vintagee:glue-cannot")); return; }
+            // The game's "clutterObtainable" setting decides whether repairing means anything.
+            string rule = world.Config.GetString("clutterObtainable", "ifrepaired").ToLowerInvariant();
+            if (rule == "yes" || rule == "no") { Tell(player, Lang.GetL(lang, rule == "yes" ? "vintagee:glue-alwaysobtain" : "vintagee:glue-neverobtain")); return; }
+
+            double cost = GlueCost(mod) * mod.Config.TrinketCostMultiplier;
+            if (player.WorldData.CurrentGameMode != EnumGameMode.Creative && !EmcWallet.TryPay(player, cost))
+            {
+                Tell(player, Lang.GetL(lang, "vintagee:glue-noemc", EmcFormat.Format(cost)));
+                return;
+            }
+            // The same step the game takes for one portion of glue.
+            bec.repairState = Math.Min(1f, bec.repairState + GlueRepairGain * 5f / (bec.reparability - 1));
+            bec.Blockentity.MarkDirty(true);
+            world.PlaySoundAt(new AssetLocation("game:sounds/player/gluerepair"), blockSel.Position, 0, player, true, 8f);
+            int pct = GameMath.Clamp((int)(bec.repairState * 100.001f), 0, 100);
+            Tell(player, Lang.GetL(lang, "vintagee:glue-repaired", Lang.GetMatchingL(lang, bec.GetFullCode()), pct, EmcFormat.Format(cost)));
         }
 
         public static void Tell(IServerPlayer player, string msg) => player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.Notification);

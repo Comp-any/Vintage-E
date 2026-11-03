@@ -1694,5 +1694,17 @@
   "gui-known": "Known: {0}",
   "number-million": "million",
   "number-billion": "billion",
-  "number-trillion": "trillion"
+  "number-trillion": "trillion",
+  "item-gadget-eternalglue": "Everlasting Pitch Glue",
+  "itemdesc-gadget-eternalglue": "Right-click a repairable clutter block to repair it one glue portion's worth (a 6-resin item takes 5 uses), paying what a litre of pitch glue is worth in EMC (32 by default) instead of glue. Never runs out.",
+  "heldhelp-gadget-eternalglue": "Repair clutter",
+  "vintagee:item-handbooktitle-vintagee:gadget-eternalglue": "How it works",
+  "vintagee:item-handbooktext-vintagee:gadget-eternalglue": "Right-click a repairable clutter block (ruined furniture, banners, chest rubble...) to repair it by the same step one portion of pitch glue would: 5 uses for an item that needs 6 resin. Each use costs what a litre of pitch glue is worth on this server (32 EMC by default, taken from your EMC or your Klein stars) instead of glue. Never runs out.\\nOnly works where the world's clutter setting is 'repairable' (the default). Made from resin, covalence dust and alchemical coal.",
+  "glue-notclutter": "That isn't a repairable block.",
+  "glue-repaired-already": "That is already fully repaired.",
+  "glue-cannot": "That can't be repaired; it will shatter when broken.",
+  "glue-alwaysobtain": "This world's clutter can always be picked up; nothing to repair.",
+  "glue-neverobtain": "This world's clutter can never be picked up, so repairing does nothing.",
+  "glue-noemc": "Not enough EMC: one use costs {0}.",
+  "glue-repaired": "{0} repaired to {1}% for {2} EMC."
 }
