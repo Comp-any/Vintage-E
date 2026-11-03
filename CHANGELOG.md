@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.11 — 2026-11-03
+
+### Fixed
+- **Looks: no more needless shape reload after join, and the textures it adds really reach the atlases.** The after-join check ran at LevelFinalize, which can fire while the game's shape loaders are still running on their own threads: it saw nothing applied yet and ordered a reload that the hook was about to make unnecessary (that reload is what left the torch and a few blocks invisible). The check now runs once the game has finished loading shapes and textures. Baking into the atlases now goes the way the game does it (with the textures/ folder and .png), where `RuntimeBake` failed for every texture with "could not be found".
+
 ## 1.17.10 — 2026-11-03
 
 ### Fixed

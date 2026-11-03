@@ -344,7 +344,11 @@ namespace VintageE
         /// <summary>True once the world is in: the game's texture atlases exist, so textures a look adds later can be baked into them.</summary>
         bool atlasesReady;
 
-        /// <summary>Puts every texture these blocks and items now use into the game's atlases (RuntimeBake), including inventory textures. Returns how many.</summary>
+        /// <summary>
+        /// Puts every texture these blocks and items now use into the game's atlases, including inventory textures and
+        /// alternates, the way the game does when a world loads. Returns how many. (CompositeTexture.RuntimeBake can't
+        /// be used: it looks the file up by its bare name, without textures/ and .png, and fails for every texture.)
+        /// </summary>
         int BakeLookTextures(IEnumerable<CollectibleObject> collectibles)
         {
             int baked = 0;
@@ -359,11 +363,25 @@ namespace VintageE
                     foreach (CompositeTexture ct in set.Values)
                     {
                         if (ct?.Base == null) continue;
-                        try { ct.RuntimeBake(Capi, atlas); baked++; }
+                        try
+                        {
+                            ct.Bake(Capi.Assets);
+                            if (BakeOne(atlas, ct.Baked)) baked++;
+                            if (ct.Baked?.BakedVariants != null) foreach (BakedCompositeTexture v in ct.Baked.BakedVariants) if (BakeOne(atlas, v)) baked++;
+                        }
                         catch (Exception e) { Mod.Logger.Warning("Look: could not add {0} to the atlas: {1}", ct.Base, e.Message); }
                     }
             }
             return baked;
+        }
+
+        static bool BakeOne(ITextureAtlasAPI atlas, BakedCompositeTexture btex)
+        {
+            if (btex?.BakedName == null) return false;
+            AssetLocation file = btex.BakedName.Clone().WithPathPrefixOnce("textures/").WithPathAppendixOnce(".png");
+            if (!atlas.GetOrInsertTexture(file, out int subId, out _)) return false;
+            btex.TextureSubId = subId;
+            return true;
         }
 
         /// <summary>What happened to the look on this computer, in order (the doctor shows it): the early pass, each hook call, any switch.</summary>
@@ -1830,9 +1848,12 @@ namespace VintageE
             ClientLookPatches.Mod = this;
             ClientLookPatches.Capi = capi;
             ClientLookPatches.Patch(Mod.Logger);
-            // Safety net: once the world is in, if the picked look never got applied (the loaders ran before the hook
-            // could see them), load the shapes once more; that pass goes through the hook.
-            capi.Event.LevelFinalize += () =>
+            // Safety net, run once the game has finished loading shapes and textures (BlockTexturesLoaded: all three
+            // atlases are done). LevelFinalize is too early for this: it can fire while the shape loaders are still
+            // running on their own threads, so it saw "nothing applied" and ordered a reload the hook was about to make
+            // unnecessary. If the picked look still never got applied by now, load the shapes once more; that pass goes
+            // through the hook, which bakes its textures now that the atlases exist.
+            capi.Event.BlockTexturesLoaded += () =>
             {
                 atlasesReady = true;
                 try
@@ -1846,9 +1867,9 @@ namespace VintageE
                         Mod.Logger.Notification("Look: {0} was picked but nothing was applied while loading (hook calls: {1}); reloading shapes once to apply it.", look, ClientLookPatches.RawCalls);
                         ChangeLookNow("nothing applied while loading, hook calls: " + ClientLookPatches.RawCalls);
                     }
-                    else LookEvent("after join: {0}, {1} models and {2} textures applied, no reload needed", look, LookResult?.Models ?? 0, LookResult?.Textures ?? 0);
+                    else LookEvent("textures loaded: {0}, {1} models and {2} textures applied{3}", look, LookResult?.Models ?? 0, LookResult?.Textures ?? 0, wanted ? ", no reload needed" : "");
                 }
-                catch (Exception e) { Mod.Logger.Warning("Look: the after-join check failed: {0}", e.Message); }
+                catch (Exception e) { Mod.Logger.Warning("Look: the after-load check failed: {0}", e.Message); }
             };
             clientChannel = capi.Network.GetChannel(ChannelName);
             clientChannel.SetMessageHandler<EmcTablePacket>(OnEmcTableReceived);
