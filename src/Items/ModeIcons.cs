@@ -13,6 +13,14 @@ namespace VintageE
             CairoFont font = CairoFont.WhiteMediumText().WithColor(new double[] { 1, 1, 1, alpha });
             font.SetupContext(ctx);
             TextExtents size = font.GetTextExtents(letter);
+            // A label wider than the icon ("F+S", "1.5x") is shrunk to fit instead of being cut off at the edges.
+            double room = w * 0.92;
+            if (size.Width > room && size.Width > 0)
+            {
+                font.UnscaledFontsize *= room / size.Width;
+                font.SetupContext(ctx);
+                size = font.GetTextExtents(letter);
+            }
             double asc = font.GetFontExtents().Ascent;
             capi.Gui.Text.DrawTextLine(ctx, font, letter, x + (w - size.Width) / 2, y + (h - asc) / 2);
             if (on || faded) return;

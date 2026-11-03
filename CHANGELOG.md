@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.4 — 2026-11-03
+
+### Fixed
+- **Table and tablet window:** learning and burning show up at once. The server's answer now carries what was learned and the new balance, and the window applies it straight away instead of waiting for the player's data to sync back (which could take seconds).
+- **Ring tool modes:** labels wider than the icon ("F+S", "1.5x") are shrunk to fit instead of being cut off.
+
 ## 1.17.3 — 2026-11-03
 
 ### Fixed

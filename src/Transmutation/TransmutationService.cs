@@ -156,22 +156,32 @@ namespace VintageE
         /// taken. Learning by burning gives back the item's full value in EMC, so keeping it instead costs nothing either way.
         /// Returns an error code (null when it worked); <paramref name="isNew"/> is false if it was already known.
         /// </summary>
-        public string Learn(IServerPlayer player, ItemStack stack, out bool isNew, out string[] args)
+        public string Learn(IServerPlayer player, ItemStack stack, out bool isNew, out string[] args) => Learn(player, stack, out isNew, out args, out _);
+
+        public string Learn(IServerPlayer player, ItemStack stack, out bool isNew, out string[] args, out string[] learnedKeys)
         {
             isNew = false;
+            learnedKeys = Array.Empty<string>();
             string error = PlanBurn(player, stack, out BurnPlan plan, out args, learnOnly: true);
             if (error != null) return error;
-            isNew = PlayerEmc.Learn(player, plan.Key);
-            if (plan.AlsoPlain) isNew |= PlayerEmc.Learn(player, PlayerEmc.KeyOf(stack.Collectible));
+            var keys = new List<string>();
+            if (PlayerEmc.Learn(player, plan.Key)) keys.Add(plan.Key);
+            if (plan.AlsoPlain && PlayerEmc.Learn(player, PlayerEmc.KeyOf(stack.Collectible))) keys.Add(PlayerEmc.KeyOf(stack.Collectible));
+            isNew = keys.Count > 0;
+            learnedKeys = keys.ToArray();
             args = new[] { stack.GetName() };
             return null;
         }
+
+        /// <summary>A result that also carries the player's balance, so the window updates at once.</summary>
+        TransmuteResultPacket Result(IServerPlayer player, string learnedKey, params string[] learnedKeys)
+            => new TransmuteResultPacket { LearnedKey = learnedKey, LearnedKeys = learnedKeys, Emc = PlayerEmc.GetEmc(player), HasEmc = true };
 
         void LearnHeld(IServerPlayer player)
         {
             ItemSlot mouse = player.InventoryManager.MouseItemSlot;
             if (mouse?.Itemstack == null) return;
-            string error = Learn(player, mouse.Itemstack, out bool isNew, out string[] args);
+            string error = Learn(player, mouse.Itemstack, out bool isNew, out string[] args, out string[] learnedKeys);
             if (error != null)
             {
                 Fail(player, error, args);
@@ -183,7 +193,7 @@ namespace VintageE
                 return;
             }
             sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
-            mod.SendResult(player, new TransmuteResultPacket { LearnedKey = PlayerEmc.KeyOf(mouse.Itemstack.Collectible) });
+            mod.SendResult(player, Result(player, PlayerEmc.KeyOf(mouse.Itemstack.Collectible), learnedKeys));
         }
 
         void Burn(IServerPlayer player, bool onlyOne)
@@ -204,7 +214,7 @@ namespace VintageE
 
             string learned = ApplyBurn(player, taken, plan);
             sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
-            mod.SendResult(player, new TransmuteResultPacket { LearnedKey = learned });
+            mod.SendResult(player, Result(player, learned, learned == null ? Array.Empty<string>() : plan.AlsoPlain ? new[] { learned, PlayerEmc.KeyOf(taken.Collectible) } : new[] { learned }));
         }
 
         /// <summary>
@@ -290,7 +300,7 @@ namespace VintageE
             }
 
             PlayerEmc.SetEmc(player, emc - each * amount);
-            mod.SendResult(player, new TransmuteResultPacket());
+            mod.SendResult(player, Result(player, null));
         }
 
         void Fail(IServerPlayer player, string code, params string[] args)

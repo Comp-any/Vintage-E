@@ -210,13 +210,51 @@ namespace VintageE
             // The knowledge array is replaced whenever it changes, so comparing the reference is enough.
             string[] known = PlayerEmc.GetKnown(player);
             if (!ReferenceEquals(known, shownKnown) || shownTableVersion != mod.TableVersion) Refresh(true);
-            else if (Math.Abs(PlayerEmc.GetEmc(player) - shownEmc) > 1e-9) Refresh(false);
+            else if (Math.Abs(EmcNow(player) - shownEmc) > 1e-9) Refresh(false);
             if (IsTablet) RefreshMagnet();
         }
 
         void OnTableUpdated() => capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) Refresh(true); }, "vintagee-refresh");
 
-        public void OnServerResult(TransmuteResultPacket packet) { }
+        /// <summary>
+        /// Keys the server said it learned, and the balance it reported, shown at once: the player's attributes
+        /// take a moment (sometimes seconds) to sync back, and the window shouldn't wait for them.
+        /// </summary>
+        readonly HashSet<string> pendingKnown = new HashSet<string>();
+        double? pendingEmc;
+
+        public void OnServerResult(TransmuteResultPacket packet)
+        {
+            if (packet == null) return;
+            bool rebuild = false;
+            if (packet.LearnedKeys != null)
+            {
+                foreach (string k in packet.LearnedKeys) if (!string.IsNullOrEmpty(k) && pendingKnown.Add(k)) rebuild = true;
+            }
+            if (packet.HasEmc) pendingEmc = packet.Emc;
+            if (rebuild || packet.HasEmc) Refresh(rebuild);
+        }
+
+        /// <summary>The player's knowledge plus what the server just confirmed; pending keys drop out once the real list has them.</summary>
+        string[] KnownNow(IPlayer player)
+        {
+            string[] known = PlayerEmc.GetKnown(player);
+            if (pendingKnown.Count == 0) return known;
+            pendingKnown.ExceptWith(known);
+            if (pendingKnown.Count == 0) return known;
+            var merged = new List<string>(known);
+            merged.AddRange(pendingKnown);
+            return merged.ToArray();
+        }
+
+        double EmcNow(IPlayer player)
+        {
+            double synced = PlayerEmc.GetEmc(player);
+            if (pendingEmc == null) return synced;
+            // Once the synced balance has caught up, the server's number is no longer needed.
+            if (Math.Abs(synced - pendingEmc.Value) < 1e-9) pendingEmc = null;
+            return pendingEmc ?? synced;
+        }
 
         Entry GetEntry(string key)
         {
@@ -243,8 +281,8 @@ namespace VintageE
         {
             if (SingleComposer == null) return;
             IPlayer player = capi.World.Player;
-            double emc = PlayerEmc.GetEmc(player);
-            string[] known = PlayerEmc.GetKnown(player);
+            double emc = EmcNow(player);
+            string[] known = KnownNow(player);
 
             if (rebuildList)
             {
@@ -260,7 +298,7 @@ namespace VintageE
                     list.Add(e);
                 }
                 entries = Sort(list);
-                shownKnown = known;
+                shownKnown = PlayerEmc.GetKnown(player); // the synced array: the tick rebuilds when the server's copy changes
                 shownTableVersion = mod.TableVersion;
             }
 

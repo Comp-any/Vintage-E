@@ -61,6 +61,11 @@ namespace VintageE
         [ProtoMember(1)] public string ErrorCode;
         [ProtoMember(2)] public string[] Args;
         [ProtoMember(3)] public string LearnedKey;
+        /// <summary>The player's EMC after the action, so the window can show it before the entity's attributes sync.</summary>
+        [ProtoMember(4)] public double Emc;
+        [ProtoMember(5)] public bool HasEmc;
+        /// <summary>Every knowledge key this action added (the exact key and, when it applies, the plain one).</summary>
+        [ProtoMember(6)] public string[] LearnedKeys;
     }
 
     /// <summary>Server → client: the blocks/items still without an EMC value, for the /emc missing window. Keys are "i:code" / "b:code".</summary>
