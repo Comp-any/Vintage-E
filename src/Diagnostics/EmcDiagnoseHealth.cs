@@ -265,16 +265,32 @@ namespace VintageE
 
         // ---------------------------------------------------------------- 9: look-only variants worth different amounts
 
-        static List<(string group, string attr, double min, double max, CollectibleObject lo, CollectibleObject hi)> VariantSpreadList(Ctx x)
+        /// <summary>
+        /// Values copied across a look-only variant group whose own-valued members disagree: the copy took one
+        /// member's value, but another member is worth something quite different, so the guess is a coin flip.
+        /// </summary>
+        static List<(CollectibleObject item, CollectibleObject from, string attr, double min, double max, CollectibleObject lo, CollectibleObject hi)> VariantSpreadList(Ctx x)
         {
-            var result = new List<(string, string, double, double, CollectibleObject, CollectibleObject)>();
+            var result = new List<(CollectibleObject, CollectibleObject, string, double, double, CollectibleObject, CollectibleObject)>();
             EmcMappingReport report = x.Report;
             if (report?.Values == null || report.Origins == null) return result;
-            var copy = x.Mod.Rules.CopyAcrossGroups;
-            if (copy == null || copy.Count == 0) return result;
-            // Only values that came from a recipe or processing (not copied or guessed from another variant).
-            bool Own(CollectibleObject c) => report.Origins.TryGetValue(c, out string o) && o != null && !o.StartsWith("same as", StringComparison.Ordinal) && !o.StartsWith("guessed", StringComparison.Ordinal) && !o.StartsWith("copied", StringComparison.Ordinal);
-            foreach (string attr in copy)
+            // The copies: "same as its variant <code> (differs in: <attr>)".
+            var copies = new List<(CollectibleObject item, string from, string attr)>();
+            foreach (var kv in report.Origins)
+            {
+                string o = kv.Value;
+                if (o == null || !o.StartsWith("same as its variant ", StringComparison.Ordinal)) continue;
+                int paren = o.IndexOf(" (differs in: ", StringComparison.Ordinal);
+                if (paren < 0) continue;
+                string from = o.Substring("same as its variant ".Length, paren - "same as its variant ".Length);
+                string attr = o.Substring(paren + " (differs in: ".Length).TrimEnd(')');
+                copies.Add((kv.Key, from, attr));
+            }
+            if (copies.Count == 0) return result;
+            bool Own(CollectibleObject c) => report.Origins.TryGetValue(c, out string o) && o != null && !o.StartsWith("same as", StringComparison.Ordinal) && !o.StartsWith("guessed", StringComparison.Ordinal);
+            // Own-valued members by signature, per attribute that was copied across.
+            var byAttr = new Dictionary<string, Dictionary<string, List<CollectibleObject>>>();
+            foreach (string attr in copies.Select(c => c.attr).Distinct())
             {
                 var groups = new Dictionary<string, List<CollectibleObject>>();
                 foreach (var kv in report.Values)
@@ -285,15 +301,18 @@ namespace VintageE
                     if (!groups.TryGetValue(sig, out var list)) groups[sig] = list = new List<CollectibleObject>();
                     list.Add(c);
                 }
-                foreach (var g in groups.Values)
-                {
-                    if (g.Count < 2) continue;
-                    CollectibleObject lo = g.OrderBy(c => report.Values[c]).First(), hi = g.OrderByDescending(c => report.Values[c]).First();
-                    double min = report.Values[lo], max = report.Values[hi];
-                    if (max > min * 1.5) result.Add((lo.Code.Domain + ":" + lo.FirstCodePart(), attr, min, max, lo, hi));
-                }
+                byAttr[attr] = groups;
             }
-            return result.OrderByDescending(r => r.Item4 / r.Item3).ToList();
+            foreach (var (item, fromCode, attr) in copies)
+            {
+                if (item?.VariantStrict == null || !byAttr.TryGetValue(attr, out var groups) || !groups.TryGetValue(VariantSignature(item, attr), out var members) || members.Count < 2) continue;
+                CollectibleObject lo = members.OrderBy(c => report.Values[c]).First(), hi = members.OrderByDescending(c => report.Values[c]).First();
+                double min = report.Values[lo], max = report.Values[hi];
+                if (max <= min * 1.5) continue;
+                CollectibleObject from = members.FirstOrDefault(c => c.Code.ToString() == fromCode);
+                result.Add((item, from, attr, min, max, lo, hi));
+            }
+            return result.OrderByDescending(r => r.Item5 / r.Item4).ToList();
         }
 
         static string VariantSignature(CollectibleObject c, string wild)
@@ -309,16 +328,15 @@ namespace VintageE
             if (x.Report.FromCache) return;
             var list = VariantSpreadList(x);
             if (list.Count == 0) { x.Ok(x.L("diag-vspread-ok")); return; }
-            // By attribute: one attribute behind many families is the finding ("stage isn't look-only"), not the families.
             var byAttr = list.GroupBy(l => l.attr).OrderByDescending(g => g.Count()).ToList();
-            x.Warn(x.L("diag-vspread-found", list.Count, byAttr.Count, string.Join(", ", byAttr.Take(6).Select(g => g.Key + " (" + g.Count() + ")"))));
+            x.Warn(x.L("diag-vspread-found", list.Count, string.Join(", ", byAttr.Take(6).Select(g => g.Key + " (" + g.Count() + ")"))));
             x.Explain(x.L("diag-vspread-why"));
             foreach (var g in byAttr.Take(full ? 20 : 4))
             {
                 x.R.Add(x.L("diag-vspread-attr", g.Key, g.Count()), EmcLineStyle.Text, 1);
-                foreach (var (group, attr, min, max, lo, hi) in g.Take(full ? 8 : 2))
-                    x.R.Add(group + ": [[" + PlayerEmc.KeyOf(lo) + "]] " + F(min) + " … [[" + PlayerEmc.KeyOf(hi) + "]] " + F(max), EmcLineStyle.Text, 2);
-                if (g.Count() > (full ? 8 : 2)) x.Note(x.L("diag-more", g.Count() - (full ? 8 : 2)), 2);
+                foreach (var (item, from, attr, min, max, lo, hi) in g.Take(full ? 10 : 3))
+                    x.R.Add("[[" + PlayerEmc.KeyOf(item) + "]] " + F(x.Report.Values[item]) + " ← [[" + (from != null ? PlayerEmc.KeyOf(from) : "?") + "]]; " + x.L("diag-vspread-range", "[[" + PlayerEmc.KeyOf(lo) + "]] " + F(min), "[[" + PlayerEmc.KeyOf(hi) + "]] " + F(max)), EmcLineStyle.Text, 2);
+                if (g.Count() > (full ? 10 : 3)) x.Note(x.L("diag-more", g.Count() - (full ? 10 : 3)), 2);
             }
             x.Fix(x.L("diag-vspread-fix"));
         }

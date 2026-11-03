@@ -1667,10 +1667,10 @@
   "diag-traderrecipe-why": "The cheapest real way to get an item is its value, and buying from a trader counts. So a trader price below the recipe is right. These are the other way round: the trader's price won although a recipe makes the item for less, so crafting one and burning it gives EMC for nothing. The mapper read the recipe too late or threw it away (a loop, a processing recipe missing an ingredient, a recipe the collector doesn't fully understand).",
   "diag-traderrecipe-recipe": "the recipe comes to {0}",
   "diag-traderrecipe-fix": "If the recipe's cost looks right, pin the item at it. Include the list in a bug report so the mapper can be taught the recipe.",
-  "diag-vspread-ok": "Variants: items that differ only in look are worth the same.",
-  "diag-vspread-found": "Variants: {0} families where items that differ only in look came out worth different amounts, through {1} attribute(s): {2}.",
-  "diag-vspread-why": "These variant groups are marked look-only (copyAcross), so members should be worth the same, yet each got its own recipe value and they disagree by more than half. An attribute behind many families (growth stage, age) isn't look-only at all: the game gives each stage its own drops, and the group belongs in neverAcross so the guesser never copies across it. A single odd family means one member has an extra recipe.",
-  "diag-vspread-fix": "For an attribute with many families: add it to neverAcross in the value file (variantGuessing). For one family: check the cheapest and dearest member's trace, then pin or report it.",
+  "diag-vspread-ok": "Variants: every value copied from a look-alike variant comes from a family that agrees on it.",
+  "diag-vspread-found": "Variants: {0} value(s) were copied from a look-alike variant in a family that doesn't agree ({1}).",
+  "diag-vspread-why": "When nothing makes an item, the mapper copies the value of a variant that differs only in a look-only attribute (copyAcross). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member it found first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only and belongs in neverAcross.",
+  "diag-vspread-fix": "Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.",
   "diag-hotkeys-ok": "Hotkeys: no other hotkey shares a key with Vintage-E's.",
   "diag-hotkeys-found": "Hotkeys: {0} of Vintage-E's hotkeys share a key with another hotkey.",
   "diag-hotkeys-why": "When two hotkeys of the same kind share a key, the game runs one and the other does nothing, or both run. That's why a key 'does nothing' or opens the wrong thing.",
@@ -1683,5 +1683,6 @@
   "diag-client-versiondiff-major": "The versions differ in a number that changes what travels between client and server, so transmutation, the doctor, the settings windows and the tooltips can fail or show nonsense until both sides match.",
   "diag-client-versiondiff-patch": "They differ only in the last number, which carries fixes but no change to what travels between client and server: everything works, the fixes are just missing on one side.",
   "diag-client-versiondiff-unknown": "Could not tell how far apart the versions are.",
-  "diag-vspread-attr": "{0}: {1} families, e.g."
+  "diag-vspread-attr": "{0}: {1} copied value(s), e.g.",
+  "diag-vspread-range": "the family runs from {0} to {1}"
 }
