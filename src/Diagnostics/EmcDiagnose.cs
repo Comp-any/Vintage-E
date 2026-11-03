@@ -164,7 +164,6 @@ namespace VintageE
                     break;
                 case ActionMapping:
                     Mapping(x, full: true);
-                    Startup(x, false);
                     Client(x, client, true);
                     Log(x, true);
                     Patches(x, true);
@@ -173,7 +172,6 @@ namespace VintageE
                     break;
                 default:
                     Mapping(x, full: false);
-                    Startup(x, false);
                     Client(x, client, true);
                     Log(x, false);
                     Patches(x, false);
@@ -366,6 +364,7 @@ namespace VintageE
             }
 
             problems += ChecksSummary(x);
+            problems += Startup(x, false);
             r.Add(problems == 0 ? x.L("diag-verdict-ok") : x.L("diag-verdict-problems", problems), problems == 0 ? EmcLineStyle.Total : EmcLineStyle.Warn);
             if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);
             return problems;
@@ -376,7 +375,7 @@ namespace VintageE
         {
             if (mod.LastReport == null) return 1;
             var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = "en", R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(sapi.World.Collectibles) };
-            int n = Mapping(x, full: false) + Startup(x, false);
+            int n = Mapping(x, full: false);
             if (mod.ConfigLoadError != null) n++;
             if (mod.LastMappingError != null && mod.LastMappingErrorAt > mod.LastReport.MappedAt) n++;
             return n;

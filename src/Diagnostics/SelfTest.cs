@@ -708,7 +708,7 @@ namespace VintageE
                 ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
                 ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"),
                 ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("short", ""),
-                ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""), ("novalue", ""), ("troubleshoot", ""),
+                ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""), ("novalue", ""), ("troubleshoot", ""), ("startup", ""),
             };
             foreach (var m in report.Missing.Select(c => c.Code.Domain).Distinct().Where(d => d != "game").Take(1)) cases.Add(("draftcompat", m));
             EmcDiagnose.RecordRefusal(null, "novalue", new[] { "test" }, new ItemStack(sapi.World.GetItem(new AssetLocation("game:ingot-copper"))));
@@ -733,6 +733,8 @@ namespace VintageE
                     if (action == "checks") Check(text.Contains("Metal tiers") && text.Contains("Skipped recipes") && text.Contains("Values defined twice"), "diagnose: the deeper checks all ran");
                     if (action == "baseline") Check(text.Contains("fresh install") || text.Contains("Your settings change"), "diagnose: the baseline compared (" + Line1(text, "settings") + ")");
                     if (action == "short") Check(text.Contains("In short"), "diagnose: the short form");
+                    if (action == "startup") Check(text.Contains("Other mods: nothing went wrong") || text.Contains("don't exist") || text.Contains("from other mods") || text.Contains("skipped by the game"),
+                        "diagnose: the start-up of other mods was read from the log (" + Line1(text, "mods") + ")");
                     if (action == "watch" && arg == "") Check(text.Contains("2 refusals") && text.Contains("Copper ingot"), "diagnose: the watch lists the recorded refusals (" + Line1(text, "refusals") + ")");
                     if (action == "draftcompat" && arg == "game") Check(text.Contains("nothing to draft"), "diagnose: no draft for the base game");
                     if (action == "clean") Check(text.Contains("base-game value"), "diagnose: the clean mapping compared base-game values (" + Line1(text, "base-game value") + ")");
