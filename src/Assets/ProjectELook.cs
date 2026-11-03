@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
@@ -201,7 +202,9 @@ namespace VintageE
                     // keep using the old ones), and for items how they're held.
                     result.Models++;
                     result.Swapped[c.Code + "#shape"] = model.Shape.ToString();
-                    var modelTextures = new Dictionary<string, CompositeTexture>(c is Block bl0 ? bl0.Textures ?? new Dictionary<string, CompositeTexture>() : ((Item)c).Textures ?? new Dictionary<string, CompositeTexture>());
+                    // The game casts these back to its own types when it collects textures: blocks need a
+                    // TextureDictionary (and a non-null inventory one), items a Dictionary, entity types a FastSmallDictionary.
+                    IDictionary<string, CompositeTexture> modelTextures = c is Block bl0 ? BlockTextures(bl0.Textures) : new Dictionary<string, CompositeTexture>(((Item)c).Textures ?? new Dictionary<string, CompositeTexture>());
                     foreach (var kv in model.Textures)
                     {
                         if (!Exists(kv.Value)) continue;
@@ -218,7 +221,7 @@ namespace VintageE
                 {
                     // Only count what would change.
                     if (c is Item di && di.Textures != null) Swap(di.Code.ToString(), new Dictionary<string, CompositeTexture>(di.Textures), mine, files, Exists, result);
-                    else if (c is Block db && db.Textures != null) Swap(db.Code.ToString(), new Dictionary<string, CompositeTexture>(db.Textures), mine, files, Exists, result);
+                    else if (c is Block db && db.Textures != null) Swap(db.Code.ToString(), BlockTextures(db.Textures), mine, files, Exists, result);
                     if (result.Textures > before) result.Collectibles++;
                     continue;
                 }
@@ -251,13 +254,13 @@ namespace VintageE
                 {
                     if (block.Textures != null)
                     {
-                        var copy = new Dictionary<string, CompositeTexture>(block.Textures);
+                        var copy = BlockTextures(block.Textures);
                         Swap(block.Code.ToString(), copy, mine, files, Exists, result);
                         block.Textures = copy;
                     }
                     if (block.TexturesInventory != null)
                     {
-                        var copy = new Dictionary<string, CompositeTexture>(block.TexturesInventory);
+                        var copy = BlockTextures(block.TexturesInventory);
                         Swap(block.Code + "#inventory", copy, mine, files, Exists, result);
                         block.TexturesInventory = copy;
                     }
@@ -273,7 +276,7 @@ namespace VintageE
                 int before = result.Textures;
                 if (type.Client.Textures != null)
                 {
-                    var copy = new Dictionary<string, CompositeTexture>(type.Client.Textures);
+                    var copy = new FastSmallDictionary<string, CompositeTexture>(type.Client.Textures);
                     Swap(type.Code.ToString(), copy, mine, files, Exists, result);
                     type.Client.Textures = copy;
                 }
@@ -299,7 +302,15 @@ namespace VintageE
         }
 
         /// <summary>Gives a block or item the New look's model, textures, draw type and (items) transforms.</summary>
-        static void ApplyModel(CollectibleObject c, Override model, Dictionary<string, CompositeTexture> textures, Result result)
+        /// <summary>A copy of a block's textures as the game's own TextureDictionary (what its texture collection casts to).</summary>
+        internal static TextureDictionary BlockTextures(IDictionary<string, CompositeTexture> from)
+        {
+            var d = new TextureDictionary(from?.Count ?? 0);
+            if (from != null) foreach (var kv in from) d[kv.Key] = kv.Value;
+            return d;
+        }
+
+        static void ApplyModel(CollectibleObject c, Override model, IDictionary<string, CompositeTexture> textures, Result result)
         {
             var shape = new CompositeShape { Base = model.Shape };
             if (c is Block block)
@@ -316,7 +327,8 @@ namespace VintageE
                 block.ShapeInventory = null;
                 result.Swapped[c.Code + "#drawtype"] = model.DrawType ?? "";
                 block.Textures = textures;
-                block.TexturesInventory = null;
+                // Never null: the game's texture collection casts and uses it without a check.
+                block.TexturesInventory = BlockTextures(textures);
                 if (model.DrawType != null) SetField(block, "DrawType", model.DrawType, result);
                 if (model.SideOpaque.HasValue) SetSides(block, "SideOpaque", model.SideOpaque.Value, result);
                 if (model.SelectionBox != null)
@@ -328,7 +340,7 @@ namespace VintageE
             else if (c is Item item)
             {
                 item.Shape = shape;
-                item.Textures = textures;
+                item.Textures = textures as Dictionary<string, CompositeTexture> ?? new Dictionary<string, CompositeTexture>(textures);
                 // A dedicated server frees item textures and transforms once they're sent, so note what was set.
                 if (textures.ContainsKey("all")) result.Swapped[c.Code + "#keptall"] = "yes";
                 foreach (var kv in model.Transforms)

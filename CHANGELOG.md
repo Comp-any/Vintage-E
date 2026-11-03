@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.15 — 2026-11-04
+
+### Fixed
+- **Crash at join in 1.17.14 (InvalidCast in EntityTextureAtlasManager.ResolveTextureCodes, NullReference in BlockTextureAtlasManager.ResolveTextureCodes).** With the look now applied during the normal load, the game's texture collection ran over the look's texture tables for the first time, and it casts them to its own types: blocks need a TextureDictionary with a non-null inventory table, entity types a FastSmallDictionary. The look gave both a plain Dictionary (and a null inventory table). It now builds the type each kind expects.
+
 ## 1.17.14 — 2026-11-04
 
 ### Fixed

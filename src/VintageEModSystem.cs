@@ -271,7 +271,7 @@ namespace VintageE
         sealed class LookOriginal
         {
             public CompositeShape Shape, ShapeInventory;
-            public Dictionary<string, CompositeTexture> Textures, TexturesInventory;
+            public IDictionary<string, CompositeTexture> Textures, TexturesInventory;
             public EnumDrawType DrawType;
             public SmallBoolArray SideOpaque;
             public Cuboidf[] SelectionBoxes;
@@ -293,8 +293,8 @@ namespace VintageE
                     if (c is Block b)
                     {
                         o.Shape = b.Shape?.Clone(); o.ShapeInventory = b.ShapeInventory?.Clone();
-                        o.Textures = b.Textures == null ? null : new Dictionary<string, CompositeTexture>(b.Textures);
-                        o.TexturesInventory = b.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(b.TexturesInventory);
+                        o.Textures = b.Textures == null ? null : ProjectELook.BlockTextures(b.Textures);
+                        o.TexturesInventory = b.TexturesInventory == null ? null : ProjectELook.BlockTextures(b.TexturesInventory);
                         o.DrawType = b.DrawType; o.SideOpaque = b.SideOpaque; o.SelectionBoxes = b.SelectionBoxes?.Select(x => x.Clone()).ToArray();
                     }
                     else if (c is Item it)
@@ -318,8 +318,8 @@ namespace VintageE
                     if (c is Block b)
                     {
                         b.Shape = o.Shape?.Clone(); b.ShapeInventory = o.ShapeInventory?.Clone();
-                        b.Textures = o.Textures == null ? null : new Dictionary<string, CompositeTexture>(o.Textures);
-                        b.TexturesInventory = o.TexturesInventory == null ? null : new Dictionary<string, CompositeTexture>(o.TexturesInventory);
+                        b.Textures = o.Textures == null ? null : ProjectELook.BlockTextures(o.Textures);
+                        b.TexturesInventory = o.TexturesInventory == null ? null : ProjectELook.BlockTextures(o.TexturesInventory);
                         b.DrawType = o.DrawType; b.SideOpaque = o.SideOpaque; b.SelectionBoxes = o.SelectionBoxes?.Select(x => x.Clone()).ToArray();
                     }
                     else if (c is Item it)
