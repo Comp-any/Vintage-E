@@ -28,14 +28,21 @@ namespace VintageE
         /// <summary>What went wrong patching, for the doctor (null when all three applied).</summary>
         public static string PatchError;
 
+        /// <summary>The game's own API object, whose assembly is the one running copy of the game's client code.</summary>
+        internal static object Capi;
+
         public static bool Patch(ILogger logger)
         {
             // Checked every time a client starts, not just once: a patch can have been removed since (an earlier
             // instance of this mod unpatching on its way out, say), and the count must say what is really in place.
             try
             {
-                Type manager = AccessTools.TypeByName("Vintagestory.Client.NoObf.ShapeTesselatorManager");
+                // The type from the assembly the game is actually running, not whichever loaded assembly answers to the
+                // name first: a second copy of the game's library (loaded for a mod) has the same type, and a patch on
+                // that copy is "in place" yet never called.
+                Type manager = Capi?.GetType().Assembly.GetType("Vintagestory.Client.NoObf.ShapeTesselatorManager") ?? AccessTools.TypeByName("Vintagestory.Client.NoObf.ShapeTesselatorManager");
                 if (manager == null) { PatchError = "ShapeTesselatorManager not found"; logger.Warning("Look: the game's shape loader wasn't found; using the Middle look."); return false; }
+                logger.Notification("Look: hooking the shape loader in {0} ({1}).", manager.Assembly.FullName, manager.Assembly.Location);
                 var h = harmony ?? new Harmony(HarmonyId);
                 PatchedCount = 0;
                 PatchError = null;

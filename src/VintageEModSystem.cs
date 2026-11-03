@@ -1802,6 +1802,7 @@ namespace VintageE
             Capi = capi;
             // The look is applied as the game loads shapes for what the server sent, which comes after this.
             ClientLookPatches.Mod = this;
+            ClientLookPatches.Capi = capi;
             ClientLookPatches.Patch(Mod.Logger);
             // Safety net: once the world is in, if the picked look never got applied (the loaders ran before the hook
             // could see them), load the shapes once more; that pass goes through the hook.

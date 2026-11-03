@@ -5,6 +5,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.17.9 — 2026-11-03
 
 ### Fixed
+- **Looks: the hook is now put on the game's own copy of its shape loader.** It was looked up by name across every loaded assembly, and when a second copy of the game's library is loaded (for a mod), the hook landed on that copy: present, verified, never called. It is now taken from the assembly of the game's running API, and the client log names the assembly hooked.
 - **Looks: switching after join no longer leaves blocks invisible.** The after-join reload (and a look picked in `.vintagee`) now puts every texture the look uses into the game's texture atlases before reloading shapes; before, blocks using Vintage-E's own New-look textures (furnaces, collectors, condensers, the pedestal, the torch, the table) pointed at textures the atlas had never seen and went invisible, with an error per block in the client log.
 
 ## 1.17.8 — 2026-11-03
