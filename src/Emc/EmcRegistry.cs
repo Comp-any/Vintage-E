@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 
 namespace VintageE
@@ -282,6 +283,15 @@ namespace VintageE
     public static class EmcFormat
     {
         /// <summary>1234567 → "1,234,567"; 1234.567 → "1,234.56"; 12.5 → "12.5"; 0.0312 → "0.031".</summary>
+        /// <summary>A short form for very large numbers (1.23 million, 4.5 billion), for places where the full number won't fit.</summary>
+        public static string Short(double v)
+        {
+            if (v < 1_000_000) return Format(v);
+            if (v < 1_000_000_000) return (Math.Floor(v / 10_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-million");
+            if (v < 1_000_000_000_000) return (Math.Floor(v / 10_000_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-billion");
+            return (Math.Floor(v / 10_000_000_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-trillion");
+        }
+
         public static string Format(double v)
         {
             // Two decimals at most (1,234.56), cut off rather than rounded, so a total never shows more than there is.

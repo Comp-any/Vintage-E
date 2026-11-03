@@ -95,14 +95,16 @@ namespace VintageE
             double leftWidth = width - 2 * slot - 52;
             string burnHint = Lang.Get("vintagee:gui-burn-hint");
             double burnHintHeight = GuiLayout.TextHeight(capi, detail, burnHint, leftWidth);
+            // EMC on its own line, the known count under it: a big balance (billions) no longer runs into the slots.
             ElementBounds emcBounds = ElementBounds.Fixed(0, top + 4, leftWidth, 28);
-            ElementBounds burnHintBounds = ElementBounds.Fixed(0, top + 34, leftWidth, burnHintHeight);
+            ElementBounds knownBounds = ElementBounds.Fixed(0, top + 30, leftWidth, 22);
+            ElementBounds burnHintBounds = ElementBounds.Fixed(0, top + 52, leftWidth, burnHintHeight);
             ElementBounds burnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - slot, top + 8, 1, 1);
             ElementBounds burnLabelBounds = ElementBounds.Fixed(width - slot - 14, top + 10 + slot, slot + 28, 20);
             ElementBounds learnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - 2 * slot - 28, top + 8, 1, 1);
             ElementBounds learnLabelBounds = ElementBounds.Fixed(width - 2 * slot - 42, top + 10 + slot, slot + 28, 20);
 
-            double row = Math.Max(top + 34 + burnHintHeight, top + 32 + slot) + 8;
+            double row = Math.Max(top + 52 + burnHintHeight, top + 32 + slot) + 8;
             ElementBounds searchBounds = ElementBounds.Fixed(0, row, width - 180, 30);
             ElementBounds sortBounds = ElementBounds.Fixed(width - 170, row, 170, 30);
             ElementBounds gridBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, row + 40, Cols, Rows);
@@ -116,7 +118,7 @@ namespace VintageE
             double helpHeight = GuiLayout.TextHeight(capi, detail, help, width);
             ElementBounds helpBounds = ElementBounds.Fixed(0, pageRow + 38, width, helpHeight);
 
-            var children = new List<ElementBounds> { emcBounds, burnHintBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds, helpBounds };
+            var children = new List<ElementBounds> { emcBounds, knownBounds, burnHintBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds, helpBounds };
 
             // The tablet's magnet: a title row with the filter mode, the magnet slot with its hint, then the filter slots.
             ElementBounds magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null;
@@ -153,6 +155,7 @@ namespace VintageE
                 .AddDialogTitleBar(title, () => TryClose())
                 .BeginChildElements(bgBounds)
                     .AddDynamicText("", CairoFont.WhiteSmallishText(), emcBounds, "emc")
+                    .AddDynamicText("", detail, knownBounds, "known")
                     .AddStaticText(burnHint, detail, burnHintBounds)
                     .AddItemSlotGrid(burnInv, OnSlotPacket, 1, burnSlotBounds, "burnslot")
                     .AddStaticText(Lang.Get("vintagee:gui-burn-label"), CairoFont.WhiteDetailText().WithOrientation(EnumTextOrientation.Center), burnLabelBounds)
@@ -271,7 +274,13 @@ namespace VintageE
             }
 
             shownEmc = emc;
-            SingleComposer.GetDynamicText("emc").SetNewText(Lang.Get("vintagee:gui-emc", EmcFormat.Format(emc), known.Length));
+            // The full number while it fits; past that, a short form (1.23 billion) so the header stays readable.
+            CairoFont emcFont = CairoFont.WhiteSmallishText();
+            string emcText = Lang.Get("vintagee:gui-emc", EmcFormat.Format(emc));
+            double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
+            if (emcFont.GetTextExtents(emcText).Width / scale > SingleComposer.GetDynamicText("emc").Bounds.fixedWidth - 4) emcText = Lang.Get("vintagee:gui-emc", EmcFormat.Short(emc));
+            SingleComposer.GetDynamicText("emc").SetNewText(emcText);
+            SingleComposer.GetDynamicText("known").SetNewText(Lang.Get("vintagee:gui-known", known.Length));
             SingleComposer.GetDynamicText("page").SetNewText((page + 1) + " / " + pages);
             if (IsTablet) RefreshMagnet(true);
         }

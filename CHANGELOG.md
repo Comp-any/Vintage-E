@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.3 — 2026-11-03
+
+### Fixed
+- **Table and tablet window:** the EMC balance has its own line, with the known count under it, so a long number no longer runs into the learn and burn slots. Past what fits (billions), it shows a short form (1.23 billion).
+
 ## 1.17.2 — 2026-11-03
 
 ### Fixed
