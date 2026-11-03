@@ -16,6 +16,9 @@ on:
         description: Branch to push the sources to
         default: ""
 
+permissions:
+  contents: write
+
 jobs:
   decompile:
     runs-on: ubuntu-latest
@@ -46,15 +49,15 @@ jobs:
           export PATH="$PATH:$HOME/.dotnet/tools"
           mkdir -p out
           for dll in VSSurvivalMod VSEssentials VintagestoryAPI VintagestoryLib; do
-            f="$VSDIR/$dll.dll"; [ -f "$f" ] || f="$VSDIR/Mods/$dll.dll"; [ -f "$f" ] || continue
-            ilspycmd -l t "$f" 2>/dev/null | grep -E "$TYPES" | sort -u > "types-$dll.txt" || true
-            while read -r t; do
-              [ -z "$t" ] && continue
-              ilspycmd -t "$t" -r "$VSDIR" -r "$VSDIR/Lib" -r "$VSDIR/Mods" "$f" > "out/$dll.$t.cs" 2>/dev/null || echo "failed: $t" >> out/failed.txt
-            done < "types-$dll.txt"
-            cp "types-$dll.txt" out/
+            f=$(find "$VSDIR" -name "$dll.dll" | head -1); [ -n "$f" ] || { echo "no $dll"; continue; }
+            # The whole assembly as a project, then only the files whose name matches.
+            rm -rf proj && mkdir proj
+            ilspycmd -p -o proj -r "$VSDIR" -r "$VSDIR/Lib" -r "$VSDIR/Mods" "$f" > "ilspy-$dll.log" 2>&1 || echo "ilspy exit $? for $dll"
+            find proj -name "*.cs" | grep -E "$TYPES" | while read -r cs; do cp "$cs" "out/$dll.$(basename "$cs")"; done
+            find proj -name "*.cs" | sed "s|^proj/||" > "out/all-types-$dll.txt"
+            tail -5 "ilspy-$dll.log" || true
           done
-          ls out | head -50
+          ls out | head -80
 
       - name: Push to the branch
         run: |
