@@ -31,6 +31,8 @@ namespace VintageE
         public const double FlightCostPerSecond = 6.4, ShieldCostPerSecond = 6.4;
         /// <summary>Swiftwolf's shield: how far it keeps hostile creatures (1.9.2: 8 blocks, was 5) and how often it pushes (every 0.1 s).</summary>
         public const float ShieldRadius = 8;
+        /// <summary>How far the Black Hole Band pulls items from; the Void Ring, the better ring, reaches further.</summary>
+        public const float BandPullRadius = 7, VoidPullRadius = 12;
         const int ShieldTickMs = 100;
         /// <summary>Players whose shield is up and paid for, with their entity: pushed for by <see cref="ShieldTick"/>.</summary>
         readonly Dictionary<string, Entity> shielded = new Dictionary<string, Entity>();
@@ -222,7 +224,7 @@ namespace VintageE
             if (t.Kind == "voidring")
             {
                 yield return "gemofeternaldensity";
-                yield return "blackholeband";
+                yield return "voidpull"; // the band's pull, with the ring's longer reach
                 yield break;
             }
             yield return t.Kind;
@@ -291,7 +293,10 @@ namespace VintageE
                     switch (effect)
                     {
                         case "blackholeband":
-                            Attract(entity.Pos.XYZ.Add(0, 0.5, 0), 7);
+                            Attract(entity.Pos.XYZ.Add(0, 0.5, 0), BandPullRadius);
+                            break;
+                        case "voidpull":
+                            Attract(entity.Pos.XYZ.Add(0, 0.5, 0), VoidPullRadius);
                             break;
                         case "harvestgoddessband":
                             if (Every(uid, effect, 1))

@@ -8,6 +8,10 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 - **Table and tablet window:** learning and burning show up at once. The server's answer now carries what was learned and the new balance, and the window applies it straight away instead of waiting for the player's data to sync back (which could take seconds).
 - **Ring tool modes:** labels wider than the icon ("F+S", "1.5x") are shrunk to fit instead of being cut off.
 
+### Changed
+- **Void Ring reaches further than the Black Hole Band:** it pulls items from 12 blocks (the band from 7), worn and as the tablet's magnet.
+- **Tooltips give the numbers:** every ring, stone, amulet, gadget, tool, Klein star, machine and furnace now says its ranges, costs, speeds and capacities in its tooltip (what the handbook already said), instead of "nearby" and "for EMC".
+
 ## 1.17.3 — 2026-11-03
 
 ### Fixed

@@ -23,7 +23,9 @@ namespace VintageE
         public const string FilterKey = "vintageeMagnetFilter";
         public const string ExcludeKey = "vintageeMagnetExclude";
         public const int FilterSlots = 9;
-        public const float Radius = 7; // the Black Hole Band's range
+        public const float Radius = TrinketEffects.BandPullRadius; // a band in the tablet reaches as far as a worn one
+        /// <summary>The magnet's reach: a Void Ring pulls from further than a Black Hole Band.</summary>
+        public static float RadiusOf(ItemStack magnet) => magnet?.Collectible is ItemEmcTrinket t && t.Kind == "voidring" ? TrinketEffects.VoidPullRadius : TrinketEffects.BandPullRadius;
         /// <summary>Items closer than this are transmuted; further out they're pulled in.</summary>
         public const float TakeRange = 2.5f;
 
@@ -127,7 +129,8 @@ namespace VintageE
                 Vec3d center = player.Entity.Pos.XYZ.Add(0, 0.5, 0);
                 long now = sapi.World.ElapsedMilliseconds;
                 int taken = 0;
-                foreach (Entity e in sapi.World.GetEntitiesAround(center, Radius, Radius, x => x is EntityItem && x.Alive))
+                float radius = RadiusOf(GetMagnet(tablet, sapi.World));
+                foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
                 {
                     var ei = (EntityItem)e;
                     ItemStack stack = ei.Itemstack;
