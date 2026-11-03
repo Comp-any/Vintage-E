@@ -123,6 +123,8 @@ namespace VintageE
             int.TryParse(f[3], out int calls); int.TryParse(f[4], out int hooked); int.TryParse(f[5], out int models); int.TryParse(f[6], out int textures);
             int.TryParse(f[8], out int missing); int.TryParse(f[9], out int patched);
             string patchError = f[10];
+            int rawCalls = 0, early = 0; string skip = "";
+            if (f.Length >= 14) { int.TryParse(f[11], out rawCalls); skip = f[12]; int.TryParse(f[13], out early); }
             string serverSetting = x.Mod.Config.Look;
             if (patched < 3 || patchError.Length > 0)
             {
@@ -131,10 +133,11 @@ namespace VintageE
                 x.Fix(x.L("diag-look-nohook-fix"));
                 return;
             }
-            if (calls == 0)
+            if (calls == 0 && models + textures == 0)
             {
                 x.Warn(x.L("diag-look-nocalls", active));
-                x.Explain(x.L("diag-look-nocalls-why"));
+                x.Explain(rawCalls == 0 ? x.L("diag-look-nocalls-why") : x.L("diag-look-skipped-why", rawCalls, skip));
+                x.Note(x.L("diag-look-early", early));
                 x.Fix(x.L("diag-look-nocalls-fix"));
                 return;
             }
@@ -150,6 +153,7 @@ namespace VintageE
             else
             {
                 x.Ok(x.L("diag-look-ok", active, models, textures, from));
+                x.Note(x.L("diag-look-how", calls, early));
                 if (missing > 0) x.Note(x.L("diag-look-missing", missing));
             }
         }

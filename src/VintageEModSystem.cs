@@ -122,6 +122,31 @@ namespace VintageE
         /// <summary>The world setting that tells players' games the server's default look.</summary>
         public const string WorldLookKey = "vintageeLook";
 
+        /// <summary>
+        /// Client: a second route for the look that doesn't depend on the shape-loader hook. The game runs this right
+        /// before it starts loading shapes; whatever blocks, items and entity types it has received by now get the look
+        /// here, and the hook (if it fires) covers the rest. Applying twice is harmless: the same model, the same textures.
+        /// </summary>
+        public override void AssetsLoaded(ICoreAPI api)
+        {
+            if (api.Side != EnumAppSide.Client || Capi == null) return;
+            try
+            {
+                var blocks = (api.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                var items = (api.World?.Items ?? new List<Item>()).Where(i => i?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                var types = (api.World?.EntityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
+                Mod.Logger.Notification("Look: at AssetsLoaded the game already holds {0} of this mod's blocks, {1} items and {2} entity types; applying the look to them now (the shape-loader hook covers what arrives later).", blocks.Count, items.Count, types.Count);
+                LookAppliedEarly = blocks.Count + items.Count;
+                if (blocks.Count > 0) ApplyClientLookTo("blocks (early)", blocks, new List<EntityProperties>());
+                if (items.Count > 0) ApplyClientLookTo("items (early)", items, new List<EntityProperties>());
+                if (types.Count > 0) ApplyClientLookTo("entities (early)", Array.Empty<CollectibleObject>(), types);
+            }
+            catch (Exception e) { Mod.Logger.Warning("Look: the early pass failed: {0}", e.Message); }
+        }
+
+        /// <summary>Client: how many of this mod's blocks and items the early pass (AssetsLoaded) found.</summary>
+        public int LookAppliedEarly { get; private set; }
+
         public override void AssetsFinalize(ICoreAPI api)
         {
             if (api.Side != EnumAppSide.Server) return;
@@ -2070,7 +2095,8 @@ namespace VintageE
                     ActiveLook ?? "?", ClientConfig?.Look ?? "?", Capi?.World?.Config?.GetString(WorldLookKey, null) ?? "",
                     LookPrefixCalls.ToString(), LookPrefixCollectibles.ToString(),
                     (LookResult?.Models ?? 0).ToString(), (LookResult?.Textures ?? 0).ToString(), (LookResult?.Collectibles ?? 0).ToString(), (LookResult?.MissingShapes?.Count ?? 0).ToString(),
-                    ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? ""
+                    ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? "",
+                    ClientLookPatches.RawCalls.ToString(), ClientLookPatches.LastSkipReason ?? "", LookAppliedEarly.ToString()
                 });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
                 lock (CollectibleBehaviorEmcTooltip.Failures)

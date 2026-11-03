@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.7 — 2026-11-03
+
+### Fixed
+- **Looks: a second route.** The doctor on a real client showed the shape-loader hook was in place but never ran during loading. The look is now also applied in the game's AssetsLoaded step, right before shapes load, to every block, item and entity type the game already holds; the hook covers whatever arrives later. The doctor's "Your look" line now distinguishes "the hook never fired", "the hook fired but turned the call down (and why)", and how much the early pass covered.
+
 ## 1.17.6 — 2026-11-03
 
 ### Fixed

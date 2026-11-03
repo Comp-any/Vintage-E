@@ -1712,7 +1712,7 @@
   "diag-look-nohook-why": "Looks are applied while your game loads shapes, through a hook on the game's shape loader. Without it every block and item keeps the Middle look (Vintage-E's flat textures), whatever is picked.",
   "diag-look-nohook-fix": "A game update renamed the loader. Please post a bug report with your game version; the Middle look works meanwhile.",
   "diag-look-nocalls": "Your look: {0} was picked, but your game's shape loading never went through the hook.",
-  "diag-look-nocalls-why": "The hook is in place but the game loaded its shapes without calling the patched methods, so nothing was applied and everything keeps the Middle look.",
+  "diag-look-nocalls-why": "The hook is in place but the game loaded its shapes without calling the patched methods, and the early pass found nothing either, so nothing was applied and everything keeps the Middle look.",
   "diag-look-nocalls-fix": "Please post a bug report with your game version and client-main.log; this is the thing to fix.",
   "diag-look-nothingours": "Your look: the shape loader ran {0} time(s) but carried none of Vintage-E's blocks or items.",
   "diag-look-nothingours-why": "The hook ran, but the lists it saw held nothing of this mod's, so there was nothing to change. Odd; a bug report with client-main.log would show why.",
@@ -1725,5 +1725,8 @@
   "diag-look-noeffect-why": "The look's map file was missing or unreadable in your game, so nothing was swapped. The client log says which file.",
   "diag-look-noeffect-fix": "Reinstall Vintage-E on this computer (the zip may be damaged), then post the client log lines starting with 'Look' if it stays like this.",
   "diag-look-ok": "Your look: {0}, {1} models and {2} textures applied ({3}).",
-  "diag-look-missing": "{0} model(s) the look names are missing in your game; those blocks keep the Middle look. The client log names them."
+  "diag-look-missing": "{0} model(s) the look names are missing in your game; those blocks keep the Middle look. The client log names them.",
+  "diag-look-skipped-why": "The hook fired {0} time(s) but did nothing each time ({1}). So the game did call the patched methods; the hook turned them down.",
+  "diag-look-early": "The early pass (before shapes load) found {0} of Vintage-E's blocks and items to apply the look to.",
+  "diag-look-how": "Applied through the shape-loader hook {0} time(s); the early pass found {1} blocks and items."
 }

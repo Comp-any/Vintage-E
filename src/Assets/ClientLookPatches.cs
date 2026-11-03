@@ -67,22 +67,35 @@ namespace VintageE
             Mod = null;
         }
 
+        /// <summary>How often each hook fired, and why it did nothing when it did (for the doctor).</summary>
+        public static int RawCalls;
+        public static string LastSkipReason;
+
         /// <summary>Only the player's own game (a dedicated or single-player server has no "game" there).</summary>
-        static bool OnPlayersSide(object instance) => Mod != null && Traverse.Create(instance).Field("game").GetValue() != null;
+        static bool OnPlayersSide(object instance, string which)
+        {
+            RawCalls++;
+            if (Mod == null) { LastSkipReason = which + ": no client mod instance"; return false; }
+            object game = null;
+            try { game = Traverse.Create(instance).Field("game").GetValue(); }
+            catch (Exception e) { LastSkipReason = which + ": " + e.GetType().Name; return false; }
+            if (game == null) { LastSkipReason = which + ": server-side loader"; return false; }
+            return true;
+        }
 
         static void BlocksPrefix(object __instance, IList<Block> blocks)
         {
-            if (OnPlayersSide(__instance)) Mod.ApplyClientLookTo("blocks", blocks?.Cast<CollectibleObject>(), new List<EntityProperties>());
+            if (OnPlayersSide(__instance, "blocks")) Mod.ApplyClientLookTo("blocks", blocks?.Cast<CollectibleObject>(), new List<EntityProperties>());
         }
 
         static void ItemsPrefix(object __instance, IList<Item> items)
         {
-            if (OnPlayersSide(__instance)) Mod.ApplyClientLookTo("items", items?.Cast<CollectibleObject>(), new List<EntityProperties>());
+            if (OnPlayersSide(__instance, "items")) Mod.ApplyClientLookTo("items", items?.Cast<CollectibleObject>(), new List<EntityProperties>());
         }
 
         static void EntitiesPrefix(object __instance, IEnumerable<EntityProperties> entities)
         {
-            if (OnPlayersSide(__instance)) Mod.ApplyClientLookTo("entities", Array.Empty<CollectibleObject>(), entities?.ToList());
+            if (OnPlayersSide(__instance, "entities")) Mod.ApplyClientLookTo("entities", Array.Empty<CollectibleObject>(), entities?.ToList());
         }
     }
 }
