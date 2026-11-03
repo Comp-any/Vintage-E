@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.5 — 2026-11-03
+
+### Fixed
+- **Tapestries (and other blocks whose type lives on the stack):** they were learned as the blank block and created without their pattern. On the server the game hadn't resolved those blocks' creative stacks yet, so Vintage-E didn't see that they carry data; it now resolves them itself, and tapestries are recognised outright. Each pattern is learned and created as itself.
+
 ## 1.17.4 — 2026-11-03
 
 ### Fixed

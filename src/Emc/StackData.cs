@@ -64,7 +64,7 @@ namespace VintageE
             foreach (CollectibleObject c in index.All)
             {
                 StackDataKind? kind;
-                try { kind = StackDataUtil.Detect(c); }
+                try { kind = StackDataUtil.Detect(c, world); }
                 catch { kind = null; }
                 if (kind == null && table.Variants.ContainsKey(c)) kind = StackDataKind.Material;
                 if (kind == null) continue;
@@ -216,7 +216,7 @@ namespace VintageE
         /// Kind detection: chiseled blocks by class; containers by class or bag behaviour; material items when their own
         /// creative inventory lists stacks that differ only by data (that's where the game keeps metal/wood/type for them).
         /// </summary>
-        public static StackDataKind? Detect(CollectibleObject c)
+        public static StackDataKind? Detect(CollectibleObject c, IWorldAccessor world = null)
         {
             if (c == null || c is IEmcStorageItem) return null;
             if (HasClass(c, "BlockMicroBlock") || HasClass(c, "BlockChisel")) return StackDataKind.Chiseled;
@@ -229,14 +229,22 @@ namespace VintageE
             {
                 return StackDataKind.Contents;
             }
-            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer")) return StackDataKind.Material;
+            // Blocks whose kind lives on the stack (tapestries, typed chests, lanterns...): their creative stacks carry the data.
+            if (HasClass(c, "FromAttributes") || HasClass(c, "BlockLantern") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockTapestry")) return StackDataKind.Material;
             if (c.CreativeInventoryStacks != null)
             {
                 foreach (var tab in c.CreativeInventoryStacks)
                 {
                     foreach (JsonItemStack js in tab?.Stacks ?? Array.Empty<JsonItemStack>())
                     {
-                        ItemStack s = js?.ResolvedItemstack;
+                        if (js == null) continue;
+                        ItemStack s = js.ResolvedItemstack;
+                        // On the server the creative stacks aren't always resolved yet; resolve them here, or every
+                        // typed block looks plain and gets learned (and created) without its type.
+                        if (s == null && world != null)
+                        {
+                            try { if (js.Resolve(world, "Vintage-E stack data", false)) s = js.ResolvedItemstack; } catch { s = null; }
+                        }
                         if (s?.Collectible == c && KeptData(s) != null && !StackContents.HasNestedStacks(s)) return StackDataKind.Material;
                     }
                 }

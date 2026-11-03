@@ -475,6 +475,17 @@ namespace VintageE
             Check(TabletMagnet.IsMagnet(new ItemStack(sapi.World.GetItem(new AssetLocation("vintagee:trinket-blackholeband")))) && !TabletMagnet.IsMagnet(new ItemStack(granite)),
                 "magnet: Black Hole Band fits, a rock doesn't");
 
+            // Typed blocks keep their type when learned: a tapestry is learned as exactly its pattern, not as a blank tapestry.
+            CollectibleObject tapestry = C("game:tapestry-north");
+            if (tapestry != null)
+            {
+                var typed = new ItemStack(tapestry);
+                typed.Attributes.SetString("type", "schematic-a");
+                string err = mod.Transmutation.PlanBurn(null, typed, out var tPlan, out _, learnOnly: true);
+                Check(mod.Emc.StackData.KindOf(tapestry) == StackDataKind.Material && err == null && tPlan != null && PlayerEmc.IsExact(tPlan.Key),
+                    "tapestry: learned as its exact pattern (kind " + mod.Emc.StackData.KindOf(tapestry) + ", key " + (tPlan?.Key ?? err ?? "?").Substring(0, Math.Min(40, (tPlan?.Key ?? err ?? "?").Length)) + ")");
+            }
+
             // Loops and reasons.
             Line($"  value loops: {report.Loops.Count}, settled loops: {report.SettledLoops.Count}");
             foreach (var loop in report.Loops.Take(5)) Line("    " + MissingAnalysis.LoopText(loop));
