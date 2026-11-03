@@ -288,9 +288,11 @@ namespace VintageE
                 bool off = hidden.Contains(state);
                 ElementBounds cb = ElementBounds.Fixed(chip.x, top, chip.w, 26);
                 bgBounds.WithChild(cb);
-                double[] colour = off ? new[] { chip.colour[0], chip.colour[1], chip.colour[2], 0.35 } : chip.colour;
-                Canvas(c, cb, (ctx, b) => DrawChip(ctx, b, colour));
-                c.AddStaticText(chip.text, chipFont.Clone().WithColor(colour), ElementBounds.Fixed(chip.x + 11, top + 4, chip.w, 24).WithParent(bgBounds));
+                // Selected (its checks shown): a lighter tint of its colour behind the words; unselected: the plain dark chip.
+                double[] colour = chip.colour;
+                double[] fill = off ? null : new[] { colour[0], colour[1], colour[2], 0.32 };
+                Canvas(c, cb, (ctx, b) => DrawChip(ctx, b, colour, fill));
+                c.AddStaticText(chip.text, chipFont.Clone().WithColor(off ? new[] { colour[0], colour[1], colour[2], 0.75 } : colour), ElementBounds.Fixed(chip.x + 11, top + 4, chip.w, 24).WithParent(bgBounds));
                 // Click a chip to hide or show the checks of that kind.
                 ElementBounds hb = ElementBounds.Fixed(chip.x, top, chip.w, 26);
                 bgBounds.WithChild(hb);
@@ -533,11 +535,11 @@ namespace VintageE
 
         // ------------------------------------------------------------------ drawing
 
-        static void DrawChip(Context ctx, ElementBounds b, double[] colour)
+        static void DrawChip(Context ctx, ElementBounds b, double[] colour, double[] fill = null)
         {
             double r = GuiElement.scaled(4);
             GuiElement.RoundRectangle(ctx, 0, 0, b.OuterWidth, b.OuterHeight, r);
-            ctx.SetSourceRGBA(0, 0, 0, 0.3);
+            if (fill != null) ctx.SetSourceRGBA(fill[0], fill[1], fill[2], fill[3]); else ctx.SetSourceRGBA(0, 0, 0, 0.3);
             ctx.FillPreserve();
             ctx.SetSourceRGBA(colour[0], colour[1], colour[2], 0.7);
             ctx.LineWidth = GuiElement.scaled(1);
