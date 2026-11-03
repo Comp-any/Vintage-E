@@ -75,9 +75,9 @@ namespace VintageE
             long bytes = 0;
             try
             {
-                using var ms = new MemoryStream();
-                ProtoBuf.Serializer.Serialize(ms, mod.Emc.ToPacket());
-                bytes = ms.Length;
+                using var buffer = new MemoryStream();
+                ProtoBuf.Serializer.Serialize(buffer, mod.Emc.ToPacket());
+                bytes = buffer.Length;
             }
             catch (Exception e) { x.Note(x.L("diag-join-error", e.Message)); return; }
             int online = (x.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>()).Length;
@@ -144,7 +144,7 @@ namespace VintageE
 
         static List<(string key, double before, double after)> SwingList(Ctx x)
         {
-            var result = new List<(string, double, double)>();
+            var result = new List<(string key, double before, double after)>();
             VintageEModSystem mod = x.Mod;
             if (mod.PreviousValues == null || x.Report?.Values == null) return result;
             bool sameMods = mod.PreviousMods != null && mod.CurrentMods != null && mod.PreviousMods.Count == mod.CurrentMods.Count && mod.PreviousMods.All(kv => mod.CurrentMods.TryGetValue(kv.Key, out string v) && v == kv.Value);
