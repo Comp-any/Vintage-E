@@ -263,9 +263,10 @@ namespace VintageE
             ElementBounds scrollbarBounds = ElementBounds.Fixed(Width + 4, listTop, 20, ListHeight);
 
             double bottom = listTop + ListHeight + 12;
-            ElementBounds backBounds = ElementBounds.Fixed(0, bottom, 80, 30);
-            ElementBounds lastBounds = ElementBounds.Fixed(90, bottom + 6, 360, 24);
-            ElementBounds copyBounds = ElementBounds.Fixed(Width - 90, bottom, 90, 30);
+            const double ButtonW = 110; // every button in the bottom row is the same width
+            ElementBounds backBounds = ElementBounds.Fixed(0, bottom, ButtonW, 30);
+            ElementBounds lastBounds = ElementBounds.Fixed(ButtonW + 10, bottom + 6, Width - 2 * ButtonW - 20, 24);
+            ElementBounds copyBounds = ElementBounds.Fixed(Width - ButtonW, bottom, ButtonW, 30);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;

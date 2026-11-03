@@ -545,6 +545,58 @@ namespace VintageE
 
         // ---------------------------------------------------------------- 10: a bug report
 
+        static readonly Regex OutlierLine = new Regex(@"^(\s*)(.+?) \((\S+:\S+)\) (\S+) \(its family's middle value is (\S+)\) ← worked backwards from (.+)$", RegexOptions.Compiled);
+        static readonly Regex CountLine = new Regex(@"^  ([^:]+(?:: [^:]+)?): (\d+)$", RegexOptions.Compiled);
+        static readonly Regex FamilyLine = new Regex(@"^    (\S+) \((\d+)\): .+ \((\S+:\S+)\)$", RegexOptions.Compiled);
+
+        /// <summary>
+        /// The same facts in fewer lines: outliers as code, value, family middle and source; runs of "name: count" and
+        /// family lines joined on one line; the long source names shortened. Nothing is dropped.
+        /// </summary>
+        static List<string> Condense(List<string> lines)
+        {
+            var result = new List<string>();
+            var run = new List<string>();
+            string runKind = null;
+            void Flush()
+            {
+                if (run.Count == 0) return;
+                result.Add("  " + string.Join(runKind == "family" ? "; " : ", ", run));
+                run.Clear(); runKind = null;
+            }
+            foreach (string raw in lines)
+            {
+                string line = raw.Replace("RecipeRegistrySystem.", "")
+                    .Replace("patches to how items are processed (ground storage, squeezing, burning, drying)", "processing patches")
+                    .Replace(" -> ", " → ").Replace(" <- ", " ← ");
+                Match m = CountLine.Match(line);
+                if (m.Success && !line.Contains("→"))
+                {
+                    if (runKind != "count") Flush();
+                    runKind = "count"; run.Add(m.Groups[1].Value + " " + m.Groups[2].Value);
+                    continue;
+                }
+                m = FamilyLine.Match(line);
+                if (m.Success)
+                {
+                    if (runKind != "family") Flush();
+                    runKind = "family"; run.Add(m.Groups[1].Value + " " + m.Groups[2].Value + " e.g. " + m.Groups[3].Value);
+                    continue;
+                }
+                Flush();
+                m = OutlierLine.Match(line);
+                if (m.Success)
+                {
+                    result.Add(m.Groups[1].Value + m.Groups[3].Value + " " + m.Groups[4].Value + " (family " + m.Groups[5].Value + ") ← " + m.Groups[6].Value);
+                    continue;
+                }
+                if (line.Trim() == "The biggest families:") continue;
+                result.Add(line);
+            }
+            Flush();
+            return result;
+        }
+
         static void BugReport(Ctx x)
         {
             EmcReport r = x.R;
@@ -582,13 +634,15 @@ namespace VintageE
             }
             // Lines that are only a link ("see the deeper checks") mean nothing on paper.
             inner.Lines.RemoveAll(l => EmcReport.ActionToken.Replace(l.Text, "").Trim().Length == 0);
+            var diag = new List<string>();
             foreach (string line in inner.PlainText(x.Sapi.World, labelsOnly: true).Split('\n'))
             {
                 // Fix links read as bare labels once the token is gone; the verdict repeats what's above.
                 string t = line.TrimEnd();
                 if (t.Length == 0 || t.Contains("worth fixing") || t.Contains("Nothing wrong with the mapping")) continue;
-                sb.Append(t).Append('\n');
+                diag.Add(t);
             }
+            foreach (string t in Condense(diag)) sb.Append(t).Append('\n');
 
             sb.Append("\n== Server log (Vintage-E errors and warnings, addresses and ids removed) ==\n");
             List<string> logLines = LogLines(x, 40, out string err);
@@ -608,12 +662,14 @@ namespace VintageE
                     JToken def = defaults[prop.Name];
                     if (def == null || !JToken.DeepEquals(def, prop.Value)) changed[prop.Name] = prop.Value;
                 }
-                sb.Append(changed.Count == 0 ? "(all defaults)" : changed.ToString(Newtonsoft.Json.Formatting.Indented));
+                // One line: Name=value, …
+                sb.Append(changed.Count == 0 ? "(all defaults)" : string.Join(", ", changed.Properties().Select(p => p.Name + "=" + p.Value.ToString(Newtonsoft.Json.Formatting.None))));
             }
             catch (Exception e) { sb.Append("(could not serialize: ").Append(e.Message).Append(')'); }
             sb.Append('\n');
 
             string text = HomePath.Replace(Ip.Replace(sb.ToString(), "<address>"), "$1<user>");
+            text = Regex.Replace(text, @"\n{3,}", "\n\n").Replace("== Diagnosis ==\n\n== Is EMC mapped at all? ==", "== Diagnosis ==");
             string file = null;
             try
             {

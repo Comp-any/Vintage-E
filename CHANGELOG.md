@@ -5,7 +5,10 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.16.4 — 2026-11-03
 
 ### Added
-- **Doctor window:** an Info chip next to Passed, Warnings and Failed; click it to hide or show the informational checks.
+- **Doctor window:** an Info chip next to Passed, Warnings and Failed; click it to hide or show the informational checks. The Back and Copy buttons are the same width.
+
+### Changed
+- **Bug report:** the same facts in about half the lines: values out of line are one short line each (code, value, family middle, source), counts and families sit on one line, settings are `Name=value` on one line, and the double blank lines are gone.
 
 ## 1.16.3 — 2026-11-03
 
