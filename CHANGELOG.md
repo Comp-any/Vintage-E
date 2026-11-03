@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.9 — 2026-11-03
+
+### Fixed
+- **Looks: switching after join no longer leaves blocks invisible.** The after-join reload (and a look picked in `.vintagee`) now puts every texture the look uses into the game's texture atlases before reloading shapes; before, blocks using Vintage-E's own New-look textures (furnaces, collectors, condensers, the pedestal, the torch, the table) pointed at textures the atlas had never seen and went invisible, with an error per block in the client log.
+
 ## 1.17.8 — 2026-11-03
 
 ### Fixed

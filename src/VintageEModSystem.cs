@@ -324,6 +324,28 @@ namespace VintageE
                 RestoreLookOriginals();
                 lock (clientLookLock) { clientLook = null; LookResult = null; }
                 ProjectELook.DisposeMeshes();
+                // Apply the look now to everything the game holds, then put every texture the look uses into the
+                // atlases: the game only collects textures when a world loads, and a reload of the shapes alone would
+                // leave a block pointing at a texture the atlas never saw (invisible, with an error per block).
+                var blocks = (Capi.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                var items = (Capi.World?.Items ?? new List<Item>()).Where(i => i?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                ApplyClientLookTo("blocks (switch)", blocks, new List<EntityProperties>());
+                ApplyClientLookTo("items (switch)", items, new List<EntityProperties>());
+                int baked = 0;
+                foreach (CollectibleObject c in blocks.Concat(items))
+                {
+                    var textures = c is Block b ? b.Textures : (c as Item)?.Textures;
+                    if (textures == null) continue;
+                    ITextureAtlasAPI atlas = c is Block ? Capi.BlockTextureAtlas : Capi.ItemTextureAtlas;
+                    foreach (CompositeTexture ct in textures.Values)
+                    {
+                        if (ct?.Base == null) continue;
+                        try { ct.RuntimeBake(Capi, atlas); baked++; }
+                        catch (Exception e) { Mod.Logger.Warning("Look: could not add {0} to the atlas: {1}", ct.Base, e.Message); }
+                    }
+                    if (c is Block bb) bb.TexturesInventory = null;
+                }
+                Mod.Logger.Notification("Look: switching; {0} textures added to the atlases, now reloading shapes.", baked);
                 Capi.TriggerChatMessage(".reload shapes");
             }
             catch (Exception e) { Mod.Logger.Error("Could not switch the look: {0}", e); }
