@@ -82,7 +82,7 @@ namespace VintageE
 
         // ---------------------------------------------------------------- 1, 2: EMC out of nothing
 
-        sealed class ProfitEntry { public Conversion Conv; public double profit, cost, gain; public bool processing; }
+        sealed class ProfitEntry { public Conversion Conv; public double profit, cost, gain; public bool processing; public int Recipes = 1; }
 
         /// <summary>Recipes whose output is worth more than their ingredients: craft and burn for free EMC.</summary>
         static List<ProfitEntry> ProfitList(Ctx x)
@@ -125,7 +125,11 @@ namespace VintageE
                 // A hair of rounding is nothing; a quarter of the cost, or more than 4 EMC, is a real gain.
                 if (profit > Math.Max(4, cost * 0.25)) result.Add(new ProfitEntry { Conv = conv, profit = profit, cost = cost, gain = gain, processing = conv.Kind == ConversionKind.Processing });
             }
-            return result.OrderByDescending(p => p.profit).GroupBy(p => (p.Conv.Output ?? p.Conv.JointOutputs?.FirstOrDefault().Key, EmcMapper.Describe(p.Conv))).Select(g => g.First()).ToList();
+            // One line per output: the recipe with the biggest gain stands for the others (18 fish all filleting to the same thing is one finding, not 18).
+            return result.OrderByDescending(p => p.profit)
+                .GroupBy(p => p.Conv.Output ?? p.Conv.JointOutputs?.FirstOrDefault().Key)
+                .Select(g => { ProfitEntry first = g.First(); first.Recipes = g.Select(e => EmcMapper.Describe(e.Conv)).Distinct().Count(); return first; })
+                .ToList();
         }
 
         static void Profit(Ctx x, bool full)
@@ -140,7 +144,7 @@ namespace VintageE
             {
                 CollectibleObject outC = p.Conv.Output ?? p.Conv.JointOutputs?.FirstOrDefault().Key;
                 r.Add((outC != null ? EmcReport.Ref(outC) : "?") + ": " + x.L("diag-profit-line", F(p.gain), F(p.cost), F(p.profit)) + (p.processing ? " " + x.L("diag-profit-processing") : ""), EmcLineStyle.Text, 1);
-                x.Note(Linkify(x, EmcMapper.Describe(p.Conv)), 2);
+                x.Note(Linkify(x, EmcMapper.Describe(p.Conv)) + (p.Recipes > 1 ? " " + x.L("diag-profit-recipes", p.Recipes - 1) : ""), 2);
                 // The usual culprit: an ingredient whose value is a guess or a trader price, below what it really costs to make.
                 var weak = p.Conv.Inputs.SelectMany(i => i.Choices).Where(c => x.Report.Origins.TryGetValue(c, out string o) && (o.StartsWith("trader", StringComparison.Ordinal) || o.StartsWith("guessed", StringComparison.Ordinal) || o.StartsWith("same as", StringComparison.Ordinal) || o.StartsWith("default value", StringComparison.Ordinal))).Distinct().Take(3).ToList();
                 if (weak.Count > 0) x.Note(x.L("diag-profit-weak", string.Join(", ", weak.Select(w => EmcReport.Ref(w) + " " + F(x.V(w))))), 2);

@@ -843,12 +843,12 @@
   "diag-q-profit": "Every recipe that gives more EMC than it costs",
   "diag-profit-help": "If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.",
   "diag-profit-none": "No recipe gives more EMC than its ingredients cost.",
-  "diag-profit-found": "{0} recipes give more than they cost ({1} of them processing steps):",
+  "diag-profit-found": "{0} items can be made for less than they're worth ({1} of them by processing):",
   "diag-profit-line": "worth {0}, costs {1}: {2} free each time",
   "diag-profit-processing": "(processing: smelting, grinding, drying...)",
   "diag-profit-weak": "Ingredients whose value is a guess or a trader price: {0}",
   "diag-profit-fix": "Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.",
-  "diag-profit-summary": "Free EMC: {0} recipes give more than they cost (the worst gives {1} free per craft).",
+  "diag-profit-summary": "Free EMC: {0} items can be made for less than they're worth (the worst gives {1} free per craft).",
   "diag-sec-blblockers": "Blacklisted ingredients holding recipes back",
   "diag-blblockers-none": "No blacklisted item is the only ingredient a missing recipe waits for.",
   "diag-blblockers-found": "{0} blacklisted items are the only thing {1} recipes wait for:",
@@ -1689,5 +1689,6 @@
   "diag-fix-removekeys": "Remove all {0} entries that match nothing, and remap",
   "diag-done-removekeys": "Removed {0} settings entries that matched nothing; the values were remapped.",
   "doctor-home": "Check-up",
-  "doctor-copy": "Copy this report"
+  "doctor-copy": "Copy this report",
+  "diag-profit-recipes": "(and {0} more recipes with the same output)"
 }

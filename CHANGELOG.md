@@ -6,6 +6,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ### Changed
 - **The doctor no longer pauses the game.** Reports are built on a worker thread and the remapping a fix triggers runs there too; the world keeps ticking and the window shows "Scanning…" until the answer arrives.
+- **Free-EMC check:** one line per item instead of one per recipe (18 kinds of fish all filleting into the same raw fillet were 18 lines); the line shows the recipe with the biggest gain and says how many more there are.
 - **Meteorite stones are worth half a meteoric iron ingot (192):** two smelt into one ingot (384), and at the generic stone value of 1 that made 382 EMC out of nothing per ingot.
 - **Carburising charges its fuel:** the stone coffin packs 40 pieces of fuel around 16 iron ingots, so blister steel now costs an iron ingot plus 2.5 of the cheapest coffin fuel (charcoal, coal or coke), not an iron ingot alone.
 
