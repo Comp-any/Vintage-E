@@ -642,6 +642,24 @@ def make_shapes(t):
                        children=[box("tip-" + side, (-0.15, 7.5, -0.15), (1.45, 9, 1.45), "metal")]))
     s["rod"] = save_shape("item/rod", shape({"wood": OAK_LOG, "cord": LEATHER, "metal": COPPER}, els))
 
+    # Everlasting Pitch Glue: a wooden bucket full of dark pitch glue, iron-banded, with a stirring stick leaning in it.
+    els = [
+        box("bottom", (4, 0, 4), (12, 1, 12), "inner"),
+        box("wall-n", (4, 1, 4), (12, 9, 5), {"north": "sides", "south": "inner", "up": "sides"}),
+        box("wall-s", (4, 1, 11), (12, 9, 12), {"south": "sides", "north": "inner", "up": "sides"}),
+        box("wall-w", (4, 1, 5), (5, 9, 11), {"west": "sides", "east": "inner", "up": "sides"}),
+        box("wall-e", (11, 1, 5), (12, 9, 11), {"east": "sides", "west": "inner", "up": "sides"}),
+        box("band-low", (3.8, 1.5, 3.8), (12.2, 2.5, 12.2), "metal"),
+        box("band-high", (3.8, 7, 3.8), (12.2, 8, 12.2), "metal"),
+        box("glue", (5, 1, 5), (11, 7.6, 11), "glue", glow=12),
+        box("drip-n", (6, 7.6, 3.9), (8, 8.4, 4.6), "glue"),
+        box("drip-e", (11.4, 5.5, 7), (12.6, 8, 9), "glue"),
+        box("stick", (7.25, 2, 7.25), (8.75, 15, 8.75), "wood", rot=(0, 0, -22), origin=(8, 2, 8)),
+        box("stick-glue", (7.1, 2, 7.1), (8.9, 7.5, 8.9), "glue", rot=(0, 0, -22), origin=(8, 2, 8)),
+    ]
+    s["gluebucket"] = save_shape("item/gluebucket", shape({"sides": G + "block/wood/bucket/sides", "inner": G + "block/wood/bucket/inner side",
+                                                           "metal": IRON, "glue": G + "block/liquid/glue-cold", "wood": OAK_LOG}, els))
+
     # Transmutation tablet: a slate tablet with the circle, in a wooden frame (standing on its edge).
     els = [
         box("frame", (2.5, 1, 7.2), (13.5, 15, 8.8), "wood"),
@@ -853,6 +871,7 @@ def make_map(t, s):
     ov.append(item("gadget-tomeofknowledge", s["book"], {}, "tome of knowledge"))
     for code, metal in (("diviningrodlow", COPPER), ("diviningrodmedium", SILVER), ("diviningrodhigh", GOLD)):
         ov.append(item("gadget-" + code, s["rod"], {"metal": metal}, code))
+    ov.append(item("gadget-eternalglue", s["gluebucket"], {}, "everlasting pitch glue"))
     ov.append(item("transmutationtablet", s["tablet"], {}, "transmutation tablet"))
     stars = {"ein": ("quartz", COPPER), "zwei": ("citrine", BRASS), "drei": ("topaz", SILVER), "vier": ("emerald", SILVER),
              "sphere": ("sapphire", GOLD), "omega": ("amethyst", GOLD)}

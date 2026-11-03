@@ -1,0 +1,751 @@
+{
+ "textureWidth": 16,
+ "textureHeight": 16,
+ "textures": {
+  "sides": "game:block/wood/bucket/sides",
+  "inner": "game:block/wood/bucket/inner side",
+  "metal": "game:block/metal/plate/iron",
+  "glue": "game:block/liquid/glue-cold",
+  "wood": "game:block/wood/debarked/oak"
+ },
+ "elements": [
+  {
+   "name": "bottom",
+   "from": [
+    4,
+    0,
+    4
+   ],
+   "to": [
+    12,
+    1,
+    12
+   ],
+   "faces": {
+    "north": {
+     "texture": "#inner",
+     "uv": [
+      12,
+      15,
+      4,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#inner",
+     "uv": [
+      12,
+      15,
+      4,
+      16
+     ]
+    },
+    "south": {
+     "texture": "#inner",
+     "uv": [
+      4,
+      15,
+      12,
+      16
+     ]
+    },
+    "west": {
+     "texture": "#inner",
+     "uv": [
+      4,
+      15,
+      12,
+      16
+     ]
+    },
+    "up": {
+     "texture": "#inner",
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ]
+    },
+    "down": {
+     "texture": "#inner",
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ]
+    }
+   }
+  },
+  {
+   "name": "wall-n",
+   "from": [
+    4,
+    1,
+    4
+   ],
+   "to": [
+    12,
+    9,
+    5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#sides",
+     "uv": [
+      12,
+      7,
+      4,
+      15
+     ]
+    },
+    "south": {
+     "texture": "#inner",
+     "uv": [
+      4,
+      7,
+      12,
+      15
+     ]
+    },
+    "up": {
+     "texture": "#sides",
+     "uv": [
+      4,
+      4,
+      12,
+      5
+     ]
+    }
+   }
+  },
+  {
+   "name": "wall-s",
+   "from": [
+    4,
+    1,
+    11
+   ],
+   "to": [
+    12,
+    9,
+    12
+   ],
+   "faces": {
+    "north": {
+     "texture": "#inner",
+     "uv": [
+      12,
+      7,
+      4,
+      15
+     ]
+    },
+    "south": {
+     "texture": "#sides",
+     "uv": [
+      4,
+      7,
+      12,
+      15
+     ]
+    },
+    "up": {
+     "texture": "#sides",
+     "uv": [
+      4,
+      11,
+      12,
+      12
+     ]
+    }
+   }
+  },
+  {
+   "name": "wall-w",
+   "from": [
+    4,
+    1,
+    5
+   ],
+   "to": [
+    5,
+    9,
+    11
+   ],
+   "faces": {
+    "east": {
+     "texture": "#inner",
+     "uv": [
+      11,
+      7,
+      5,
+      15
+     ]
+    },
+    "west": {
+     "texture": "#sides",
+     "uv": [
+      5,
+      7,
+      11,
+      15
+     ]
+    },
+    "up": {
+     "texture": "#sides",
+     "uv": [
+      4,
+      5,
+      5,
+      11
+     ]
+    }
+   }
+  },
+  {
+   "name": "wall-e",
+   "from": [
+    11,
+    1,
+    5
+   ],
+   "to": [
+    12,
+    9,
+    11
+   ],
+   "faces": {
+    "east": {
+     "texture": "#sides",
+     "uv": [
+      11,
+      7,
+      5,
+      15
+     ]
+    },
+    "west": {
+     "texture": "#inner",
+     "uv": [
+      5,
+      7,
+      11,
+      15
+     ]
+    },
+    "up": {
+     "texture": "#sides",
+     "uv": [
+      11,
+      5,
+      12,
+      11
+     ]
+    }
+   }
+  },
+  {
+   "name": "band-low",
+   "from": [
+    3.8,
+    1.5,
+    3.8
+   ],
+   "to": [
+    12.2,
+    2.5,
+    12.2
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      12.2,
+      13.5,
+      3.8,
+      14.5
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      12.2,
+      13.5,
+      3.8,
+      14.5
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      13.5,
+      12.2,
+      14.5
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      13.5,
+      12.2,
+      14.5
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      3.8,
+      12.2,
+      12.2
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      3.8,
+      12.2,
+      12.2
+     ]
+    }
+   }
+  },
+  {
+   "name": "band-high",
+   "from": [
+    3.8,
+    7,
+    3.8
+   ],
+   "to": [
+    12.2,
+    8,
+    12.2
+   ],
+   "faces": {
+    "north": {
+     "texture": "#metal",
+     "uv": [
+      12.2,
+      8,
+      3.8,
+      9
+     ]
+    },
+    "east": {
+     "texture": "#metal",
+     "uv": [
+      12.2,
+      8,
+      3.8,
+      9
+     ]
+    },
+    "south": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      8,
+      12.2,
+      9
+     ]
+    },
+    "west": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      8,
+      12.2,
+      9
+     ]
+    },
+    "up": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      3.8,
+      12.2,
+      12.2
+     ]
+    },
+    "down": {
+     "texture": "#metal",
+     "uv": [
+      3.8,
+      3.8,
+      12.2,
+      12.2
+     ]
+    }
+   }
+  },
+  {
+   "name": "glue",
+   "from": [
+    5,
+    1,
+    5
+   ],
+   "to": [
+    11,
+    7.6,
+    11
+   ],
+   "faces": {
+    "north": {
+     "texture": "#glue",
+     "uv": [
+      11,
+      8.4,
+      5,
+      15
+     ],
+     "glow": 12
+    },
+    "east": {
+     "texture": "#glue",
+     "uv": [
+      11,
+      8.4,
+      5,
+      15
+     ],
+     "glow": 12
+    },
+    "south": {
+     "texture": "#glue",
+     "uv": [
+      5,
+      8.4,
+      11,
+      15
+     ],
+     "glow": 12
+    },
+    "west": {
+     "texture": "#glue",
+     "uv": [
+      5,
+      8.4,
+      11,
+      15
+     ],
+     "glow": 12
+    },
+    "up": {
+     "texture": "#glue",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "glow": 12
+    },
+    "down": {
+     "texture": "#glue",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "glow": 12
+    }
+   }
+  },
+  {
+   "name": "drip-n",
+   "from": [
+    6,
+    7.6,
+    3.9
+   ],
+   "to": [
+    8,
+    8.4,
+    4.6
+   ],
+   "faces": {
+    "north": {
+     "texture": "#glue",
+     "uv": [
+      8,
+      7.6,
+      6,
+      8.4
+     ]
+    },
+    "east": {
+     "texture": "#glue",
+     "uv": [
+      4.6,
+      7.6,
+      3.9,
+      8.4
+     ]
+    },
+    "south": {
+     "texture": "#glue",
+     "uv": [
+      6,
+      7.6,
+      8,
+      8.4
+     ]
+    },
+    "west": {
+     "texture": "#glue",
+     "uv": [
+      3.9,
+      7.6,
+      4.6,
+      8.4
+     ]
+    },
+    "up": {
+     "texture": "#glue",
+     "uv": [
+      6,
+      3.9,
+      8,
+      4.6
+     ]
+    },
+    "down": {
+     "texture": "#glue",
+     "uv": [
+      6,
+      3.9,
+      8,
+      4.6
+     ]
+    }
+   }
+  },
+  {
+   "name": "drip-e",
+   "from": [
+    11.4,
+    5.5,
+    7
+   ],
+   "to": [
+    12.6,
+    8,
+    9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#glue",
+     "uv": [
+      12.6,
+      8,
+      11.4,
+      10.5
+     ]
+    },
+    "east": {
+     "texture": "#glue",
+     "uv": [
+      9,
+      8,
+      7,
+      10.5
+     ]
+    },
+    "south": {
+     "texture": "#glue",
+     "uv": [
+      11.4,
+      8,
+      12.6,
+      10.5
+     ]
+    },
+    "west": {
+     "texture": "#glue",
+     "uv": [
+      7,
+      8,
+      9,
+      10.5
+     ]
+    },
+    "up": {
+     "texture": "#glue",
+     "uv": [
+      11.4,
+      7,
+      12.6,
+      9
+     ]
+    },
+    "down": {
+     "texture": "#glue",
+     "uv": [
+      11.4,
+      7,
+      12.6,
+      9
+     ]
+    }
+   }
+  },
+  {
+   "name": "stick",
+   "from": [
+    7.25,
+    2,
+    7.25
+   ],
+   "to": [
+    8.75,
+    15,
+    8.75
+   ],
+   "faces": {
+    "north": {
+     "texture": "#wood",
+     "uv": [
+      8.75,
+      1,
+      7.25,
+      14
+     ]
+    },
+    "east": {
+     "texture": "#wood",
+     "uv": [
+      8.75,
+      1,
+      7.25,
+      14
+     ]
+    },
+    "south": {
+     "texture": "#wood",
+     "uv": [
+      7.25,
+      1,
+      8.75,
+      14
+     ]
+    },
+    "west": {
+     "texture": "#wood",
+     "uv": [
+      7.25,
+      1,
+      8.75,
+      14
+     ]
+    },
+    "up": {
+     "texture": "#wood",
+     "uv": [
+      7.25,
+      7.25,
+      8.75,
+      8.75
+     ]
+    },
+    "down": {
+     "texture": "#wood",
+     "uv": [
+      7.25,
+      7.25,
+      8.75,
+      8.75
+     ]
+    }
+   },
+   "rotationOrigin": [
+    8,
+    2,
+    8
+   ],
+   "rotationZ": -22
+  },
+  {
+   "name": "stick-glue",
+   "from": [
+    7.1,
+    2,
+    7.1
+   ],
+   "to": [
+    8.9,
+    7.5,
+    8.9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#glue",
+     "uv": [
+      8.9,
+      8.5,
+      7.1,
+      14
+     ]
+    },
+    "east": {
+     "texture": "#glue",
+     "uv": [
+      8.9,
+      8.5,
+      7.1,
+      14
+     ]
+    },
+    "south": {
+     "texture": "#glue",
+     "uv": [
+      7.1,
+      8.5,
+      8.9,
+      14
+     ]
+    },
+    "west": {
+     "texture": "#glue",
+     "uv": [
+      7.1,
+      8.5,
+      8.9,
+      14
+     ]
+    },
+    "up": {
+     "texture": "#glue",
+     "uv": [
+      7.1,
+      7.1,
+      8.9,
+      8.9
+     ]
+    },
+    "down": {
+     "texture": "#glue",
+     "uv": [
+      7.1,
+      7.1,
+      8.9,
+      8.9
+     ]
+    }
+   },
+   "rotationOrigin": [
+    8,
+    2,
+    8
+   ],
+   "rotationZ": -22
+  }
+ ]
+}

@@ -2210,6 +2210,73 @@
    }
   },
   {
+   "code": "vintagee:gadget-eternalglue",
+   "label": "everlasting pitch glue",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/gluebucket",
+   "textures": {
+    "sides": "game:block/wood/bucket/sides",
+    "inner": "game:block/wood/bucket/inner side",
+    "metal": "game:block/metal/plate/iron",
+    "glue": "game:block/liquid/glue-cold",
+    "wood": "game:block/wood/debarked/oak"
+   },
+   "guiTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 150,
+     "y": 45,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.512,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 1.0
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
+    },
+    "rotation": {
+     "x": 5,
+     "y": 82,
+     "z": 16
+    },
+    "origin": {
+     "x": 0.512,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 0.3
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.512,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.2
+   }
+  },
+  {
    "code": "vintagee:transmutationtablet",
    "label": "transmutation tablet",
    "kind": "item",

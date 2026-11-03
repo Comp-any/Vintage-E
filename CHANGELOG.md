@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.6 — 2026-11-03
+
+### Added
+- **Everlasting Pitch Glue in the New look:** a 3D model, a wooden bucket full of dark pitch glue with iron bands and a stirring stick, built from the game's bucket, glue and plate textures.
+
 ## 1.17.5 — 2026-11-03
 
 ### Added
