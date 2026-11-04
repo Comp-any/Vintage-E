@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.29 — 2026-11-05
+
+### Fixed
+- **Tablet magnet took only about half of what it pulled in; the rest landed in the inventory as the item.** A pulled item could fly from outside the magnet's 2.5-block take range to within the game's own pickup range (1.5 blocks) between two magnet ticks, and the hand got it first. The take range is 4 blocks and the pull is slower near the end, so the magnet always sees an item before the hand can reach it. (Reported with a Black Hole Band.)
+
 ## 1.17.28 — 2026-11-04
 
 ### Fixed

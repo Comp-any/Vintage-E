@@ -26,8 +26,15 @@ namespace VintageE
         public const float Radius = TrinketEffects.BandPullRadius; // a band in the tablet reaches as far as a worn one
         /// <summary>The magnet's reach: a Void Ring pulls from further than a Black Hole Band.</summary>
         public static float RadiusOf(ItemStack magnet) => magnet?.Collectible is ItemEmcTrinket t && t.Kind == "voidring" ? TrinketEffects.VoidPullRadius : TrinketEffects.BandPullRadius;
-        /// <summary>Items closer than this are transmuted; further out they're pulled in.</summary>
-        public const float TakeRange = 2.5f;
+        /// <summary>
+        /// Items closer than this are transmuted; further out they're pulled in. Wide enough that an item pulled from
+        /// outside it can't cross it in one tick and land in the game's own pickup range (about 1.5 blocks) before the
+        /// magnet sees it again: the pull moves an item at most <see cref="PullSpeed"/> a game tick, about two blocks
+        /// between magnet ticks, so it stops short of the player and the magnet, not the hand, takes it.
+        /// </summary>
+        public const float TakeRange = 4f;
+        /// <summary>Most blocks a pulled item moves per game tick.</summary>
+        public const double PullSpeed = 0.25;
 
         public static bool IsMagnet(ItemStack stack) =>
             stack?.Collectible is ItemEmcTrinket t && (t.Kind == "blackholeband" || t.Kind == "voidring");
@@ -162,7 +169,7 @@ namespace VintageE
                         if (learned != null) mod.SendResult(player, new TransmuteResultPacket { LearnedKey = learned });
                         continue;
                     }
-                    dir.Mul(Math.Min(0.45, 0.1 + dist * 0.05) / dist);
+                    dir.Mul(Math.Min(PullSpeed, 0.1 + dist * 0.05) / dist);
                     e.Pos.Motion.Set(dir.X, dir.Y + 0.04, dir.Z);
                 }
                 if (taken > 0) sapi.World.PlaySoundAt(new AssetLocation("game:sounds/player/collect"), player.Entity, null, true, 8, 0.4f);
