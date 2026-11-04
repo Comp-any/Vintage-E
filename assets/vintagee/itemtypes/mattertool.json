@@ -171,6 +171,12 @@
       },
       {
         "name": "AnimationAuthoritative"
+      },
+      {
+        "name": "VintageESlay",
+        "properties": {
+          "damage": 8
+        }
       }
     ],
     "*-dark-hoe": [
@@ -298,7 +304,8 @@
       {
         "name": "VintageEMatterTool",
         "properties": {
-          "maxAreaRadius": 2
+          "maxAreaRadius": 2,
+          "shotModes": true
         }
       }
     ],
@@ -330,7 +337,8 @@
       {
         "name": "VintageEMatterTool",
         "properties": {
-          "maxAreaRadius": 2
+          "maxAreaRadius": 2,
+          "shotModes": true
         }
       }
     ],
@@ -362,7 +370,8 @@
       {
         "name": "VintageEMatterTool",
         "properties": {
-          "maxAreaRadius": 2
+          "maxAreaRadius": 2,
+          "shotModes": true
         }
       },
       {
@@ -405,6 +414,12 @@
       },
       {
         "name": "AnimationAuthoritative"
+      },
+      {
+        "name": "VintageESlay",
+        "properties": {
+          "damage": 11
+        }
       }
     ],
     "*-red-hoe": [
@@ -468,6 +483,7 @@
         "name": "VintageEMatterTool",
         "properties": {
           "maxAreaRadius": 2,
+          "shotModes": true,
           "defaultAreaRadius": 1
         }
       }

@@ -18,6 +18,13 @@ namespace VintageE
     /// <summary>Block class for collectors and condensers: forwards right-clicks to the block entity.</summary>
     public class BlockEmcMachine : Block
     {
+        public override void OnBlockBroken(IWorldAccessor world, Vintagestory.API.MathTools.BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+        {
+            // A Klein star inside a collector or relay comes out with it.
+            if (world.Side == EnumAppSide.Server && world.BlockAccessor.GetBlockEntity(pos) is IStarHolder holder) holder.Star.Drop(world, pos);
+            base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+        }
+
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is IEmcInteractable machine)

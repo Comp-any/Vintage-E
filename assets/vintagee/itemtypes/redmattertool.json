@@ -46,6 +46,7 @@
         "name": "VintageEMatterTool",
         "properties": {
           "maxAreaRadius": 2,
+          "shotModes": true,
           "defaultAreaRadius": 0
         }
       },
@@ -53,6 +54,12 @@
         "name": "AnimationAuthoritative",
         "properties": {
           "onlyOnEntity": true
+        }
+      },
+      {
+        "name": "VintageESlay",
+        "properties": {
+          "damage": 14
         }
       }
     ],
@@ -85,6 +92,7 @@
         "name": "VintageEMatterTool",
         "properties": {
           "maxAreaRadius": 2,
+          "shotModes": true,
           "defaultAreaRadius": 1
         }
       },

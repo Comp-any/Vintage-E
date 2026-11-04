@@ -2201,5 +2201,30 @@
       "code": "vintagee:gadget-eternalglue"
     },
     "name": "vintagee:eternalglue"
+  },
+  {
+    "ingredientPattern": "LLL,RPR,LLL",
+    "ingredients": {
+      "L": {
+        "type": "item",
+        "code": "game:gem-emerald-rough"
+      },
+      "R": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:trinket-mindstone"
+    },
+    "name": "vintagee:mindstone"
   }
 ]

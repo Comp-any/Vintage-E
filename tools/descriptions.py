@@ -123,9 +123,9 @@ BLOCK = {
                            "Feeds condensers, furnaces and relays next to it every second; sneak + right-click with an empty hand (or a Klein star) to take the EMC yourself.",
     "energycollector-mk3": "Makes up to 40 EMC a second in full sunlight (less in shade, none in the dark) and stores 60,000.\n"
                            "Feeds condensers, furnaces and relays next to it every second; sneak + right-click with an empty hand (or a Klein star) to take the EMC yourself.",
-    "energycondenser-mk1": "Put an item in the target slot: it burns up to 4 other items a second (plus EMC from collectors) and makes up to 1 copy of the target a second.\n"
+    "energycondenser-mk1": "Put an item in the target slot: it burns up to 20 other items a second (plus EMC from collectors) and makes up to 20 copies of the target a second, as in ProjectE.\n"
                            "Stores up to 1,000,000 EMC; 40 storage slots.",
-    "energycondenser-mk2": "Put an item in the target slot: it burns up to 16 other items a second (plus EMC from collectors) and makes up to 4 copies of the target a second.\n"
+    "energycondenser-mk2": "Put an item in the target slot: it burns up to 64 other items a second (plus EMC from collectors) and makes up to 64 copies of the target a second.\n"
                            "Stores up to 10,000,000 EMC; 40 storage slots.",
     "alchemicalfuelblock-alchemicalcoal": "9 alchemical coal: burns at 1,400 °C for 1,440 seconds.",
     "alchemicalfuelblock-mobiusfuel": "9 mobius fuel: burns at 1,500 °C for 5,760 seconds.",

@@ -13,9 +13,10 @@ namespace VintageE
     /// moved into the player's personal EMC for use at a transmutation table.
     /// Rates come from the block's attributes: <c>emcPerSecond</c>, <c>capacity</c>.
     /// </summary>
-    public class BEEnergyCollector : BlockEntity, IEmcInteractable
+    public class BEEnergyCollector : BlockEntity, IEmcInteractable, IStarHolder
     {
         public double Stored;
+        public StarHolder Star { get; } = new StarHolder();
         double currentRate;
         double ratePerSecond = 4;
         double capacity = 10000;
@@ -45,6 +46,10 @@ namespace VintageE
             double before = Stored;
             Stored = Math.Min(capacity, Stored + rate * dt);
 
+            // A Klein star inside is charged first.
+            double charged = Star.Charge(Stored);
+            if (charged > 0) { Stored -= charged; MarkDirty(true); }
+
             // Feed neighbouring acceptors (condensers).
             foreach (BlockFacing face in BlockFacing.ALLFACES)
             {
@@ -66,7 +71,8 @@ namespace VintageE
         public bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
         {
             ItemSlot hand = byPlayer.InventoryManager.ActiveHotbarSlot;
-            bool wantsWithdraw = byPlayer.Entity.Controls.Sneak && (hand?.Empty != false || hand.Itemstack.Collectible is IEmcStorageItem);
+            if (!byPlayer.Entity.Controls.Sneak) return Star.Interact(this, byPlayer);
+            bool wantsWithdraw = hand?.Empty != false || hand.Itemstack.Collectible is IEmcStorageItem;
             if (!wantsWithdraw) return false;
             if (Api.Side == EnumAppSide.Client) return true;
 
@@ -85,6 +91,7 @@ namespace VintageE
             base.ToTreeAttributes(tree);
             tree.SetDouble("emc", Stored);
             tree.SetDouble("rate", currentRate);
+            Star.ToTree(tree);
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
@@ -92,6 +99,7 @@ namespace VintageE
             base.FromTreeAttributes(tree, worldAccessForResolve);
             Stored = tree.GetDouble("emc");
             currentRate = tree.GetDouble("rate");
+            Star.FromTree(tree, worldAccessForResolve);
         }
 
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
@@ -99,6 +107,7 @@ namespace VintageE
             base.GetBlockInfo(forPlayer, dsc);
             dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Format(Stored), EmcFormat.Format(capacity)));
             dsc.AppendLine(Lang.Get("vintagee:collector-rate", EmcFormat.Format(currentRate)));
+            Star.Info(dsc);
         }
     }
 }

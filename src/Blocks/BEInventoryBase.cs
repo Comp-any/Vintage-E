@@ -176,7 +176,12 @@ namespace VintageE
         }
     }
 
-    /// <summary>Alchemical Chest: 104 slots (8 rows of 13) for all your transmutation materials.</summary>
+    /// <summary>
+    /// Alchemical Chest: 104 slots (8 rows of 13) for all your transmutation materials. As in ProjectE, some trinkets
+    /// work from inside it, once a second: a Black Hole Band or Void Ring pulls loose items nearby into the chest, a
+    /// Repair Talisman repairs everything in it, and a Gem of Eternal Density condenses the cheap things in it into its
+    /// target (following the gem's filter).
+    /// </summary>
     public class BEAlchemicalChest : BEInventoryBase
     {
         public override string InventoryClassName => "vintageechest";
@@ -186,6 +191,113 @@ namespace VintageE
         {
             int slots = Block?.Attributes?["quantitySlots"].AsInt(104) ?? 104;
             return new InventoryGeneric(slots, null, null, null);
+        }
+
+        public override void Initialize(ICoreAPI api)
+        {
+            base.Initialize(api);
+            if (api.Side == EnumAppSide.Server) RegisterGameTickListener(OnServerTick, 1000);
+        }
+
+        void OnServerTick(float dt)
+        {
+            try { ChestTick(); }
+            catch (System.Exception e) { Api.Logger.Warning("Vintage-E alchemical chest at {0}: {1}", Pos, e.Message); }
+        }
+
+        void ChestTick()
+        {
+            var mod = Api.ModLoader.GetModSystem<VintageEModSystem>();
+            TrinketEffects fx = mod?.Trinkets;
+            if (fx == null || inventory == null) return;
+            bool pull = false, repair = false;
+            float pullRadius = 0;
+            ItemSlot gem = null;
+            foreach (ItemSlot slot in inventory)
+            {
+                if (!(slot?.Itemstack?.Collectible is ItemEmcTrinket t)) continue;
+                switch (t.Kind)
+                {
+                    case "blackholeband": pull = true; pullRadius = System.Math.Max(pullRadius, TrinketEffects.BandPullRadius); break;
+                    case "voidring": pull = true; pullRadius = System.Math.Max(pullRadius, TrinketEffects.VoidPullRadius); gem ??= slot; break;
+                    case "gemofeternaldensity": gem ??= slot; break;
+                    case "repairtalisman": repair = true; break;
+                }
+            }
+            Vintagestory.API.MathTools.Vec3d center = Pos.ToVec3d().Add(0.5, 0.6, 0.5);
+            if (pull)
+            {
+                fx.Attract(center, pullRadius, outsideClaimsOnly: true);
+                Collect(center);
+            }
+            if (repair)
+            {
+                foreach (ItemSlot slot in inventory) TrinketEffects.RepairOnce(slot, mod.Config);
+            }
+            if (gem != null) Condense(mod, gem);
+        }
+
+        /// <summary>Items that reached the chest go in.</summary>
+        void Collect(Vintagestory.API.MathTools.Vec3d center)
+        {
+            foreach (Vintagestory.API.Common.Entities.Entity e in Api.World.GetEntitiesAround(center, 1.5f, 1.5f, x => x is EntityItem && x.Alive))
+            {
+                var ei = (EntityItem)e;
+                if (ei.Itemstack == null) continue;
+                var source = new DummySlot(ei.Itemstack);
+                foreach (ItemSlot slot in inventory)
+                {
+                    if (source.Empty) break;
+                    if (slot.Itemstack?.Collectible is ItemEmcTrinket) continue;
+                    source.TryPutInto(Api.World, slot, source.StackSize);
+                }
+                if (source.Empty) e.Die(EnumDespawnReason.PickedUp);
+                else ei.Itemstack = source.Itemstack;
+            }
+        }
+
+        /// <summary>The Gem of Eternal Density on the chest's contents: cheap things become its target, which goes back in the chest.</summary>
+        void Condense(VintageEModSystem mod, ItemSlot gemSlot)
+        {
+            int mode = Vintagestory.API.MathTools.GameMath.Clamp(ItemEmcTrinket.GetMode(gemSlot.Itemstack), 0, ItemEmcTrinket.DensityTargets.Length - 1);
+            CollectibleObject target = ItemEmcTrinket.Resolve(Api.World, ItemEmcTrinket.DensityTargets[mode]);
+            double targetValue = target == null || mod.Emc.IsNoTransmute(target) ? 0 : mod.Emc.GetValue(target);
+            if (targetValue <= 0) return;
+            double maxInput = gemSlot.Itemstack.Collectible.Attributes?["maxInputValue"].AsDouble(8) ?? 8;
+            double stored = StoredEmc.Get(gemSlot.Itemstack);
+            bool changed = false;
+            foreach (ItemSlot slot in inventory)
+            {
+                ItemStack stack = slot?.Itemstack;
+                if (stack == null || slot == gemSlot) continue;
+                CollectibleObject c = stack.Collectible;
+                if (c == target || c is ItemEmcTrinket || c is IEmcStorageItem || c.GetMaxDurability(stack) > 0) continue;
+                if (StackContents.HasNestedStacks(stack)) continue;
+                if (!GemFilter.Passes(gemSlot.Itemstack, c)) continue;
+                double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
+                if (value <= 0 || value > maxInput) continue;
+                stored += value * stack.StackSize;
+                slot.Itemstack = null;
+                slot.MarkDirty();
+                changed = true;
+            }
+            int made = 0;
+            while (stored >= targetValue && made < 64)
+            {
+                var source = new DummySlot(new ItemStack(target));
+                foreach (ItemSlot slot in inventory)
+                {
+                    if (source.Empty) break;
+                    if (slot == gemSlot || slot.Itemstack?.Collectible is ItemEmcTrinket) continue;
+                    source.TryPutInto(Api.World, slot, 1);
+                }
+                if (!source.Empty) break; // the chest is full: the EMC stays on the gem
+                stored -= targetValue;
+                made++;
+                changed = true;
+            }
+            if (System.Math.Abs(stored - StoredEmc.Get(gemSlot.Itemstack)) > 1e-9) { StoredEmc.Set(gemSlot.Itemstack, stored); gemSlot.MarkDirty(); changed = true; }
+            if (changed) MarkDirty(false);
         }
     }
 }

@@ -2,9 +2,28 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
-## 1.17.30 — 2026-11-05
+## 1.18.0 — 2026-11-05
+
+More of ProjectE, and the condensers at ProjectE's speed.
 
 ### Added
+- **Mind Stone** (new): while on, keeps your body temperature at normal whatever you wear and whatever the weather, 1 EMC a second while it has to. Vintage Story has no experience points, so ProjectE's XP stone became this. Recipe: emeralds around red matter and the Philosopher's Stone.
+- **Swiftwolf's Rending Gale lightning**: the fire-projectile key calls a lightning strike where you look, up to 64 blocks away, 832 EMC (free on the Ring of Arcana when its Ignition effect is off).
+- **Zero Ring snow and burst**: it lays snow around you while on; sneak + right-click freezes water and lays snow within 8 blocks for 32 EMC (free on the Ring of Arcana).
+- **Harvest Goddess Band burst**: sneak + right-click harvests every ripe crop within 8 blocks and grows the rest a stage, 4 EMC a stage (free on the Ring of Arcana).
+- **Gem of Eternal Density filter**: "Filter..." in its tool modes opens a window with nine slots and a mode button: eat every cheap thing except these, or only these. The Void Ring has it too.
+- **Alchemical Chest trinkets**: a Black Hole Band or Void Ring inside pulls loose items nearby into the chest, a Repair Talisman repairs everything in it, and a Gem of Eternal Density condenses the cheap things in it (following its filter).
+- **Philosopher's Stone**: right-click in the air opens the crafting grid.
+- **Gem armour**: the helmet keeps your air full under water, the chestplate makes you immune to explosions. **Red matter armour**: a full set makes you immune to fire.
+- **Red matter tools**: 3 tall, 3 wide and 3 long modes after 3x3 and 5x5 (ProjectE's shot modes).
+- **Dark Matter Sword, Red Matter Sword and Katar**: right-click strikes every hostile creature within 6 blocks, sneak + right-click every creature but players and pets, 8 EMC each.
+- **Klein stars in collectors and relays**: right-click with a star to put it in; it is charged before anything else; right-click with an empty hand to take it out. It drops when the block is broken.
+- **Interdiction Torch** turns away arrows and other projectiles creatures fire (players' own fly on).
+- **Divining rods** also list the most valuable kinds of block they found; the server setting `DiviningRodListsTop` (3) says how many, 0 turns it off.
+
+### Changed
+- **Energy Condenser speeds match ProjectE**: MK1 burns 20 items a second and makes 20 copies a second (was 4 and 1) and stores 10,000,000 EMC (was 1,000,000); MK2 burns 64 and makes 64 a second (was 16 and 4).
+
 - **Klein stars charge in the Energy Condenser**: a star in the target slot is filled from the condenser's stored EMC instead of being copied (as in ProjectE). The tooltip shows how full it is. Stars in the storage slots are never burned any more (what they held was lost).
 - **Klein stars charge on the Transmutation Table**: drop one on Burn to fill it from your EMC; right-click to empty it into your EMC. It stays on the cursor instead of being burned.
 

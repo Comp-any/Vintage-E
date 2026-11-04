@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
@@ -397,6 +398,7 @@ namespace VintageE
             double total = 0, best = 0;
             int count = 0;
             Block bestBlock = null;
+            var kinds = new Dictionary<Block, (double value, int n)>();
             for (int dy = 0; dy < depth; dy++)
             {
                 for (int dx = -1; dx <= 1; dx++)
@@ -412,11 +414,23 @@ namespace VintageE
                         total += v;
                         count++;
                         if (v > best) { best = v; bestBlock = block; }
+                        kinds[block] = kinds.TryGetValue(block, out var k) ? (v, k.n + 1) : (v, 1);
                     }
                 }
             }
             string bestName = bestBlock == null ? "-" : bestBlock.GetHeldItemName(new ItemStack(bestBlock));
             Tell(player, Lang.GetL(player.LanguageCode, "vintagee:divining-result", depth, EmcFormat.Format(total), EmcFormat.Format(count == 0 ? 0 : total / count), bestName, EmcFormat.Format(best)));
+            // ProjectE's rods also name the best finds; how many is the server's DiviningRodListsTop (0: not at all).
+            int top = mod.Config.DiviningRodListsTop;
+            if (top > 0 && kinds.Count > 0)
+            {
+                var lines = new List<string>();
+                foreach (var kv in kinds.OrderByDescending(kv => kv.Value.value).Take(top))
+                {
+                    lines.Add(Lang.GetL(player.LanguageCode, "vintagee:divining-top-line", kv.Key.GetHeldItemName(new ItemStack(kv.Key)), kv.Value.n, EmcFormat.Format(kv.Value.value)));
+                }
+                Tell(player, Lang.GetL(player.LanguageCode, "vintagee:divining-top", string.Join(", ", lines)));
+            }
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)

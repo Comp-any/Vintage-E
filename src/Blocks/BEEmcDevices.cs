@@ -17,9 +17,10 @@ namespace VintageE
     /// adjacent condensers, furnaces and emptier relays. Sneak + right-click with an empty hand to take the EMC
     /// yourself, or with a Klein star to charge it. Attributes: <c>capacity</c>, <c>bonusPerSecond</c>, <c>transferPerSecond</c>.
     /// </summary>
-    public class BEAntimatterRelay : BlockEntity, IEmcAcceptor, IEmcInteractable
+    public class BEAntimatterRelay : BlockEntity, IEmcAcceptor, IEmcInteractable, IStarHolder
     {
         public double Stored;
+        public StarHolder Star { get; } = new StarHolder();
         double capacity = 100000, bonusPerSecond = 1, transferPerSecond = 64;
 
         public override void Initialize(ICoreAPI api)
@@ -46,6 +47,8 @@ namespace VintageE
             double before = Stored;
             double speed = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Config.MachineSpeedMultiplier ?? 1;
             if (Stored > 0) Stored = Math.Min(capacity, Stored + bonusPerSecond * speed * dt);
+            double charged = Star.Charge(Stored); // a Klein star inside is charged first
+            if (charged > 0) { Stored -= charged; MarkDirty(true); }
 
             double budget = Math.Min(Stored, transferPerSecond * speed * dt);
             foreach (BlockFacing face in BlockFacing.ALLFACES)
@@ -63,7 +66,7 @@ namespace VintageE
 
         public bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
         {
-            if (!byPlayer.Entity.Controls.Sneak) return false;
+            if (!byPlayer.Entity.Controls.Sneak) return Star.Interact(this, byPlayer);
             if (Api.Side == EnumAppSide.Client) return true;
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use) || Stored < 1) return true;
             Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, Math.Floor(Stored));
@@ -75,12 +78,14 @@ namespace VintageE
         {
             base.ToTreeAttributes(tree);
             tree.SetDouble("emc", Stored);
+            Star.ToTree(tree);
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
             Stored = tree.GetDouble("emc");
+            Star.FromTree(tree, worldAccessForResolve);
         }
 
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
@@ -88,6 +93,7 @@ namespace VintageE
             base.GetBlockInfo(forPlayer, dsc);
             dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Format(Stored), EmcFormat.Format(capacity)));
             dsc.AppendLine(Lang.Get("vintagee:relay-bonus", EmcFormat.Format(bonusPerSecond), EmcFormat.Format(transferPerSecond)));
+            Star.Info(dsc);
         }
     }
 
@@ -125,7 +131,13 @@ namespace VintageE
             radius = Block?.Attributes?["radius"].AsFloat(8) ?? 8;
             if (api.Side == EnumAppSide.Server) RegisterGameTickListener(_ =>
             {
-                try { Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets?.Repel(Pos.ToVec3d().Add(0.5, 0.5, 0.5), radius); }
+                try
+                {
+                    TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+                    Vec3d center = Pos.ToVec3d().Add(0.5, 0.5, 0.5);
+                    fx?.Repel(center, radius);
+                    fx?.RepelProjectiles(center, radius, null); // arrows and the like turn away too; players' own fly on
+                }
                 catch (Exception e) { Api.Logger.Warning("Vintage-E interdiction torch at {0}: {1}", Pos, e.Message); }
             }, 250);
         }

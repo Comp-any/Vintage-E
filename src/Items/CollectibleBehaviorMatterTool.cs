@@ -16,6 +16,7 @@ namespace VintageE
     {
         int maxRadius;
         int defaultRadius;
+        bool shots;
         SkillItem[] toolModes;
 
         public CollectibleBehaviorMatterTool(CollectibleObject collObj) : base(collObj) { }
@@ -25,12 +26,13 @@ namespace VintageE
             base.Initialize(properties);
             maxRadius = properties?["maxAreaRadius"].AsInt(0) ?? 0;
             defaultRadius = System.Math.Clamp(properties?["defaultAreaRadius"].AsInt(0) ?? 0, 0, maxRadius);
+            shots = properties?["shotModes"].AsBool(false) ?? false; // red matter: 3 tall / 3 wide / 3 long too
         }
 
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
-            if (api is ICoreClientAPI capi && maxRadius > 0) toolModes = AreaToolModes.Create(capi, maxRadius);
+            if (api is ICoreClientAPI capi && maxRadius > 0) toolModes = AreaToolModes.Create(capi, maxRadius, shots);
         }
 
         public override void OnUnloaded(ICoreAPI api)
@@ -58,8 +60,8 @@ namespace VintageE
         {
             // Runs before the targeted block breaks; we only add the surrounding ones and let the normal break continue.
             if (world.Side != EnumAppSide.Server || maxRadius <= 0 || blockSel == null) return true;
-            int radius = System.Math.Min(AreaToolModes.GetRadius(itemslot, defaultRadius), maxRadius);
-            if (radius <= 0) return true;
+            int mode = System.Math.Min(AreaToolModes.GetRadius(itemslot, defaultRadius), maxRadius + (shots ? AreaToolModes.Shots.Length : 0));
+            if (mode <= 0) return true;
 
             IPlayer player = (byEntity as EntityPlayer)?.Player;
             if (player == null || (byEntity as EntityAgent)?.Controls.Sneak == true) return true; // sneak = single block
@@ -69,7 +71,7 @@ namespace VintageE
             if (tool == null) return true;
 
             int broken = 0;
-            foreach (var pos in AreaToolModes.Plane(blockSel.Position, blockSel.Face, radius))
+            foreach (var pos in AreaToolModes.Positions(blockSel.Position, blockSel.Face, mode, maxRadius))
             {
                 if (pos.Equals(blockSel.Position)) continue;
                 Block block = ba.GetBlock(pos);

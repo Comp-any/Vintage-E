@@ -855,7 +855,7 @@ def make_map(t, s):
     for code, (metal, gem) in rings.items():
         ov.append(item("trinket-" + code, s["ring"], {"metal": metal, "gem": gemtex(gem)}, code))
     ov.append(item("ironband", s["band"], {}, "iron band"))
-    stones = {"bodystone": (BRASS, "topaz"), "soulstone": (SILVER, "sapphire"), "lifestone": (GOLD, "ruby")}
+    stones = {"bodystone": (BRASS, "topaz"), "soulstone": (SILVER, "sapphire"), "lifestone": (GOLD, "ruby"), "mindstone": (SILVER, "emerald")}
     for code, (metal, gem) in stones.items():
         ov.append(item("trinket-" + code, s["stone"], {"metal": metal, "gem": gemtex(gem)}, code))
     ov.append(item("trinket-evertideamulet", s["amulet"], {"metal": SILVER, "gem": gemtex("aquamarine")}, "evertide amulet"))

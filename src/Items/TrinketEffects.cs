@@ -38,6 +38,15 @@ namespace VintageE
         readonly Dictionary<string, Entity> shielded = new Dictionary<string, Entity>();
         /// <summary>Seconds after ring flight ends during which falling doesn't hurt.</summary>
         public const double FlightGraceSeconds = 15;
+        /// <summary>Swiftwolf's lightning shot (ProjectE: 832 EMC).</summary>
+        public const double LightningCost = 832;
+        /// <summary>Zero Ring burst (sneak + right-click): a wide freeze with snow.</summary>
+        public const double FreezeBurstCost = 32;
+        /// <summary>Mind Stone: EMC a second while it holds your body temperature at normal.</summary>
+        public const double TemperCostPerSecond = 1;
+        /// <summary>Dark Matter Sword / Red Matter Katar area attack: EMC per creature hit, and how far it reaches.</summary>
+        public const double SlayCostEach = 8;
+        public const float SlayRadius = 6;
 
         readonly VintageEModSystem mod;
         readonly ICoreServerAPI sapi;
@@ -373,6 +382,10 @@ namespace VintageE
                             break;
                         case "zeroring":
                             Freeze(entity.Pos.AsBlockPos, 3, player);
+                            if (Every(uid, "snow", 1)) LaySnow(entity.Pos.AsBlockPos, 3, 3, player);
+                            break;
+                        case "mindstone":
+                            Temper(player);
                             break;
                         case "bodystone":
                             if (Every(uid, effect, 2)) Feed(player, ItemEmcTrinket.FeedsNutrition(slot.Itemstack));
@@ -391,6 +404,17 @@ namespace VintageE
                             if (Every(uid, key, 2)) Condense(player, slot); // per slot: two gems used to share one timer
                             break;
                     }
+                }
+            }
+
+            // Gem helmet: you never run out of air (ProjectE's gives water breathing).
+            if (EntityBehaviorVintageE.ArmorPieces(player, "gem", out _) > 0 && WearsGemHead(player))
+            {
+                ITreeAttribute oxygen = entity.WatchedAttributes.GetTreeAttribute("oxygen");
+                if (oxygen != null)
+                {
+                    float max = oxygen.GetFloat("maxoxygen", 0), cur = oxygen.GetFloat("currentoxygen", 0);
+                    if (max > 0 && cur < max) { oxygen.SetFloat("currentoxygen", max); entity.WatchedAttributes.MarkPathDirty("oxygen"); }
                 }
             }
 
@@ -435,6 +459,18 @@ namespace VintageE
             // Speed comes with the paid ring: while flying for free on the Ring of Arcana, nothing is paid, so no speed.
             bool speedPaid = paidGaleSlots.Count > 0 && !outOfEmc && !(flying && flightFree);
             SetSpeed(player, speedPaid ? speed : 1);
+        }
+
+        static bool WearsGemHead(IPlayer player)
+        {
+            IInventory gear = player?.InventoryManager?.GetOwnInventory(GlobalConstants.characterInvClassName);
+            if (gear == null) return false;
+            foreach (ItemSlot slot in gear)
+            {
+                AssetLocation code = slot?.Itemstack?.Collectible?.Code;
+                if (code != null && code.Domain == VintageEModSystem.ModId && code.Path == "matterarmor-gem-head") return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -712,12 +748,15 @@ namespace VintageE
         }
 
         /// <summary>Swiftwolf's shield: turns arrows and other projectiles that someone else fired away from <paramref name="owner"/>.</summary>
-        public void RepelProjectiles(Entity owner, float radius)
+        public void RepelProjectiles(Entity owner, float radius) => RepelProjectiles(owner.Pos.XYZ.Add(0, 1, 0), radius, owner);
+
+        /// <summary>Turns projectiles within <paramref name="radius"/> of <paramref name="center"/> away from it; <paramref name="owner"/>'s own fly on (null: a player's are left alone - the interdiction torch).</summary>
+        public void RepelProjectiles(Vec3d center, float radius, Entity owner)
         {
-            Vec3d center = owner.Pos.XYZ.Add(0, 1, 0);
             foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is IProjectile))
             {
-                if (((IProjectile)e).FiredBy?.EntityId == owner.EntityId) continue;
+                Entity by = ((IProjectile)e).FiredBy;
+                if (owner != null ? by?.EntityId == owner.EntityId : by is EntityPlayer) continue;
                 Vec3d away = e.Pos.XYZ.SubCopy(center);
                 double dist = away.Length();
                 double speed = Math.Max(0.2, e.Pos.Motion.Length());
@@ -849,6 +888,7 @@ namespace VintageE
                     CollectibleObject c = stack.Collectible;
                     if (c == target || c is ItemEmcTrinket || c is IEmcStorageItem || c.GetMaxDurability(stack) > 0) continue;
                     if (StackContents.HasNestedStacks(stack)) continue;
+                    if (!GemFilter.Passes(gemSlot.Itemstack, c)) continue;
                     double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
                     if (value <= 0 || value > maxInput) continue;
                     stored += value * stack.StackSize;
@@ -867,6 +907,115 @@ namespace VintageE
             }
             StoredEmc.Set(gemSlot.Itemstack, stored);
             gemSlot.MarkDirty();
+        }
+
+        /// <summary>
+        /// Zero Ring: lays snow on bare ground around <paramref name="center"/> (ProjectE's ring does too), a few random
+        /// spots at a time so it drifts in rather than blankets everything at once.
+        /// </summary>
+        public int LaySnow(BlockPos center, int radius, int attempts, IServerPlayer byPlayer)
+        {
+            IBlockAccessor ba = sapi.World.BlockAccessor;
+            Block snow = sapi.World.GetBlock(new AssetLocation("game:snowlayer-1"));
+            if (snow == null || snow.Id == 0) return 0;
+            int laid = 0;
+            for (int i = 0; i < attempts; i++)
+            {
+                BlockPos pos = center.AddCopy(rand.Next(-radius, radius + 1), rand.Next(-1, 2), rand.Next(-radius, radius + 1));
+                if (ba.GetBlock(pos).Id != 0 || ba.GetBlock(pos, BlockLayersAccess.Fluid).Id != 0) continue;
+                Block below = ba.GetBlock(pos.DownCopy());
+                if (below == null || below.Id == 0 || !below.SideSolid[BlockFacing.UP.Index]) continue;
+                if (!MayChange(byPlayer, pos)) continue;
+                ba.SetBlock(snow.BlockId, pos);
+                laid++;
+            }
+            return laid;
+        }
+
+        /// <summary>Zero Ring sneak + right-click: freezes water within 8 blocks and lays snow within 6, for <see cref="FreezeBurstCost"/>.</summary>
+        public void FreezeBurst(IServerPlayer player, bool free)
+        {
+            if (!free && !Pay(player, FreezeBurstCost)) return;
+            BlockPos at = player.Entity.Pos.AsBlockPos;
+            Freeze(at, 8, player);
+            LaySnow(at, 6, 60, player);
+            Extinguish(player.Entity.Pos.XYZ, 8);
+            PESounds.Play(sapi.World, PESounds.WaterMagic, "game:sounds/effect/extinguish", player.Entity, 16, 0.8f);
+        }
+
+        /// <summary>Harvest Goddess Band sneak + right-click: harvests every ripe crop within 8 blocks and grows the rest a stage, 4 EMC a stage.</summary>
+        public void HarvestBurst(IServerPlayer player, bool free)
+        {
+            BlockPos at = player.Entity.Pos.AsBlockPos;
+            int harvested = Harvest(at, 8, player);
+            int grown = Grow(at, 8, 64, free ? null : player, free ? 0 : Cost(4));
+            if (harvested + grown > 0) sapi.World.PlaySoundAt(new AssetLocation("game:sounds/block/plant"), player.Entity, null, true, 16, 0.8f);
+        }
+
+        /// <summary>Mind Stone: keeps the player's body temperature at normal (37 °C), for <see cref="TemperCostPerSecond"/> while it has to.</summary>
+        void Temper(IServerPlayer player)
+        {
+            ITreeAttribute temp = player.Entity.WatchedAttributes.GetTreeAttribute("bodyTemp");
+            if (temp == null) return;
+            const float normal = 37f;
+            float cur = temp.GetFloat("bodytemp", normal);
+            if (Math.Abs(cur - normal) < 0.05f) return;
+            if (!EmcWallet.TryPay(player, Cost(TemperCostPerSecond * Interval))) return;
+            temp.SetFloat("bodytemp", normal);
+            player.Entity.WatchedAttributes.MarkPathDirty("bodyTemp");
+        }
+
+        /// <summary>
+        /// Swiftwolf's Rending Gale fire-projectile key: a lightning strike where the player looks (up to 64 blocks),
+        /// through the game's weather system; without it, the creatures there are shocked directly.
+        /// </summary>
+        public bool Lightning(IServerPlayer player, bool free)
+        {
+            EntityPlayer e = player.Entity;
+            Vec3d eye = e.Pos.XYZ.Add(0, e.LocalEyePos.Y, 0);
+            BlockSelection blockSel = null;
+            EntitySelection entitySel = null;
+            sapi.World.RayTraceForSelection(eye, e.Pos.Pitch, e.Pos.Yaw, 64, ref blockSel, ref entitySel, x => x != e, null);
+            Vec3d target = entitySel?.Entity?.Pos.XYZ ?? (blockSel != null ? blockSel.Position.ToVec3d().Add(0.5, 1, 0.5) : null);
+            if (target == null) return false;
+            if (!sapi.World.Claims.TryAccess(player, target.AsBlockPos, EnumBlockAccessFlags.Use)) return false;
+            if (!free && !Pay(player, LightningCost)) return false;
+            bool flashed = false;
+            try
+            {
+                ModSystem weather = sapi.ModLoader.Systems.FirstOrDefault(s => s.GetType().Name == "WeatherSystemServer");
+                var m = weather?.GetType().GetMethod("SpawnLightningFlash", new[] { typeof(Vec3d) });
+                if (m != null) { m.Invoke(weather, new object[] { target }); flashed = true; }
+            }
+            catch (Exception ex) { sapi.Logger.Warning("Vintage-E: lightning: {0}", ex.Message); }
+            if (!flashed)
+            {
+                foreach (Entity hit in sapi.World.GetEntitiesAround(target, 3, 3, x => x != e && x is EntityAgent && x.Alive))
+                {
+                    hit.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Player, SourceEntity = e, CauseEntity = e, Type = EnumDamageType.Electricity }, 12f);
+                    hit.Ignite();
+                }
+                sapi.World.PlaySoundAt(new AssetLocation("game:sounds/weather/lightning-near"), target.X, target.Y, target.Z, null, true, 48, 1f);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Dark Matter Sword / Red Matter Katar right-click: hits every hostile creature (or, in "all" mode, every creature
+        /// but players and the tamed) within <see cref="SlayRadius"/>, for <see cref="SlayCostEach"/> each.
+        /// </summary>
+        public int Slay(IServerPlayer player, float damage, bool all)
+        {
+            EntityPlayer e = player.Entity;
+            int hit = 0;
+            foreach (Entity target in sapi.World.GetEntitiesAround(e.Pos.XYZ, SlayRadius, SlayRadius / 2, x => all ? x is EntityAgent && !(x is EntityPlayer) && x.Alive && x.WatchedAttributes.GetString("ownerUid") == null : IsHostile(x)))
+            {
+                if (!EmcWallet.TryPay(player, Cost(SlayCostEach))) break;
+                target.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Player, SourceEntity = e, CauseEntity = e, Type = EnumDamageType.SlashingAttack, KnockbackStrength = 1 }, damage);
+                hit++;
+            }
+            if (hit > 0) PESounds.Play(sapi.World, PESounds.Power, "game:sounds/player/strike", e, 16, 0.8f);
+            return hit;
         }
 
         /// <summary>Black Hole Band / Void Ring right-click: removes a water or lava source block. Returns false if there is none.</summary>
@@ -934,6 +1083,56 @@ namespace VintageE
             if (solid != null && solid.Id != 0 && solid.Replaceable < 6000) return;
             if (lava && !Pay(player, ItemEmcTrinket.LavaCost)) return;
             PlaceLiquidAt(sapi.World, pos, lava);
+        }
+    }
+
+    /// <summary>
+    /// The Gem of Eternal Density's (and Void Ring's) filter: a row of items on the gem, either "eat everything cheap
+    /// except these" (the default, with nothing listed: everything cheap) or "eat only these". Stored on the gem with
+    /// the tablet magnet's keys, so the same slots and clicks serve both.
+    /// </summary>
+    public static class GemFilter
+    {
+        public const string OnlyKey = "vintageeGemOnly";
+
+        public static bool Only(ItemStack gem) => gem?.Attributes?.GetBool(OnlyKey) == true;
+
+        public static bool Passes(ItemStack gem, CollectibleObject c)
+        {
+            string key = PlayerEmc.KeyOf(c);
+            bool listed = key != null && TabletMagnet.GetFilter(gem).Contains(key);
+            return Only(gem) ? listed : !listed;
+        }
+
+        /// <summary>The gem the player is using: the one in hand if it's a gem or Void Ring, otherwise the first carried.</summary>
+        public static ItemSlot Find(IPlayer player)
+        {
+            ItemSlot hand = player?.InventoryManager?.ActiveHotbarSlot;
+            if ((hand?.Itemstack?.Collectible as ItemEmcTrinket)?.UsesDensityModes == true) return hand;
+            return EmcWallet.CarriedSlots(player).FirstOrDefault(s => (s.Itemstack?.Collectible as ItemEmcTrinket)?.UsesDensityModes == true);
+        }
+
+        /// <summary>Handles the filter window's clicks (server side).</summary>
+        public static void OnRequest(IServerPlayer player, TransmuteRequestPacket req, Action<string, string[]> fail)
+        {
+            ItemSlot gemSlot = Find(player);
+            if (gemSlot == null) { fail("nogem", Array.Empty<string>()); return; }
+            ItemStack gem = gemSlot.Itemstack;
+            if (req.Action == TransmuteAction.GemMode)
+            {
+                gem.Attributes.SetBool(OnlyKey, !Only(gem));
+                gemSlot.MarkDirty();
+                return;
+            }
+            int i = req.Mode;
+            if (i < 0 || i >= TabletMagnet.FilterSlots) return;
+            string[] keys = TabletMagnet.GetFilter(gem);
+            ItemStack cursor = player.InventoryManager.MouseItemSlot?.Itemstack;
+            string key = cursor != null ? PlayerEmc.KeyOf(cursor.Collectible) : null;
+            if (key != null && keys.Contains(key)) return;
+            keys[i] = key;
+            (gem.Attributes as TreeAttribute)?.SetStringArray(TabletMagnet.FilterKey, keys.Select(k => k ?? "").ToArray());
+            gemSlot.MarkDirty();
         }
     }
 }

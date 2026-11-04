@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -150,13 +151,15 @@ namespace VintageE
             }
             else if (UsesDensityModes)
             {
-                modes = new SkillItem[DensityTargets.Length];
-                for (int i = 0; i < modes.Length; i++)
+                // The targets, then "Filter..." which opens the filter window instead of picking a target.
+                modes = new SkillItem[DensityTargets.Length + 1];
+                for (int i = 0; i < DensityTargets.Length; i++)
                 {
                     CollectibleObject target = Resolve(capi.World, DensityTargets[i]);
                     string name = target == null ? DensityTargets[i] : target.GetHeldItemName(new ItemStack(target));
                     modes[i] = new SkillItem { Code = new AssetLocation("vintagee", "density" + i), Name = name }.WithLetterIcon(capi, string.IsNullOrEmpty(name) ? "?" : name.Substring(0, 1));
                 }
+                modes[DensityTargets.Length] = new SkillItem { Code = new AssetLocation("vintagee", "densityfilter"), Name = Lang.Get("vintagee:density-filter") }.WithLetterIcon(capi, "…");
             }
         }
 
@@ -209,6 +212,12 @@ namespace VintageE
                 if (off == 0) slot.Itemstack.Attributes.RemoveAttribute(ArcanaOffKey);
                 else slot.Itemstack.Attributes.SetInt(ArcanaOffKey, off);
             }
+            if (UsesDensityModes && toolMode >= DensityTargets.Length)
+            {
+                // "Filter...": the window, not a mode. The pick reaches both sides; only the client opens it.
+                if (api is ICoreClientAPI capi) capi.ModLoader.GetModSystem<VintageEModSystem>()?.OpenGemFilterDialog();
+                return;
+            }
             if (Kind == "swiftwolfsrendinggale" && toolMode >= GaleModes.Length)
             {
                 slot.Itemstack.Attributes.SetInt(SpeedKey, GameMath.Clamp(toolMode - GaleModes.Length, 0, GaleSpeeds.Length - 1));
@@ -246,7 +255,20 @@ namespace VintageE
                 effects.Teleport(player, TeleportRange);
                 return;
             }
+            if (Kind == "zeroring" && byEntity.Controls.Sneak)
+            {
+                effects.FreezeBurst(player, false);
+                return;
+            }
+            if (Kind == "ringofarcana" && byEntity.Controls.Sneak)
+            {
+                // Its Zero Ring and Harvest Goddess bursts at once, whichever are switched on; both free, as the ring is.
+                if (ArcanaEnabled(slot.Itemstack, 0)) effects.FreezeBurst(player, true);
+                if (ArcanaEnabled(slot.Itemstack, 2)) effects.HarvestBurst(player, true);
+                return;
+            }
             if ((Kind == "blackholeband" || Kind == "voidring") && blockSel != null && effects.RemoveLiquidSource(player, blockSel.Position)) return;
+            if (Kind == "harvestgoddessband" && byEntity.Controls.Sneak) { effects.HarvestBurst(player, false); return; }
             if (Kind == "harvestgoddessband" && blockSel != null && effects.PlantSeeds(player, blockSel, PlantRadius) > 0) return;
 
             bool on = !IsActive(slot.Itemstack);
@@ -280,9 +302,12 @@ namespace VintageE
 
         public bool CanShoot(ItemSlot slot)
         {
-            if (IsAmulet || Kind == "ignitionring") return true;
-            return Kind == "ringofarcana" && ArcanaEnabled(slot?.Itemstack, 1);
+            if (IsAmulet || Kind == "ignitionring" || Kind == "swiftwolfsrendinggale") return true;
+            return Kind == "ringofarcana" && (ArcanaEnabled(slot?.Itemstack, 1) || ArcanaEnabled(slot?.Itemstack, 3));
         }
+
+        /// <summary>What the fire-projectile key does: the Arcana shoots fire when its Ignition effect is on, else lightning.</summary>
+        string ShotKind(ItemSlot slot) => Kind == "ringofarcana" ? (ArcanaEnabled(slot?.Itemstack, 1) ? "ignitionring" : "swiftwolfsrendinggale") : Kind;
 
         public bool Shoot(IServerPlayer player, ItemSlot slot)
         {
@@ -299,6 +324,10 @@ namespace VintageE
                     if (EntityVintageEProjectile.Shoot(player, "lava", 30) == null) return false;
                     PESounds.Play(world, PESounds.Transmute, "game:sounds/effect/extinguish", player.Entity, 16, 0.5f);
                     return true;
+                case "swiftwolfsrendinggale":
+                    return Effects(world).Lightning(player, false);
+                case "ringofarcana" when ShotKind(slot) == "swiftwolfsrendinggale":
+                    return Effects(world).Lightning(player, true);
                 default: // ignition ring, ring of arcana
                     if (EntityVintageEProjectile.Shoot(player, "fire", 30, shot => shot.Damage = 3) == null) return false;
                     PESounds.Play(world, PESounds.Power, "game:sounds/effect/swoosh", player.Entity, 16, 0.8f);
@@ -312,7 +341,7 @@ namespace VintageE
             ItemStack stack = inSlot?.Itemstack;
             if (stack == null) return;
             if (IsToggleable) dsc.AppendLine(Lang.Get(IsActive(stack) ? "vintagee:trinket-on" : "vintagee:trinket-off"));
-            if (IsAmulet || Kind == "ignitionring" || Kind == "ringofarcana") VintageEModSystem.AppendFireKey(world, dsc);
+            if (IsAmulet || Kind == "ignitionring" || Kind == "ringofarcana" || Kind == "swiftwolfsrendinggale") VintageEModSystem.AppendFireKey(world, dsc);
             if (Kind == "ringofarcana")
             {
                 var on = new List<string>();
@@ -336,6 +365,9 @@ namespace VintageE
             {
                 CollectibleObject target = Resolve(world, DensityTargets[GameMath.Clamp(GetMode(stack), 0, DensityTargets.Length - 1)]);
                 if (target != null) dsc.AppendLine(Lang.Get("vintagee:density-target", target.GetHeldItemName(new ItemStack(target)), EmcFormat.Format(StoredEmc.Get(stack))));
+                string[] filter = TabletMagnet.GetFilter(stack);
+                int listed = filter.Count(f => f != null);
+                dsc.AppendLine(Lang.Get(GemFilter.Only(stack) ? "vintagee:density-filter-only" : listed == 0 ? "vintagee:density-filter-none" : "vintagee:density-filter-except", listed));
             }
         }
 
@@ -347,7 +379,9 @@ namespace VintageE
             if (Kind == "blackholeband" || Kind == "voidring") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-voidliquid", MouseButton = EnumMouseButton.Right });
             if (Kind == "harvestgoddessband") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-plant", MouseButton = EnumMouseButton.Right });
             if (Kind == "voidring") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-teleport", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
-            if (CanShoot(inSlot)) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-shoot-" + (Kind == "ringofarcana" ? "ignitionring" : Kind), HotKeyCode = VintageEModSystem.FireHotkey, MouseButton = EnumMouseButton.None });
+            if (Kind == "zeroring" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-freezeburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
+            if (Kind == "harvestgoddessband" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-harvestburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
+            if (CanShoot(inSlot)) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-shoot-" + ShotKind(inSlot), HotKeyCode = VintageEModSystem.FireHotkey, MouseButton = EnumMouseButton.None });
             if (modes != null || arcanaOn != null || galeOn != null) list.Add(new WorldInteraction { ActionLangCode = arcanaOn != null ? "vintagee:heldhelp-arcana-toggle" : "vintagee:heldhelp-trinket-mode", HotKeyCodes = new[] { "toolmodeselect" }, MouseButton = EnumMouseButton.None });
             return list.ToArray();
         }

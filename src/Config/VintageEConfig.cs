@@ -197,6 +197,10 @@ namespace VintageE
         [System.ComponentModel.Description("The Repair Talisman stops restoring clothing at this condition (percent). 100 = good as new.")]
         public double RepairTalismanClothingMaxCondition = 100;
 
+        /// <summary>Divining rods also list the most valuable kinds of block they found, this many of them (ProjectE's rods list three). 0 = only the totals.</summary>
+        [System.ComponentModel.Description("Divining rods also list the most valuable kinds of block they found, this many of them (ProjectE's rods list three). 0 = only the totals.")]
+        public int DiviningRodListsTop = 3;
+
         /// <summary>Multiplies the EMC that rings, stones, amulets and gadgets cost to run.</summary>
         [System.ComponentModel.Description("Multiplies the EMC that rings, stones, amulets and gadgets cost to run.")]
         public double TrinketCostMultiplier = 1.0;
@@ -254,6 +258,7 @@ namespace VintageE
             // emptied by a NaN cost, a collector stuck at NaN. Such values go back to their defaults.
             static bool Bad(double v) => double.IsNaN(v) || double.IsInfinity(v);
             if (Bad(TrinketCostMultiplier)) TrinketCostMultiplier = 1;
+            DiviningRodListsTop = Math.Clamp(DiviningRodListsTop, 0, 20);
             if (TrinketCostMultiplier < 0) TrinketCostMultiplier = 0;
             if (Bad(WatchSpeedUp)) WatchSpeedUp = 10;
             if (WatchSpeedUp < 1) WatchSpeedUp = 1;

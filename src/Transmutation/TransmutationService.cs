@@ -39,6 +39,11 @@ namespace VintageE
                 tableSessions.Remove(player.PlayerUID);
                 return;
             }
+            if (req.Action == TransmuteAction.GemFilter || req.Action == TransmuteAction.GemMode)
+            {
+                GemFilter.OnRequest(player, req, (code, args) => Fail(player, code, args)); // needs the gem, not a table
+                return;
+            }
             if (!HasAccess(player))
             {
                 Fail(player, "noaccess");

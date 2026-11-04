@@ -1296,6 +1296,70 @@
    }
   },
   {
+   "code": "vintagee:trinket-mindstone",
+   "label": "mindstone",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/stone",
+   "textures": {
+    "metal": "game:block/metal/plate/silver",
+    "gem": "game:block/stone/gem/emerald"
+   },
+   "guiTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 150,
+     "y": 45,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 1.65
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
+    },
+    "rotation": {
+     "x": 5,
+     "y": 82,
+     "z": 16
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.378,
+     "z": 0.5
+    },
+    "scale": 0.49
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.094,
+     "z": 0.5
+    },
+    "scale": 1.76
+   }
+  },
+  {
    "code": "vintagee:trinket-evertideamulet",
    "label": "evertide amulet",
    "kind": "item",

@@ -32,6 +32,13 @@ namespace VintageE
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
+            if (blockSel == null && firstEvent && byEntity is EntityPlayer)
+            {
+                // ProjectE: right-click in the air opens a crafting grid. Here that's the game's own, in the inventory window.
+                handling = EnumHandHandling.PreventDefault;
+                if (api is ICoreClientAPI capi) OpenCrafting(capi);
+                return;
+            }
             if (blockSel == null || !firstEvent || !(byEntity is EntityPlayer ep) || ep.Player == null)
             {
                 base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
@@ -66,6 +73,17 @@ namespace VintageE
             }
         }
 
+        static void OpenCrafting(ICoreClientAPI capi)
+        {
+            try
+            {
+                GuiDialog inv = System.Linq.Enumerable.FirstOrDefault(capi.Gui.LoadedGuis, g => g.GetType().Name == "GuiDialogInventory");
+                if (inv == null) return;
+                if (!inv.IsOpened()) inv.TryOpen();
+            }
+            catch (System.Exception e) { capi.Logger.Warning("Vintage-E: could not open the crafting grid: {0}", e.Message); }
+        }
+
         static int GameMathClamp(int v, int min, int max) => v < min ? min : (v > max ? max : v);
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
@@ -73,6 +91,7 @@ namespace VintageE
             return new[]
             {
                 new WorldInteraction { ActionLangCode = "vintagee:heldhelp-transmute", MouseButton = EnumMouseButton.Right },
+                new WorldInteraction { ActionLangCode = "vintagee:heldhelp-stone-craft", MouseButton = EnumMouseButton.Right },
                 new WorldInteraction { ActionLangCode = "vintagee:heldhelp-transmute-reverse", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right },
                 new WorldInteraction { ActionLangCode = "vintagee:heldhelp-area", HotKeyCode = "toolmodeselect" }
             };

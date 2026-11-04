@@ -90,6 +90,7 @@ namespace VintageE
             api.RegisterBlockEntityClass("VintageEEnergyCollector", typeof(BEEnergyCollector));
             api.RegisterBlockEntityClass("VintageEEnergyCondenser", typeof(BEEnergyCondenser));
             api.RegisterCollectibleBehaviorClass("VintageEMatterTool", typeof(CollectibleBehaviorMatterTool));
+            api.RegisterCollectibleBehaviorClass("VintageESlay", typeof(CollectibleBehaviorSlay));
             api.RegisterItemClass("ItemKleinStar", typeof(ItemKleinStar));
             api.RegisterItemClass("ItemEmcTrinket", typeof(ItemEmcTrinket));
             api.RegisterItemClass("ItemEmcGadget", typeof(ItemEmcGadget));
@@ -2527,11 +2528,24 @@ namespace VintageE
             transmutationDialog.TryOpen();
         }
 
+        GuiDialogGemFilter gemFilterDialog;
+
+        /// <summary>Opens (or closes) the Gem of Eternal Density's filter window, from the gem's tool modes.</summary>
+        public void OpenGemFilterDialog()
+        {
+            if (Capi == null) return;
+            if (gemFilterDialog != null && gemFilterDialog.IsOpened()) { gemFilterDialog.TryClose(); return; }
+            gemFilterDialog?.Dispose();
+            gemFilterDialog = new GuiDialogGemFilter(Capi, this);
+            gemFilterDialog.TryOpen();
+        }
+
         #endregion
 
         public override void Dispose()
         {
             transmutationDialog?.Dispose();
+            gemFilterDialog?.Dispose();
             missingDialog?.Dispose();
             watchHud?.Dispose();
             watchGlowTexture?.Dispose();

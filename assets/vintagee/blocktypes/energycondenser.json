@@ -17,8 +17,8 @@
     "west": { "base": "block/energycondenser-{tier}-side" }
   },
   "attributesByType": {
-    "*-mk1": { "itemsPerSecond": 4, "outputsPerSecond": 1, "capacity": 1000000, "storageSlots": 40, "interactionHelp": "vintagee:blockhelp-condenser" },
-    "*-mk2": { "itemsPerSecond": 16, "outputsPerSecond": 4, "capacity": 10000000, "storageSlots": 40, "interactionHelp": "vintagee:blockhelp-condenser" }
+    "*-mk1": { "itemsPerSecond": 20, "outputsPerSecond": 20, "capacity": 10000000, "storageSlots": 40, "interactionHelp": "vintagee:blockhelp-condenser" },
+    "*-mk2": { "itemsPerSecond": 64, "outputsPerSecond": 64, "capacity": 10000000, "storageSlots": 40, "interactionHelp": "vintagee:blockhelp-condenser" }
   },
   "resistance": 5,
   "requiredMiningTier": 2,

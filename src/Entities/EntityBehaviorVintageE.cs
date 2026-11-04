@@ -24,16 +24,7 @@ namespace VintageE
             IPlayer player = (entity as EntityPlayer)?.Player;
             if (player == null || damage <= 0 || damageSource.Type == EnumDamageType.Heal) return;
 
-            int gem = 0;
-            IInventory gear = player.InventoryManager?.GetOwnInventory(GlobalConstants.characterInvClassName);
-            if (gear != null)
-            {
-                foreach (ItemSlot slot in gear)
-                {
-                    string path = slot?.Itemstack?.Collectible?.Code?.Path;
-                    if (slot?.Itemstack?.Collectible?.Code?.Domain == VintageEModSystem.ModId && path != null && path.StartsWith("matterarmor-gem-")) gem++;
-                }
-            }
+            int gem = ArmorPieces(player, "gem", out bool gemBody), red = ArmorPieces(player, "red", out _);
 
             bool fall = damageSource.Source == EnumDamageSource.Fall || damageSource.Type == EnumDamageType.Gravity;
             TrinketEffects fx = entity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
@@ -42,11 +33,35 @@ namespace VintageE
                 damage = 0;
                 return;
             }
+            // Fire can't hurt a full set of red matter or gem armour (ProjectE); a gem chestplate shrugs off explosions.
             bool fire = damageSource.Type == EnumDamageType.Fire;
-            if (fire && (gem >= 3 || TrinketEffects.IsFireProof(player)))
+            if (fire && (gem >= 3 || red >= 3 || TrinketEffects.IsFireProof(player)))
+            {
+                damage = 0;
+                return;
+            }
+            if (damageSource.Source == EnumDamageSource.Explosion && gemBody)
             {
                 damage = 0;
             }
+        }
+
+        /// <summary>How many pieces of this mod's <paramref name="material"/> armour the player wears, and whether the chestplate is one of them.</summary>
+        public static int ArmorPieces(IPlayer player, string material, out bool body)
+        {
+            int n = 0;
+            body = false;
+            IInventory gear = player?.InventoryManager?.GetOwnInventory(GlobalConstants.characterInvClassName);
+            if (gear == null) return 0;
+            string prefix = "matterarmor-" + material + "-";
+            foreach (ItemSlot slot in gear)
+            {
+                CollectibleObject c = slot?.Itemstack?.Collectible;
+                if (c?.Code == null || c.Code.Domain != VintageEModSystem.ModId || !c.Code.Path.StartsWith(prefix)) continue;
+                n++;
+                if (c.Code.Path.EndsWith("-body")) body = true;
+            }
+            return n;
         }
     }
 }

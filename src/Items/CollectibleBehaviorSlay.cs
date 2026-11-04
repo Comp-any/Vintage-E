@@ -1,0 +1,50 @@
+using Vintagestory.API.Client;
+using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Datastructures;
+using Vintagestory.API.Server;
+
+namespace VintageE
+{
+    /// <summary>
+    /// ProjectE's Dark Matter Sword / Red Matter Sword / Katar area attack: right-click hits every hostile creature
+    /// within <see cref="TrinketEffects.SlayRadius"/> blocks ("slay hostile"); sneak + right-click every creature but
+    /// players and pets ("slay all"). Costs EMC per creature hit. Property <c>damage</c> sets the hit.
+    /// <code>"behaviors": [ { "name": "VintageESlay", "properties": { "damage": 8 } } ]</code>
+    /// </summary>
+    public class CollectibleBehaviorSlay : CollectibleBehavior
+    {
+        float damage = 8;
+        long lastMs;
+
+        public CollectibleBehaviorSlay(CollectibleObject collObj) : base(collObj) { }
+
+        public override void Initialize(JsonObject properties)
+        {
+            base.Initialize(properties);
+            damage = properties?["damage"].AsFloat(8) ?? 8;
+        }
+
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
+        {
+            if (!firstEvent) return;
+            handHandling = EnumHandHandling.PreventDefault;
+            handling = EnumHandling.PreventDefault;
+            if (byEntity.World.Side != EnumAppSide.Server || !((byEntity as EntityPlayer)?.Player is IServerPlayer player)) return;
+            long now = byEntity.World.ElapsedMilliseconds;
+            if (now - lastMs < 600) return; // once a swing
+            lastMs = now;
+            TrinketEffects fx = byEntity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+            fx?.Slay(player, damage, byEntity.Controls.Sneak);
+        }
+
+        public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot, ref EnumHandling handling)
+        {
+            return new[]
+            {
+                new WorldInteraction { ActionLangCode = "vintagee:heldhelp-slay-hostile", MouseButton = EnumMouseButton.Right },
+                new WorldInteraction { ActionLangCode = "vintagee:heldhelp-slay-all", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right }
+            };
+        }
+    }
+}

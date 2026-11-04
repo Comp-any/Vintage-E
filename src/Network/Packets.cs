@@ -42,7 +42,11 @@ namespace VintageE
         /// <summary>Tablet magnet: switch between "only these" and "everything except these".</summary>
         MagnetMode = 7,
         /// <summary>Learn what's on the mouse cursor without burning it (it stays on the cursor).</summary>
-        Learn = 8
+        Learn = 8,
+        /// <summary>Gem of Eternal Density filter: Mode = filter slot; what's on the cursor goes in it (an empty cursor clears it).</summary>
+        GemFilter = 9,
+        /// <summary>Gem of Eternal Density: switch between "all cheap things except these" and "only these".</summary>
+        GemMode = 10
     }
 
     /// <summary>Client → server request from the transmutation GUI.</summary>
