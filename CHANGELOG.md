@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.26 — 2026-11-04
+
+### Changed
+- **Doctor: a "World time" line in the health checks** says when the world's time runs faster or slower than normal and why (a Watch of Flowing Time switched on, or something else), and what that means: days, crops and temporal storms come round that much faster in real time, warping of the world included.
+
 ## 1.17.25 — 2026-11-04
 
 A deep review pass: threading, the windows, gameplay effects, commands and settings.

@@ -93,10 +93,32 @@ namespace VintageE
             else x.Ok(x.L("diag-join-ok", size, ms));
         }
 
+        // ---------------------------------------------------------------- world time
+
+        /// <summary>
+        /// A Watch of Flowing Time that is switched on changes how fast the whole world's time runs, and with it how
+        /// often temporal storms come round in real time: worth saying, because "the world warps like a temporal
+        /// storm" is exactly how a storm that arrived ten times sooner looks.
+        /// </summary>
+        static void WorldTime(Ctx x)
+        {
+            try
+            {
+                float modifier = x.Mod.Trinkets?.WatchTimeModifier ?? 0;
+                float speed = x.Sapi.World.Calendar?.SpeedOfTime ?? 60;
+                if (Math.Abs(modifier) < 0.01f && Math.Abs(speed - 60) < 0.01f) { x.Ok(x.L("diag-time-ok")); return; }
+                double factor = speed / 60.0;
+                x.Info(x.L("diag-time-changed", factor.ToString("0.##", CultureInfo.InvariantCulture), Math.Abs(modifier) < 0.01f ? x.L("diag-time-other") : x.L("diag-time-watch")));
+                x.Explain(x.L("diag-time-why"));
+            }
+            catch (Exception e) { x.Note("world time: " + e.Message); }
+        }
+
         // ---------------------------------------------------------------- 2, 3: the players' own data
 
         static void PlayerData(Ctx x)
         {
+            WorldTime(x);
             IPlayer[] players = x.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>();
             if (players.Length == 0) { x.Info(x.L("diag-pdata-nobody")); x.Explain(x.L("diag-pdata-nobody-why")); return; }
             int cap = x.Mod.Config.MaxExactKnowledge;

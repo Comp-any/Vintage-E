@@ -1732,5 +1732,10 @@
   "diag-look-trail": "What happened to the look on this computer, in order:",
   "diag-client-log-info": "Your game's log: no Vintage-E errors or warnings in client-main.log; the look's {0} progress lines:",
   "doctor-deeper": "Deeper checks",
-  "cmd-notready": "Vintage-E's transmutation service didn't start on this server (see /emc diagnose); learning is off until it does."
+  "cmd-notready": "Vintage-E's transmutation service didn't start on this server (see /emc diagnose); learning is off until it does.",
+  "diag-time-ok": "World time: runs at the normal speed; no Watch of Flowing Time is on.",
+  "diag-time-changed": "World time: runs at {0}x the normal speed ({1}).",
+  "diag-time-watch": "a Watch of Flowing Time is switched on",
+  "diag-time-other": "set by something other than Vintage-E: the game or another mod",
+  "diag-time-why": "Faster time means days, seasons, crops and temporal storms all come round faster in real time: a storm due in two days arrives in a fifth of the usual time at 10x, and the storm's warping of the world with it. Switch the watch off (or set WatchChangesWorldTime to false) if that's not wanted."
 }
