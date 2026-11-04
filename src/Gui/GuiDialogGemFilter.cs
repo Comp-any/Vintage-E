@@ -85,7 +85,12 @@ namespace VintageE
         void Refresh()
         {
             ItemStack gem = Gem;
-            if (gem == null) { TryClose(); return; }
+            if (gem == null)
+            {
+                // The gem is gone: close, but not from inside the tick listener that drives this.
+                capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) TryClose(); }, "vintagee-gemfilter-close");
+                return;
+            }
             string[] filter = TabletMagnet.GetFilter(gem);
             bool only = GemFilter.Only(gem);
             string signature = only + "|" + string.Join(",", filter);
