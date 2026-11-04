@@ -975,7 +975,7 @@ namespace VintageE
             Vec3d eye = e.Pos.XYZ.Add(0, e.LocalEyePos.Y, 0);
             BlockSelection blockSel = null;
             EntitySelection entitySel = null;
-            sapi.World.RayTraceForSelection(eye, e.Pos.Pitch, e.Pos.Yaw, 64, ref blockSel, ref entitySel, x => x != e, null);
+            sapi.World.RayTraceForSelection(eye, e.Pos.Pitch, e.Pos.Yaw, 64, ref blockSel, ref entitySel, null, x => x != e);
             Vec3d target = entitySel?.Entity?.Pos.XYZ ?? (blockSel != null ? blockSel.Position.ToVec3d().Add(0.5, 1, 0.5) : null);
             if (target == null) return false;
             if (!sapi.World.Claims.TryAccess(player, target.AsBlockPos, EnumBlockAccessFlags.Use)) return false;
