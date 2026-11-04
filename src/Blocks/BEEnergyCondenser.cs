@@ -53,6 +53,10 @@ namespace VintageE
             {
                 var resized = new CondenserInventory(storage + 1);
                 for (int i = 0; i < Math.Min(resized.Count, inventory.Count); i++) resized[i].Itemstack = inventory[i].Itemstack;
+                // Fewer slots than before (an update or a patch): what was in the lost slots is dropped on the ground, not lost.
+                if (api.Side == EnumAppSide.Server)
+                    for (int i = resized.Count; i < inventory.Count; i++)
+                        if (inventory[i].Itemstack != null) api.World.SpawnItemEntity(inventory[i].Itemstack, Pos.ToVec3d().Add(0.5, 1.1, 0.5));
                 inventory = resized;
             }
             capacity = attrs?["capacity"].AsDouble(1000000) ?? 1000000;

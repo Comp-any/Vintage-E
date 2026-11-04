@@ -121,7 +121,8 @@ namespace VintageE
                 // expected, and the doctor would otherwise flag every attempt. The watch keeps the refusal.
                 sapi.Logger.Notification("Vintage-E: {0} can't burn {1} ({2}): the server values it at {3} each (the plain item {4}); stack attributes: {5}",
                     player?.PlayerName ?? "?", stack.GetName(), stack.Collectible.Code, each, plain, stack.Attributes?.ToJsonToken() ?? "none");
-                if (player != null) mod.ResendEmcTable(player);
+                // Once a minute per player: clicking the burn slot with a worthless item must not cost a table send each time.
+                if (player != null && mod.ResendAllowed(player)) mod.ResendEmcTable(player);
                 args = new[] { stack.GetName() + " (" + stack.Collectible.Code + ")" };
                 return "novalue";
             }
@@ -228,7 +229,25 @@ namespace VintageE
             ItemStack stack = PlayerEmc.ResolveStack(world, key);
             if (stack == null) return null;
             if (PlayerEmc.IsExact(key) && mod.Emc.StackData.ModeOf(stack.Collectible) == StackDataMode.Item) return new ItemStack(stack.Collectible, 1);
+            // A clutter, tapestry or typed-container version whose type the game no longer lists (its mod was removed
+            // or renamed it) would be a nameless block with no shape: not offered, not created.
+            if (PlayerEmc.IsExact(key) && StackDataUtil.NeedsData(stack.Collectible, world) && !KnownVersion(world, stack)) return null;
             return stack;
+        }
+
+        /// <summary>True when the game's creative inventory lists this version of a typed block (or lists none at all, like cuttings).</summary>
+        static bool KnownVersion(IWorldAccessor world, ItemStack stack)
+        {
+            TreeAttribute kept = StackDataUtil.KeptData(stack);
+            if (kept == null) return true;
+            bool any = false;
+            foreach (ItemStack version in StackDataUtil.CreativeVersions(stack.Collectible, world))
+            {
+                any = true;
+                if (version?.Attributes == null) continue;
+                if (StackDataUtil.IsSubset(world, kept, version.Attributes)) return true;
+            }
+            return !any;
         }
 
         /// <param name="mode">0 = one onto cursor, 1 = stack onto cursor, 2 = stack into inventory</param>

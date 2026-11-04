@@ -2,6 +2,22 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.24 — 2026-11-04
+
+A second review pass, this one for what happens when mods are added, removed or updated.
+
+### Fixed
+- **Exact versions learned from a removed mod no longer count toward `MaxExactKnowledge`.** They were invisible in the table (so they couldn't be forgotten) yet still counted, until the player was told "too many exact versions" with far fewer on screen.
+- **An exact version whose contents are gone with their mod** (a bucket of a modded liquid, a chiseled block of a modded rock) is no longer offered: it would have been created as a container of nothing, worth the empty container.
+- **A clutter, tapestry or typed-container version whose type the game no longer lists** (its mod removed, or the type renamed) is no longer offered or created: it would have been a nameless block with no shape, at a guessed value.
+- **"What changed" and the value-swing check compared across worlds**: the snapshots were one file per server, so loading a second world reported every item of the first world's mods as lost. They are per world now, like the cache.
+- **A condenser with fewer slots than before** (an update or a patch) dropped what was in the lost slots. It is dropped on the ground now.
+- **A pedestal whose item vanished with its mod** kept its "active" look; it reads as empty now and looks it.
+- **Refusals shown by the watch** from a previous world in the same game session are cleared at server start.
+- **Clicking the burn slot with a worthless item** made the server resend the whole EMC table every time; now at most once a minute per player.
+- The "learned …" chat line no longer trusts a modded item's name to not throw; EMC table packets are bounds-checked against this game's own item and block lists.
+- The doctor's "remove entries that match nothing" fix says that the settings file is shared by every world on the server.
+
 ## 1.17.23 — 2026-11-04
 
 ### Changed

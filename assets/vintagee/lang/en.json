@@ -1686,7 +1686,7 @@
   "diag-vspread-attr": "{0}: {1} copied value(s), e.g.",
   "diag-vspread-range": "the family runs from {0} to {1}",
   "diag-check-crashed": "The {0} check itself failed ({1}); the rest ran. Please include this in a bug report.",
-  "diag-fix-removekeys": "Remove all {0} entries that match nothing, and remap",
+  "diag-fix-removekeys": "Remove all {0} entries that match nothing, and remap (the settings file is shared by every world on this server: entries for a mod that is only switched off here go too)",
   "diag-done-removekeys": "Removed {0} settings entries that matched nothing; the values were remapped.",
   "doctor-home": "Check-up",
   "doctor-copy": "Copy this report",

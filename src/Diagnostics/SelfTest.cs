@@ -354,6 +354,16 @@ namespace VintageE
                 ItemStack copy = TransmutationService.Prototype(mod, sapi.World, key);
                 Check(copy != null && copy.Attributes.GetString("metal") == "gold" && Math.Abs(mod.Emc.GetValue(copy) - mod.Emc.GetValue(goldShield)) < 1e-6, "an exact copy of a gold shield is a gold shield at the same price");
             }
+            // Mod changes: a typed version the game no longer lists is not offered; an exact key whose contents are gone is dead.
+            Block tapestryBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code?.Path == "tapestry" && b.Code.Domain == "game");
+            if (tapestryBlock != null)
+            {
+                var fake = new TreeAttribute(); fake.SetString("type", "nosuchpattern-from-a-removed-mod");
+                string badKey = PlayerEmc.ExactKey(tapestryBlock, fake);
+                Check(TransmutationService.Prototype(mod, sapi.World, badKey) == null, "a tapestry pattern the game no longer has is not offered or created");
+                ItemStack real = StackDataUtil.CreativeVersions(tapestryBlock, sapi.World).FirstOrDefault();
+                if (real != null) Check(TransmutationService.Prototype(mod, sapi.World, PlayerEmc.ExactKey(tapestryBlock, StackDataUtil.KeptData(real))) != null, "a real tapestry pattern is still offered");
+            }
 
             // Chiseled block: a full block of granite is worth a granite block, half of one half.
             Block chiseled = sapi.World.GetBlock(new AssetLocation("game:chiseledblock"));

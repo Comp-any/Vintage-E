@@ -128,6 +128,9 @@ namespace VintageE
                 if (data == null) return null;
                 foreach (var kv in data) stack.Attributes[kv.Key] = kv.Value.Clone();
                 StackDataUtil.ResolveNested(world, stack);
+                // Something inside it (a modded liquid in a bucket, a modded rock in a chiseled block) is gone with
+                // its mod: better no entry than a container of nothing, or one worth the empty container.
+                if (!StackDataUtil.NestedResolved(stack)) return null;
             }
             return stack;
         }
@@ -145,7 +148,12 @@ namespace VintageE
             foreach (string key in GetKnown(player))
             {
                 if (!IsExact(key)) continue;
-                if (world != null && NeedsDataCached(Resolve(world, key), world)) continue;
+                if (world != null)
+                {
+                    CollectibleObject c = Resolve(world, key);
+                    // Gone with its mod: it sits in the list harmlessly and counts for nothing (the doctor says so).
+                    if (c == null || NeedsDataCached(c, world)) continue;
+                }
                 n++;
             }
             return n;

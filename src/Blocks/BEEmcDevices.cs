@@ -242,9 +242,11 @@ namespace VintageE
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-            held?.ResolveBlockOrItem(api.World);
+            if (held != null && !held.ResolveBlockOrItem(api.World)) held = null;
             if (api.Side == EnumAppSide.Server)
             {
+                // A held item that didn't survive a mod change leaves the block in its "active" look; put it right.
+                if (held == null) api.Event.RegisterCallback(_ => { try { UpdateBlockState(); } catch { } }, 50);
                 RegisterGameTickListener(OnServerTick, 500);
                 if ((held?.Collectible as ItemEmcTrinket)?.Kind is string k && (k == "evertideamulet" || k == "volcaniteamulet"))
                     RegisterDelayedCallback(_ => ApplyWeather(true), 3000);

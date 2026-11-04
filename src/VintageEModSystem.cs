@@ -557,6 +557,8 @@ namespace VintageE
         {
             Sapi = sapi;
             Config = LoadConfig(sapi);
+            // Refusals are kept in a static list: a previous world's (single player) must not show in this one's watch.
+            EmcDiagnose.ClearRefusals();
             Step("services", () =>
             {
                 Transmutation = new TransmutationService(this, sapi);
@@ -1146,6 +1148,20 @@ namespace VintageE
         /// <summary>Sends one player the server's values again (after the server refused something their game showed a value for).</summary>
         public void ResendEmcTable(IServerPlayer player) => SendEmcTable(player);
 
+        readonly Dictionary<string, long> lastResend = new Dictionary<string, long>();
+        /// <summary>At most one refusal-triggered table resend a minute per player (the doctor's Resend is not limited).</summary>
+        public bool ResendAllowed(IServerPlayer player)
+        {
+            if (player?.PlayerUID == null || Sapi == null) return false;
+            long now = Sapi.World.ElapsedMilliseconds;
+            lock (lastResend)
+            {
+                if (lastResend.TryGetValue(player.PlayerUID, out long last) && now - last < 60000) return false;
+                lastResend[player.PlayerUID] = now;
+                return true;
+            }
+        }
+
         /// <summary>How long the last EMC table took to build and hand to the network, for the doctor's join-cost check.</summary>
         public long LastTableSendMs { get; private set; }
 
@@ -1503,13 +1519,21 @@ namespace VintageE
         public Dictionary<string, double> PreviousValues { get; private set; }
         public DateTime PreviousValuesAt { get; private set; }
 
+        static string SafeFileName(string s)
+        {
+            foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) s = s.Replace(ch, '_');
+            return s;
+        }
+
         /// <summary>Keeps the last two mappings' values on disk (emc-snapshot.json, emc-snapshot-previous.json) so "what changed" works across restarts.</summary>
         void SnapshotValues(EmcMappingReport report)
         {
             try
             {
                 string dir = DataFolder(Sapi);
-                string last = System.IO.Path.Combine(dir, "emc-snapshot.json"), prev = System.IO.Path.Combine(dir, "emc-snapshot-previous.json");
+                // Per world, like the cache: "what changed" must not compare one world's values with another's.
+                string worldId = SafeFileName(Sapi.World.SavegameIdentifier ?? "default");
+                string last = System.IO.Path.Combine(dir, "emc-snapshot-" + worldId + ".json"), prev = System.IO.Path.Combine(dir, "emc-snapshot-previous-" + worldId + ".json");
                 if (LastReport != null)
                 {
                     PreviousValues = LastReport.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv.Value);
@@ -2147,7 +2171,12 @@ namespace VintageE
             if (packet.LearnedKey != null)
             {
                 ItemStack learned = PlayerEmc.ResolveStack(Capi.World, packet.LearnedKey);
-                if (learned != null) Capi.ShowChatMessage(Lang.Get("vintagee:learned", learned.GetName()));
+                if (learned != null)
+                {
+                    string name;
+                    try { name = learned.GetName(); } catch { name = learned.Collectible?.Code?.ToShortString() ?? "?"; }
+                    Capi.ShowChatMessage(Lang.Get("vintagee:learned", name));
+                }
             }
             transmutationDialog?.OnServerResult(packet);
         }

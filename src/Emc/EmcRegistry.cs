@@ -240,8 +240,11 @@ namespace VintageE
             var fresh = new Dictionary<CollectibleObject, double>();
             int[] ids = packet.ItemIds ?? Array.Empty<int>();
             double[] vals = packet.ItemValues ?? Array.Empty<double>();
+            // Ids the server sent; this game may hold fewer (a mismatch), so stay inside its lists and skip bad numbers.
+            int itemCount = world.Items?.Count ?? 0, blockCount = world.Blocks?.Count ?? 0;
             for (int i = 0; i < ids.Length && i < vals.Length; i++)
             {
+                if (ids[i] < 0 || ids[i] >= itemCount || double.IsNaN(vals[i]) || double.IsInfinity(vals[i])) continue;
                 Item item = world.GetItem(ids[i]);
                 if (item?.Code != null) fresh[item] = vals[i];
             }
@@ -249,6 +252,7 @@ namespace VintageE
             vals = packet.BlockValues ?? Array.Empty<double>();
             for (int i = 0; i < ids.Length && i < vals.Length; i++)
             {
+                if (ids[i] < 0 || ids[i] >= blockCount || double.IsNaN(vals[i]) || double.IsInfinity(vals[i])) continue;
                 Block block = world.GetBlock(ids[i]);
                 if (block?.Code != null) fresh[block] = vals[i];
             }

@@ -202,6 +202,18 @@ namespace VintageE
         }
 
         /// <summary>Resolves the stacks held inside a stack's data (they only know their ids after loading).</summary>
+        /// <summary>False when any stack held inside this one has no collectible (its mod is gone).</summary>
+        public static bool NestedResolved(ItemStack stack, int depth = 0)
+        {
+            if (stack == null || depth > 6) return true;
+            foreach (ItemStack inner in StackContents.NestedStacks(stack))
+            {
+                if (inner.Collectible == null) return false;
+                if (!NestedResolved(inner, depth + 1)) return false;
+            }
+            return true;
+        }
+
         public static void ResolveNested(IWorldAccessor world, ItemStack stack, int depth = 0)
         {
             if (world == null || depth > 6) return;
