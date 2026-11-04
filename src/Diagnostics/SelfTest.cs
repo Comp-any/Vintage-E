@@ -358,11 +358,16 @@ namespace VintageE
             Block tapestryBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code?.Path == "tapestry-north" && b.Code.Domain == "game");
             if (tapestryBlock != null)
             {
-                var fake = new TreeAttribute(); fake.SetString("type", "nosuchpattern-from-a-removed-mod");
-                string badKey = PlayerEmc.ExactKey(tapestryBlock, fake);
-                Check(TransmutationService.Prototype(mod, sapi.World, badKey) == null, "a tapestry pattern the game no longer has is not offered or created");
+                // The check needs the game's list of versions, which a dedicated server doesn't hold for every block.
                 ItemStack real = StackDataUtil.CreativeVersions(tapestryBlock, sapi.World).FirstOrDefault();
-                if (real != null) Check(TransmutationService.Prototype(mod, sapi.World, PlayerEmc.ExactKey(tapestryBlock, StackDataUtil.KeptData(real))) != null, "a real tapestry pattern is still offered");
+                Line("  tapestry versions known to this server: " + (real != null ? "yes" : "none (the version check is skipped here)"));
+                if (real != null)
+                {
+                    var fake = new TreeAttribute(); fake.SetString("type", "nosuchpattern-from-a-removed-mod");
+                    string badKey = PlayerEmc.ExactKey(tapestryBlock, fake);
+                    Check(TransmutationService.Prototype(mod, sapi.World, badKey) == null, "a tapestry pattern the game no longer has is not offered or created");
+                    Check(TransmutationService.Prototype(mod, sapi.World, PlayerEmc.ExactKey(tapestryBlock, StackDataUtil.KeptData(real))) != null, "a real tapestry pattern is still offered");
+                }
             }
 
             // Chiseled block: a full block of granite is worth a granite block, half of one half.
