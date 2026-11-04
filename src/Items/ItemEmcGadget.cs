@@ -436,6 +436,7 @@ namespace VintageE
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+            VintageEModSystem.AppendServerScaling(world, dsc, costs: Kind != "tomeofknowledge" && !IsDiviningRod(this));
             if (IsLens) VintageEModSystem.AppendFireKey(world, dsc);
             if (Kind == "mercurialeye")
             {

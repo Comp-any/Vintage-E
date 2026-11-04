@@ -22,6 +22,11 @@ namespace VintageE
         [ProtoMember(11)] public bool ProjectESounds;
         /// <summary>Blocks/items on the server's NoTransmute list (valued, but can't be burned, learned or created).</summary>
         [ProtoMember(12)] public string[] NoTransmuteKeys;
+        /// <summary>The server's multipliers, so tooltips can say when the numbers in them are scaled: trinket/gadget costs, machine speed, the watch's speed-up and slow-down.</summary>
+        [ProtoMember(13)] public double TrinketCostMultiplier = 1;
+        [ProtoMember(14)] public double MachineSpeedMultiplier = 1;
+        [ProtoMember(15)] public double WatchSpeedUp = 10;
+        [ProtoMember(16)] public double WatchSlowDown = 3;
     }
 
     public enum TransmuteAction

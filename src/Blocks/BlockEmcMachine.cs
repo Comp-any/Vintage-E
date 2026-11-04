@@ -34,6 +34,13 @@ namespace VintageE
             return base.OnBlockInteractStart(world, byPlayer, blockSel);
         }
 
+        public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+            bool machine = Attributes?["emcPerSecond"].Exists == true || Attributes?["itemsPerSecond"].Exists == true || Attributes?["transferPerSecond"].Exists == true;
+            if (machine) VintageEModSystem.AppendServerScaling(world, dsc, costs: false, machine: true);
+        }
+
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
         {
             var help = new System.Collections.Generic.List<WorldInteraction>(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer) ?? System.Array.Empty<WorldInteraction>());

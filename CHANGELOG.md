@@ -21,6 +21,8 @@ More of ProjectE, and the condensers at ProjectE's speed.
 - **Interdiction Torch** turns away arrows and other projectiles creatures fire (players' own fly on).
 - **Divining rods** also list the most valuable kinds of block they found; the server setting `DiviningRodListsTop` (3) says how many, 0 turns it off.
 
+- **Tooltips say when this server scales the numbers**: a trinket or gadget whose costs are multiplied (TrinketCostMultiplier), a machine running faster or slower (MachineSpeedMultiplier) and the watch's speeds (WatchSpeedUp, WatchSlowDown) get a line saying so; the client now receives those settings with the EMC table.
+
 ### Changed
 - **Energy Condenser speeds match ProjectE**: MK1 burns 20 items a second and makes 20 copies a second (was 4 and 1) and stores 10,000,000 EMC (was 1,000,000); MK2 burns 64 and makes 64 a second (was 16 and 4).
 

@@ -18,6 +18,11 @@ namespace VintageE
 
         /// <summary>Whether ProjectE's sounds are on (mirrors the server config on clients).</summary>
         public bool ProjectESounds { get; set; }
+        /// <summary>The server's multipliers (sent with the table), for tooltips that quote costs and speeds.</summary>
+        public double TrinketCostMultiplier { get; set; } = 1;
+        public double MachineSpeedMultiplier { get; set; } = 1;
+        public double WatchSpeedUp { get; set; } = 10;
+        public double WatchSlowDown { get; set; } = 3;
 
         /// <summary>
         /// Items that keep their EMC value (recipes still use it) but can't be burned for EMC, learned or created
@@ -226,6 +231,10 @@ namespace VintageE
                 BlockValues = blockValues.ToArray(),
                 DurabilityScales = DurabilityScales,
                 ProjectESounds = ProjectESounds,
+                TrinketCostMultiplier = TrinketCostMultiplier,
+                MachineSpeedMultiplier = MachineSpeedMultiplier,
+                WatchSpeedUp = WatchSpeedUp,
+                WatchSlowDown = WatchSlowDown,
                 NoTransmuteKeys = NoTransmute.Select(PlayerEmc.KeyOf).Where(k => k != null).ToArray(),
                 DataKeys = dataKeys.ToArray(),
                 DataKindModes = dataKindModes.ToArray(),
@@ -259,6 +268,10 @@ namespace VintageE
             values = fresh;
             DurabilityScales = packet.DurabilityScales;
             ProjectESounds = packet.ProjectESounds;
+            TrinketCostMultiplier = packet.TrinketCostMultiplier > 0 ? packet.TrinketCostMultiplier : 1;
+            MachineSpeedMultiplier = packet.MachineSpeedMultiplier > 0 ? packet.MachineSpeedMultiplier : 1;
+            WatchSpeedUp = packet.WatchSpeedUp > 0 ? packet.WatchSpeedUp : 10;
+            WatchSlowDown = packet.WatchSlowDown > 0 ? packet.WatchSlowDown : 3;
             var noTransmute = new HashSet<CollectibleObject>();
             foreach (string key in packet.NoTransmuteKeys ?? Array.Empty<string>())
             {

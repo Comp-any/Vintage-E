@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -878,6 +879,10 @@ namespace VintageE
             Emc.Replace(report.Values);
             Emc.DurabilityScales = Config.DurabilityScalesEmc;
             Emc.ProjectESounds = Config.ProjectESounds;
+            Emc.TrinketCostMultiplier = Config.TrinketCostMultiplier;
+            Emc.MachineSpeedMultiplier = Config.MachineSpeedMultiplier;
+            Emc.WatchSpeedUp = Config.WatchSpeedUp;
+            Emc.WatchSlowDown = Config.WatchSlowDown;
             Emc.World = Sapi.World;
             BuildStackData(report);
             sw.Stop();
@@ -2205,6 +2210,19 @@ namespace VintageE
         }
 
         public void SendTransmuteRequest(TransmuteRequestPacket packet) => clientChannel?.SendPacket(packet);
+
+        /// <summary>
+        /// Tooltip lines saying when this server scales the numbers a tooltip quotes: trinket and gadget costs
+        /// (TrinketCostMultiplier), machine speeds (MachineSpeedMultiplier), the watch's speeds. Nothing at the defaults.
+        /// </summary>
+        public static void AppendServerScaling(IWorldAccessor world, StringBuilder dsc, bool costs, bool machine = false, bool watch = false)
+        {
+            EmcRegistry emc = world?.Api?.ModLoader.GetModSystem<VintageEModSystem>()?.Emc;
+            if (emc == null) return;
+            if (costs && Math.Abs(emc.TrinketCostMultiplier - 1) > 1e-9) dsc.AppendLine(Lang.Get("vintagee:server-costs", emc.TrinketCostMultiplier.ToString("0.##")));
+            if (machine && Math.Abs(emc.MachineSpeedMultiplier - 1) > 1e-9) dsc.AppendLine(Lang.Get("vintagee:server-machinespeed", emc.MachineSpeedMultiplier.ToString("0.##")));
+            if (watch && (Math.Abs(emc.WatchSpeedUp - 10) > 1e-9 || Math.Abs(emc.WatchSlowDown - 3) > 1e-9)) dsc.AppendLine(Lang.Get("vintagee:server-watch", emc.WatchSpeedUp.ToString("0.##"), emc.WatchSlowDown.ToString("0.##")));
+        }
 
         public const string SetValueHotkey = "vintagee-setvalue";
         public const string DiagnoseHotkey = "vintagee-diagnose";
