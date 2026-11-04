@@ -236,8 +236,11 @@ namespace VintageE
             {
                 string title = Block.GetPlacedBlockName(Api.World, Pos);
                 dialog = new GuiDialogCondenser(title, inventory, Pos, capi, this);
+                // Already open in another window (the game refuses a second one): don't keep a dead dialog that
+                // would swallow every later click.
+                if (dialog.IsDuplicate) { dialog.Dispose(); dialog = null; return; }
                 dialog.OnClosed += () => { dialog?.Dispose(); dialog = null; };
-                dialog.TryOpen();
+                if (!dialog.TryOpen()) { dialog.Dispose(); dialog = null; return; }
                 capi.Network.SendPacketClient(inventory.Open(byPlayer));
                 capi.Network.SendBlockEntityPacket(Pos, (int)EnumBlockEntityPacketId.Open);
             }

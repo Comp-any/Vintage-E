@@ -125,6 +125,7 @@ namespace VintageE
             SingleComposer.GetSwitch("icon").SetValue(Cfg.WatchIcon);
             SingleComposer.GetSwitch("glow").SetValue(Cfg.WatchGlow);
             SingleComposer.GetSlider("size").SetValues(Cfg.WatchIconSize, 16, 128, 4, "px");
+            SingleComposer.GetSlider("size").TriggerOnlyOnMouseUp(); // not a file write per pixel of dragging
             SingleComposer.GetNumberInput("offx").SetValue(Cfg.WatchIconOffsetX.ToString(CultureInfo.InvariantCulture));
             SingleComposer.GetNumberInput("offy").SetValue(Cfg.WatchIconOffsetY.ToString(CultureInfo.InvariantCulture));
             SingleComposer.GetTextInput("color").SetValue(Cfg.WatchGlowColor);

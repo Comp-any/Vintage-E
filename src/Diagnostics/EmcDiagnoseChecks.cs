@@ -347,7 +347,8 @@ namespace VintageE
         {
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-runs"));
-            var runs = x.Mod.MappingHistory;
+            List<(DateTime at, string reason, long ms, bool cached)> runs;
+            lock (x.Mod.MappingHistory) runs = x.Mod.MappingHistory.ToList();
             if (runs.Count == 0) { x.Note(x.L("diag-runs-none"), 0); return; }
             var last = runs[runs.Count - 1];
             var fresh = runs.Where(m => !m.cached).ToList();

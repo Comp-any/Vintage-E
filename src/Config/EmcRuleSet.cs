@@ -117,6 +117,9 @@ namespace VintageE
         /// </summary>
         public const string CompatPath = "config/vintagee-emc-compat/";
 
+        /// <summary>Value files that threw while being read (file → error), for the doctor.</summary>
+        public Dictionary<string, string> BrokenFiles = new Dictionary<string, string>();
+
         public static string DisabledKeyOf(IEnumerable<string> disabled) => string.Join("|", (disabled ?? Enumerable.Empty<string>()).Where(d => d != null).Select(d => d.Trim().ToLowerInvariant()).OrderBy(d => d, StringComparer.Ordinal));
 
         /// <summary>True if <paramref name="source"/> (an asset location) is on the DisabledCompat list, which may also name just the file ("primitivesurvival" or "primitivesurvival.json").</summary>
@@ -195,8 +198,17 @@ namespace VintageE
 
             foreach (var (asset, root, compat) in ordered)
             {
-                set.Merge(root, asset.Location.ToString(), lastResort: compat);
-                set.LoadedFiles.Add(asset.Location.ToString());
+                // One mod's malformed file (a string where an object is expected) must not take the server down.
+                try
+                {
+                    set.Merge(root, asset.Location.ToString(), lastResort: compat);
+                    set.LoadedFiles.Add(asset.Location.ToString());
+                }
+                catch (Exception e)
+                {
+                    logger.Error("EMC value file {0} could not be read and is skipped: {1}", asset.Location, e.Message);
+                    set.BrokenFiles[asset.Location.ToString()] = e.Message;
+                }
             }
             set.Compat.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
             logger.Notification("Loaded {0} EMC base value rules and {1} last-resort rules from {2} file(s): {3}", set.Values.Count, set.Defaults.Count, set.LoadedFiles.Count, string.Join(", ", set.LoadedFiles));

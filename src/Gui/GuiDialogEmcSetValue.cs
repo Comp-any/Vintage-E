@@ -49,7 +49,8 @@ namespace VintageE
             CairoFont detail = CairoFont.WhiteDetailText();
             CairoFont label = CairoFont.WhiteSmallText();
             CairoFont grey = CairoFont.WhiteDetailText().WithColor(new double[] { 0.75, 0.75, 0.75, 1 });
-            string name = stack.GetName();
+            string name;
+            try { name = stack.GetName(); } catch { name = stack.Collectible?.Code?.ToShortString() ?? "?"; }
             string code = (stack.Class == EnumItemClass.Block ? "block:" : "item:") + stack.Collectible.Code;
             string now = state.Free ? Lang.Get("vintagee:setvalue-nowfree")
                 : state.Blacklisted ? Lang.Get("vintagee:setvalue-nowblacklisted")
@@ -129,7 +130,6 @@ namespace VintageE
         public override void OnGuiOpened()
         {
             base.OnGuiOpened();
-            ignoreNextKeyPress = true; // the hotkey's own key press
             GuiElementTextInput input = SingleComposer?.GetTextInput("value");
             if (input != null) SingleComposer.FocusElement(input.TabIndex);
         }

@@ -104,6 +104,7 @@ namespace VintageE
                 mod.SaveConfig();
                 mod.Trinkets?.ResetHostile();
                 mod.RecalculateEmc("/emc configure: every setting reset"); // also applies the table, sounds and no-transmute settings
+                try { mod.Sapi?.World?.Config?.SetString(VintageEModSystem.WorldLookKey, ProjectELook.NormalizeLook(mod.Config.Look)); } catch { }
                 return Lang.GetL(lang, "vintagee:cfg-resetall-done");
             }
             FieldInfo field = Field(name) ?? throw new FormatException(Lang.GetL(lang, "vintagee:cfg-unknown", name));

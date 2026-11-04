@@ -46,6 +46,8 @@ namespace VintageE
 
         /// <summary>Resolved knowledge entries, kept between openings (cleared when the world is left).</summary>
         static readonly Dictionary<string, Entry> cache = new Dictionary<string, Entry>();
+        /// <summary>Drops the entries (they hold a world's item stacks; called when a world ends).</summary>
+        public static void ForgetWorld() { cache.Clear(); }
         static IWorldAccessor cacheWorld;
 
         /// <summary>0 = most EMC first, 1 = least EMC first, 2 = name A-Z, 3 = name Z-A. Remembered while the game runs.</summary>
@@ -451,7 +453,8 @@ namespace VintageE
                     // Ctrl + right-click forgets an entry, after asking (you'd have to burn one again to learn it back).
                     if (click.Button == EnumMouseButton.Right)
                     {
-                        string name = shown.GetName();
+                        string name;
+                        try { name = shown.GetName(); } catch { name = shown.Collectible?.Code?.ToShortString() ?? "?"; }
                         new GuiDialogConfirm(capi, Lang.Get("vintagee:gui-forget-confirm", name), ok =>
                         {
                             if (ok) mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.Forget, Key = key });

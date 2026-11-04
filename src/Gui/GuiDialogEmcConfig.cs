@@ -302,7 +302,8 @@ namespace VintageE
             if (comps.Count == 0) comps.Add(new RichTextComponent(capi, Lang.Get("vintagee:missing-nomatch"), normal));
             GuiElementRichtext list = SingleComposer.GetRichtext("list");
             if (list == null) return;
-            list.SetNewText(comps.ToArray());
+            GuiTextures.Release(list); // the old link components own GL textures the element won't free
+                list.SetNewText(comps.ToArray());
             list.Bounds.CalcWorldBounds();
             float scroll = listScroll;
             GuiElementScrollbar bar = SingleComposer.GetScrollbar("listbar");

@@ -353,11 +353,11 @@ namespace VintageE
                     fx.Extinguish(center, 6 * range);
                     break;
                 case "blackholeband":
-                    fx.Attract(center.AddCopy(0, 0.6, 0), 10 * range);
+                    fx.Attract(center.AddCopy(0, 0.6, 0), 10 * range, outsideClaimsOnly: true);
                     Collect(center);
                     break;
                 case "voidpull":
-                    fx.Attract(center.AddCopy(0, 0.6, 0), TrinketEffects.VoidPullRadius * range);
+                    fx.Attract(center.AddCopy(0, 0.6, 0), TrinketEffects.VoidPullRadius * range, outsideClaimsOnly: true);
                     Collect(center);
                     break;
                 case "swiftwolfsrendinggale":

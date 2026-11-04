@@ -64,8 +64,9 @@ namespace VintageE
             return Path.Combine(dir, "emc-" + world + ".json");
         }
 
-        public static string Fingerprint(ICoreServerAPI sapi, VintageEModSystem mod, ILogger logger)
+        public static string Fingerprint(ICoreServerAPI sapi, VintageEModSystem mod, ILogger logger, VintageEConfig config = null)
         {
+            config ??= mod.Config;
             using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
             var sb = new StringBuilder(4096);
             void Flush()
@@ -85,7 +86,7 @@ namespace VintageE
             }
 
             // Settings and value files
-            sb.Append("config=").Append(JsonConvert.SerializeObject(mod.Config)).Append('\n');
+            sb.Append("config=").Append(JsonConvert.SerializeObject(config)).Append('\n');
             foreach (EmcValueRule r in mod.Rules.Values) sb.Append("rule=").Append(r.Source).Append('|').Append(r.Pattern).Append(r.PerLitre ? "/L=" : "=").Append(r.Value.ToString("R")).Append('\n');
             foreach (string b in mod.Rules.Blacklist) sb.Append("bl=").Append(b).Append('\n');
             foreach (string a in mod.Rules.Allow) sb.Append("allow=").Append(a).Append('\n');

@@ -118,6 +118,10 @@ namespace VintageE
             if (!Alive || done || World.Side != EnumAppSide.Server) return;
 
             age += dt;
+            // A shot that was saved with its chunk (it flew into unloaded land) carries its age across the reload,
+            // instead of flying its full time again from there.
+            if (age < 0.5f && WatchedAttributes.HasAttribute("vintageeAge")) age = Math.Max(age, WatchedAttributes.GetFloat("vintageeAge"));
+            WatchedAttributes.SetFloat("vintageeAge", age);
             if (age > MaxLifeSeconds)
             {
                 Die(EnumDespawnReason.Expire);

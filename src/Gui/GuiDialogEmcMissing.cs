@@ -399,6 +399,7 @@ namespace VintageE
                 GuiElementRichtext list = SingleComposer.GetRichtext("list");
                 if (list == null) return;
                 float scroll = (float)-list.Bounds.fixedY;
+                GuiTextures.Release(list); // the old link components own GL textures the element won't free
                 list.SetNewText(comps.ToArray());
                 list.Bounds.CalcWorldBounds();
 
@@ -498,8 +499,8 @@ namespace VintageE
             if (SingleComposer == null) return true;
             string[] keys = SelectedKeys;
             if (keys.Length == 0) { UpdateStatus(Lang.Get("vintagee:missing-select")); return true; }
-            string text = (SingleComposer.GetTextInput("value")?.GetText() ?? "").Trim().Replace(',', '.');
-            if (!double.TryParse(text, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double v) || v < 0 || double.IsInfinity(v))
+            string text = SingleComposer.GetTextInput("value")?.GetText() ?? "";
+            if (!GuiDialogEmcSetValue.TryParse(text, out double v))
             {
                 UpdateStatus(Lang.Get("vintagee:missing-badvalue"));
                 return true;

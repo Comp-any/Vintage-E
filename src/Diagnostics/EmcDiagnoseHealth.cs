@@ -118,7 +118,10 @@ namespace VintageE
                 if (cap > 0 && exact > cap) problems.Add(x.L("diag-pdata-overcap", p.PlayerName, exact, cap));
                 // Tablet filters naming items that no longer exist.
                 int badFilters = 0;
-                foreach (IInventory inv in p.InventoryManager?.Inventories?.Values.ToList() ?? new List<IInventory>())
+                List<IInventory> inventories;
+                try { inventories = p.InventoryManager?.Inventories?.Values.ToList() ?? new List<IInventory>(); }
+                catch (InvalidOperationException) { inventories = new List<IInventory>(); } // opened or closed a container just now
+                foreach (IInventory inv in inventories)
                 {
                     // The creative inventory has no slots on the server (its Count throws); only the real ones can hold a tablet.
                     if (inv == null || inv.ClassName == null || inv.ClassName.Contains("creative")) continue;

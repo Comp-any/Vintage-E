@@ -50,7 +50,7 @@ namespace VintageE
             if (words.Length == 2)
             {
                 string n = words[0].TrimEnd('x', 'X', '*');
-                if (!double.TryParse(n, NumberStyles.Float, CultureInfo.InvariantCulture, out qty) || qty <= 0 || double.IsInfinity(qty))
+                if (!double.TryParse(n, NumberStyles.Float, CultureInfo.InvariantCulture, out qty) || !(qty > 0) || double.IsInfinity(qty))
                 {
                     error = "\"" + words[0] + "\" isn't a quantity";
                     return false;

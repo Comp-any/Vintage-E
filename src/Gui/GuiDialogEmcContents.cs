@@ -243,6 +243,7 @@ namespace VintageE
                 GuiElementRichtext list = SingleComposer.GetRichtext("list");
                 if (list == null) return;
                 float scroll = (float)-list.Bounds.fixedY;
+                GuiTextures.Release(list); // the old link components own GL textures the element won't free
                 list.SetNewText(comps.ToArray());
                 list.Bounds.CalcWorldBounds();
                 GuiElementScrollbar bar = SingleComposer.GetScrollbar("scrollbar");

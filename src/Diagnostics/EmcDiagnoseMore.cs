@@ -518,7 +518,7 @@ namespace VintageE
                     case "pin":
                         {
                             int eq = target.IndexOf('=');
-                            if (eq <= 0 || !double.TryParse(target.Substring(eq + 1), NumberStyles.Float, CultureInfo.InvariantCulture, out double v) || v < 0) return L("diag-done-nothing", target);
+                            if (eq <= 0 || !double.TryParse(target.Substring(eq + 1), NumberStyles.Float, CultureInfo.InvariantCulture, out double v) || v < 0 || double.IsNaN(v) || double.IsInfinity(v)) return L("diag-done-nothing", target);
                             string key = target.Substring(0, eq);
                             string lesson = Lesson(mod, key, lang);
                             mod.Config.FixedValues[key] = v;

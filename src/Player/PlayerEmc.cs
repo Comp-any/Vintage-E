@@ -160,6 +160,8 @@ namespace VintageE
         }
 
         static readonly Dictionary<CollectibleObject, bool> needsData = new Dictionary<CollectibleObject, bool>();
+        /// <summary>Forgets the typed-block answers (they hold a world's collectibles; called when a world ends).</summary>
+        public static void ForgetWorld() { lock (needsData) needsData.Clear(); }
         static bool NeedsDataCached(CollectibleObject c, IWorldAccessor world)
         {
             if (c == null) return false;

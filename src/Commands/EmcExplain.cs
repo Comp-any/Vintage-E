@@ -218,7 +218,9 @@ namespace VintageE
             remapped = false;
             if (report == null || report.FromCache)
             {
-                report = mod.RecalculateEmc(why) ?? report;
+                // Compute only: a live remap would resend the table and announce the mapping to every player.
+                try { report = mod.ComputeMapping(why, false, out _) ?? report; }
+                catch (Exception e) { mod.Mod.Logger.Warning("EMC: could not work the values out for the dump: {0}", e.Message); }
                 remapped = true;
             }
             return report;

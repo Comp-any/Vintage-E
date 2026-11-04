@@ -355,7 +355,7 @@ namespace VintageE
                 Check(copy != null && copy.Attributes.GetString("metal") == "gold" && Math.Abs(mod.Emc.GetValue(copy) - mod.Emc.GetValue(goldShield)) < 1e-6, "an exact copy of a gold shield is a gold shield at the same price");
             }
             // Mod changes: a typed version the game no longer lists is not offered; an exact key whose contents are gone is dead.
-            Block tapestryBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code?.Path == "tapestry" && b.Code.Domain == "game");
+            Block tapestryBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code?.Path == "tapestry-north" && b.Code.Domain == "game");
             if (tapestryBlock != null)
             {
                 var fake = new TreeAttribute(); fake.SetString("type", "nosuchpattern-from-a-removed-mod");
@@ -551,10 +551,12 @@ namespace VintageE
             Check(dir.Replace('\\', '/').Contains("ModData/vintagee"), "data folder is ModData/vintagee: " + dir);
 
             // Resetting settings.
-            double defaultRange = new VintageEConfig().TableUseRange;
+            double defaultRange = new VintageEConfig().TableUseRange, adminRange = mod.Config.TableUseRange;
             RunCommand("/emc configure TableUseRange 13");
             string reset = RunCommand("/emc configure TableUseRange default");
             Check(Math.Abs(mod.Config.TableUseRange - defaultRange) < 1e-9, "/emc configure <setting> default resets it: " + reset);
+            // The admin's own value, not the default, is what stays in the settings file.
+            if (Math.Abs(adminRange - defaultRange) > 1e-9) RunCommand("/emc configure TableUseRange " + adminRange.ToString(System.Globalization.CultureInfo.InvariantCulture));
             Check(ConfigureCommand.DefaultTexts().Length == ConfigureCommand.Snapshot(mod.Config).names.Length, "every setting has a default for the window");
 
             // Look is a drop-down in the window; typed, it only takes its choices.
@@ -1079,9 +1081,10 @@ namespace VintageE
             try { ConfigureCommand.SetFromText(mod, "TransitionEmcPerDay", "dry = lots", "en"); }
             catch (FormatException) { refused = true; }
             Check(refused && mod.Config.TransitionEmcPerDay.TryGetValue("dry", out double dry) && dry == 64, "the settings window refuses a bad table line and keeps the old value");
+            double adminSpeed = mod.Config.WatchSpeedUp;
             ConfigureCommand.SetFromText(mod, "WatchSpeedUp", "12", "en");
             bool number = Math.Abs(mod.Config.WatchSpeedUp - 12) < 1e-9;
-            ConfigureCommand.SetFromText(mod, "WatchSpeedUp", "10", "en");
+            ConfigureCommand.SetFromText(mod, "WatchSpeedUp", adminSpeed.ToString(System.Globalization.CultureInfo.InvariantCulture), "en");
             Check(number, "the settings window changes a number");
         }
 

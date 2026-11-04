@@ -1731,5 +1731,6 @@
   "diag-look-how": "Applied through the shape-loader hook {0} time(s); the early pass found {1} blocks and items.",
   "diag-look-trail": "What happened to the look on this computer, in order:",
   "diag-client-log-info": "Your game's log: no Vintage-E errors or warnings in client-main.log; the look's {0} progress lines:",
-  "doctor-deeper": "Deeper checks"
+  "doctor-deeper": "Deeper checks",
+  "cmd-notready": "Vintage-E's transmutation service didn't start on this server (see /emc diagnose); learning is off until it does."
 }

@@ -61,7 +61,7 @@ namespace VintageE
             var loc = new AssetLocation(pattern);
             // A broken @regex in a settings entry throws inside the game's matcher; it then matches nothing.
             try { return Candidates(loc).Where(c => (type == null || c.ItemClass == type) && WildcardUtil.Match(loc, c.Code)).ToList(); }
-            catch (ArgumentException) { return Enumerable.Empty<CollectibleObject>(); }
+            catch (Exception) { return Enumerable.Empty<CollectibleObject>(); } // a broken @regex, or one that times out
         }
 
         /// <summary>Whether one collectible matches <paramref name="pattern"/> (same rules as <see cref="Match"/>).</summary>

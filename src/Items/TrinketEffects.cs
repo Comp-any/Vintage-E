@@ -73,6 +73,22 @@ namespace VintageE
 
         double Cost(double baseCost) => baseCost * mod.Config.TrinketCostMultiplier;
 
+        /// <summary>
+        /// Whether an effect may change this block: the player's own claim rules, or, for a pedestal (no player),
+        /// nothing inside anyone's claim at all. A pedestal just outside a claim used to harvest the crops and freeze
+        /// the ponds inside it.
+        /// </summary>
+        bool MayChange(IPlayer byPlayer, BlockPos pos)
+        {
+            try
+            {
+                if (byPlayer != null) return sapi.World.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak);
+                LandClaim[] claims = sapi.World.Claims.Get(pos);
+                return claims == null || claims.Length == 0;
+            }
+            catch { return false; }
+        }
+
         // ------------------------------------------------------------------ pedestal weather
 
         /// <summary>Loaded pedestals holding an Evertide or Volcanite Amulet, and which.</summary>
@@ -84,6 +100,22 @@ namespace VintageE
         /// A pedestal's amulet changed (null: none, or the pedestal was removed/unloaded). An Evertide Amulet on any
         /// loaded pedestal brings rain; otherwise a Volcanite Amulet stops it; with neither, the weather is the game's again.
         /// </summary>
+        /// <summary>
+        /// At server start nothing of ours is running yet, so anything left behind by a crash is cleared: the watch's
+        /// time-speed modifier (its first tick only removes it on a change) and a pedestal's rain override, which
+        /// the pedestal re-asserts itself once its chunk loads.
+        /// </summary>
+        public void ReconcileAfterStart()
+        {
+            try { sapi.World.Calendar?.RemoveTimeSpeedModifier(TimeModifierName); } catch { }
+            try
+            {
+                if (sapi.WorldManager.SaveGame.GetData<bool>(WeatherOwnedKey, false) && weatherPedestals.Count == 0 && SetPrecipitationOverride(null))
+                    sapi.WorldManager.SaveGame.StoreData(WeatherOwnedKey, false);
+            }
+            catch { }
+        }
+
         public void SetPedestalWeather(BlockPos pos, string kind)
         {
             if (pos == null) return;
@@ -341,7 +373,7 @@ namespace VintageE
                             if (Every(uid, effect, 1)) Repair(player);
                             break;
                         case "gemofeternaldensity":
-                            if (Every(uid, effect, 2)) Condense(player, slot);
+                            if (Every(uid, key, 2)) Condense(player, slot); // per slot: two gems used to share one timer
                             break;
                     }
                 }
@@ -364,8 +396,9 @@ namespace VintageE
             if (shieldUp) shielded[uid] = entity; // pushed every 0.1 s by ShieldTick
             else shielded.Remove(uid);
             // Moving costs more the faster you go: flying 6.4 EMC/s × speed, running 6.4 EMC/s × (speed - 1).
+            // Only real flight is paid: a jump, a fall or a ladder with the ring on used to cost 6.4 EMC/s too.
             bool airborne = !entity.OnGround && !entity.Swimming;
-            bool flying = wantFlight && airborne && player.WorldData.FreeMove;
+            bool flying = wantFlight && airborne && player.WorldData.FreeMove && entity.Controls.IsFlying;
             double moveCost = flying && !flightFree ? FlightCostPerSecond * speed
                 : !flying && speed > 1 && entity.Controls.TriesToMove ? FlightCostPerSecond * (speed - 1) : 0;
             if (moveCost > 0 && !EmcWallet.TryPay(player, Cost(moveCost * Interval)))
@@ -384,7 +417,9 @@ namespace VintageE
                 speed = 1;
             }
             SetFlight(player, wantFlight);
-            SetSpeed(player, paidGaleSlots.Count > 0 && !outOfEmc ? speed : 1);
+            // Speed comes with the paid ring: while flying for free on the Ring of Arcana, nothing is paid, so no speed.
+            bool speedPaid = paidGaleSlots.Count > 0 && !outOfEmc && !(flying && flightFree);
+            SetSpeed(player, speedPaid ? speed : 1);
         }
 
         /// <summary>
@@ -449,10 +484,12 @@ namespace VintageE
         // ------------------------------------------------------------------ effects (also used by pedestals)
 
         /// <summary>Pulls loose items towards <paramref name="center"/>.</summary>
-        public void Attract(Vec3d center, float radius)
+        public void Attract(Vec3d center, float radius, bool outsideClaimsOnly = false)
         {
             foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
             {
+                // A pedestal (no player) leaves what lies inside someone's claim alone.
+                if (outsideClaimsOnly && !MayChange(null, e.Pos.AsBlockPos)) continue;
                 Vec3d dir = center.SubCopy(e.Pos.XYZ);
                 double dist = dir.Length();
                 if (dist < 0.75) continue;
@@ -510,7 +547,7 @@ namespace VintageE
                     {
                         BlockPos pos = center.AddCopy(dx, dy, dz);
                         if (!IsRipeCrop(ba.GetBlock(pos))) continue;
-                        if (byPlayer != null && !sapi.World.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak)) continue;
+                        if (!MayChange(byPlayer, pos)) continue;
                         ba.BreakBlock(pos, byPlayer);
                         harvested++;
                     }
@@ -595,7 +632,7 @@ namespace VintageE
                         Block fluid = ba.GetBlock(pos, BlockLayersAccess.Fluid);
                         if (fluid?.Code == null || !fluid.Code.Path.StartsWith("water-still", StringComparison.Ordinal)) continue;
                         if (ba.GetBlock(pos, BlockLayersAccess.Solid)?.Id > 0) continue;
-                        if (byPlayer != null && !sapi.World.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak)) continue;
+                        if (!MayChange(byPlayer, pos)) continue;
                         if (!ice.ForFluidsLayer) ba.SetBlock(0, pos, BlockLayersAccess.Fluid);
                         ba.SetBlock(ice.BlockId, pos);
                         frozen++;

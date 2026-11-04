@@ -2,6 +2,31 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.25 — 2026-11-04
+
+A deep review pass: threading, the windows, gameplay effects, commands and settings.
+
+### Fixed — crashes and races
+- **Original look: swapping projectile textures from the game's entity shape loader raced the game's entity texture collection on another thread and could crash the client thread at join.** Entity types are left alone on a player's game now; projectiles keep Vintage-E's own look on every look.
+- **A background mapping (a doctor fix, `/emc recalc` from a window) read the live settings while an admin changed them**, which failed the mapping with "collection was modified". The mapper works on a copy of the settings taken when it starts.
+- **A malformed value file from another mod** (a string where an object is expected in `relativeValues`, `blacklist`, …) stopped the server at start-up. It is logged and skipped.
+- The doctor's reads of a player's inventories and of the mapping history are guarded against the game thread changing them; the look hook keeps its own reference to the mod instance.
+
+### Fixed — windows
+- **The set-value box swallowed the first character typed** ("1000" became "000").
+- **Every refill of a list window leaked GL textures** (two per link, per keystroke in the search box). They are released now.
+- **A condenser window could go dead** when the game refused to open it twice; the client-settings slider wrote the settings file for every pixel dragged; the missing-items window's value box rejected "1,000"; two more unguarded item names.
+
+### Fixed — gameplay
+- **Pedestals respected no land claims**: a Harvest Goddess Band one block outside a claim harvested the crops inside it, a Zero Ring froze its ponds, a Black Hole Band pulled the drops out. A pedestal now leaves anything inside a claim alone.
+- **Swiftwolf's Rending Gale charged for flight whenever you were in the air** — every jump, fall and ladder. Only real flight is paid now.
+- **Ring of Arcana + Swiftwolf's**: flying free on the Arcana still gave the Swiftwolf's speed for nothing; speed now comes only with paid flight (or running, which it pays for).
+- **Two Gems of Eternal Density** shared one timer, so only one ever condensed.
+- **A shot that flew into unloaded land** resumed with its full flight time when the chunk loaded; its age is kept now.
+- **After a crash, the Watch's time speed and a pedestal's rain override stayed in the world** until someone toggled them again; they are cleared at server start.
+- "Pin all" no longer pins items that a recipe would value once their ingredients are valued; `/emc configure resetall` applies the Look reset to joining players; `/emc dump` no longer remaps the live table (and announces it to everyone) just to explain a value; a broken `@regex` in `/emc dump` or a settings list is caught (including one that times out); NaN is refused in pins and custom recipes; `/emc learn` refuses non-admins when the transmutation service failed to start; the self-test puts the admin's settings back instead of the defaults.
+- A world's caches (typed-block answers, the table window's entries) are dropped when the world ends.
+
 ## 1.17.24 — 2026-11-04
 
 A second review pass, this one for what happens when mods are added, removed or updated.

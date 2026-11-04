@@ -243,6 +243,7 @@ namespace VintageE
             HostileCreatures ??= new List<string>();
             StackDataModes ??= new Dictionary<string, string>();
             if (MaxExactKnowledge < 0) MaxExactKnowledge = 0;
+            DisabledCompat ??= new List<string>();
             RepairTalismanClothingPercentPerMinute = Math.Max(0, RepairTalismanClothingPercentPerMinute);
             RepairTalismanClothingMinCondition = Math.Clamp(RepairTalismanClothingMinCondition, 0, 100);
             RepairTalismanClothingMaxCondition = Math.Clamp(RepairTalismanClothingMaxCondition, RepairTalismanClothingMinCondition, 100);

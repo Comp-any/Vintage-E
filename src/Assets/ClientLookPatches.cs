@@ -84,7 +84,7 @@ namespace VintageE
         /// </summary>
         public static void Forget(object instance)
         {
-            if (ReferenceEquals(Mod, instance)) Mod = null;
+            if (ReferenceEquals(Mod, instance)) { Mod = null; Capi = null; }
         }
 
         /// <summary>Removes the patches outright (not used at run time; kept for tests).</summary>
@@ -113,22 +113,26 @@ namespace VintageE
 
         static void BlocksPrefix(object __instance, IList<Block> blocks)
         {
-            if (OnPlayersSide(__instance, "blocks")) Mod.ApplyClientLookTo("blocks", blocks?.Cast<CollectibleObject>(), new List<EntityProperties>());
+            VintageEModSystem mod = Mod; // a local: Forget can null the static from the main thread meanwhile
+            if (mod != null && OnPlayersSide(__instance, "blocks")) mod.ApplyClientLookTo("blocks", blocks?.Cast<CollectibleObject>(), new List<EntityProperties>());
         }
 
         static void ItemsPrefix(object __instance, IList<Item> items)
         {
-            if (OnPlayersSide(__instance, "items")) Mod.ApplyClientLookTo("items", items?.Cast<CollectibleObject>(), new List<EntityProperties>());
+            VintageEModSystem mod = Mod;
+            if (mod != null && OnPlayersSide(__instance, "items")) mod.ApplyClientLookTo("items", items?.Cast<CollectibleObject>(), new List<EntityProperties>());
         }
 
+        /// <summary>
+        /// Entity types are left alone on a player's game, whatever the look: the game collects entity textures on one
+        /// thread while this loader runs on another, and anything swapped here from under that collection (new,
+        /// unbaked texture entries) crashed the client thread on the Original look. Projectiles keep Vintage-E's
+        /// own look on every look. (The hook stays so the doctor can count the loader's calls.)
+        /// </summary>
         static void EntitiesPrefix(object __instance, IEnumerable<EntityProperties> entities)
         {
             if (!OnPlayersSide(__instance, "entities")) return;
-            // The game collects entity textures on another thread while this loader runs, and a type whose shape
-            // isn't loaded when its turn comes loses the shape's textures (the player's included). So nothing is done
-            // here unless the look really changes an entity type (the New look changes none).
-            if (!Mod.LookTouchesEntities(entities)) { LastSkipReason = "entities: the look changes no entity type"; return; }
-            Mod.ApplyClientLookTo("entities", Array.Empty<CollectibleObject>(), entities?.ToList());
+            LastSkipReason = "entities: left alone (entity textures are collected on another thread at the same time)";
         }
     }
 }

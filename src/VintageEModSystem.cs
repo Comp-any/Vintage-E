@@ -165,7 +165,8 @@ namespace VintageE
         {
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
-            Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat);
+            try { Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat); }
+            catch (Exception e) { Mod.Logger.Error("EMC value files could not be loaded at AssetsFinalize ({0}); the mapping will try again.", e.Message); StartupErrors.Add("value files: " + e.Message); }
             // Looks are applied on each player's own computer (see ApplyClientLook). The server only tells them its default,
             // through the world's settings, which reach a player's game before its blocks and items are set up. The config
             // is only loaded properly in StartServerSide, which comes later, so peek at that one setting here.
@@ -589,6 +590,7 @@ namespace VintageE
             {
                 sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
                 {
+                    Trinkets?.ReconcileAfterStart();
                     EnsureMapped(null);
                     if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(_ => new SelfTest(this, sapi).Start(), 5000);
                 });
@@ -756,11 +758,12 @@ namespace VintageE
             mappingInFlight = true;
             int serial = ++mappingSerial;
             var sw = Stopwatch.StartNew();
+            VintageEConfig snapshot = ConfigSnapshot();
             System.Threading.Tasks.Task.Run(() =>
             {
                 EmcMappingReport computed = null;
                 string fingerprint = null;
-                try { computed = ComputeMapping(reason, allowCache, out fingerprint); }
+                try { computed = ComputeMapping(reason, allowCache, out fingerprint, snapshot); }
                 catch (Exception e)
                 {
                     LastMappingError = (mappingStage ?? "mapping") + ": " + e.GetType().Name + ": " + e.Message;
@@ -801,23 +804,27 @@ namespace VintageE
         /// The slow half of a mapping: loads the value files if needed, tries the cache, runs the mapper. Touches
         /// nothing the game is using, so it can run on a worker thread. Null (and LastMappingError set) on failure.
         /// </summary>
-        public EmcMappingReport ComputeMapping(string reason, bool allowCache, out string fingerprint)
+        public EmcMappingReport ComputeMapping(string reason, bool allowCache, out string fingerprint, VintageEConfig snapshot = null)
         {
             fingerprint = null;
+            // The live config's lists and tables are edited on the game thread (a pin, a blacklist click) while a
+            // background mapping enumerates them, which throws "collection was modified" and fails the mapping. The
+            // mapper therefore works on a copy taken when the mapping starts.
+            VintageEConfig config = snapshot ?? ConfigSnapshot();
             mappingStage = "loading the value files";
-            if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(Config.DisabledCompat))
+            if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(config.DisabledCompat))
             {
-                Rules = EmcRuleSet.Load(Sapi, Mod.Logger, Config.DisabledCompat);
+                Rules = EmcRuleSet.Load(Sapi, Mod.Logger, config.DisabledCompat);
                 worldTransmutation = null;
             }
-            var mapper = new EmcMapper(Sapi, Config, Rules, Mod.Logger);
+            var mapper = new EmcMapper(Sapi, config, Rules, Mod.Logger);
             EmcMappingReport report = null;
             mappingStage = "checking the value cache";
-            if (Config.CacheEmcValues)
+            if (config.CacheEmcValues)
             {
                 try
                 {
-                    fingerprint = EmcCache.Fingerprint(Sapi, this, Mod.Logger);
+                    fingerprint = EmcCache.Fingerprint(Sapi, this, Mod.Logger, config);
                     if (allowCache && EmcCache.TryLoad(Sapi, fingerprint, Mod.Logger, out EmcCacheFile cached, out var cachedValues, out var cachedVariants))
                     {
                         report = mapper.FromValues(cachedValues);
@@ -846,9 +853,21 @@ namespace VintageE
                     Mod.Logger.Error("EMC mapping failed ({0}): {1}", reason, e);
                     return null;
                 }
-                if (Config.CacheEmcValues && fingerprint != null) EmcCache.Save(Sapi, fingerprint, report, Mod.Logger);
+                if (config.CacheEmcValues && fingerprint != null) EmcCache.Save(Sapi, fingerprint, report, Mod.Logger);
             }
             return report;
+        }
+
+        /// <summary>A deep copy of the server config (through JSON), for work on other threads.</summary>
+        public VintageEConfig ConfigSnapshot()
+        {
+            try
+            {
+                var copy = Newtonsoft.Json.JsonConvert.DeserializeObject<VintageEConfig>(Newtonsoft.Json.JsonConvert.SerializeObject(Config));
+                if (copy != null) { copy.Normalize(); return copy; }
+            }
+            catch (Exception e) { Mod.Logger.Warning("EMC: could not copy the settings for the mapping: {0}", e.Message); }
+            return Config;
         }
 
         /// <summary>The fast half: puts the mapped values into play. Game thread only.</summary>
@@ -863,8 +882,11 @@ namespace VintageE
             sw.Stop();
             report.Milliseconds = sw.ElapsedMilliseconds;
             report.MappedAt = DateTime.Now;
-            MappingHistory.Add((report.MappedAt, reason, report.Milliseconds, report.FromCache));
-            if (MappingHistory.Count > 50) MappingHistory.RemoveAt(0);
+            lock (MappingHistory)
+            {
+                MappingHistory.Add((report.MappedAt, reason, report.Milliseconds, report.FromCache));
+                if (MappingHistory.Count > 50) MappingHistory.RemoveAt(0);
+            }
             mappingStage = "writing the value snapshot";
             SnapshotValues(report);
             mappingStage = "logging the coverage";
@@ -2517,7 +2539,9 @@ namespace VintageE
             {
                 ProjectELook.DisposeMeshes();
                 ClientLookPatches.Forget(this);
+                GuiDialogTransmutation.ForgetWorld();
             }
+            PlayerEmc.ForgetWorld();
             try { (Sapi?.World ?? (IWorldAccessor)Capi?.World)?.Calendar?.RemoveTimeSpeedModifier(TrinketEffects.TimeModifierName); }
             catch { /* world already gone */ }
             base.Dispose();

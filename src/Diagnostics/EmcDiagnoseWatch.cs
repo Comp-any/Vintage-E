@@ -164,6 +164,8 @@ namespace VintageE
             skipped = 0;
             foreach (CollectibleObject c in x.Report.Missing.Where(m => m.Code.Domain == domain).ToList())
             {
+                // Only raw materials: an item that a recipe will value once its ingredients are valued must not be pinned over that recipe.
+                if (x.Report.MissingRecipes.TryGetValue(c, out var recipes) && recipes.Count > 0) { skipped++; continue; }
                 var (value, _) = SuggestValue(x, c);
                 if (value <= 0) { skipped++; continue; }
                 mod.Config.FixedValues[VintageEModSystem.ConfigKey(c)] = value;

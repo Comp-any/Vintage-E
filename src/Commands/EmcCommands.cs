@@ -164,6 +164,7 @@ namespace VintageE
             ItemStack held = player?.InventoryManager?.ActiveHotbarSlot?.Itemstack;
             if (held == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-holdsomething"));
             bool admin = args.Caller.HasPrivilege(Privilege.controlserver);
+            if (!admin && mod.Transmutation == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-notready"));
             if (!admin && player is IServerPlayer sp && mod.Transmutation != null)
             {
                 string error = mod.Transmutation.Learn(sp, held, out bool isNew, out string[] errArgs);
@@ -526,8 +527,11 @@ namespace VintageE
             catch { return null; }
             if (loc.Path.IndexOfAny(new[] { '*', '?' }) >= 0)
             {
-                var match = sapi.World.Collectibles.FirstOrDefault(c => c?.Code != null && (block == null || (c.ItemClass == EnumItemClass.Block) == block) && WildcardUtil.Match(loc, c.Code));
-                return match;
+                try
+                {
+                    return sapi.World.Collectibles.FirstOrDefault(c => c?.Code != null && (block == null || (c.ItemClass == EnumItemClass.Block) == block) && WildcardUtil.Match(loc, c.Code));
+                }
+                catch (Exception) { return null; } // a broken @regex
             }
             if (block != true && sapi.World.GetItem(loc) is Item item) return item;
             if (block != false && sapi.World.GetBlock(loc) is Block b && b.Code != null) return b;
