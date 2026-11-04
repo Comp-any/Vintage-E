@@ -832,7 +832,7 @@
   "diag-q-sporadic": "Values come and go, or differ between stacks or players",
   "diag-q-mapping": "Nothing has a value, or I want every mapping check",
   "diag-q-missinglist": "The full list of missing items is in /emc missing, where values can be set from the window.",
-  "diag-q-console": "From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping.",
+  "diag-q-console": "From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping | trace hand | trace <code>.",
   "diag-q-back": "Back to the check-up",
   "diag-sec-checks-deep": "Deeper checks",
   "diag-q-checks": "Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates",

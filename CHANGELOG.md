@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.23 — 2026-11-04
+
+### Changed
+- **`/emc diagnose trace hand`** (and `trace held`) traces the held item, like `trace` on its own; the console hint lists the trace forms.
+
 ## 1.17.22 — 2026-11-04
 
 A review pass over the whole mod for crashes and wrong values.

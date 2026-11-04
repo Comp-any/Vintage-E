@@ -140,8 +140,10 @@ namespace VintageE
                 case ActionWatch: Watch(x, arg); break;
                 case ActionTrace:
                     {
-                        CollectibleObject tc = arg.Length > 0 ? Find(x, arg) : held?.Collectible;
-                        if (tc == null) { r.Add(arg.Length > 0 ? x.L("diag-item-notfound", arg) : x.L("diag-item-holdit"), EmcLineStyle.Warn); Questions(x, held, client); break; }
+                        // "trace", "trace hand" and "trace held" all trace what the player holds.
+                        bool wantHeld = arg.Length == 0 || arg.Equals("hand", StringComparison.OrdinalIgnoreCase) || arg.Equals("held", StringComparison.OrdinalIgnoreCase);
+                        CollectibleObject tc = wantHeld ? held?.Collectible : Find(x, arg);
+                        if (tc == null) { r.Add(!wantHeld ? x.L("diag-item-notfound", arg) : x.L("diag-item-holdit"), EmcLineStyle.Warn); Questions(x, held, client); break; }
                         x.ThenAction = ActionTrace; x.ThenArg = tc.Code.ToString(); r.Key = ActionTrace + "|" + tc.Code;
                         Trace(x, tc);
                         break;
