@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.21 — 2026-11-04
+
+### Fixed
+- **Every texture a look puts on a block or item is baked the moment it is applied**, so a worn ring, Klein Star or matter armour piece can never hand the game an unbaked texture when it draws a player (the game reads the baked name without a check there). Belt and braces for the join crash fixed in 1.17.20.
+
 ## 1.17.20 — 2026-11-04
 
 ### Fixed

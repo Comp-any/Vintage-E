@@ -252,6 +252,10 @@ namespace VintageE
                 // does, so a later pass (a look switch, a shape reload) has to put them into the atlases itself, or the
                 // block is drawn invisible with an "Unable to initialize TextureSource" error.
                 int baked = atlasesReady ? BakeLookTextures(mine2) : 0;
+                // Whatever the stage, every texture the look put on an item or block gets its baked name now (no atlas
+                // needed for that): the game reads it without a check when a worn ring, star or armour piece is drawn
+                // on a player (IAttachableToEntity.CollectTexturesFromCollectible), and a null there crashes the game.
+                PreBakeLookTextures(capi, mine2);
                 LookEvent("{0}: {1} of ours, {2} models, {3} textures{4} (thread {5})", kind, mine2.Count, r.Models, r.Textures, atlasesReady ? ", " + baked + " baked into the atlases" : "", System.Threading.Thread.CurrentThread.Name ?? "?");
             }
             catch (Exception e)
@@ -420,6 +424,22 @@ namespace VintageE
                 LookEvent("start-up tesselation {0} after {1} ms", done ? "finished" : "not reported finished, going ahead anyway", waited);
                 action();
             }, 200);
+        }
+
+        static void PreBakeLookTextures(ICoreClientAPI capi, IEnumerable<CollectibleObject> collectibles)
+        {
+            foreach (CollectibleObject c in collectibles)
+            {
+                var sets = new List<IDictionary<string, CompositeTexture>>();
+                if (c is Block b) { if (b.Textures != null) sets.Add(b.Textures); if (b.TexturesInventory != null) sets.Add(b.TexturesInventory); }
+                else if (c is Item it && it.Textures != null) sets.Add(it.Textures);
+                foreach (var set in sets)
+                    foreach (CompositeTexture ct in set.Values)
+                    {
+                        if (ct?.Base == null || ct.Baked != null) continue;
+                        try { ct.Bake(capi.Assets); } catch { }
+                    }
+            }
         }
 
         /// <summary>True once the world is in: the game's texture atlases exist, so textures a look adds later can be baked into them.</summary>
