@@ -59,6 +59,7 @@ namespace VintageE
             if (stack?.Collectible == null || OwnerUid == null || Api?.Side != EnumAppSide.Server) return false;
             VintageEModSystem mod = Mod;
             if (mod == null || mod.Emc.IsNoTransmute(stack.Collectible)) return false;
+            if (stack.Collectible is IEmcStorageItem) return false; // a Klein star would lose what it holds
             StackDataTable data = mod.Emc.StackData;
             bool keepsData = data.CarriesData(stack.Collectible) && data.ModeOf(stack.Collectible) != StackDataMode.Item;
             if (!keepsData && mod.Config.ProtectContainersWithContents && StackContents.HasNestedStacks(stack)) return false;

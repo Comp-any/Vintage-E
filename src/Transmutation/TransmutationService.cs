@@ -109,6 +109,8 @@ namespace VintageE
             plan = null;
             args = new[] { stack?.GetName() ?? "?" };
             if (stack?.Collectible == null) return "novalue";
+            // A Klein star is never burned (what it holds would be lost): not by a hopper into the table, nor the magnet.
+            if (stack.Collectible is IEmcStorageItem && !learnOnly) return "star-noburn";
             StackDataTable data = mod.Emc.StackData;
             StackDataMode mode = data.ModeOf(stack.Collectible);
             bool keepsData = data.CarriesData(stack.Collectible) && mode != StackDataMode.Item;

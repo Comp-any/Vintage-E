@@ -238,7 +238,14 @@ namespace VintageE
                 return;
             }
             handling = EnumHandHandling.PreventDefault;
-            if (!firstEvent || world.Side != EnumAppSide.Server) return;
+            if (!firstEvent) return;
+            // Gem of Eternal Density: sneak + right-click opens its filter window (the same as "Filter..." in its tool modes).
+            if (Kind == "gemofeternaldensity" && byEntity.Controls.Sneak)
+            {
+                if (world.Side == EnumAppSide.Client) (world.Api as ICoreClientAPI)?.ModLoader.GetModSystem<VintageEModSystem>()?.OpenGemFilterDialog();
+                return;
+            }
+            if (world.Side != EnumAppSide.Server) return;
             if (!((byEntity as EntityPlayer)?.Player is IServerPlayer player) || slot.Itemstack == null) return;
             TrinketEffects effects = Effects(world);
             if (effects == null) return;
@@ -380,6 +387,7 @@ namespace VintageE
             if (Kind == "blackholeband" || Kind == "voidring") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-voidliquid", MouseButton = EnumMouseButton.Right });
             if (Kind == "harvestgoddessband") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-plant", MouseButton = EnumMouseButton.Right });
             if (Kind == "voidring") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-teleport", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
+            if (Kind == "gemofeternaldensity") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-gemfilter", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (Kind == "zeroring" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-freezeburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (Kind == "harvestgoddessband" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-harvestburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (CanShoot(inSlot)) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-shoot-" + ShotKind(inSlot), HotKeyCode = VintageEModSystem.FireHotkey, MouseButton = EnumMouseButton.None });

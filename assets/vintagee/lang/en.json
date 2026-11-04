@@ -1787,5 +1787,7 @@
   "vintagee:item-handbooktext-vintagee:matterarmor-dark-legs": "98% protection, 2.4 flat damage reduction, protection tier 5.\nDurability 10,000 that never drops: hits don't wear it, so it always protects in full.",
   "server-costs": "On this server its EMC costs are ×{0} the numbers above (TrinketCostMultiplier).",
   "server-machinespeed": "On this server machines run at ×{0} the speed above (MachineSpeedMultiplier).",
-  "server-watch": "On this server: ×{0} faster, ÷{1} slower (WatchSpeedUp, WatchSlowDown)."
+  "server-watch": "On this server: ×{0} faster, ÷{1} slower (WatchSpeedUp, WatchSlowDown).",
+  "heldhelp-trinket-gemfilter": "Open the filter",
+  "error-star-noburn": "{0} isn't burned: it would lose the EMC it holds. Drop it on Burn to fill it, right-click to empty it."
 }
