@@ -393,7 +393,7 @@ namespace VintageE
                 RestoreLookOriginals();
                 lock (clientLookLock) { clientLook = null; LookResult = null; }
                 lock (appliedLook) appliedLook.Clear();
-                ProjectELook.DisposeMeshes();
+                ProjectELook.DisposeMeshes(Capi);
                 // Apply the look here, on the main thread, to everything the game holds, and put its textures into
                 // the atlases (that is GL work, so it can't run on the thread the game's item reload uses). The reload
                 // then runs the hook, which sees these as already applied and leaves them be.
@@ -2540,7 +2540,7 @@ namespace VintageE
             windSound = null;
             if (Capi != null)
             {
-                ProjectELook.DisposeMeshes();
+                ProjectELook.DisposeMeshes(Capi);
                 ClientLookPatches.Forget(this);
                 GuiDialogTransmutation.ForgetWorld();
             }

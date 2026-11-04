@@ -365,9 +365,9 @@ namespace VintageE
             }
             if (exclude != composedExclude)
             {
-                // The button's label is drawn when composing, so draw the window again with the other label.
-                Compose();
-                Refresh(true);
+                // The button's label is drawn when composing, so draw the window again with the other label, a frame
+                // later: this can run from the search box's own text-changed callback.
+                capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) { Compose(); Refresh(true); } }, "vintagee-table-recompose");
                 return;
             }
             string state = magnet == null ? Lang.Get("vintagee:magnet-none")

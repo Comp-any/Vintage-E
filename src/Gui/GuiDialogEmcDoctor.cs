@@ -98,6 +98,15 @@ namespace VintageE
         readonly Action<string, byte[]> onOpenItem;
         readonly Action<string> onSetValue;
         readonly Stack<EmcReportPacket> history = new Stack<EmcReportPacket>();
+
+        /// <summary>Keeps the newest <paramref name="keep"/> reports of a Back trail (each holds a whole report).</summary>
+        internal static void TrimHistory(Stack<EmcReportPacket> stack, int keep)
+        {
+            if (stack.Count <= keep) return;
+            EmcReportPacket[] newest = stack.Take(keep).ToArray();
+            stack.Clear();
+            for (int i = newest.Length - 1; i >= 0; i--) stack.Push(newest[i]);
+        }
         EmcReportPacket current;
         readonly HashSet<int> expanded = new HashSet<int>();
         /// <summary>Check states hidden by clicking their chip at the top.</summary>
@@ -126,7 +135,7 @@ namespace VintageE
         public void Show(EmcReportPacket packet)
         {
             if (packet == null) return;
-            if (!replaceNext && current != null && current.Key != packet.Key) history.Push(current);
+            if (!replaceNext && current != null && current.Key != packet.Key) { history.Push(current); TrimHistory(history, 40); }
             replaceNext = false;
             busy = false;
             busyText = null;
@@ -470,11 +479,22 @@ namespace VintageE
             }
             var comps = new List<RichTextComponentBase>();
             AddRichParts(comps, e.Title, titleFont, -1);
-            c.AddRichtext(comps.ToArray(), In(parent, ElementBounds.Fixed(CardX + TitleX, y + (headH - titleH) / 2 + 1, titleW, titleH + 4)));
+            ElementBounds titleBounds = In(parent, ElementBounds.Fixed(CardX + TitleX, y + (headH - titleH) / 2 + 1, titleW, titleH + 4));
+            c.AddRichtext(comps.ToArray(), titleBounds);
             if (canOpen)
             {
                 int index = e.Index;
-                c.AddInteractiveElement(new GuiElementHotspot(capi, In(parent, ElementBounds.Fixed(CardX, y, CardW - BadgeW - 24, headH)), () => Toggle(index)));
+                // The header opens and closes the card, except where an item icon or name sits: a click there opens
+                // the item's report (the icon component takes the click but never marks it handled).
+                RichTextComponentBase[] parts = comps.ToArray();
+                c.AddInteractiveElement(new GuiElementHotspot(capi, In(parent, ElementBounds.Fixed(CardX, y, CardW - BadgeW - 24, headH)), () =>
+                {
+                    foreach (RichTextComponentBase part in parts)
+                    {
+                        if ((part is ItemstackTextComponent || part is LinkTextComponent) && part.BoundsPerLine != null && part.UseMouseOverCursor(titleBounds)) return;
+                    }
+                    Toggle(index);
+                }));
             }
 
             // The badge.
@@ -770,7 +790,8 @@ namespace VintageE
             current = history.Pop();
             expanded.Clear();
             busy = false;
-            Compose();
+            // Deferred: this runs from the button being clicked, and rebuilding now would tear that button down under itself.
+            capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) Compose(); }, "vintagee-doctor-back");
             return true;
         }
 

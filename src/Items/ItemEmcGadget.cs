@@ -317,7 +317,7 @@ namespace VintageE
                 if (old.Id == target.Id || old.EntityClass != null || mod.Emc.IsNoTransmute(old) || !Breakable(world, player, pos, old)) continue;
                 if (radius > 0 && old.Id != clicked.Id) continue; // the bigger squares only swap blocks like the one clicked
                 double diff = targetValue - mod.Emc.GetValue(old);
-                if (diff > 0 && !EmcWallet.TryPay(player, diff)) break;
+                if (diff > 0 && !EmcWallet.TryPay(player, diff * Math.Max(0, mod.Config.TrinketCostMultiplier))) break;
                 if (diff < 0) PlayerEmc.AddEmc(player, -diff);
                 ba.SetBlock(target.BlockId, pos);
                 ba.TriggerNeighbourBlockUpdate(pos);

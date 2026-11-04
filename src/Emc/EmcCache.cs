@@ -356,7 +356,7 @@ namespace VintageE
                     if (key != null) file.MissingWhy[key] = kv.Value;
                 }
                 string path = FilePath(sapi);
-                string tmp = path + ".tmp";
+                string tmp = path + "." + Guid.NewGuid().ToString("N").Substring(0, 8) + ".tmp"; // two mappings finishing together must not share it
                 File.WriteAllText(tmp, JsonConvert.SerializeObject(file, Formatting.Indented));
                 File.Move(tmp, path, true);
             }

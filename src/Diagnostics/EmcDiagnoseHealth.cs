@@ -123,6 +123,7 @@ namespace VintageE
             if (players.Length == 0) { x.Info(x.L("diag-pdata-nobody")); x.Explain(x.L("diag-pdata-nobody-why")); return; }
             int cap = x.Mod.Config.MaxExactKnowledge;
             var problems = new List<string>();
+            int deadTotal = 0;
             foreach (IPlayer p in players)
             {
                 if (p?.Entity == null) continue;
@@ -135,7 +136,7 @@ namespace VintageE
                 {
                     if (PlayerEmc.Resolve(x.Sapi.World, k) == null) { dead++; firstDead ??= k; }
                 }
-                if (dead > 0) problems.Add(x.L("diag-pdata-dead", p.PlayerName, dead, known.Length, firstDead));
+                if (dead > 0) { deadTotal += dead; problems.Add(x.L("diag-pdata-dead", p.PlayerName, dead, known.Length, firstDead)); }
                 int exact = PlayerEmc.CountExact(p);
                 if (cap > 0 && exact > cap) problems.Add(x.L("diag-pdata-overcap", p.PlayerName, exact, cap));
                 // Tablet filters naming items that no longer exist.
@@ -167,6 +168,7 @@ namespace VintageE
             x.Warn(x.L("diag-pdata-found", problems.Count, players.Length));
             foreach (string pr in problems) x.Note(pr);
             x.Explain(x.L("diag-pdata-why"));
+            if (deadTotal > 0) x.R.Add(FixLink(x, "forgetdead", "", x.L("diag-fix-forgetdead", deadTotal)), EmcLineStyle.Text, 1);
             x.Fix(x.L("diag-pdata-fix"));
         }
 

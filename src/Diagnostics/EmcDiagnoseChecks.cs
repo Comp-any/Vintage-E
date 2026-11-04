@@ -222,7 +222,7 @@ namespace VintageE
             if (list.Count == 0) { x.Ok(x.L("diag-modes-none")); return; }
             x.Warn(x.L("diag-modes-found", list.Count));
             r.Add(x.L("diag-modes-help"), EmcLineStyle.Note, 1);
-            foreach (CollectibleObject c in list.Take(20)) r.Add(EmcReport.Ref(c) + "  " + FixLink(x, "contentsmode", c.Code + "=full", x.L("diag-fix-contentsmode")), EmcLineStyle.Text, 1);
+            foreach (CollectibleObject c in list.Take(20)) r.Add(EmcReport.Ref(c) + "  " + FixLink(x, "contentsmode", VintageEModSystem.ConfigKey(c) + "=full", x.L("diag-fix-contentsmode")), EmcLineStyle.Text, 1);
             x.Fix(x.L("diag-modes-fix"));
         }
 

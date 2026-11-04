@@ -185,12 +185,22 @@ namespace VintageE
         BlockPos ToBlockPos(Vec3d at) => new BlockPos((int)Math.Floor(at.X), (int)Math.Floor(at.Y), (int)Math.Floor(at.Z), Pos.Dimension);
 
         /// <summary>Smite arrows turn towards the nearest hostile creature within 24 blocks.</summary>
+        Entity steerTarget;
+        float steerSearchIn;
+
         void Steer(float dt)
         {
-            TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
-            if (fx == null) return;
-            Entity target = World.GetNearestEntity(Pos.XYZ, 24, 24, fx.IsHostile);
-            if (target == null) return;
+            // A volley is ten arrows; searching 24 blocks of entities every tick for each was the mod's dearest loop.
+            steerSearchIn -= dt;
+            if (steerSearchIn <= 0 || steerTarget == null || !steerTarget.Alive)
+            {
+                steerSearchIn = 0.2f;
+                TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+                if (fx == null) return;
+                steerTarget = World.GetNearestEntity(Pos.XYZ, 24, 24, fx.IsHostile);
+            }
+            Entity target = steerTarget;
+            if (target == null || !target.Alive) return;
             double speed = Pos.Motion.Length();
             Vec3d want = target.Pos.XYZ.Add(0, target.SelectionBox.Y2 / 2, 0).Sub(Pos.XYZ).Normalize().Mul(speed);
             double t = Math.Min(1, dt * 6);

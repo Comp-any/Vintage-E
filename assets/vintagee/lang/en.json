@@ -1737,5 +1737,7 @@
   "diag-time-changed": "World time: runs at {0}x the normal speed ({1}).",
   "diag-time-watch": "a Watch of Flowing Time is switched on",
   "diag-time-other": "set by something other than Vintage-E: the game or another mod",
-  "diag-time-why": "Faster time means days, seasons, crops and temporal storms all come round faster in real time: a storm due in two days arrives in a fifth of the usual time at 10x, and the storm's warping of the world with it. Switch the watch off (or set WatchChangesWorldTime to false) if that's not wanted."
+  "diag-time-why": "Faster time means days, seasons, crops and temporal storms all come round faster in real time: a storm due in two days arrives in a fifth of the usual time at 10x, and the storm's warping of the world with it. Switch the watch off (or set WatchChangesWorldTime to false) if that's not wanted.",
+  "diag-fix-forgetdead": "Forget the {0} learned items that no longer exist (every online player)",
+  "diag-done-forgetdead": "Forgot {0} learned items that no longer exist, for {1} player(s). A mod that comes back has to be learned again."
 }

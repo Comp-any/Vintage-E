@@ -512,12 +512,15 @@ namespace VintageE
         }
 
         static readonly Dictionary<string, MultiTextureMeshRef> spriteMeshes = new Dictionary<string, MultiTextureMeshRef>();
+        /// <summary>The client API the cached meshes were uploaded for; a different one means another world is running now.</summary>
+        static ICoreClientAPI spriteOwner;
 
         /// <summary>Draws the item as a flat sprite of <paramref name="texture"/> instead of its usual mesh (client side).</summary>
         public static void UseSprite(ICoreClientAPI capi, AssetLocation texture, ref ItemRenderInfo renderinfo)
         {
             if (texture == null) return;
             string key = texture.ToString();
+            if (!ReferenceEquals(spriteOwner, capi)) { DisposeMeshes(capi); spriteOwner = capi; }
             if (!spriteMeshes.TryGetValue(key, out MultiTextureMeshRef mesh))
             {
                 mesh = null;
@@ -540,10 +543,13 @@ namespace VintageE
             if (mesh != null) renderinfo.ModelRef = mesh;
         }
 
-        public static void DisposeMeshes()
+        /// <summary>Frees the cached sprite meshes. From a mod instance's Dispose, only when they are that instance's world's (the game can dispose an old instance after the next world started).</summary>
+        public static void DisposeMeshes(ICoreClientAPI capi = null)
         {
-            foreach (MultiTextureMeshRef m in spriteMeshes.Values) m?.Dispose();
+            if (capi != null && spriteOwner != null && !ReferenceEquals(spriteOwner, capi)) return;
+            foreach (MultiTextureMeshRef m in spriteMeshes.Values) { try { m?.Dispose(); } catch { } }
             spriteMeshes.Clear();
+            spriteOwner = null;
         }
     }
 }

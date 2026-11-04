@@ -300,8 +300,7 @@ namespace VintageE
         {
             editing = null;
             ClearSlots();
-            Compose();
-            SetLine("");
+            Recompose(() => SetLine(""));
             return true;
         }
 
@@ -343,9 +342,9 @@ namespace VintageE
                 }
             }
             editing = line;
-            Compose();
-            SetLine(line);
-            ShowMessage(Lang.Get("vintagee:recipe-editing"), false);
+            packet.Message = Lang.Get("vintagee:recipe-editing");
+            packet.Error = false;
+            Recompose(() => SetLine(line));
             return true;
         }
 
@@ -376,8 +375,18 @@ namespace VintageE
             packet.Message = text;
             packet.Error = error;
             string line = LineText();
-            Compose();
-            SetLine(line);
+            Recompose(() => SetLine(line));
+        }
+
+        /// <summary>Rebuilds the window a frame later (these run from clicks on elements the rebuild tears down), then runs <paramref name="then"/>.</summary>
+        void Recompose(Action then = null)
+        {
+            capi.Event.EnqueueMainThreadTask(() =>
+            {
+                if (!IsOpened()) return;
+                Compose();
+                then?.Invoke();
+            }, "vintagee-recipe-recompose");
         }
 
         public override void OnGuiClosed()

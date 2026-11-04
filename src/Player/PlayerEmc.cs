@@ -67,6 +67,15 @@ namespace VintageE
             return set.Count - before;
         }
 
+        /// <summary>Replaces a player's whole knowledge list (the doctor's prune of entries that no longer exist).</summary>
+        public static void SetKnown(IPlayer player, string[] keys)
+        {
+            var attrs = Attrs(player);
+            if (attrs == null) return;
+            attrs.SetStringArray(KnownKey, keys ?? Array.Empty<string>());
+            attrs.MarkPathDirty(KnownKey);
+        }
+
         public static bool Forget(IPlayer player, string key)
         {
             var attrs = Attrs(player);

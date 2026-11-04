@@ -68,6 +68,8 @@ namespace VintageE
                 timers.Remove(p.PlayerUID);
                 shielded.Remove(p.PlayerUID);
                 statsCleaned.Remove(p.PlayerUID);
+                flightEndedMs.Remove(p.PlayerUID);
+                lastTeleportMs.Remove(p.PlayerUID);
             };
         }
 
@@ -262,6 +264,19 @@ namespace VintageE
                 yield break;
             }
             yield return t.Kind;
+        }
+
+        /// <summary>A switched-on Swiftwolf's Rending Gale whose mode includes flight (shield-only mode never pays for flight, so it gives no fall protection).</summary>
+        public static bool HasGaleFlight(IPlayer player)
+        {
+            foreach (var (slot, t) in ActiveTrinkets(player))
+            {
+                if (!EffectsOf(t, slot.Itemstack).Contains("swiftwolfsrendinggale")) continue;
+                bool free = t.Kind == "ringofarcana"; // the Arcana's flight is free and always on
+                int mode = free ? 0 : GameMath.Clamp(ItemEmcTrinket.GetMode(slot.Itemstack), 0, ItemEmcTrinket.GaleModes.Length - 1);
+                if (mode != 2) return true;
+            }
+            return false;
         }
 
         public static bool HasActiveEffect(IPlayer player, string effect)

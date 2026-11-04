@@ -366,9 +366,21 @@ namespace VintageE
             if (pageText == null || lines == null) return;
             var edited = pageText.Replace("\r", "").Split('\n').ToList();
             if (edited.Count > 0 && edited[edited.Count - 1].Length == 0) edited.RemoveAt(edited.Count - 1);
-            int at = shown.Length > 0 ? shown.Min() : lines.Count;
-            foreach (int i in shown.OrderByDescending(i => i)) if (i < lines.Count) lines.RemoveAt(i);
-            lines.InsertRange(Math.Min(at, lines.Count), edited);
+            // Shown lines keep their places: line for line while both run, then extra edited lines go in after the
+            // last shown one and shown lines left over are removed. (Removing them all and re-inserting the edit as
+            // one block used to reorder a filtered list.)
+            int[] slots = shown.Where(i => i < lines.Count).OrderBy(i => i).ToArray();
+            int common = Math.Min(slots.Length, edited.Count);
+            for (int k = 0; k < common; k++) lines[slots[k]] = edited[k];
+            if (edited.Count > common)
+            {
+                int after = slots.Length > 0 ? slots[common - 1] + 1 : lines.Count;
+                lines.InsertRange(Math.Min(after, lines.Count), edited.Skip(common));
+            }
+            else
+            {
+                foreach (int i in slots.Skip(common).OrderByDescending(i => i)) lines.RemoveAt(i);
+            }
             pageText = null;
             draft = string.Join("\n", lines);
         }

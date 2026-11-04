@@ -60,7 +60,7 @@ namespace VintageE
         public void Show(EmcReportPacket packet)
         {
             if (packet == null) return;
-            if (!replaceNext && current != null && !(current.Kind == packet.Kind && current.Key == packet.Key && (current.Stack == null) == (packet.Stack == null))) history.Push(current);
+            if (!replaceNext && current != null && !(current.Kind == packet.Kind && current.Key == packet.Key && (current.Stack == null) == (packet.Stack == null))) { history.Push(current); GuiDialogEmcDoctor.TrimHistory(history, 40); }
             if (!replaceNext && current != null && current.Kind != packet.Kind) search = "";
             replaceNext = false;
             current = packet;
@@ -358,17 +358,20 @@ namespace VintageE
                 // Closing one line while everything is open: keep the others open and drop back to per-line state.
                 expandAll = false;
                 foreach (Line l in Lines()) if (l.Details > 0 && l.Index != index) expanded.Add(l.Index);
-                Compose();
+                Recompose();
                 return;
             }
             Refill();
         }
 
+        /// <summary>Rebuilds the window a frame later: these run from a click on an element the rebuild would tear down.</summary>
+        void Recompose() => capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) Compose(); }, "vintagee-report-recompose");
+
         bool OnExpandAll()
         {
             expandAll = !expandAll;
             expanded.Clear();
-            Compose(); // the button's label changes with it
+            Recompose(); // the button's label changes with it
             return true;
         }
 
@@ -402,7 +405,7 @@ namespace VintageE
             current = history.Pop();
             page = 0;
             status = null;
-            Compose();
+            Recompose();
             return true;
         }
 

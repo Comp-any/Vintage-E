@@ -168,7 +168,8 @@ namespace VintageE
 
         /// <summary>A log line whose own level is Error, Warning or Fatal (not one that merely quotes "[Error]").</summary>
         static readonly Regex LogLevel = new Regex(@"^\S+ \S+ \[(Error|Warning|Fatal)\]", RegexOptions.Compiled);
-        static readonly Regex Ip = new Regex(@"\b\d{1,3}(\.\d{1,3}){3}(:\d+)?\b", RegexOptions.Compiled);
+        // Not preceded by "Version=" or "v" (a four-part version number is not an address).
+        static readonly Regex Ip = new Regex(@"(?<![Vv]ersion=|\bv)\b\d{1,3}(\.\d{1,3}){3}(:\d+)?\b", RegexOptions.Compiled);
         static readonly Regex Uid = new Regex(@"\b(?=[A-Za-z0-9+/_-]*\d)(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z])[A-Za-z0-9+/_-]{20,}\b", RegexOptions.Compiled);
         static readonly Regex HomePath = new Regex(@"(/home/|/Users/|[A-Z]:\\Users\\)[^/\\\s]+", RegexOptions.Compiled);
 
@@ -176,8 +177,8 @@ namespace VintageE
         static string Anonymise(string line)
         {
             line = Ip.Replace(line, "<address>");
+            line = HomePath.Replace(line, "$1<user>"); // before the id pass, so a user folder isn't eaten as an id
             line = Uid.Replace(line, "<id>");
-            line = HomePath.Replace(line, "$1<user>");
             return line;
         }
 
@@ -542,6 +543,22 @@ namespace VintageE
                             if (items.Count == 0) return L("diag-done-nothing", target);
                             mod.SetStackDataModes(items, mode);
                             return L("diag-done-contentsmode", target.Substring(0, eq), StackDataTable.ModeName(mode));
+                        }
+                    case "forgetdead":
+                        {
+                            // Learned items that no longer exist, taken out of every online player's list. A mod that comes
+                            // back would have to be learned again; until then they are only list entries.
+                            int removed = 0, players = 0;
+                            foreach (IPlayer p in mod.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>())
+                            {
+                                string[] known = PlayerEmc.GetKnown(p);
+                                string[] alive = known.Where(k => PlayerEmc.Resolve(mod.Sapi.World, k) != null).ToArray();
+                                if (alive.Length == known.Length) continue;
+                                PlayerEmc.SetKnown(p, alive);
+                                removed += known.Length - alive.Length;
+                                players++;
+                            }
+                            return L("diag-done-forgetdead", removed, players);
                         }
                     case "safe":
                         return ApplySafeFixes(mod, player, lang);

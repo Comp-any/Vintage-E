@@ -2,6 +2,20 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.27 — 2026-11-04
+
+The last of the review findings.
+
+### Fixed
+- **Doctor: "Forget the N learned items that no longer exist"**, a one-click prune for every online player (a mod that comes back has to be learned again). The dead entries were harmless but grew the player's list and its sync forever.
+- **Windows rebuilt from inside their own buttons** (the doctor's Back, the report's expand/collapse and Back, the recipe window's Clear/Edit/messages, the table's magnet switch) now rebuild a frame later; the Back trails are capped at 40 reports.
+- **Settings editor: editing a filtered list no longer moves lines** (the edited lines were taken out and put back as one block, reordering what was around them).
+- **Doctor card: clicking an item icon in a card's title opened the item *and* toggled the card**; now only the item.
+- **Swiftwolf's in shield-only mode gave fall immunity** although it never pays for flight; now only a mode with flight does.
+- **Archangel's Smite**: ten arrows each searched 24 blocks of entities every tick; they look five times a second and steer towards what they found.
+- **Mercurial Eye** charges follow `TrinketCostMultiplier` like every other gadget.
+- Sprite meshes of the Original look are freed only by the world that made them (the game can dispose an old world's mod instance after the next world started); two mappings finishing together no longer collide on the cache's temporary file; per-player timers are dropped at disconnect; the bug report's anonymiser no longer turns four-part version numbers into "<address>" or user folders into "<id>"; the container-mode fix names its item with the block:/item: prefix like every other key.
+
 ## 1.17.26 — 2026-11-04
 
 ### Changed

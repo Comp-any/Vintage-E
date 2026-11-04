@@ -37,7 +37,7 @@ namespace VintageE
 
             bool fall = damageSource.Source == EnumDamageSource.Fall || damageSource.Type == EnumDamageType.Gravity;
             TrinketEffects fx = entity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
-            if (fall && (gem >= 3 || TrinketEffects.HasActiveEffect(player, "swiftwolfsrendinggale") || fx?.FlightProtects(player) == true))
+            if (fall && (gem >= 3 || TrinketEffects.HasGaleFlight(player) || fx?.FlightProtects(player) == true))
             {
                 damage = 0;
                 return;
