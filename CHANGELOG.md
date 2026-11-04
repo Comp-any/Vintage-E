@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.28 — 2026-11-04
+
+### Fixed
+- **Tablet magnet with two tablets**: the magnet ran from the first carried tablet that held a magnet, while the table's magnet buttons edited the tablet in hand. Both now use the same one: the tablet in hand, else the first carried one with a magnet.
+- **Tablet magnet ate other players' fresh drops**: an item another player dropped within range was burned at once. Any player's drop is now left alone for 8 seconds (your own for 3, as before), so a handed-over item reaches the other person.
+
 ## 1.17.27 — 2026-11-04
 
 The last of the review findings.

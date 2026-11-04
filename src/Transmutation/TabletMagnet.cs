@@ -117,10 +117,16 @@ namespace VintageE
             foreach (IPlayer p in sapi.World.AllOnlinePlayers)
             {
                 if (!(p is IServerPlayer player) || player.Entity == null || !player.Entity.Alive || player.ConnectionState != EnumClientState.Playing) continue;
+                // The same tablet the window edits: the one in hand first, then the first carried one with a magnet in it.
                 ItemStack tablet = null;
-                foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
+                ItemStack held = player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
+                if (held?.Collectible is ItemTransmutationTablet && GetMagnet(held, sapi.World) != null) tablet = held;
+                else
                 {
-                    if (slot.Itemstack?.Collectible is ItemTransmutationTablet && GetMagnet(slot.Itemstack, sapi.World) != null) { tablet = slot.Itemstack; break; }
+                    foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
+                    {
+                        if (slot.Itemstack?.Collectible is ItemTransmutationTablet && GetMagnet(slot.Itemstack, sapi.World) != null) { tablet = slot.Itemstack; break; }
+                    }
                 }
                 if (tablet == null) continue;
                 string[] filter = GetFilter(tablet);
@@ -138,8 +144,11 @@ namespace VintageE
                     // Worth nothing: leave it lying there. (PlanBurn would log the refusal and resend the EMC table
                     // four times a second for as long as it lies within reach.)
                     if (mod.BurnValue(stack) <= 0) continue;
-                    // Something you just threw away stays put for a moment.
-                    if (ei.ByPlayerUid == player.PlayerUID && now - ei.itemSpawnedMilliseconds < 3000) continue;
+                    // Something a player just dropped stays put for a moment: your own, so you can pick it back up, and
+                    // anyone else's, so an item dropped to hand over isn't eaten before the other person reaches it.
+                    long age = now - ei.itemSpawnedMilliseconds;
+                    if (ei.ByPlayerUid == player.PlayerUID && age < 3000) continue;
+                    if (ei.ByPlayerUid != null && ei.ByPlayerUid != player.PlayerUID && age < 8000) continue;
                     if (service.PlanBurn(player, stack, out TransmutationService.BurnPlan plan, out _) != null) continue;
 
                     Vec3d dir = center.SubCopy(e.Pos.XYZ);
