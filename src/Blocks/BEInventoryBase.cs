@@ -216,6 +216,7 @@ namespace VintageE
             foreach (ItemSlot slot in inventory)
             {
                 if (!(slot?.Itemstack?.Collectible is ItemEmcTrinket t)) continue;
+                if (t.IsToggleable && !ItemEmcTrinket.IsActive(slot.Itemstack)) continue; // switched off: does nothing, as when carried
                 switch (t.Kind)
                 {
                     case "blackholeband": pull = true; pullRadius = System.Math.Max(pullRadius, TrinketEffects.BandPullRadius); break;
@@ -244,6 +245,7 @@ namespace VintageE
             {
                 var ei = (EntityItem)e;
                 if (ei.Itemstack == null) continue;
+                if (ei.ByPlayerUid != null && Api.World.ElapsedMilliseconds - ei.itemSpawnedMilliseconds < 3000) continue; // just dropped: let them pick it up
                 var source = new DummySlot(ei.Itemstack);
                 foreach (ItemSlot slot in inventory)
                 {

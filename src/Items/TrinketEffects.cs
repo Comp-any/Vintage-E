@@ -53,6 +53,7 @@ namespace VintageE
         readonly Dictionary<string, Dictionary<string, float>> timers = new Dictionary<string, Dictionary<string, float>>();
         readonly Dictionary<string, long> flightEndedMs = new Dictionary<string, long>();
         readonly Dictionary<string, long> lastTeleportMs = new Dictionary<string, long>();
+        readonly Dictionary<string, long> lastLightningMs = new Dictionary<string, long>();
         readonly HashSet<string> statsCleaned = new HashSet<string>();
         readonly Random rand = new Random();
         AssetLocation[] hostile;
@@ -79,6 +80,7 @@ namespace VintageE
                 statsCleaned.Remove(p.PlayerUID);
                 flightEndedMs.Remove(p.PlayerUID);
                 lastTeleportMs.Remove(p.PlayerUID);
+                lastLightningMs.Remove(p.PlayerUID);
             };
         }
 
@@ -534,13 +536,36 @@ namespace VintageE
 
         // ------------------------------------------------------------------ effects (also used by pedestals)
 
-        /// <summary>Pulls loose items towards <paramref name="center"/>.</summary>
+        /// <summary>
+        /// Whether a block at <paramref name="at"/> (a pedestal, a chest) may take what lies at <paramref name="pos"/>:
+        /// unclaimed land, or a claim of the same owner as the one the block itself stands in. Nothing is pulled out of
+        /// someone else's claim.
+        /// </summary>
+        bool MayTakeFrom(BlockPos at, BlockPos pos)
+        {
+            try
+            {
+                LandClaim[] there = sapi.World.Claims.Get(pos);
+                if (there == null || there.Length == 0) return true;
+                LandClaim[] here = sapi.World.Claims.Get(at);
+                if (here == null || here.Length == 0) return false;
+                foreach (LandClaim c in there)
+                {
+                    if (!here.Any(h => ReferenceEquals(h, c) || (h.OwnedByPlayerUid != null && h.OwnedByPlayerUid == c.OwnedByPlayerUid))) return false;
+                }
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>Pulls loose items towards <paramref name="center"/>. With <paramref name="outsideClaimsOnly"/> (a block, no player), only from unclaimed land or the block's own claim.</summary>
         public void Attract(Vec3d center, float radius, bool outsideClaimsOnly = false)
         {
+            BlockPos at = center.AsBlockPos;
             foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
             {
-                // A pedestal (no player) leaves what lies inside someone's claim alone.
-                if (outsideClaimsOnly && !MayChange(null, e.Pos.AsBlockPos)) continue;
+                // A pedestal or chest (no player) leaves what lies inside someone else's claim alone.
+                if (outsideClaimsOnly && !MayTakeFrom(at, e.Pos.AsBlockPos)) continue;
                 Vec3d dir = center.SubCopy(e.Pos.XYZ);
                 double dist = dir.Length();
                 if (dist < 0.75) continue;
@@ -972,6 +997,8 @@ namespace VintageE
         public bool Lightning(IServerPlayer player, bool free)
         {
             EntityPlayer e = player.Entity;
+            long now = sapi.World.ElapsedMilliseconds;
+            if (lastLightningMs.TryGetValue(player.PlayerUID, out long last) && now - last < 1000) return false; // once a second
             Vec3d eye = e.Pos.XYZ.Add(0, e.LocalEyePos.Y, 0);
             BlockSelection blockSel = null;
             EntitySelection entitySel = null;
@@ -980,6 +1007,7 @@ namespace VintageE
             if (target == null) return false;
             if (!sapi.World.Claims.TryAccess(player, target.AsBlockPos, EnumBlockAccessFlags.Use)) return false;
             if (!free && !Pay(player, LightningCost)) return false;
+            lastLightningMs[player.PlayerUID] = now;
             bool flashed = false;
             try
             {
@@ -1008,7 +1036,7 @@ namespace VintageE
         {
             EntityPlayer e = player.Entity;
             int hit = 0;
-            foreach (Entity target in sapi.World.GetEntitiesAround(e.Pos.XYZ, SlayRadius, SlayRadius / 2, x => all ? x is EntityAgent && !(x is EntityPlayer) && x.Alive && x.WatchedAttributes.GetString("ownerUid") == null : IsHostile(x)))
+            foreach (Entity target in sapi.World.GetEntitiesAround(e.Pos.XYZ, SlayRadius, SlayRadius / 2, x => all ? x is EntityAgent && !(x is EntityPlayer) && x.Alive && !IsPet(x) : IsHostile(x)))
             {
                 if (!EmcWallet.TryPay(player, Cost(SlayCostEach))) break;
                 target.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Player, SourceEntity = e, CauseEntity = e, Type = EnumDamageType.SlashingAttack, KnockbackStrength = 1 }, damage);
@@ -1016,6 +1044,16 @@ namespace VintageE
             }
             if (hit > 0) PESounds.Play(sapi.World, PESounds.Power, "game:sounds/player/strike", e, 16, 0.8f);
             return hit;
+        }
+
+        /// <summary>Tamed or owned by someone: the game's domestication, and the owner marks pet mods use.</summary>
+        static bool IsPet(Entity e)
+        {
+            var attrs = e.WatchedAttributes;
+            if (attrs == null) return false;
+            if (attrs.GetString("ownerUid") != null || attrs.GetString("owner") != null) return true;
+            ITreeAttribute dom = attrs.GetTreeAttribute("domesticationstatus");
+            return dom != null && (dom.GetString("owner") != null || dom.GetBool("domesticated"));
         }
 
         /// <summary>Black Hole Band / Void Ring right-click: removes a water or lava source block. Returns false if there is none.</summary>

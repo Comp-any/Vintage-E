@@ -47,8 +47,8 @@ namespace VintageE
             double before = Stored;
             double speed = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Config.MachineSpeedMultiplier ?? 1;
             if (Stored > 0) Stored = Math.Min(capacity, Stored + bonusPerSecond * speed * dt);
-            double charged = Star.Charge(Stored); // a Klein star inside is charged first
-            if (charged > 0) { Stored -= charged; MarkDirty(true); }
+            double charged = Star.Charge(Math.Min(Stored, transferPerSecond * speed * dt)); // a Klein star inside is charged first, at the relay's rate
+            if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
 
             double budget = Math.Min(Stored, transferPerSecond * speed * dt);
             foreach (BlockFacing face in BlockFacing.ALLFACES)

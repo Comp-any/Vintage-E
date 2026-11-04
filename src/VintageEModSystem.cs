@@ -2563,6 +2563,7 @@ namespace VintageE
         public override void Dispose()
         {
             transmutationDialog?.Dispose();
+            try { if (gemFilterDialog?.IsOpened() == true) gemFilterDialog.TryClose(); } catch { }
             gemFilterDialog?.Dispose();
             missingDialog?.Dispose();
             watchHud?.Dispose();

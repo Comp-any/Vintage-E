@@ -15,7 +15,8 @@ namespace VintageE
     public class CollectibleBehaviorSlay : CollectibleBehavior
     {
         float damage = 8;
-        long lastMs;
+        /// <summary>Last strike per player: once a swing, however fast they click.</summary>
+        readonly System.Collections.Generic.Dictionary<string, long> lastMs = new System.Collections.Generic.Dictionary<string, long>();
 
         public CollectibleBehaviorSlay(CollectibleObject collObj) : base(collObj) { }
 
@@ -28,12 +29,14 @@ namespace VintageE
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
             if (!firstEvent) return;
+            // Sneaking at a block is the game's ground storage (the sword is put down): "slay all" is sneak + right-click in the air.
+            if (byEntity.Controls.Sneak && blockSel != null) return;
             handHandling = EnumHandHandling.PreventDefault;
             handling = EnumHandling.PreventDefault;
             if (byEntity.World.Side != EnumAppSide.Server || !((byEntity as EntityPlayer)?.Player is IServerPlayer player)) return;
             long now = byEntity.World.ElapsedMilliseconds;
-            if (now - lastMs < 600) return; // once a swing
-            lastMs = now;
+            if (lastMs.TryGetValue(player.PlayerUID, out long last) && now - last < 600) return; // once a swing
+            lastMs[player.PlayerUID] = now;
             TrinketEffects fx = byEntity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
             fx?.Slay(player, damage, byEntity.Controls.Sneak);
         }

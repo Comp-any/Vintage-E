@@ -82,10 +82,10 @@ namespace VintageE
                     case "wide": // across the face
                         if (axis == EnumAxis.X) p.Add(0, 0, k); else p.Add(k, 0, 0);
                         break;
-                    default: // long: into the block, away from the player
-                        if (k < 0) continue;
+                    default: // long: the block and the two behind it, away from the player
+                        int depth = k + 1;
                         BlockFacing into = face?.Opposite ?? BlockFacing.DOWN;
-                        p.Add(into.Normali.X * k, into.Normali.Y * k, into.Normali.Z * k);
+                        p.Add(into.Normali.X * depth, into.Normali.Y * depth, into.Normali.Z * depth);
                         break;
                 }
                 yield return p;

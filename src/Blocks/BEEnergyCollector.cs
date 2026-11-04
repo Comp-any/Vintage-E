@@ -46,9 +46,9 @@ namespace VintageE
             double before = Stored;
             Stored = Math.Min(capacity, Stored + rate * dt);
 
-            // A Klein star inside is charged first.
-            double charged = Star.Charge(Stored);
-            if (charged > 0) { Stored -= charged; MarkDirty(true); }
+            // A Klein star inside is charged first, at the collector's own rate (so it still feeds its neighbours).
+            double charged = Star.Charge(Math.Min(Stored, Math.Max(1, ratePerSecond * cfg.MachineSpeedMultiplier) * dt));
+            if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
 
             // Feed neighbouring acceptors (condensers).
             foreach (BlockFacing face in BlockFacing.ALLFACES)
