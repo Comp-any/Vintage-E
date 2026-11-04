@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.20 — 2026-11-04
+
+### Fixed
+- **Crash at join or when opening the character window on some games (NullReferenceException in EntityBehaviorTexturedClothing.GetTextureSource), reported on 1.17.19.** The game loads entity shapes and collects entity textures on two threads at once; a type whose shape isn't loaded when the texture collector reaches it loses the shape's textures, and for the player that ends in this crash. Vintage-E's hook on the entity shape loader ran first and did its work (reading the look's map, walking every entity type) before the loader started, which widened that window. The hook now does nothing at all unless the look changes an entity type (the New look changes none), and the look's map is read once instead of on every loader.
+
 ## 1.17.19 — 2026-11-04
 
 ### Fixed

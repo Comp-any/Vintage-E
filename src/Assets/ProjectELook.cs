@@ -101,26 +101,21 @@ namespace VintageE
             public Dictionary<string, string> Swapped = new Dictionary<string, string>(StringComparer.Ordinal);
         }
 
-        /// <summary>Swaps textures on every Vintage-E block, item and entity type for ProjectE's. Server side, from AssetsFinalize.</summary>
-        public static Result Apply(ICoreAPI api, ILogger logger) => Apply(api, logger, LookOriginal, false);
+        sealed class LookMap { public Dictionary<string, AssetLocation> Files; public List<Override> Overrides; }
+        static readonly Dictionary<string, LookMap> mapCache = new Dictionary<string, LookMap>();
 
-        /// <summary>
-        /// Applies a look (<see cref="LookOriginal"/> or <see cref="LookNew"/>) to every Vintage-E block, item and entity
-        /// type. Server side, from AssetsFinalize: players get the changed definitions from the server. With
-        /// <paramref name="dryRun"/> nothing is changed; the result only says what would be and what's missing (the self-test).
-        /// </summary>
-        public static Result Apply(ICoreAPI api, ILogger logger, string look, bool dryRun,
-            IEnumerable<CollectibleObject> collectibles = null, IEnumerable<EntityProperties> entityTypes = null)
+        /// <summary>The parsed look map (textures and overrides), read once per look and side: the hooks run it on the game's loading threads, where every millisecond before the shapes load counts.</summary>
+        static LookMap LoadMap(ICoreAPI api, ILogger logger, string look)
         {
-            look = NormalizeLook(look);
-            var result = new Result { Look = look };
             string mapFile = MapFor(look);
-            if (mapFile == null) return result;
+            if (mapFile == null) return null;
+            string cacheKey = api.Side + "|" + look;
+            lock (mapCache) { if (mapCache.TryGetValue(cacheKey, out LookMap cached)) return cached; }
             IAsset asset = api.Assets.TryGet(new AssetLocation(VintageEModSystem.ModId, mapFile));
             if (asset == null)
             {
                 logger.Warning("Look is {0} but {1} is missing; keeping Vintage-E's textures.", look, mapFile);
-                return result;
+                return null;
             }
 
             JObject root;
@@ -128,7 +123,7 @@ namespace VintageE
             catch (Exception e)
             {
                 logger.Error("Could not read {0}: {1}; keeping Vintage-E's textures.", mapFile, e.Message);
-                return result;
+                return null;
             }
 
             var files = new Dictionary<string, AssetLocation>(StringComparer.Ordinal);
@@ -169,6 +164,50 @@ namespace VintageE
                     overrides.Add(o);
                 }
             }
+
+            var loaded = new LookMap { Files = files, Overrides = overrides };
+            lock (mapCache) mapCache[cacheKey] = loaded;
+            return loaded;
+        }
+
+        /// <summary>
+        /// True when the look changes anything about these entity types (a texture or a model). The New look changes
+        /// none, so the hook on the game's entity shape loader does nothing and gets out of the way at once: the
+        /// game collects entity textures on another thread at the same time, and anything that delays the shape
+        /// loader there can leave an entity type without its shape's textures.
+        /// </summary>
+        public static bool TouchesEntities(ICoreAPI api, ILogger logger, string look, IEnumerable<EntityProperties> types)
+        {
+            LookMap map = LoadMap(api, logger, NormalizeLook(look));
+            if (map == null || types == null) return false;
+            foreach (EntityProperties t in types)
+            {
+                if (t?.Code == null || t.Code.Domain != VintageEModSystem.ModId || t.Client == null) continue;
+                if (map.Overrides.Any(o => WildcardUtil.Match(o.Code, t.Code) && (o.Textures.Count > 0 || o.Shape != null))) return true;
+                if (t.Client.Textures != null && t.Client.Textures.Values.Any(ct => ct?.Base != null && map.Files.ContainsKey(ct.Base.ToString()))) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Swaps textures on every Vintage-E block, item and entity type for ProjectE's. Server side, from AssetsFinalize.</summary>
+        public static Result Apply(ICoreAPI api, ILogger logger) => Apply(api, logger, LookOriginal, false);
+
+        /// <summary>
+        /// Applies a look (<see cref="LookOriginal"/> or <see cref="LookNew"/>) to every Vintage-E block, item and entity
+        /// type. Server side, from AssetsFinalize: players get the changed definitions from the server. With
+        /// <paramref name="dryRun"/> nothing is changed; the result only says what would be and what's missing (the self-test).
+        /// </summary>
+        public static Result Apply(ICoreAPI api, ILogger logger, string look, bool dryRun,
+            IEnumerable<CollectibleObject> collectibles = null, IEnumerable<EntityProperties> entityTypes = null)
+        {
+            look = NormalizeLook(look);
+            var result = new Result { Look = look };
+            string mapFile = MapFor(look);
+            if (mapFile == null) return result;
+            LookMap map = LoadMap(api, logger, look);
+            if (map == null) return result;
+            Dictionary<string, AssetLocation> files = map.Files;
+            List<Override> overrides = map.Overrides;
 
             // Every ProjectE texture named must be there, or the block would show the game's "unknown" texture.
             // The game's own textures (the New look's planks, metals, gems...) only ship with the game client, so a

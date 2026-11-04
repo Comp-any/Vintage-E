@@ -260,6 +260,32 @@ namespace VintageE
             }
         }
 
+        /// <summary>Client: whether this player's look changes any of these entity types (worked out once; see ClientLookPatches.EntitiesPrefix).</summary>
+        internal bool LookTouchesEntities(IEnumerable<EntityProperties> types)
+        {
+            try
+            {
+                ICoreClientAPI capi = Capi;
+                if (capi == null) return false;
+                string look;
+                lock (clientLookLock)
+                {
+                    if (clientLook == null)
+                    {
+                        ClientConfig ??= VintageEClientConfig.Load(capi);
+                        string serverLook = capi.World?.Config?.GetString(WorldLookKey, null);
+                        string mine = ClientConfig.Look;
+                        look = mine == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(serverLook ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(mine);
+                    }
+                    else look = clientLook;
+                }
+                bool touches = ProjectELook.TouchesEntities(capi, Mod.Logger, look, types);
+                LookEvent("entities: the {0} look {1} entity types", look, touches ? "changes" : "leaves alone, so the entity loader is untouched");
+                return touches;
+            }
+            catch (Exception e) { Mod.Logger.Warning("Look: could not tell whether the look touches entity types: {0}", e.Message); return false; }
+        }
+
         /// <summary>The look in use: on the server its default for players, on a player's computer the one they see.</summary>
         public string ActiveLook { get; private set; } = ProjectELook.LookNew;
 

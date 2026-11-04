@@ -123,7 +123,12 @@ namespace VintageE
 
         static void EntitiesPrefix(object __instance, IEnumerable<EntityProperties> entities)
         {
-            if (OnPlayersSide(__instance, "entities")) Mod.ApplyClientLookTo("entities", Array.Empty<CollectibleObject>(), entities?.ToList());
+            if (!OnPlayersSide(__instance, "entities")) return;
+            // The game collects entity textures on another thread while this loader runs, and a type whose shape
+            // isn't loaded when its turn comes loses the shape's textures (the player's included). So nothing is done
+            // here unless the look really changes an entity type (the New look changes none).
+            if (!Mod.LookTouchesEntities(entities)) { LastSkipReason = "entities: the look changes no entity type"; return; }
+            Mod.ApplyClientLookTo("entities", Array.Empty<CollectibleObject>(), entities?.ToList());
         }
     }
 }
