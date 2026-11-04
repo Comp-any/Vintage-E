@@ -2,6 +2,31 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.22 — 2026-11-04
+
+A review pass over the whole mod for crashes and wrong values.
+
+### Fixed — crashes
+- **Table and tablet window: a known item that no longer resolves (a removed mod's item, a typeless clutter block learned by the Tome) crashed the window the second time it was listed** (the failed lookup was cached as "nothing", then read as an entry). 
+- **Switching the look to Middle after joining with another look left every Vintage-E texture unbaked**, which crashed the game the moment a worn ring, star or armour piece was drawn. A switch now applies the look on the main thread (the atlas work has to be there) before the game reloads shapes, and the hook leaves what is already applied alone.
+- **A bad `@regex` in `HostileCreatures`** threw inside the shield, the interdiction torch and the pedestal ticks, which took the server down. Patterns are checked and dropped with a log line; those ticks catch their own errors now.
+- **A pedestal holding an item from a removed mod** crashed anyone looking at it or clicking it. The item is dropped instead.
+- **The set-value box** threw on an entry that was only commas or spaces; a trinket's mode icon threw on an empty translation; a Divining Rod valued above 214 million got a negative durability.
+
+### Fixed — behaviour
+- **The tablet magnet re-sent the whole EMC table four times a second** (and wrote a log line each time) for every valueless item lying within its reach. It now leaves those where they are.
+- **Black Hole Band on a pedestal pushed items into any slot of the container next to it** — a condenser's target slot (so it started duplicating whatever fell nearby) or a furnace's fuel slot. It now uses the slot a hopper would.
+- **Void Ring on a pedestal** pulls items now (12 blocks), as the handbook said it did.
+- **A stale background mapping could overwrite a newer one** (a pin or blacklist change made while a doctor fix was remapping went missing until the next remap). The newer result wins; a mapping started while the server shuts down no longer leaves the "mapping in progress" flag stuck.
+- `/emc set` refuses NaN and Infinity (an infinite pin gave the player infinite EMC); a hand-edited NaN or Infinity in the settings goes back to the default instead of emptying Klein Stars; a tiny value no longer rounds to a 0 that counts as valued.
+- Exact-version keys now strip this mod's own stored-EMC and Arcana attributes (the names had drifted).
+
+### Fixed — values
+- **Items in a self-cheapening recipe loop kept whichever value they were given first, which could be their dearest recipe** (a mod's reversible process rather than clay, for a crucible). They now take their cheapest recipe outside the loop.
+- **The final guessed-value pass no longer lowers a guess through a recipe whose ingredients were priced from that guess** (it halved the value every round), and never lowers something it raised.
+- **A mod recipe with a quantity of 0** (crushing, transitions) made its output worth hundreds of times its input; such recipes are skipped. The drying/curing time bonus is capped at ten days' worth.
+- **The trader currency keeps a mod recipe's cheaper price** instead of being fixed at the trader rate (crafting gears, then burning them, made EMC).
+
 ## 1.17.21 — 2026-11-04
 
 ### Fixed

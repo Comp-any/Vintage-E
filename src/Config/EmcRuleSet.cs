@@ -117,7 +117,7 @@ namespace VintageE
         /// </summary>
         public const string CompatPath = "config/vintagee-emc-compat/";
 
-        public static string DisabledKeyOf(IEnumerable<string> disabled) => string.Join("|", (disabled ?? Enumerable.Empty<string>()).Select(d => d.Trim().ToLowerInvariant()).OrderBy(d => d, StringComparer.Ordinal));
+        public static string DisabledKeyOf(IEnumerable<string> disabled) => string.Join("|", (disabled ?? Enumerable.Empty<string>()).Where(d => d != null).Select(d => d.Trim().ToLowerInvariant()).OrderBy(d => d, StringComparer.Ordinal));
 
         /// <summary>True if <paramref name="source"/> (an asset location) is on the DisabledCompat list, which may also name just the file ("primitivesurvival" or "primitivesurvival.json").</summary>
         public static bool IsDisabled(string source, IEnumerable<string> disabled)

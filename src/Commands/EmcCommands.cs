@@ -268,7 +268,7 @@ namespace VintageE
             string key = (held.Class == EnumItemClass.Block ? "block:" : "item:") + held.Collectible.Code;
             if (value.HasValue)
             {
-                if (value.Value < 0) return TextCommandResult.Error("Value must be 0 or more");
+                if (value.Value < 0 || double.IsNaN(value.Value) || double.IsInfinity(value.Value)) return TextCommandResult.Error("Value must be a number, 0 or more");
             }
             else if (!mod.Config.FixedValues.ContainsKey(key))
             {

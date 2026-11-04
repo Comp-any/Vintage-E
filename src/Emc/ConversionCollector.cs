@@ -565,7 +565,8 @@ namespace VintageE
                 if (crushed?.Collectible != null)
                 {
                     double avg = c.CrushingProps.Quantity?.avg ?? 1;
-                    if (AddProcessing(c, 1, crushed.Collectible, crushed.StackSize * Math.Max(avg, 0.01), "pulverizer crushing")) crush++;
+                    // A quantity of 0 would make the output worth hundreds of times the input (cost / quantity); skip it.
+                    if (avg > 0 && AddProcessing(c, 1, crushed.Collectible, crushed.StackSize * avg, "pulverizer crushing")) crush++;
                 }
 
                 if (c.TransitionableProps != null)
@@ -582,9 +583,11 @@ namespace VintageE
                             double hoursPerDay = sapi.World.Calendar?.HoursPerDay ?? 24;
                             if (hoursPerDay <= 0) hoursPerDay = 24;
                             double hours = Math.Max(0, tp.FreshHours?.avg ?? 0) + Math.Max(0, tp.TransitionHours?.avg ?? 0);
-                            bonus = perDay * hours / hoursPerDay;
+                            // At most ten days' worth: a mod's month-long cure would otherwise add thousands.
+                            bonus = perDay * Math.Min(10, hours / hoursPerDay);
                         }
-                        if (AddProcessing(c, 1, result.Collectible, result.StackSize * Math.Max(tp.TransitionRatio, 0.0001f), "transitions (" + type + ")", bonus)) transition++;
+                        if (tp.TransitionRatio <= 0) continue; // a ratio of 0 would be a 10,000x multiplier, not a transition
+                        if (AddProcessing(c, 1, result.Collectible, result.StackSize * tp.TransitionRatio, "transitions (" + type + ")", bonus)) transition++;
                     }
                 }
             }

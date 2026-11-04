@@ -79,6 +79,8 @@ namespace VintageE
         public HashSet<T> Unstable { get; } = new HashSet<T>();
         /// <summary>The first value each item ever got; loop items that can't be settled fall back to it instead of losing their value.</summary>
         readonly Dictionary<T, double> firstValue = new Dictionary<T, double>();
+        /// <summary>The value each frozen item settled at (its cheapest recipe outside the loop), kept across restarts.</summary>
+        readonly Dictionary<T, double> frozenValue = new Dictionary<T, double>();
         /// <summary>Items that never settled and were given their first value at the end (normally empty).</summary>
         public HashSet<T> KeptAtFirstValue { get; } = new HashSet<T>();
         /// <summary>Items in self-cheapening loops that keep their first value instead of being lowered.</summary>
@@ -99,6 +101,7 @@ namespace VintageE
                     // Loop detected: freeze (or, second time round, drop) the offenders and start over from trusted values.
                     Values = new Dictionary<T, double>(Fixed);
                     foreach (var kv in Inferred) if (!Unstable.Contains(kv.Key)) Values[kv.Key] = kv.Value;
+                    foreach (var kv in frozenValue) if (!Unstable.Contains(kv.Key)) Values[kv.Key] = kv.Value;
                     foreach (T k in Via.Keys.Where(k => !Inferred.ContainsKey(k)).ToList()) Via.Remove(k);
                     continue;
                 }
@@ -201,7 +204,7 @@ namespace VintageE
                 {
                     bool anyNew = false;
                     foreach (T item in suspects) anyNew |= Frozen.Add(item);
-                    if (anyNew) return false;
+                    if (anyNew) { SettleFrozen(suspects); return false; }
                     Unstable.UnionWith(suspects);
                     return false;
                 }
@@ -222,10 +225,45 @@ namespace VintageE
                     bool anyNew = false;
                     foreach (T item in changed) anyNew |= Frozen.Add(item);
                     if (!anyNew) Unstable.UnionWith(changed); // freezing didn't help: give up on these
+                    else SettleFrozen(changed);
                     return false;
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Items just frozen for sitting in a self-cheapening loop get the value of their cheapest recipe that does not
+        /// go through another loop item, worked out from the values as they stand; only when every recipe runs
+        /// through the loop does the first value they ever got stay. Before this, a frozen item kept whichever
+        /// derivation happened first, which could be its dearest recipe (a crucible from a mod's expensive
+        /// reversible process rather than from clay).
+        /// </summary>
+        void SettleFrozen(IEnumerable<T> items)
+        {
+            var set = new HashSet<T>(items);
+            foreach (T item in set)
+            {
+                double best = double.PositiveInfinity;
+                object via = null;
+                for (int i = 0; i < Edges.Count; i++)
+                {
+                    Edge e = Edges[i];
+                    if (!Equals(e.Output, item)) continue;
+                    bool throughLoop = false;
+                    foreach (T[] choice in e.Choices)
+                    {
+                        if (choice.Length == 1 && (set.Contains(choice[0]) || Frozen.Contains(choice[0]))) { throughLoop = true; break; }
+                    }
+                    if (throughLoop) continue;
+                    double cost = Cost(e);
+                    if (double.IsNaN(cost) || e.OutputQuantity <= 0) continue;
+                    double per = cost / e.OutputQuantity;
+                    if (per >= MinValue && per < best) { best = per; via = e; }
+                }
+                if (via != null && !double.IsInfinity(best)) { Values[item] = best; Via[item] = via; firstValue[item] = best; frozenValue[item] = best; }
+                else if (firstValue.TryGetValue(item, out double first)) { Values[item] = first; frozenValue[item] = first; }
+            }
         }
 
         /// <summary>Cost of one run of the edge, or NaN if some ingredient has no value yet.</summary>

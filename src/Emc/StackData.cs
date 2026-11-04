@@ -143,7 +143,7 @@ namespace VintageE
         public static readonly HashSet<string> VolatileKeys = new HashSet<string>(StringComparer.Ordinal)
         {
             "temperature", "toolMode", "renderVariant", "transitionstate", "durability", "condition", "vintageeActive", "vintageeMode", "vintageeSpeed",
-            "vintageeArcana", "vintageeStored", "vintageeSpeedBase"
+            "vintageeArcanaOff", "vintageeStoredEmc", "vintageeSpeedBase"
         };
 
         /// <summary>A sorted copy of the stack's data without the volatile parts; null when nothing is left.</summary>

@@ -226,6 +226,8 @@ namespace VintageE
                             foreach (CollectibleObject c in index.Match(pattern))
                             {
                                 if (noGuess.Contains(c) || PinnedByConfig(index, c)) continue;
+                                // A mod's recipe that makes the currency for less is the real price (craft, then burn).
+                                if (solver.Values.TryGetValue(c, out double made) && made < rate) continue;
                                 extra[c] = rate;
                                 currency.Add(c);
                                 extraOrigin[c] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "trader currency: {0:0.##} EMC per gear, measured on {1} traded items", rate, samples);
@@ -411,9 +413,12 @@ namespace VintageE
                 {
                     CollectibleObject o = conv.Output;
                     // A guess that is also raised to its yield keeps the raise: the burn exploit is the one to close.
-                    if (o == null || conv.JointOutputs != null || !extra.ContainsKey(o) || currency.Contains(o) || PinnedByConfig(index, o) || dearer.ContainsKey(o)) continue;
+                    if (o == null || conv.JointOutputs != null || !extra.ContainsKey(o) || currency.Contains(o) || PinnedByConfig(index, o) || dearer.ContainsKey(o) || raised.Contains(o)) continue;
                     double? per = ViableCostPer(conv, solver.Values);
                     if (per == null || per.Value <= 0 || per.Value >= extra[o] * 0.999) continue;
+                    // A recipe whose ingredients were themselves priced from this item (o -> 2P, P + stick -> o) would
+                    // lower it every round towards nothing; only recipes that rest on other things count.
+                    if (RestsOn(conv, o, solver)) continue;
                     if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
                 }
                 if (cheaper.Count == 0 && dearer.Count == 0) break;
@@ -440,7 +445,8 @@ namespace VintageE
             report.Values = new Dictionary<CollectibleObject, double>();
             foreach (var kv in solver.Values)
             {
-                if (kv.Value > 0 && !excluded.Contains(kv.Key) && !solver.Unstable.Contains(kv.Key)) report.Values[kv.Key] = Tidy(kv.Value);
+                double tidy = Tidy(kv.Value);
+                if (tidy > 0 && !double.IsNaN(tidy) && !double.IsInfinity(tidy) && !excluded.Contains(kv.Key) && !solver.Unstable.Contains(kv.Key)) report.Values[kv.Key] = tidy;
             }
             report.BaseCount = fixedValues.Count;
             report.InferredCount = solver.Inferred.Keys.Count(k => report.Values.ContainsKey(k));
@@ -553,7 +559,7 @@ namespace VintageE
                 if (attr != null && attr.Exists)
                 {
                     double v = attr.AsDouble(-1);
-                    if (v > 0) fixedValues[c] = v;
+                    if (v > 0 && !double.IsNaN(v) && !double.IsInfinity(v)) fixedValues[c] = v;
                     else if (v == 0) { excluded.Add(c); fixedValues.Remove(c); }
                 }
             }
@@ -621,6 +627,26 @@ namespace VintageE
                     cost -= rv * r.Value;
                 }
             return cost / conv.OutputQuantity;
+        }
+
+        /// <summary>True when any ingredient of this recipe got its value (through the solver's Via chain) from <paramref name="target"/>.</summary>
+        static bool RestsOn(Conversion conv, CollectibleObject target, EmcSolver<CollectibleObject> solver)
+        {
+            var seen = new HashSet<CollectibleObject>();
+            var stack = new Stack<(CollectibleObject item, int depth)>();
+            foreach (ConversionInput input in conv.Inputs) foreach (CollectibleObject c in input.Choices) if (c != null) stack.Push((c, 0));
+            while (stack.Count > 0)
+            {
+                var (item, depth) = stack.Pop();
+                if (item == target) return true;
+                if (depth >= 10 || !seen.Add(item) || !solver.Via.TryGetValue(item, out object via)) continue;
+                if (via is EmcSolver<CollectibleObject>.Edge e)
+                {
+                    foreach (CollectibleObject[] choice in e.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                }
+                else if (via is EmcSolver<CollectibleObject>.JointEdge j && j.Input != null) stack.Push((j.Input, depth + 1));
+            }
+            return false;
         }
 
         /// <summary>What one unit of this single-input process's input yields in EMC (every output valued), or null.</summary>
@@ -755,8 +781,10 @@ namespace VintageE
                     if (star >= 0)
                     {
                         var pattern = new AssetLocation(rule.Code.StartsWith("item:") || rule.Code.StartsWith("block:") ? rule.Code.Substring(rule.Code.IndexOf(':') + 1) : rule.Code);
-                        string prefix = pattern.Path.Substring(0, pattern.Path.IndexOf('*'));
-                        string suffix = pattern.Path.Substring(pattern.Path.IndexOf('*') + 1);
+                        int pathStar = pattern.Path.IndexOf('*');
+                        if (pathStar < 0) continue; // the only * is in the domain: nothing to carry over
+                        string prefix = pattern.Path.Substring(0, pathStar);
+                        string suffix = pattern.Path.Substring(pathStar + 1);
                         string path = c.Code.Path;
                         if (path.Length < prefix.Length + suffix.Length) continue;
                         string captured = path.Substring(prefix.Length, path.Length - prefix.Length - suffix.Length);
@@ -806,6 +834,7 @@ namespace VintageE
                 if (value > 0)
                 {
                     double itemsPerLitre = perLitre ? EmcRegistry.ItemsPerLitre(c) : 0;
+                    if (double.IsNaN(value) || double.IsInfinity(value)) continue;
                     fixedValues[c] = itemsPerLitre > 0 ? value / itemsPerLitre : value;
                     excluded.Remove(c);
                 }

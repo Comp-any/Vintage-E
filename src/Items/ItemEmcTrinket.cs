@@ -97,7 +97,7 @@ namespace VintageE
                 for (int i = 0; i < ArcanaModes.Length; i++)
                 {
                     string name = Lang.Get("vintagee:arcana-" + ArcanaModes[i]);
-                    string letter = name.Substring(0, 1);
+                    string letter = string.IsNullOrEmpty(name) ? "?" : name.Substring(0, 1);
                     arcanaOn[i] = new SkillItem { Code = new AssetLocation("vintagee", "arcana-" + ArcanaModes[i] + "-on"), Name = Lang.Get("vintagee:arcana-toggle-on", name) }
                         .WithIcon(capi, (ctx, x, y, w, h, rgba) => ModeIcons.Letter(capi, ctx, x, y, w, h, letter, true));
                     arcanaOff[i] = new SkillItem { Code = new AssetLocation("vintagee", "arcana-" + ArcanaModes[i] + "-off"), Name = Lang.Get("vintagee:arcana-toggle-off", name) }
@@ -155,7 +155,7 @@ namespace VintageE
                 {
                     CollectibleObject target = Resolve(capi.World, DensityTargets[i]);
                     string name = target == null ? DensityTargets[i] : target.GetHeldItemName(new ItemStack(target));
-                    modes[i] = new SkillItem { Code = new AssetLocation("vintagee", "density" + i), Name = name }.WithLetterIcon(capi, name.Substring(0, 1));
+                    modes[i] = new SkillItem { Code = new AssetLocation("vintagee", "density" + i), Name = name }.WithLetterIcon(capi, string.IsNullOrEmpty(name) ? "?" : name.Substring(0, 1));
                 }
             }
         }

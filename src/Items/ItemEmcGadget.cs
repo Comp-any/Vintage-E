@@ -343,7 +343,7 @@ namespace VintageE
             {
                 if (!IsDiviningRod(item)) continue;
                 double v = emc?.GetValue(item) ?? 0;
-                item.Durability = v > 0 ? (int)Math.Max(1, Math.Round(v * 10)) : 100;
+                item.Durability = v > 0 ? (int)Math.Min(int.MaxValue / 2, Math.Max(1, Math.Round(v * 10))) : 100;
             }
         }
 

@@ -258,7 +258,8 @@ namespace VintageE
 
         Entry GetEntry(string key)
         {
-            if (cache.TryGetValue(key, out Entry e) && e.TableVersion == mod.TableVersion) return e;
+            // A key that failed to resolve is cached as null (it stays broken); a cached entry is good while the table is the same.
+            if (cache.TryGetValue(key, out Entry e)) { if (e == null) return null; if (e.TableVersion == mod.TableVersion) return e; }
             ItemStack stack = TransmutationService.Prototype(mod, capi.World, key);
             if (stack == null) { cache[key] = null; return null; }
             // A clutter block or tapestry with no type is a broken thing (learned before 1.17.5, or by the Tome): never offer it.

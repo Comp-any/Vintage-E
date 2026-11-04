@@ -135,6 +135,9 @@ namespace VintageE
                     var ei = (EntityItem)e;
                     ItemStack stack = ei.Itemstack;
                     if (stack?.Collectible == null || !Passes(tablet, stack.Collectible)) continue;
+                    // Worth nothing: leave it lying there. (PlanBurn would log the refusal and resend the EMC table
+                    // four times a second for as long as it lies within reach.)
+                    if (mod.BurnValue(stack) <= 0) continue;
                     // Something you just threw away stays put for a moment.
                     if (ei.ByPlayerUid == player.PlayerUID && now - ei.itemSpawnedMilliseconds < 3000) continue;
                     if (service.PlanBurn(player, stack, out TransmutationService.BurnPlan plan, out _) != null) continue;

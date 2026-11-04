@@ -123,7 +123,11 @@ namespace VintageE
         {
             base.Initialize(api);
             radius = Block?.Attributes?["radius"].AsFloat(8) ?? 8;
-            if (api.Side == EnumAppSide.Server) RegisterGameTickListener(_ => Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets?.Repel(Pos.ToVec3d().Add(0.5, 0.5, 0.5), radius), 250);
+            if (api.Side == EnumAppSide.Server) RegisterGameTickListener(_ =>
+            {
+                try { Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets?.Repel(Pos.ToVec3d().Add(0.5, 0.5, 0.5), radius); }
+                catch (Exception e) { Api.Logger.Warning("Vintage-E interdiction torch at {0}: {1}", Pos, e.Message); }
+            }, 250);
         }
     }
 
@@ -298,6 +302,12 @@ namespace VintageE
 
         void OnServerTick(float dt)
         {
+            try { PedestalTick(dt); }
+            catch (Exception e) { Api.Logger.Warning("Vintage-E pedestal at {0}: {1}", Pos, e.Message); }
+        }
+
+        void PedestalTick(float dt)
+        {
             if (!(held?.Collectible is ItemEmcTrinket t)) return;
             TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
             if (fx == null) return;
@@ -344,6 +354,10 @@ namespace VintageE
                     fx.Attract(center.AddCopy(0, 0.6, 0), 10 * range);
                     Collect(center);
                     break;
+                case "voidpull":
+                    fx.Attract(center.AddCopy(0, 0.6, 0), TrinketEffects.VoidPullRadius * range);
+                    Collect(center);
+                    break;
                 case "swiftwolfsrendinggale":
                     if (everySecond)
                     {
@@ -378,10 +392,16 @@ namespace VintageE
                 var source = new DummySlot(ei.Itemstack);
                 foreach (IBlockEntityContainer container in containers)
                 {
-                    foreach (ItemSlot slot in container.Inventory)
+                    // Only where the container lets automation push (a hopper would): never a condenser's target slot
+                    // or a furnace's fuel slot, which taking every slot in turn used to fill with whatever fell nearby.
+                    if (!(container.Inventory is InventoryBase inv)) continue;
+                    for (int guard = 0; guard < 64 && !source.Empty; guard++)
                     {
-                        if (source.Empty) break;
-                        source.TryPutInto(Api.World, slot, source.StackSize);
+                        ItemSlot slot = null;
+                        try { slot = inv.GetAutoPushIntoSlot(BlockFacing.UP, source); } catch { }
+                        if (slot == null) break;
+                        int moved = source.TryPutInto(Api.World, slot, source.StackSize);
+                        if (moved <= 0) break;
                     }
                     if (source.Empty) break;
                 }
@@ -469,7 +489,8 @@ namespace VintageE
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
             held = tree.GetItemstack("held");
-            held?.ResolveBlockOrItem(worldAccessForResolve);
+            // An item from a removed mod can't be resolved: drop it rather than crash on every look or click.
+            if (held != null && !held.ResolveBlockOrItem(worldAccessForResolve)) held = null;
             if (renderer != null) renderer.Stack = held;
         }
 

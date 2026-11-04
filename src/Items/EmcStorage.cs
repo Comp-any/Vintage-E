@@ -64,6 +64,7 @@ namespace VintageE
         public static bool TryPay(IPlayer player, double amount)
         {
             if (amount <= 0) return true;
+            if (double.IsNaN(amount) || double.IsInfinity(amount)) return false;
             if (player == null || Balance(player) + 1e-9 < amount) return false;
 
             double personal = PlayerEmc.GetEmc(player);

@@ -130,10 +130,12 @@ namespace VintageE
         public bool IsHostile(Entity e)
         {
             if (e == null || !e.Alive || e is EntityPlayer || !(e is EntityAgent) || e.Code == null) return false;
-            hostile ??= mod.Config.HostileCreatures.Select(p => new AssetLocation(p)).ToArray();
+            hostile ??= mod.Config.HostileCreatures.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => new AssetLocation(p)).ToArray();
             foreach (AssetLocation pattern in hostile)
             {
-                if (WildcardUtil.Match(pattern, e.Code)) return true;
+                // A bad pattern (an unfinished @regex in the settings) must not take a tick listener down.
+                try { if (WildcardUtil.Match(pattern, e.Code)) return true; }
+                catch (Exception ex) { mod.Mod.Logger.Warning("Vintage-E: HostileCreatures entry {0} can't be used: {1}", pattern, ex.Message); hostile = hostile.Where(h => h != pattern).ToArray(); return false; }
             }
             return false;
         }
@@ -629,8 +631,12 @@ namespace VintageE
             {
                 Entity owner = kv.Value;
                 if (owner == null || !owner.Alive) { shielded.Remove(kv.Key); continue; }
-                Repel(owner.Pos.XYZ, ShieldRadius);
-                RepelProjectiles(owner, ShieldRadius);
+                try
+                {
+                    Repel(owner.Pos.XYZ, ShieldRadius);
+                    RepelProjectiles(owner, ShieldRadius);
+                }
+                catch (Exception e) { sapi.Logger.Warning("Vintage-E shield for {0}: {1}", kv.Key, e.Message); }
             }
         }
 

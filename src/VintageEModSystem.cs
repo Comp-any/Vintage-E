@@ -236,9 +236,24 @@ namespace VintageE
                 lock (clientLookLock) { LookPrefixCalls++; LookPrefixCollectibles += mine2.Count; }
                 // Remember how the game sent each block and item, so a look change can put it back and apply another.
                 SnapshotLookOriginals(mine2);
-                if (ProjectELook.MapFor(clientLook) == null) return;
+                // Already carrying this look (a switch applied it on the main thread before the reload that brought
+                // us here): leave them, so the baked textures stay and no atlas work happens off the main thread.
+                lock (appliedLook) { mine2.RemoveAll(c => appliedLook.Contains(c)); }
+                // Whatever look is on (Middle has no map), every texture these carry must have its baked name: the
+                // game reads it without a check when a worn ring, star or armour piece is drawn on a player
+                // (IAttachableToEntity.CollectTexturesFromCollectible), and a null there crashes the game.
+                if (ProjectELook.MapFor(clientLook) == null)
+                {
+                    // Middle after a switch: the originals put back were replaced before the game's atlas collection
+                    // at load, so they are in no atlas yet; add them now (main thread only, which a switch is).
+                    if (atlasesReady) BakeLookTextures(mine2);
+                    PreBakeLookTextures(capi, mine2);
+                    lock (appliedLook) { foreach (CollectibleObject c in mine2) appliedLook.Add(c); }
+                    return;
+                }
                 if (mine2.Count == 0 && types.Count == 0) return;
                 ProjectELook.Result r = ProjectELook.Apply(capi, Mod.Logger, clientLook, false, mine2, types);
+                lock (appliedLook) { foreach (CollectibleObject c in mine2) appliedLook.Add(c); }
                 lock (clientLookLock)
                 {
                     LookResult ??= new ProjectELook.Result { Look = clientLook };
@@ -252,9 +267,6 @@ namespace VintageE
                 // does, so a later pass (a look switch, a shape reload) has to put them into the atlases itself, or the
                 // block is drawn invisible with an "Unable to initialize TextureSource" error.
                 int baked = atlasesReady ? BakeLookTextures(mine2) : 0;
-                // Whatever the stage, every texture the look put on an item or block gets its baked name now (no atlas
-                // needed for that): the game reads it without a check when a worn ring, star or armour piece is drawn
-                // on a player (IAttachableToEntity.CollectTexturesFromCollectible), and a null there crashes the game.
                 PreBakeLookTextures(capi, mine2);
                 LookEvent("{0}: {1} of ours, {2} models, {3} textures{4} (thread {5})", kind, mine2.Count, r.Models, r.Textures, atlasesReady ? ", " + baked + " baked into the atlases" : "", System.Threading.Thread.CurrentThread.Name ?? "?");
             }
@@ -337,6 +349,9 @@ namespace VintageE
             }
         }
 
+        /// <summary>Blocks and items carrying the current look (cleared on a switch), so the hook doesn't apply it twice.</summary>
+        readonly HashSet<CollectibleObject> appliedLook = new HashSet<CollectibleObject>();
+
         void RestoreLookOriginals()
         {
             lock (lookOriginals)
@@ -358,6 +373,8 @@ namespace VintageE
                         it.Textures = o.Textures == null ? null : new Dictionary<string, CompositeTexture>(o.Textures);
                     }
                 }
+                // Originals a look replaced at load were never collected by the game, so they may be unbaked.
+                if (Capi != null) PreBakeLookTextures(Capi, lookOriginals.Keys);
             }
         }
 
@@ -374,10 +391,15 @@ namespace VintageE
                 LookEvent("switch ({0})", why);
                 RestoreLookOriginals();
                 lock (clientLookLock) { clientLook = null; LookResult = null; }
+                lock (appliedLook) appliedLook.Clear();
                 ProjectELook.DisposeMeshes();
-                // The game loads the shapes again, which runs the look hook: it applies the look and, now that the
-                // atlases exist, bakes the look's textures into them (ApplyClientLookTo). Applying here as well would
-                // be undone by the hook, which always builds fresh texture entries.
+                // Apply the look here, on the main thread, to everything the game holds, and put its textures into
+                // the atlases (that is GL work, so it can't run on the thread the game's item reload uses). The reload
+                // then runs the hook, which sees these as already applied and leaves them be.
+                var blocks = (Capi.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                var items = (Capi.World?.Items ?? new List<Item>()).Where(i => i?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
+                ApplyClientLookTo("blocks (switch)", blocks, new List<EntityProperties>());
+                ApplyClientLookTo("items (switch)", items, new List<EntityProperties>());
                 Mod.Logger.Notification("Look: switching ({0}); reloading shapes.", why);
                 ReloadShapes();
             }
@@ -695,10 +717,18 @@ namespace VintageE
         EmcMappingReport RecalculateEmcInner(string reason, bool allowCache)
         {
             var sw = Stopwatch.StartNew();
+            // A mapping on the game thread is the newest word: a background one started before it is stale and is
+            // thrown away when it comes in (its config may be older than the change this one carries).
+            int serial = ++mappingSerial;
             EmcMappingReport report = ComputeMapping(reason, allowCache, out string fingerprint);
             if (report == null) return null;
-            return ApplyMapping(report, fingerprint, reason, sw);
+            EmcMappingReport applied = ApplyMapping(report, fingerprint, reason, sw);
+            appliedSerial = serial;
+            return applied;
         }
+
+        /// <summary>Counts mappings started; a background result is applied only if nothing newer was applied meanwhile.</summary>
+        int mappingSerial, appliedSerial;
 
         /// <summary>Set by the doctor's fixes instead of remapping on the spot; the request path then maps in the background.</summary>
         public string PendingRemap { get; private set; }
@@ -722,6 +752,7 @@ namespace VintageE
                 return;
             }
             mappingInFlight = true;
+            int serial = ++mappingSerial;
             var sw = Stopwatch.StartNew();
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -734,20 +765,33 @@ namespace VintageE
                     LastMappingErrorAt = DateTime.Now;
                     Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "mapping", e);
                 }
-                Sapi.Event.EnqueueMainThreadTask(() =>
+                try
                 {
-                    EmcMappingReport applied = null;
-                    try { if (computed != null) applied = ApplyMapping(computed, fingerprint, reason, sw); }
-                    catch (Exception e)
+                    Sapi.Event.EnqueueMainThreadTask(() =>
                     {
-                        LastMappingError = (mappingStage ?? "applying") + ": " + e.GetType().Name + ": " + e.Message;
-                        LastMappingErrorAt = DateTime.Now;
-                        Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "applying", e);
-                    }
-                    finally { mappingInFlight = false; }
-                    try { then?.Invoke(applied); }
-                    catch (Exception e) { Mod.Logger.Error("Vintage-E: after the mapping ({0}): {1}", reason, e); }
-                }, "vintagee-mapping");
+                        EmcMappingReport applied = null;
+                        try
+                        {
+                            if (computed != null && appliedSerial > serial) Mod.Logger.Notification("EMC: a background mapping ({0}) finished after a newer one was applied; its result is dropped.", reason);
+                            else if (computed != null) { applied = ApplyMapping(computed, fingerprint, reason, sw); appliedSerial = serial; }
+                        }
+                        catch (Exception e)
+                        {
+                            LastMappingError = (mappingStage ?? "applying") + ": " + e.GetType().Name + ": " + e.Message;
+                            LastMappingErrorAt = DateTime.Now;
+                            Mod.Logger.Error("EMC mapping failed ({0}) while {1}: {2}", reason, mappingStage ?? "applying", e);
+                        }
+                        finally { mappingInFlight = false; }
+                        try { then?.Invoke(applied); }
+                        catch (Exception e) { Mod.Logger.Error("Vintage-E: after the mapping ({0}): {1}", reason, e); }
+                    }, "vintagee-mapping");
+                }
+                catch (Exception e)
+                {
+                    // The server is going down (nothing takes main-thread tasks any more): don't leave the flag stuck.
+                    mappingInFlight = false;
+                    Mod.Logger.Warning("EMC: could not hand the mapping ({0}) to the game thread: {1}", reason, e.Message);
+                }
             });
         }
 
@@ -2407,6 +2451,7 @@ namespace VintageE
             GuiDialogEmcContents previous = contentsDialog != null && contentsDialog.IsOpened() ? contentsDialog : null;
             var dialog = new GuiDialogEmcContents(Capi, packet, previous, (keys, mode) => clientChannel.SendPacket(new EmcContentsSetPacket { Keys = keys, Mode = mode }));
             previous?.TryClose();
+            previous?.Dispose();
             contentsDialog = dialog;
             dialog.TryOpen();
         }

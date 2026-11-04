@@ -249,10 +249,16 @@ namespace VintageE
             if (legacyProjectETextures == true) Look = ProjectELook.LookOriginal;
             legacyProjectETextures = null;
             Look = ProjectELook.NormalizeLook(Look);
+            // A hand-edited NaN or Infinity (Newtonsoft reads both) would poison every sum it touches: Klein stars
+            // emptied by a NaN cost, a collector stuck at NaN. Such values go back to their defaults.
+            static bool Bad(double v) => double.IsNaN(v) || double.IsInfinity(v);
+            if (Bad(TrinketCostMultiplier)) TrinketCostMultiplier = 1;
             if (TrinketCostMultiplier < 0) TrinketCostMultiplier = 0;
+            if (Bad(WatchSpeedUp)) WatchSpeedUp = 10;
             if (WatchSpeedUp < 1) WatchSpeedUp = 1;
+            if (Bad(WatchSlowDown)) WatchSlowDown = 3;
             if (WatchSlowDown < 1) WatchSlowDown = 1;
-            if (MachineSpeedMultiplier <= 0) MachineSpeedMultiplier = 1.0;
+            if (Bad(MachineSpeedMultiplier) || MachineSpeedMultiplier <= 0) MachineSpeedMultiplier = 1.0;
             if (MaxMappingPasses < 4) MaxMappingPasses = 4;
             if (TableUseRange < 2) TableUseRange = 2;
         }

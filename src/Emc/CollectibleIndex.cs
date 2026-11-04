@@ -59,7 +59,9 @@ namespace VintageE
             else if (pattern.StartsWith("block:", StringComparison.OrdinalIgnoreCase)) { type = EnumItemClass.Block; pattern = pattern.Substring(6); }
 
             var loc = new AssetLocation(pattern);
-            return Candidates(loc).Where(c => (type == null || c.ItemClass == type) && WildcardUtil.Match(loc, c.Code));
+            // A broken @regex in a settings entry throws inside the game's matcher; it then matches nothing.
+            try { return Candidates(loc).Where(c => (type == null || c.ItemClass == type) && WildcardUtil.Match(loc, c.Code)).ToList(); }
+            catch (ArgumentException) { return Enumerable.Empty<CollectibleObject>(); }
         }
 
         /// <summary>Whether one collectible matches <paramref name="pattern"/> (same rules as <see cref="Match"/>).</summary>

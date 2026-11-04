@@ -187,6 +187,7 @@ namespace VintageE
             value = 0;
             if (string.IsNullOrWhiteSpace(text)) return false;
             string t = text.Trim().Replace(",", "").Replace(" ", "").Replace("_", "");
+            if (t.Length == 0) return false;
             double scale = 1;
             char last = char.ToLowerInvariant(t[t.Length - 1]);
             if (last == 'k' || last == 'm' || last == 'b')
