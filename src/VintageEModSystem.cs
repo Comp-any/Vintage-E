@@ -2221,9 +2221,12 @@ namespace VintageE
         string lastLookSetting;
         bool lookReloadTried;
 
+        long clientSavePending;
         public void OnClientConfigChanged()
         {
-            ClientConfig?.Save(Capi);
+            // Coalesced: the settings slider fires for every pixel dragged, and each used to be a file write.
+            if (clientSavePending == 0 && Capi != null)
+                clientSavePending = Capi.Event.RegisterCallback(_ => { clientSavePending = 0; try { ClientConfig?.Save(Capi); } catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not save the client settings: {0}", e.Message); } }, 400);
             watchHud?.Update(true);
             string look = ClientConfig?.Look;
             if (look != null && lastLookSetting != null && look != lastLookSetting) ChangeLookNow("setting changed from " + lastLookSetting + " to " + look);

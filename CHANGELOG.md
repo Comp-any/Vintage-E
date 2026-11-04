@@ -15,7 +15,7 @@ A deep review pass: threading, the windows, gameplay effects, commands and setti
 ### Fixed — windows
 - **The set-value box swallowed the first character typed** ("1000" became "000").
 - **Every refill of a list window leaked GL textures** (two per link, per keystroke in the search box). They are released now.
-- **A condenser window could go dead** when the game refused to open it twice; the client-settings slider wrote the settings file for every pixel dragged; the missing-items window's value box rejected "1,000"; two more unguarded item names.
+- **A condenser window could go dead** when the game refused to open it twice; the client-settings slider wrote the settings file for every pixel dragged (saves are coalesced now); the missing-items window's value box rejected "1,000"; two more unguarded item names.
 
 ### Fixed — gameplay
 - **Pedestals respected no land claims**: a Harvest Goddess Band one block outside a claim harvested the crops inside it, a Zero Ring froze its ponds, a Black Hole Band pulled the drops out. A pedestal now leaves anything inside a claim alone.
