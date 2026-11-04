@@ -203,6 +203,22 @@ namespace VintageE
         {
             ItemSlot mouse = player.InventoryManager.MouseItemSlot;
             if (mouse?.Itemstack == null) return;
+            // A Klein star dropped on Burn isn't burned (what it holds would be lost): left-click fills it from your
+            // EMC, right-click empties it into your EMC, and it stays on the cursor (as in ProjectE).
+            if (mouse.Itemstack.Collectible is IEmcStorageItem)
+            {
+                ItemStack star = mouse.Itemstack;
+                if (star.StackSize != 1) { Fail(player, "star-onlyone", star.GetName()); return; }
+                double stored = StoredEmc.Get(star);
+                double move = onlyOne ? -stored : Math.Min(PlayerEmc.GetEmc(player), StoredEmc.Capacity(star) - stored);
+                if (Math.Abs(move) < 1e-9) { Fail(player, onlyOne ? "star-empty" : "star-full", star.GetName()); return; }
+                PlayerEmc.AddEmc(player, -move);
+                StoredEmc.Set(star, stored + move);
+                mouse.MarkDirty();
+                sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), player.Entity, null, true, 8, 0.6f);
+                mod.SendResult(player, Result(player, null));
+                return;
+            }
             string error = PlanBurn(player, mouse.Itemstack, out BurnPlan plan, out string[] args);
             if (error != null)
             {

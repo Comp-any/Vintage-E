@@ -115,10 +115,23 @@ namespace VintageE
             if (mod == null) return;
             double speed = mod.Config.MachineSpeedMultiplier;
             ItemStack target = inventory[TargetSlot].Itemstack;
-            ItemStack copy = target == null ? null : CopyOf(mod, target);
+            bool changed = false;
+            // A Klein star as the target is charged from the stored EMC, never copied (as in ProjectE).
+            bool chargingStar = target?.Collectible is IEmcStorageItem;
+            if (chargingStar && Stored >= 1)
+            {
+                double move = Math.Min(Math.Floor(Stored), StoredEmc.Capacity(target) - StoredEmc.Get(target));
+                if (move > 0)
+                {
+                    StoredEmc.Set(target, StoredEmc.Get(target) + move);
+                    Stored -= move;
+                    inventory[TargetSlot].MarkDirty();
+                    changed = true;
+                }
+            }
+            ItemStack copy = target == null || chargingStar ? null : CopyOf(mod, target);
             // Things on the NoTransmute list are never made from EMC (nor burned, below).
             double targetValue = copy == null || mod.Emc.IsNoTransmute(copy.Collectible) ? 0 : mod.Emc.GetValue(copy);
-            bool changed = false;
 
             // 1. Burn storage (anything that isn't the target) into EMC, while there's room for it.
             burnBudget = Math.Min(burnBudget + itemsPerSecond * speed * dt, itemsPerSecond * speed * 2 + 1);
@@ -128,6 +141,8 @@ namespace VintageE
                 ItemStack stack = slot.Itemstack;
                 if (stack == null) continue;
                 if (target != null && stack.Collectible == target.Collectible) continue;
+                // A Klein star is never burned: what it holds would be lost. Put it in the target slot to charge it.
+                if (stack.Collectible is IEmcStorageItem) continue;
                 if (mod.Config.ProtectContainersWithContents && StackContents.HasNestedStacks(stack) && mod.Emc.StackData.ModeOf(stack.Collectible) == StackDataMode.Item) continue;
                 double value = mod.Emc.IsNoTransmute(stack.Collectible) ? 0 : mod.BurnValue(stack);
                 if (value <= 0 || Stored + value > capacity) continue;
@@ -359,7 +374,11 @@ namespace VintageE
             dsc.AppendLine(Lang.Get("vintagee:condenser-stored", EmcFormat.Format(Stored)));
             if (IncomingPerSecond > 0) dsc.AppendLine(Lang.Get("vintagee:condenser-incoming", EmcFormat.Format(IncomingPerSecond)));
             ItemStack target = inventory[TargetSlot].Itemstack;
-            if (target != null)
+            if (target?.Collectible is IEmcStorageItem)
+            {
+                dsc.AppendLine(Lang.Get("vintagee:condenser-charging", target.GetName(), EmcFormat.Format(StoredEmc.Get(target)), EmcFormat.Format(StoredEmc.Capacity(target))));
+            }
+            else if (target != null)
             {
                 dsc.AppendLine(Lang.Get("vintagee:condenser-target", target.GetName(), EmcFormat.Format(TargetValue)));
             }

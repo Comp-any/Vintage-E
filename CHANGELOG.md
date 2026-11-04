@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.17.30 — 2026-11-05
+
+### Added
+- **Klein stars charge in the Energy Condenser**: a star in the target slot is filled from the condenser's stored EMC instead of being copied (as in ProjectE). The tooltip shows how full it is. Stars in the storage slots are never burned any more (what they held was lost).
+- **Klein stars charge on the Transmutation Table**: drop one on Burn to fill it from your EMC; right-click to empty it into your EMC. It stays on the cursor instead of being burned.
+
 ## 1.17.29 — 2026-11-05
 
 ### Fixed
