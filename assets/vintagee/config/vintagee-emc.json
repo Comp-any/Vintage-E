@@ -527,7 +527,7 @@
       "makes": "item:game:boat-*"
     }
   ],
-  "//stackData": "Blocks/items that carry contents or a material on the stack. Detected automatically: containers (buckets, pots, bags...) default to \"item\" (item only), items whose material/type lives on the stack (round shields, lanterns, typed chests, chiseled blocks...) to \"full\" (item + contents). Set code/wildcard -> \"item\", \"full\" or \"itemprice\" here to change the built-in choice; servers change it with /emc contents.",
+  "//stackData": "Blocks/items that carry contents or a material on the stack. Detected automatically: liquid containers (buckets, jugs, bowls...) default to \"full\" (learned as full ones), other containers (pots, bags...) to \"item\" (item only), items whose material/type lives on the stack (round shields, lanterns, typed chests, chiseled blocks...) to \"full\" (item + contents). Set code/wildcard -> \"item\", \"full\" or \"itemprice\" here to change the built-in choice; servers change it with /emc contents.",
   "stackData": {},
   "worldTransmutation": {
     "swaps": [

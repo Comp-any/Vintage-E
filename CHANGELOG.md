@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.1 — 2026-11-05
+
+### Changed
+- **Liquids can be learned and made.** Buckets, jugs, bowls and other liquid containers now keep their liquid by default ("item + contents" mode instead of "item only"), so burning a bucket of water teaches the bucket of water and the table can make one. Whatever was in the one you burned, you learn the full container (a 3 L bucket teaches the 10 L bucket of water) and making one costs bucket + full litres; the part-filled one still burns for what it actually held. Servers that prefer the old way set them back with `/emc contents game:woodbucket item` (or `stackData` in the config).
+
 ## 1.18.0 — 2026-11-05
 
 More of ProjectE, and the condensers at ProjectE's speed.

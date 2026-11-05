@@ -69,7 +69,9 @@ namespace VintageE
                 if (kind == null && table.Variants.ContainsKey(c)) kind = StackDataKind.Material;
                 if (kind == null) continue;
                 table.Kinds[c] = kind.Value;
-                table.Modes[c] = DefaultMode(kind.Value);
+                // Liquid containers (buckets, jugs, bowls...) keep their liquid by default, so a bucket of water can be
+                // learned and made; they're learned as full ones (see StackDataUtil.FilledLiquid).
+                table.Modes[c] = StackDataUtil.IsLiquidContainer(c) ? StackDataMode.Full : DefaultMode(kind.Value);
                 table.Sources[c] = "default";
             }
             void Apply(IEnumerable<KeyValuePair<string, string>> entries, string source)
@@ -316,6 +318,37 @@ namespace VintageE
                 }
             }
             return null;
+        }
+
+        /// <summary>A bucket, jug, bowl or other container for liquids (the game's BlockLiquidContainerBase and its kin).</summary>
+        public static bool IsLiquidContainer(CollectibleObject c) => c != null && HasClass(c, "BlockLiquidContainerBase");
+
+        /// <summary>
+        /// A liquid container as its full self: the same liquid, but as many litres as it holds. What you learn, see in
+        /// the table and make is the full container, however much was in the one you burned; a partly filled one is
+        /// still burned for what it actually holds.
+        /// </summary>
+        public static ItemStack FilledLiquid(ItemStack stack, IWorldAccessor world)
+        {
+            try
+            {
+                if (stack?.Collectible == null || !IsLiquidContainer(stack.Collectible)) return stack;
+                ITreeAttribute contents = stack.Attributes?.GetTreeAttribute("contents");
+                ItemStack liquid = contents?.GetItemstack("0");
+                if (liquid == null) return stack;
+                if (liquid.Collectible == null && (world == null || !liquid.ResolveBlockOrItem(world))) return stack;
+                double capacity = stack.Collectible.Attributes?["capacityLitres"].AsDouble(0) ?? 0;
+                double perLitre = liquid.Collectible.Attributes?["waterTightContainerProps"]?["itemsPerLitre"].AsDouble(1) ?? 1;
+                int full = (int)Math.Round(capacity * perLitre);
+                if (full <= 0 || liquid.StackSize == full) return stack;
+                ItemStack copy = stack.Clone();
+                ITreeAttribute copyContents = copy.Attributes.GetTreeAttribute("contents");
+                ItemStack filled = liquid.Clone();
+                filled.StackSize = full;
+                copyContents.SetItemstack("0", filled);
+                return copy;
+            }
+            catch { return stack; }
         }
 
         static bool HasClass(CollectibleObject c, string namePart)

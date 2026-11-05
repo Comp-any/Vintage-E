@@ -321,7 +321,7 @@ namespace VintageE
             Line($"  contents: {data.Kinds.Count} carry data ({data.Kinds.Values.Count(k => k == StackDataKind.Contents)} containers, {data.Kinds.Values.Count(k => k == StackDataKind.Material)} material, {data.Kinds.Values.Count(k => k == StackDataKind.Chiseled)} chiseled); {data.Variants.Count} with material values");
             foreach (var (code, kind, mode) in new[] {
                 ("game:shield-woodmetal", StackDataKind.Material, StackDataMode.Full),
-                ("game:woodbucket", StackDataKind.Contents, StackDataMode.Item),
+                ("game:woodbucket", StackDataKind.Contents, StackDataMode.Full),
                 ("game:chiseledblock", StackDataKind.Chiseled, StackDataMode.Full) })
             {
                 CollectibleObject c = (CollectibleObject)sapi.World.GetItem(new AssetLocation(code)) ?? sapi.World.GetBlock(new AssetLocation(code));
@@ -405,7 +405,7 @@ namespace VintageE
                 Check(data.CarriesData(crucible) && Math.Abs(full - expect) < 1e-6, "a crucible of molten metal counts its metal units");
             }
 
-            // A bucket of water: item only by default; item + contents adds the water.
+            // A bucket of water: item + contents by default (1.18.1), so it can be learned and made; item only ignores the water.
             Block bucket = sapi.World.GetBlock(new AssetLocation("game:woodbucket"));
             Item water = sapi.World.GetItem(new AssetLocation("game:waterportion"));
             if (bucket != null && water != null)
@@ -414,8 +414,9 @@ namespace VintageE
                 var contents = new TreeAttribute();
                 contents["0"] = new ItemstackAttribute(new ItemStack(water, 1000));
                 st.Attributes["contents"] = contents;
-                double plain = mod.Emc.GetValue(st);
                 StackDataMode before = data.ModeOf(bucket);
+                data.Modes[bucket] = StackDataMode.Item;
+                double plain = mod.Emc.GetValue(st);
                 data.Modes[bucket] = StackDataMode.Full;
                 double full = mod.Emc.GetValue(st);
                 data.Modes[bucket] = StackDataMode.ItemPrice;
@@ -423,6 +424,20 @@ namespace VintageE
                 data.Modes[bucket] = before;
                 Line($"  bucket of 10 L water: item only {plain}, item + contents {full}, item price {price}");
                 Check(full > plain && Math.Abs(price - plain) < 1e-6, "filled buckets count their water only in item + contents mode");
+
+                // Learned as a full bucket, whatever was in it: a 3 L bucket teaches the 10 L version, and that one is worth bucket + 10 L.
+                var part = new ItemStack(bucket);
+                var partContents = new TreeAttribute();
+                partContents["0"] = new ItemstackAttribute(new ItemStack(water, 300));
+                part.Attributes["contents"] = partContents;
+                ItemStack filled = StackDataUtil.FilledLiquid(part, sapi.World);
+                int litres = filled.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0")?.StackSize ?? 0;
+                string learned = EmcCommands.KnowledgeKey(mod, part);
+                ItemStack made = PlayerEmc.ResolveStack(sapi.World, learned);
+                int madeLitres = made?.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0")?.StackSize ?? 0;
+                Line($"  3 L bucket: learned as {litres / 100.0} L ({learned.Length} chars), made as {madeLitres / 100.0} L worth {(made == null ? -1 : mod.Emc.GetValue(made))}");
+                Check(litres == 1000 && madeLitres == 1000 && made != null && Math.Abs(mod.Emc.GetValue(made) - full) < 1e-6, "a part-filled bucket is learned and made as a full one");
+                Check(Math.Abs(mod.Emc.GetValue(part) - (plain + 3)) < 1e-6, $"a 3 L bucket burns for the bucket plus 3 EMC ({mod.Emc.GetValue(part)} vs {plain + 3})");
             }
         }
 

@@ -444,7 +444,7 @@ namespace VintageE
             StackDataTable data = mod.Emc.StackData;
             if (data.CarriesData(stack.Collectible) && data.ModeOf(stack.Collectible) != StackDataMode.Item)
             {
-                var kept = StackDataUtil.KeptData(stack);
+                var kept = StackDataUtil.KeptData(StackDataUtil.FilledLiquid(stack, mod.Api?.World));
                 if (kept != null) return PlayerEmc.ExactKey(stack.Collectible, kept);
             }
             return PlayerEmc.KeyOf(stack.Collectible);

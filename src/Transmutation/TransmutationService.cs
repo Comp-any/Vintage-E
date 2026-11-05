@@ -135,8 +135,8 @@ namespace VintageE
             }
             if (mod.Emc.IsNoTransmute(stack.Collectible)) return "notransmute";
 
-            // Items that keep their contents/material are learned as exactly this version.
-            TreeAttribute kept = keepsData ? StackDataUtil.KeptData(stack) : null;
+            // Items that keep their contents/material are learned as exactly this version (a liquid container as a full one).
+            TreeAttribute kept = keepsData ? StackDataUtil.KeptData(StackDataUtil.FilledLiquid(stack, sapi.World)) : null;
             string key = kept != null ? PlayerEmc.ExactKey(stack.Collectible, kept) : PlayerEmc.KeyOf(stack.Collectible);
             if (kept != null && !PlayerEmc.Knows(player, key) && PlayerEmc.CountExact(player) >= mod.Config.MaxExactKnowledge)
             {

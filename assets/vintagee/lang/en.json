@@ -441,7 +441,7 @@
   "tooltip-data-item": "Transmutes as the plain item (what it holds or is made of isn't kept)",
   "error-toomanyexact": "You already know {0} exact versions (filled containers, chiseled blocks...), the most allowed. Ctrl + right-click entries you don't need to forget them.",
   "contents-title": "Contents and materials",
-  "contents-help": "{0} blocks/items hold things or keep what they're made of on the item. Item only: burns and is created as the plain item (containers that hold something won't burn). Item + contents: worth the item plus its contents or material, and you learn and create exactly that version. Item price only: exactly that version, but it costs and burns for the item alone; its contents are free. (Vintage-E {1})",
+  "contents-help": "{0} blocks/items hold things or keep what they're made of on the item. Item only: burns and is created as the plain item (containers that hold something won't burn). Item + contents: worth the item plus its contents or material, and you learn and create exactly that version. Item price only: exactly that version, but it costs and burns for the item alone; its contents are free. (Vintage-E {1}) Liquid containers (buckets, jugs, bowls) are item + contents by default and are learned as full ones.",
   "contents-mode-item": "Item only",
   "contents-mode-full": "Item + contents",
   "contents-mode-itemprice": "Item price only",
