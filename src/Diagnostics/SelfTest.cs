@@ -435,7 +435,7 @@ namespace VintageE
                 string learned = EmcCommands.KnowledgeKey(mod, part);
                 ItemStack made = PlayerEmc.ResolveStack(sapi.World, learned);
                 int madeLitres = made?.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0")?.StackSize ?? 0;
-                Line($"  3 L bucket: learned as {litres / 100.0} L ({learned.Length} chars), made as {madeLitres / 100.0} L worth {(made == null ? -1 : mod.Emc.GetValue(made))}");
+                Line($"  3 L bucket (capacity {StackDataUtil.CapacityLitres(bucket)} L): learned as {litres / 100.0} L ({learned.Length} chars), made as {madeLitres / 100.0} L worth {(made == null ? -1 : mod.Emc.GetValue(made))}");
                 Check(litres == 1000 && madeLitres == 1000 && made != null && Math.Abs(mod.Emc.GetValue(made) - full) < 1e-6, "a part-filled bucket is learned and made as a full one");
                 Check(Math.Abs(mod.Emc.GetValue(part) - (plain + 3)) < 1e-6, $"a 3 L bucket burns for the bucket plus 3 EMC ({mod.Emc.GetValue(part)} vs {plain + 3})");
             }
@@ -867,12 +867,15 @@ namespace VintageE
                 contents["0"] = new ItemstackAttribute(new ItemStack(waterItem, 1000));
                 st.Attributes["contents"] = contents;
                 bool before = mod.Config.ProtectContainersWithContents;
+                StackDataMode modeBefore = mod.Emc.StackData.ModeOf(bucket);
+                mod.Emc.StackData.Modes[bucket] = StackDataMode.Item; // the protection is about item-only containers
                 double plain = mod.Emc.GetValue(st), inside = mod.Emc.ContentsValue(st);
                 mod.Config.ProtectContainersWithContents = true;
                 double guarded = mod.BurnValue(st);
                 mod.Config.ProtectContainersWithContents = false;
                 double open = mod.BurnValue(st);
                 mod.Config.ProtectContainersWithContents = before;
+                mod.Emc.StackData.Modes[bucket] = modeBefore;
                 Check(Math.Abs(guarded - plain) < 1e-6 && Math.Abs(open - (plain + inside)) < 1e-6 && inside > 0,
                     $"a bucket of water burns for {EmcFormat.Format(guarded)} with containers protected, {EmcFormat.Format(open)} (with the water) without");
             }
@@ -1080,10 +1083,10 @@ namespace VintageE
             Check(added && !mod.Config.HostileCreatures.Contains("game:fox-*"), "/emc configure adds and removes list entries");
 
             Block bucket = sapi.World.GetBlock(new AssetLocation("game:woodbucket"));
-            RunCommand("/emc configure StackDataModes set block:game:woodbucket full");
-            bool full = bucket != null && mod.Emc.StackData.ModeOf(bucket) == StackDataMode.Full;
+            RunCommand("/emc configure StackDataModes set block:game:woodbucket item");
+            bool item = bucket != null && mod.Emc.StackData.ModeOf(bucket) == StackDataMode.Item;
             RunCommand("/emc configure StackDataModes remove block:game:woodbucket");
-            Check(full && mod.Emc.StackData.ModeOf(bucket) == StackDataMode.Item, "/emc configure sets a contents mode and puts it back");
+            Check(item && mod.Emc.StackData.ModeOf(bucket) == StackDataMode.Full, "/emc configure sets a contents mode and puts it back (liquid containers default to full)");
 
             string bad = RunCommand("/emc configure WatchSpeedUp lots");
             Check(bad.Contains("Error"), "/emc configure refuses a bad value (" + bad + ")");

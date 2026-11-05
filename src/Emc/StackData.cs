@@ -337,7 +337,7 @@ namespace VintageE
                 ItemStack liquid = contents?.GetItemstack("0");
                 if (liquid == null) return stack;
                 if (liquid.Collectible == null && (world == null || !liquid.ResolveBlockOrItem(world))) return stack;
-                double capacity = stack.Collectible.Attributes?["capacityLitres"].AsDouble(0) ?? 0;
+                double capacity = CapacityLitres(stack.Collectible);
                 double perLitre = liquid.Collectible.Attributes?["waterTightContainerProps"]?["itemsPerLitre"].AsDouble(1) ?? 1;
                 int full = (int)Math.Round(capacity * perLitre);
                 if (full <= 0 || liquid.StackSize == full) return stack;
@@ -349,6 +349,22 @@ namespace VintageE
                 return copy;
             }
             catch { return stack; }
+        }
+
+        /// <summary>How many litres a liquid container holds: the game's CapacityLitres property, else its capacityLitres attribute.</summary>
+        public static double CapacityLitres(CollectibleObject c)
+        {
+            try
+            {
+                var prop = c.GetType().GetProperty("CapacityLitres");
+                if (prop != null)
+                {
+                    double v = Convert.ToDouble(prop.GetValue(c));
+                    if (v > 0) return v;
+                }
+            }
+            catch { /* fall back to the attribute */ }
+            return c.Attributes?["capacityLitres"].AsDouble(0) ?? 0;
         }
 
         static bool HasClass(CollectibleObject c, string namePart)
