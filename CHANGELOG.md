@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.2 — 2026-11-05
+
+### Fixed
+- **A container of an unvalued liquid (or any unvalued contents) is unvalued as a whole** in item + contents mode. Before, a bucket of a liquid nothing values was worth just the bucket, so you could learn it and make the liquid for free. Give the liquid a value (`/emc set`, a compat file) and the container follows.
+
 ## 1.18.1 — 2026-11-05
 
 ### Changed

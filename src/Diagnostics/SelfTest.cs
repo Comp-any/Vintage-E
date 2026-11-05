@@ -438,6 +438,18 @@ namespace VintageE
                 Line($"  3 L bucket (capacity {StackDataUtil.CapacityLitres(bucket)} L): learned as {litres / 100.0} L ({learned.Length} chars), made as {madeLitres / 100.0} L worth {(made == null ? -1 : mod.Emc.GetValue(made))}");
                 Check(litres == 1000 && madeLitres == 1000 && made != null && Math.Abs(mod.Emc.GetValue(made) - full) < 1e-6, "a part-filled bucket is learned and made as a full one");
                 Check(Math.Abs(mod.Emc.GetValue(part) - (plain + 3)) < 1e-6, $"a 3 L bucket burns for the bucket plus 3 EMC ({mod.Emc.GetValue(part)} vs {plain + 3})");
+
+                // A bucket of something with no value is worth nothing at all (else the liquid could be made for free).
+                Item unvalued = sapi.World.Items.FirstOrDefault(i => i?.Code != null && i.Code.Domain == "game" && i.Code.Path.EndsWith("portion") && mod.Emc.GetValue(i) <= 0);
+                if (unvalued != null)
+                {
+                    var odd = new ItemStack(bucket);
+                    var oddContents = new TreeAttribute();
+                    oddContents["0"] = new ItemstackAttribute(new ItemStack(unvalued, 1000));
+                    odd.Attributes["contents"] = oddContents;
+                    Check(mod.Emc.GetValue(odd) <= 0, $"a bucket of an unvalued liquid ({unvalued.Code}) is unvalued as a whole ({mod.Emc.GetValue(odd)})");
+                }
+                else Line("  (every base-game liquid has a value: the unvalued-contents check was skipped)");
             }
         }
 

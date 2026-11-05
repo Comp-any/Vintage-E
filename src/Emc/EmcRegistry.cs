@@ -103,8 +103,31 @@ namespace VintageE
             double own = ItemValue(stack);
             if (own <= 0 && StackData.KindOf(c) != StackDataKind.Contents) return 0;
             double total = Worn(stack, own);
-            if (mode == StackDataMode.Full) total += ContentsValue(stack, depth);
+            if (mode == StackDataMode.Full)
+            {
+                // Something inside with no value makes the whole thing unvalued: otherwise a bucket of an unvalued
+                // liquid would be worth the bucket, and making one would give the liquid away.
+                if (!AllContentsValued(stack, depth)) return 0;
+                total += ContentsValue(stack, depth);
+            }
             return total;
+        }
+
+        /// <summary>False if anything stored inside has no EMC value (and isn't on the free list).</summary>
+        public bool AllContentsValued(ItemStack stack, int depth = 0)
+        {
+            if (stack.Attributes?["units"] is IntAttribute && stack.Attributes.GetItemstack("output") is ItemStack metal)
+            {
+                if (metal.Collectible == null && (World == null || !metal.ResolveBlockOrItem(World))) return false;
+                return GetValue(metal, depth + 1) > 0;
+            }
+            foreach (ItemStack inner in StackContents.NestedStacks(stack))
+            {
+                if (inner.Collectible == null && (World == null || !inner.ResolveBlockOrItem(World))) return false;
+                if (inner.Collectible == null) return false;
+                if (GetValue(inner, depth + 1) <= 0) return false;
+            }
+            return true;
         }
 
         /// <summary>The plain item's value (Klein stars include what they hold); no wear applied.</summary>
