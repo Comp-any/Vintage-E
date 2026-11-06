@@ -145,7 +145,10 @@ namespace VintageE
         public static readonly HashSet<string> VolatileKeys = new HashSet<string>(StringComparer.Ordinal)
         {
             "temperature", "toolMode", "renderVariant", "transitionstate", "durability", "condition", "vintageeActive", "vintageeMode", "vintageeSpeed",
-            "vintageeArcanaOff", "vintageeStoredEmc", "vintageeSpeedBase"
+            "vintageeArcanaOff", "vintageeStoredEmc", "vintageeSpeedBase",
+            // States that change on their own or with use, found by the self-test's scan (1.18.4): a crate's lid open or
+            // shut, a populated skep ready to harvest, a locust nest's import flag.
+            "lidState", "harvestable", "spawnOnlyAfterImport"
         };
 
         /// <summary>A sorted copy of the stack's data without the volatile parts; null when nothing is left.</summary>

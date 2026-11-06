@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.4 — 2026-11-07
+
+### Fixed
+- **More things that made separate entries for the same item**, found by a new self-test scan of the data every learned-as-exact item carries: a crate with its lid open and shut, a populated skep before and after it's ready to harvest, and a locust nest's import flag. These are left out of what's learned now, and players' existing entries are merged when they join (as for freshness in 1.18.3).
+
 ## 1.18.3 — 2026-11-06
 
 ### Fixed

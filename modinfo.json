@@ -6,7 +6,7 @@
     "demonic69"
   ],
   "description": "Equivalent exchange for Vintage Story, inspired by the Minecraft mod ProjectE. Burn items into EMC and transmute them into anything you've learned. EMC values are worked out automatically from every loaded recipe when the server starts, so items from other mods get values too.",
-  "version": "1.18.3",
+  "version": "1.18.4",
   "side": "Universal",
   "requiredOnClient": true,
   "requiredOnServer": true,
