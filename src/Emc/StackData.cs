@@ -162,6 +162,15 @@ namespace VintageE
             foreach (var kv in tree.OrderBy(k => k.Key, StringComparer.Ordinal))
             {
                 if (top && VolatileKeys.Contains(kv.Key)) continue;
+                if (kv.Value is ItemstackAttribute isa && isa.value?.Attributes != null && isa.value.Attributes.Count > 0)
+                {
+                    // A stack inside (the milk in a bucket, the food in a crock) loses its volatile parts too - its
+                    // freshness above all, or every bucket of milk would be a different thing to learn.
+                    ItemStack inner = isa.value.Clone();
+                    inner.Attributes = SortedCopy(inner.Attributes, true);
+                    result[kv.Key] = new ItemstackAttribute(inner);
+                    continue;
+                }
                 result[kv.Key] = kv.Value is ITreeAttribute sub ? SortedCopy(sub, false) : kv.Value.Clone();
             }
             return result;

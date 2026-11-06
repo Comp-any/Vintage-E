@@ -439,6 +439,28 @@ namespace VintageE
                 Check(litres == 1000 && madeLitres == 1000 && made != null && Math.Abs(mod.Emc.GetValue(made) - full) < 1e-6, "a part-filled bucket is learned and made as a full one");
                 Check(Math.Abs(mod.Emc.GetValue(part) - (plain + 3)) < 1e-6, $"a 3 L bucket burns for the bucket plus 3 EMC ({mod.Emc.GetValue(part)} vs {plain + 3})");
 
+                // Freshness inside doesn't make a different thing to learn: two buckets of milk at different ages share a key.
+                Item milk = sapi.World.GetItem(new AssetLocation("game:milkportion"));
+                if (milk != null)
+                {
+                    ItemStack Milk(double hours)
+                    {
+                        var liquid = new ItemStack(milk, 1000);
+                        var ts = new TreeAttribute();
+                        ts.SetDouble("createdTotalHours", hours);
+                        ts.SetDouble("lastUpdatedTotalHours", hours);
+                        ts.SetFloat("freshHoursPercent", 100);
+                        liquid.Attributes["transitionstate"] = ts;
+                        var b = new ItemStack(bucket);
+                        var cc = new TreeAttribute();
+                        cc["0"] = new ItemstackAttribute(liquid);
+                        b.Attributes["contents"] = cc;
+                        return b;
+                    }
+                    string k1 = EmcCommands.KnowledgeKey(mod, Milk(10)), k2 = EmcCommands.KnowledgeKey(mod, Milk(500));
+                    Check(k1 == k2 && !k1.Contains("transitionstate"), $"buckets of milk of different ages are one thing to learn ({k1.Length} chars)");
+                }
+
                 // A bucket of something with no value is worth nothing at all (else the liquid could be made for free).
                 Item unvalued = sapi.World.Items.FirstOrDefault(i => i?.Code != null && i.Code.Domain == "game" && i.Code.Path.EndsWith("portion") && mod.Emc.GetValue(i) <= 0);
                 if (unvalued != null)

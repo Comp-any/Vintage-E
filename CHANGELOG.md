@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.3 — 2026-11-06
+
+### Fixed
+- **Duplicate entries for liquids with freshness** (milk, juice, cider...): the learned version kept the liquid's age, so every bucket of milk you burned became a new entry in the table. Freshness (and the other volatile data) inside a container is ignored now; a made container's liquid is fresh. Existing knowledge is tidied when a player joins: entries that differ only by age or fill level are merged.
+
 ## 1.18.2 — 2026-11-05
 
 ### Fixed

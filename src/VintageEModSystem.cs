@@ -608,6 +608,12 @@ namespace VintageE
                 sapi.Event.PlayerNowPlaying += player =>
                 {
                     EnsureMapped("the first player joining");
+                    try
+                    {
+                        int gone = PlayerEmc.Tidy(player, sapi.World);
+                        if (gone > 0) sapi.Logger.Notification("Vintage-E: tidied {0}'s knowledge: {1} duplicate entries (freshness or fill level) merged", player.PlayerName, gone);
+                    }
+                    catch (Exception e) { sapi.Logger.Warning("Vintage-E: tidying {0}'s knowledge: {1}", player.PlayerName, e.Message); }
                     if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
                     {
                         // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire

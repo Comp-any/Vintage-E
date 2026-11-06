@@ -145,6 +145,42 @@ namespace VintageE
         }
 
         /// <summary>
+        /// Re-keys a player's exact knowledge the way it would be learned today and drops the duplicates: entries
+        /// learned before 1.18.3 kept the liquid's freshness (one entry per bucket of milk), and liquid containers
+        /// learned on 1.18.0 kept their fill level. Returns how many entries went.
+        /// </summary>
+        public static int Tidy(IPlayer player, IWorldAccessor world)
+        {
+            string[] known = GetKnown(player);
+            if (known.Length == 0) return 0;
+            var kept = new List<string>(known.Length);
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            bool changed = false;
+            foreach (string key in known)
+            {
+                string now = key;
+                if (IsExact(key))
+                {
+                    try
+                    {
+                        ItemStack stack = ResolveStack(world, key);
+                        if (stack != null)
+                        {
+                            TreeAttribute data = StackDataUtil.KeptData(StackDataUtil.FilledLiquid(stack, world));
+                            now = data == null ? KeyOf(stack.Collectible) : ExactKey(stack.Collectible, data);
+                        }
+                    }
+                    catch { now = key; }
+                }
+                if (now != key) changed = true;
+                if (seen.Add(now)) kept.Add(now); else changed = true;
+            }
+            if (!changed) return 0;
+            SetKnown(player, kept.ToArray());
+            return known.Length - kept.Count;
+        }
+
+        /// <summary>
         /// How many exact versions a player knows that count against MaxExactKnowledge: a filled bucket, a gold
         /// shield, a chiseled block. A block that is nothing without its data (clutter, a tapestry pattern, a fruit
         /// tree cutting) is only ever known as an exact version, so those don't count: they are the plain items of
