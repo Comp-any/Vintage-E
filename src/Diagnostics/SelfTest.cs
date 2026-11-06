@@ -439,6 +439,57 @@ namespace VintageE
                 Check(litres == 1000 && madeLitres == 1000 && made != null && Math.Abs(mod.Emc.GetValue(made) - full) < 1e-6, "a part-filled bucket is learned and made as a full one");
                 Check(Math.Abs(mod.Emc.GetValue(part) - (plain + 3)) < 1e-6, $"a 3 L bucket burns for the bucket plus 3 EMC ({mod.Emc.GetValue(part)} vs {plain + 3})");
 
+                // Every liquid container with every valued liquid, part-filled and aged: what you learn from it costs at
+                // least what it burned for (no profit in burn → learn → make), and comes out fresh.
+                var containers = sapi.World.Collectibles.Where(c => c?.Code != null && StackDataUtil.IsLiquidContainer(c) && StackDataUtil.CapacityLitres(c) > 0).ToList();
+                var liquids = sapi.World.Items.Where(i => i?.Code != null && i.Code.Path.Contains("portion") && mod.Emc.GetValue(i) > 0).ToList();
+                int tried = 0, profit = 0, aged = 0;
+                var worst = new List<string>();
+                foreach (CollectibleObject box in containers)
+                {
+                    foreach (Item liq in liquids)
+                    {
+                        double perLitre = liq.Attributes?["waterTightContainerProps"]?["itemsPerLitre"].AsDouble(1) ?? 1;
+                        int n = Math.Max(1, (int)(StackDataUtil.CapacityLitres(box) * perLitre * 0.3));
+                        var inner = new ItemStack(liq, n);
+                        var ts = new TreeAttribute(); ts.SetDouble("createdTotalHours", 1); ts.SetDouble("lastUpdatedTotalHours", 1); ts.SetFloat("freshHoursPercent", 10);
+                        inner.Attributes["transitionstate"] = ts;
+                        ItemStack holder;
+                        try { holder = new ItemStack(box); } catch { continue; }
+                        var cc = new TreeAttribute(); cc["0"] = new ItemstackAttribute(inner); holder.Attributes["contents"] = cc;
+                        double burned = mod.Emc.GetValue(holder);
+                        if (burned <= 0) continue;
+                        tried++;
+                        string key = EmcCommands.KnowledgeKey(mod, holder);
+                        ItemStack proto = TransmutationService.Prototype(mod, sapi.World, key);
+                        double cost = proto == null ? 0 : mod.Emc.GetValue(proto);
+                        if (proto != null && cost + 1e-6 < burned) { profit++; if (worst.Count < 5) worst.Add($"{box.Code}+{liq.Code} burns {burned} makes for {cost}"); }
+                        ItemStack made = proto?.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0");
+                        if (made?.Attributes?["transitionstate"] != null) aged++;
+                    }
+                }
+                Line($"  liquid sweep: {containers.Count} containers x {liquids.Count} valued liquids, {tried} combinations valued; {profit} cheaper to make than they burn, {aged} made aged");
+                foreach (string w in worst) Line("    " + w);
+                Check(tried > 0 && profit == 0 && aged == 0, "no liquid container can be burned for more than it costs to make, and made liquids are fresh");
+
+                // Liquids that spoil or turn into something worth more than they are (per portion) would be free EMC by waiting.
+                var gain = new List<string>();
+                foreach (Item liq in liquids)
+                {
+                    TransitionableProperties[] props;
+                    try { props = liq.GetTransitionableProperties(sapi.World, new ItemStack(liq), null); } catch { continue; }
+                    if (props == null) continue;
+                    foreach (var tp in props)
+                    {
+                        ItemStack outStack = tp?.TransitionedStack?.ResolvedItemstack;
+                        if (outStack?.Collectible == null) continue;
+                        double before = mod.Emc.GetValue(liq), after = mod.Emc.GetValue(outStack) * outStack.StackSize * tp.TransitionRatio;
+                        if (after > before * 1.01 + 1e-6) gain.Add($"{liq.Code} ({before}) -{tp.Type}-> {outStack.Collectible.Code} x{tp.TransitionRatio} ({after})");
+                    }
+                }
+                Line($"  liquid transitions worth more after than before: {gain.Count}");
+                foreach (string g in gain.Take(10)) Line("    " + g);
+
                 // Freshness inside doesn't make a different thing to learn: two buckets of milk at different ages share a key.
                 Item milk = sapi.World.GetItem(new AssetLocation("game:milkportion"));
                 if (milk != null)
