@@ -468,6 +468,37 @@ namespace VintageE
                         if (madeLiquid?.Attributes?["transitionstate"] != null) aged++;
                     }
                 }
+                var noCapacity = sapi.World.Collectibles.Where(c => c?.Code != null && StackDataUtil.IsLiquidContainer(c) && StackDataUtil.CapacityLitres(c) <= 0).Select(c => c.Code.ToString()).ToList();
+                Line($"  liquid containers with no capacity (learned at whatever fill they had): {noCapacity.Count} {string.Join(", ", noCapacity.Take(15))}");
+
+                // What data the things learned as exact versions carry: anything here that changes by itself (like
+                // freshness did) would make a new entry every time.
+                var keyCount = new Dictionary<string, int>();
+                var keyExample = new Dictionary<string, string>();
+                foreach (CollectibleObject c in sapi.World.Collectibles)
+                {
+                    if (c?.Code == null || !data.CarriesData(c) || data.ModeOf(c) == StackDataMode.Item) continue;
+                    List<ItemStack> versions;
+                    try { versions = StackDataUtil.CreativeVersions(c, sapi.World).Take(4).ToList(); } catch { continue; }
+                    foreach (ItemStack v in versions)
+                    {
+                        void Walk(ITreeAttribute t, string path)
+                        {
+                            foreach (var kv in t)
+                            {
+                                string p2 = path + kv.Key;
+                                if (kv.Value is ITreeAttribute sub) Walk(sub, p2 + ".");
+                                else if (kv.Value is ItemstackAttribute isa && isa.value?.Attributes != null) Walk(isa.value.Attributes, p2 + ">");
+                                string norm = System.Text.RegularExpressions.Regex.Replace(p2, @"\d+", "#");
+                                keyCount[norm] = keyCount.TryGetValue(norm, out int n) ? n + 1 : 1;
+                                if (!keyExample.ContainsKey(norm)) keyExample[norm] = c.Code.ToString();
+                            }
+                        }
+                        if (v?.Attributes != null) Walk(v.Attributes, "");
+                    }
+                }
+                Line($"  attribute paths on exact-version things ({keyCount.Count}): " + string.Join("; ", keyCount.OrderByDescending(k => k.Value).Select(k => $"{k.Key} x{k.Value} ({keyExample[k.Key]})")));
+
                 Line($"  liquid sweep: {containers.Count} containers x {liquids.Count} valued liquids, {tried} combinations valued; {profit} cheaper to make than they burn, {aged} made aged");
                 foreach (string w in worst) Line("    " + w);
                 Check(tried > 0 && profit == 0 && aged == 0, "no liquid container can be burned for more than it costs to make, and made liquids are fresh");
