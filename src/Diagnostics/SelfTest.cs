@@ -464,8 +464,8 @@ namespace VintageE
                         ItemStack proto = TransmutationService.Prototype(mod, sapi.World, key);
                         double cost = proto == null ? 0 : mod.Emc.GetValue(proto);
                         if (proto != null && cost + 1e-6 < burned) { profit++; if (worst.Count < 5) worst.Add($"{box.Code}+{liq.Code} burns {burned} makes for {cost}"); }
-                        ItemStack made = proto?.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0");
-                        if (made?.Attributes?["transitionstate"] != null) aged++;
+                        ItemStack madeLiquid = proto?.Attributes?.GetTreeAttribute("contents")?.GetItemstack("0");
+                        if (madeLiquid?.Attributes?["transitionstate"] != null) aged++;
                     }
                 }
                 Line($"  liquid sweep: {containers.Count} containers x {liquids.Count} valued liquids, {tried} combinations valued; {profit} cheaper to make than they burn, {aged} made aged");
@@ -483,8 +483,8 @@ namespace VintageE
                     {
                         ItemStack outStack = tp?.TransitionedStack?.ResolvedItemstack;
                         if (outStack?.Collectible == null) continue;
-                        double before = mod.Emc.GetValue(liq), after = mod.Emc.GetValue(outStack) * outStack.StackSize * tp.TransitionRatio;
-                        if (after > before * 1.01 + 1e-6) gain.Add($"{liq.Code} ({before}) -{tp.Type}-> {outStack.Collectible.Code} x{tp.TransitionRatio} ({after})");
+                        double was = mod.Emc.GetValue(liq), after = mod.Emc.GetValue(outStack) * outStack.StackSize * tp.TransitionRatio;
+                        if (after > was * 1.01 + 1e-6) gain.Add($"{liq.Code} ({was}) -{tp.Type}-> {outStack.Collectible.Code} x{tp.TransitionRatio} ({after})");
                     }
                 }
                 Line($"  liquid transitions worth more after than before: {gain.Count}");
