@@ -279,7 +279,7 @@ namespace VintageE
             }
         }
 
-        /// <summary>Client: whether this player's look changes any of these entity types (worked out once; see ClientLookPatches.EntitiesPrefix).</summary>
+        /// <summary>Client: whether this player's look changes any of these entity types (worked out once; entity types are never touched on a player's game, so there is no entity hook).</summary>
         internal bool LookTouchesEntities(IEnumerable<EntityProperties> types)
         {
             try
@@ -2051,7 +2051,7 @@ namespace VintageE
             // The look hook was put in place in Start (see there); this only makes sure it is still there.
             ClientLookPatches.Mod = this;
             ClientLookPatches.Capi = capi;
-            if (ClientLookPatches.PatchedCount < 3) ClientLookPatches.Patch(Mod.Logger);
+            if (ClientLookPatches.PatchedCount < ClientLookPatches.HookCount) ClientLookPatches.Patch(Mod.Logger);
             // Safety net, run once the game has finished loading shapes and textures (BlockTexturesLoaded: all three
             // atlases are done). LevelFinalize is too early for this: it can fire while the shape loaders are still
             // running on their own threads, so it saw "nothing applied" and ordered a reload the hook was about to make

@@ -77,7 +77,7 @@ namespace VintageE
             }
             else x.Ok(x.L("diag-client-table", client.ClientTableCount, client.ClientTableVersion));
 
-            if (client.ClientPatched < 3)
+            if (client.ClientPatched < ClientLookPatches.HookCount)
             {
                 x.Warn(x.L("diag-client-patches", client.ClientPatched));
                 x.Fix(x.L("diag-client-patches-fix"));

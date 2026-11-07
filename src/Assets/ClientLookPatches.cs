@@ -9,7 +9,7 @@ namespace VintageE
 {
     /// <summary>
     /// Applies the player's look at the moment the game loads shapes for the blocks, items and entity types it got from
-    /// the server (the game's ShapeTesselatorManager.LoadBlockShapes / LoadItemShapes / LoadEntityShapes, which run on
+    /// the server (the game's ShapeTesselatorManager.LoadBlockShapes / LoadItemShapes, which run on
     /// background threads as soon as those arrive). Mod systems' AssetsFinalize comes too late on the player's side: a
     /// model swapped in after that is never loaded, so the block or item draws nothing (only its outline shows). Each
     /// kind is changed only by its own loader, so the threads never touch the same definitions.
@@ -20,6 +20,9 @@ namespace VintageE
         static Harmony harmony;
         /// <summary>How many of the three loader methods were patched (0 before Patch runs), for /emc diagnose.</summary>
         public static int PatchedCount { get; private set; }
+
+        /// <summary>How many loaders get patched: blocks and items. Entity types are never touched on a player's game, so the entity loader is left alone (1.18.5).</summary>
+        public const int HookCount = 2;
 
         /// <summary>The mod system on this player's side (null on a dedicated server).</summary>
         internal static VintageEModSystem Mod;
@@ -49,9 +52,8 @@ namespace VintageE
                 bool all = true;
                 all &= PatchOne(h, manager, "LoadBlockShapes", nameof(BlocksPrefix), logger);
                 all &= PatchOne(h, manager, "LoadItemShapes", nameof(ItemsPrefix), logger);
-                all &= PatchOne(h, manager, "LoadEntityShapes", nameof(EntitiesPrefix), logger);
                 harmony = h;
-                logger.Notification("Look: {0} of 3 shape-loader hooks in place{1}.", PatchedCount, PatchError == null ? "" : " (" + PatchError + ")");
+                logger.Notification("Look: {0} of {1} shape-loader hooks in place{1}.", PatchedCount, HookCount, PatchError == null ? "" : " (" + PatchError + ")");
                 return all;
             }
             catch (Exception e)
@@ -121,18 +123,6 @@ namespace VintageE
         {
             VintageEModSystem mod = Mod;
             if (mod != null && OnPlayersSide(__instance, "items")) mod.ApplyClientLookTo("items", items?.Cast<CollectibleObject>(), new List<EntityProperties>());
-        }
-
-        /// <summary>
-        /// Entity types are left alone on a player's game, whatever the look: the game collects entity textures on one
-        /// thread while this loader runs on another, and anything swapped here from under that collection (new,
-        /// unbaked texture entries) crashed the client thread on the Original look. Projectiles keep Vintage-E's
-        /// own look on every look. (The hook stays so the doctor can count the loader's calls.)
-        /// </summary>
-        static void EntitiesPrefix(object __instance, IEnumerable<EntityProperties> entities)
-        {
-            if (!OnPlayersSide(__instance, "entities")) return;
-            LastSkipReason = "entities: left alone (entity textures are collected on another thread at the same time)";
         }
     }
 }

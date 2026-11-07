@@ -61,7 +61,7 @@ namespace VintageE
         /// <summary>Game methods whose patching by another mod would change what Vintage-E's tooltips, looks and windows do.</summary>
         static readonly string[] WatchedMethods =
         {
-            "ShapeTesselatorManager.LoadBlockShapes", "ShapeTesselatorManager.LoadItemShapes", "ShapeTesselatorManager.LoadEntityShapes",
+            "ShapeTesselatorManager.LoadBlockShapes", "ShapeTesselatorManager.LoadItemShapes",
             "CollectibleObject.GetHeldItemInfo", "CollectibleObject.GetHeldItemName", "Block.GetPlacedBlockInfo", "Block.GetPlacedBlockName",
             "GuiElementItemstackInfo", "ItemSlot.", "InventoryBase.", "GuiDialog.TryOpen", "GuiComposer.", "Entity.ReceiveDamage", "EntityPlayer."
         };

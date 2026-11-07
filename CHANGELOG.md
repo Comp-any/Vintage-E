@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.5 — 2026-11-07
+
+### Fixed
+- **A join that crashed on a player's own character** (`EntityBehaviorTexturedClothing.GetTextureSource`, a null reference while the character screen opens, with the entity texture atlas built from a single texture). A second player's PC crashed this way with only Vintage-E installed. The game collects entity textures on another thread while it loads entity shapes, and Vintage-E had a hook on the game's entity shape loader that did nothing at all (the looks never change entity types). A hook on that method can still cost it time at the wrong moment, so it is gone: Vintage-E now hooks only the block and item loaders, which the look needs. Not yet confirmed to be the cause on that PC.
+- `/emc diagnose` counts two look hooks (blocks, items) instead of three.
+
 ## 1.18.4 — 2026-11-07
 
 ### Fixed

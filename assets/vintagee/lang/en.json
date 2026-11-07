@@ -1048,7 +1048,7 @@
   "diag-client-stale": "Your EMC table: {0} values, but the server's has {1}. You're seeing old numbers.",
   "diag-client-stale-fix": "Click Resend below, or rejoin. This happens when a remap finished while your game was still loading.",
   "diag-client-table": "Your EMC table: the same as the server's ({0} values, received {1} time(s) this session).",
-  "diag-client-patches": "Your look patches: only {0} of 3 applied. Items in the New look may show their outline only.",
+  "diag-client-patches": "Your look patches: only {0} of 2 applied. Items in the New look may show their outline only.",
   "diag-client-patches-fix": "Your game version may have renamed those methods; client-main.log says which, under 'Look:'. The values themselves aren't affected.",
   "diag-client-patches-ok": "Your look patches: all applied.",
   "diag-client-notooltip": "Held item's tooltip: your game has no EMC tooltip on this item, so its value can't show.",
