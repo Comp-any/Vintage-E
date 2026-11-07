@@ -1,0 +1,23 @@
+== Other mods changing recipes and items ==
+• Other mods' patches: 4 mods patch things the mapper reads:
+  Wildcraft: Fruits and Nuts (wildcraftfruit) (/emc diagnose mod wildcraftfruit): 289 recipe patches, 12 patches to how items are processed (ground storage, squeezing, burning, drying)
+    zippys-crop-tweaks.json → wildcraftfruit:recipes/grid/seed-conversion.json
+    zippys-crop-tweaks.json → wildcraftfruit:recipes/grid/seed-conversion.json
+    zippys-crop-tweaks.json → wildcraftfruit:recipes/grid/seed-conversion.json
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+    soup.json → game:recipes/cooking/soup.json
+    soup.json → game:recipes/cooking/soup.json
+    soup.json → game:recipes/cooking/soup.json
+  Primitive Survival (primitivesurvival) (/emc diagnose mod primitivesurvival): 70 recipe patches, 21 patches to how items are processed (ground storage, squeezing, burning, drying)
+    ps-raft.json → primitivesurvival:recipes/grid/raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaperegion/recipes/grid/floralzonescaperegion-raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaribbeanregion/recipes/grid/floralzonescaribbeanregion-raft.json
+  Expanded Matter (em) (/emc diagnose mod em): 41 recipe patches, 8 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-barrel-dye-woad.json → game:recipes/barrel/dye/woad.json
+    survival-recipes-barrel-dye-pink.json → game:recipes/barrel/dye/pink.json
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
