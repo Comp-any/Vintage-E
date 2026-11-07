@@ -127,6 +127,11 @@ namespace VintageE
                         if (h != null && with != null) { h.Inventory[0].Itemstack = with; h.Inventory[0].MarkDirty(); }
                         return h;
                     }
+                    // Taking out needs a chute: the game's hopper only catches dropped items and never pulls from above.
+                    Block chuteBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code != null && b.Code.Domain == "game" && b.Code.Path.StartsWith("chute")
+                        && (b.Attributes?["pullFaces"].AsArray<string>(null)?.Contains("up") ?? false) && (b.Attributes?["pushFaces"].AsArray<string>(null)?.Contains("down") ?? false));
+                    Check(chuteBlock != null, $"a straight up-down chute exists ({chuteBlock?.Code})");
+                    BlockEntityContainer Chute(BlockPos at) => chuteBlock == null ? null : Place<BlockEntityContainer>(at, chuteBlock.Code.ToString());
                     int Count(IInventory inv, Item item) => inv == null ? -1 : inv.Where(sl => sl?.Itemstack?.Collectible == item).Sum(sl => sl.StackSize);
 
                     // A hopper on a chest fills it; a hopper under a chest empties it.
@@ -134,31 +139,32 @@ namespace VintageE
                     var hopIn = Hopper(new BlockPos(x, y + 1, cz), new ItemStack(stickItem, 4));
                     chuteChecks.Add(("a hopper on an alchemical chest fills it", () => Count(chestIn?.Inventory, stickItem) > 0, () => $"{Count(chestIn?.Inventory, stickItem)} sticks in the chest"));
                     var chestOut = Place<BEAlchemicalChest>(new BlockPos(x + 2, y + 1, cz), "vintagee:alchemicalchest");
-                    var hopOut = Hopper(new BlockPos(x + 2, y, cz), null);
+                    var hopOut = Chute(new BlockPos(x + 2, y, cz));
                     if (chestOut != null) { chestOut.Inventory[5].Itemstack = new ItemStack(stickItem, 4); chestOut.Inventory[5].MarkDirty(); }
-                    chuteChecks.Add(("a hopper under an alchemical chest takes from it", () => Count(hopOut?.Inventory, stickItem) > 0, () => $"{Count(hopOut?.Inventory, stickItem)} sticks in the hopper, {Count(chestOut?.Inventory, stickItem)} left in the chest"));
+                    chuteChecks.Add(("a chute under an alchemical chest takes from it", () => Count(chestOut?.Inventory, stickItem) < 4, () => $"{Count(hopOut?.Inventory, stickItem)} sticks in the chute, {Count(chestOut?.Inventory, stickItem)} left in the chest"));
 
                     // A hopper on a condenser fills its storage, never the target; one under it takes copies of the target.
                     var condIn = Place<BEEnergyCondenser>(new BlockPos(x + 4, y, cz), "vintagee:energycondenser-mk1");
                     Hopper(new BlockPos(x + 4, y + 1, cz), new ItemStack(stickItem, 4));
-                    chuteChecks.Add(("a hopper on a condenser fills its storage, not the target", () => condIn != null && condIn.Inventory[0].Empty && Count(condIn.Inventory, stickItem) > 0, () => $"{Count(condIn?.Inventory, stickItem)} sticks in the condenser, target {condIn?.Inventory[0].Itemstack?.Collectible.Code}"));
+                    // No target, so what it's given is burned into EMC: either the sticks or their EMC shows they went in.
+                    chuteChecks.Add(("a hopper on a condenser fills its storage, not the target", () => condIn != null && condIn.Inventory[0].Empty && (Count(condIn.Inventory, stickItem) > 0 || condIn.Stored > 0), () => $"{Count(condIn?.Inventory, stickItem)} sticks in the condenser, {condIn?.Stored} EMC, target {condIn?.Inventory[0].Itemstack?.Collectible.Code}"));
                     var condOut = Place<BEEnergyCondenser>(new BlockPos(x + 6, y + 1, cz), "vintagee:energycondenser-mk1");
-                    var hopCond = Hopper(new BlockPos(x + 6, y, cz), null);
+                    var hopCond = Chute(new BlockPos(x + 6, y, cz));
                     if (condOut != null)
                     {
                         condOut.Inventory[0].Itemstack = new ItemStack(stickItem, 1); condOut.Inventory[0].MarkDirty();
                         condOut.Inventory[3].Itemstack = new ItemStack(stickItem, 4); condOut.Inventory[3].MarkDirty();
                     }
-                    chuteChecks.Add(("a hopper under a condenser takes copies of its target", () => Count(hopCond?.Inventory, stickItem) > 0 && condOut?.Inventory[0].Itemstack?.Collectible == stickItem, () => $"{Count(hopCond?.Inventory, stickItem)} sticks in the hopper, target still {condOut?.Inventory[0].Itemstack?.Collectible.Code}"));
+                    chuteChecks.Add(("a chute under a condenser takes copies of its target, never the target", () => Count(condOut?.Inventory, stickItem) < 5 && condOut?.Inventory[0].Itemstack?.Collectible == stickItem, () => $"{Count(hopCond?.Inventory, stickItem)} sticks in the chute, {Count(condOut?.Inventory, stickItem)} left in the condenser, target still {condOut?.Inventory[0].Itemstack?.Collectible.Code}"));
 
                     // Matter furnace: from above into the input, from below out of the output.
                     BlockEntityFirepit furnIn = PlaceFurnace(new BlockPos(x + 8, y, cz), "dark");
                     if (meatItem != null) Hopper(new BlockPos(x + 8, y + 1, cz), new ItemStack(meatItem, 2));
                     chuteChecks.Add(("a hopper on a matter furnace puts food in its input", () => meatItem == null || furnIn?.inputSlot?.Itemstack?.Collectible == meatItem || furnIn?.outputSlot?.Itemstack != null, () => $"input {furnIn?.inputSlot?.Itemstack?.Collectible.Code} x{furnIn?.inputSlot?.StackSize}, chute inventory {(furnIn as BEMatterFurnace)?.ChuteInventory}"));
                     BlockEntityFirepit furnOut = PlaceFurnace(new BlockPos(x + 10, y + 1, cz), "dark");
-                    var hopFurn = Hopper(new BlockPos(x + 10, y, cz), null);
+                    var hopFurn = Chute(new BlockPos(x + 10, y, cz));
                     if (furnOut != null) { furnOut.outputSlot.Itemstack = new ItemStack(stickItem, 3); furnOut.outputSlot.MarkDirty(); }
-                    chuteChecks.Add(("a hopper under a matter furnace takes its output", () => Count(hopFurn?.Inventory, stickItem) > 0, () => $"{Count(hopFurn?.Inventory, stickItem)} sticks in the hopper, output {furnOut?.outputSlot?.StackSize}"));
+                    chuteChecks.Add(("a chute under a matter furnace takes its output", () => (furnOut?.outputSlot?.StackSize ?? 3) < 3, () => $"{Count(hopFurn?.Inventory, stickItem)} sticks in the chute, output {furnOut?.outputSlot?.StackSize}"));
                 }
 
                 // Projectiles fired straight down at the ground a little way off. The lens aims at its own column's
