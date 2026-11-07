@@ -1,0 +1,85 @@
+Vintage-E 1.18.9 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-07 07:49
+
+== Mods (7) ==
+butchering 1.14.3, em 3.8.2, fromgoldencombs 2.1.0, herbarium 1.4.4, primitivesurvival 5.1.4, vintagee 1.18.9
+wildcraftfruit 1.5.0
+
+== Diagnosis ==
+✓ EMC mapped: 28046 values, worked out in 3711 ms.
+  12601 of the 12614 blocks and items in the creative inventory have a value (99.9%).
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 6 loaded, giving 2089 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+✓ Compatibility files: 5 active, valuing 2076 items.
+  Butchering 84, Expanded Matter 3, From Golden Combs 1400, Primitive Survival 105, Wildcraft: Fruits and Nuts 484
+  Files waiting for a mod that isn't loaded: Wildcraft: Trees and Shrubs. Nothing to do.
+✓ Mod coverage: every mod that adds items (7) has values for at least three quarters of them.
+⚠ Value loops: 1, holding 2 items.
+    Platinum ingot (game:ingot-platinum) → Platinum bits (game:metalbit-platinum)
+• Items without a value: 13 (9 that nothing makes, 2 waiting on an ingredient, 2 in loops).
+  game:figurehead 4 e.g. game:figurehead-eidolon; game:ingot 2 e.g. game:ingot-platinum; game:metalbit 2 e.g. game:metalbit-platinum; game:metalplate 2 e.g. game:metalplate-platinum; game:arrow 1 e.g. game:arrow-erel; game:bonyremains 1 e.g. game:bonyremains-cowskull-up; game:spear 1 e.g. game:spear-generic-erel
+• Mapping statistics: 42087 recipes and processes from 23 sources.
+  17562 values from recipes and processing, 1940 priced from a recipe that uses them, 1641 from fixed ratios, 472 from trader prices, 2072 copied from a look-alike variant, 2190 fallback values, 80 estimated as fuel or food.
+⚠ Free EMC: 10 items can be made for less than they're worth (the worst gives 64 free per craft).
+⚠ Blacklist: 2 blacklisted items hold back 15 recipes.
+⚠ Metal tiers: 1 tool or armour families out of order.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 377 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 42 value(s) were copied from a look-alike variant in a family that doesn't agree (color (40), rock (1), model (1)).
+  color: 40 copied value(s), e.g.
+    Ceramic Honey Pot (Chthonic) (fromgoldencombs:hivetop-chthonic-harvestable) 1,120 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,120
+    Ceramic Honey Pot (Cowrie) (fromgoldencombs:hivetop-cowrie-harvestable) 1,120 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,120
+    Ceramic Honey Pot (Rime) (fromgoldencombs:hivetop-rime-harvestable) 1,120 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,120
+    ... and 37 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  model: 1 copied value(s), e.g.
+    Small piece of driftwood (game:flotsam-driftwood-4) 24 ← Large piece of driftwood (game:flotsam-driftwood-3); the family runs from Driftwood (game:flotsam-driftwood-1) 8 to Large piece of driftwood (game:flotsam-driftwood-3) 24
+• Other mods: 1 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: fromgoldencombs (1)).
+== Other mods changing recipes and items ==
+• Other mods' patches: 4 mods patch things the mapper reads:
+  Wildcraft: Fruits and Nuts (wildcraftfruit): 289 recipe patches, 12 processing patches
+  Butchering (butchering): 120 recipe patches
+  Primitive Survival (primitivesurvival): 70 recipe patches, 21 processing patches
+  Expanded Matter (em): 41 recipe patches, 8 processing patches
+== Values out of line with their family ==
+⚠ Values out of line: 29 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  wildcraftfruit:flowerwine-currant 0.035 (family 32) ← BarrelRecipes: 5 wildcraftfruit:flower-currant + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-currant
+  wildcraftfruit:flowerwine-honeysuckle 0.035 (family 32) ← BarrelRecipes: 5 wildcraftfruit:flower-honeysuckle + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-honeysuckle
+  wildcraftfruit:vinegarportion-fruit 0 (family 0.08) ← BarrelRecipes: 1 wildcraftfruit:flowerwine-currant (or 6 more) + 1 wildcraftfruit:vinegarmother-fresh → 500 wildcraftfruit:vinegarportion-fruit
+  wildcraftfruit:flower-honeypots 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wildcraftfruit:flower-honeysuckle 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wildcraftfruit:flower-currant 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wildcraftfruit:flower-passionflower 639.61 (family 18.99) ← BarrelRecipes: 4 wildcraftfruit:flower-passionflower + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-passionflower
+  wildcraftfruit:flower-rose 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-rose + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-rose
+  wildcraftfruit:flower-hibiscus 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-hibiscus + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-hibiscus
+  wildcraftfruit:flower-orangeblossom 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-orangeblossom + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-orangeblossom
+  wildcraftfruit:flower-elder 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-elder + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-elder
+  em:powdered-ore-kernite 154.16 (family 6.4) ← BarrelRecipes: 100 game:waterportion + 2 em:powdered-ore-kernite → 100 em:dilutedkerniteportion
+  wildcraftfruit:juiceportion-cashewapple 0.011 (family 0.256) ← fruit press: 1 wildcraftfruit:fruit-cashewwhole → 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  wildcraftfruit:fruit-cashewapple 0.733 (family 16) ← fruit press: 1 wildcraftfruit:fruit-cashewapple → 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  wildcraftfruit:pressedmash-cashewapple 0.366 (family 8) ← fruit press: 1 wildcraftfruit:fruit-cashewwhole → 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  wildcraftfruit:ciderportion-cashewapple 0.012 (family 0.272) ← BarrelRecipes: 500 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple → 500 wildcraftfruit:ciderportion-cashewapple
+  wildcraftfruit:dryfruit-walnut 46 (family 2.52) ← grid: 1 game:rope + 1 wildcraftfruit:dryfruit-walnut → 1 game:clothes-neck-walnut-amulet
+  game:powder-borax 154.66 (family 12.12) ← BarrelRecipes: 500 game:waterportion + 2 game:powder-borax → 500 game:dilutedboraxportion
+  wildcraftfruit:fruit-hawthorn 1.4 (family 16) ← BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-hawthorn → 100 game:dye-orange
+  wildcraftfruit:fruit-husktomato 1.4 (family 16) ← BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-husktomato → 100 game:dye-orange
+  wildcraftfruit:fruit-newhusktomato 1.4 (family 16) ← fruit press: 1 wildcraftfruit:fruit-newhusktomato → 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  wildcraftfruit:pressedmash-hawthorn 0.702 (family 8) ← fruit press: 1 wildcraftfruit:fruit-hawthorn → 31.25 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn
+  wildcraftfruit:pressedmash-husktomato 0.702 (family 8) ← fruit press: 1 wildcraftfruit:fruit-husktomato → 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  wildcraftfruit:ciderportion-hawthorn 0.023 (family 0.272) ← BarrelRecipes: 500 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn → 500 wildcraftfruit:ciderportion-hawthorn
+  wildcraftfruit:ciderportion-husktomato 0.023 (family 0.272) ← BarrelRecipes: 500 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato → 500 wildcraftfruit:ciderportion-husktomato
+  ... and 4 more
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, SelfTestOnStart=true, ProjectESounds=true
