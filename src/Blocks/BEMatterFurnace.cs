@@ -1,3 +1,4 @@
+using Vintagestory.API.MathTools;
 using System;
 using System.Reflection;
 using System.Text;
@@ -35,6 +36,34 @@ namespace VintageE
         /// </summary>
         const float SpitDrop = 0.55f;
         ModelTransform loweredTransform;
+
+        static readonly FieldInfo InventoryField = typeof(BlockEntityFirepit).GetField("inventory", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+        static readonly MethodInfo SlotModifiedHandler = typeof(BlockEntityFirepit).GetMethod("OnSlotModified", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        /// <summary>Whether the chute-aware inventory went in (false if the game's firepit changed and reflection failed).</summary>
+        public bool ChuteInventory { get; private set; }
+
+        /// <summary>
+        /// Swaps the firepit's inventory for one with ProjectE's hopper rules (see <see cref="MatterFurnaceInventory"/>):
+        /// the game's firepit takes chutes in only, by best fit, and never lets one take anything out. Done before
+        /// Initialize, so everything the firepit sets up later uses the new one.
+        /// </summary>
+        public BEMatterFurnace()
+        {
+            try
+            {
+                if (InventoryField?.GetValue(this) is InventorySmelting old && SlotModifiedHandler != null)
+                {
+                    var handler = (Action<int>)Delegate.CreateDelegate(typeof(Action<int>), this, SlotModifiedHandler);
+                    old.SlotModified -= handler;
+                    var replacement = new MatterFurnaceInventory(null, null);
+                    replacement.SlotModified += handler;
+                    InventoryField.SetValue(this, replacement);
+                    ChuteInventory = true;
+                }
+            }
+            catch { ChuteInventory = false; }
+        }
 
         public override float HeatModifier => heatModifier;
         public override float BurnDurationModifier => burnDurationModifier;
@@ -161,6 +190,46 @@ namespace VintageE
     /// Matter furnaces placed with Vintage-E 1.4.0 (before they became firepits): turns itself into the new furnace
     /// as soon as it loads, dropping whatever was inside on top of it.
     /// </summary>
+    /// <summary>
+    /// The firepit's inventory (slot 0 fuel, 1 input, 2 output, 3–6 cooking pot slots) with ProjectE's matter furnace
+    /// hopper rules: a chute or hopper from above puts things to smelt or cook into the input, one from the side puts
+    /// fuel into the fuel slot, and one underneath takes from the output.
+    /// </summary>
+    public class MatterFurnaceInventory : InventorySmelting
+    {
+        public MatterFurnaceInventory(string inventoryID, ICoreAPI api) : base(inventoryID, api) { }
+
+        public override ItemSlot GetAutoPushIntoSlot(BlockFacing atBlockFace, ItemSlot fromSlot)
+        {
+            ItemStack stack = fromSlot?.Itemstack;
+            if (stack == null) return null;
+            if (atBlockFace == BlockFacing.UP)
+            {
+                ItemSlot input = this[1];
+                bool cookable = stack.Collectible.CombustibleProps?.SmeltedStack != null
+                    || stack.Collectible is BlockSmeltingContainer || stack.Collectible is BlockCookingContainer;
+                return cookable && CanTake(input, stack) ? input : null;
+            }
+            if (atBlockFace.IsHorizontal)
+            {
+                ItemSlot fuel = this[0];
+                bool burns = (stack.Collectible.CombustibleProps?.BurnTemperature ?? 0) > 0;
+                return burns && CanTake(fuel, stack) ? fuel : null;
+            }
+            return null;
+        }
+
+        public override ItemSlot GetAutoPullFromSlot(BlockFacing atBlockFace) =>
+            atBlockFace == BlockFacing.DOWN && !this[2].Empty ? this[2] : null;
+
+        bool CanTake(ItemSlot slot, ItemStack stack)
+        {
+            if (slot.Empty) return true;
+            return slot.Itemstack.Equals(Api?.World, stack, GlobalConstants.IgnoredStackAttributes)
+                && slot.StackSize < slot.Itemstack.Collectible.MaxStackSize;
+        }
+    }
+
     public class BEMatterFurnaceLegacy : BEInventoryBase
     {
         public override string InventoryClassName => "vintageefurnace";

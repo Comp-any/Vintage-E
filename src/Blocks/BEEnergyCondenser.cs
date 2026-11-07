@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.GameContent;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
@@ -16,7 +17,7 @@ namespace VintageE
     /// copies of the target. Works with hoppers and chutes like any container.
     /// Rates come from block attributes: <c>itemsPerSecond</c>, <c>outputsPerSecond</c>, <c>capacity</c>, <c>storageSlots</c>.
     /// </summary>
-    public class BEEnergyCondenser : BlockEntity, IBlockEntityContainer, IEmcAcceptor, IEmcInteractable
+    public class BEEnergyCondenser : BlockEntityContainer, IEmcAcceptor, IEmcInteractable
     {
         public const int TargetSlot = 0;
 
@@ -35,8 +36,9 @@ namespace VintageE
         long lastSyncMs;
         public double IncomingPerSecond;
 
-        public IInventory Inventory => inventory;
-        public string InventoryClassName => "vintageecondenser";
+        /// <summary>The game's BlockEntityContainer (see BEInventoryBase.Inventory): chutes and hoppers only see that class.</summary>
+        public override InventoryBase Inventory => inventory;
+        public override string InventoryClassName => "vintageecondenser";
 
         public BEEnergyCondenser()
         {
@@ -45,8 +47,6 @@ namespace VintageE
 
         public override void Initialize(ICoreAPI api)
         {
-            base.Initialize(api);
-
             JsonObject attrs = Block?.Attributes ?? api.World.BlockAccessor.GetBlock(Pos)?.Attributes;
             int storage = attrs?["storageSlots"].AsInt(40) ?? 40;
             if (storage + 1 != inventory.Count)
@@ -63,8 +63,8 @@ namespace VintageE
             itemsPerSecond = attrs?["itemsPerSecond"].AsDouble(4) ?? 4;
             outputsPerSecond = attrs?["outputsPerSecond"].AsDouble(1) ?? 1;
 
-            inventory.LateInitialize(InventoryClassName + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
-            inventory.Pos = Pos;
+            // The base class initializes the inventory (and its perish handling), so it runs after any resize above.
+            base.Initialize(api);
             inventory.ResolveBlocksOrItems();
             inventory.SlotModified += OnSlotModified;
 
@@ -231,12 +231,12 @@ namespace VintageE
 
         #region GUI and networking (same protocol as vanilla containers)
 
-        public void DropContents(Vec3d atPos)
+        public override void DropContents(Vec3d atPos)
         {
             inventory.DropAll(atPos);
         }
 
-        public void CheckInventoryClearedMidTick() { }
+        public override void CheckInventoryClearedMidTick() { }
 
         public bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
         {
@@ -306,15 +306,6 @@ namespace VintageE
 
         #region Lifecycle and persistence
 
-        public override void OnBlockBroken(IPlayer byPlayer = null)
-        {
-            if (Api.Side == EnumAppSide.Server && !inventory.Empty)
-            {
-                inventory.DropAll(Pos.ToVec3d().Add(0.5, 0.5, 0.5));
-            }
-            base.OnBlockBroken(byPlayer);
-        }
-
         public override void OnBlockRemoved()
         {
             base.OnBlockRemoved();
@@ -329,10 +320,7 @@ namespace VintageE
 
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
-            base.ToTreeAttributes(tree);
-            var invTree = new TreeAttribute();
-            inventory.ToTreeAttributes(invTree);
-            tree["inventory"] = invTree;
+            base.ToTreeAttributes(tree); // the inventory, under "inventory" as before
             tree.SetDouble("emc", Stored);
             tree.SetDouble("incoming", IncomingPerSecond);
         }
@@ -340,37 +328,16 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            ITreeAttribute invTree = tree.GetTreeAttribute("inventory");
-            if (invTree != null)
-            {
-                inventory.FromTreeAttributes(invTree);
-                if (Api != null) inventory.AfterBlocksLoaded(Api.World);
-            }
+            if (Api != null) inventory.AfterBlocksLoaded(Api.World);
             Stored = tree.GetDouble("emc");
             IncomingPerSecond = tree.GetDouble("incoming");
             dialog?.UpdateInfo();
         }
 
-        public override void OnStoreCollectibleMappings(Dictionary<int, AssetLocation> blockIdMapping, Dictionary<int, AssetLocation> itemIdMapping)
-        {
-            foreach (ItemSlot slot in inventory)
-            {
-                slot.Itemstack?.Collectible.OnStoreCollectibleMappings(Api.World, slot, blockIdMapping, itemIdMapping);
-            }
-        }
-
-        public override void OnLoadCollectibleMappings(IWorldAccessor worldForResolve, Dictionary<int, AssetLocation> oldBlockIdMapping, Dictionary<int, AssetLocation> oldItemIdMapping, int schematicSeed, bool resolveImports)
-        {
-            foreach (ItemSlot slot in inventory)
-            {
-                if (slot.Itemstack == null) continue;
-                if (!slot.Itemstack.FixMapping(oldBlockIdMapping, oldItemIdMapping, worldForResolve)) slot.Itemstack = null;
-            }
-        }
-
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
         {
-            base.GetBlockInfo(forPlayer, dsc);
+            // Not the container's own info (a "stored food perish speed" line); just what block behaviors add.
+            foreach (var behavior in Behaviors) behavior.GetBlockInfo(forPlayer, dsc);
             dsc.AppendLine(Lang.Get("vintagee:condenser-stored", EmcFormat.Format(Stored)));
             if (IncomingPerSecond > 0) dsc.AppendLine(Lang.Get("vintagee:condenser-incoming", EmcFormat.Format(IncomingPerSecond)));
             ItemStack target = inventory[TargetSlot].Itemstack;

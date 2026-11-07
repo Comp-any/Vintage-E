@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.10 — 2026-11-08
+
+### Fixed
+- **Chutes and hoppers did nothing with Energy Condensers and Alchemical Chests** (a Mod DB report: "the chutes don't work, transport nothing"). The game's chutes only look for blocks built on its `BlockEntityContainer` class, and these two only had its interface, so to a chute they weren't there. They're built on the class now, with the same rules as ProjectE's: a chute or hopper on any side fills an Alchemical Chest and one underneath empties it, like the game's chests; a condenser takes anything into its storage (never the target slot) and lets one underneath take only finished copies of the target. Saved chests and condensers load as before (same save format). Items kept in them now perish at the room's rate, like in the game's own chests.
+- **Dark and Red Matter Furnaces now follow ProjectE's hopper rules:** from above, things to smelt or cook go into the input; from the sides, fuel goes into the fuel slot; a chute or hopper underneath takes from the output. Before, the game's firepit rules applied: in only, and nothing ever came out.
+
 ## 1.18.9 — 2026-11-07
 
 ### Changed

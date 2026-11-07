@@ -114,6 +114,53 @@ namespace VintageE
                     hopper.Inventory[0].MarkDirty();
                 }
 
+                // 1.18.10: chutes and hoppers see the alchemical chest, the condenser and the matter furnace (before, only
+                // the table: the others weren't the game's BlockEntityContainer, which is all a chute looks for).
+                var chuteChecks = new List<(string label, Func<bool> ok, Func<string> state)>();
+                Item meatItem = sapi.World.GetItem(new AssetLocation("game:redmeat-raw"));
+                if (hopperBlock != null && stickItem != null)
+                {
+                    int cz = z - 4;
+                    BlockEntityContainer Hopper(BlockPos at, ItemStack with)
+                    {
+                        var h = Place<BlockEntityContainer>(at, hopperBlock.Code.ToString());
+                        if (h != null && with != null) { h.Inventory[0].Itemstack = with; h.Inventory[0].MarkDirty(); }
+                        return h;
+                    }
+                    int Count(IInventory inv, Item item) => inv == null ? -1 : inv.Where(sl => sl?.Itemstack?.Collectible == item).Sum(sl => sl.StackSize);
+
+                    // A hopper on a chest fills it; a hopper under a chest empties it.
+                    var chestIn = Place<BEAlchemicalChest>(new BlockPos(x, y, cz), "vintagee:alchemicalchest");
+                    var hopIn = Hopper(new BlockPos(x, y + 1, cz), new ItemStack(stickItem, 4));
+                    chuteChecks.Add(("a hopper on an alchemical chest fills it", () => Count(chestIn?.Inventory, stickItem) > 0, () => $"{Count(chestIn?.Inventory, stickItem)} sticks in the chest"));
+                    var chestOut = Place<BEAlchemicalChest>(new BlockPos(x + 2, y + 1, cz), "vintagee:alchemicalchest");
+                    var hopOut = Hopper(new BlockPos(x + 2, y, cz), null);
+                    if (chestOut != null) { chestOut.Inventory[5].Itemstack = new ItemStack(stickItem, 4); chestOut.Inventory[5].MarkDirty(); }
+                    chuteChecks.Add(("a hopper under an alchemical chest takes from it", () => Count(hopOut?.Inventory, stickItem) > 0, () => $"{Count(hopOut?.Inventory, stickItem)} sticks in the hopper, {Count(chestOut?.Inventory, stickItem)} left in the chest"));
+
+                    // A hopper on a condenser fills its storage, never the target; one under it takes copies of the target.
+                    var condIn = Place<BEEnergyCondenser>(new BlockPos(x + 4, y, cz), "vintagee:energycondenser-mk1");
+                    Hopper(new BlockPos(x + 4, y + 1, cz), new ItemStack(stickItem, 4));
+                    chuteChecks.Add(("a hopper on a condenser fills its storage, not the target", () => condIn != null && condIn.Inventory[0].Empty && Count(condIn.Inventory, stickItem) > 0, () => $"{Count(condIn?.Inventory, stickItem)} sticks in the condenser, target {condIn?.Inventory[0].Itemstack?.Collectible.Code}"));
+                    var condOut = Place<BEEnergyCondenser>(new BlockPos(x + 6, y + 1, cz), "vintagee:energycondenser-mk1");
+                    var hopCond = Hopper(new BlockPos(x + 6, y, cz), null);
+                    if (condOut != null)
+                    {
+                        condOut.Inventory[0].Itemstack = new ItemStack(stickItem, 1); condOut.Inventory[0].MarkDirty();
+                        condOut.Inventory[3].Itemstack = new ItemStack(stickItem, 4); condOut.Inventory[3].MarkDirty();
+                    }
+                    chuteChecks.Add(("a hopper under a condenser takes copies of its target", () => Count(hopCond?.Inventory, stickItem) > 0 && condOut?.Inventory[0].Itemstack?.Collectible == stickItem, () => $"{Count(hopCond?.Inventory, stickItem)} sticks in the hopper, target still {condOut?.Inventory[0].Itemstack?.Collectible.Code}"));
+
+                    // Matter furnace: from above into the input, from below out of the output.
+                    BlockEntityFirepit furnIn = PlaceFurnace(new BlockPos(x + 8, y, cz), "dark");
+                    if (meatItem != null) Hopper(new BlockPos(x + 8, y + 1, cz), new ItemStack(meatItem, 2));
+                    chuteChecks.Add(("a hopper on a matter furnace puts food in its input", () => meatItem == null || furnIn?.inputSlot?.Itemstack?.Collectible == meatItem || furnIn?.outputSlot?.Itemstack != null, () => $"input {furnIn?.inputSlot?.Itemstack?.Collectible.Code} x{furnIn?.inputSlot?.StackSize}, chute inventory {(furnIn as BEMatterFurnace)?.ChuteInventory}"));
+                    BlockEntityFirepit furnOut = PlaceFurnace(new BlockPos(x + 10, y + 1, cz), "dark");
+                    var hopFurn = Hopper(new BlockPos(x + 10, y, cz), null);
+                    if (furnOut != null) { furnOut.outputSlot.Itemstack = new ItemStack(stickItem, 3); furnOut.outputSlot.MarkDirty(); }
+                    chuteChecks.Add(("a hopper under a matter furnace takes its output", () => Count(hopFurn?.Inventory, stickItem) > 0, () => $"{Count(hopFurn?.Inventory, stickItem)} sticks in the hopper, output {furnOut?.outputSlot?.StackSize}"));
+                }
+
                 // Projectiles fired straight down at the ground a little way off. The lens aims at its own column's
                 // ground height (hilly sites made it land outside the area that was counted).
                 int lensY = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z + 12)) + 1;
@@ -165,6 +212,7 @@ namespace VintageE
                         ItemStack fed = table?.Inventory[0].Itemstack;
                         Check(table != null && hopper != null && fed?.Collectible == stickItem && fed.StackSize > 0,
                             $"a hopper on the table fed it sticks to burn ({fed?.StackSize ?? 0} waiting for its owner to come online, {hopper?.Inventory[0].StackSize ?? -1} left in the hopper)");
+                        foreach (var (label, ok, state) in chuteChecks) Check(ok(), $"{label} ({state()})");
                         Report("dark furnace on charcoal", fuelled);
                         Report("red furnace on EMC", onEmc);
                         CheckPedestalWeather();

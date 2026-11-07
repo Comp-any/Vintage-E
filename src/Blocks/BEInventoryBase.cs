@@ -1,6 +1,9 @@
+using Vintagestory.API.MathTools;
+using System.Linq;
 using System.Collections.Generic;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.GameContent;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 
@@ -11,13 +14,18 @@ namespace VintageE
     /// it with the game's standard block-inventory window, claims checks, saving, id remapping and dropping the
     /// contents when broken. Works with hoppers and chutes through <see cref="IBlockEntityContainer"/>.
     /// </summary>
-    public abstract class BEInventoryBase : BlockEntity, IBlockEntityContainer, IEmcInteractable
+    public abstract class BEInventoryBase : BlockEntityContainer, IEmcInteractable
     {
         protected InventoryBase inventory;
         GuiDialogBlockEntityInventory dialog;
 
-        public IInventory Inventory => inventory;
-        public abstract string InventoryClassName { get; }
+        /// <summary>
+        /// The game's BlockEntityContainer, not just its IBlockEntityContainer interface: chutes and hoppers only look
+        /// for the class (BlockEntityItemFlow asks for GetBlockEntity&lt;BlockEntityContainer&gt;), so before 1.18.10
+        /// they couldn't see these blocks at all. Saving is unchanged: the base class keeps the inventory under the
+        /// same "inventory" key.
+        /// </summary>
+        public override InventoryBase Inventory => inventory ??= CreateInventory();
 
         /// <summary>Slot columns in the window.</summary>
         protected virtual int Columns => 4;
@@ -28,8 +36,6 @@ namespace VintageE
         {
             inventory ??= CreateInventory();
             base.Initialize(api);
-            inventory.LateInitialize(InventoryClassName + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
-            inventory.Pos = Pos;
             inventory.ResolveBlocksOrItems();
             inventory.SlotModified += OnSlotModified;
         }
@@ -43,9 +49,9 @@ namespace VintageE
             }
         }
 
-        public virtual void CheckInventoryClearedMidTick() { }
+        public override void CheckInventoryClearedMidTick() { }
 
-        public virtual void DropContents(Vintagestory.API.MathTools.Vec3d atPos)
+        public override void DropContents(Vintagestory.API.MathTools.Vec3d atPos)
         {
             inventory?.DropAll(atPos);
         }
@@ -114,15 +120,6 @@ namespace VintageE
             }
         }
 
-        public override void OnBlockBroken(IPlayer byPlayer = null)
-        {
-            if (Api.Side == EnumAppSide.Server && inventory != null && !inventory.Empty)
-            {
-                inventory.DropAll(Pos.ToVec3d().Add(0.5, 0.5, 0.5));
-            }
-            base.OnBlockBroken(byPlayer);
-        }
-
         public override void OnBlockRemoved()
         {
             base.OnBlockRemoved();
@@ -135,44 +132,11 @@ namespace VintageE
             dialog?.TryClose();
         }
 
-        public override void ToTreeAttributes(ITreeAttribute tree)
-        {
-            base.ToTreeAttributes(tree);
-            if (inventory == null) return;
-            var invTree = new TreeAttribute();
-            inventory.ToTreeAttributes(invTree);
-            tree["inventory"] = invTree;
-        }
-
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
-            base.FromTreeAttributes(tree, worldAccessForResolve);
             inventory ??= CreateInventory();
-            ITreeAttribute invTree = tree.GetTreeAttribute("inventory");
-            if (invTree != null)
-            {
-                inventory.FromTreeAttributes(invTree);
-                if (Api != null) inventory.AfterBlocksLoaded(Api.World);
-            }
-        }
-
-        public override void OnStoreCollectibleMappings(Dictionary<int, AssetLocation> blockIdMapping, Dictionary<int, AssetLocation> itemIdMapping)
-        {
-            if (inventory == null) return;
-            foreach (ItemSlot slot in inventory)
-            {
-                slot.Itemstack?.Collectible.OnStoreCollectibleMappings(Api.World, slot, blockIdMapping, itemIdMapping);
-            }
-        }
-
-        public override void OnLoadCollectibleMappings(IWorldAccessor worldForResolve, Dictionary<int, AssetLocation> oldBlockIdMapping, Dictionary<int, AssetLocation> oldItemIdMapping, int schematicSeed, bool resolveImports)
-        {
-            if (inventory == null) return;
-            foreach (ItemSlot slot in inventory)
-            {
-                if (slot.Itemstack == null) continue;
-                if (!slot.Itemstack.FixMapping(oldBlockIdMapping, oldItemIdMapping, worldForResolve)) slot.Itemstack = null;
-            }
+            base.FromTreeAttributes(tree, worldAccessForResolve);
+            if (Api != null) inventory.AfterBlocksLoaded(Api.World);
         }
     }
 
@@ -190,7 +154,10 @@ namespace VintageE
         protected override InventoryBase CreateInventory()
         {
             int slots = Block?.Attributes?["quantitySlots"].AsInt(104) ?? 104;
-            return new InventoryGeneric(slots, null, null, null);
+            var inv = new InventoryGeneric(slots, null, null, null);
+            // Like the game's chests: a chute or hopper underneath takes from the first filled slot; any side fills it.
+            inv.OnGetAutoPullFromSlot = face => face == BlockFacing.DOWN ? inv.FirstOrDefault(slot => !slot.Empty) : null;
+            return inv;
         }
 
         public override void Initialize(ICoreAPI api)
