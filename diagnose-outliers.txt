@@ -1,0 +1,60 @@
+== Values out of line with their family ==
+⚠ Values out of line: 29 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Currant flower wine (wildcraftfruit:flowerwine-currant) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-currant + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-currant
+  Honeysuckle flower wine (wildcraftfruit:flowerwine-honeysuckle) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-honeysuckle + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-honeysuckle
+  Fruit vinegar (wildcraftfruit:vinegarportion-fruit) 0 (its family's middle value is 0.08)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1 wildcraftfruit:flowerwine-currant (or 6 more) + 1 wildcraftfruit:vinegarmother-fresh -> 500 wildcraftfruit:vinegarportion-fruit
+  Honey-pots flowers (wildcraftfruit:flower-honeypots) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Honeysuckle flowers (wildcraftfruit:flower-honeysuckle) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Currant flowers (wildcraftfruit:flower-currant) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Passionflower (wildcraftfruit:flower-passionflower) 639.61 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 4 wildcraftfruit:flower-passionflower + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-passionflower
+  Rose petals (wildcraftfruit:flower-rose) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-rose + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-rose
+  Hibiscus petals (wildcraftfruit:flower-hibiscus) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-hibiscus + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-hibiscus
+  Orange blossoms (wildcraftfruit:flower-orangeblossom) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-orangeblossom + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-orangeblossom
+  Elderflowers (wildcraftfruit:flower-elder) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-elder + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-elder
+  Powdered kernite (em:powdered-ore-kernite) 154.16 (its family's middle value is 6.4)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 em:powdered-ore-kernite -> 100 em:dilutedkerniteportion
+  Cashew apple juice (wildcraftfruit:juiceportion-cashewapple) 0.011 (its family's middle value is 0.256)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewwhole -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Cashew apple (wildcraftfruit:fruit-cashewapple) 0.733 (its family's middle value is 16)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewapple -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Dry cashew apple mash (wildcraftfruit:pressedmash-cashewapple) 0.366 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewwhole -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Cashew apple cider (wildcraftfruit:ciderportion-cashewapple) 0.012 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple -> 500 wildcraftfruit:ciderportion-cashewapple
+  Walnuts (wildcraftfruit:dryfruit-walnut) 46 (its family's middle value is 2.52)
+    worked backwards from grid: 1 game:rope + 1 wildcraftfruit:dryfruit-walnut -> 1 game:clothes-neck-walnut-amulet
+  Powdered borax (game:powder-borax) 154.66 (its family's middle value is 12.12)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 2 game:powder-borax -> 500 game:dilutedboraxportion
+  Hawthorn (wildcraftfruit:fruit-hawthorn) 1.4 (its family's middle value is 16)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-hawthorn -> 100 game:dye-orange
+  Paper lantern berry (wildcraftfruit:fruit-husktomato) 1.4 (its family's middle value is 16)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-husktomato -> 100 game:dye-orange
+  Husk cherry (wildcraftfruit:fruit-newhusktomato) 1.4 (its family's middle value is 16)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-newhusktomato -> 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  Dry hawthorn mash (wildcraftfruit:pressedmash-hawthorn) 0.702 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-hawthorn -> 31.25 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn
+  Dry husk cherry mash (wildcraftfruit:pressedmash-husktomato) 0.702 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-husktomato -> 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  Hawthorn wine (wildcraftfruit:ciderportion-hawthorn) 0.023 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn -> 500 wildcraftfruit:ciderportion-hawthorn
+  Husk cherry wine (wildcraftfruit:ciderportion-husktomato) 0.023 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato -> 500 wildcraftfruit:ciderportion-husktomato
+  ... and 4 more
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
