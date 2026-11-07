@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.9 — 2026-11-07
+
+### Changed
+- **Switching looks without rejoining is on by default again** (`HotLooksReload`). It was turned off by default in 1.18.6 while a join crash was tracked down; that crash had another cause (fixed in 1.18.8). Settings files saved by 1.18.6–1.18.8 are switched back on once; if you turn it off now, it stays off.
+
 ## 1.18.8 — 2026-11-07
 
 ### Fixed

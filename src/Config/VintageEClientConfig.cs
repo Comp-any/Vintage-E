@@ -21,12 +21,19 @@ namespace VintageE
         public string Look = LookServer;
 
         /// <summary>
-        /// Off (default): a look picked in .vintagee shows the next time you join a world, and nothing reloads the game's
-        /// shapes while you play. On: the pick shows at once, by putting the blocks and items back, applying the look
-        /// and having the game reload its shapes (and, if the look didn't apply while loading, doing that once after
-        /// the world is in). That path reaches into the game's internals and can race its loading threads.
+        /// On (default since 1.18.9): a look picked in .vintagee shows at once, by putting the blocks and items back,
+        /// applying the look and having the game reload its shapes (and, if the look didn't apply while loading, doing
+        /// that once after the world is in). Off: the pick shows the next time you join a world, and nothing reloads the
+        /// game's shapes while you play. (1.18.6–1.18.8 had it off by default while a join crash was tracked down; that
+        /// crash turned out to be unrelated, see 1.18.8.)
         /// </summary>
-        public bool HotLooksReload = false;
+        public bool HotLooksReload = true;
+
+        /// <summary>Which defaults this file was written with; lets a changed default reach files saved before it changed.</summary>
+        public int ConfigVersion = 0;
+
+        /// <summary>The current <see cref="ConfigVersion"/>. 2: HotLooksReload defaults to on again.</summary>
+        public const int CurrentConfigVersion = 2;
 
         /// <summary>
         /// On (default): Vintage-E hooks the game's block and item shape loaders so the New and Original looks can be
@@ -72,6 +79,10 @@ namespace VintageE
 
         public void Normalize()
         {
+            // Files from 1.18.6–1.18.8 saved HotLooksReload = false only because that was the default then; turn it
+            // back on once. Anyone who turns it off after this keeps it off.
+            if (ConfigVersion < 2) HotLooksReload = true;
+            ConfigVersion = CurrentConfigVersion;
             int li = Array.FindIndex(Looks, l => l.Equals((Look ?? "").Trim(), StringComparison.OrdinalIgnoreCase));
             Look = li >= 0 ? Looks[li] : LookServer;
             WatchIconSize = GameMath.Clamp(WatchIconSize, 16, 128);
