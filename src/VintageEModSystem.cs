@@ -80,8 +80,11 @@ namespace VintageE
                 Capi = startCapi;
                 ClientLookPatches.Mod = this;
                 ClientLookPatches.Capi = startCapi;
-                ClientLookPatches.Patch(Mod.Logger);
-                LookEvent("start: hook in place, the game holds {0} blocks and {1} items so far", startCapi.World?.Blocks?.Count ?? 0, startCapi.World?.Items?.Count ?? 0);
+                ClientConfig ??= VintageEClientConfig.Load(startCapi);
+                if (ClientConfig.LookHooks) ClientLookPatches.Patch(Mod.Logger);
+                else Mod.Logger.Notification("Look: LookHooks is off in {0}; no hooks on the game's shape loading, the Middle look is used.", VintageEClientConfig.FileName);
+                LookEvent("start: hook {0}, the game holds {1} blocks and {2} items so far", ClientConfig.LookHooks ? "in place" : "off", startCapi.World?.Blocks?.Count ?? 0, startCapi.World?.Items?.Count ?? 0);
+                ClientCheck.Log(this, "Start");
             }
 
             api.RegisterItemClass("ItemPhilosophersStone", typeof(ItemPhilosophersStone));
@@ -156,6 +159,7 @@ namespace VintageE
                 if (blocks.Count > 0) ApplyClientLookTo("blocks (early)", blocks, new List<EntityProperties>());
                 if (items.Count > 0) ApplyClientLookTo("items (early)", items, new List<EntityProperties>());
                 if (types.Count > 0) ApplyClientLookTo("entities (early)", Array.Empty<CollectibleObject>(), types);
+                ClientCheck.Log(this, "AssetsLoaded");
             }
             catch (Exception e) { Mod.Logger.Warning("Look: the early pass failed: {0}", e.Message); }
         }
@@ -2051,7 +2055,10 @@ namespace VintageE
             // The look hook was put in place in Start (see there); this only makes sure it is still there.
             ClientLookPatches.Mod = this;
             ClientLookPatches.Capi = capi;
-            if (ClientLookPatches.PatchedCount < ClientLookPatches.HookCount) ClientLookPatches.Patch(Mod.Logger);
+            if (ClientConfig?.LookHooks != false && ClientLookPatches.PatchedCount < ClientLookPatches.HookCount) ClientLookPatches.Patch(Mod.Logger);
+            ClientCheck.Log(this, "StartClientSide");
+            capi.Event.LevelFinalize += () => ClientCheck.Log(this, "LevelFinalize");
+            capi.Event.PlayerJoin += p => { if (p == capi.World.Player) ClientCheck.Log(this, "PlayerJoin"); };
             // Safety net, run once the game has finished loading shapes and textures (BlockTexturesLoaded: all three
             // atlases are done). LevelFinalize is too early for this: it can fire while the shape loaders are still
             // running on their own threads, so it saw "nothing applied" and ordered a reload the hook was about to make
@@ -2060,6 +2067,7 @@ namespace VintageE
             capi.Event.BlockTexturesLoaded += () =>
             {
                 atlasesReady = true;
+                ClientCheck.Log(this, "BlockTexturesLoaded");
                 try
                 {
                     string look = clientLook ?? (ClientConfig?.Look == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(capi.World?.Config?.GetString(WorldLookKey, null) ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(ClientConfig?.Look));

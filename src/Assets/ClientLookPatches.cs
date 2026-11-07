@@ -53,7 +53,7 @@ namespace VintageE
                 all &= PatchOne(h, manager, "LoadBlockShapes", nameof(BlocksPrefix), logger);
                 all &= PatchOne(h, manager, "LoadItemShapes", nameof(ItemsPrefix), logger);
                 harmony = h;
-                logger.Notification("Look: {0} of {1} shape-loader hooks in place{1}.", PatchedCount, HookCount, PatchError == null ? "" : " (" + PatchError + ")");
+                logger.Notification("Look: {0} of {1} shape-loader hooks in place{2}.", PatchedCount, HookCount, PatchError == null ? "" : " (" + PatchError + ")");
                 return all;
             }
             catch (Exception e)

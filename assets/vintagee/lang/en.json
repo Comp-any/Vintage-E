@@ -500,6 +500,7 @@
   "clientcfg-look-original": "Original (ProjectE's textures)",
   "clientcfg-look-note": "The server's default is {0}; you're seeing {1}. A change shows the next time you join a world (worn rings and projectiles too). With the switch below on, it shows at once instead.",
   "clientcfg-hotreload": "Switch looks without rejoining (reloads shapes while you play)",
+  "clientcfg-lookhooks": "Hook the game's shape loading for the New and Original looks (off: Middle look, no patches; takes effect on the next join)",
   "cfg-choice-look-middle": "Middle (Vintage-E's flat textures)",
   "cfg-choice-look-original": "Original (ProjectE's textures)",
   "cfg-hint-list": "One entry per line (codes and wildcards like game:rock-*), then Save.",

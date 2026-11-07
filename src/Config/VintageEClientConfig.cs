@@ -28,6 +28,13 @@ namespace VintageE
         /// </summary>
         public bool HotLooksReload = false;
 
+        /// <summary>
+        /// On (default): Vintage-E hooks the game's block and item shape loaders so the New and Original looks can be
+        /// applied while a world loads. Off: no hooks are installed on this computer at all (no Harmony patches on the
+        /// game's loading), and the blocks and items keep the Middle look. For isolating load problems.
+        /// </summary>
+        public bool LookHooks = true;
+
         /// <summary>Show an icon on screen while the watch is on (or time runs faster or slower because of one).</summary>
         public bool WatchIcon = true;
         /// <summary>The icon's size in GUI pixels (16-128).</summary>

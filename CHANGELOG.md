@@ -2,6 +2,15 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.7 — 2026-11-07
+
+### Added
+- **Client check lines in client-main.log** at each stage of joining (Start, AssetsLoaded, StartClientSide, BlockTexturesLoaded, LevelFinalize, PlayerJoin): how many blocks, items and entity types the game holds, how many entity types have textures and baked textures, the entity atlas size and position count, the player entity type's textures, renderer, shape and behaviors, the player's own entity's texture state, and the look hooks' state. For reading a crash while joining (a player model with no texture) without the doctor.
+- **`LookHooks` client setting** (on by default; `.vintagee` window or `vintagee-client.json`). Off: Vintage-E installs no hooks on the game's shape loading at all, and keeps the Middle look. For isolating load problems.
+
+### Fixed
+- The "shape-loader hooks in place" log line printed a stray "2".
+
 ## 1.18.6 — 2026-11-07
 
 ### Changed
