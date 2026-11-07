@@ -152,13 +152,16 @@ namespace VintageE
             {
                 var blocks = (api.World?.Blocks ?? new List<Block>()).Where(b => b?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
                 var items = (api.World?.Items ?? new List<Item>()).Where(i => i?.Code?.Domain == ModId).Cast<CollectibleObject>().ToList();
-                var types = (api.World?.EntityTypes ?? new List<EntityProperties>()).Where(t => t?.Code?.Domain == ModId).ToList();
-                Mod.Logger.Notification("Look: at AssetsLoaded the game already holds {0} of this mod's blocks, {1} items and {2} entity types; applying the look to them now (the shape-loader hook covers what arrives later).", blocks.Count, items.Count, types.Count);
+                // Entity types are never read here: on a player's game, World.EntityTypes is a list the game builds
+                // from its entity dictionary on the first read and never rebuilds. Read before the server's entity types
+                // have all arrived (they come after AssetsLoaded over a network join), the list stays short or empty
+                // for the whole session, the entity texture atlas ends up with no textures, and the game crashes on the
+                // player's own model when the character screen opens. Looks never change entity types on a client anyway.
+                Mod.Logger.Notification("Look: at AssetsLoaded the game already holds {0} of this mod's blocks and {1} items; applying the look to them now (the shape-loader hook covers what arrives later).", blocks.Count, items.Count);
                 LookAppliedEarly = blocks.Count + items.Count;
-                LookEvent("assets loaded: the game holds {0} blocks, {1} items, {2} entity types (thread {3})", blocks.Count, items.Count, types.Count, System.Threading.Thread.CurrentThread.Name ?? "?");
+                LookEvent("assets loaded: the game holds {0} blocks, {1} items (thread {2})", blocks.Count, items.Count, System.Threading.Thread.CurrentThread.Name ?? "?");
                 if (blocks.Count > 0) ApplyClientLookTo("blocks (early)", blocks, new List<EntityProperties>());
                 if (items.Count > 0) ApplyClientLookTo("items (early)", items, new List<EntityProperties>());
-                if (types.Count > 0) ApplyClientLookTo("entities (early)", Array.Empty<CollectibleObject>(), types);
                 ClientCheck.Log(this, "AssetsLoaded");
             }
             catch (Exception e) { Mod.Logger.Warning("Look: the early pass failed: {0}", e.Message); }

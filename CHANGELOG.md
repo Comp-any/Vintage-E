@@ -2,7 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
-## 1.18.7 — 2026-11-07
+## 1.18.8 — 2026-11-07
+
+### Fixed
+- **Crash while joining a server (and in 1.18.7, also single player): the player's own model had no texture** (`EntityBehaviorTexturedClothing.GetTextureSource`, with the entity texture atlas "composed from 1 textures"). Found with 1.18.7's client check lines: the game held 0 entity types all the way through the join. The cause is in how the game's client exposes its entity types: `World.EntityTypes` builds a list from the entity dictionary on the first read and never rebuilds it. Vintage-E read it at AssetsLoaded (since 1.17.7), which over a network join comes before the server's entity types have arrived, so the list was frozen empty (or, when timing was kinder, at a handful), no entity textures were collected, and the character screen crashed. Single player mostly escaped because the local server had already filled the dictionary. 1.18.7's new checks read it even earlier, at Start, which broke single player too. The client no longer reads `World.EntityTypes` at all; the check lines read the game's dictionary directly.
+
+
 
 ### Added
 - **Client check lines in client-main.log** at each stage of joining (Start, AssetsLoaded, StartClientSide, BlockTexturesLoaded, LevelFinalize, PlayerJoin): how many blocks, items and entity types the game holds, how many entity types have textures and baked textures, the entity atlas size and position count, the player entity type's textures, renderer, shape and behaviors, the player's own entity's texture state, and the look hooks' state. For reading a crash while joining (a player model with no texture) without the doctor.
