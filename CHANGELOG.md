@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.6 — 2026-11-07
+
+### Changed
+- **Switching looks while you play is now an option, off by default** (`HotLooksReload` in `ModConfig/vintagee-client.json`, or the switch in `.vintagee`). Off: a look picked in `.vintagee` shows the next time you join a world, and nothing reloads the game's shapes or reaches into its internals while you play; if the look didn't apply while loading, the log says so (with the advice to rejoin) instead of reloading after the world is in. On: the old behaviour (the pick shows at once; the game reloads its shapes). Added because a PC kept crashing on join and the reload paths race the game's loading threads; whether they were involved isn't known.
+
 ## 1.18.5 — 2026-11-07
 
 ### Fixed

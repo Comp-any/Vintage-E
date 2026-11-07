@@ -45,6 +45,9 @@ namespace VintageE
             string lookNote = Lang.Get("vintagee:clientcfg-look-note", ProjectELook.NormalizeLook(capi.World?.Config?.GetString(VintageEModSystem.WorldLookKey, null) ?? ProjectELook.LookDefault), mod.ActiveLook);
             ElementBounds lookNoteBounds = ElementBounds.Fixed(0, y, Width, GuiLayout.TextHeight(capi, detail, lookNote, Width));
             y += lookNoteBounds.fixedHeight + 14;
+            ElementBounds hotSwitch = ElementBounds.Fixed(0, y, 30, 30);
+            ElementBounds hotLabel = ElementBounds.Fixed(40, y + 5, Width - 40, 22);
+            y += 44;
             ElementBounds heading = ElementBounds.Fixed(0, y, Width, 24);
             y += 30;
             ElementBounds iconSwitch = ElementBounds.Fixed(0, y, 30, 30);
@@ -76,7 +79,7 @@ namespace VintageE
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(lookHeading, lookDrop, lookNoteBounds, heading, iconSwitch, iconLabel, sizeLabel, sizeSlider, posLabel, posDrop, offLabel, offXLabel, offX, offYLabel, offY,
+            bgBounds.WithChildren(lookHeading, lookDrop, lookNoteBounds, hotSwitch, hotLabel, heading, iconSwitch, iconLabel, sizeLabel, sizeSlider, posLabel, posDrop, offLabel, offXLabel, offX, offYLabel, offY,
                 glowSwitch, glowLabel, colorLabel, colorDrop, colorText, noteBounds, doneBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
@@ -100,6 +103,8 @@ namespace VintageE
                     .AddStaticText(Lang.Get("vintagee:clientcfg-look"), CairoFont.WhiteSmallishText(), lookHeading)
                     .AddDropDown(VintageEClientConfig.Looks, lookNames, lookIndex, (code, sel) => { if (!composing && sel) { Cfg.Look = code; Changed(); } }, lookDrop, "look")
                     .AddStaticText(lookNote, detail, lookNoteBounds)
+                    .AddSwitch(on => { if (!composing) { Cfg.HotLooksReload = on; Changed(); } }, hotSwitch, "hotreload")
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-hotreload"), label, hotLabel)
                     .AddStaticText(Lang.Get("vintagee:clientcfg-watch"), CairoFont.WhiteSmallishText(), heading)
                     .AddSwitch(on => { Cfg.WatchIcon = on; Changed(); }, iconSwitch, "icon")
                     .AddStaticText(Lang.Get("vintagee:clientcfg-icon"), label, iconLabel)
@@ -122,6 +127,7 @@ namespace VintageE
                 .EndChildElements()
                 .Compose();
 
+            SingleComposer.GetSwitch("hotreload").SetValue(Cfg.HotLooksReload);
             SingleComposer.GetSwitch("icon").SetValue(Cfg.WatchIcon);
             SingleComposer.GetSwitch("glow").SetValue(Cfg.WatchGlow);
             SingleComposer.GetSlider("size").SetValues(Cfg.WatchIconSize, 16, 128, 4, "px");

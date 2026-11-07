@@ -2065,7 +2065,12 @@ namespace VintageE
                     string look = clientLook ?? (ClientConfig?.Look == VintageEClientConfig.LookServer ? ProjectELook.NormalizeLook(capi.World?.Config?.GetString(WorldLookKey, null) ?? ProjectELook.LookDefault) : ProjectELook.NormalizeLook(ClientConfig?.Look));
                     bool wanted = ProjectELook.MapFor(look) != null;
                     bool applied = (LookResult?.Models ?? 0) + (LookResult?.Textures ?? 0) > 0;
-                    if (wanted && !applied && !lookReloadTried)
+                    if (wanted && !applied && !lookReloadTried && ClientConfig?.HotLooksReload != true)
+                    {
+                        lookReloadTried = true;
+                        Mod.Logger.Warning("Look: {0} was picked but nothing was applied while loading (hook calls: {1}). Rejoin the world to try again, or turn on HotLooksReload in .vintagee to have it reloaded after the world is in.", look, ClientLookPatches.RawCalls);
+                    }
+                    else if (wanted && !applied && !lookReloadTried)
                     {
                         lookReloadTried = true;
                         Mod.Logger.Notification("Look: {0} was picked but nothing was applied while loading (hook calls: {1}); reloading shapes once to apply it.", look, ClientLookPatches.RawCalls);
@@ -2254,7 +2259,11 @@ namespace VintageE
                 clientSavePending = Capi.Event.RegisterCallback(_ => { clientSavePending = 0; try { ClientConfig?.Save(Capi); } catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not save the client settings: {0}", e.Message); } }, 400);
             watchHud?.Update(true);
             string look = ClientConfig?.Look;
-            if (look != null && lastLookSetting != null && look != lastLookSetting) ChangeLookNow("setting changed from " + lastLookSetting + " to " + look);
+            if (look != null && lastLookSetting != null && look != lastLookSetting)
+            {
+                if (ClientConfig?.HotLooksReload == true) ChangeLookNow("setting changed from " + lastLookSetting + " to " + look);
+                else LookEvent("look changed from {0} to {1}; it shows the next time a world is joined (HotLooksReload is off)", lastLookSetting, look);
+            }
             lastLookSetting = look;
         }
 

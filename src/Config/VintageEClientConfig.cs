@@ -20,6 +20,14 @@ namespace VintageE
         /// <summary>How Vintage-E's blocks and items look on this computer: Server (the server's default), New, Middle or Original. Applied when joining a world.</summary>
         public string Look = LookServer;
 
+        /// <summary>
+        /// Off (default): a look picked in .vintagee shows the next time you join a world, and nothing reloads the game's
+        /// shapes while you play. On: the pick shows at once, by putting the blocks and items back, applying the look
+        /// and having the game reload its shapes (and, if the look didn't apply while loading, doing that once after
+        /// the world is in). That path reaches into the game's internals and can race its loading threads.
+        /// </summary>
+        public bool HotLooksReload = false;
+
         /// <summary>Show an icon on screen while the watch is on (or time runs faster or slower because of one).</summary>
         public bool WatchIcon = true;
         /// <summary>The icon's size in GUI pixels (16-128).</summary>
