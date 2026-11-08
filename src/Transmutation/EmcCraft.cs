@@ -331,11 +331,29 @@ namespace VintageE
             if (stack.StackSize > 0 && player?.Entity != null) api.World.SpawnItemEntity(stack, player.Entity.Pos.XYZ.Add(0, 0.5, 0));
         }
 
+        readonly Dictionary<string, string> lastFill = new Dictionary<string, string>();
+
+        /// <summary>What happened the last time this player asked Emc Craft to fill the grid (for the doctor), or null.</summary>
+        public string LastFill(IPlayer player) => player != null && lastFill.TryGetValue(player.PlayerUID, out string s) ? s : null;
+
+        void FillOutcome(IServerPlayer player, EmcCraftPacket packet, GridRecipe clicked, string outcome)
+        {
+            string what = (clicked?.Output?.Code?.ToString() ?? packet.OutputCode ?? "?") + " (recipe " + (packet.RecipeName ?? "?") + ", #" + packet.RecipeIndex + ")";
+            lastFill[player.PlayerUID] = DateTime.Now.ToString("HH:mm:ss") + " " + what + ": " + outcome;
+            api.Logger.Notification("Vintage-E: Emc Craft: {0} asked to fill the grid for {1}: {2}", player.PlayerName, what, outcome);
+        }
+
+        void Refuse(IServerPlayer player, EmcCraftPacket packet, GridRecipe clicked, string code, params string[] args)
+        {
+            FillOutcome(player, packet, clicked, "refused, " + code + (args.Length > 0 ? " (" + string.Join("; ", args) + ")" : ""));
+            mod.Transmutation.Fail(player, code, args);
+        }
+
         void Fill(IServerPlayer player, EmcCraftPacket packet)
         {
-            if (!CarriesArcaneTablet(player)) { mod.Transmutation.Fail(player, "emccraft-notablet"); return; }
+            if (!CarriesArcaneTablet(player)) { Refuse(player, packet, null, "emccraft-notablet"); return; }
             GridRecipe clicked = FindRecipe(packet);
-            if (clicked == null) { mod.Transmutation.Fail(player, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
+            if (clicked == null) { Refuse(player, packet, null, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
 
             EmcCraftGrid grid = GridOf(player);
             if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
@@ -349,13 +367,14 @@ namespace VintageE
             (GridRecipe recipe, Plan plan, Plan clickedPlan, Plan cheapestUnaffordable) = Choose(player, clicked, known, carried, emc);
             if (plan == null)
             {
-                if (cheapestUnaffordable != null) { mod.Transmutation.Fail(player, "notenoughemc", EmcFormat.Format(cheapestUnaffordable.Cost), EmcFormat.Format(emc)); return; }
-                if (clickedPlan.Missing.Count > 0) { mod.Transmutation.Fail(player, "emccraft-missing", string.Join(", ", clickedPlan.Missing)); return; }
-                mod.Transmutation.Fail(player, "emccraft-notmakeable", string.Join(", ", clickedPlan.NotMakeable));
+                if (cheapestUnaffordable != null) { Refuse(player, packet, clicked, "notenoughemc", EmcFormat.Format(cheapestUnaffordable.Cost), EmcFormat.Format(emc)); return; }
+                if (clickedPlan.Missing.Count > 0) { Refuse(player, packet, clicked, "emccraft-missing", string.Join(", ", clickedPlan.Missing)); return; }
+                Refuse(player, packet, clicked, "emccraft-notmakeable", string.Join(", ", clickedPlan.NotMakeable));
                 return;
             }
 
             PlayerEmc.AddEmc(player, -plan.Cost);
+            int filled = 0, ownTools = 0;
             for (int cell = 0; cell < plan.Cells.Length; cell++)
             {
                 ItemStack stack = plan.Cells[cell];
@@ -368,11 +387,15 @@ namespace VintageE
                     if (stack == null) continue;
                     // The player's own tool: never burned, whatever an old attribute on it says.
                     stack.Attributes.RemoveAttribute(MadeFromEmc);
+                    ownTools++;
                 }
                 else RecordMade(player.PlayerUID, stack);
                 grid[cell].Itemstack = stack;
                 grid[cell].MarkDirty();
+                filled++;
             }
+            FillOutcome(player, packet, clicked, "filled " + filled + " cell(s) (" + ownTools + " of your own tools) for " + EmcFormat.Format(plan.Cost) + " EMC"
+                + (recipe != clicked ? ", using a cheaper recipe" : ""));
             api.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
             mod.SendResult(player, new TransmuteResultPacket { Emc = PlayerEmc.GetEmc(player), HasEmc = true });
         }

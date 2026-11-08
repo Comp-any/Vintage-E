@@ -2226,7 +2226,14 @@ namespace VintageE
         {
             if (!string.IsNullOrEmpty(packet.ErrorCode))
             {
-                Capi.TriggerIngameError(this, packet.ErrorCode, Lang.Get("vintagee:error-" + packet.ErrorCode, packet.Args ?? Array.Empty<string>()));
+                string message = Lang.Get("vintagee:error-" + packet.ErrorCode, packet.Args ?? Array.Empty<string>());
+                Capi.TriggerIngameError(this, packet.ErrorCode, message);
+                // The handbook hides the error at the top of the screen, so Emc Craft's refusals also go in its window and chat.
+                if (emcCraftDialog?.IsOpened() == true)
+                {
+                    emcCraftDialog.ShowStatus(message);
+                    Capi.ShowChatMessage(Lang.Get("vintagee:emccraft-refused", message));
+                }
             }
             // Learned at the table, or by the tablet's magnet while the window is shut.
             if (packet.LearnedKey != null)
@@ -2277,6 +2284,7 @@ namespace VintageE
             if (Capi == null || recipe == null) return;
             OpenEmcCraftDialog(toggle: false);
             if (emcCraftDialog?.IsOpened() != true) return;
+            emcCraftDialog.ShowStatus("");
             SendEmcCraft(EmcCraft.FillRequest(Capi.World, recipe));
         }
 

@@ -54,7 +54,7 @@ namespace VintageE
             if (!c.Known) { x.Info(x.L("diag-emccraft-oldclient")); x.Fix(x.L("diag-emccraft-oldclient-fix")); return; }
             if (!c.Patched) { x.Warn(x.L("diag-emccraft-nohook", c.Error.Length == 0 ? "?" : c.Error)); x.Fix(x.L("diag-emccraft-nohook-fix")); }
             else if (c.Links > 0) x.Ok(x.L("diag-emccraft-ok", c.Links, c.Pages));
-            else if (!c.TabletNow) { x.Info(x.L("diag-emccraft-notablet")); x.Explain(x.L("diag-emccraft-notablet-why")); }
+            else if (!c.TabletNow) { x.Warn(x.L("diag-emccraft-notablet")); x.Explain(x.L("diag-emccraft-notablet-why")); }
             else if (c.Calls == 0) { x.Info(x.L("diag-emccraft-nopages")); x.Explain(x.L("diag-emccraft-nopages-why")); }
             else if (c.Pages == 0) { x.Info(x.L("diag-emccraft-norecipes", c.Calls)); x.Explain(x.L("diag-emccraft-norecipes-why")); }
             else { x.Warn(x.L("diag-emccraft-nolinks", c.Pages, c.LastPage, c.LastTablet ? x.L("diag-yes") : x.L("diag-no"))); x.Explain(x.L("diag-emccraft-nolinks-why")); }
@@ -88,12 +88,14 @@ namespace VintageE
             {
                 bool carries = EmcCraft.CarriesArcaneTablet(x.Player);
                 if (carries) x.Ok(x.L("diag-emccraft-player-carries", x.Player.PlayerName));
-                else { x.Info(x.L("diag-emccraft-player-nocarry", x.Player.PlayerName)); x.Explain(x.L("diag-emccraft-player-nocarry-why")); }
+                else { x.Warn(x.L("diag-emccraft-player-nocarry", x.Player.PlayerName)); x.Explain(x.L("diag-emccraft-player-nocarry-why")); }
                 var grid = x.Player.InventoryManager?.GetInventory(EmcCraft.InventoryClass + "-" + x.Player.PlayerUID);
                 int items = 0;
                 if (grid != null) for (int i = 0; i < EmcCraft.GridSize * EmcCraft.GridSize; i++) if (grid[i]?.Itemstack != null) items++;
                 x.Info(grid == null ? x.L("diag-emccraft-grid-closed") : x.L("diag-emccraft-grid-open", items));
                 x.Info(x.L("diag-emccraft-known", PlayerEmc.GetKnown(x.Player).Length, EmcFormat.Format(PlayerEmc.GetEmc(x.Player))));
+                string last = x.Mod.EmcCrafting?.LastFill(x.Player);
+                x.Info(last == null ? x.L("diag-emccraft-lastfill-none") : x.L("diag-emccraft-lastfill", last));
             }
 
             // The player's computer: the handbook hook and what it has seen.
@@ -105,7 +107,7 @@ namespace VintageE
             if (c.Patched) x.Ok(x.L("diag-emccraft-hook-ok"));
             else { x.Warn(x.L("diag-emccraft-nohook", c.Error.Length == 0 ? "?" : c.Error)); x.Fix(x.L("diag-emccraft-nohook-fix")); }
             if (c.TabletNow) x.Ok(x.L("diag-emccraft-client-carries"));
-            else { x.Info(x.L("diag-emccraft-notablet")); x.Explain(x.L("diag-emccraft-notablet-why")); }
+            else { x.Warn(x.L("diag-emccraft-notablet")); x.Explain(x.L("diag-emccraft-notablet-why")); }
             x.Info(x.L("diag-emccraft-pages", c.Calls, c.Pages, c.Links));
             if (c.LastPage.Length > 0) x.Note(x.L("diag-emccraft-lastpage", c.LastPage, c.LastSlideshows, c.LastTablet ? x.L("diag-yes") : x.L("diag-no")));
             if (c.Patched && c.TabletNow && c.Pages > 0 && c.Links == 0) { x.Warn(x.L("diag-emccraft-nolinks", c.Pages, c.LastPage, c.LastTablet ? x.L("diag-yes") : x.L("diag-no"))); x.Explain(x.L("diag-emccraft-nolinks-why")); }

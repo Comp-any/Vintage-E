@@ -118,12 +118,12 @@ namespace VintageE
                     // Without the tablet the button stays, in red, so it's clear why it can't be used.
                     string label = !tablet ? Lang.Get("vintagee:emccraft-button-notablet")
                         : first == null ? Lang.Get("vintagee:emccraft-button") : mod.ClientEmcCraft?.ButtonLabel(capi.World.Player, first) ?? Lang.Get("vintagee:emccraft-button");
-                    CairoFont font = tablet ? CairoFont.WhiteSmallText() : CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.35, 0.3, 1 });
-                    var link = new LinkTextComponent(capi, label, font, _ =>
+                    var link = new EmcCraftButtonComponent(capi, label, CairoFont.WhiteSmallText(), red: !tablet, () =>
                     {
                         if (!EmcCraft.CarriesArcaneTablet(capi.World.Player))
                         {
                             capi.TriggerIngameError(mod, "emccraft-notablet", Lang.Get("vintagee:error-emccraft-notablet"));
+                            capi.ShowChatMessage(Lang.Get("vintagee:emccraft-refused", Lang.Get("vintagee:error-emccraft-notablet")));
                             return;
                         }
                         GridRecipe recipe = show.CurrentVisibleRecipe?.Recipe;

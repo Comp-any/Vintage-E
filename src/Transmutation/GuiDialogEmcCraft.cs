@@ -19,6 +19,9 @@ namespace VintageE
 
         public override string ToggleKeyCombinationCode => null;
         public override bool PrefersUngrabbedMouse => false;
+        /// <summary>Above the handbook (0.2), which is where Emc Craft is opened from.</summary>
+        public override double DrawOrder => 0.21;
+        public override double InputOrder => 0.45;
 
         public GuiDialogEmcCraft(ICoreClientAPI capi, VintageEModSystem mod) : base(capi)
         {
@@ -41,11 +44,12 @@ namespace VintageE
             ElementBounds gridBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, top + 34, EmcCraft.GridSize, EmcCraft.GridSize);
             ElementBounds arrowBounds = ElementBounds.Fixed(gridWidth + 6, top + 34 + slot, slot, slot);
             ElementBounds outputBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, gridWidth + slot + 20, top + 34 + slot, 1, 1);
-            ElementBounds hintBounds = ElementBounds.Fixed(0, top + 34 + EmcCraft.GridSize * slot + 10, width, hintHeight);
+            ElementBounds statusBounds = ElementBounds.Fixed(0, top + 34 + EmcCraft.GridSize * slot + 8, width, 2 * 18);
+            ElementBounds hintBounds = ElementBounds.Fixed(0, top + 34 + EmcCraft.GridSize * slot + 8 + 2 * 18 + 6, width, hintHeight);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(emcBounds, gridBounds, arrowBounds, outputBounds, hintBounds);
+            bgBounds.WithChildren(emcBounds, gridBounds, arrowBounds, outputBounds, statusBounds, hintBounds);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             int[] cells = new int[EmcCraft.GridSize * EmcCraft.GridSize];
@@ -60,6 +64,7 @@ namespace VintageE
                     .AddItemSlotGrid(grid, SendInvPacket, EmcCraft.GridSize, cells, gridBounds, "grid")
                     .AddStaticText("→", CairoFont.WhiteMediumText().WithOrientation(EnumTextOrientation.Center), arrowBounds)
                     .AddItemSlotGrid(grid, SendInvPacket, 1, new[] { cells.Length }, outputBounds, "output")
+                    .AddDynamicText(status ?? "", CairoFont.WhiteDetailText().WithColor(new double[] { 1, 0.45, 0.4, 1 }), statusBounds, "status")
                     .AddStaticText(hint, detail, hintBounds)
                 .EndChildElements()
                 .Compose();
@@ -67,6 +72,15 @@ namespace VintageE
         }
 
         void SendInvPacket(object packet) => capi.Network.SendPacketClient(packet);
+
+        string status;
+
+        /// <summary>Why the last fill was refused (shown in red under the grid), or "" to clear it.</summary>
+        public void ShowStatus(string text)
+        {
+            status = text;
+            SingleComposer?.GetDynamicText("status")?.SetNewText(text ?? "");
+        }
 
         void UpdateEmc()
         {

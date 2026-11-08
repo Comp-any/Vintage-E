@@ -5,7 +5,11 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.19.2 — 2026-11-09
 
 - **`/emc setemc <amount> [player]`** (admin): sets a player's personal EMC to an exact amount (yours if no name is given); 0 empties it. `/emc set` still pins the held item's value.
-- **The handbook's Emc Craft button no longer disappears without the Arcane Tablet.** It shows in red as "Emc Craft (missing Tablet)"; clicking it says you need the tablet (or works, if you've picked one up since the page opened).
+- **Emc Craft in the handbook is a button now**, not an underlined link.
+- **The button no longer disappears without the Arcane Tablet.** It shows in red as "Emc Craft (missing Tablet)"; clicking it says you need the tablet (or works, if you've picked one up since the page opened).
+- **The Emc Craft window opens on top of the handbook** instead of underneath it.
+- **Why Emc Craft didn't fill the grid is shown in its window** (in red, under the grid) and in chat, as well as at the top of the screen, where the handbook covered it. Every fill is logged to server-main.log ("Vintage-E: Emc Craft: …"), and the doctor's Emc Craft check shows the last one.
+- **Doctor:** not carrying the Arcane Tablet is a warning, not just information.
 
 ## 1.19.1 — 2026-11-09
 
