@@ -191,6 +191,7 @@ namespace VintageE
                 {
                     var e = new Entry { Kind = Kind.Check, Index = i, Style = style, Indent = 0 };
                     if (t.StartsWith("✓", StringComparison.Ordinal)) { e.State = State.Ok; e.Title = t.Substring(1).Trim(); }
+                    else if (t.StartsWith(EmcDiagnose.CautionMark, StringComparison.Ordinal)) { e.State = State.Warn; e.Title = t.Substring(EmcDiagnose.CautionMark.Length).Trim(); }
                     else if (t.StartsWith("⚠", StringComparison.Ordinal)) { e.State = State.Fail; e.Title = t.Substring(1).Trim(); }
                     else if (t.StartsWith("•", StringComparison.Ordinal)) { e.State = State.Info; e.Title = t.Substring(1).Trim(); }
                     else { e.State = State.Info; e.Title = t; }

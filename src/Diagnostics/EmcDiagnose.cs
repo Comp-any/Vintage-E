@@ -41,6 +41,11 @@ namespace VintageE
             public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Check);
             /// <summary>A test that found something: one line; the window shows its details and fixes when clicked.</summary>
             public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Check);
+            /// <summary>
+            /// Something to look at, never a failure even with a fix under it: the window shows it as a warning. Marked by
+            /// an invisible character after the ⚠ (<see cref="CautionMark"/>), so copied reports read the same.
+            /// </summary>
+            public void Caution(string text) => R.Add(CautionMark + " " + text, EmcLineStyle.Check);
             /// <summary>A neutral finding (neither good nor bad) with details behind it.</summary>
             public void Info(string text) => R.Add("• " + text, EmcLineStyle.Check);
             public void Fix(string text) { if (!Compact) R.Add("→ " + text, EmcLineStyle.Text, 1); }
@@ -385,6 +390,9 @@ namespace VintageE
         }
 
         /// <summary>The check-up's count of things worth fixing, for the start-up log and the join message (no report shown).</summary>
+        /// <summary>The start of a <see cref="Ctx.Caution"/> line: ⚠ and a zero-width space.</summary>
+        public const string CautionMark = "⚠\u200B";
+
         public static int CountProblems(VintageEModSystem mod, ICoreServerAPI sapi)
         {
             if (mod.LastReport == null) return 1;

@@ -9,7 +9,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 - **The button no longer disappears without the Arcane Tablet.** It shows in red as "Emc Craft (missing Tablet)"; clicking it says you need the tablet (or works, if you've picked one up since the page opened).
 - **The Emc Craft window opens on top of the handbook** instead of underneath it.
 - **Why Emc Craft didn't fill the grid is shown in its window** (in red, under the grid) and in chat, as well as at the top of the screen, where the handbook covered it. Every fill is logged to server-main.log ("Vintage-E: Emc Craft: …"), and the doctor's Emc Craft check shows the last one.
-- **Doctor:** not carrying the Arcane Tablet is a warning, not just information.
+- **Doctor:** not carrying the Arcane Tablet is a warning, not just information; "Variants: … copied from a look-alike variant in a family that doesn't agree" is a warning, not a problem (and no longer counts in the join message's problem count).
 
 ## 1.19.1 — 2026-11-09
 
