@@ -834,7 +834,7 @@ namespace VintageE
                 {
                     var toolKeys = withTool.ResolvedIngredients.Where(i => i != null).Select(i => PlayerEmc.KeyOf(i.ResolvedItemStack.Collectible)).Distinct().ToArray();
                     EmcCraft.Plan tp = craft.MakePlan(withTool, toolKeys, null);
-                    int toolCell = Array.FindIndex(tp.Cells, c => c != null && c.Attributes.GetBool(EmcCraft.MadeFromEmc));
+                    int toolCell = Array.FindIndex(tp.Cells, c => c != null && c.Attributes.GetString(EmcCraft.MadeFromEmc) != null);
                     Check(tp.Missing.Count == 0 && toolCell >= 0, $"Emc Craft makes the tool for {withTool.Output.Code} from EMC and marks it ({tp.Cells[Math.Max(0, toolCell)]?.Collectible?.Code})");
                     if (toolCell >= 0)
                     {
