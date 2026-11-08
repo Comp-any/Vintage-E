@@ -85,7 +85,7 @@ namespace VintageE
             capi.Logger.Notification("Vintage-E: Emc Craft: slot {0} on this computer now holds {1}", slotId, grid[slotId]?.Itemstack?.ToString() ?? "nothing");
         }
 
-        /// <summary>The server's grid after a fill: if this window shows something else, take the server's (see OnEmcCraftContents).</summary>
+        /// <summary>The server's grid after a fill: shown at once (the game's own slot updates follow on its next tick; see OnEmcCraftContents).</summary>
         public void CheckContents(List<byte[]> stacks)
         {
             if (!IsOpened()) return;
@@ -111,7 +111,7 @@ namespace VintageE
                 {
                     contentsFixLogged = true;
                     IInventory held = capi.World.Player?.InventoryManager?.GetInventory(grid.InventoryID);
-                    capi.Logger.Warning("Vintage-E: Emc Craft: the game didn't bring {0} slot(s) of the server's grid to this window; shown from Vintage-E's own copy (the game holds {1})",
+                    capi.Logger.Notification("Vintage-E: Emc Craft: showed {0} slot(s) of the server's grid ahead of the game's own update (the game is paused while the handbook is open in single player; the game holds {1})",
                         fixedSlots, held == null ? "no grid" : ReferenceEquals(held, grid) ? "this grid" : "another grid (" + held.GetType().Name + ")");
                 }
             }

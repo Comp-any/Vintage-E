@@ -2288,17 +2288,15 @@ namespace VintageE
             serverChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action ?? "", Arg = arg ?? "" }, player);
 
         /// <summary>
-        /// The server's grid after a fill. The game sends each slot to this computer itself; a moment later the window
-        /// checks it shows the same, and if not, takes the server's copy (and says so in the log, once per window).
+        /// The server's grid after a fill, shown straight away. The game sends a grid's slots only on its game tick, and
+        /// in single player the open handbook pauses the game, so without this the grid stayed empty until the handbook
+        /// was closed (packets still arrive while paused; ticks and timed callbacks don't run).
         /// </summary>
         void OnEmcCraftContents(EmcCraftPacket packet)
         {
             if (packet?.Action != EmcCraftAction.Contents || packet.Stacks == null) return;
-            Capi.Event.RegisterCallback(_ =>
-            {
-                try { emcCraftDialog?.CheckContents(packet.Stacks); }
-                catch (Exception e) { Capi.Logger.Warning("Vintage-E: Emc Craft: checking the grid: {0}", e.Message); }
-            }, 400);
+            try { emcCraftDialog?.CheckContents(packet.Stacks); }
+            catch (Exception e) { Capi.Logger.Warning("Vintage-E: Emc Craft: showing the grid: {0}", e.Message); }
         }
 
         /// <summary>Emc Craft from the handbook: open the window (if needed) and ask the server to fill it for this recipe.</summary>
