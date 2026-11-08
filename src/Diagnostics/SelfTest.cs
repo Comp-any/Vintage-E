@@ -1065,7 +1065,7 @@ namespace VintageE
                 ("item", "game:ingot-copper"), ("item", "game:creature-trader-female-artisan-cold"), ("item", "game:nosuchitem"),
                 ("log", ""), ("patches", ""), ("outliers", ""), ("clean", ""), ("players", ""), ("player", "nobody"), ("bugreport", ""), ("changes", ""),
                 ("symptom", ""), ("symptom", "tooltipnoburn"), ("symptom", "aftermod"), ("symptom", "nothing"), ("symptom", "onlyme"), ("client", ""),
-                ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"),
+                ("watch", ""), ("watch", "60"), ("draftcompat", "game"), ("draftcompat", "nosuchmod"), ("emccraft", ""), ("arcane", ""),
                 ("trace", "game:ingot-tinbronze"), ("trace", "game:ingot-copper"), ("trace", "hand"), ("trace", "game:hide-pelt-bear-brown-head"), ("trace", "game:hide-pelt-bear-brown-complete"), ("short", ""),
                 ("checks", ""), ("profit", ""), ("skipped", ""), ("baseline", ""), ("novalue", ""), ("troubleshoot", ""), ("startup", ""), ("health", ""),
             };
@@ -1103,6 +1103,8 @@ namespace VintageE
                     if (action == "bugreport") Check(text.Contains("Mods (") && text.Contains("settings that differ from the defaults") && !text.Split('\n').Any(l => l.TrimStart().StartsWith("\u2192 ")) && text.Split('\n').Length < 400, "diagnose: the bug report has the mod list and the changed settings, no advice, and stays short (" + text.Split('\n').Length + " lines)");
                     if (action == "overview" || action == "") Check(r.Lines.Count(l => l.Style == EmcLineStyle.Check) >= 8, "diagnose: the overview is a list of checks (" + r.Lines.Count(l => l.Style == EmcLineStyle.Check) + ")");
                     if (action == "novalue" || action == "troubleshoot") Check(text.Contains("Step 7") && text.Contains("Step 1") && !text.Contains("vintagee:diag-novalue"), "diagnose: the no-value walkthrough has its seven steps");
+                    if (action == "emccraft" || action == "arcane") Check(text.Contains("Arcane Tablet is loaded") && text.Contains("load a crafting grid saved") && !text.Contains("vintagee:diag-emccraft"),
+                        "diagnose: the Emc Craft report checks the item and the saved-grid class (" + Line1(text, "Arcane Tablet") + ")");
                     if (action == "symptom" && arg == "") Check(text.Split('\n').Count(l => l.Contains("/emc diagnose symptom ")) >= 10, "diagnose: ten symptoms are offered");
                     if (missing != null && action == "item" && arg == missing.Code.ToString()) Check(text.Contains("Next steps") && text.Contains("mods.vintagestory.at"), "diagnose: next steps point to the Mod DB page");
                     File.WriteAllText(Path.Combine(dir, "diagnose-" + (action.Length == 0 ? "overview" : action) + (arg.Length > 0 ? "-" + arg.Replace(':', '_') : "") + ".txt"), text);
