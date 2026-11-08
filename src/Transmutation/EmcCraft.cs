@@ -19,6 +19,18 @@ namespace VintageE
     /// Closing burns tools that Emc Craft made from EMC back into EMC (their remaining value, after wear) and puts
     /// everything else in the player's inventory, or at their feet when it's full.
     /// </summary>
+    /// <summary>
+    /// The game's crafting grid, except that it goes away when it's closed: the game's player grid stays among the
+    /// player's inventories for good (InventoryBasePlayer.RemoveOnClose is false), which would leave this one open, and
+    /// possibly saved with the player, after the window closed.
+    /// </summary>
+    public class EmcCraftGrid : InventoryCraftingGrid
+    {
+        public EmcCraftGrid(string className, string instanceID, ICoreAPI api) : base(className, instanceID, api) { }
+        public EmcCraftGrid(string inventoryID, ICoreAPI api) : base(inventoryID, api) { }
+        public override bool RemoveOnClose => true;
+    }
+
     public class EmcCraft
     {
         public const string InventoryClass = "vintageeemccraft";
@@ -30,7 +42,14 @@ namespace VintageE
 
         readonly VintageEModSystem mod;
         readonly ICoreAPI api;
-        readonly Dictionary<string, InventoryCraftingGrid> grids = new Dictionary<string, InventoryCraftingGrid>();
+        readonly Dictionary<string, EmcCraftGrid> grids = new Dictionary<string, EmcCraftGrid>();
+
+        /// <summary>
+        /// Tools this player's Emc Craft made from EMC and hasn't burned yet: the id written in each one's
+        /// <see cref="MadeFromEmc"/> attribute, and its code. Only these are burned on closing, so the attribute on a
+        /// tool that left the grid (shift-click, the mouse, death), or copied onto a crafted item, burns nothing later.
+        /// </summary>
+        readonly Dictionary<string, Dictionary<string, string>> madeTools = new Dictionary<string, Dictionary<string, string>>();
 
         public EmcCraft(VintageEModSystem mod, ICoreAPI api)
         {
@@ -38,13 +57,49 @@ namespace VintageE
             this.api = api;
         }
 
+        /// <summary>
+        /// Tells the game how to rebuild the grid by its class name. It saves every player-grid inventory the player has
+        /// open with their data and sends it to their game on joining, so a server that saved (or stopped) while the
+        /// window was open would otherwise log "Could not load a players inventory" on the next join and drop what was
+        /// in it. Through the game's world object (ServerMain / ClientMain both expose the registry); never throws.
+        /// </summary>
+        public static void RegisterGridClass(ICoreAPI api)
+        {
+            try
+            {
+                object world = api.World;
+                var prop = world?.GetType().GetProperty("ClassRegistryInt", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+                (prop?.GetValue(world) as ClassRegistry)?.RegisterInventoryClass(InventoryClass, typeof(EmcCraftGrid));
+                if (prop == null) api.Logger.Warning("Vintage-E: couldn't register the Emc Craft grid with the game (no class registry found); a grid saved while open won't load back.");
+            }
+            catch (Exception e) { api.Logger.Warning("Vintage-E: registering the Emc Craft grid: {0}", e.Message); }
+        }
+
+        /// <summary>
+        /// On joining: a grid the game saved while its window was open (an autosave, or the server stopping) comes back
+        /// with the player's data. Give its contents back and close it, so nothing is lost and the grid starts empty.
+        /// </summary>
+        public void OnPlayerJoined(IServerPlayer player)
+        {
+            try
+            {
+                if (!(player?.InventoryManager?.GetInventory(InventoryClass + "-" + player.PlayerUID) is InventoryCraftingGrid restored)) return;
+                int items = 0;
+                for (int i = 0; i < GridSize * GridSize; i++) if (restored[i]?.Itemstack != null) items++;
+                Empty(player, restored, burnMadeTools: false);
+                player.InventoryManager.CloseInventory(restored);
+                if (items > 0) api.Logger.Notification("Vintage-E: gave {0} back {1} stack(s) left in their Emc Craft grid when the game was last saved", player.PlayerName, items);
+            }
+            catch (Exception e) { api.Logger.Warning("Vintage-E: restoring {0}'s Emc Craft grid: {1}", player?.PlayerName, e.Message); }
+        }
+
         /// <summary>The player's grid on this side (made on first use; one per player).</summary>
-        public InventoryCraftingGrid GridOf(IPlayer player)
+        public EmcCraftGrid GridOf(IPlayer player)
         {
             if (player == null) return null;
-            if (!grids.TryGetValue(player.PlayerUID, out InventoryCraftingGrid grid))
+            if (!grids.TryGetValue(player.PlayerUID, out EmcCraftGrid grid))
             {
-                grid = new InventoryCraftingGrid(InventoryClass, player.PlayerUID, api);
+                grid = new EmcCraftGrid(InventoryClass, player.PlayerUID, api);
                 grids[player.PlayerUID] = grid;
             }
             return grid;
@@ -130,7 +185,7 @@ namespace VintageE
 
                     ItemStack stack = pick.Clone();
                     stack.StackSize = Math.Max(1, ing.Quantity);
-                    if (ing.IsTool) stack.Attributes.SetBool(MadeFromEmc, true);
+                    if (ing.IsTool) stack.Attributes.SetString(MadeFromEmc, Guid.NewGuid().ToString("N"));
                     plan.Cells[cell] = stack;
                     plan.Cost += mod.Emc.GetValue(pick) * stack.StackSize;
                     plan.NetCost += ing.IsTool ? WearCost(pick, ing) : mod.Emc.GetValue(pick) * stack.StackSize;
@@ -179,9 +234,7 @@ namespace VintageE
             double bestValue = double.MaxValue, bestPrice = double.MaxValue;
             foreach (ItemStack s in knownStacks)
             {
-                ItemStack probe = s.Clone();
-                probe.StackSize = Math.Max(1, ing.Quantity);
-                if (!ing.SatisfiesAsIngredient(probe, false)) continue;
+                if (!ing.SatisfiesAsIngredient(s, false)) continue; // stack size isn't checked, so no copy is needed
                 anyKnown = true;
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
                 double price = mod.Emc.GetValue(s);
@@ -218,14 +271,14 @@ namespace VintageE
         void Open(IServerPlayer player)
         {
             if (!CarriesArcaneTablet(player)) { mod.Transmutation.Fail(player, "emccraft-notablet"); return; }
-            InventoryCraftingGrid grid = GridOf(player);
+            EmcCraftGrid grid = GridOf(player);
             if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
         }
 
         /// <summary>Empties the grid (burning tools Emc Craft made), then closes it. Also run when the player leaves.</summary>
         public void Close(IServerPlayer player)
         {
-            if (!grids.TryGetValue(player.PlayerUID, out InventoryCraftingGrid grid)) return;
+            if (!grids.TryGetValue(player.PlayerUID, out EmcCraftGrid grid)) return;
             Empty(player, grid, burnMadeTools: true);
             if (player.InventoryManager.HasInventory(grid)) player.InventoryManager.CloseInventory(grid);
         }
@@ -234,25 +287,41 @@ namespace VintageE
         /// Takes everything out of the grid: tools made from EMC are burned for what they're still worth, the rest goes
         /// to the player (or the ground at their feet). Returns the EMC given back.
         /// </summary>
-        public double Empty(IPlayer player, InventoryCraftingGrid grid, bool burnMadeTools)
+        /// <param name="ownerUid">Whose made tools to look up when there's no player object (the self-test).</param>
+        public double Empty(IPlayer player, InventoryCraftingGrid grid, bool burnMadeTools, string ownerUid = null)
         {
             double back = 0;
+            string uid = player?.PlayerUID ?? ownerUid ?? "";
+            madeTools.TryGetValue(uid, out Dictionary<string, string> made);
             for (int i = 0; i < GridSize * GridSize; i++)
             {
                 ItemSlot slot = grid[i];
                 if (slot?.Itemstack == null) continue;
                 ItemStack stack = slot.TakeOutWhole();
-                if (burnMadeTools && stack.Attributes.GetBool(MadeFromEmc))
+                slot.MarkDirty(); // before anything else, so a burned tool also leaves the player's view of the grid
+                string id = stack.Attributes.GetString(MadeFromEmc);
+                if (burnMadeTools && id != null && made != null && made.TryGetValue(id, out string code) && code == stack.Collectible?.Code?.ToString())
                 {
+                    made.Remove(id);
                     double v = mod.BurnValue(stack) * stack.StackSize;
                     if (v > 0) { back += v; continue; }
-                    stack.Attributes.RemoveAttribute(MadeFromEmc);
                 }
+                if (id != null) stack.Attributes.RemoveAttribute(MadeFromEmc);
                 Give(player, stack);
-                slot.MarkDirty();
             }
+            // Made tools that left the grid are the player's now; their ids no longer burn anything.
+            if (burnMadeTools) madeTools.Remove(uid);
             if (back > 0 && player != null) PlayerEmc.AddEmc(player, back);
             return back;
+        }
+
+        /// <summary>Records a tool Emc Craft made (by the id in its attribute), so closing burns it.</summary>
+        public void RecordMade(string uid, ItemStack tool)
+        {
+            string id = tool?.Attributes.GetString(MadeFromEmc);
+            if (id == null) return;
+            if (!madeTools.TryGetValue(uid, out var made)) madeTools[uid] = made = new Dictionary<string, string>();
+            made[id] = tool.Collectible.Code.ToString();
         }
 
         void Give(IPlayer player, ItemStack stack)
@@ -268,6 +337,12 @@ namespace VintageE
             GridRecipe clicked = FindRecipe(packet);
             if (clicked == null) { mod.Transmutation.Fail(player, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
 
+            EmcCraftGrid grid = GridOf(player);
+            if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
+            // The grid starts empty: what was in it goes back first (tools made earlier are burned, as on closing),
+            // so the plan below sees the player's own tools wherever they ended up.
+            Empty(player, grid, burnMadeTools: true);
+
             double emc = PlayerEmc.GetEmc(player);
             string[] known = PlayerEmc.GetKnown(player);
             List<ItemSlot> carried = EmcWallet.CarriedSlots(player).ToList();
@@ -280,11 +355,6 @@ namespace VintageE
                 return;
             }
 
-            InventoryCraftingGrid grid = GridOf(player);
-            if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
-            // Whatever was in the grid goes back first (tools made earlier are burned, as on closing).
-            Empty(player, grid, burnMadeTools: true);
-
             PlayerEmc.AddEmc(player, -plan.Cost);
             for (int cell = 0; cell < plan.Cells.Length; cell++)
             {
@@ -296,7 +366,10 @@ namespace VintageE
                     stack = from.TakeOut(1);
                     from.MarkDirty();
                     if (stack == null) continue;
+                    // The player's own tool: never burned, whatever an old attribute on it says.
+                    stack.Attributes.RemoveAttribute(MadeFromEmc);
                 }
+                else RecordMade(player.PlayerUID, stack);
                 grid[cell].Itemstack = stack;
                 grid[cell].MarkDirty();
             }
@@ -313,19 +386,22 @@ namespace VintageE
         public (GridRecipe recipe, Plan plan, Plan clickedPlan, Plan cheapestUnaffordable) Choose(IPlayer player, GridRecipe clicked, ICollection<string> known, List<ItemSlot> carried, double emc)
         {
             ItemStack target = clicked.Output?.ResolvedItemStack;
-            var candidates = new List<GridRecipe> { clicked };
+            CharacterSystem chars = api.ModLoader.GetModSystem<CharacterSystem>();
+            bool Usable(GridRecipe r) => r.Enabled != false && r.ResolvedIngredients != null
+                && (r.RequiresTrait == null || player == null || chars == null || chars.HasTrait(player, r.RequiresTrait));
+            var candidates = new List<GridRecipe>();
+            if (Usable(clicked)) candidates.Add(clicked);
             if (target != null)
             {
-                CharacterSystem chars = api.ModLoader.GetModSystem<CharacterSystem>();
                 foreach (GridRecipe r in api.World.GridRecipes)
                 {
-                    if (r == clicked || r.Enabled == false || r.ResolvedIngredients == null) continue;
+                    if (r == clicked || !Usable(r)) continue;
                     ItemStack o = r.Output?.ResolvedItemStack;
                     if (o?.Collectible != target.Collectible || !o.Equals(api.World, target, GlobalConstants.IgnoredStackAttributes)) continue;
-                    if (r.RequiresTrait != null && player != null && chars != null && !chars.HasTrait(player, r.RequiresTrait)) continue;
                     candidates.Add(r);
                 }
             }
+            if (candidates.Count == 0) candidates.Add(clicked); // for its plan's error message; the grid won't craft it
 
             GridRecipe bestRecipe = null;
             Plan best = null, clickedPlan = null, out_ = null;
@@ -369,6 +445,7 @@ namespace VintageE
         {
             try { Close(player); } catch (Exception e) { api.Logger.Warning("Vintage-E: emptying {0}'s Emc Craft grid: {1}", player?.PlayerName, e.Message); }
             grids.Remove(player.PlayerUID);
+            madeTools.Remove(player.PlayerUID);
         }
 
         // ---------------------------------------------------------------- client

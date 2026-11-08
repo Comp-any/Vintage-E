@@ -819,8 +819,12 @@ namespace VintageE
                 var outSlot = new DummySlot();
                 recipe.GenerateOutputStack(slots, outSlot);
                 Check(layoutOk && outSlot.Itemstack?.Collectible == arcane, $"Emc Craft lays the ingredients out as the recipe wants, and it makes {outSlot.Itemstack?.Collectible?.Code}");
-                var gridInv = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest", sapi);
-                Check(gridInv.InventoryID == EmcCraft.InventoryClass + "-selftest" && gridInv.Count == 10, $"the game's crafting grid takes Vintage-E's ID ({gridInv.InventoryID}, {gridInv.Count} slots)");
+                InventoryBase rebuilt = null;
+                try { rebuilt = Vintagestory.Server.ServerMain.ClassRegistry?.CreateInventory(EmcCraft.InventoryClass, EmcCraft.InventoryClass + "-selftest", sapi); } catch { }
+                Check(rebuilt is EmcCraftGrid, $"the game can rebuild a saved Emc Craft grid by its class name ({rebuilt?.GetType().Name ?? "no"})");
+                var gridInv = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest", sapi);
+                Check(gridInv.InventoryID == EmcCraft.InventoryClass + "-selftest" && gridInv.Count == 10 && gridInv.RemoveOnClose,
+                    $"the game's crafting grid takes Vintage-E's ID and goes away when closed ({gridInv.InventoryID}, {gridInv.Count} slots, removed on close {gridInv.RemoveOnClose})");
 
                 // A recipe with a tool: the tool is made from EMC when none is carried, marked, and burned back on closing.
                 GridRecipe withTool = sapi.World.GridRecipes.FirstOrDefault(r => r.Enabled != false && r.ResolvedIngredients != null && r.Output?.Code?.Domain == "game"
@@ -843,10 +847,20 @@ namespace VintageE
                         Check(pick != null && pickPlan != null && pickPlan.NetCost <= tp.NetCost + 1e-6,
                             $"Emc Craft picks the cheapest recipe for {withTool.Output.Code} ({pickPlan?.NetCost:0.##} EMC, {pick?.Name})");
                     }
-                    var g2 = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest2", sapi);
-                    if (toolCell >= 0) g2[0].Itemstack = tp.Cells[toolCell].Clone(); // no MarkDirty: matching would ask for the (absent) player
-                    double back = craft.Empty(null, g2, burnMadeTools: true);
-                    Check(toolCell >= 0 && back > 0 && g2[0].Empty, $"closing burns a tool made from EMC back into EMC ({back})");
+                    var g2 = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest2", sapi);
+                    if (toolCell >= 0)
+                    {
+                        // A made tool (recorded) is burned; a tool carrying the same kind of attribute that this grid
+                        // never made (one that left the grid earlier, say) is given back, attribute removed.
+                        g2[0].Itemstack = tp.Cells[toolCell].Clone(); // no MarkDirty: matching would ask for the (absent) player
+                        craft.RecordMade("selftest2", g2[0].Itemstack);
+                        ItemStack stray = tp.Cells[toolCell].Clone();
+                        stray.Attributes.SetString(EmcCraft.MadeFromEmc, "not-made-here");
+                        g2[1].Itemstack = stray;
+                    }
+                    double back = craft.Empty(null, g2, burnMadeTools: true, ownerUid: "selftest2");
+                    Check(toolCell >= 0 && Math.Abs(back - mod.BurnValue(tp.Cells[toolCell])) < 0.01 && g2[0].Empty && g2[1].Empty,
+                        $"closing burns only the tools Emc Craft made, back into EMC ({back}); a tool it didn't make isn't burned");
                 }
                 else Check(true, "no base-game recipe with a valued tool to test Emc Craft's tools on (skipped)");
             }

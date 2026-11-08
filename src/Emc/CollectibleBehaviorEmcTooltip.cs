@@ -121,7 +121,29 @@ namespace VintageE
             catch (Exception e) { capi?.Logger.Warning("Vintage-E: adding Emc Craft to a handbook page: {0}", e.Message); }
         }
 
-        static readonly ConditionalWeakTable<string[], Dictionary<CraftingRecipeIngredient, bool>> knownIngredients = new ConditionalWeakTable<string[], Dictionary<CraftingRecipeIngredient, bool>>();
+        static readonly ConditionalWeakTable<string[], Dictionary<string, bool>> knownIngredients = new ConditionalWeakTable<string[], Dictionary<string, bool>>();
+
+        /// <summary>
+        /// A key for what an ingredient accepts. Not the ingredient object: the handbook copies some recipes each time
+        /// it builds a page, so the same ingredient comes back as a new object and would miss the cache every time.
+        /// </summary>
+        static string IngredientKey(CraftingRecipeIngredient ing) =>
+            ing.Type + "|" + ing.Code + "|" + ing.Name + "|" + (ing.AllowedVariants == null ? "" : string.Join(",", ing.AllowedVariants))
+            + "|" + (ing.SkipVariants == null ? "" : string.Join(",", ing.SkipVariants)) + "|" + TagsKey(ing) + "|" + ing.ResolvedItemStack?.Attributes?.ToJsonToken();
+
+        static string TagsKey(CraftingRecipeIngredient ing)
+        {
+            try
+            {
+                using var ms = new System.IO.MemoryStream();
+                using var w = new System.IO.BinaryWriter(ms);
+                var tags = ing.Tags;
+                Vintagestory.API.Datastructures.ComplexTagConditionExtensions.ToBytes(in tags, w);
+                w.Flush();
+                return Convert.ToBase64String(ms.ToArray());
+            }
+            catch { return ""; }
+        }
         static long tabletCheckedAt = -10000;
         static bool tabletCarried;
 
@@ -143,18 +165,18 @@ namespace VintageE
                 if (!tabletCarried) return;
 
                 string[] known = PlayerEmc.GetKnown(player);
-                var cache = knownIngredients.GetValue(known, _ => new Dictionary<CraftingRecipeIngredient, bool>());
-                if (!cache.TryGetValue(ing, out bool learned))
+                var cache = knownIngredients.GetValue(known, _ => new Dictionary<string, bool>());
+                string ingKey = IngredientKey(ing);
+                if (!cache.TryGetValue(ingKey, out bool learned))
                 {
                     learned = false;
                     foreach (string key in known)
                     {
                         ItemStack stack = PlayerEmc.ResolveStack(capi.World, key);
-                        if (stack == null) continue;
-                        stack.StackSize = Math.Max(1, ing.Quantity);
-                        if (ing.SatisfiesAsIngredient(stack, false)) { learned = true; break; }
+                        if (stack != null && ing.SatisfiesAsIngredient(stack, false)) { learned = true; break; }
                     }
-                    cache[ing] = learned;
+                    if (cache.Count > 4000) cache.Clear();
+                    cache[ingKey] = learned;
                 }
                 if (learned) return;
                 float half = (float)(size / 2);

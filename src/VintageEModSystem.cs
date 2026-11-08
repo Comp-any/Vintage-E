@@ -74,6 +74,7 @@ namespace VintageE
         public override void Start(ICoreAPI api)
         {
             Api = api;
+            EmcCraft.RegisterGridClass(api);
             if (api is ICoreClientAPI startCapi)
             {
                 // The look hook must be in place before the game loads shapes. Start runs then; StartClientSide does
@@ -623,6 +624,7 @@ namespace VintageE
                 sapi.Event.PlayerNowPlaying += player =>
                 {
                     EnsureMapped("the first player joining");
+                    EmcCrafting?.OnPlayerJoined(player);
                     try
                     {
                         int gone = PlayerEmc.Tidy(player, sapi.World);

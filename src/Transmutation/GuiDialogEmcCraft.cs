@@ -14,7 +14,7 @@ namespace VintageE
     public class GuiDialogEmcCraft : GuiDialog
     {
         readonly VintageEModSystem mod;
-        readonly InventoryCraftingGrid grid;
+        readonly EmcCraftGrid grid;
         long tickListener;
 
         public override string ToggleKeyCombinationCode => null;
