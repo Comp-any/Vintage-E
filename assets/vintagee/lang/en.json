@@ -60,7 +60,9 @@
   "gui-table-title": "Transmutation Table",
   "gui-tablet-title": "Transmutation Tablet",
   "gui-emc": "EMC: {0}",
-  "gui-burn-hint": "Drop an item on Burn to turn it into EMC and learn it (left-click: the whole stack, right-click: one). Drop it on Learn to learn it and keep it. A Klein star on Burn is filled from your EMC (right-click: emptied into it).",
+  "gui-burn-hint": "Drop an item on Burn to turn it into EMC and learn it (left-click: the whole stack, right-click: one). Drop it on Learn to learn it and keep it. Drop a Klein star on Charge to fill it from your EMC (right-click: empty it into your EMC); on Burn it's burned for the star and what it holds.",
+  "gui-charge-label": "Charge",
+  "error-charge-notstar": "Only Klein stars go in Charge; {0} isn't one.",
   "gui-burn-label": "Burn",
   "gui-search": "Search known items...",
   "gui-create-hint": "Left-click: take one  ·  Right-click: take a stack  ·  Shift-click: a stack straight into your inventory  ·  Ctrl + right-click: forget (asks first)",
@@ -1791,5 +1793,5 @@
   "server-machinespeed": "On this server machines run at ×{0} the speed above (MachineSpeedMultiplier).",
   "server-watch": "On this server: ×{0} faster, ÷{1} slower (WatchSpeedUp, WatchSlowDown).",
   "heldhelp-trinket-gemfilter": "Open the filter",
-  "error-star-noburn": "{0} isn't burned: it would lose the EMC it holds. Drop it on Burn to fill it, right-click to empty it."
+  "error-star-noburn": "{0} isn't burned by hoppers or the magnet: it would lose the EMC it holds. Drop it on Burn yourself to burn it with what it holds, or on Charge to fill or empty it."
 }

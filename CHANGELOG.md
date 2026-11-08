@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.18.11 — 2026-11-08
+
+### Changed
+- **A Charge slot on the Transmutation Table and Tablet** for Klein stars: drop a star on it to fill it from your EMC (right-click: empty it into your EMC); it stays on the cursor. Until now Burn did this, so a Klein star could never be burned.
+- **Burn now burns a Klein star** like anything else, for the star's own value plus the EMC it holds, so nothing is lost, and learns it. Hoppers into the table and the tablet's magnet still never burn a star.
+
 ## 1.18.10 — 2026-11-08
 
 ### Fixed

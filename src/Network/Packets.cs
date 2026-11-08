@@ -51,7 +51,9 @@ namespace VintageE
         /// <summary>Gem of Eternal Density filter: Mode = filter slot; what's on the cursor goes in it (an empty cursor clears it).</summary>
         GemFilter = 9,
         /// <summary>Gem of Eternal Density: switch between "all cheap things except these" and "only these".</summary>
-        GemMode = 10
+        GemMode = 10,
+        /// <summary>Charge slot (1.18.11): a Klein star on the cursor is filled from the player's EMC (Mode 0) or emptied into it (Mode 1); it stays on the cursor.</summary>
+        Charge = 11
     }
 
     /// <summary>Client → server request from the transmutation GUI.</summary>

@@ -663,6 +663,19 @@ namespace VintageE
             CollectibleObject granite = C("game:rock-granite");
             string key = VintageEModSystem.ConfigKey(granite);
             mod.SetNoTransmute(new[] { key }, true);
+            // 1.18.11: a Klein star is burned by hand (for the star plus what it holds), never by a hopper or the magnet.
+            var kStarItem = sapi.World.GetItem(new AssetLocation("vintagee:kleinstar-ein")) as CollectibleObject;
+            if (kStarItem != null)
+            {
+                var kStar = new ItemStack(kStarItem);
+                StoredEmc.Set(kStar, 1000);
+                string auto = mod.Transmutation.PlanBurn(null, kStar, out _, out _);
+                string hand = mod.Transmutation.PlanBurn(null, kStar, out TransmutationService.BurnPlan kStarPlan, out _, byHand: true);
+                double plain = mod.Emc.GetValue(new ItemStack(kStarItem));
+                Check(auto == "star-noburn" && hand == null && kStarPlan != null && Math.Abs(kStarPlan.Each - (plain + 1000)) < 0.01,
+                    $"a Klein star holding 1,000 is burned only by hand, for the star plus what it holds (automatic: {auto ?? "allowed"}, by hand: {hand ?? "allowed"}, worth {kStarPlan?.Each} = {plain} + 1,000)");
+            }
+            else Check(false, "vintagee:kleinstar-ein exists");
             string refused = mod.Transmutation.PlanBurn(null, new ItemStack(granite), out _, out _);
             Check(mod.Emc.IsNoTransmute(granite) && mod.Emc.GetValue(granite) > 0 && refused == "notransmute", $"no-transmute: granite keeps its value but can't be burned ({refused})");
             Check(mod.Emc.ToPacket().NoTransmuteKeys?.Contains(PlayerEmc.KeyOf(granite)) == true, "no-transmute list goes to clients");

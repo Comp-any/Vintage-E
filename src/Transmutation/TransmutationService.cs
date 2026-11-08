@@ -54,6 +54,7 @@ namespace VintageE
             {
                 case TransmuteAction.Burn: Burn(player, req.Mode == 1); break;
                 case TransmuteAction.Learn: LearnHeld(player); break;
+                case TransmuteAction.Charge: Charge(player, req.Mode == 1); break;
                 case TransmuteAction.Create: Create(player, req.Key, req.Mode); break;
                 case TransmuteAction.Forget: PlayerEmc.Forget(player, req.Key); break;
                 case TransmuteAction.MagnetSwap:
@@ -104,13 +105,15 @@ namespace VintageE
 
         /// <summary>Whether this stack can be burned (null) or why not (an error code, with <paramref name="args"/> for its message).</summary>
         /// <param name="learnOnly">Only learning it, not burning it: a container's contents aren't at risk, so it isn't refused for them.</param>
-        public string PlanBurn(IServerPlayer player, ItemStack stack, out BurnPlan plan, out string[] args, bool learnOnly = false)
+        /// <param name="byHand">The player dropped it on Burn themselves: a Klein star is burned then (for the star and what it holds).</param>
+        public string PlanBurn(IServerPlayer player, ItemStack stack, out BurnPlan plan, out string[] args, bool learnOnly = false, bool byHand = false)
         {
             plan = null;
             args = new[] { stack?.GetName() ?? "?" };
             if (stack?.Collectible == null) return "novalue";
-            // A Klein star is never burned (what it holds would be lost): not by a hopper into the table, nor the magnet.
-            if (stack.Collectible is IEmcStorageItem && !learnOnly) return "star-noburn";
+            // A Klein star is only burned by hand on Burn (its value counts what it holds, so nothing is lost), never by a
+            // hopper into the table or the magnet, where someone would lose a charged star without meaning to.
+            if (stack.Collectible is IEmcStorageItem && !learnOnly && !byHand) return "star-noburn";
             StackDataTable data = mod.Emc.StackData;
             StackDataMode mode = data.ModeOf(stack.Collectible);
             bool keepsData = data.CarriesData(stack.Collectible) && mode != StackDataMode.Item;
@@ -206,27 +209,33 @@ namespace VintageE
             mod.SendResult(player, Result(player, learnedKeys.Length > 0 ? learnedKeys[0] : PlayerEmc.KeyOf(mouse.Itemstack.Collectible), learnedKeys));
         }
 
+        /// <summary>
+        /// The Charge slot: a Klein star dropped on it is filled from the player's EMC (left-click) or emptied into it
+        /// (right-click), and stays on the cursor. Until 1.18.11 this was what Burn did with a star, so a star could
+        /// never be burned.
+        /// </summary>
+        void Charge(IServerPlayer player, bool empty)
+        {
+            ItemSlot mouse = player.InventoryManager.MouseItemSlot;
+            if (mouse?.Itemstack == null) return;
+            if (!(mouse.Itemstack.Collectible is IEmcStorageItem)) { Fail(player, "charge-notstar", mouse.Itemstack.GetName()); return; }
+            ItemStack star = mouse.Itemstack;
+            if (star.StackSize != 1) { Fail(player, "star-onlyone", star.GetName()); return; }
+            double stored = StoredEmc.Get(star);
+            double move = empty ? -stored : Math.Min(PlayerEmc.GetEmc(player), StoredEmc.Capacity(star) - stored);
+            if (Math.Abs(move) < 1e-9) { Fail(player, empty ? "star-empty" : "star-full", star.GetName()); return; }
+            PlayerEmc.AddEmc(player, -move);
+            StoredEmc.Set(star, stored + move);
+            mouse.MarkDirty();
+            sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), player.Entity, null, true, 8, 0.6f);
+            mod.SendResult(player, Result(player, null));
+        }
+
         void Burn(IServerPlayer player, bool onlyOne)
         {
             ItemSlot mouse = player.InventoryManager.MouseItemSlot;
             if (mouse?.Itemstack == null) return;
-            // A Klein star dropped on Burn isn't burned (what it holds would be lost): left-click fills it from your
-            // EMC, right-click empties it into your EMC, and it stays on the cursor (as in ProjectE).
-            if (mouse.Itemstack.Collectible is IEmcStorageItem)
-            {
-                ItemStack star = mouse.Itemstack;
-                if (star.StackSize != 1) { Fail(player, "star-onlyone", star.GetName()); return; }
-                double stored = StoredEmc.Get(star);
-                double move = onlyOne ? -stored : Math.Min(PlayerEmc.GetEmc(player), StoredEmc.Capacity(star) - stored);
-                if (Math.Abs(move) < 1e-9) { Fail(player, onlyOne ? "star-empty" : "star-full", star.GetName()); return; }
-                PlayerEmc.AddEmc(player, -move);
-                StoredEmc.Set(star, stored + move);
-                mouse.MarkDirty();
-                sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), player.Entity, null, true, 8, 0.6f);
-                mod.SendResult(player, Result(player, null));
-                return;
-            }
-            string error = PlanBurn(player, mouse.Itemstack, out BurnPlan plan, out string[] args);
+            string error = PlanBurn(player, mouse.Itemstack, out BurnPlan plan, out string[] args, byHand: true);
             if (error != null)
             {
                 Fail(player, error, args);
