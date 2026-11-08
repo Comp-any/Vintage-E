@@ -94,6 +94,7 @@ namespace VintageE
         {
             if (client == null || !client.HasClientInfo) return;
             ClientLook(x, client);
+            ClientEmcCraft(x, client);
             var keys = client.ClientHotkeyConflicts ?? Array.Empty<string>();
             if (keys.Length == 0) x.Ok(x.L("diag-hotkeys-ok"));
             else
@@ -128,9 +129,9 @@ namespace VintageE
             string[] trail = f.Length >= 15 && f[14].Length > 0 ? f[14].Split(';') : Array.Empty<string>();
             void Trail() { if (trail.Length > 0) { x.Note(x.L("diag-look-trail")); foreach (string t in trail) x.Note("  " + t); } }
             string serverSetting = x.Mod.Config.Look;
-            if (patched < 3 || patchError.Length > 0)
+            if (patched < ClientLookPatches.HookCount || patchError.Length > 0)
             {
-                x.Warn(x.L("diag-look-nohook", patched, patchError.Length == 0 ? "?" : patchError));
+                x.Warn(x.L("diag-look-nohook", patched, patchError.Length == 0 ? "?" : patchError, ClientLookPatches.HookCount));
                 x.Explain(x.L("diag-look-nohook-why"));
                 x.Fix(x.L("diag-look-nohook-fix"));
                 return;

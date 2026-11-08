@@ -111,7 +111,7 @@ namespace VintageE
             GuiComposer c = capi.Gui
                 .CreateCompo("vintagee-report", dialogBounds)
                 .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(string.IsNullOrEmpty(current?.Title) ? Lang.Get(IsDiagnose ? "vintagee:diag-title" : "vintagee:loopgui-title") : current.Title, () => TryClose())
+                .AddDialogTitleBar(IsDiagnose ? EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : current.Title) : (string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:loopgui-title") : current.Title), () => TryClose())
                 .BeginChildElements(bgBounds)
                     .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                     .AddTextInput(searchBounds, OnSearch, CairoFont.WhiteSmallText(), "search")

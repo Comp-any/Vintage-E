@@ -147,7 +147,7 @@ namespace VintageE
 
         /// <summary>
         /// Client: a second route for the look that doesn't depend on the shape-loader hook. The game runs this right
-        /// before it starts loading shapes; whatever blocks, items and entity types it has received by now get the look
+        /// before it starts loading shapes; whatever blocks and items it has received by now get the look
         /// here, and the hook (if it fires) covers the rest. Applying twice is harmless: the same model, the same textures.
         /// </summary>
         public override void AssetsLoaded(ICoreAPI api)
@@ -2485,6 +2485,7 @@ namespace VintageE
                     LookTrailText()
                 });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
+                p.ClientEmcCraftInfo = HandbookPatches.Info() + "|" + (EmcCraft.CarriesArcaneTablet(Capi.World.Player) ? "1" : "0") + "|" + (emcCraftDialog?.IsOpened() == true ? "1" : "0");
                 lock (CollectibleBehaviorEmcTooltip.Failures)
                 {
                     p.ClientTooltipFailures = CollectibleBehaviorEmcTooltip.Failures.OrderByDescending(kv => kv.Value.count).Take(10).Select(kv => kv.Key + ": " + kv.Value.count + ": " + kv.Value.last).ToArray();

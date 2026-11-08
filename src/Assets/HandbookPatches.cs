@@ -30,6 +30,13 @@ namespace VintageE
         public static string Error { get; private set; }
         public static bool Patched => patched;
 
+        // What the hook has seen on this computer, for the doctor ("Emc Craft in the handbook").
+        public static int Calls, PagesWithRecipes, LinksAdded;
+        public static string LastPage, LastError;
+        public static int LastSlideshows;
+        public static bool LastTablet;
+        static int logged;
+
         public static System.Reflection.MethodInfo Target() => typeof(CollectibleBehaviorHandbookTextAndExtraInfo).GetMethod("GetHandbookInfo",
             new[] { typeof(ItemSlot), typeof(ICoreClientAPI), typeof(ItemStack[]), typeof(ActionConsumable<string>) });
 
@@ -49,6 +56,7 @@ namespace VintageE
                 new Harmony(HarmonyId).Patch(target, postfix: new HarmonyMethod(typeof(HandbookPatches), nameof(Postfix)));
                 patched = true;
                 Error = null;
+                logger.Notification("Vintage-E: Emc Craft: hooked the handbook page builder ({0}.{1}).", target.DeclaringType?.Name, target.Name);
             }
             catch (Exception e)
             {
@@ -57,15 +65,32 @@ namespace VintageE
             }
         }
 
-        static void Postfix(ICoreClientAPI capi, ref RichTextComponentBase[] __result)
+        static void Postfix(ItemSlot inSlot, ICoreClientAPI capi, ref RichTextComponentBase[] __result)
         {
             try
             {
-                if (__result == null || Mod == null || capi == null) return;
+                Calls++;
+                if (__result == null || Mod == null || capi == null) { LastError = __result == null ? "the page had no content" : "Vintage-E isn't started on this side"; return; }
                 var list = new List<RichTextComponentBase>(__result);
-                if (CollectibleBehaviorEmcTooltip.AddEmcCraftLinks(Mod, list, capi)) __result = list.ToArray();
+                int added = CollectibleBehaviorEmcTooltip.AddEmcCraftLinks(Mod, list, capi, out int slideshows, out bool tablet);
+                LastPage = inSlot?.Itemstack?.Collectible?.Code?.ToString();
+                LastSlideshows = slideshows;
+                LastTablet = tablet;
+                if (slideshows > 0) PagesWithRecipes++;
+                if (added > 0) { LinksAdded += added; __result = list.ToArray(); }
+                // The first few pages with crafting recipes go in client-main.log, so a missing link can be read there too.
+                if (slideshows > 0 && logged < 5)
+                {
+                    logged++;
+                    capi.Logger.Notification("Vintage-E: Emc Craft: handbook page {0}: {1} crafting recipe slideshow(s), Arcane Tablet carried: {2}, links added: {3}.",
+                        LastPage ?? "?", slideshows, tablet, added);
+                }
             }
-            catch { /* a handbook page never breaks over this */ }
+            catch (Exception e) { LastError = e.GetType().Name + ": " + e.Message; /* a handbook page never breaks over this */ }
         }
+
+        /// <summary>For the doctor request: patched|error|calls|pages with recipes|links|last page|last slideshows|last tablet|last error.</summary>
+        public static string Info() => string.Join("|", patched ? "1" : "0", (Error ?? "").Replace('|', '/'), Calls, PagesWithRecipes, LinksAdded,
+            LastPage ?? "", LastSlideshows, LastTablet ? "1" : "0", (LastError ?? "").Replace('|', '/'));
     }
 }

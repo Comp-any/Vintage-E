@@ -2,6 +2,15 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.1 — 2026-11-09
+
+### Added
+- **Doctor: Emc Craft.** A check in "Your game" says whether the handbook's Emc Craft link works on your computer and, if not, the likely reason (no Arcane Tablet with you, no page with a crafting recipe opened yet, the hook missing, an older Vintage-E still running). The full report, `/emc diagnose emccraft` (or the new question in the doctor), also checks the server side: the item and its recipe, the saved-grid class, whether the server sees the tablet on you, your grid, and what the handbook hook has seen since the game started. client-main.log gets a line for the first few handbook pages with crafting recipes.
+- **The doctor's windows show the Vintage-E version** in their title.
+
+### Fixed
+- **The doctor said the look's hook was missing** ("only 2 of 3 game methods patched"): it still expected the three hooks from before 1.18.5. There are two now (blocks and items), and its texts say so.
+
 ## 1.19.0 — 2026-11-09
 
 ### Added

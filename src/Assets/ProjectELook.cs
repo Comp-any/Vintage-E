@@ -172,9 +172,8 @@ namespace VintageE
 
         /// <summary>
         /// True when the look changes anything about these entity types (a texture or a model). The New look changes
-        /// none, so the hook on the game's entity shape loader does nothing and gets out of the way at once: the
-        /// game collects entity textures on another thread at the same time, and anything that delays the shape
-        /// loader there can leave an entity type without its shape's textures.
+        /// none. (Since 1.18.5 there is no hook on the game's entity shape loader at all; this is still used for the
+        /// early pass and the doctor.)
         /// </summary>
         public static bool TouchesEntities(ICoreAPI api, ILogger logger, string look, IEnumerable<EntityProperties> types)
         {

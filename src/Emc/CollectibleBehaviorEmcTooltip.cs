@@ -98,14 +98,19 @@ namespace VintageE
         /// <summary>
         /// With an Arcane Tablet carried, an "Emc Craft" link under every crafting-grid recipe slideshow on a handbook
         /// page: it opens the tablet's crafting window filled for the recipe the slideshow is showing at that moment.
-        /// Called from <see cref="HandbookPatches"/> after the game builds the page. True if anything was added.
+        /// Called from <see cref="HandbookPatches"/> after the game builds the page. Returns how many links were added.
         /// </summary>
-        public static bool AddEmcCraftLinks(VintageEModSystem mod, List<RichTextComponentBase> components, ICoreClientAPI capi)
+        public static int AddEmcCraftLinks(VintageEModSystem mod, List<RichTextComponentBase> components, ICoreClientAPI capi, out int slideshows, out bool tablet)
         {
-            bool added = false;
+            int added = 0;
+            slideshows = 0;
+            tablet = false;
             try
             {
-                if (components == null || capi?.World?.Player == null || !EmcCraft.CarriesArcaneTablet(capi.World.Player)) return false;
+                if (components == null || capi?.World?.Player == null) return 0;
+                foreach (var c in components) if (c is SlideshowGridRecipeTextComponent) slideshows++;
+                tablet = EmcCraft.CarriesArcaneTablet(capi.World.Player);
+                if (!tablet || slideshows == 0) return 0;
                 for (int i = components.Count - 1; i >= 0; i--)
                 {
                     if (!(components[i] is SlideshowGridRecipeTextComponent show)) continue;
@@ -118,10 +123,10 @@ namespace VintageE
                     });
                     components.Insert(i + 1, link);
                     components.Insert(i + 2, new RichTextComponent(capi, "\n", CairoFont.WhiteSmallText()));
-                    added = true;
+                    added++;
                 }
             }
-            catch (Exception e) { capi?.Logger.Warning("Vintage-E: adding Emc Craft to a handbook page: {0}", e.Message); }
+            catch (Exception e) { HandbookPatches.LastError = e.GetType().Name + ": " + e.Message; capi?.Logger.Warning("Vintage-E: adding Emc Craft to a handbook page: {0}", e.Message); }
             return added;
         }
 

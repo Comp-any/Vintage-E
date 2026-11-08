@@ -227,6 +227,8 @@ namespace VintageE
         [ProtoMember(14)] public string[] ClientPatchOwners;
         /// <summary>The look on this computer: active|setting|server default|hook calls|hooked blocks+items|models|textures|collectibles|missing models|patched methods|patch error.</summary>
         [ProtoMember(15)] public string ClientLookInfo;
+        /// <summary>Emc Craft on this computer (1.19.1): <see cref="HandbookPatches.Info"/>, then "|" tablet carried now, grid open.</summary>
+        [ProtoMember(16)] public string ClientEmcCraftInfo;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

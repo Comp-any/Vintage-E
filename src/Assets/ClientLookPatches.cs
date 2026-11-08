@@ -8,7 +8,7 @@ using Vintagestory.API.Common.Entities;
 namespace VintageE
 {
     /// <summary>
-    /// Applies the player's look at the moment the game loads shapes for the blocks, items and entity types it got from
+    /// Applies the player's look at the moment the game loads shapes for the blocks and items it got from
     /// the server (the game's ShapeTesselatorManager.LoadBlockShapes / LoadItemShapes, which run on
     /// background threads as soon as those arrive). Mod systems' AssetsFinalize comes too late on the player's side: a
     /// model swapped in after that is never loaded, so the block or item draws nothing (only its outline shows). Each
@@ -18,7 +18,7 @@ namespace VintageE
     {
         public const string HarmonyId = "vintagee.clientlook";
         static Harmony harmony;
-        /// <summary>How many of the three loader methods were patched (0 before Patch runs), for /emc diagnose.</summary>
+        /// <summary>How many of the <see cref="HookCount"/> loader methods were patched (0 before Patch runs), for /emc diagnose.</summary>
         public static int PatchedCount { get; private set; }
 
         /// <summary>How many loaders get patched: blocks and items. Entity types are never touched on a player's game, so the entity loader is left alone (1.18.5).</summary>
@@ -28,7 +28,7 @@ namespace VintageE
         internal static VintageEModSystem Mod;
 
         /// <summary>Patches the game's shape loading. False (and logged) if this game version has no such methods.</summary>
-        /// <summary>What went wrong patching, for the doctor (null when all three applied).</summary>
+        /// <summary>What went wrong patching, for the doctor (null when both applied).</summary>
         public static string PatchError;
 
         /// <summary>The game's own API object, whose assembly is the one running copy of the game's client code.</summary>

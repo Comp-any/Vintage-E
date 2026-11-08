@@ -299,7 +299,7 @@ namespace VintageE
             composing = true;
             GuiComposer c = capi.Gui.CreateCompo("vintagee-doctor", dialogBounds)
                 .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : current.Title, () => TryClose())
+                .AddDialogTitleBar(EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : current.Title), () => TryClose())
                 .BeginChildElements(bgBounds);
 
             // Summary chips and the progress bar.
