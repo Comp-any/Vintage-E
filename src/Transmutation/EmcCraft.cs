@@ -93,16 +93,39 @@ namespace VintageE
             catch (Exception e) { api.Logger.Warning("Vintage-E: restoring {0}'s Emc Craft grid: {1}", player?.PlayerName, e.Message); }
         }
 
-        /// <summary>The player's grid on this side (made on first use; one per player).</summary>
+        /// <summary>
+        /// The player's grid on this side (made on first use; one per player). If the game already holds a grid with
+        /// this ID (it rebuilds a grid that was saved while open, and the client gets one with the player's data on
+        /// joining), that one is used: the server's changes to the grid's slots go to the instance the game holds, so a
+        /// second instance of our own would never see them and the window would stay empty.
+        /// </summary>
         public EmcCraftGrid GridOf(IPlayer player)
         {
             if (player == null) return null;
+            if (player.InventoryManager?.GetInventory(InventoryClass + "-" + player.PlayerUID) is EmcCraftGrid live)
+            {
+                grids[player.PlayerUID] = live;
+                return live;
+            }
             if (!grids.TryGetValue(player.PlayerUID, out EmcCraftGrid grid))
             {
                 grid = new EmcCraftGrid(InventoryClass, player.PlayerUID, api);
                 grids[player.PlayerUID] = grid;
             }
             return grid;
+        }
+
+        /// <summary>
+        /// Opens <paramref name="grid"/> for the player, first closing any other inventory the game holds under the same
+        /// ID (one it made itself that isn't ours), so the slot updates reach the grid the window shows.
+        /// </summary>
+        public static void Attach(IPlayer player, InventoryBase grid)
+        {
+            var mgr = player?.InventoryManager;
+            if (mgr == null || grid == null) return;
+            IInventory other = mgr.GetInventory(grid.InventoryID);
+            if (other != null && !ReferenceEquals(other, grid)) mgr.CloseInventory(other);
+            if (!ReferenceEquals(mgr.GetInventory(grid.InventoryID), grid)) mgr.OpenInventory(grid);
         }
 
         public static bool CarriesArcaneTablet(IPlayer player) =>
@@ -272,7 +295,7 @@ namespace VintageE
         {
             if (!CarriesArcaneTablet(player)) { mod.Transmutation.Fail(player, "emccraft-notablet"); return; }
             EmcCraftGrid grid = GridOf(player);
-            if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
+            Attach(player, grid);
         }
 
         /// <summary>Empties the grid (burning tools Emc Craft made), then closes it. Also run when the player leaves.</summary>
@@ -356,7 +379,7 @@ namespace VintageE
             if (clicked == null) { Refuse(player, packet, null, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
 
             EmcCraftGrid grid = GridOf(player);
-            if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
+            Attach(player, grid);
             // The grid starts empty: what was in it goes back first (tools made earlier are burned, as on closing),
             // so the plan below sees the player's own tools wherever they ended up.
             Empty(player, grid, burnMadeTools: true);

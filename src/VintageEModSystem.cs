@@ -2494,7 +2494,8 @@ namespace VintageE
                     ClientConfig?.LookHooks == false ? "0" : "1", ClientConfig?.HotLooksReload == false ? "0" : "1"
                 });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
-                p.ClientEmcCraftInfo = HandbookPatches.Info() + "|" + (EmcCraft.CarriesArcaneTablet(Capi.World.Player) ? "1" : "0") + "|" + (emcCraftDialog?.IsOpened() == true ? "1" : "0");
+                p.ClientEmcCraftInfo = HandbookPatches.Info() + "|" + (EmcCraft.CarriesArcaneTablet(Capi.World.Player) ? "1" : "0") + "|" + (emcCraftDialog?.IsOpened() == true ? "1" : "0")
+                    + "|" + (emcCraftDialog?.IsOpened() == true ? emcCraftDialog.SyncInfo() : "-|-");
                 lock (CollectibleBehaviorEmcTooltip.Failures)
                 {
                     p.ClientTooltipFailures = CollectibleBehaviorEmcTooltip.Failures.OrderByDescending(kv => kv.Value.count).Take(10).Select(kv => kv.Key + ": " + kv.Value.count + ": " + kv.Value.last).ToArray();

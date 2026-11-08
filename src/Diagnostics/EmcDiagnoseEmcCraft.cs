@@ -29,6 +29,9 @@ namespace VintageE
         class CraftClient
         {
             public bool Known, Patched, LastTablet, TabletNow, GridOpen;
+            /// <summary>Items in the open window's grid on the player's computer (-1 unknown), and whether the game holds that very grid ("1", "0", "-").</summary>
+            public int WindowItems = -1;
+            public string WindowHeld = "-";
             public string Error = "", LastPage = "", LastError = "";
             public int Calls, Pages, Links, LastSlideshows;
 
@@ -42,6 +45,7 @@ namespace VintageE
                 int.TryParse(f[2], out c.Calls); int.TryParse(f[3], out c.Pages); int.TryParse(f[4], out c.Links);
                 c.LastPage = f[5]; int.TryParse(f[6], out c.LastSlideshows); c.LastTablet = f[7] == "1"; c.LastError = f[8];
                 c.TabletNow = f[9] == "1"; c.GridOpen = f[10] == "1";
+                if (f.Length >= 13) { if (!int.TryParse(f[11], out c.WindowItems)) c.WindowItems = -1; c.WindowHeld = f[12]; }
                 return c;
             }
         }
@@ -113,6 +117,15 @@ namespace VintageE
             if (c.Patched && c.TabletNow && c.Pages > 0 && c.Links == 0) { x.Warn(x.L("diag-emccraft-nolinks", c.Pages, c.LastPage, c.LastTablet ? x.L("diag-yes") : x.L("diag-no"))); x.Explain(x.L("diag-emccraft-nolinks-why")); }
             if (c.LastError.Length > 0) x.Problem(x.L("diag-emccraft-lasterror", c.LastError));
             x.Info(c.GridOpen ? x.L("diag-emccraft-window-open") : x.L("diag-emccraft-window-closed"));
+            if (c.GridOpen && x.Player != null)
+            {
+                var serverGrid = x.Player.InventoryManager?.GetInventory(EmcCraft.InventoryClass + "-" + x.Player.PlayerUID);
+                int serverItems = 0;
+                if (serverGrid != null) for (int i = 0; i < EmcCraft.GridSize * EmcCraft.GridSize; i++) if (serverGrid[i]?.Itemstack != null) serverItems++;
+                if (c.WindowHeld == "0") { x.Problem(x.L("diag-emccraft-twogrids")); x.Fix(x.L("diag-emccraft-twogrids-fix")); }
+                else if (c.WindowItems >= 0 && serverItems != c.WindowItems) { x.Problem(x.L("diag-emccraft-nosync", serverItems, c.WindowItems)); x.Fix(x.L("diag-emccraft-twogrids-fix")); }
+                else if (c.WindowItems >= 0) x.Ok(x.L("diag-emccraft-sync-ok", serverItems));
+            }
             x.Note(x.L("diag-emccraft-howto"));
             Back(x);
         }

@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.4 — 2026-11-09
+
+- **Fixed: Emc Craft took the EMC but the grid stayed empty.** The game keeps its own copy of the grid (it comes with your player data when you join, if a grid was saved while open), and the server's changes went to that copy while the window showed another. The window now uses the game's grid, so what Emc Craft fills shows. If the EMC was taken and nothing appeared, closing the window gives back whatever was in the server's grid.
+- **Doctor:** with the Emc Craft window open, the Emc Craft check compares what the server has in the grid with what your window shows.
+
 ## 1.19.3 — 2026-11-09
 
 - **Doctor: clearer levels.** Passed is good; Info is something to know; Warning is something that may affect play (a missing value, an empty machine, the variants spread); Problem is part of the mod not running properly or a crash risk (the mapping or config failed, a failed patch or hook, a version mismatch between your game and the server, a missing Arcane Tablet recipe). Problems are marked ✖ in copied reports, warnings ⚠. Before, any warning with a suggested fix showed as a problem.

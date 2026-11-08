@@ -75,6 +75,15 @@ namespace VintageE
 
         string status;
 
+        /// <summary>For the doctor: the grid this window shows, and whether the game's inventory under its ID is it.</summary>
+        public string SyncInfo()
+        {
+            int items = 0;
+            for (int i = 0; i < EmcCraft.GridSize * EmcCraft.GridSize; i++) if (grid[i]?.Itemstack != null) items++;
+            IInventory held = capi.World.Player?.InventoryManager?.GetInventory(grid.InventoryID);
+            return items + "|" + (held == null ? "-" : ReferenceEquals(held, grid) ? "1" : "0");
+        }
+
         /// <summary>Why the last fill was refused (shown in red under the grid), or "" to clear it.</summary>
         public void ShowStatus(string text)
         {
@@ -91,7 +100,7 @@ namespace VintageE
         {
             base.OnGuiOpened();
             IPlayer player = capi.World.Player;
-            if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
+            EmcCraft.Attach(player, grid);
             mod.SendEmcCraft(new EmcCraftPacket { Action = EmcCraftAction.Open });
             tickListener = capi.Event.RegisterGameTickListener(_ => UpdateEmc(), 250);
         }
