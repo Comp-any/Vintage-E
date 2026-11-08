@@ -22,6 +22,8 @@ namespace VintageE
         public double Stored;
         public StarHolder Star { get; } = new StarHolder();
         double capacity = 100000, bonusPerSecond = 1, transferPerSecond = 64;
+        public double Capacity => capacity;
+        public double TransferPerSecond => transferPerSecond;
 
         public override void Initialize(ICoreAPI api)
         {

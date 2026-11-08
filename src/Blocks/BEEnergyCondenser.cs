@@ -26,6 +26,7 @@ namespace VintageE
 
         public double Stored;
         double capacity = 1000000;
+        public double Capacity => capacity;
         double itemsPerSecond = 4;
         double outputsPerSecond = 1;
         double burnBudget, makeBudget;

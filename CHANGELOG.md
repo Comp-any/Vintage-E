@@ -6,6 +6,8 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ### Added
 - **Doctor: Emc Craft.** A check in "Your game" says whether the handbook's Emc Craft link works on your computer and, if not, the likely reason (no Arcane Tablet with you, no page with a crafting recipe opened yet, the hook missing, an older Vintage-E still running). The full report, `/emc diagnose emccraft` (or the new question in the doctor), also checks the server side: the item and its recipe, the saved-grid class, whether the server sees the tablet on you, your grid, and what the handbook hook has seen since the game started. client-main.log gets a line for the first few handbook pages with crafting recipes.
+- **Doctor: machines, chutes, magnet, stars and trinkets.** `/emc diagnose machines` (or the new question) covers chutes and hoppers with Vintage-E's blocks (including a check that the matter furnaces' hopper rules are in place), the block you're looking at (a collector's light and output, a relay or condenser's EMC, a condenser's target and storage, a table's owner and hopper slot, a pedestal's trinket, a chest's trinkets, a furnace's slots) and what you carry (the tablet's magnet and filter, Klein stars, switched-on trinkets and the EMC left to run them). The check-up shows the chute line.
+- **Doctor: your look settings** ("Hook the game's shape loading", "Switch looks without rejoining") in "Your game", with a warning when the hooks are off but a look other than Middle is picked.
 - **The doctor's windows show the Vintage-E version** in their title.
 
 ### Fixed

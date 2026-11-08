@@ -94,6 +94,7 @@ namespace VintageE
         {
             if (client == null || !client.HasClientInfo) return;
             ClientLook(x, client);
+            ClientLookSettings(x, client);
             ClientEmcCraft(x, client);
             var keys = client.ClientHotkeyConflicts ?? Array.Empty<string>();
             if (keys.Length == 0) x.Ok(x.L("diag-hotkeys-ok"));
@@ -113,6 +114,22 @@ namespace VintageE
                 x.Explain(x.L("diag-harmony-why"));
                 x.Fix(x.L("diag-harmony-fix"));
             }
+        }
+
+        /// <summary>The look settings on the player's computer (1.19.1): LookHooks and HotLooksReload.</summary>
+        static void ClientLookSettings(Ctx x, EmcDiagnoseRequestPacket client)
+        {
+            string[] f = (client.ClientLookInfo ?? "").Split('|');
+            if (f.Length < 17) return;
+            bool hooks = f[15] != "0", hot = f[16] != "0";
+            string active = f[0];
+            if (!hooks && !string.Equals(active, "Middle", StringComparison.OrdinalIgnoreCase))
+            {
+                x.Warn(x.L("diag-look-hooksoff", active));
+                x.Fix(x.L("diag-look-hooksoff-fix"));
+            }
+            else x.Info(x.L("diag-look-settings", hooks ? x.L("diag-on") : x.L("diag-off"), hot ? x.L("diag-on") : x.L("diag-off")));
+            if (!hot) x.Explain(x.L("diag-look-hotoff-why"));
         }
 
         /// <summary>The look on the player's computer: which one, where it came from, and whether the game's shape loading went through the hook that applies it.</summary>

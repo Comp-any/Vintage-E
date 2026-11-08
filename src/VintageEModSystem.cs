@@ -2482,7 +2482,8 @@ namespace VintageE
                     (LookResult?.Models ?? 0).ToString(), (LookResult?.Textures ?? 0).ToString(), (LookResult?.Collectibles ?? 0).ToString(), (LookResult?.MissingShapes?.Count ?? 0).ToString(),
                     ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? "",
                     ClientLookPatches.RawCalls.ToString(), ClientLookPatches.LastSkipReason ?? "", LookAppliedEarly.ToString(),
-                    LookTrailText()
+                    LookTrailText(),
+                    ClientConfig?.LookHooks == false ? "0" : "1", ClientConfig?.HotLooksReload == false ? "0" : "1"
                 });
                 p.ClientPatchOwners = EmcDiagnose.HarmonyPatchOwners(ClientLookPatches.HarmonyId);
                 p.ClientEmcCraftInfo = HandbookPatches.Info() + "|" + (EmcCraft.CarriesArcaneTablet(Capi.World.Player) ? "1" : "0") + "|" + (emcCraftDialog?.IsOpened() == true ? "1" : "0");

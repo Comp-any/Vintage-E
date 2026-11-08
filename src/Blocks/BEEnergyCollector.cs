@@ -17,6 +17,10 @@ namespace VintageE
     {
         public double Stored;
         public StarHolder Star { get; } = new StarHolder();
+        public double Capacity => capacity;
+        /// <summary>EMC a second in full sunlight, before the server's machine speed; and what it made on its last tick.</summary>
+        public double RatePerSecond => ratePerSecond;
+        public double CurrentRate => currentRate;
         double currentRate;
         double ratePerSecond = 4;
         double capacity = 10000;

@@ -82,6 +82,7 @@ namespace VintageE
 
             if (action == "troubleshoot" || action == "help" || action == "guide") action = ActionNoValue;
             if (action == "arcane" || action == "arcanetablet" || action == "handbook") action = ActionEmcCraft;
+            if (action == "machine" || action == "block" || action == "magnet" || action == "stars" || action == "trinkets" || action == "chutes") action = ActionMachines;
             // An item code or a mod id given straight: "/emc diagnose game:ingot-copper", "/emc diagnose primitivesurvival".
             if (action.Length > 0 && !AllActions.Contains(action))
             {
@@ -160,6 +161,7 @@ namespace VintageE
                 case ActionSymptom: Symptom(x, arg, client); break;
                 case ActionNoValue: NoValueGuide(x, client); break;
                 case ActionEmcCraft: EmcCraftReport(x, client); break;
+                case ActionMachines: MachinesReport(x); break;
                 case ActionChanges: Changes(x); break;
                 case ActionMod:
                     if (arg.Length == 0) { Mods(x); break; }
@@ -184,6 +186,7 @@ namespace VintageE
                     Client(x, client, true);
                     Log(x, false);
                     Patches(x, false);
+                    MachinesShort(x);
                     Questions(x, held, client);
                     break;
             }
@@ -917,6 +920,7 @@ namespace VintageE
             r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
             r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
             r.Add(Link(ActionEmcCraft, "", x.L("diag-q-emccraft")));
+            r.Add(Link(ActionMachines, "", x.L("diag-q-machines")));
             if (held?.Collectible?.Code != null)
             {
                 r.Add(Link(ActionHand, "", x.L("diag-q-held", EmcExplain.NameOf(held.Collectible))));
