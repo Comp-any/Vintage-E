@@ -203,6 +203,7 @@ Value files can also hold:
 | `.vintagee` | everyone | This computer's settings: the Watch of Flowing Time's icon (on/off, size, position) and glow (on/off, colour) |
 | `/emc add <amount> [player]` | admin | Add personal EMC to a player (yourself if no name is given) |
 | `/emc remove <amount> [player]` | admin | Take personal EMC from a player (never below 0) |
+| `/emc setemc <amount> [player]` | admin | Set a player's personal EMC to an exact amount (yourself if no name is given) |
 | `/emc learn` (or `/emc learn hand`) | everyone | Learn the held item without burning it: anything the table could burn (admins: anything) |
 
 ## Recipes

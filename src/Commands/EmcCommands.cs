@@ -20,6 +20,7 @@ namespace VintageE
     /// /emc missing         – (admin) list blocks/items without a value (also written to ModData/vintagee/emc-missing.csv)
     /// /emc add &lt;amount&gt; [player]    – (admin) add personal EMC to a player (yourself by default)
     /// /emc remove &lt;amount&gt; [player] – (admin) take personal EMC from a player
+    /// /emc setemc &lt;amount&gt; [player] – (admin) set a player's personal EMC to an exact amount
     /// /emc give &lt;amount&gt;  – (admin) old name for /emc add on yourself
     /// /emc learn           – (admin) learn the held item without burning it
     /// /emc diagnose [what] – (admin) why EMC isn't working: a check-up with questions, or the held item, a code, a mod id, "mods", "sporadic", "mapping"
@@ -138,6 +139,12 @@ namespace VintageE
                     .WithArgs(parsers.Double("amount"), new OnlinePlayerArgParser("player", sapi, false))
                     .HandleWith(Safe(args => ChangeBalance(args, -1)))
                 .EndSubCommand()
+                .BeginSubCommand("setemc")
+                    .WithDescription("Set a player's personal EMC to an exact amount (yours if no player is named)")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(parsers.Double("amount"), new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(args => SetBalance(args)))
+                .EndSubCommand()
                 .BeginSubCommand("give")
                     .WithDescription("Same as /emc add")
                     .RequiresPrivilege(Privilege.controlserver)
@@ -202,6 +209,7 @@ namespace VintageE
             ("/emc compat disable|enable <name>", "cmdhelp-compatset", true),
             ("/emc add <amount> [player]", "cmdhelp-add", true),
             ("/emc remove <amount> [player]", "cmdhelp-remove", true),
+            ("/emc setemc <amount> [player]", "cmdhelp-setemc", true),
             ("/emc learn [hand]", "cmdhelp-learn", false),
         };
 
@@ -243,6 +251,27 @@ namespace VintageE
             }
             return TextCommandResult.Success(Lang.GetL(lang, sign > 0 ? "vintagee:cmd-emc-added" : "vintagee:cmd-emc-removed",
                 EmcFormat.Format(changed), target.PlayerName, EmcFormat.Format(after)));
+        }
+
+        /// <summary>/emc setemc: sets a player's personal EMC to an exact amount (0 or more).</summary>
+        static TextCommandResult SetBalance(TextCommandCallingArgs args)
+        {
+            string lang = args.LanguageCode;
+            double amount = (double)args[0];
+            IPlayer target = args[1] as IPlayer ?? args.Caller.Player;
+            if (target == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-needplayer"));
+            if (double.IsNaN(amount) || double.IsInfinity(amount) || amount < 0) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-notnegative"));
+
+            double before = PlayerEmc.GetEmc(target);
+            PlayerEmc.SetEmc(target, amount);
+
+            if (target != args.Caller.Player && target is IServerPlayer sp)
+            {
+                string who = args.Caller.Player?.PlayerName ?? "Server";
+                sp.SendMessage(GlobalConstants.GeneralChatGroup,
+                    Lang.GetL(sp.LanguageCode, "vintagee:cmd-emc-gotset", who, EmcFormat.Format(amount)), EnumChatType.Notification);
+            }
+            return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-emc-set", target.PlayerName, EmcFormat.Format(amount), EmcFormat.Format(before)));
         }
 
         static TextCommandResult Info(VintageEModSystem mod, TextCommandCallingArgs args)
