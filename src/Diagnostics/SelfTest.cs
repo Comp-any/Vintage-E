@@ -805,16 +805,22 @@ namespace VintageE
                 Check(plan.Missing.Count == 0 && plan.NotMakeable.Count == 0 && filled == 5 && Math.Abs(plan.Cost - (vTablet + 4 * vRed)) < 0.5,
                     $"Emc Craft plans the Arcane Tablet: 5 cells for {plan.Cost} EMC");
 
-                // The game's own crafting grid, under Vintage-E's ID, crafts it.
-                var grid = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest", sapi);
-                for (int i = 0; i < plan.Cells.Length; i++)
-                {
-                    if (plan.Cells[i] == null) continue;
-                    grid[i].Itemstack = plan.Cells[i].Clone();
-                    grid[i].MarkDirty();
-                }
-                ItemStack output = grid[EmcCraft.GridSize * EmcCraft.GridSize]?.Itemstack;
-                Check(output?.Collectible == arcane, $"the game's crafting grid under Vintage-E's ID shows the result ({output?.Collectible?.Code})");
+                // The plan's layout satisfies every ingredient where the recipe wants it, and the recipe makes the tablet from it.
+                // (The game's crafting grid itself asks which player owns it while matching; the test server has none.)
+                bool layoutOk = true;
+                for (int row = 0; row < recipe.Height; row++)
+                    for (int col = 0; col < recipe.Width; col++)
+                    {
+                        var ing = recipe.ResolvedIngredients[row * recipe.Width + col];
+                        ItemStack cellStack = plan.Cells[row * EmcCraft.GridSize + col];
+                        if (ing == null ? cellStack != null : cellStack == null || !ing.SatisfiesAsIngredient(cellStack)) layoutOk = false;
+                    }
+                var slots = plan.Cells.Select(c => (ItemSlot)new DummySlot(c?.Clone())).ToArray();
+                var outSlot = new DummySlot();
+                recipe.GenerateOutputStack(slots, outSlot);
+                Check(layoutOk && outSlot.Itemstack?.Collectible == arcane, $"Emc Craft lays the ingredients out as the recipe wants, and it makes {outSlot.Itemstack?.Collectible?.Code}");
+                var gridInv = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest", sapi);
+                Check(gridInv.InventoryID == EmcCraft.InventoryClass + "-selftest" && gridInv.Count == 10, $"the game's crafting grid takes Vintage-E's ID ({gridInv.InventoryID}, {gridInv.Count} slots)");
 
                 // A recipe with a tool: the tool is made from EMC when none is carried, marked, and burned back on closing.
                 GridRecipe withTool = sapi.World.GridRecipes.FirstOrDefault(r => r.Enabled != false && r.ResolvedIngredients != null && r.Output?.Code?.Domain == "game"
@@ -827,7 +833,7 @@ namespace VintageE
                     int toolCell = Array.FindIndex(tp.Cells, c => c != null && c.Attributes.GetBool(EmcCraft.MadeFromEmc));
                     Check(tp.Missing.Count == 0 && toolCell >= 0, $"Emc Craft makes the tool for {withTool.Output.Code} from EMC and marks it ({tp.Cells[Math.Max(0, toolCell)]?.Collectible?.Code})");
                     var g2 = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest2", sapi);
-                    if (toolCell >= 0) { g2[0].Itemstack = tp.Cells[toolCell].Clone(); g2[0].MarkDirty(); }
+                    if (toolCell >= 0) g2[0].Itemstack = tp.Cells[toolCell].Clone(); // no MarkDirty: matching would ask for the (absent) player
                     double back = craft.Empty(null, g2, burnMadeTools: true);
                     Check(toolCell >= 0 && back > 0 && g2[0].Empty, $"closing burns a tool made from EMC back into EMC ({back})");
                 }
