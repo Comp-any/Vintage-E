@@ -847,20 +847,25 @@ namespace VintageE
                         Check(pick != null && pickPlan != null && pickPlan.NetCost <= tp.NetCost + 1e-6,
                             $"Emc Craft picks the cheapest recipe for {withTool.Output.Code} ({pickPlan?.NetCost:0.##} EMC, {pick?.Name})");
                     }
+                    // One item per grid: taking one out of a grid that still holds something makes the game match
+                    // recipes for the grid's player, and the test server has none.
                     var g2 = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest2", sapi);
+                    var g3 = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest3", sapi);
+                    double back = 0, strayBack = -1;
                     if (toolCell >= 0)
                     {
-                        // A made tool (recorded) is burned; a tool carrying the same kind of attribute that this grid
-                        // never made (one that left the grid earlier, say) is given back, attribute removed.
+                        // A made tool (recorded) is burned; a tool carrying the same attribute that this grid never made
+                        // (one that left the grid earlier, say) isn't, and loses the attribute.
                         g2[0].Itemstack = tp.Cells[toolCell].Clone(); // no MarkDirty: matching would ask for the (absent) player
                         craft.RecordMade("selftest2", g2[0].Itemstack);
+                        back = craft.Empty(null, g2, burnMadeTools: true, ownerUid: "selftest2");
                         ItemStack stray = tp.Cells[toolCell].Clone();
                         stray.Attributes.SetString(EmcCraft.MadeFromEmc, "not-made-here");
-                        g2[1].Itemstack = stray;
+                        g3[0].Itemstack = stray;
+                        strayBack = craft.Empty(null, g3, burnMadeTools: true, ownerUid: "selftest3");
                     }
-                    double back = craft.Empty(null, g2, burnMadeTools: true, ownerUid: "selftest2");
-                    Check(toolCell >= 0 && Math.Abs(back - mod.BurnValue(tp.Cells[toolCell])) < 0.01 && g2[0].Empty && g2[1].Empty,
-                        $"closing burns only the tools Emc Craft made, back into EMC ({back}); a tool it didn't make isn't burned");
+                    Check(toolCell >= 0 && Math.Abs(back - mod.BurnValue(tp.Cells[toolCell])) < 0.01 && g2[0].Empty && strayBack == 0,
+                        $"closing burns only the tools Emc Craft made, back into EMC ({back}); one it didn't make gives back {strayBack}");
                 }
                 else Check(true, "no base-game recipe with a valued tool to test Emc Craft's tools on (skipped)");
             }
