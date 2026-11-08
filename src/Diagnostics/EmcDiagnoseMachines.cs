@@ -30,7 +30,7 @@ namespace VintageE
             try { return new BEMatterFurnace().ChuteInventory; } catch { return false; }
         }
 
-        static void MachinesReport(Ctx x)
+        static void MachinesReport(Ctx x, EmcDiagnoseRequestPacket client)
         {
             EmcReport r = x.R;
             var cfg = x.Mod.Config;
@@ -47,7 +47,7 @@ namespace VintageE
             if (Math.Abs(cfg.MachineSpeedMultiplier - 1) > 1e-9) x.Info(x.L("diag-mach-speed", cfg.MachineSpeedMultiplier));
 
             r.Section(x.L("diag-mach-looked-title"));
-            LookedAt(x);
+            LookedAt(x, client);
 
             if (x.Player != null)
             {
@@ -60,9 +60,11 @@ namespace VintageE
         }
 
         /// <summary>The Vintage-E block the asking player is looking at, and why it might not be doing anything.</summary>
-        static void LookedAt(Ctx x)
+        static void LookedAt(Ctx x, EmcDiagnoseRequestPacket client)
         {
-            BlockPos pos = x.Player?.CurrentBlockSelection?.Position;
+            // Where the player looks on their computer; the server's own selection is only the last block they clicked.
+            BlockPos pos = client?.HasLookedAt == true ? new BlockPos(client.LookedAtX, client.LookedAtY, client.LookedAtZ, client.LookedAtDim)
+                : client?.HasClientInfo == true ? null : x.Player?.CurrentBlockSelection?.Position;
             if (pos == null) { x.Info(x.L("diag-mach-looked-none")); return; }
             var world = x.Sapi.World;
             BlockEntity be = world.BlockAccessor.GetBlockEntity(pos);

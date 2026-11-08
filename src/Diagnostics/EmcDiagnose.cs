@@ -70,6 +70,14 @@ namespace VintageE
         static string Link(string action, string arg, string label) => "{{" + action + "|" + (arg ?? "") + "|" + label.Replace("{", "").Replace("}", "").Replace("|", "/") + "}}";
 
         /// <summary>Builds the report for one action. <paramref name="held"/> is the player's held stack (may be null).</summary>
+        /// <summary>Reports that read live blocks and inventories, so they must run on the main thread.</summary>
+        public static bool ReadsLiveState(string action)
+        {
+            action = (action ?? "").Trim().ToLowerInvariant();
+            return action == ActionEmcCraft || action == "arcane" || action == "arcanetablet" || action == "handbook"
+                || action == ActionMachines || action == "machine" || action == "block" || action == "magnet" || action == "stars" || action == "trinkets" || action == "chutes";
+        }
+
         public static EmcReport Run(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held,
             EmcDiagnoseRequestPacket client = null, string outcome = null)
         {
@@ -163,7 +171,7 @@ namespace VintageE
                 case ActionSymptom: Symptom(x, arg, client); break;
                 case ActionNoValue: NoValueGuide(x, client); break;
                 case ActionEmcCraft: EmcCraftReport(x, client); break;
-                case ActionMachines: MachinesReport(x); break;
+                case ActionMachines: MachinesReport(x, client); break;
                 case ActionChanges: Changes(x); break;
                 case ActionMod:
                     if (arg.Length == 0) { Mods(x); break; }

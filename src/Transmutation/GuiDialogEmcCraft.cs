@@ -142,6 +142,9 @@ namespace VintageE
         {
             base.OnGuiOpened();
             IPlayer player = capi.World.Player;
+            // The server's grid always starts empty (it gives back anything saved in it on joining); a copy the game sent
+            // with the player data may still show those old stacks here, so clear this side to match.
+            for (int i = 0; i < grid.Count; i++) if (grid[i]?.Itemstack != null) grid[i].Itemstack = null;
             EmcCraft.Attach(player, grid);
             IInventory heldNow = player.InventoryManager.GetInventory(grid.InventoryID);
             capi.Logger.Notification("Vintage-E: Emc Craft: window opened on {0}; the game holds {1}", grid.InventoryID,

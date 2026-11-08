@@ -2,6 +2,15 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.7 — 2026-11-09
+
+Fixes from a bug and problem review of 1.19.1–1.19.6:
+- **Doctor:** the Emc Craft and machine reports run on the server's main thread (they read blocks and inventories, which could fail now and then with "the diagnosis failed" when read alongside the game).
+- **Doctor: "the block you're looking at"** uses where you look on your screen; the server only knew the last block you clicked.
+- **`/emc diagnose` in chat** falls back to running on the server if your game doesn't answer within 4 seconds (another Vintage-E version, say), instead of showing nothing.
+- **Emc Craft:** the window starts empty on your screen too (a grid saved while open could show its old stacks after rejoining, though the server had already given them back); only Emc Craft's own refusals go to its window and chat (not a table's or the magnet's); fill log lines are kept short.
+- **Doctor:** problem lines (✖) are red in the text report window; a look error containing "|" no longer muddles the look-settings check.
+
 ## 1.19.6 — 2026-11-09
 
 - **Fixed: the Emc Craft grid stayed empty until the handbook was closed.** In single player the handbook pauses the game, and the game only sends a grid's slots to your screen on its game tick, so the filled grid didn't show until you closed the handbook. The window now shows the server's grid as soon as the fill is done (found by the user: "the guidebook pauses the game").

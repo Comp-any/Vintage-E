@@ -273,6 +273,7 @@ namespace VintageE
             {
                 case EmcLineStyle.Check:
                     if (text != null && text.StartsWith("\u2713", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
+                    if (text != null && text.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.4, 0.35, 1 }).WithWeight(Cairo.FontWeight.Bold);
                     if (text != null && text.StartsWith("\u26a0", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.6, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
                     return CairoFont.WhiteSmallText().WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Heading: return CairoFont.WhiteSmallishText().WithColor(new double[] { 1, 0.85, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);

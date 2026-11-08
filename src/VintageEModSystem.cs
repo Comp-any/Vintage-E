@@ -1527,6 +1527,7 @@ namespace VintageE
         void OnDiagnoseRequest(IServerPlayer player, EmcDiagnoseRequestPacket packet)
         {
             if (packet == null) return;
+            diagnoseRequestAt[player.PlayerUID] = Sapi.World.ElapsedMilliseconds;
             if (!player.HasPrivilege(Privilege.controlserver))
             {
                 player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:error-noprivilege"), EnumChatType.CommandError);
@@ -1662,6 +1663,23 @@ namespace VintageE
         public void SendDiagnosis(IServerPlayer player, string action, string arg, ItemStack held, EmcDiagnoseRequestPacket client = null, string outcome = null)
         {
             string lang = player.LanguageCode;
+            // These read blocks, block entities and the player's inventories, which only the main thread may touch;
+            // they're quick, so they run here (called from a command or a packet, both on the main thread).
+            if (EmcDiagnose.ReadsLiveState(action))
+            {
+                try
+                {
+                    EmcReport live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, outcome);
+                    SaveReport(live, "emc-diagnose.txt");
+                    SendReport(player, live);
+                }
+                catch (Exception e)
+                {
+                    Mod.Logger.Error("Vintage-E: /emc diagnose failed: {0}", e);
+                    player.SendMessage(GlobalConstants.GeneralChatGroup, "Vintage-E: the diagnosis failed (" + e.Message + "), see the server log.", EnumChatType.CommandError);
+                }
+                return;
+            }
             System.Threading.Tasks.Task.Run(() =>
             {
                 EmcReport report = null;
@@ -2232,7 +2250,7 @@ namespace VintageE
                 string message = Lang.Get("vintagee:error-" + packet.ErrorCode, packet.Args ?? Array.Empty<string>());
                 Capi.TriggerIngameError(this, packet.ErrorCode, message);
                 // The handbook hides the error at the top of the screen, so Emc Craft's refusals also go in its window and chat.
-                if (emcCraftDialog?.IsOpened() == true)
+                if (emcCraftDialog?.IsOpened() == true && (packet.ErrorCode.StartsWith("emccraft-", StringComparison.Ordinal) || packet.ErrorCode == "notenoughemc"))
                 {
                     emcCraftDialog.ShowStatus(message);
                     Capi.ShowChatMessage(Lang.Get("vintagee:emccraft-refused", message));
@@ -2284,8 +2302,21 @@ namespace VintageE
         public void SendEmcCraftContents(IServerPlayer player, EmcCraftPacket packet) => serverChannel?.SendPacket(packet, player);
 
         /// <summary>Asks the player's game to send /emc diagnose itself, so the report has that side's information.</summary>
-        public void AskClientToDiagnose(IServerPlayer player, string action, string arg) =>
+        public void AskClientToDiagnose(IServerPlayer player, string action, string arg)
+        {
+            long asked = Sapi.World.ElapsedMilliseconds;
             serverChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action ?? "", Arg = arg ?? "" }, player);
+            // A game that doesn't answer (another Vintage-E version, say): run it here, without that side's information.
+            Sapi.Event.RegisterCallback(_ =>
+            {
+                if (player.ConnectionState != EnumClientState.Playing) return;
+                if (diagnoseRequestAt.TryGetValue(player.PlayerUID, out long at) && at >= asked) return;
+                Mod.Logger.Notification("Vintage-E: {0}'s game didn't send the /emc diagnose request; running it without its side", player.PlayerName);
+                SendDiagnosis(player, action, arg, player.InventoryManager?.ActiveHotbarSlot?.Itemstack);
+            }, 4000);
+        }
+
+        readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> diagnoseRequestAt = new System.Collections.Concurrent.ConcurrentDictionary<string, long>();
 
         /// <summary>
         /// The server's grid after a fill, shown straight away. The game sends a grid's slots only on its game tick, and
@@ -2493,6 +2524,8 @@ namespace VintageE
         EmcDiagnoseRequestPacket DiagnoseRequest(string action, string arg)
         {
             var p = new EmcDiagnoseRequestPacket { Action = action, Arg = arg, Stack = HeldStackBytes(), HasClientInfo = true };
+            BlockPos lookedAt = Capi?.World?.Player?.CurrentBlockSelection?.Position;
+            if (lookedAt != null) { p.HasLookedAt = true; p.LookedAtX = lookedAt.X; p.LookedAtY = lookedAt.Y; p.LookedAtZ = lookedAt.Z; p.LookedAtDim = lookedAt.dimension; }
             try
             {
                 p.ClientVersion = Version;
@@ -2509,8 +2542,8 @@ namespace VintageE
                     ActiveLook ?? "?", ClientConfig?.Look ?? "?", Capi?.World?.Config?.GetString(WorldLookKey, null) ?? "",
                     LookPrefixCalls.ToString(), LookPrefixCollectibles.ToString(),
                     (LookResult?.Models ?? 0).ToString(), (LookResult?.Textures ?? 0).ToString(), (LookResult?.Collectibles ?? 0).ToString(), (LookResult?.MissingShapes?.Count ?? 0).ToString(),
-                    ClientLookPatches.PatchedCount.ToString(), ClientLookPatches.PatchError ?? "",
-                    ClientLookPatches.RawCalls.ToString(), ClientLookPatches.LastSkipReason ?? "", LookAppliedEarly.ToString(),
+                    ClientLookPatches.PatchedCount.ToString(), (ClientLookPatches.PatchError ?? "").Replace('|', '/'),
+                    ClientLookPatches.RawCalls.ToString(), (ClientLookPatches.LastSkipReason ?? "").Replace('|', '/'), LookAppliedEarly.ToString(),
                     LookTrailText(),
                     ClientConfig?.LookHooks == false ? "0" : "1", ClientConfig?.HotLooksReload == false ? "0" : "1"
                 });

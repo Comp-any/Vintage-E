@@ -234,6 +234,12 @@ namespace VintageE
         [ProtoMember(15)] public string ClientLookInfo;
         /// <summary>Emc Craft on this computer (1.19.1): <see cref="HandbookPatches.Info"/>, then "|" tablet carried now, grid open.</summary>
         [ProtoMember(16)] public string ClientEmcCraftInfo;
+        /// <summary>The block the player is looking at on their computer (the server only knows the last one they clicked).</summary>
+        [ProtoMember(17)] public bool HasLookedAt;
+        [ProtoMember(18)] public int LookedAtX;
+        [ProtoMember(19)] public int LookedAtY;
+        [ProtoMember(20)] public int LookedAtZ;
+        [ProtoMember(21)] public int LookedAtDim;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

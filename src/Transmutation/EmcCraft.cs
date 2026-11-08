@@ -124,7 +124,8 @@ namespace VintageE
             var mgr = player?.InventoryManager;
             if (mgr == null || grid == null) return;
             IInventory other = mgr.GetInventory(grid.InventoryID);
-            if (other != null && !ReferenceEquals(other, grid)) mgr.CloseInventory(other);
+            // Only on the client: there it's a stale copy. On the server another inventory under this ID could hold items.
+            if (other != null && !ReferenceEquals(other, grid) && grid.Api?.Side == EnumAppSide.Client) mgr.CloseInventory(other);
             if (!ReferenceEquals(mgr.GetInventory(grid.InventoryID), grid)) mgr.OpenInventory(grid);
         }
 
@@ -354,14 +355,22 @@ namespace VintageE
             if (stack.StackSize > 0 && player?.Entity != null) api.World.SpawnItemEntity(stack, player.Entity.Pos.XYZ.Add(0, 0.5, 0));
         }
 
-        readonly Dictionary<string, string> lastFill = new Dictionary<string, string>();
+        readonly System.Collections.Concurrent.ConcurrentDictionary<string, string> lastFill = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
+
+        /// <summary>A string the client sent, safe for one log line: short, no line breaks.</summary>
+        static string Clean(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "?";
+            s = s.Replace('\r', ' ').Replace('\n', ' ');
+            return s.Length > 80 ? s.Substring(0, 80) + "…" : s;
+        }
 
         /// <summary>What happened the last time this player asked Emc Craft to fill the grid (for the doctor), or null.</summary>
         public string LastFill(IPlayer player) => player != null && lastFill.TryGetValue(player.PlayerUID, out string s) ? s : null;
 
         void FillOutcome(IServerPlayer player, EmcCraftPacket packet, GridRecipe clicked, string outcome)
         {
-            string what = (clicked?.Output?.Code?.ToString() ?? packet.OutputCode ?? "?") + " (recipe " + (packet.RecipeName ?? "?") + ", #" + packet.RecipeIndex + ")";
+            string what = (clicked?.Output?.Code?.ToString() ?? Clean(packet.OutputCode)) + " (recipe " + Clean(packet.RecipeName) + ", #" + packet.RecipeIndex + ")";
             lastFill[player.PlayerUID] = DateTime.Now.ToString("HH:mm:ss") + " " + what + ": " + outcome;
             api.Logger.Notification("Vintage-E: Emc Craft: {0} asked to fill the grid for {1}: {2}", player.PlayerName, what, outcome);
         }
@@ -388,7 +397,7 @@ namespace VintageE
         {
             if (!CarriesArcaneTablet(player)) { Refuse(player, packet, null, "emccraft-notablet"); return; }
             GridRecipe clicked = FindRecipe(packet);
-            if (clicked == null) { Refuse(player, packet, null, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
+            if (clicked == null) { Refuse(player, packet, null, "emccraft-norecipe", Clean(packet.RecipeName)); return; }
 
             EmcCraftGrid grid = GridOf(player);
             Attach(player, grid);
@@ -507,6 +516,7 @@ namespace VintageE
             try { Close(player); } catch (Exception e) { api.Logger.Warning("Vintage-E: emptying {0}'s Emc Craft grid: {1}", player?.PlayerName, e.Message); }
             grids.Remove(player.PlayerUID);
             madeTools.Remove(player.PlayerUID);
+            lastFill.TryRemove(player.PlayerUID, out _);
         }
 
         // ---------------------------------------------------------------- client
