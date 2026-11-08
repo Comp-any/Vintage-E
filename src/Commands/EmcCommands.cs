@@ -441,8 +441,9 @@ namespace VintageE
             {
                 if (args.Caller.Player is IServerPlayer player)
                 {
-                    mod.SendDiagnosis(player, what, which, player.InventoryManager?.ActiveHotbarSlot?.Itemstack);
-                    return TextCommandResult.Success();
+                    // The player's game sends the request back with its own side (the look, the handbook hook, the Emc Craft window).
+                    mod.AskClientToDiagnose(player, what, which);
+                    return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-diagnose-opening"));
                 }
                 EmcReport report = EmcDiagnose.Run(mod, sapi, null, lang, what, which, null);
                 string file = mod.SaveReport(report, "emc-diagnose.txt");

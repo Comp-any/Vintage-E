@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -74,6 +75,47 @@ namespace VintageE
         void SendInvPacket(object packet) => capi.Network.SendPacketClient(packet);
 
         string status;
+        int slotChangesLogged;
+        bool contentsFixLogged;
+
+        void OnSlotModified(int slotId)
+        {
+            if (slotChangesLogged >= 10) return;
+            slotChangesLogged++;
+            capi.Logger.Notification("Vintage-E: Emc Craft: slot {0} on this computer now holds {1}", slotId, grid[slotId]?.Itemstack?.ToString() ?? "nothing");
+        }
+
+        /// <summary>The server's grid after a fill: if this window shows something else, take the server's (see OnEmcCraftContents).</summary>
+        public void CheckContents(List<byte[]> stacks)
+        {
+            if (!IsOpened()) return;
+            int fixedSlots = 0;
+            for (int i = 0; i < stacks.Count && i < EmcCraft.GridSize * EmcCraft.GridSize; i++)
+            {
+                ItemStack server = null;
+                if (stacks[i] != null && stacks[i].Length > 0)
+                {
+                    server = new ItemStack(stacks[i]);
+                    if (!server.ResolveBlockOrItem(capi.World)) continue;
+                }
+                ItemStack here = grid[i].Itemstack;
+                bool same = server == null ? here == null : here != null && here.StackSize == server.StackSize && here.Equals(capi.World, server, GlobalConstants.IgnoredStackAttributes);
+                if (same) continue;
+                grid[i].Itemstack = server;
+                grid[i].MarkDirty();
+                fixedSlots++;
+            }
+            if (fixedSlots > 0)
+            {
+                if (!contentsFixLogged)
+                {
+                    contentsFixLogged = true;
+                    IInventory held = capi.World.Player?.InventoryManager?.GetInventory(grid.InventoryID);
+                    capi.Logger.Warning("Vintage-E: Emc Craft: the game didn't bring {0} slot(s) of the server's grid to this window; shown from Vintage-E's own copy (the game holds {1})",
+                        fixedSlots, held == null ? "no grid" : ReferenceEquals(held, grid) ? "this grid" : "another grid (" + held.GetType().Name + ")");
+                }
+            }
+        }
 
         /// <summary>For the doctor: the grid this window shows, and whether the game's inventory under its ID is it.</summary>
         public string SyncInfo()
@@ -101,6 +143,12 @@ namespace VintageE
             base.OnGuiOpened();
             IPlayer player = capi.World.Player;
             EmcCraft.Attach(player, grid);
+            IInventory heldNow = player.InventoryManager.GetInventory(grid.InventoryID);
+            capi.Logger.Notification("Vintage-E: Emc Craft: window opened on {0}; the game holds {1}", grid.InventoryID,
+                heldNow == null ? "no grid" : ReferenceEquals(heldNow, grid) ? "this grid" : "another grid (" + heldNow.GetType().Name + ")");
+            slotChangesLogged = 0;
+            grid.SlotModified -= OnSlotModified;
+            grid.SlotModified += OnSlotModified;
             mod.SendEmcCraft(new EmcCraftPacket { Action = EmcCraftAction.Open });
             tickListener = capi.Event.RegisterGameTickListener(_ => UpdateEmc(), 250);
         }
@@ -109,6 +157,7 @@ namespace VintageE
         {
             base.OnGuiClosed();
             if (tickListener != 0) { capi.Event.UnregisterGameTickListener(tickListener); tickListener = 0; }
+            grid.SlotModified -= OnSlotModified;
             IPlayer player = capi.World.Player;
             // The server empties the grid as it closes; clear this side's copy so a reopened window starts empty.
             for (int i = 0; i < grid.Count; i++) if (grid[i] != null) grid[i].Itemstack = null;

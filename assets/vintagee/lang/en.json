@@ -405,6 +405,7 @@
   "cmd-emc-gotremoved": "{0} took {1} EMC from you. You now have {2} EMC.",
   "cmd-emc-needplayer": "Name an online player when running this from the console.",
   "cmd-emc-positive": "The amount must be a number above 0.",
+  "cmd-diagnose-opening": "Opening the EMC doctor…",
   "cmd-emc-notnegative": "The amount must be a number, 0 or more.",
   "cmd-emc-set": "Set {0}'s EMC to {1} (it was {2}).",
   "cmd-emc-gotset": "{0} set your EMC to {1}.",

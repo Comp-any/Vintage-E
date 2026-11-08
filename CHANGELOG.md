@@ -2,6 +2,12 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.5 — 2026-11-09
+
+- **Emc Craft: the window shows what the server put in the grid** even when the game doesn't bring the grid's slots to your computer. After a fill the server sends its grid; a moment later the window checks it shows the same and, if not, takes the server's copy (client-main.log then says "the game didn't bring … slot(s)"). Clicking the output and closing the window already worked, which is how the items reached you.
+- **Logging:** the Emc Craft window logs which grid it shows and the first slot changes it sees; each fill in server-main.log says whether the game holds that grid.
+- **`/emc diagnose` typed in chat** now goes through your game, so the report has your side too (the look, the handbook hook, the Emc Craft window), as when it's opened from the doctor's buttons. It says "Opening the EMC doctor…" in chat.
+
 ## 1.19.4 — 2026-11-09
 
 - **Fixed: Emc Craft took the EMC but the grid stayed empty.** The game keeps its own copy of the grid (it comes with your player data when you join, if a grid was saved while open), and the server's changes went to that copy while the window showed another. The window now uses the game's grid, so what Emc Craft fills shows. If the EMC was taken and nothing appeared, closing the window gives back whatever was in the server's grid.

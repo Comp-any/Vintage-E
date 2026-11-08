@@ -366,6 +366,18 @@ namespace VintageE
             api.Logger.Notification("Vintage-E: Emc Craft: {0} asked to fill the grid for {1}: {2}", player.PlayerName, what, outcome);
         }
 
+        /// <summary>Tells the player's game what the server's grid holds (the window checks it shows the same).</summary>
+        void SendContents(IServerPlayer player, InventoryCraftingGrid grid)
+        {
+            try
+            {
+                var stacks = new List<byte[]>();
+                for (int i = 0; i < GridSize * GridSize; i++) stacks.Add(grid[i]?.Itemstack?.ToBytes() ?? Array.Empty<byte>());
+                mod.SendEmcCraftContents(player, new EmcCraftPacket { Action = EmcCraftAction.Contents, Stacks = stacks });
+            }
+            catch (Exception e) { api.Logger.Warning("Vintage-E: sending {0}'s Emc Craft grid: {1}", player.PlayerName, e.Message); }
+        }
+
         void Refuse(IServerPlayer player, EmcCraftPacket packet, GridRecipe clicked, string code, params string[] args)
         {
             FillOutcome(player, packet, clicked, "refused, " + code + (args.Length > 0 ? " (" + string.Join("; ", args) + ")" : ""));
@@ -417,8 +429,11 @@ namespace VintageE
                 grid[cell].MarkDirty();
                 filled++;
             }
+            IInventory held = player.InventoryManager.GetInventory(grid.InventoryID);
             FillOutcome(player, packet, clicked, "filled " + filled + " cell(s) (" + ownTools + " of your own tools) for " + EmcFormat.Format(plan.Cost) + " EMC"
-                + (recipe != clicked ? ", using a cheaper recipe" : ""));
+                + (recipe != clicked ? ", using a cheaper recipe" : "")
+                + "; the game holds " + (held == null ? "no grid" : ReferenceEquals(held, grid) ? "this grid" : "another grid") + ", opened: " + grid.HasOpened(player));
+            SendContents(player, grid);
             api.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
             mod.SendResult(player, new TransmuteResultPacket { Emc = PlayerEmc.GetEmc(player), HasEmc = true });
         }

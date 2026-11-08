@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ProtoBuf;
 
 namespace VintageE
@@ -64,7 +65,9 @@ namespace VintageE
         /// <summary>The window closed: the grid is emptied (tools made from EMC burned back).</summary>
         Close = 2,
         /// <summary>Emc Craft: fill the grid for a recipe from the player's EMC.</summary>
-        Fill = 3
+        Fill = 3,
+        /// <summary>Server → client: what the server's grid holds (Stacks), so the window can check it shows the same.</summary>
+        Contents = 4
     }
 
     /// <summary>Client → server: the Arcane Tablet's crafting window (1.19.0).</summary>
@@ -76,6 +79,8 @@ namespace VintageE
         [ProtoMember(2)] public int RecipeIndex = -1;
         [ProtoMember(3)] public string RecipeName;
         [ProtoMember(4)] public string OutputCode;
+        /// <summary>Contents: one entry per grid cell (ItemStack.ToBytes; empty for an empty cell).</summary>
+        [ProtoMember(5)] public List<byte[]> Stacks;
     }
 
     /// <summary>Client → server request from the transmutation GUI.</summary>

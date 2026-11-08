@@ -2155,6 +2155,9 @@ namespace VintageE
             clientChannel.SetMessageHandler<EmcCompatListPacket>(OnCompatList);
             clientChannel.SetMessageHandler<EmcItemStatePacket>(OnItemState);
             clientChannel.SetMessageHandler<EmcReportPacket>(OnReport);
+            clientChannel.SetMessageHandler<EmcCraftPacket>(OnEmcCraftContents);
+            // /emc diagnose typed in chat: the server asks this computer to send the request, so it carries this side's information.
+            clientChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(p => SendDiagnose(p?.Action ?? "", p?.Arg ?? ""));
 
             // Tooltips: give every collectible a tiny client-only behaviour that prints its EMC.
             capi.Event.BlockTexturesLoaded += () =>
@@ -2276,6 +2279,26 @@ namespace VintageE
             emcCraftDialog?.Dispose();
             emcCraftDialog = new GuiDialogEmcCraft(Capi, this);
             emcCraftDialog.TryOpen();
+        }
+
+        public void SendEmcCraftContents(IServerPlayer player, EmcCraftPacket packet) => serverChannel?.SendPacket(packet, player);
+
+        /// <summary>Asks the player's game to send /emc diagnose itself, so the report has that side's information.</summary>
+        public void AskClientToDiagnose(IServerPlayer player, string action, string arg) =>
+            serverChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action ?? "", Arg = arg ?? "" }, player);
+
+        /// <summary>
+        /// The server's grid after a fill. The game sends each slot to this computer itself; a moment later the window
+        /// checks it shows the same, and if not, takes the server's copy (and says so in the log, once per window).
+        /// </summary>
+        void OnEmcCraftContents(EmcCraftPacket packet)
+        {
+            if (packet?.Action != EmcCraftAction.Contents || packet.Stacks == null) return;
+            Capi.Event.RegisterCallback(_ =>
+            {
+                try { emcCraftDialog?.CheckContents(packet.Stacks); }
+                catch (Exception e) { Capi.Logger.Warning("Vintage-E: Emc Craft: checking the grid: {0}", e.Message); }
+            }, 400);
         }
 
         /// <summary>Emc Craft from the handbook: open the window (if needed) and ask the server to fill it for this recipe.</summary>
