@@ -110,14 +110,22 @@ namespace VintageE
                 if (components == null || capi?.World?.Player == null) return 0;
                 foreach (var c in components) if (c is SlideshowGridRecipeTextComponent) slideshows++;
                 tablet = EmcCraft.CarriesArcaneTablet(capi.World.Player);
-                if (!tablet || slideshows == 0) return 0;
+                if (slideshows == 0) return 0;
                 for (int i = components.Count - 1; i >= 0; i--)
                 {
                     if (!(components[i] is SlideshowGridRecipeTextComponent show)) continue;
                     GridRecipe first = show.GridRecipesAndUnnamedIngredients?.FirstOrDefault()?.Recipe;
-                    string label = first == null ? Lang.Get("vintagee:emccraft-button") : mod.ClientEmcCraft?.ButtonLabel(capi.World.Player, first) ?? Lang.Get("vintagee:emccraft-button");
-                    var link = new LinkTextComponent(capi, label, CairoFont.WhiteSmallText(), _ =>
+                    // Without the tablet the button stays, in red, so it's clear why it can't be used.
+                    string label = !tablet ? Lang.Get("vintagee:emccraft-button-notablet")
+                        : first == null ? Lang.Get("vintagee:emccraft-button") : mod.ClientEmcCraft?.ButtonLabel(capi.World.Player, first) ?? Lang.Get("vintagee:emccraft-button");
+                    CairoFont font = tablet ? CairoFont.WhiteSmallText() : CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.35, 0.3, 1 });
+                    var link = new LinkTextComponent(capi, label, font, _ =>
                     {
+                        if (!EmcCraft.CarriesArcaneTablet(capi.World.Player))
+                        {
+                            capi.TriggerIngameError(mod, "emccraft-notablet", Lang.Get("vintagee:error-emccraft-notablet"));
+                            return;
+                        }
                         GridRecipe recipe = show.CurrentVisibleRecipe?.Recipe;
                         if (recipe != null) mod.EmcCraftFill(recipe);
                     });

@@ -2,6 +2,10 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.2 — 2026-11-09
+
+- **The handbook's Emc Craft button no longer disappears without the Arcane Tablet.** It shows in red as "Emc Craft (missing Tablet)"; clicking it says you need the tablet (or works, if you've picked one up since the page opened).
+
 ## 1.19.1 — 2026-11-09
 
 ### Added
