@@ -961,7 +961,8 @@ namespace VintageE
         {
             EmcMappingReport report = mod.LastReport;
             if (report == null) { Check(false, "diagnose: EMC not mapped"); return; }
-            CollectibleObject missing = report.Missing.FirstOrDefault(c => c.Code.Domain == "game") ?? report.Missing.FirstOrDefault();
+            // Sorted by code: the set has no order, and a value-loop item (platinum bits) has no "Next steps" section, so an unlucky pick failed the check.
+            CollectibleObject missing = report.Missing.Where(c => c.Code.Domain == "game").OrderBy(c => c.Code.ToString(), StringComparer.Ordinal).FirstOrDefault() ?? report.Missing.OrderBy(c => c.Code.ToString(), StringComparer.Ordinal).FirstOrDefault();
             var cases = new List<(string action, string arg)>
             {
                 ("", ""), ("mapping", ""), ("mods", ""), ("mod", "game"), ("mod", "nosuchmod"), ("sporadic", ""),
