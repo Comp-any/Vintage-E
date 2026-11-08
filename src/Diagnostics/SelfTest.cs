@@ -822,6 +822,9 @@ namespace VintageE
                 InventoryBase rebuilt = null;
                 try { rebuilt = Vintagestory.Server.ServerMain.ClassRegistry?.CreateInventory(EmcCraft.InventoryClass, EmcCraft.InventoryClass + "-selftest", sapi); } catch { }
                 Check(rebuilt is EmcCraftGrid, $"the game can rebuild a saved Emc Craft grid by its class name ({rebuilt?.GetType().Name ?? "no"})");
+                var hb = HandbookPatches.Target();
+                Check(hb != null && hb.ReturnType == typeof(Vintagestory.API.Client.RichTextComponentBase[]) && hb.GetParameters()[1].Name == "capi",
+                    $"the game's handbook page builder is there for the Emc Craft link ({hb?.DeclaringType?.Name}.{hb?.Name}, parameter '{(hb == null ? "?" : hb.GetParameters()[1].Name)}')");
                 var gridInv = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest", sapi);
                 Check(gridInv.InventoryID == EmcCraft.InventoryClass + "-selftest" && gridInv.Count == 10 && gridInv.RemoveOnClose,
                     $"the game's crafting grid takes Vintage-E's ID and goes away when closed ({gridInv.InventoryID}, {gridInv.Count} slots, removed on close {gridInv.RemoveOnClose})");

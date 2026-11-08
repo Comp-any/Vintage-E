@@ -16,7 +16,7 @@ namespace VintageE
     /// Liquids are shown per litre (the game stores them as 100 small portions per litre, which made a litre of
     /// water look like 0.01), and containers show what their contents are worth.
     /// </summary>
-    public class CollectibleBehaviorEmcTooltip : CollectibleBehavior, ICustomHandbookPageContent
+    public class CollectibleBehaviorEmcTooltip : CollectibleBehavior
     {
         readonly VintageEModSystem mod;
 
@@ -96,14 +96,16 @@ namespace VintageE
         // ------------------------------------------------------------ Arcane Tablet in the handbook (1.19.0)
 
         /// <summary>
-        /// With an Arcane Tablet carried, an "Emc Craft" link under every crafting-grid recipe slideshow on this page: it
-        /// opens the tablet's crafting window filled for the recipe the slideshow is showing at that moment.
+        /// With an Arcane Tablet carried, an "Emc Craft" link under every crafting-grid recipe slideshow on a handbook
+        /// page: it opens the tablet's crafting window filled for the recipe the slideshow is showing at that moment.
+        /// Called from <see cref="HandbookPatches"/> after the game builds the page. True if anything was added.
         /// </summary>
-        public void OnHandbookPageComposed(List<RichTextComponentBase> components, ItemSlot inSlot, ICoreClientAPI capi, ItemStack[] allStacks, ActionConsumable<string> openDetailPageFor)
+        public static bool AddEmcCraftLinks(VintageEModSystem mod, List<RichTextComponentBase> components, ICoreClientAPI capi)
         {
+            bool added = false;
             try
             {
-                if (components == null || capi?.World?.Player == null || !EmcCraft.CarriesArcaneTablet(capi.World.Player)) return;
+                if (components == null || capi?.World?.Player == null || !EmcCraft.CarriesArcaneTablet(capi.World.Player)) return false;
                 for (int i = components.Count - 1; i >= 0; i--)
                 {
                     if (!(components[i] is SlideshowGridRecipeTextComponent show)) continue;
@@ -116,9 +118,11 @@ namespace VintageE
                     });
                     components.Insert(i + 1, link);
                     components.Insert(i + 2, new RichTextComponent(capi, "\n", CairoFont.WhiteSmallText()));
+                    added = true;
                 }
             }
             catch (Exception e) { capi?.Logger.Warning("Vintage-E: adding Emc Craft to a handbook page: {0}", e.Message); }
+            return added;
         }
 
         static readonly ConditionalWeakTable<string[], Dictionary<string, bool>> knownIngredients = new ConditionalWeakTable<string[], Dictionary<string, bool>>();

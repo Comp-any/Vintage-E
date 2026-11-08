@@ -2063,6 +2063,7 @@ namespace VintageE
 
         public override void StartClientSide(ICoreClientAPI capi)
         {
+            HandbookPatches.Patch(this, Mod.Logger);
             Capi = capi;
             LookEvent("client side started (the game's last mod phase): the game holds {0} blocks and {1} items", capi.World?.Blocks?.Count ?? 0, capi.World?.Items?.Count ?? 0);
             // The look hook was put in place in Start (see there); this only makes sure it is still there.

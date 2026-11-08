@@ -1233,7 +1233,7 @@
   "diag-next-comment": "Post a comment on the Vintage-E Mod DB page: {0}",
   "diag-next-paste-game": "Suggested text: \"Vintage-E {0}: these base-game items have no value: {1}\"",
   "diag-next-paste-mod": "Suggested text: \"Vintage-E {0} with {1} {2}: these items have no value: {3}. /emc diagnose says nothing the mapper reads makes them.\"",
-  "diag-next-modauthor": "If the mod makes them in its own machine or recipe type, its author can help too: items can carry \"attributes\": { \"emcValue\": <n> } in their JSON, which Vintage-E reads directly.",
+  "diag-next-modauthor": "If the mod makes them in its own machine or recipe type, its author can help too: items can carry \"attributes\": {{ \"emcValue\": <n> }} in their JSON, which Vintage-E reads directly.",
   "diag-next-meanwhile": "Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.",
   "compat-title": "Compatibility values",
   "compat-help": "Vintage-E ships value files for other mods whose raw materials no recipe makes (fish, foraged plants, creature drops, new ores). Each loads only when its mod is loaded, and its values are a last resort: a recipe, trader price, ratio rule or variant that values an item always wins. {0} file(s): {1} active, {2} waiting for their mod, {3} disabled. Switching one off or on changes the DisabledCompat setting and remaps.",
