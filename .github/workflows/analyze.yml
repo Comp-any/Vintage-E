@@ -169,6 +169,8 @@ jobs:
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
           [ -n "$EXTRA_MODS" ] && python3 tools/ci_mod_grep.py data/Mods "${VSDIR:+$VSDIR/assets}" tools/ci_mod_grep.txt analysis/mod-grep.txt || true
+          # Which other mods' code uses the game APIs Vintage-E builds on (e.g. the handbook page hook Emc Craft adds its link through).
+          [ -n "$EXTRA_MODS" ] && python3 tools/ci_dll_grep.py data/Mods analysis/dll-grep.txt ICustomHandbookPageContent OnHandbookPageComposed OnHandbookRecipeRender || true
           ls -la analysis
 
       - name: Push results to the ci-analysis branch
