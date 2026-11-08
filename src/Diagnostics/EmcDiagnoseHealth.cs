@@ -61,7 +61,7 @@ namespace VintageE
                 catch (Exception e) { bad.Add(dir + ": " + e.Message); }
             }
             if (bad.Count == 0) { x.Ok(x.L("diag-write-ok")); return; }
-            x.Warn(x.L("diag-write-bad", bad.Count));
+            x.Problem(x.L("diag-write-bad", bad.Count));
             foreach (string b in bad) x.Note(Anonymise(b));
             x.Explain(x.L("diag-write-why"));
             x.Fix(x.L("diag-write-fix"));
@@ -361,7 +361,7 @@ namespace VintageE
             var list = VariantSpreadList(x);
             if (list.Count == 0) { x.Ok(x.L("diag-vspread-ok")); return; }
             var byAttr = list.GroupBy(l => l.attr).OrderByDescending(g => g.Count()).ToList();
-            x.Caution(x.L("diag-vspread-found", list.Count, string.Join(", ", byAttr.Take(6).Select(g => g.Key + " (" + g.Count() + ")"))));
+            x.Warn(x.L("diag-vspread-found", list.Count, string.Join(", ", byAttr.Take(6).Select(g => g.Key + " (" + g.Count() + ")"))));
             x.Explain(x.L("diag-vspread-why"));
             foreach (var g in byAttr.Take(full ? 20 : 4))
             {
@@ -403,7 +403,7 @@ namespace VintageE
         {
             int before = x.R.Lines.Count;
             RunHealthChecks(x, false);
-            return x.R.Lines.Skip(before).Count(l => l.Style == EmcLineStyle.Check && l.Text.StartsWith("⚠", StringComparison.Ordinal) && !l.Text.StartsWith(EmcDiagnose.CautionMark, StringComparison.Ordinal));
+            return x.R.Lines.Skip(before).Count(l => l.Style == EmcLineStyle.Check && (l.Text.StartsWith("⚠", StringComparison.Ordinal) || l.Text.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal)));
         }
 
         /// <summary>The full health report (/emc diagnose health).</summary>

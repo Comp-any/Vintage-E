@@ -191,8 +191,8 @@ namespace VintageE
                 {
                     var e = new Entry { Kind = Kind.Check, Index = i, Style = style, Indent = 0 };
                     if (t.StartsWith("✓", StringComparison.Ordinal)) { e.State = State.Ok; e.Title = t.Substring(1).Trim(); }
-                    else if (t.StartsWith(EmcDiagnose.CautionMark, StringComparison.Ordinal)) { e.State = State.Warn; e.Title = t.Substring(EmcDiagnose.CautionMark.Length).Trim(); }
-                    else if (t.StartsWith("⚠", StringComparison.Ordinal)) { e.State = State.Fail; e.Title = t.Substring(1).Trim(); }
+                    else if (t.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal)) { e.State = State.Fail; e.Title = t.Substring(EmcDiagnose.ProblemMark.Length).Trim(); }
+                    else if (t.StartsWith("⚠", StringComparison.Ordinal)) { e.State = State.Warn; e.Title = t.Substring(1).Trim(); }
                     else if (t.StartsWith("•", StringComparison.Ordinal)) { e.State = State.Info; e.Title = t.Substring(1).Trim(); }
                     else { e.State = State.Info; e.Title = t; }
                     e.Title = TakeActions(e.Title, e.Actions);
@@ -222,12 +222,7 @@ namespace VintageE
                 plain.Plain = EmcReport.Plain(capi.World, plain.Title);
                 entries.Add(plain);
             }
-            // A check whose details hold a warning is a warning, not a failure, when the check itself passed; a ⚠ with
-            // a fix is a problem; a ⚠ without one is something to look at.
-            foreach (Entry e in entries.Where(e => e.Kind == Kind.Check && e.State == State.Fail))
-            {
-                if (!e.HasFix && !e.Details.Any(d => d.Style == EmcLineStyle.Warn)) e.State = State.Warn;
-            }
+            // Levels: ✓ passed, • something to know, ⚠ may affect play, ✖ the mod isn't running properly or could crash.
             cachedFor = current;
             cached = entries;
             return entries;

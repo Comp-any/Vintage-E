@@ -117,7 +117,7 @@ namespace VintageE
             foreach (string err in mod.StartupErrors)
             {
                 problems++;
-                x.Warn(x.L("diag-startup-step", err));
+                x.Problem(x.L("diag-startup-step", err));
                 x.Explain(x.L("diag-startup-step-why"));
                 x.Fix(x.L("diag-startup-step-fix"));
             }
@@ -131,7 +131,7 @@ namespace VintageE
             if (mod.CommandConflict)
             {
                 problems++;
-                x.Warn(x.L("diag-startup-command"));
+                x.Problem(x.L("diag-startup-command"));
                 x.Explain(x.L("diag-startup-command-why"));
                 x.Fix(x.L("diag-startup-command-fix"));
             }
@@ -142,7 +142,7 @@ namespace VintageE
             if (log.Crashes.Count > 0)
             {
                 problems++;
-                x.Warn(x.L("diag-startup-crashes", log.Crashes.Count));
+                x.Problem(x.L("diag-startup-crashes", log.Crashes.Count));
                 x.Explain(x.L(x.Report == null || mod.MappingLateReason != null ? "diag-startup-crashes-why-hit" : "diag-startup-crashes-why"));
                 int show = full ? log.Crashes.Count : Math.Min(6, log.Crashes.Count);
                 for (int i = 0; i < show; i++) r.Add(log.Crashes[i], EmcLineStyle.Text, 1);

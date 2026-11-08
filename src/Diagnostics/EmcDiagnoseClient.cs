@@ -148,14 +148,14 @@ namespace VintageE
             string serverSetting = x.Mod.Config.Look;
             if (patched < ClientLookPatches.HookCount || patchError.Length > 0)
             {
-                x.Warn(x.L("diag-look-nohook", patched, patchError.Length == 0 ? "?" : patchError, ClientLookPatches.HookCount));
+                x.Problem(x.L("diag-look-nohook", patched, patchError.Length == 0 ? "?" : patchError, ClientLookPatches.HookCount));
                 x.Explain(x.L("diag-look-nohook-why"));
                 x.Fix(x.L("diag-look-nohook-fix"));
                 return;
             }
             if (calls == 0 && models + textures == 0)
             {
-                x.Warn(x.L("diag-look-nocalls", active));
+                x.Problem(x.L("diag-look-nocalls", active));
                 x.Explain(rawCalls == 0 ? x.L("diag-look-nocalls-why") : x.L("diag-look-skipped-why", rawCalls, skip));
                 x.Note(x.L("diag-look-early", early));
                 x.Fix(x.L("diag-look-nocalls-fix"));

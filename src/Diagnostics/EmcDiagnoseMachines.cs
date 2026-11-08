@@ -20,7 +20,7 @@ namespace VintageE
         static void MachinesShort(Ctx x)
         {
             bool furnace = FurnaceChutesWork();
-            if (!furnace) { x.Warn(x.L("diag-mach-furnace-nochute")); x.Fix(x.L("diag-mach-furnace-nochute-fix")); }
+            if (!furnace) { x.Problem(x.L("diag-mach-furnace-nochute")); x.Fix(x.L("diag-mach-furnace-nochute-fix")); }
             else x.Ok(x.L("diag-mach-chutes-ok"));
             x.R.Add(Link(ActionMachines, "", x.L("diag-mach-more")), EmcLineStyle.Text, 1);
         }
@@ -41,7 +41,7 @@ namespace VintageE
             x.Ok(x.L("diag-mach-condenser-ok"));
             x.Explain(x.L("diag-mach-condenser-why"));
             if (FurnaceChutesWork()) { x.Ok(x.L("diag-mach-furnace-ok")); x.Explain(x.L("diag-mach-furnace-why")); }
-            else { x.Warn(x.L("diag-mach-furnace-nochute")); x.Fix(x.L("diag-mach-furnace-nochute-fix")); }
+            else { x.Problem(x.L("diag-mach-furnace-nochute")); x.Fix(x.L("diag-mach-furnace-nochute-fix")); }
             x.Info(x.L("diag-mach-table-chutes"));
             x.Explain(x.L("diag-mach-hopper-note"));
             if (Math.Abs(cfg.MachineSpeedMultiplier - 1) > 1e-9) x.Info(x.L("diag-mach-speed", cfg.MachineSpeedMultiplier));
@@ -136,7 +136,7 @@ namespace VintageE
                     }
                 case BEMatterFurnace f:
                     x.Info(x.L("diag-mach-furnace", name, f.fuelSlot?.Itemstack?.GetName() ?? "-", f.inputSlot?.Itemstack?.GetName() ?? "-", f.outputSlot?.Itemstack?.GetName() ?? "-"));
-                    if (!f.ChuteInventory) x.Warn(x.L("diag-mach-furnace-nochute"));
+                    if (!f.ChuteInventory) x.Problem(x.L("diag-mach-furnace-nochute"));
                     break;
                 default:
                     x.Info(x.L("diag-mach-looked-other", name));

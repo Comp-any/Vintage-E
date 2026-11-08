@@ -2,6 +2,10 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.3 — 2026-11-09
+
+- **Doctor: clearer levels.** Passed is good; Info is something to know; Warning is something that may affect play (a missing value, an empty machine, the variants spread); Problem is part of the mod not running properly or a crash risk (the mapping or config failed, a failed patch or hook, a version mismatch between your game and the server, a missing Arcane Tablet recipe). Problems are marked ✖ in copied reports, warnings ⚠. Before, any warning with a suggested fix showed as a problem.
+
 ## 1.19.2 — 2026-11-09
 
 - **`/emc setemc <amount> [player]`** (admin): sets a player's personal EMC to an exact amount (yours if no name is given); 0 empties it. `/emc set` still pins the held item's value.

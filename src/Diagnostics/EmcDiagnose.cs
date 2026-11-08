@@ -39,13 +39,10 @@ namespace VintageE
             public double V(CollectibleObject c) => c != null && Report?.Values != null && Report.Values.TryGetValue(c, out double v) ? v : 0;
             /// <summary>A test that passed: one line, which the window shows collapsed with its details behind it.</summary>
             public void Ok(string text) => R.Add("✓ " + text, EmcLineStyle.Check);
-            /// <summary>A test that found something: one line; the window shows its details and fixes when clicked.</summary>
+            /// <summary>A warning: something that may affect play (a missing value, an empty machine). Shown as Warning.</summary>
             public void Warn(string text) => R.Add("⚠ " + text, EmcLineStyle.Check);
-            /// <summary>
-            /// Something to look at, never a failure even with a fix under it: the window shows it as a warning. Marked by
-            /// an invisible character after the ⚠ (<see cref="CautionMark"/>), so copied reports read the same.
-            /// </summary>
-            public void Caution(string text) => R.Add(CautionMark + " " + text, EmcLineStyle.Check);
+            /// <summary>A problem: part of the mod isn't running properly, or could crash (a failed patch, the mapping failed). Shown as Problem.</summary>
+            public void Problem(string text) => R.Add(ProblemMark + " " + text, EmcLineStyle.Check);
             /// <summary>A neutral finding (neither good nor bad) with details behind it.</summary>
             public void Info(string text) => R.Add("• " + text, EmcLineStyle.Check);
             public void Fix(string text) { if (!Compact) R.Add("→ " + text, EmcLineStyle.Text, 1); }
@@ -208,15 +205,15 @@ namespace VintageE
             if (heading) r.Section(x.L("diag-sec-state"));
             if (mod.ConfigLoadError != null)
             {
-                x.Warn(x.L("diag-config-broken", VintageEModSystem.ConfigFile, mod.ConfigLoadError));
+                x.Problem(x.L("diag-config-broken", VintageEModSystem.ConfigFile, mod.ConfigLoadError));
                 x.Fix(x.L("diag-config-broken-fix"));
             }
             if (x.Report == null)
             {
-                x.Warn(x.L("diag-notmapped"));
+                x.Problem(x.L("diag-notmapped"));
                 if (mod.LastMappingError != null)
                 {
-                    x.Warn(x.L("diag-mapfailed", mod.LastMappingErrorAt, mod.LastMappingError));
+                    x.Problem(x.L("diag-mapfailed", mod.LastMappingErrorAt, mod.LastMappingError));
                     x.Fix(x.L("diag-mapfailed-fix1"));
                     x.Fix(x.L("diag-mapfailed-fix2"));
                     x.Fix(x.L("diag-mapfailed-fix3", mod.Version));
@@ -257,7 +254,7 @@ namespace VintageE
             if (cfg.DisableBuiltInBaseValues)
             {
                 problems++;
-                x.Warn(x.L("diag-nobuiltin", report.BaseCount));
+                x.Problem(x.L("diag-nobuiltin", report.BaseCount));
                 x.Explain(x.L("diag-nobuiltin-why"));
                 x.Fix(x.L("diag-nobuiltin-fix"));
                 r.Add(FixLink(x, "setting", "DisableBuiltInBaseValues=false", x.L("diag-fix-setting", "DisableBuiltInBaseValues", "false")), EmcLineStyle.Text, 1);
@@ -390,8 +387,8 @@ namespace VintageE
         }
 
         /// <summary>The check-up's count of things worth fixing, for the start-up log and the join message (no report shown).</summary>
-        /// <summary>The start of a <see cref="Ctx.Caution"/> line: ⚠ and a zero-width space.</summary>
-        public const string CautionMark = "⚠\u200B";
+        /// <summary>The start of a <see cref="Ctx.Problem"/> line.</summary>
+        public const string ProblemMark = "✖";
 
         public static int CountProblems(VintageEModSystem mod, ICoreServerAPI sapi)
         {

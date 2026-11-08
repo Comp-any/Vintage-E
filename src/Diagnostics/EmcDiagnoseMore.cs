@@ -54,7 +54,7 @@ namespace VintageE
             if (string.IsNullOrEmpty(client.ClientVersion)) { x.Warn(x.L("diag-client-noversion")); }
             else if (client.ClientVersion != serverVersion)
             {
-                x.Warn(x.L("diag-client-versiondiff", client.ClientVersion, serverVersion));
+                x.Problem(x.L("diag-client-versiondiff", client.ClientVersion, serverVersion));
                 x.Explain(VersionImpact(x, client.ClientVersion, serverVersion));
                 x.Fix(x.L("diag-client-versiondiff-fix"));
             }
@@ -64,7 +64,7 @@ namespace VintageE
             long serverHash = x.Mod.Emc.Fingerprint();
             if (client.ClientTableCount == 0)
             {
-                x.Warn(x.L("diag-client-notable"));
+                x.Problem(x.L("diag-client-notable"));
                 x.Explain(x.L("diag-client-notable-why"));
                 x.Fix(x.L("diag-client-notable-fix"));
                 r.Add(FixLink(x, "resend", "", x.L("diag-fix-resend")));
@@ -79,7 +79,7 @@ namespace VintageE
 
             if (client.ClientPatched < ClientLookPatches.HookCount)
             {
-                x.Warn(x.L("diag-client-patches", client.ClientPatched));
+                x.Problem(x.L("diag-client-patches", client.ClientPatched));
                 x.Fix(x.L("diag-client-patches-fix"));
             }
             else x.Ok(x.L("diag-client-patches-ok"));
