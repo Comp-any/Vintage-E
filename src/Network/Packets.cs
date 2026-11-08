@@ -56,6 +56,28 @@ namespace VintageE
         Charge = 11
     }
 
+    public enum EmcCraftAction
+    {
+        None = 0,
+        /// <summary>The Arcane Tablet's crafting window opened.</summary>
+        Open = 1,
+        /// <summary>The window closed: the grid is emptied (tools made from EMC burned back).</summary>
+        Close = 2,
+        /// <summary>Emc Craft: fill the grid for a recipe from the player's EMC.</summary>
+        Fill = 3
+    }
+
+    /// <summary>Client → server: the Arcane Tablet's crafting window (1.19.0).</summary>
+    [ProtoContract]
+    public class EmcCraftPacket
+    {
+        [ProtoMember(1)] public EmcCraftAction Action;
+        /// <summary>The recipe's place in the game's grid recipe list (checked against the name and output).</summary>
+        [ProtoMember(2)] public int RecipeIndex = -1;
+        [ProtoMember(3)] public string RecipeName;
+        [ProtoMember(4)] public string OutputCode;
+    }
+
     /// <summary>Client → server request from the transmutation GUI.</summary>
     [ProtoContract]
     public class TransmuteRequestPacket

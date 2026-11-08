@@ -362,7 +362,7 @@ namespace VintageE
             mod.SendResult(player, Result(player, null));
         }
 
-        void Fail(IServerPlayer player, string code, params string[] args)
+        internal void Fail(IServerPlayer player, string code, params string[] args)
         {
             try { EmcDiagnose.RecordRefusal(player, code, args, player?.InventoryManager?.MouseItemSlot?.Itemstack); }
             catch { /* diagnostics never get in the way */ }

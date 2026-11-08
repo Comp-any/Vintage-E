@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.19.0 — 2026-11-09
+
+### Added
+- **Arcane Tablet**: a Transmutation Tablet upgraded with four red matter (it keeps the tablet's magnet and filter). It does everything the tablet does, plus a **crafting window**: sneak + right-click it, or press **Emc Craft window** in the tablet.
+- **Emc Craft in the handbook**: while you carry an Arcane Tablet, every crafting recipe in the handbook has an **Emc Craft** link. It opens the crafting window with the recipe's ingredients put in from your EMC, using the cheapest thing you've learned for each (any planks, any log...). Ingredients you haven't learned anything for are marked red in the recipe.
+- **Tools in Emc Craft**: a tool the recipe uses comes from your inventory when you carry one; otherwise one is made from EMC, and closing the window burns it back into EMC for what it's still worth. Anything else left in the grid when you close the window goes to your inventory, or at your feet if it's full.
+- The grid is the game's own crafting grid, so crafting works exactly as in your inventory (tool wear, things a recipe gives back, shift-click). It isn't saved: close the window before you quit, or what's in it is given back when you leave the game.
+
 ## 1.18.11 — 2026-11-08
 
 ### Changed

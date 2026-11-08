@@ -2406,6 +2406,71 @@
    }
   },
   {
+   "code": "vintagee:arcanetablet",
+   "label": "arcane tablet",
+   "kind": "item",
+   "shape": "vintagee:newlook/item/tablet",
+   "textures": {
+    "wood": "vintagee:newlook/block/matterblock-red",
+    "top": "vintagee:newlook/block/transmutation-circle",
+    "stone": "game:block/stone/polishedrock/slate"
+   },
+   "guiTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 150,
+     "y": 45,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 1.0
+   },
+   "tpHandTransform": {
+    "translation": {
+     "x": -0.8,
+     "y": -0.1,
+     "z": -0.7
+    },
+    "rotation": {
+     "x": 5,
+     "y": 82,
+     "z": 16
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.469,
+     "z": 0.5
+    },
+    "scale": 0.3
+   },
+   "groundTransform": {
+    "translation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "rotation": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    },
+    "origin": {
+     "x": 0.5,
+     "y": 0.0,
+     "z": 0.5
+    },
+    "scale": 1.2
+   }
+  },
+  {
    "code": "vintagee:kleinstar-ein",
    "label": "klein star ein",
    "kind": "item",

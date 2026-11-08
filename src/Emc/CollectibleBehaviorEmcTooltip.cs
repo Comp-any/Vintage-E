@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
+using Vintagestory.GameContent;
 
 namespace VintageE
 {
@@ -10,7 +15,7 @@ namespace VintageE
     /// Liquids are shown per litre (the game stores them as 100 small portions per litre, which made a litre of
     /// water look like 0.01), and containers show what their contents are worth.
     /// </summary>
-    public class CollectibleBehaviorEmcTooltip : CollectibleBehavior
+    public class CollectibleBehaviorEmcTooltip : CollectibleBehavior, ICustomHandbookPageContent
     {
         readonly VintageEModSystem mod;
 
@@ -85,6 +90,74 @@ namespace VintageE
                 };
                 dsc.AppendLine(Lang.Get(line));
             }
+        }
+    
+        // ------------------------------------------------------------ Arcane Tablet in the handbook (1.19.0)
+
+        /// <summary>
+        /// With an Arcane Tablet carried, an "Emc Craft" link under every crafting-grid recipe slideshow on this page: it
+        /// opens the tablet's crafting window filled for the recipe the slideshow is showing at that moment.
+        /// </summary>
+        public void OnHandbookPageComposed(List<RichTextComponentBase> components, ItemSlot inSlot, ICoreClientAPI capi, ItemStack[] allStacks, ActionConsumable<string> openDetailPageFor)
+        {
+            try
+            {
+                if (components == null || capi?.World?.Player == null || !EmcCraft.CarriesArcaneTablet(capi.World.Player)) return;
+                for (int i = components.Count - 1; i >= 0; i--)
+                {
+                    if (!(components[i] is SlideshowGridRecipeTextComponent show)) continue;
+                    var link = new LinkTextComponent(capi, Lang.Get("vintagee:emccraft-button"), CairoFont.WhiteSmallText(), _ =>
+                    {
+                        GridRecipe recipe = show.CurrentVisibleRecipe?.Recipe;
+                        if (recipe != null) mod.EmcCraftFill(recipe);
+                    });
+                    components.Insert(i + 1, link);
+                    components.Insert(i + 2, new RichTextComponent(capi, "\n", CairoFont.WhiteSmallText()));
+                }
+            }
+            catch (Exception e) { capi?.Logger.Warning("Vintage-E: adding Emc Craft to a handbook page: {0}", e.Message); }
+        }
+
+        static readonly ConditionalWeakTable<string[], Dictionary<CraftingRecipeIngredient, bool>> knownIngredients = new ConditionalWeakTable<string[], Dictionary<CraftingRecipeIngredient, bool>>();
+        static long tabletCheckedAt = -10000;
+        static bool tabletCarried;
+
+        /// <summary>
+        /// With an Arcane Tablet carried, a red square behind each ingredient of a crafting-grid recipe that nothing you've
+        /// learned can stand in for (for "any planks" and the like, any learned kind counts).
+        /// </summary>
+        public override void OnHandbookRecipeRender(ICoreClientAPI capi, IRecipeBase recipe, ItemSlot slot, double x, double y, double z, double size, ref EnumHandling handling)
+        {
+            try
+            {
+                if (!(recipe is GridRecipe grid) || grid.ResolvedIngredients == null || slot?.BackgroundIcon == null) return;
+                if (!int.TryParse(slot.BackgroundIcon, out int index) || index < 0 || index >= grid.ResolvedIngredients.Length) return;
+                CraftingRecipeIngredient ing = grid.ResolvedIngredients[index];
+                if (ing == null || ing.IsTool) return;
+                IPlayer player = capi.World.Player;
+                long now = capi.World.ElapsedMilliseconds;
+                if (now - tabletCheckedAt > 500) { tabletCarried = EmcCraft.CarriesArcaneTablet(player); tabletCheckedAt = now; }
+                if (!tabletCarried) return;
+
+                string[] known = PlayerEmc.GetKnown(player);
+                var cache = knownIngredients.GetValue(known, _ => new Dictionary<CraftingRecipeIngredient, bool>());
+                if (!cache.TryGetValue(ing, out bool learned))
+                {
+                    learned = false;
+                    foreach (string key in known)
+                    {
+                        ItemStack stack = PlayerEmc.ResolveStack(capi.World, key);
+                        if (stack == null) continue;
+                        stack.StackSize = Math.Max(1, ing.Quantity);
+                        if (ing.SatisfiesAsIngredient(stack, false)) { learned = true; break; }
+                    }
+                    cache[ing] = learned;
+                }
+                if (learned) return;
+                float half = (float)(size / 2);
+                capi.Render.RenderRectangle((float)x - half, (float)y - half, (float)z - 1, half * 2, half * 2, ColorUtil.ToRgba(110, 220, 30, 30));
+            }
+            catch { /* a handbook drawing never throws over this */ }
         }
     }
 }

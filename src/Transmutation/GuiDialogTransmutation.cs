@@ -126,12 +126,23 @@ namespace VintageE
 
             var children = new List<ElementBounds> { emcBounds, knownBounds, burnHintBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, chargeSlotBounds, chargeLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds, helpBounds };
 
+            // An Arcane Tablet adds a button for its crafting window (1.19.0).
+            bool arcane = IsTablet && EmcCraft.CarriesArcaneTablet(capi.World.Player);
+            ElementBounds craftBounds = null;
+            double extra = 0;
+            if (arcane)
+            {
+                craftBounds = ElementBounds.Fixed(0, pageRow + 38 + helpHeight + 6, 200, 28);
+                children.Add(craftBounds);
+                extra = 36;
+            }
+
             // The tablet's magnet: a title row with the filter mode, the magnet slot with its hint, then the filter slots.
             ElementBounds magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null;
             string magnetHint = Lang.Get("vintagee:magnet-hint", TabletMagnet.Radius);
             if (IsTablet)
             {
-                double y = pageRow + 38 + helpHeight + 10;
+                double y = pageRow + 38 + helpHeight + 10 + extra;
                 magnetTitleBounds = ElementBounds.Fixed(0, y + 4, width - 230, 24);
                 modeBounds = ElementBounds.Fixed(width - 220, y, 220, 28);
                 double hintWidth = width - slot - 12;
@@ -176,6 +187,7 @@ namespace VintageE
                     .AddDynamicText("", CairoFont.WhiteSmallText().WithOrientation(EnumTextOrientation.Center), pageBounds, "page")
                     .AddSmallButton(">", OnNextPage, nextBounds)
                     .AddStaticText(help, detail, helpBounds);
+            if (arcane) composer.AddSmallButton(Lang.Get("vintagee:emccraft-open"), () => { mod.OpenEmcCraftDialog(toggle: false); return true; }, craftBounds, EnumButtonStyle.Normal, "emccraft");
             if (IsTablet)
             {
                 composedExclude = TabletMagnet.Excludes(TabletMagnet.FindTablet(capi.World.Player)?.Itemstack);

@@ -873,6 +873,7 @@ def make_map(t, s):
         ov.append(item("gadget-" + code, s["rod"], {"metal": metal}, code))
     ov.append(item("gadget-eternalglue", s["gluebucket"], {}, "everlasting pitch glue"))
     ov.append(item("transmutationtablet", s["tablet"], {}, "transmutation tablet"))
+    ov.append(item("arcanetablet", s["tablet"], {"wood": "vintagee:newlook/block/matterblock-red"}, "arcane tablet"))
     stars = {"ein": ("quartz", COPPER), "zwei": ("citrine", BRASS), "drei": ("topaz", SILVER), "vier": ("emerald", SILVER),
              "sphere": ("sapphire", GOLD), "omega": ("amethyst", GOLD)}
     for tier, (gem, metal) in stars.items():

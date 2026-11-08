@@ -663,6 +663,7 @@ namespace VintageE
             CollectibleObject granite = C("game:rock-granite");
             string key = VintageEModSystem.ConfigKey(granite);
             mod.SetNoTransmute(new[] { key }, true);
+            CheckArcaneTablet();
             // 1.18.11: a Klein star is burned by hand (for the star plus what it holds), never by a hopper or the magnet.
             var kStarItem = sapi.World.GetItem(new AssetLocation("vintagee:kleinstar-ein")) as CollectibleObject;
             if (kStarItem != null)
@@ -779,6 +780,62 @@ namespace VintageE
         /// ProjectETextures / ProjectESounds: every ProjectE file the swap list names is there, and - when the server
         /// test turns the settings on - blocks, items and projectiles really use ProjectE's textures.
         /// </summary>
+        /// <summary>1.19.0: the Arcane Tablet, Emc Craft's plan, and the game's crafting grid under Vintage-E's ID.</summary>
+        void CheckArcaneTablet()
+        {
+            try
+            {
+                Item arcane = sapi.World.GetItem(new AssetLocation("vintagee:arcanetablet"));
+                Item tablet = sapi.World.GetItem(new AssetLocation("vintagee:transmutationtablet"));
+                Item red = sapi.World.GetItem(new AssetLocation("vintagee:matter-red"));
+                Check(arcane is ItemArcaneTablet && TabletMagnet.IsTablet(new ItemStack(arcane)), "the Arcane Tablet exists and counts as a tablet");
+                if (arcane == null || tablet == null || red == null) return;
+                double vArcane = mod.Emc.GetValue(arcane), vTablet = mod.Emc.GetValue(tablet), vRed = mod.Emc.GetValue(red);
+                Check(vArcane > 0 && Math.Abs(vArcane - (vTablet + 4 * vRed)) < 0.5, $"the Arcane Tablet is worth a tablet and four red matter ({vArcane} = {vTablet} + 4 × {vRed})");
+
+                GridRecipe recipe = sapi.World.GridRecipes.FirstOrDefault(r => r.Output?.Code?.ToString() == "vintagee:arcanetablet");
+                Check(recipe != null, "the Arcane Tablet has a crafting recipe");
+                if (recipe == null) return;
+                var craft = mod.EmcCrafting;
+                EmcCraft.Plan none = craft.MakePlan(recipe, new string[0], null);
+                Check(none.Missing.Count == 2, $"Emc Craft with nothing learned names both ingredients as missing ({string.Join(", ", none.Missing)})");
+                var known = new[] { PlayerEmc.KeyOf(red), PlayerEmc.KeyOf(tablet) };
+                EmcCraft.Plan plan = craft.MakePlan(recipe, known, null);
+                int filled = plan.Cells.Count(c => c != null);
+                Check(plan.Missing.Count == 0 && plan.NotMakeable.Count == 0 && filled == 5 && Math.Abs(plan.Cost - (vTablet + 4 * vRed)) < 0.5,
+                    $"Emc Craft plans the Arcane Tablet: 5 cells for {plan.Cost} EMC");
+
+                // The game's own crafting grid, under Vintage-E's ID, crafts it.
+                var grid = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest", sapi);
+                for (int i = 0; i < plan.Cells.Length; i++)
+                {
+                    if (plan.Cells[i] == null) continue;
+                    grid[i].Itemstack = plan.Cells[i].Clone();
+                    grid[i].MarkDirty();
+                }
+                ItemStack output = grid[EmcCraft.GridSize * EmcCraft.GridSize]?.Itemstack;
+                Check(output?.Collectible == arcane, $"the game's crafting grid under Vintage-E's ID shows the result ({output?.Collectible?.Code})");
+
+                // A recipe with a tool: the tool is made from EMC when none is carried, marked, and burned back on closing.
+                GridRecipe withTool = sapi.World.GridRecipes.FirstOrDefault(r => r.Enabled != false && r.ResolvedIngredients != null && r.Output?.Code?.Domain == "game"
+                    && r.ResolvedIngredients.Any(i => i != null && i.IsTool && i.ResolvedItemStack != null && mod.Emc.GetValue(i.ResolvedItemStack) > 0)
+                    && r.ResolvedIngredients.All(i => i == null || i.ResolvedItemStack != null && mod.Emc.GetValue(i.ResolvedItemStack) > 0));
+                if (withTool != null)
+                {
+                    var toolKeys = withTool.ResolvedIngredients.Where(i => i != null).Select(i => PlayerEmc.KeyOf(i.ResolvedItemStack.Collectible)).Distinct().ToArray();
+                    EmcCraft.Plan tp = craft.MakePlan(withTool, toolKeys, null);
+                    int toolCell = Array.FindIndex(tp.Cells, c => c != null && c.Attributes.GetBool(EmcCraft.MadeFromEmc));
+                    Check(tp.Missing.Count == 0 && toolCell >= 0, $"Emc Craft makes the tool for {withTool.Output.Code} from EMC and marks it ({tp.Cells[Math.Max(0, toolCell)]?.Collectible?.Code})");
+                    var g2 = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest2", sapi);
+                    if (toolCell >= 0) { g2[0].Itemstack = tp.Cells[toolCell].Clone(); g2[0].MarkDirty(); }
+                    double back = craft.Empty(null, g2, burnMadeTools: true);
+                    Check(toolCell >= 0 && back > 0 && g2[0].Empty, $"closing burns a tool made from EMC back into EMC ({back})");
+                }
+                else Check(true, "no base-game recipe with a valued tool to test Emc Craft's tools on (skipped)");
+            }
+            catch (Exception e) { Check(false, "Arcane Tablet checks threw: " + e.GetType().Name + ": " + e.Message + " " + e.StackTrace?.Split('\n').FirstOrDefault()?.Trim()); }
+        }
+
         /// <summary>1.9.0: handbook texts, nova ignition, pedestal weather, rings in the hand slot.</summary>
         void Check190()
         {

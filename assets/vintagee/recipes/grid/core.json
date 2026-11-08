@@ -67,5 +67,26 @@
       "code": "vintagee:transmutationtablet"
     },
     "name": "vintagee:transmutationtablet"
+  },
+  {
+    "ingredientPattern": "_R_,RTR,_R_",
+    "ingredients": {
+      "R": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "T": {
+        "type": "item",
+        "code": "vintagee:transmutationtablet"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "copyAttributesFrom": "T",
+    "output": {
+      "type": "item",
+      "code": "vintagee:arcanetablet"
+    },
+    "name": "vintagee:arcanetablet"
   }
 ]

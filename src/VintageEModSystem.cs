@@ -42,6 +42,9 @@ namespace VintageE
 
         public TransmutationService Transmutation { get; private set; }
 
+        /// <summary>The Arcane Tablet's crafting grids (both sides).</summary>
+        public EmcCraft EmcCrafting { get; private set; }
+
         /// <summary>Runs ring/stone/amulet effects (server only).</summary>
         public TrinketEffects Trinkets { get; private set; }
 
@@ -89,6 +92,7 @@ namespace VintageE
 
             api.RegisterItemClass("ItemPhilosophersStone", typeof(ItemPhilosophersStone));
             api.RegisterItemClass("ItemTransmutationTablet", typeof(ItemTransmutationTablet));
+            api.RegisterItemClass("ItemArcaneTablet", typeof(ItemArcaneTablet));
             api.RegisterBlockClass("BlockTransmutationTable", typeof(BlockTransmutationTable));
             api.RegisterBlockClass("BlockEmcMachine", typeof(BlockEmcMachine));
             api.RegisterBlockEntityClass("VintageEEnergyCollector", typeof(BEEnergyCollector));
@@ -131,7 +135,8 @@ namespace VintageE
                 .RegisterMessageType<EmcDumpRequestPacket>()
                 .RegisterMessageType<EmcCompatListPacket>()
                 .RegisterMessageType<EmcCompatSetPacket>()
-                .RegisterMessageType<EmcDiagnoseRequestPacket>();
+                .RegisterMessageType<EmcDiagnoseRequestPacket>()
+                .RegisterMessageType<EmcCraftPacket>();
         }
 
         #region Server
@@ -572,6 +577,7 @@ namespace VintageE
             Step("services", () =>
             {
                 Transmutation = new TransmutationService(this, sapi);
+                EmcCrafting = new EmcCraft(this, sapi);
                 Trinkets = new TrinketEffects(this, sapi);
             });
 
@@ -590,6 +596,7 @@ namespace VintageE
                 serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
                 serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
                 serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(OnDiagnoseRequest);
+                serverChannel.SetMessageHandler<EmcCraftPacket>((p, k) => EmcCrafting?.OnPacket(p, k));
             });
 
             // Every mod has registered its recipes by the time the game starts running, so map then. If another mod
@@ -612,6 +619,7 @@ namespace VintageE
             });
             Step("player hooks", () =>
             {
+                sapi.Event.PlayerDisconnect += player => EmcCrafting?.OnPlayerLeft(player);
                 sapi.Event.PlayerNowPlaying += player =>
                 {
                     EnsureMapped("the first player joining");
@@ -2232,6 +2240,39 @@ namespace VintageE
         }
 
         public void SendTransmuteRequest(TransmuteRequestPacket packet) => clientChannel?.SendPacket(packet);
+
+        public void SendEmcCraft(EmcCraftPacket packet) => clientChannel?.SendPacket(packet);
+
+        GuiDialogEmcCraft emcCraftDialog;
+
+        /// <summary>Opens the Arcane Tablet's crafting window (toggles it when it's open already).</summary>
+        public void OpenEmcCraftDialog(bool toggle = true)
+        {
+            if (Capi == null) return;
+            if (!EmcCraft.CarriesArcaneTablet(Capi.World.Player))
+            {
+                Capi.TriggerIngameError(this, "emccraft-notablet", Lang.Get("vintagee:error-emccraft-notablet"));
+                return;
+            }
+            EmcCrafting ??= new EmcCraft(this, Capi);
+            if (emcCraftDialog != null && emcCraftDialog.IsOpened())
+            {
+                if (toggle) emcCraftDialog.TryClose();
+                return;
+            }
+            emcCraftDialog?.Dispose();
+            emcCraftDialog = new GuiDialogEmcCraft(Capi, this);
+            emcCraftDialog.TryOpen();
+        }
+
+        /// <summary>Emc Craft from the handbook: open the window (if needed) and ask the server to fill it for this recipe.</summary>
+        public void EmcCraftFill(GridRecipe recipe)
+        {
+            if (Capi == null || recipe == null) return;
+            OpenEmcCraftDialog(toggle: false);
+            if (emcCraftDialog?.IsOpened() != true) return;
+            SendEmcCraft(EmcCraft.FillRequest(Capi.World, recipe));
+        }
 
         /// <summary>
         /// Tooltip lines saying when this server scales the numbers a tooltip quotes: trinket and gadget costs
