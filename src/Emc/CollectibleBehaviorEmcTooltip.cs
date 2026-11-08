@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Vintagestory.API.Client;
@@ -106,7 +107,9 @@ namespace VintageE
                 for (int i = components.Count - 1; i >= 0; i--)
                 {
                     if (!(components[i] is SlideshowGridRecipeTextComponent show)) continue;
-                    var link = new LinkTextComponent(capi, Lang.Get("vintagee:emccraft-button"), CairoFont.WhiteSmallText(), _ =>
+                    GridRecipe first = show.GridRecipesAndUnnamedIngredients?.FirstOrDefault()?.Recipe;
+                    string label = first == null ? Lang.Get("vintagee:emccraft-button") : mod.ClientEmcCraft?.ButtonLabel(capi.World.Player, first) ?? Lang.Get("vintagee:emccraft-button");
+                    var link = new LinkTextComponent(capi, label, CairoFont.WhiteSmallText(), _ =>
                     {
                         GridRecipe recipe = show.CurrentVisibleRecipe?.Recipe;
                         if (recipe != null) mod.EmcCraftFill(recipe);

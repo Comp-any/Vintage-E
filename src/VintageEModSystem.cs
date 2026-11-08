@@ -2243,6 +2243,9 @@ namespace VintageE
 
         public void SendEmcCraft(EmcCraftPacket packet) => clientChannel?.SendPacket(packet);
 
+        /// <summary>The Emc Craft helper on the player's side (made on first use).</summary>
+        public EmcCraft ClientEmcCraft => Capi == null ? null : (EmcCrafting ??= new EmcCraft(this, Capi));
+
         GuiDialogEmcCraft emcCraftDialog;
 
         /// <summary>Opens the Arcane Tablet's crafting window (toggles it when it's open already).</summary>
@@ -2254,7 +2257,7 @@ namespace VintageE
                 Capi.TriggerIngameError(this, "emccraft-notablet", Lang.Get("vintagee:error-emccraft-notablet"));
                 return;
             }
-            EmcCrafting ??= new EmcCraft(this, Capi);
+            _ = ClientEmcCraft;
             if (emcCraftDialog != null && emcCraftDialog.IsOpened())
             {
                 if (toggle) emcCraftDialog.TryClose();

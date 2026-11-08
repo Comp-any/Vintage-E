@@ -6,6 +6,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.Common;
+using Vintagestory.GameContent;
 
 namespace VintageE
 {
@@ -61,7 +62,14 @@ namespace VintageE
             public ItemStack[] Cells = new ItemStack[GridSize * GridSize];
             /// <summary>Cells filled with a tool from the player's inventory: the slot it comes out of.</summary>
             public ItemSlot[] FromInventory = new ItemSlot[GridSize * GridSize];
+            /// <summary>EMC taken when the grid is filled (tools made from EMC at full price).</summary>
             public double Cost;
+            /// <summary>
+            /// What one craft really costs in EMC: the ingredients it uses up, plus the wear on each tool (its value × the
+            /// durability one craft takes ÷ its full durability), since a tool made from EMC is burned back on closing for
+            /// what it's still worth, and wear on your own tool is a loss too.
+            /// </summary>
+            public double NetCost;
             /// <summary>Ingredients nothing known can stand in for (their names).</summary>
             public List<string> Missing = new List<string>();
             /// <summary>Ingredients that are known but can't be made from EMC (no value, no-transmute).</summary>
@@ -73,7 +81,8 @@ namespace VintageE
         /// satisfies it (any planks, any log...), in the recipe's layout. A tool ingredient is taken from
         /// <paramref name="carried"/> when one there fits, and made from EMC otherwise.
         /// </summary>
-        public Plan MakePlan(GridRecipe recipe, ICollection<string> known, IEnumerable<ItemSlot> carried)
+        /// <param name="toolsByWear">Pick each tool made from EMC by what one craft wears off it (true), or by what it costs to make (false).</param>
+        public Plan MakePlan(GridRecipe recipe, ICollection<string> known, IEnumerable<ItemSlot> carried, bool toolsByWear = true)
         {
             var plan = new Plan();
             if (recipe?.ResolvedIngredients == null) { plan.Missing.Add("?"); return plan; }
@@ -99,6 +108,7 @@ namespace VintageE
                             plan.FromInventory[cell] = own;
                             plan.Cells[cell] = own.Itemstack.GetEmptyClone();
                             plan.Cells[cell].StackSize = 1;
+                            plan.NetCost += WearCost(own.Itemstack, ing);
                             continue;
                         }
                     }
@@ -106,7 +116,7 @@ namespace VintageE
                     if (!cache.TryGetValue(ing, out ItemStack pick))
                     {
                         knownStacks ??= KnownStacks(known);
-                        pick = Cheapest(ing, knownStacks, out bool anyKnown);
+                        pick = Cheapest(ing, knownStacks, out bool anyKnown, ing.IsTool && toolsByWear);
                         cache[ing] = pick;
                         if (pick == null)
                         {
@@ -123,13 +133,18 @@ namespace VintageE
                     if (ing.IsTool) stack.Attributes.SetBool(MadeFromEmc, true);
                     plan.Cells[cell] = stack;
                     plan.Cost += mod.Emc.GetValue(pick) * stack.StackSize;
+                    plan.NetCost += ing.IsTool ? WearCost(pick, ing) : mod.Emc.GetValue(pick) * stack.StackSize;
                 }
             }
             return plan;
         }
 
-        /// <summary>Every learned key as a stack that could be made (exact versions included), once.</summary>
-        List<ItemStack> KnownStacks(ICollection<string> known)
+        readonly System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, List<ItemStack>> knownStacksCache = new System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, List<ItemStack>>();
+
+        /// <summary>Every learned key as a stack that could be made (exact versions included), once per knowledge list.</summary>
+        List<ItemStack> KnownStacks(ICollection<string> known) => knownStacksCache.GetValue(known, BuildKnownStacks);
+
+        List<ItemStack> BuildKnownStacks(ICollection<string> known)
         {
             var list = new List<ItemStack>();
             foreach (string key in known)
@@ -140,11 +155,28 @@ namespace VintageE
             return list;
         }
 
-        ItemStack Cheapest(CraftingRecipeIngredient ing, List<ItemStack> knownStacks, out bool anyKnown)
+        /// <summary>
+        /// The EMC one craft wears off a tool: its value × the durability the recipe takes ÷ its full durability (all of
+        /// it if that breaks it). Nothing when the server doesn't scale values by wear (a worn tool burns for its full value).
+        /// </summary>
+        public double WearCost(ItemStack tool, CraftingRecipeIngredient ing)
+        {
+            if (tool?.Collectible == null) return 0;
+            double value = mod.Emc.GetValue(tool);
+            int max = tool.Collectible.GetMaxDurability(tool);
+            if (max <= 0) return 0; // no durability: the recipe doesn't use it up
+            int remaining = tool.Collectible.GetRemainingDurability(tool);
+            int cost = Math.Max(1, ing.ToolDurabilityCost);
+            if (cost >= remaining) return value; // this craft breaks it
+            if (!mod.Emc.DurabilityScales) return 0;
+            return value * cost / remaining;
+        }
+
+        ItemStack Cheapest(CraftingRecipeIngredient ing, List<ItemStack> knownStacks, out bool anyKnown, bool byWear = false)
         {
             anyKnown = false;
             ItemStack best = null;
-            double bestValue = double.MaxValue;
+            double bestValue = double.MaxValue, bestPrice = double.MaxValue;
             foreach (ItemStack s in knownStacks)
             {
                 ItemStack probe = s.Clone();
@@ -152,10 +184,14 @@ namespace VintageE
                 if (!ing.SatisfiesAsIngredient(probe, false)) continue;
                 anyKnown = true;
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
-                double v = mod.Emc.GetValue(s);
-                if (v <= 0 || v >= bestValue) continue;
+                double price = mod.Emc.GetValue(s);
+                if (price <= 0) continue;
+                double v = byWear ? WearCost(s, ing) : price;
+                // Equal wear: the cheaper one to make, so less EMC is tied up while the window is open.
+                if (v > bestValue || (v == bestValue && price >= bestPrice)) continue;
                 best = s;
                 bestValue = v;
+                bestPrice = price;
             }
             return best;
         }
@@ -229,14 +265,20 @@ namespace VintageE
         void Fill(IServerPlayer player, EmcCraftPacket packet)
         {
             if (!CarriesArcaneTablet(player)) { mod.Transmutation.Fail(player, "emccraft-notablet"); return; }
-            GridRecipe recipe = FindRecipe(packet);
-            if (recipe == null) { mod.Transmutation.Fail(player, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
+            GridRecipe clicked = FindRecipe(packet);
+            if (clicked == null) { mod.Transmutation.Fail(player, "emccraft-norecipe", packet.RecipeName ?? "?"); return; }
 
-            Plan plan = MakePlan(recipe, PlayerEmc.GetKnown(player), EmcWallet.CarriedSlots(player));
-            if (plan.Missing.Count > 0) { mod.Transmutation.Fail(player, "emccraft-missing", string.Join(", ", plan.Missing)); return; }
-            if (plan.NotMakeable.Count > 0) { mod.Transmutation.Fail(player, "emccraft-notmakeable", string.Join(", ", plan.NotMakeable)); return; }
             double emc = PlayerEmc.GetEmc(player);
-            if (plan.Cost > emc + 1e-9) { mod.Transmutation.Fail(player, "notenoughemc", EmcFormat.Format(plan.Cost), EmcFormat.Format(emc)); return; }
+            string[] known = PlayerEmc.GetKnown(player);
+            List<ItemSlot> carried = EmcWallet.CarriedSlots(player).ToList();
+            (GridRecipe recipe, Plan plan, Plan clickedPlan, Plan cheapestUnaffordable) = Choose(player, clicked, known, carried, emc);
+            if (plan == null)
+            {
+                if (cheapestUnaffordable != null) { mod.Transmutation.Fail(player, "notenoughemc", EmcFormat.Format(cheapestUnaffordable.Cost), EmcFormat.Format(emc)); return; }
+                if (clickedPlan.Missing.Count > 0) { mod.Transmutation.Fail(player, "emccraft-missing", string.Join(", ", clickedPlan.Missing)); return; }
+                mod.Transmutation.Fail(player, "emccraft-notmakeable", string.Join(", ", clickedPlan.NotMakeable));
+                return;
+            }
 
             InventoryCraftingGrid grid = GridOf(player);
             if (!player.InventoryManager.HasInventory(grid)) player.InventoryManager.OpenInventory(grid);
@@ -262,6 +304,56 @@ namespace VintageE
             mod.SendResult(player, new TransmuteResultPacket { Emc = PlayerEmc.GetEmc(player), HasEmc = true });
         }
 
+        /// <summary>
+        /// Every recipe that makes the same thing as <paramref name="clicked"/> (and that this player may use), planned;
+        /// the one with the lowest real cost per item made (<see cref="Plan.NetCost"/>) among those the player can pay for
+        /// up front. Tools are first picked by wear; if that makes a recipe too dear up front, by price to make.
+        /// Returns the pick (or null), the clicked recipe's own plan (for its error), and the cheapest plan that was out of reach.
+        /// </summary>
+        public (GridRecipe recipe, Plan plan, Plan clickedPlan, Plan cheapestUnaffordable) Choose(IPlayer player, GridRecipe clicked, ICollection<string> known, List<ItemSlot> carried, double emc)
+        {
+            ItemStack target = clicked.Output?.ResolvedItemStack;
+            var candidates = new List<GridRecipe> { clicked };
+            if (target != null)
+            {
+                CharacterSystem chars = api.ModLoader.GetModSystem<CharacterSystem>();
+                foreach (GridRecipe r in api.World.GridRecipes)
+                {
+                    if (r == clicked || r.Enabled == false || r.ResolvedIngredients == null) continue;
+                    ItemStack o = r.Output?.ResolvedItemStack;
+                    if (o?.Collectible != target.Collectible || !o.Equals(api.World, target, GlobalConstants.IgnoredStackAttributes)) continue;
+                    if (r.RequiresTrait != null && player != null && chars != null && !chars.HasTrait(player, r.RequiresTrait)) continue;
+                    candidates.Add(r);
+                }
+            }
+
+            GridRecipe bestRecipe = null;
+            Plan best = null, clickedPlan = null, out_ = null;
+            double bestPer = double.MaxValue, outPer = double.MaxValue;
+            foreach (GridRecipe r in candidates)
+            {
+                Plan p = MakePlan(r, known, carried, toolsByWear: true);
+                if (r == clicked) clickedPlan = p;
+                if (p.Missing.Count > 0 || p.NotMakeable.Count > 0) continue;
+                if (p.Cost > emc + 1e-9)
+                {
+                    Plan p2 = MakePlan(r, known, carried, toolsByWear: false);
+                    if (p2.Cost <= emc + 1e-9) p = p2;
+                }
+                double per = p.NetCost / Math.Max(1, r.Output?.Quantity ?? 1);
+                if (p.Cost > emc + 1e-9)
+                {
+                    if (per < outPer) { outPer = per; out_ = p; }
+                    continue;
+                }
+                if (per < bestPer - 1e-9 || (Math.Abs(per - bestPer) <= 1e-9 && r == clicked))
+                {
+                    bestPer = per; best = p; bestRecipe = r;
+                }
+            }
+            return (bestRecipe, best, clickedPlan, best == null ? out_ : null);
+        }
+
         /// <summary>The recipe the client asked for: by its place in the list when that still matches, else by name and output.</summary>
         GridRecipe FindRecipe(EmcCraftPacket packet)
         {
@@ -280,6 +372,25 @@ namespace VintageE
         }
 
         // ---------------------------------------------------------------- client
+
+        /// <summary>
+        /// The Emc Craft link's label for a handbook recipe slideshow: what one craft would cost right now, after the
+        /// tool refund (the same choice the server makes), or why it can't be made.
+        /// </summary>
+        public string ButtonLabel(IPlayer player, GridRecipe recipe)
+        {
+            string name = Lang.Get("vintagee:emccraft-button");
+            try
+            {
+                double emc = PlayerEmc.GetEmc(player);
+                var (_, plan, clickedPlan, tooDear) = Choose(player, recipe, PlayerEmc.GetKnown(player), EmcWallet.CarriedSlots(player).ToList(), emc);
+                if (plan != null) return Lang.Get("vintagee:emccraft-button-cost", name, EmcFormat.Format(plan.NetCost));
+                if (tooDear != null) return Lang.Get("vintagee:emccraft-button-dear", name, EmcFormat.Format(tooDear.NetCost), EmcFormat.Format(tooDear.Cost));
+                if (clickedPlan?.Missing.Count > 0) return Lang.Get("vintagee:emccraft-button-missing", name, clickedPlan.Missing.Count);
+                return Lang.Get("vintagee:emccraft-button-cant", name);
+            }
+            catch { return name; }
+        }
 
         /// <summary>What the client sends for a recipe shown in the handbook.</summary>
         public static EmcCraftPacket FillRequest(IWorldAccessor world, GridRecipe recipe)

@@ -832,6 +832,17 @@ namespace VintageE
                     EmcCraft.Plan tp = craft.MakePlan(withTool, toolKeys, null);
                     int toolCell = Array.FindIndex(tp.Cells, c => c != null && c.Attributes.GetBool(EmcCraft.MadeFromEmc));
                     Check(tp.Missing.Count == 0 && toolCell >= 0, $"Emc Craft makes the tool for {withTool.Output.Code} from EMC and marks it ({tp.Cells[Math.Max(0, toolCell)]?.Collectible?.Code})");
+                    if (toolCell >= 0)
+                    {
+                        ItemStack tool = tp.Cells[toolCell];
+                        int maxDur = tool.Collectible.GetMaxDurability(tool);
+                        double wear = craft.WearCost(tool, withTool.ResolvedIngredients.First(i => i != null && i.IsTool));
+                        Check(maxDur > 1 && Math.Abs(wear - mod.Emc.GetValue(tool) / maxDur) < 0.01 && tp.NetCost < tp.Cost,
+                            $"Emc Craft counts only the tool's wear as the real cost ({wear:0.##} of {mod.Emc.GetValue(tool)}; {tp.NetCost:0.##} real vs {tp.Cost:0.##} up front)");
+                        var (pick, pickPlan, _, _) = craft.Choose(null, withTool, toolKeys, new List<ItemSlot>(), double.MaxValue);
+                        Check(pick != null && pickPlan != null && pickPlan.NetCost <= tp.NetCost + 1e-6,
+                            $"Emc Craft picks the cheapest recipe for {withTool.Output.Code} ({pickPlan?.NetCost:0.##} EMC, {pick?.Name})");
+                    }
                     var g2 = new Vintagestory.Common.InventoryCraftingGrid(EmcCraft.InventoryClass, "selftest2", sapi);
                     if (toolCell >= 0) g2[0].Itemstack = tp.Cells[toolCell].Clone(); // no MarkDirty: matching would ask for the (absent) player
                     double back = craft.Empty(null, g2, burnMadeTools: true);
