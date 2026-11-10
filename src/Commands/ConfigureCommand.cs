@@ -41,6 +41,8 @@ namespace VintageE
         public static TextCommandResult Handle(VintageEModSystem mod, TextCommandCallingArgs args)
         {
             string lang = args.LanguageCode;
+            // A player's change remaps in the background; the console's remaps at once, as before.
+            IServerPlayer caller = args.Caller?.Player as IServerPlayer;
             string name = args[0] as string;
             string rest = (args[1] as string)?.Trim() ?? "";
             if (string.IsNullOrEmpty(name))
@@ -57,11 +59,11 @@ namespace VintageE
             if (name.Equals("resetall", StringComparison.OrdinalIgnoreCase))
             {
                 // Typed on purpose, so no second step; the window asks first.
-                return TextCommandResult.Success(Reset(mod, "*", lang));
+                return TextCommandResult.Success(Reset(mod, "*", lang, caller));
             }
             if (name.Equals("reload", StringComparison.OrdinalIgnoreCase))
             {
-                string error = mod.ReloadConfig();
+                string error = mod.ReloadConfig(caller);
                 return error == null ? TextCommandResult.Success(Lang.GetL(lang, "vintagee:cfg-reloaded")) : TextCommandResult.Error(error);
             }
 
@@ -71,7 +73,7 @@ namespace VintageE
             if (rest.Length == 0) return TextCommandResult.Success(Describe(field, value, lang));
             if (rest.Equals("default", StringComparison.OrdinalIgnoreCase) || rest.Equals("reset", StringComparison.OrdinalIgnoreCase))
             {
-                return TextCommandResult.Success(Reset(mod, field.Name, lang));
+                return TextCommandResult.Success(Reset(mod, field.Name, lang, caller));
             }
 
             string result;
@@ -85,7 +87,7 @@ namespace VintageE
             }
             mod.Config.Normalize();
             mod.SaveConfig();
-            string applied = Apply(mod, field.Name, lang);
+            string applied = Apply(mod, field.Name, lang, caller);
             return TextCommandResult.Success(result + " " + applied + "\n" + Lang.GetL(lang, "vintagee:cfg-now", field.Name, Show(field.GetValue(mod.Config))));
         }
 
@@ -93,7 +95,8 @@ namespace VintageE
         /// Puts one setting back to its default, or every setting when <paramref name="name"/> is "*". Saves, applies
         /// (resetting everything remaps the values) and returns what happened.
         /// </summary>
-        public static string Reset(VintageEModSystem mod, string name, string lang)
+        /// <param name="forPlayer">The player who asked, if one did: a remap then runs in the background (see <see cref="VintageEModSystem.RemapFor"/>).</param>
+        public static string Reset(VintageEModSystem mod, string name, string lang, IServerPlayer forPlayer = null)
         {
             var defaults = new VintageEConfig();
             defaults.Normalize();
@@ -103,7 +106,9 @@ namespace VintageE
                 mod.Config.Normalize();
                 mod.SaveConfig();
                 mod.Trinkets?.ResetHostile();
-                mod.RecalculateEmc("/emc configure: every setting reset"); // also applies the table, sounds and no-transmute settings
+                // What the mapping doesn't decide takes effect at once; the values follow when it is done.
+                mod.RefreshMirroredSettings();
+                mod.RemapFor(forPlayer, "/emc configure: every setting reset"); // also applies the table, sounds and no-transmute settings
                 try { mod.Sapi?.World?.Config?.SetString(VintageEModSystem.WorldLookKey, ProjectELook.NormalizeLook(mod.Config.Look)); } catch { }
                 return Lang.GetL(lang, "vintagee:cfg-resetall-done");
             }
@@ -111,7 +116,7 @@ namespace VintageE
             field.SetValue(mod.Config, field.GetValue(defaults));
             mod.Config.Normalize();
             mod.SaveConfig();
-            return Lang.GetL(lang, "vintagee:cfg-reset-done", field.Name, Show(field.GetValue(mod.Config))) + " " + Apply(mod, field.Name, lang);
+            return Lang.GetL(lang, "vintagee:cfg-reset-done", field.Name, Show(field.GetValue(mod.Config))) + " " + Apply(mod, field.Name, lang, forPlayer);
         }
 
         /// <summary>Every setting's default as editable text (for the window).</summary>
@@ -196,7 +201,7 @@ namespace VintageE
         /// Replaces a setting with the window's text (the whole list/table at once), checking every line first. Saves,
         /// applies, and returns what happened; throws FormatException with a readable message if something is wrong.
         /// </summary>
-        public static string SetFromText(VintageEModSystem mod, string name, string text, string lang)
+        public static string SetFromText(VintageEModSystem mod, string name, string text, string lang, IServerPlayer forPlayer = null)
         {
             FieldInfo field = Field(name) ?? throw new FormatException(Lang.GetL(lang, "vintagee:cfg-unknown", name));
             object value = field.GetValue(mod.Config);
@@ -228,7 +233,7 @@ namespace VintageE
             }
             mod.Config.Normalize();
             mod.SaveConfig();
-            string applied = Apply(mod, field.Name, lang);
+            string applied = Apply(mod, field.Name, lang, forPlayer);
             return Lang.GetL(lang, "vintagee:cfg-saved", field.Name) + " " + applied;
         }
 
@@ -363,12 +368,13 @@ namespace VintageE
         }
 
         /// <summary>Makes the change take effect and says how.</summary>
-        static string Apply(VintageEModSystem mod, string setting, string lang)
+        static string Apply(VintageEModSystem mod, string setting, string lang, IServerPlayer forPlayer = null)
         {
             if (Remaps.Contains(setting))
             {
-                mod.RecalculateEmc("/emc configure " + setting);
-                return Lang.GetL(lang, "vintagee:cfg-remapped");
+                mod.RemapFor(forPlayer, "/emc configure " + setting);
+                // For a player the values are worked out in the background and arrive a moment later.
+                return Lang.GetL(lang, forPlayer == null ? "vintagee:cfg-remapped" : "vintagee:cfg-remapping");
             }
             switch (setting)
             {

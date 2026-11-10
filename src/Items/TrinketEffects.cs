@@ -377,7 +377,7 @@ namespace VintageE
         }
 
         /// <summary><see cref="EffectsOf"/> into a buffer of four; returns how many.</summary>
-        static int EffectsInto(ItemEmcTrinket t, ItemStack stack, string[] into)
+        internal static int EffectsInto(ItemEmcTrinket t, ItemStack stack, string[] into)
         {
             string kind = t.Kind;
             if (kind == "ringofarcana")
@@ -671,6 +671,7 @@ namespace VintageE
             IBlockAccessor ba = sapi.World.BlockAccessor;
             int grown = 0;
             // One position moved from spot to spot (a new one used to be made for every try and every scanned block).
+            ReadyBlockTables();
             BlockPos pos = center.Copy();
             for (int i = 0; i < attempts; i++)
             {
@@ -688,24 +689,27 @@ namespace VintageE
 
         // What the scans ask of a block, remembered per block id (blocks don't change while a world runs): the
         // next crop stage, whether a crop is ripe, whether a fluid is still water. 0 = not asked yet.
-        Block[] nextStageById;
-        byte[] nextStageKnown, ripeById, stillWaterById;
+        Block[] nextStageById = Array.Empty<Block>();
+        byte[] nextStageKnown = Array.Empty<byte>(), ripeById = Array.Empty<byte>(), stillWaterById = Array.Empty<byte>();
         Block iceBlock, snowBlock;
 
-        byte[] PerBlock(ref byte[] cache)
+        /// <summary>Sizes the per-block tables to the world's block list (once; again only if the list grew).</summary>
+        void ReadyBlockTables()
         {
             int count = sapi.World.Blocks.Count;
-            if (cache == null || cache.Length < count) cache = new byte[count];
-            return cache;
+            if (ripeById.Length >= count) return;
+            nextStageById = new Block[count];
+            nextStageKnown = new byte[count];
+            ripeById = new byte[count];
+            stillWaterById = new byte[count];
         }
 
         Block NextCropStageCached(Block block)
         {
             if (block == null) return null;
             int id = block.Id;
-            byte[] known = PerBlock(ref nextStageKnown);
-            if (nextStageById == null || nextStageById.Length < known.Length) nextStageById = new Block[known.Length];
-            if (id < 0 || id >= known.Length) return NextCropStage(block);
+            byte[] known = nextStageKnown;
+            if ((uint)id >= (uint)known.Length) return NextCropStage(block);
             if (known[id] == 0)
             {
                 nextStageById[id] = NextCropStage(block);
@@ -718,8 +722,8 @@ namespace VintageE
         {
             if (block == null) return false;
             int id = block.Id;
-            byte[] cache = PerBlock(ref ripeById);
-            if (id < 0 || id >= cache.Length) return IsRipeCrop(block);
+            byte[] cache = ripeById;
+            if ((uint)id >= (uint)cache.Length) return IsRipeCrop(block);
             if (cache[id] == 0) cache[id] = IsRipeCrop(block) ? (byte)1 : (byte)2;
             return cache[id] == 1;
         }
@@ -728,8 +732,8 @@ namespace VintageE
         {
             if (fluid == null) return false;
             int id = fluid.Id;
-            byte[] cache = PerBlock(ref stillWaterById);
-            if (id < 0 || id >= cache.Length) return IsStillWater(fluid);
+            byte[] cache = stillWaterById;
+            if ((uint)id >= (uint)cache.Length) return IsStillWater(fluid);
             if (cache[id] == 0) cache[id] = IsStillWater(fluid) ? (byte)1 : (byte)2;
             return cache[id] == 1;
         }
@@ -759,6 +763,7 @@ namespace VintageE
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
             int harvested = 0;
+            ReadyBlockTables();
             BlockPos scan = center.Copy();
             for (int dx = -radius; dx <= radius; dx++)
             {
@@ -843,6 +848,7 @@ namespace VintageE
             Block ice = iceBlock ??= sapi.World.GetBlock(new AssetLocation("game:lakeice"));
             if (ice == null || ice.Id == 0) return 0;
             int frozen = 0;
+            ReadyBlockTables();
             BlockPos scan = center.Copy();
             for (int dx = -radius; dx <= radius; dx++)
             {

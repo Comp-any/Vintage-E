@@ -30,6 +30,23 @@ namespace VintageE
         [ProtoMember(16)] public double WatchSlowDown = 3;
     }
 
+    /// <summary>
+    /// Server → one client: that player's own EMC and knowledge. Everything on joining (<see cref="HasEmc"/> and
+    /// <see cref="HasKnown"/>), then only what changed: the balance, single keys learned or forgotten, or the whole
+    /// list again after a big change.
+    /// </summary>
+    [ProtoContract]
+    public class PlayerEmcPacket
+    {
+        [ProtoMember(1)] public double Emc;
+        [ProtoMember(2)] public bool HasEmc;
+        /// <summary>The whole knowledge list (only when <see cref="HasKnown"/>).</summary>
+        [ProtoMember(3)] public string[] Known;
+        [ProtoMember(4)] public bool HasKnown;
+        [ProtoMember(5)] public string[] Learned;
+        [ProtoMember(6)] public string[] Forgotten;
+    }
+
     public enum TransmuteAction
     {
         None = 0,

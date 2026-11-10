@@ -56,7 +56,7 @@ namespace VintageE
                 .BeginSubCommand("recalc")
                     .WithDescription("Recalculate all EMC values from recipes")
                     .RequiresPrivilege(Privilege.controlserver)
-                    .HandleWith(Safe(args => Recalc(mod)))
+                    .HandleWith(Safe(args => Recalc(mod, args)))
                 .EndSubCommand()
                 .BeginSubCommand("dump")
                     .WithDescription("Write all EMC values to a CSV file; with 'hand' (or a block/item code) open a window explaining everything that makes up its value")
@@ -305,16 +305,36 @@ namespace VintageE
                 return TextCommandResult.Error(Lang.Get("vintagee:cmd-nopin", key));
             }
             mod.SetFixedValue(held.Collectible, value);
-            var report = mod.RecalculateEmc("/emc " + (value.HasValue ? "set" : "clear"));
-            if (report == null) return TextCommandResult.Error("Mapping failed, see server log");
-            return TextCommandResult.Success(Lang.Get("vintagee:cmd-itemvalue", held.GetName(), held.Collectible.Code, EmcFormat.Format(mod.Emc.GetValue(held.Collectible))));
+            return AfterRemap(mod, args, "/emc " + (value.HasValue ? "set" : "clear"), report => report == null
+                ? TextCommandResult.Error("Mapping failed, see server log")
+                : TextCommandResult.Success(Lang.Get("vintagee:cmd-itemvalue", held.GetName(), held.Collectible.Code, EmcFormat.Format(mod.Emc.GetValue(held.Collectible)))));
         }
 
-        static TextCommandResult Recalc(VintageEModSystem mod)
+        static TextCommandResult Recalc(VintageEModSystem mod, TextCommandCallingArgs args)
         {
-            var report = mod.RecalculateEmc("/emc recalc");
-            if (report == null) return TextCommandResult.Error("Mapping failed, see server log");
-            return TextCommandResult.Success(Lang.Get("vintagee:cmd-recalc", report.Values.Count, report.Milliseconds, report.ConversionCount));
+            return AfterRemap(mod, args, "/emc recalc", report => report == null
+                ? TextCommandResult.Error("Mapping failed, see server log")
+                : TextCommandResult.Success(Lang.Get("vintagee:cmd-recalc", report.Values.Count, report.Milliseconds, report.ConversionCount)));
+        }
+
+        /// <summary>
+        /// Remaps for a command and answers with <paramref name="finish"/>'s result. From the console the mapping runs
+        /// here and the answer is the command's own. For a player it runs in the background (the world keeps going):
+        /// the command answers at once that it is under way, and the result follows in chat when the values are in.
+        /// </summary>
+        static TextCommandResult AfterRemap(VintageEModSystem mod, TextCommandCallingArgs args, string reason, System.Func<EmcMappingReport, TextCommandResult> finish)
+        {
+            if (!(args.Caller?.Player is IServerPlayer player)) return finish(mod.RecalculateEmc(reason));
+            mod.RemapFor(player, reason, report => Tell(player, finish(report)));
+            return TextCommandResult.Success(Lang.GetL(args.LanguageCode, "vintagee:remap-started"));
+        }
+
+        /// <summary>A command's result as a chat line, for results that come after the command has answered.</summary>
+        static void Tell(IServerPlayer player, TextCommandResult result)
+        {
+            if (player == null || string.IsNullOrEmpty(result?.StatusMessage)) return;
+            try { player.SendMessage(GlobalConstants.GeneralChatGroup, ChatSafe(result.StatusMessage), result.Status == EnumCommandStatus.Error ? EnumChatType.CommandError : EnumChatType.CommandSuccess); }
+            catch { /* they left */ }
         }
 
         static TextCommandResult Missing(VintageEModSystem mod, TextCommandCallingArgs args)
@@ -371,7 +391,8 @@ namespace VintageE
                 if (held == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-holdsomething"));
                 bool add = action == "add";
                 mod.SetGrayList(new[] { VintageEModSystem.ConfigKey(held.Collectible) }, add);
-                mod.RecalculateEmc(add ? "/emc graylist add" : "/emc graylist remove");
+                // The list is changed at once; the values follow when the mapping is done (in the background for a player).
+                mod.RemapFor(args.Caller?.Player as IServerPlayer, add ? "/emc graylist add" : "/emc graylist remove");
                 return TextCommandResult.Success(Lang.GetL(lang, add ? "vintagee:cmd-gray-held-added" : "vintagee:cmd-gray-held-removed", held.GetName(), held.Collectible.Code));
             }
             if (args.Caller.Player is IServerPlayer player)
@@ -388,11 +409,20 @@ namespace VintageE
             if (action == "add" || action == "remove")
             {
                 if (string.IsNullOrWhiteSpace(line)) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:recipe-needline"));
-                bool error;
-                string msg = action == "add"
-                    ? mod.AddCustomRecipe(line.Trim(), null, lang, out error)
-                    : mod.RemoveCustomRecipe(CustomRecipe.Parse(line, out _)?.ToString() ?? line.Trim(), lang, out error);
-                return error ? TextCommandResult.Error(msg) : TextCommandResult.Success(msg);
+                // The console's answer is the result; a player's comes in chat once the values are worked out again.
+                IServerPlayer asker = args.Caller?.Player as IServerPlayer;
+                TextCommandResult answer = null;
+                Action<string, bool> done = (msg, error) =>
+                {
+                    TextCommandResult result = error ? TextCommandResult.Error(msg) : TextCommandResult.Success(msg);
+                    if (answer == null) answer = result;
+                    if (asker != null) Tell(asker, result);
+                };
+                if (action == "add") mod.AddCustomRecipe(asker, line.Trim(), null, lang, done);
+                else mod.RemoveCustomRecipe(asker, CustomRecipe.Parse(line, out _)?.ToString() ?? line.Trim(), lang, done);
+                // A player has been told already if it was settled on the spot (a bad line, say); otherwise it is under way.
+                if (asker != null) return answer != null ? TextCommandResult.Success() : TextCommandResult.Success(Lang.GetL(lang, "vintagee:remap-started"));
+                return answer ?? TextCommandResult.Error("Mapping failed, see server log");
             }
             if (action != "list" && args.Caller.Player is IServerPlayer player)
             {
@@ -411,9 +441,18 @@ namespace VintageE
             if (action == "disable" || action == "enable" || action == "off" || action == "on")
             {
                 if (string.IsNullOrWhiteSpace(name)) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:compat-needname"));
-                string msg = mod.SetCompatDisabled(name.Trim(), action == "disable" || action == "off", lang, out bool error);
-                if (args.Caller.Player is IServerPlayer sp && !error) mod.SendCompatList(sp, msg, false);
-                return error ? TextCommandResult.Error(msg) : TextCommandResult.Success(msg);
+                IServerPlayer asker = args.Caller?.Player as IServerPlayer;
+                TextCommandResult answer = null;
+                mod.SetCompatDisabled(asker, name.Trim(), action == "disable" || action == "off", lang, (msg, error) =>
+                {
+                    TextCommandResult result = error ? TextCommandResult.Error(msg) : TextCommandResult.Success(msg);
+                    if (answer == null) answer = result;
+                    if (asker == null) return;
+                    if (!error) mod.SendCompatList(asker, msg, false);
+                    Tell(asker, result);
+                });
+                if (asker != null) return answer != null ? TextCommandResult.Success() : TextCommandResult.Success(Lang.GetL(lang, "vintagee:remap-started"));
+                return answer ?? TextCommandResult.Error("Mapping failed, see server log");
             }
             if (action != "list" && args.Caller.Player is IServerPlayer player)
             {

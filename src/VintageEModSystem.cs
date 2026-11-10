@@ -159,7 +159,8 @@ namespace VintageE
                 .RegisterMessageType<EmcCompatListPacket>()
                 .RegisterMessageType<EmcCompatSetPacket>()
                 .RegisterMessageType<EmcDiagnoseRequestPacket>()
-                .RegisterMessageType<EmcCraftPacket>();
+                .RegisterMessageType<EmcCraftPacket>()
+                .RegisterMessageType<PlayerEmcPacket>();
         }
 
         #region Server
@@ -651,7 +652,13 @@ namespace VintageE
             });
             Step("player hooks", () =>
             {
-                sapi.Event.PlayerDisconnect += player => EmcCrafting?.OnPlayerLeft(player);
+                sapi.Event.PlayerDisconnect += player =>
+                {
+                    EmcCrafting?.OnPlayerLeft(player);
+                    PlayerEmc.ForgetPending(player?.PlayerUID);
+                };
+                // Each player's own EMC and knowledge go to their game alone, as they change (see PlayerEmc).
+                sapi.Event.RegisterGameTickListener(_ => FlushPlayerEmc(), 50);
                 sapi.Event.PlayerNowPlaying += player =>
                 {
                     EnsureMapped("the first player joining");
@@ -662,6 +669,8 @@ namespace VintageE
                         if (gone > 0) sapi.Logger.Notification("Vintage-E: tidied {0}'s knowledge: {1} duplicate entries (freshness or fill level) merged", player.PlayerName, gone);
                     }
                     catch (Exception e) { sapi.Logger.Warning("Vintage-E: tidying {0}'s knowledge: {1}", player.PlayerName, e.Message); }
+                    try { SendPlayerEmc(player, everything: true); }
+                    catch (Exception e) { sapi.Logger.Warning("Vintage-E: sending {0} their EMC and knowledge: {1}", player.PlayerName, e.Message); }
                     if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
                     {
                         // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire
@@ -736,7 +745,7 @@ namespace VintageE
         }
 
         /// <summary>Re-reads ModConfig/vintagee.json (after editing it by hand) and applies it. Returns an error message, or null.</summary>
-        public string ReloadConfig()
+        public string ReloadConfig(IServerPlayer forPlayer = null)
         {
             VintageEConfig cfg;
             try
@@ -751,7 +760,9 @@ namespace VintageE
             cfg.Normalize();
             Config = cfg;
             Trinkets?.ResetHostile();
-            RecalculateEmc("config reloaded");
+            // For a player the mapping runs in the background: what it doesn't decide takes effect now.
+            if (forPlayer != null && Emc.Count > 0) RefreshMirroredSettings();
+            RemapFor(forPlayer, "config reloaded");
             return null;
         }
 
@@ -816,8 +827,10 @@ namespace VintageE
         {
             if (mappingInFlight)
             {
-                // Wait for the running one, then go: the caller's change (a pin, a removed key) must be in the next mapping.
-                Sapi.Event.RegisterCallback(_ => RecalculateEmcAsync(reason, then, allowCache), 500);
+                // Wait for the running one, then go: the caller's change (a pin, a removed key) must be in the next
+                // mapping. Everything that asks while one runs shares that next mapping: five clicks in a list are
+                // one more mapping, not five.
+                waitingRemaps.Add((reason, then));
                 return;
             }
             mappingInFlight = true;
@@ -842,7 +855,12 @@ namespace VintageE
                         EmcMappingReport applied = null;
                         try
                         {
-                            if (computed != null && appliedSerial > serial) Mod.Logger.Notification("EMC: a background mapping ({0}) finished after a newer one was applied; its result is dropped.", reason);
+                            if (computed != null && appliedSerial > serial)
+                            {
+                                // The newer one was mapped from the settings as they were after this one started, so it has this one's change too.
+                                Mod.Logger.Notification("EMC: a background mapping ({0}) finished after a newer one was applied; its result is dropped.", reason);
+                                applied = LastReport;
+                            }
                             else if (computed != null) { applied = ApplyMapping(computed, fingerprint, reason, sw); appliedSerial = serial; }
                         }
                         catch (Exception e)
@@ -854,6 +872,7 @@ namespace VintageE
                         finally { mappingInFlight = false; }
                         try { then?.Invoke(applied); }
                         catch (Exception e) { Mod.Logger.Error("Vintage-E: after the mapping ({0}): {1}", reason, e); }
+                        StartWaitingRemaps();
                     }, "vintagee-mapping");
                 }
                 catch (Exception e)
@@ -863,6 +882,52 @@ namespace VintageE
                     Mod.Logger.Warning("EMC: could not hand the mapping ({0}) to the game thread: {1}", reason, e.Message);
                 }
             });
+        }
+
+        /// <summary>Remaps asked for while a background mapping was running, with what each wants done afterwards.</summary>
+        readonly List<(string reason, Action<EmcMappingReport> then)> waitingRemaps = new List<(string reason, Action<EmcMappingReport> then)>();
+
+        /// <summary>One background mapping for everything that waited on the last one. Game thread.</summary>
+        void StartWaitingRemaps()
+        {
+            if (waitingRemaps.Count == 0 || mappingInFlight) return;
+            var batch = waitingRemaps.ToArray();
+            waitingRemaps.Clear();
+            string reason = batch.Length == 1 ? batch[0].reason : batch[batch.Length - 1].reason + " (and " + (batch.Length - 1) + " more changes)";
+            RecalculateEmcAsync(reason, report =>
+            {
+                foreach (var waiting in batch)
+                {
+                    try { waiting.then?.Invoke(report); }
+                    catch (Exception e) { Mod.Logger.Error("Vintage-E: after the mapping ({0}): {1}", waiting.reason, e); }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Works the values out again after a change someone made, then runs <paramref name="done"/> on the game
+        /// thread with the new report (null if the mapping failed).
+        /// <para>For a player (a click in a window, a command they typed) the mapping runs on a worker thread, so the
+        /// world doesn't stop for everyone while it does - until 1.21.1 each of these held the game thread for the
+        /// whole mapping, 1.3 seconds in a base game and 20 with fifty mods. With no player (the console, the
+        /// self-test) it runs here and now, as before, and <paramref name="done"/> has run when this returns.</para>
+        /// </summary>
+        public void RemapFor(IServerPlayer player, string reason, Action<EmcMappingReport> done = null)
+        {
+            if (player == null || Sapi == null)
+            {
+                EmcMappingReport report = RecalculateEmc(reason);
+                done?.Invoke(report);
+                return;
+            }
+            // A word only when the wait will be noticed: the last mapping was slow, or this one has to queue.
+            long last = LastReport?.Milliseconds ?? 0;
+            if (last >= 3000 || mappingInFlight)
+            {
+                try { player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:remap-working", Math.Max(1, (last + 500) / 1000)), EnumChatType.Notification); }
+                catch { /* they left */ }
+            }
+            RecalculateEmcAsync(reason, done);
         }
 
         /// <summary>
@@ -1308,7 +1373,32 @@ namespace VintageE
 
         public void SendResult(IServerPlayer player, TransmuteResultPacket result)
         {
+            // Their balance and knowledge first, so the window never shows a result against older numbers.
+            SendPlayerEmc(player);
             serverChannel.SendPacket(result, player);
+        }
+
+        /// <summary>Sends a player what changed in their own EMC and knowledge since they were last told (<paramref name="everything"/>: all of it, on joining).</summary>
+        public void SendPlayerEmc(IServerPlayer player, bool everything = false)
+        {
+            if (player == null || serverChannel == null) return;
+            PlayerEmcPacket packet = PlayerEmc.TakeChanges(player, everything);
+            if (packet != null) serverChannel.SendPacket(packet, player);
+        }
+
+        /// <summary>A few times a second: every change of a player's EMC or knowledge since the last time goes to that player, in one packet.</summary>
+        void FlushPlayerEmc()
+        {
+            if (!PlayerEmc.AnyPending) return;
+            foreach (string uid in PlayerEmc.PendingPlayers())
+            {
+                IServerPlayer player = Sapi.World.PlayerByUid(uid) as IServerPlayer;
+                if (player == null) { PlayerEmc.ForgetPending(uid); continue; }
+                // Still loading in: they get everything when they start playing.
+                if (player.ConnectionState != EnumClientState.Playing) continue;
+                try { SendPlayerEmc(player); }
+                catch (Exception e) { Mod.Logger.Warning("Vintage-E: sending {0} their EMC: {1}", player.PlayerName, e.Message); }
+            }
         }
 
         /// <summary>
@@ -1397,16 +1487,18 @@ namespace VintageE
                     msg = packet.Add ? Lang.GetL(lang, "vintagee:cmd-blacklisted", NameOf(c), c.Code) : null;
                 }
             }
-            EmcMappingReport report = RecalculateEmc(packet.Add ? "blacklisted from the /emc missing window" : "removed from the blacklist");
-            if (msg == null)
+            RemapFor(player, packet.Add ? "blacklisted from the /emc missing window" : "removed from the blacklist", report =>
             {
-                CollectibleObject c = ResolveKeys(Sapi.World, packet.Key, packet.Keys)[0];
-                double v = Emc.GetValue(c);
-                msg = v > 0 ? Lang.GetL(lang, "vintagee:cmd-unblacklisted-value", NameOf(c), c.Code, EmcFormat.Format(v))
-                    : Lang.GetL(lang, "vintagee:cmd-unblacklisted", NameOf(c), c.Code);
-            }
-            player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
-            if (report != null) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+                if (msg == null)
+                {
+                    CollectibleObject c = ResolveKeys(Sapi.World, packet.Key, packet.Keys)[0];
+                    double v = Emc.GetValue(c);
+                    msg = v > 0 ? Lang.GetL(lang, "vintagee:cmd-unblacklisted-value", NameOf(c), c.Code, EmcFormat.Format(v))
+                        : Lang.GetL(lang, "vintagee:cmd-unblacklisted", NameOf(c), c.Code);
+                }
+                player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
+                if (report != null) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+            });
         }
 
         /// <summary>The no-transmute window's buttons: put items on the list or take them (or a whole mod) off. Values don't change.</summary>
@@ -1459,9 +1551,11 @@ namespace VintageE
                 SetGrayList(items.Select(ConfigKey), packet.Add);
                 msg = Lang.GetL(lang, packet.Add ? "vintagee:cmd-gray-added" : "vintagee:cmd-gray-removed", items.Count);
             }
-            EmcMappingReport report = RecalculateEmc(packet.Add ? "gray-listed from the /emc missing window" : "taken off the gray list");
-            player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
-            if (report != null) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+            RemapFor(player, packet.Add ? "gray-listed from the /emc missing window" : "taken off the gray list", report =>
+            {
+                player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
+                if (report != null) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+            });
         }
 
         /// <summary>Adds or removes codes on the GrayList setting and saves it (the caller remaps).</summary>
@@ -1509,18 +1603,20 @@ namespace VintageE
             }
             foreach (CollectibleObject c in items) SetFixedValue(c, packet.Clear ? (double?)null : packet.Value, save: false);
             SaveConfig();
-            EmcMappingReport report = RecalculateEmc(packet.Quiet ? "hovered-item value box" : "/emc missing window");
-            string msg;
-            if (items.Count == 1)
+            RemapFor(player, packet.Quiet ? "hovered-item value box" : "/emc missing window", report =>
             {
-                double now = Emc.GetValue(items[0]);
-                msg = now > 0
-                    ? Lang.GetL(lang, "vintagee:cmd-itemvalue", NameOf(items[0]), items[0].Code, EmcFormat.Format(now))
-                    : Lang.GetL(lang, "vintagee:cmd-novalue", NameOf(items[0]), items[0].Code);
-            }
-            else msg = Lang.GetL(lang, "vintagee:cmd-setmany", items.Count, EmcFormat.Format(packet.Value));
-            player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
-            if (report != null && !packet.Quiet) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+                string msg;
+                if (items.Count == 1)
+                {
+                    double now = Emc.GetValue(items[0]);
+                    msg = now > 0
+                        ? Lang.GetL(lang, "vintagee:cmd-itemvalue", NameOf(items[0]), items[0].Code, EmcFormat.Format(now))
+                        : Lang.GetL(lang, "vintagee:cmd-novalue", NameOf(items[0]), items[0].Code);
+                }
+                else msg = Lang.GetL(lang, "vintagee:cmd-setmany", items.Count, EmcFormat.Format(packet.Value));
+                player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
+                if (report != null && !packet.Quiet) SendMissingList(player, report, null, FromKind(packet.FromKind, packet.FromBlacklist));
+            });
         }
 
         void OnItemStateRequest(IServerPlayer player, EmcItemStateRequestPacket packet)
@@ -1845,16 +1941,17 @@ namespace VintageE
             if (packet.Unpin) Config.FixedValues.Remove(key);
             else if (packet.SetValue && !packet.Blacklist && !packet.Free) SetFixedValue(c, packet.Value, save: false);
             SaveConfig();
-            RecalculateEmc("hovered-item value box");
-
-            EmcItemStatePacket after = ItemState(c, packet.Key);
-            string state = after.Free ? Lang.GetL(lang, "vintagee:setvalue-isfree")
-                : after.Blacklisted ? Lang.GetL(lang, "vintagee:setvalue-isblacklisted")
-                : after.Value > 0 ? EmcFormat.Format(after.Value) + " EMC" : Lang.GetL(lang, "vintagee:setvalue-novalue");
-            if (after.Gray) state += ", " + Lang.GetL(lang, "vintagee:setvalue-isgray");
-            string msg = Lang.GetL(lang, "vintagee:setvalue-result", NameOf(c), c.Code, state);
-            if (notes.Count > 0) msg += " " + string.Join(" ", notes);
-            player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
+            RemapFor(player, "hovered-item value box", _ =>
+            {
+                EmcItemStatePacket after = ItemState(c, packet.Key);
+                string state = after.Free ? Lang.GetL(lang, "vintagee:setvalue-isfree")
+                    : after.Blacklisted ? Lang.GetL(lang, "vintagee:setvalue-isblacklisted")
+                    : after.Value > 0 ? EmcFormat.Format(after.Value) + " EMC" : Lang.GetL(lang, "vintagee:setvalue-novalue");
+                if (after.Gray) state += ", " + Lang.GetL(lang, "vintagee:setvalue-isgray");
+                string msg = Lang.GetL(lang, "vintagee:setvalue-result", NameOf(c), c.Code, state);
+                if (notes.Count > 0) msg += " " + string.Join(" ", notes);
+                player.SendMessage(GlobalConstants.GeneralChatGroup, msg, EnumChatType.CommandSuccess);
+            });
         }
 
         /// <summary>A compatibility file's display name, from the rules (or its file name when it isn't known).</summary>
@@ -1890,21 +1987,35 @@ namespace VintageE
         /// <summary>Sends this player the EMC table again (the diagnosis found their copy differs).</summary>
         public void ResendTable(IServerPlayer player) => serverChannel?.SendPacket(Emc.ToPacket(), player);
 
+        /// <summary>Switches a compatibility file off or on and remaps here and now (the console, the doctor): returns the message.</summary>
         public string SetCompatDisabled(string key, bool disabled, string lang, out bool error)
         {
-            error = true;
+            string message = null;
+            bool failed = true;
+            SetCompatDisabled(null, key, disabled, lang, (m, e) => { message = m; failed = e; });
+            error = failed;
+            return message;
+        }
+
+        /// <summary>
+        /// Switches a compatibility file off or on and remaps (in the background for a player, see <see cref="RemapFor"/>);
+        /// <paramref name="done"/> gets the message and whether it is an error.
+        /// </summary>
+        public void SetCompatDisabled(IServerPlayer player, string key, bool disabled, string lang, Action<string, bool> done)
+        {
             EmcRuleSet.CompatFile f = Rules?.Compat?.FirstOrDefault(c => c.Source.Equals(key, StringComparison.OrdinalIgnoreCase)
                 || c.Name.Equals(key, StringComparison.OrdinalIgnoreCase) || EmcRuleSet.IsDisabled(c.Source, new[] { key }));
-            if (f == null) return Lang.GetL(lang, "vintagee:compat-unknown", key);
-            if (f.Disabled == disabled) { error = false; return Lang.GetL(lang, disabled ? "vintagee:compat-alreadyoff" : "vintagee:compat-alreadyon", f.Name); }
+            if (f == null) { done(Lang.GetL(lang, "vintagee:compat-unknown", key), true); return; }
+            if (f.Disabled == disabled) { done(Lang.GetL(lang, disabled ? "vintagee:compat-alreadyoff" : "vintagee:compat-alreadyon", f.Name), false); return; }
             Config.DisabledCompat.RemoveAll(d => EmcRuleSet.IsDisabled(f.Source, new[] { d }));
             if (disabled) Config.DisabledCompat.Add(f.Source.Substring(f.Source.LastIndexOf('/') + 1).Replace(".json", ""));
             SaveConfig();
-            EmcMappingReport report = RecalculateEmc(disabled ? "/emc compat disable" : "/emc compat enable");
-            if (report == null) return Lang.GetL(lang, "vintagee:compat-failed");
-            error = false;
-            int n = report.CompatUsed.TryGetValue(f.Source, out int used) ? used : 0;
-            return Lang.GetL(lang, disabled ? "vintagee:compat-disabled" : "vintagee:compat-enabled", f.Name, n);
+            RemapFor(player, disabled ? "/emc compat disable" : "/emc compat enable", report =>
+            {
+                if (report == null) { done(Lang.GetL(lang, "vintagee:compat-failed"), true); return; }
+                int n = report.CompatUsed.TryGetValue(f.Source, out int used) ? used : 0;
+                done(Lang.GetL(lang, disabled ? "vintagee:compat-disabled" : "vintagee:compat-enabled", f.Name, n), false);
+            });
         }
 
         void OnCompatSetRequest(IServerPlayer player, EmcCompatSetPacket packet)
@@ -1915,8 +2026,7 @@ namespace VintageE
                 player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:error-noprivilege"), EnumChatType.CommandError);
                 return;
             }
-            string message = SetCompatDisabled(packet.Key, packet.Disabled, player.LanguageCode, out bool error);
-            SendCompatList(player, message, error);
+            SetCompatDisabled(player, packet.Key, packet.Disabled, player.LanguageCode, (message, error) => SendCompatList(player, message, error));
         }
 
         /// <summary>Opens (or refreshes) the /emc recipe window for a player.</summary>
@@ -1964,42 +2074,60 @@ namespace VintageE
         /// </summary>
         public string AddCustomRecipe(string line, string replaces, string lang, out bool error)
         {
-            error = true;
+            string message = null;
+            bool failed = true;
+            AddCustomRecipe(null, line, replaces, lang, (m, e) => { message = m; failed = e; });
+            error = failed;
+            return message;
+        }
+
+        /// <summary>The same for a player: the remaps run in the background (see <see cref="RemapFor"/>), and <paramref name="done"/> gets the message and whether it is an error.</summary>
+        public void AddCustomRecipe(IServerPlayer player, string line, string replaces, string lang, Action<string, bool> done)
+        {
             CustomRecipe r = CustomRecipe.Parse(line, out string why);
-            if (r == null) return Lang.GetL(lang, "vintagee:recipe-bad", why);
+            if (r == null) { done(Lang.GetL(lang, "vintagee:recipe-bad", why), true); return; }
             string clean = r.ToString();
             CollectibleObject output = ResolveCode(r.Output);
-            if (output == null) return Lang.GetL(lang, "vintagee:recipe-bad", "no block or item " + r.Output);
+            if (output == null) { done(Lang.GetL(lang, "vintagee:recipe-bad", "no block or item " + r.Output), true); return; }
             int at = replaces == null ? -1 : Config.CustomRecipes.IndexOf(replaces);
             if (at >= 0) Config.CustomRecipes.RemoveAt(at);
-            if (Config.CustomRecipes.Contains(clean)) { error = false; return Lang.GetL(lang, "vintagee:recipe-already"); }
+            if (Config.CustomRecipes.Contains(clean)) { done(Lang.GetL(lang, "vintagee:recipe-already"), false); return; }
             if (at >= 0) Config.CustomRecipes.Insert(at, clean); else Config.CustomRecipes.Add(clean);
             SaveConfig();
-            EmcMappingReport report = RecalculateEmc("/emc recipe");
-            string problem = report == null ? null : ProblemOf(report.CustomRecipeProblems, clean);
-            if (!string.IsNullOrEmpty(problem))
+            RemapFor(player, "/emc recipe", report =>
             {
-                Config.CustomRecipes.Remove(clean);
-                if (at >= 0) Config.CustomRecipes.Insert(at, replaces);
-                SaveConfig();
-                RecalculateEmc("/emc recipe (undone)");
-                return Lang.GetL(lang, "vintagee:recipe-bad", problem);
-            }
-            error = false;
-            double v = Emc.GetValue(output);
-            return v > 0
-                ? Lang.GetL(lang, "vintagee:recipe-added", NameOf(output), EmcFormat.Format(v))
-                : Lang.GetL(lang, "vintagee:recipe-addednovalue", NameOf(output));
+                string problem = report == null ? null : ProblemOf(report.CustomRecipeProblems, clean);
+                if (!string.IsNullOrEmpty(problem))
+                {
+                    Config.CustomRecipes.Remove(clean);
+                    if (at >= 0) Config.CustomRecipes.Insert(Math.Min(at, Config.CustomRecipes.Count), replaces);
+                    SaveConfig();
+                    RemapFor(player, "/emc recipe (undone)", _ => done(Lang.GetL(lang, "vintagee:recipe-bad", problem), true));
+                    return;
+                }
+                double v = Emc.GetValue(output);
+                done(v > 0
+                    ? Lang.GetL(lang, "vintagee:recipe-added", NameOf(output), EmcFormat.Format(v))
+                    : Lang.GetL(lang, "vintagee:recipe-addednovalue", NameOf(output)), false);
+            });
         }
 
         /// <summary>Takes a hand-written recipe off the server config and remaps.</summary>
         public string RemoveCustomRecipe(string line, string lang, out bool error)
         {
-            error = !Config.CustomRecipes.Remove(line);
-            if (error) return Lang.GetL(lang, "vintagee:recipe-notfound", line);
+            string message = null;
+            bool failed = true;
+            RemoveCustomRecipe(null, line, lang, (m, e) => { message = m; failed = e; });
+            error = failed;
+            return message;
+        }
+
+        /// <summary>The same for a player, remapping in the background.</summary>
+        public void RemoveCustomRecipe(IServerPlayer player, string line, string lang, Action<string, bool> done)
+        {
+            if (!Config.CustomRecipes.Remove(line)) { done(Lang.GetL(lang, "vintagee:recipe-notfound", line), true); return; }
             SaveConfig();
-            RecalculateEmc("/emc recipe remove");
-            return Lang.GetL(lang, "vintagee:recipe-removed", line);
+            RemapFor(player, "/emc recipe remove", _ => done(Lang.GetL(lang, "vintagee:recipe-removed", line), false));
         }
 
         void OnRecipeEditRequest(IServerPlayer player, EmcRecipeEditPacket packet)
@@ -2010,11 +2138,9 @@ namespace VintageE
                 player.SendMessage(GlobalConstants.GeneralChatGroup, Lang.GetL(player.LanguageCode, "vintagee:error-noprivilege"), EnumChatType.CommandError);
                 return;
             }
-            bool error;
-            string message = packet.Remove
-                ? RemoveCustomRecipe(packet.Line, player.LanguageCode, out error)
-                : AddCustomRecipe(packet.Line, packet.Replaces, player.LanguageCode, out error);
-            SendRecipeList(player, message, error);
+            Action<string, bool> done = (message, error) => SendRecipeList(player, message, error);
+            if (packet.Remove) RemoveCustomRecipe(player, packet.Line, player.LanguageCode, done);
+            else AddCustomRecipe(player, packet.Line, packet.Replaces, player.LanguageCode, done);
         }
 
         /// <summary>Opens the /emc contents window for a player.</summary>
@@ -2097,8 +2223,8 @@ namespace VintageE
             try
             {
                 message = packet.Reset
-                    ? ConfigureCommand.Reset(this, packet.Name, player.LanguageCode)
-                    : ConfigureCommand.SetFromText(this, packet.Name, packet.Text ?? "", player.LanguageCode);
+                    ? ConfigureCommand.Reset(this, packet.Name, player.LanguageCode, player)
+                    : ConfigureCommand.SetFromText(this, packet.Name, packet.Text ?? "", player.LanguageCode, player);
             }
             catch (FormatException e)
             {
@@ -2218,6 +2344,7 @@ namespace VintageE
             clientChannel = capi.Network.GetChannel(ChannelName);
             clientChannel.SetMessageHandler<EmcTablePacket>(OnEmcTableReceived);
             clientChannel.SetMessageHandler<TransmuteResultPacket>(OnTransmuteResult);
+            clientChannel.SetMessageHandler<PlayerEmcPacket>(p => PlayerEmc.ApplyOnClient(p, capi.World.Player?.PlayerUID));
             clientChannel.SetMessageHandler<EmcMissingPacket>(OnMissingList);
             clientChannel.SetMessageHandler<EmcContentsPacket>(OnContentsList);
             clientChannel.SetMessageHandler<EmcConfigPacket>(OnConfigList);
@@ -2807,6 +2934,7 @@ namespace VintageE
                 ProjectELook.DisposeMeshes(Capi);
                 ClientLookPatches.Forget(this);
                 GuiDialogTransmutation.ForgetWorld();
+                PlayerEmc.ForgetClient();
             }
             PlayerEmc.ForgetWorld();
             if (ReferenceEquals(serverInstance, this)) serverInstance = null;

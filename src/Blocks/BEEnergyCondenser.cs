@@ -125,7 +125,7 @@ namespace VintageE
         /// What the condenser makes from its target: the plain item, or - for items that keep their contents or
         /// material - exactly that version (fresh and undamaged).
         /// </summary>
-        static ItemStack CopyOf(VintageEModSystem mod, ItemStack target)
+        internal static ItemStack CopyOf(VintageEModSystem mod, ItemStack target)
         {
             var copy = new ItemStack(target.Collectible, 1);
             if (mod.Emc.StackData.CarriesData(target.Collectible) && mod.Emc.StackData.ModeOf(target.Collectible) != StackDataMode.Item)

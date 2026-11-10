@@ -69,13 +69,80 @@ namespace VintageE
             catch (Exception e) { line("BENCH " + name + ": could not run (" + e.GetType().Name + ": " + e.Message + ")"); }
         }
 
+        /// <summary>"before -> after (n times faster)" for one thing measured both ways in the same run.</summary>
+        static string Pair((double ns, double bytes) before, (double ns, double bytes) after)
+        {
+            string times = after.ns > 0 && before.ns / after.ns >= 1.05
+                ? (before.ns / after.ns).ToString(before.ns / after.ns >= 10 ? "0" : "0.#", System.Globalization.CultureInfo.InvariantCulture) + " times faster"
+                : "no faster";
+            return $"before {Show(before)} -> after {Show(after)} ({times})";
+        }
+
+        static long WireBytes<T>(T packet)
+        {
+            using var buffer = new MemoryStream();
+            ProtoBuf.Serializer.Serialize(buffer, packet);
+            return buffer.Length;
+        }
+
+        // The area scans as they were before 1.21.1 (a new position for every block, the questions asked of the block
+        // itself every time), kept here so both ways are timed on the same machine in the same run.
+        static int OldHarvestScan(IBlockAccessor ba, BlockPos center, int radius)
+        {
+            int n = 0;
+            for (int dx = -radius; dx <= radius; dx++)
+                for (int dz = -radius; dz <= radius; dz++)
+                    for (int dy = -2; dy <= 2; dy++)
+                    {
+                        BlockPos pos = center.AddCopy(dx, dy, dz);
+                        if (TrinketEffects.IsRipeCrop(ba.GetBlock(pos))) n++;
+                    }
+            return n;
+        }
+
+        static int OldFreezeScan(ICoreServerAPI sapi, BlockPos center, int radius)
+        {
+            IBlockAccessor ba = sapi.World.BlockAccessor;
+            Block ice = sapi.World.GetBlock(new AssetLocation("game:lakeice"));
+            if (ice == null || ice.Id == 0) return 0;
+            int n = 0;
+            for (int dx = -radius; dx <= radius; dx++)
+                for (int dz = -radius; dz <= radius; dz++)
+                {
+                    if (dx * dx + dz * dz > radius * radius) continue;
+                    for (int dy = -2; dy <= 0; dy++)
+                    {
+                        BlockPos pos = center.AddCopy(dx, dy, dz);
+                        Block fluid = ba.GetBlock(pos, BlockLayersAccess.Fluid);
+                        if (fluid?.Code == null || !fluid.Code.Path.StartsWith("water-still", StringComparison.Ordinal)) continue;
+                        if (ba.GetBlock(pos, BlockLayersAccess.Solid)?.Id > 0) continue;
+                        n++;
+                    }
+                }
+            return n;
+        }
+
+        static readonly Random oldRand = new Random(7);
+
+        static int OldGrowScan(TrinketEffects fx, IBlockAccessor ba, BlockPos center, int radius, int attempts)
+        {
+            int n = 0;
+            for (int i = 0; i < attempts; i++)
+            {
+                BlockPos pos = center.AddCopy(oldRand.Next(-radius, radius + 1), oldRand.Next(-2, 3), oldRand.Next(-radius, radius + 1));
+                if (fx.NextCropStage(ba.GetBlock(pos)) != null) n++;
+            }
+            return n;
+        }
+
         /// <param name="site">A spot in loaded chunks where blocks may be scanned (and ripe crops harvested, still water frozen).</param>
         public static void Run(VintageEModSystem mod, ICoreServerAPI sapi, BlockPos site, Action<string> line)
         {
             line($"BENCH machine: {Environment.ProcessorCount} cores, calibration {CalibrationMs():0.#} ms (lower is a faster machine)");
+            IBlockAccessor ba = sapi.World.BlockAccessor;
 
             // ---- the mapping, and what a remap costs the game thread
-            Try(line, "mapping (whole remap on the game thread)", () =>
+            Try(line, "mapping (a whole remap)", () =>
             {
                 var parts = new List<string>();
                 for (int i = 0; i < 2; i++)
@@ -83,10 +150,20 @@ namespace VintageE
                     var sw = Stopwatch.StartNew();
                     EmcMappingReport report = mod.RecalculateEmc("benchmark");
                     sw.Stop();
-                    parts.Add($"{report?.Milliseconds} ms mapping, {sw.ElapsedMilliseconds} ms with what follows it ({report?.TimingText()})");
+                    // What is left on the game thread when a player starts the remap: putting the result into play.
+                    long applying = 0;
+                    if (report != null)
+                    {
+                        foreach (var t in report.Timings)
+                        {
+                            if (t.Key == "contents and materials table" || (t.Key.StartsWith("(after)", StringComparison.Ordinal) && !t.Key.Contains("DumpValuesOnStart"))) applying += t.Value;
+                        }
+                    }
+                    parts.Add($"{report?.Milliseconds} ms mapping, {sw.ElapsedMilliseconds} ms with what follows it; of that the game thread does {applying} ms when a player starts it ({report?.TimingText()})");
                 }
                 return string.Join(" | ", parts);
             });
+            Try(line, "settings copy for a background remap", () => Show(Measure(() => mod.ConfigSnapshot(), 20)));
             Try(line, "cache fingerprint", () =>
             {
                 double best = double.MaxValue;
@@ -99,15 +176,18 @@ namespace VintageE
                 }
                 return best.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " ms";
             });
+            Try(line, "an ingredient's optional member (asked for every ingredient of every recipe, in the mapping and the fingerprint)", () =>
+            {
+                object ing = sapi.World.GridRecipes.FirstOrDefault(r => r?.ResolvedIngredients != null && r.ResolvedIngredients.Any(i => i != null))?.ResolvedIngredients.First(i => i != null);
+                if (ing == null) return "no ingredient";
+                Type t = ing.GetType();
+                return Pair(Measure(() => { object v = t.GetField("ConsumeQuantity")?.GetValue(ing) ?? t.GetProperty("ConsumeQuantity")?.GetValue(ing); }, 200000),
+                    Measure(() => ConversionCollector.OptionalMember(ing, "ConsumeQuantity"), 200000));
+            });
 
             // ---- the table every joining player is sent
             Try(line, "EMC table packet", () =>
-            {
-                var m = Measure(() => mod.Emc.ToPacket(), 3);
-                using var buffer = new MemoryStream();
-                ProtoBuf.Serializer.Serialize(buffer, mod.Emc.ToPacket());
-                return Show(m) + " to build, " + buffer.Length / 1024 + " KB on the wire";
-            });
+                Pair(Measure(() => mod.Emc.BuildPacket(), 3), Measure(() => mod.Emc.ToPacket(), 1000)) + ", " + WireBytes(mod.Emc.ToPacket()) / 1024 + " KB on the wire");
 
             // ---- burning and planning
             Item stick = sapi.World.GetItem(new AssetLocation("game:stick"));
@@ -125,15 +205,41 @@ namespace VintageE
                 int step = Math.Max(1, all.Count / 25);
                 List<GridRecipe> picked = all.Where((r, i) => i % step == 0).Take(25).ToList();
                 var carried = new List<ItemSlot>();
-                var sw = Stopwatch.StartNew();
-                foreach (GridRecipe r in picked) mod.EmcCrafting.Choose(null, r, known, carried, 1e15);
-                double first = sw.Elapsed.TotalMilliseconds;
-                var m = Measure(() => { foreach (GridRecipe r in picked) mod.EmcCrafting.Choose(null, r, known, carried, 1e15); }, 1, 3);
-                return $"{first:0.#} ms the first time (learned items resolved), then {Show(m)}";
+                void Plan() { foreach (GridRecipe r in picked) mod.EmcCrafting.Choose(null, r, known, carried, 1e15); }
+                Plan(); // the learned items are resolved once per knowledge list, either way
+                try
+                {
+                    mod.EmcCrafting.RememberMatches = false;
+                    var before = Measure(Plan, 1, 3);
+                    mod.EmcCrafting.RememberMatches = true;
+                    var sw = Stopwatch.StartNew();
+                    Plan();
+                    double first = sw.Elapsed.TotalMilliseconds;
+                    return Pair(before, Measure(Plan, 1, 3)) + $"; the first time a recipe's ingredients are met: {first:0.#} ms";
+                }
+                finally { mod.EmcCrafting.RememberMatches = true; }
             });
-            Try(line, "knowledge on the wire", () =>
+            Try(line, "handbook ingredient key (per ingredient on screen, per frame)", () =>
             {
-                long Bytes(string[] keys)
+                CraftingRecipeIngredient ing = sapi.World.GridRecipes.FirstOrDefault(r => r?.ResolvedIngredients != null && r.ResolvedIngredients.Any(i => i != null && !i.IsTool))?.ResolvedIngredients.First(i => i != null && !i.IsTool);
+                if (ing == null) return "no ingredient";
+                return Pair(Measure(() => CollectibleBehaviorEmcTooltip.IngredientKey(ing), 20000), Measure(() => CollectibleBehaviorEmcTooltip.IngredientKeyCached(ing), 200000));
+            });
+            Try(line, "magnet / gem filter, one item checked", () =>
+            {
+                CollectibleObject granite = sapi.World.GetBlock(new AssetLocation("game:rock-granite")), andesite = sapi.World.GetBlock(new AssetLocation("game:rock-andesite"));
+                Item tabletItem = sapi.World.GetItem(new AssetLocation("vintagee:transmutationtablet"));
+                if (granite == null || andesite == null || tabletItem == null) return "no tablet or rock";
+                var tablet = new ItemStack(tabletItem);
+                ((TreeAttribute)tablet.Attributes).SetStringArray(TabletMagnet.FilterKey, new[] { PlayerEmc.KeyOf(granite), PlayerEmc.KeyOf(stick), "", "", "", "", "", "", "" });
+                bool same = TabletMagnet.Passes(tablet, granite) == TabletMagnet.Passes(tablet, granite, sapi.World) && TabletMagnet.Passes(tablet, andesite) == TabletMagnet.Passes(tablet, andesite, sapi.World);
+                return Pair(Measure(() => TabletMagnet.Passes(tablet, andesite), 200000), Measure(() => TabletMagnet.Passes(tablet, andesite, sapi.World), 200000)) + (same ? "" : " BUT THE ANSWERS DIFFER");
+            });
+
+            // ---- what goes over the network about a player's EMC and knowledge
+            Try(line, "player EMC and knowledge on the wire", () =>
+            {
+                long Whole(string[] keys)
                 {
                     using var ms = new MemoryStream();
                     using var w = new BinaryWriter(ms);
@@ -141,7 +247,11 @@ namespace VintageE
                     w.Flush();
                     return ms.Length;
                 }
-                return $"the whole list is {Bytes(known.Take(300).ToArray())} bytes for 300 learned items, {Bytes(known)} bytes for {known.Length}";
+                string[] three = known.Take(300).ToArray();
+                long oneKey = WireBytes(new PlayerEmcPacket { Learned = new[] { three.Length > 0 ? three[three.Length - 1] : "i:game:stick" } });
+                long balance = WireBytes(new PlayerEmcPacket { HasEmc = true, Emc = 123456.78 });
+                return $"learning one item, knowing 300: before {Whole(three)} bytes to every player in view -> after {oneKey} bytes to the learner alone; knowing {known.Length}: before {Whole(known)} bytes -> after {oneKey}; "
+                    + $"a change of balance: before an attribute update to every player in view on every change -> after {balance} bytes to the owner, at most once a tick";
             });
 
             // ---- ticks
@@ -158,22 +268,54 @@ namespace VintageE
                 Entity wolf = Make("wolf-"), hen = Make("chicken-");
                 if (wolf == null || hen == null) return "no wolf or chicken entity type";
                 bool hostile = mod.Trinkets.IsHostile(wolf), tame = mod.Trinkets.IsHostile(hen);
-                return $"a wolf ({hostile}) {Show(Measure(() => mod.Trinkets.IsHostile(wolf), 200000))}; a chicken ({tame}) {Show(Measure(() => mod.Trinkets.IsHostile(hen), 200000))}";
+                return $"a wolf ({hostile}): " + Pair(Measure(() => mod.Trinkets.MatchesHostileList(wolf.Code, out _), 200000), Measure(() => mod.Trinkets.IsHostile(wolf), 200000))
+                    + $"; a chicken ({tame}): " + Pair(Measure(() => mod.Trinkets.MatchesHostileList(hen.Code, out _), 200000), Measure(() => mod.Trinkets.IsHostile(hen), 200000));
             });
-            Try(line, "Harvest scan, radius 5 (a worn band: 605 blocks)", () => Show(Measure(() => mod.Trinkets.Harvest(site, 5, null), 40)));
-            Try(line, "Harvest scan, radius 16 (a red pedestal: 5,445 blocks)", () => Show(Measure(() => mod.Trinkets.Harvest(site, 16, null), 8)));
-            Try(line, "Freeze scan, radius 3 (a worn Zero Ring)", () => Show(Measure(() => mod.Trinkets.Freeze(site, 3, null), 200)));
-            Try(line, "Freeze scan, radius 12 (a red pedestal)", () => Show(Measure(() => mod.Trinkets.Freeze(site, 12, null), 20)));
-            Try(line, "Grow, 80 tries in radius 16 (a red pedestal)", () => Show(Measure(() => mod.Trinkets.Grow(site, 16, 80, null, 0), 50)));
+            Try(line, "interdiction torch, one tick (two searches of the area before, one after)", () =>
+            {
+                Vec3d center = site.ToVec3d().Add(0.5, 0.5, 0.5);
+                int around = sapi.World.GetEntitiesAround(center, 40, 40, null).Length;
+                return Pair(Measure(() => { mod.Trinkets.Repel(center, 8); mod.Trinkets.RepelProjectiles(center, 8, null); }, 2000), Measure(() => mod.Trinkets.RepelAll(center, 8), 2000)) + $", with {around} creatures and items within 40 blocks";
+            });
+            Try(line, "Harvest scan, radius 5 (a worn band: 605 blocks)", () => Pair(Measure(() => OldHarvestScan(ba, site, 5), 40), Measure(() => mod.Trinkets.Harvest(site, 5, null), 40)));
+            Try(line, "Harvest scan, radius 16 (a red pedestal: 5,445 blocks)", () => Pair(Measure(() => OldHarvestScan(ba, site, 16), 8), Measure(() => mod.Trinkets.Harvest(site, 16, null), 8)));
+            Try(line, "Freeze scan, radius 3 (a worn Zero Ring)", () => Pair(Measure(() => OldFreezeScan(sapi, site, 3), 200), Measure(() => mod.Trinkets.Freeze(site, 3, null), 200)));
+            Try(line, "Freeze scan, radius 12 (a red pedestal)", () => Pair(Measure(() => OldFreezeScan(sapi, site, 12), 20), Measure(() => mod.Trinkets.Freeze(site, 12, null), 20)));
+            Try(line, "Grow, 80 tries in radius 16 (a red pedestal)", () => Pair(Measure(() => OldGrowScan(mod.Trinkets, ba, site, 16, 80), 50), Measure(() => mod.Trinkets.Grow(site, 16, 80, null, 0), 50)));
+            Try(line, "pedestal range and power (read several times on every pedestal tick)", () =>
+            {
+                Block pedestal = sapi.World.Blocks.FirstOrDefault(b => b?.Code != null && b.Code.Domain == "vintagee" && b.Attributes != null && b.Attributes["pedestalRange"].Exists);
+                if (pedestal == null) return "no pedestal with a range";
+                float kept = pedestal.Attributes["pedestalRange"].AsFloat(1);
+                return Pair(Measure(() => { float r = pedestal.Attributes?["pedestalRange"].AsFloat(1) ?? 1; }, 200000), Measure(() => { float r = kept; }, 200000));
+            });
+            Try(line, "an active trinket's effects (per trinket, per player, twice a second)", () =>
+            {
+                var ring = sapi.World.GetItem(new AssetLocation("vintagee:trinket-ringofarcana")) as ItemEmcTrinket;
+                if (ring == null) return "no Ring of Arcana";
+                var stack = new ItemStack(ring);
+                var buffer = new string[4];
+                return Pair(Measure(() => { foreach (string effect in TrinketEffects.EffectsOf(ring, stack)) { } }, 200000), Measure(() => TrinketEffects.EffectsInto(ring, stack, buffer), 200000));
+            });
+            Try(line, "a condenser's copy of its target and its price (per condenser, twice a second)", () =>
+            {
+                var target = new ItemStack(stick, 1);
+                return Show(Measure(() => mod.Emc.GetValue(BEEnergyCondenser.CopyOf(mod, target)), 200000)) + " before -> after: kept until the target or the table changes";
+            });
+            Try(line, "matter furnace: finding the renderer's fields (per furnace on screen, four times a second)", () =>
+            {
+                Type t = typeof(Vintagestory.GameContent.BlockEntityFirepit);
+                return Show(Measure(() => { var a = t.GetField("ContentStack"); var b = t.GetField("contentStackRenderer"); var c = t.GetField("Transform"); }, 200000)) + " before -> after: found once";
+            });
 
             // ---- small things done very often
             Try(line, $"finding the mod system ({sapi.ModLoader.Systems.Count()} mod systems loaded)", () =>
-                Show(Measure(() => sapi.ModLoader.GetModSystem<VintageEModSystem>(), 200000)));
+                Pair(Measure(() => sapi.ModLoader.GetModSystem<VintageEModSystem>(), 200000), Measure(() => VintageEModSystem.Of(sapi), 200000)));
             Try(line, "a trinket's Kind", () =>
             {
                 var ring = sapi.World.GetItem(new AssetLocation("vintagee:trinket-zeroring")) as ItemEmcTrinket;
                 if (ring == null) return "no zero ring";
-                return Show(Measure(() => { if (ring.Kind == null) throw new InvalidOperationException(); }, 1000000));
+                return Pair(Measure(() => { string k = ring.Variant?["type"] ?? ""; }, 1000000), Measure(() => { if (ring.Kind == null) throw new InvalidOperationException(); }, 1000000));
             });
         }
     }

@@ -73,6 +73,7 @@ namespace VintageE
                 Check1101();
                 Check1110();
                 Check1211();
+                CheckSpeedups();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -220,7 +221,12 @@ namespace VintageE
                         Line("  fluid where the water shot landed: " + (placed?.Code?.ToString() ?? "none"));
                         Check(fire == null || !fire.Alive, "fireball landed");
                         Block onTop = sapi.World.BlockAccessor.GetBlock(woodPos.UpCopy());
-                        Check(onTop?.Code?.Path == "fire", $"fireball set the planks alight ({onTop?.Code?.ToString() ?? "nothing"} on top)");
+                        // Rain and snow put the game's fire out within seconds (each run is a new world with its own
+                        // weather), so with precipitation there a missing fire says nothing about the fireball.
+                        float falling = 0;
+                        try { falling = sapi.World.BlockAccessor.GetClimateAt(woodPos, EnumGetClimateMode.NowValues)?.Rainfall ?? 0; } catch { }
+                        if (onTop?.Code?.Path != "fire" && falling > 0.04f) Line($"  fireball on planks: no fire after 4 s, but it is raining or snowing there ({falling:0.##}), which puts fire out: not judged");
+                        else Check(onTop?.Code?.Path == "fire", $"fireball set the planks alight ({onTop?.Code?.ToString() ?? "nothing"} on top, precipitation {falling:0.##})");
                     }
                     catch (Exception e) { Check(false, "projectile check threw " + e); }
                 }, 4000);
@@ -1320,6 +1326,164 @@ namespace VintageE
         }
 
         /// <summary>1.21.1: fixes from the bug check of 1.21.0.</summary>
+        /// <summary>The 1.21.1 speed-ups: each has to give the same answers as the slow way it replaces.</summary>
+        void CheckSpeedups()
+        {
+            // Players' EMC and knowledge moved from the watched attributes to the entity's own, sent to their owner alone.
+            var watched = new TreeAttribute();
+            var own = new TreeAttribute();
+            watched.SetDouble(PlayerEmc.EmcKey, 50);
+            watched.SetStringArray(PlayerEmc.KnownKey, new[] { "i:game:stick", "b:game:rock-granite" });
+            bool moved = PlayerEmc.MigrateTree(watched, own);
+            string[] ownKnown = own.GetStringArray(PlayerEmc.KnownKey) ?? Array.Empty<string>();
+            Check(moved && own.GetDouble(PlayerEmc.EmcKey) == 50 && ownKnown.SequenceEqual(new[] { "i:game:stick", "b:game:rock-granite" })
+                && !watched.HasAttribute(PlayerEmc.EmcKey) && !watched.HasAttribute(PlayerEmc.KnownKey),
+                $"a save from before 1.21.1 keeps its EMC and knowledge when they move out of the synced attributes ({own.GetDouble(PlayerEmc.EmcKey)} EMC, {ownKnown.Length} known)");
+            Check(!PlayerEmc.MigrateTree(watched, own) && own.GetDouble(PlayerEmc.EmcKey) == 50 && (own.GetStringArray(PlayerEmc.KnownKey)?.Length ?? 0) == 2,
+                "moving them a second time changes nothing");
+            // A world that went back to an older version for a while has both: nothing of either is lost.
+            watched.SetDouble(PlayerEmc.EmcKey, 5);
+            watched.SetStringArray(PlayerEmc.KnownKey, new[] { "i:game:stick", "i:game:flint" });
+            PlayerEmc.MigrateTree(watched, own);
+            ownKnown = own.GetStringArray(PlayerEmc.KnownKey) ?? Array.Empty<string>();
+            Check(own.GetDouble(PlayerEmc.EmcKey) == 55 && ownKnown.SequenceEqual(new[] { "i:game:stick", "b:game:rock-granite", "i:game:flint" }),
+                $"EMC and knowledge saved by an older version in between are added, not dropped ({own.GetDouble(PlayerEmc.EmcKey)} EMC, {string.Join(" ", ownKnown)})");
+            var brokenOld = new TreeAttribute();
+            brokenOld.SetDouble(PlayerEmc.EmcKey, double.NaN);
+            var fresh = new TreeAttribute();
+            PlayerEmc.MigrateTree(brokenOld, fresh);
+            Check(fresh.GetDouble(PlayerEmc.EmcKey, -1) == 0, "a broken old balance (not a number) moves over as 0");
+
+            // What a player's game is sent: single keys while that is enough, the whole list otherwise.
+            var changes = new PlayerEmc.PendingChanges { Emc = true };
+            changes.Note("i:game:flint", true);
+            changes.Note("i:game:stick", false);
+            PlayerEmcPacket sent = changes.Take(12.5, new[] { "b:game:rock-granite", "i:game:flint" });
+            Check(sent.HasEmc && sent.Emc == 12.5 && !sent.HasKnown && sent.Known == null && sent.Learned?.Length == 1 && sent.Learned[0] == "i:game:flint"
+                && sent.Forgotten?.Length == 1 && sent.Forgotten[0] == "i:game:stick" && !changes.Any,
+                "a player's game is sent their new balance and just the keys learned and forgotten");
+            changes.Note("i:game:flint", true);
+            changes.Note("i:game:flint", false);
+            sent = changes.Take(0, new[] { "b:game:rock-granite" });
+            Check(!sent.HasEmc && sent.HasKnown && sent.Known.Length == 1 && sent.Learned == null && sent.Forgotten == null,
+                "a key learned and forgotten in the same moment sends the whole list instead (so the order can't drift)");
+
+            // The game's side: the same array while nothing changes (windows redraw their list when it is a new one).
+            string[] mine = { "i:game:stick", "b:game:rock-granite" };
+            string[] after = PlayerEmc.ApplyKnown(mine, new PlayerEmcPacket { HasEmc = true, Emc = 3 });
+            bool sameArray = ReferenceEquals(after, mine);
+            after = PlayerEmc.ApplyKnown(mine, new PlayerEmcPacket { Learned = new[] { "i:game:flint", "i:game:stick" }, Forgotten = new[] { "b:game:rock-granite" } });
+            bool delta = !ReferenceEquals(after, mine) && after.SequenceEqual(new[] { "i:game:stick", "i:game:flint" }) && mine.Length == 2;
+            string[] whole = { "i:game:clay-blue" };
+            Check(sameArray && delta && ReferenceEquals(PlayerEmc.ApplyKnown(mine, new PlayerEmcPacket { HasKnown = true, Known = whole }), whole)
+                && ReferenceEquals(PlayerEmc.ApplyKnown(mine, new PlayerEmcPacket { Learned = new[] { "i:game:stick" } }), mine),
+                $"a game applies what it is sent: balance only keeps the list, keys are added and taken out ({string.Join(" ", after)}), a whole list replaces it");
+            Check(PlayerEmc.GetEmc(null) == 0 && PlayerEmc.GetKnown(null).Length == 0 && !PlayerEmc.Learn(null, "i:game:stick") && PlayerEmc.TakeChanges(null) == null,
+                "no player: no EMC, no knowledge, nothing to send");
+
+            // The table's packet is kept until the table changes.
+            EmcTablePacket first = mod.Emc.ToPacket();
+            bool kept = ReferenceEquals(first, mod.Emc.ToPacket());
+            int revision = mod.Emc.Revision;
+            double costBefore = mod.Config.TrinketCostMultiplier;
+            mod.Emc.TrinketCostMultiplier = costBefore + 1;
+            EmcTablePacket second = mod.Emc.ToPacket();
+            mod.Emc.TrinketCostMultiplier = costBefore;
+            EmcTablePacket third = mod.Emc.ToPacket(), built = mod.Emc.BuildPacket();
+            Check(kept && mod.Emc.Revision > revision && !ReferenceEquals(first, second) && Math.Abs(second.TrinketCostMultiplier - costBefore - 1) < 1e-9
+                && Math.Abs(third.TrinketCostMultiplier - costBefore) < 1e-9 && third.ItemIds.SequenceEqual(built.ItemIds) && third.ItemValues.SequenceEqual(built.ItemValues)
+                && third.BlockIds.SequenceEqual(built.BlockIds) && third.BlockValues.SequenceEqual(built.BlockValues) && (third.DataKeys ?? new string[0]).SequenceEqual(built.DataKeys ?? new string[0]),
+                "the table sent to players is kept while nothing changes, made again as soon as something does, and is the same as one built from scratch");
+
+            // The magnet's and gem's filter by items gives the answers the filter by keys gives.
+            Item tabletItem = sapi.World.GetItem(new AssetLocation("vintagee:transmutationtablet"));
+            CollectibleObject graniteRock = sapi.World.GetBlock(new AssetLocation("game:rock-granite")), andesiteRock = sapi.World.GetBlock(new AssetLocation("game:rock-andesite"));
+            CollectibleObject stickItem = sapi.World.GetItem(new AssetLocation("game:stick"));
+            if (tabletItem != null && graniteRock != null && andesiteRock != null && stickItem != null)
+            {
+                var filterTablet = new ItemStack(tabletItem);
+                bool agree = TabletMagnet.Passes(filterTablet, graniteRock) == TabletMagnet.Passes(filterTablet, graniteRock, sapi.World);
+                ((TreeAttribute)filterTablet.Attributes).SetStringArray(TabletMagnet.FilterKey, new[] { PlayerEmc.KeyOf(graniteRock), "", "i:game:nosuchitem-gone", PlayerEmc.KeyOf(stickItem) });
+                foreach (bool exclude in new[] { false, true })
+                {
+                    filterTablet.Attributes.SetBool(TabletMagnet.ExcludeKey, exclude);
+                    filterTablet.Attributes.SetBool(GemFilter.OnlyKey, exclude);
+                    foreach (CollectibleObject c in new[] { graniteRock, andesiteRock, stickItem })
+                    {
+                        agree &= TabletMagnet.Passes(filterTablet, c) == TabletMagnet.Passes(filterTablet, c, sapi.World);
+                        agree &= GemFilter.Passes(filterTablet, c) == GemFilter.Passes(filterTablet, c, sapi.World);
+                    }
+                }
+                // A changed filter is a new stored list: the items found for the old one must not answer for it.
+                ((TreeAttribute)filterTablet.Attributes).SetStringArray(TabletMagnet.FilterKey, new[] { PlayerEmc.KeyOf(andesiteRock) });
+                filterTablet.Attributes.SetBool(TabletMagnet.ExcludeKey, false);
+                agree &= TabletMagnet.Passes(filterTablet, andesiteRock, sapi.World) && !TabletMagnet.Passes(filterTablet, graniteRock, sapi.World);
+                Check(agree && TabletMagnet.FilterItems(filterTablet, sapi.World).Length == 1, "the magnet's and gem's filter by items gives the same answers as by keys, and follows a changed filter");
+            }
+
+            // Hostile creatures by kind: the remembered answer is the list's answer, and a changed list is asked again.
+            EntityProperties wolfType = sapi.World.EntityTypes.FirstOrDefault(t => t?.Code != null && t.Code.Domain == "game" && t.Code.Path.StartsWith("wolf-", StringComparison.Ordinal));
+            EntityProperties henType = sapi.World.EntityTypes.FirstOrDefault(t => t?.Code != null && t.Code.Domain == "game" && t.Code.Path.StartsWith("chicken-", StringComparison.Ordinal));
+            if (wolfType != null && henType != null && mod.Trinkets != null)
+            {
+                Entity wolf = sapi.World.ClassRegistry.CreateEntity(wolfType), hen = sapi.World.ClassRegistry.CreateEntity(henType);
+                wolf.Code = wolfType.Code;
+                hen.Code = henType.Code;
+                bool wolfListed = mod.Trinkets.MatchesHostileList(wolf.Code, out _), henListed = mod.Trinkets.MatchesHostileList(hen.Code, out _);
+                bool sameAnswers = mod.Trinkets.IsHostile(wolf) == wolfListed && mod.Trinkets.IsHostile(hen) == henListed && mod.Trinkets.IsHostile(wolf) == wolfListed;
+                var listBefore = new List<string>(mod.Config.HostileCreatures);
+                mod.Config.HostileCreatures = new List<string> { "game:chicken-*" };
+                mod.Trinkets.ResetHostile();
+                bool followsList = mod.Trinkets.IsHostile(hen) && !mod.Trinkets.IsHostile(wolf);
+                mod.Config.HostileCreatures = listBefore;
+                mod.Trinkets.ResetHostile();
+                Check(sameAnswers && followsList && mod.Trinkets.IsHostile(wolf) == wolfListed && mod.Trinkets.IsHostile(hen) == henListed,
+                    $"hostile creatures are remembered by kind and asked again when the list changes (wolf {wolfListed}, chicken {henListed})");
+            }
+
+            // Emc Craft: remembering which learned items fit an ingredient gives the plans the full search gives.
+            string[] knownAll = mod.Emc.All.Keys.Where(c => c?.Code != null && CollectibleIndex.IsListed(c) && mod.Emc.CanTransmute(c)).Take(1500).Select(PlayerEmc.KeyOf).ToArray();
+            List<GridRecipe> recipes = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null).ToList();
+            int every = Math.Max(1, recipes.Count / 60), differing = 0, compared = 0;
+            try
+            {
+                for (int i = 0; i < recipes.Count; i += every)
+                {
+                    mod.EmcCrafting.RememberMatches = false;
+                    EmcCraft.Plan slow = mod.EmcCrafting.MakePlan(recipes[i], knownAll, null);
+                    mod.EmcCrafting.RememberMatches = true;
+                    EmcCraft.Plan quick = mod.EmcCrafting.MakePlan(recipes[i], knownAll, null), again = mod.EmcCrafting.MakePlan(recipes[i], knownAll, null);
+                    compared++;
+                    if (!SamePlan(slow, quick) || !SamePlan(slow, again)) differing++;
+                }
+            }
+            finally { mod.EmcCrafting.RememberMatches = true; }
+            Check(compared > 0 && differing == 0, $"Emc Craft plans the same fill whether it remembers which learned items fit an ingredient or searches them all ({compared} recipes, {differing} differ)");
+
+            // A trinket's effects into the tick's buffer are the ones the list gives.
+            bool sameEffects = true;
+            var effectBuffer = new string[4];
+            foreach (string type in new[] { "ringofarcana", "voidring", "zeroring", "repairtalisman" })
+            {
+                if (!(sapi.World.GetItem(new AssetLocation("vintagee:trinket-" + type)) is ItemEmcTrinket trinket)) continue;
+                var trinketStack = new ItemStack(trinket);
+                int n = TrinketEffects.EffectsInto(trinket, trinketStack, effectBuffer);
+                sameEffects &= TrinketEffects.EffectsOf(trinket, trinketStack).SequenceEqual(effectBuffer.Take(n)) && trinket.Kind == type;
+            }
+            Check(sameEffects, "a trinket's effects in the tick are the ones its list gives, and its kind is its type");
+        }
+
+        static bool SamePlan(EmcCraft.Plan a, EmcCraft.Plan b)
+        {
+            if (a == null || b == null) return a == b;
+            if (Math.Abs(a.Cost - b.Cost) > 1e-9 || Math.Abs(a.NetCost - b.NetCost) > 1e-9 || !a.Missing.SequenceEqual(b.Missing) || !a.NotMakeable.SequenceEqual(b.NotMakeable)) return false;
+            for (int i = 0; i < a.Cells.Length; i++)
+            {
+                if (a.Cells[i]?.Collectible != b.Cells[i]?.Collectible || (a.Cells[i]?.StackSize ?? 0) != (b.Cells[i]?.StackSize ?? 0)) return false;
+            }
+            return true;
+        }
+
         void Check1211()
         {
             var inv = System.Globalization.CultureInfo.InvariantCulture;
