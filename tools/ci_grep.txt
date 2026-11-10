@@ -28,3 +28,15 @@ path:itemtypes/tool/shears.json
 tool-knife
 tool-scythe
 tool-chisel
+path:itemtypes/resource/charcoal.json
+path:itemtypes/resource/coke.json
+path:itemtypes/resource/saltpeter.json
+path:itemtypes/resource/gem.json
+path:itemtypes/resource/nugget.json
+path:itemtypes/resource/ingot.json
+path:itemtypes/resource/workitem.json
+path:recipes/smithing/metalplate.json
+path:recipes/barrel/leather.json
+path:recipes/smithing/hoop.json
+grindingProps
+smeltedRatio
