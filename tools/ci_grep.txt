@@ -20,4 +20,11 @@ path:itemtypes/tool/spear.json
 path:itemtypes/tool/bow.json
 path:entities/nonliving/thrownspear
 path:entities/nonliving/projectile/spear
-"isTool": true
+path:itemtypes/tool/axe
+path:itemtypes/tool/pickaxe.json
+path:itemtypes/tool/shovel.json
+path:itemtypes/tool/hoe.json
+path:itemtypes/tool/shears.json
+tool-knife
+tool-scythe
+tool-chisel
