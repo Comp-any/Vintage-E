@@ -1,0 +1,20 @@
+== The live values against a fresh install ==
+Vintage-E mapped once more with default settings and only the base game's recipes (what a fresh install gives), then once more with your settings but still without other mods. Comparing the three separates your settings' changes from your mods'.
+Your settings change 0 base-game values; your other mods change 2038.
+
+== Changed by other mods (2038) ==
+  Through Expanded Matter (em): 766 values
+  Through Tailor's Delight (tailorsdelight): 428 values
+  Through no single mod (244 values: another mod's patch to a base-game recipe or item, or a guess that moved)
+  Through Wool & More (wool): 212 values
+  Through Primitive Survival (primitivesurvival): 84 values
+  Through Wildcraft: Fruits and Nuts (wildcraftfruit): 80 values
+  Through Tankards, Goblets and More! (tankardsandgoblets): 60 values
+  Through Butchering (butchering): 59 values
+  Through Bricklayers (bricklayers): 51 values
+  Through Aldi's Classes (aldiclasses): 29 values
+  Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

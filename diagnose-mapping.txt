@@ -1,0 +1,269 @@
+== Is EMC mapped at all? ==
+✓ EMC mapped: 45125 values, worked out in 8883 ms.
+  23607 of the 25746 blocks and items in the creative inventory have a value (91.7%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 6 loaded, giving 2571 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  2 recipes were skipped because the mapper couldn't read them (an ingredient or output it doesn't know). The server log lists them at Debug level.
+✓ Compatibility files: 5 active, valuing 2073 items.
+  Butchering: 84
+  Expanded Matter: 0
+  From Golden Combs: 1400
+  Primitive Survival: 105
+  Wildcraft: Fruits and Nuts: 484
+  Files waiting for a mod that isn't loaded: Wildcraft: Trees and Shrubs. Nothing to do.
+⚠ Mod coverage: 5 mods have values for less than three quarters of their items:
+    Rustbound Magic (rustboundmagic) (/emc diagnose mod rustboundmagic): 504 of 2360 valued (21.4%)
+    chiseltools (chiseltools) (/emc diagnose mod chiseltools): 97 of 158 valued (61.4%)
+    BetterRuins (betterruins) (/emc diagnose mod betterruins): 0 of 30 valued (0.0%)
+    xlib (/emc diagnose mod xlib): 0 of 29 valued (0.0%)
+    Translocator Engineering Redux (translocatorengineeringredux) (/emc diagnose mod translocatorengineeringredux): 1 of 7 valued (14.3%)
+  → Click a mod to see why, and which raw materials would fix the most items at once.
+⚠ Value loops: 9, holding 18 items.
+  In a loop, each item is only made from the next one, so none of them can get a value first.
+    Bloodstone (rustboundmagic:bloodstone) → Bloodstone block (rustboundmagic:runestone-bloodstone)
+    Moonstone (rustboundmagic:moonstone) → Moonstone block (rustboundmagic:runestone-moonstone)
+    Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) → Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow)
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+• Items without a value: 2139 (1907 that nothing makes, 220 waiting on an ingredient, 12 in loops).
+  The biggest families:
+    rustboundmagic:toolstaff (396): Arcanus staff (rustboundmagic:toolstaff-apprentice-staffcrude-plain)
+    rustboundmagic:grimoire (246): Befriend Animal I (rustboundmagic:grimoire-befriendanimal1)
+    rustboundmagic:toolspellscroll (246): Spell Scroll: Befriend Animal I (rustboundmagic:toolspellscroll-befriendanimal1)
+    rustboundmagic:armorbody (108): Apprentice robe (rustboundmagic:armorbody-basic-plain-tier1)
+    rustboundmagic:armorhead (108): Apprentice hat (rustboundmagic:armorhead-basic-plain-tier1)
+    rustboundmagic:armorlegs (108): Apprentice trousers (rustboundmagic:armorlegs-basic-plain-tier1)
+    rustboundmagic:itementityfamiliar (69): Pet: Black bear (rustboundmagic:itementityfamiliar-bear-1)
+    rustboundmagic:spellcipherempty (33): Light spell cipher (rustboundmagic:spellcipherempty-tier1-light-none)
+    rustboundmagic:magicstationancientmarker (32): Inert ancient marker (rustboundmagic:magicstationancientmarker-inert-1)
+    rustboundmagic:magicstationancientmonolith (32): Inert ancient monolith (rustboundmagic:magicstationancientmonolith-inert-1)
+    rustboundmagic:magicstationancientpylon (32): Inert ancient pylon (rustboundmagic:magicstationancientpylon-inert-1)
+    rustboundmagic:magicstationancientspire (32): Inert ancient spire (rustboundmagic:magicstationancientspire-inert-1)
+    betterruins:br (30): Gatekeeper's Blueprint (betterruins:br-schematic-door)
+    chiseltools:halfcreativelight (29): Light 32 (chiseltools:halfcreativelight-32)
+    xlib:skillbook (29): Brick red book (xlib:skillbook-normal-brickred)
+  → Click a family's example to see why it has no value and what fixes it. /emc missing lists them all and can set values from its window.
+• Mapping statistics: 80982 recipes and processes from 23 sources.
+  30551 values from recipes and processing, 3659 priced from a recipe that uses them, 1545 from fixed ratios, 259 from trader prices, 4819 copied from a look-alike variant, 1602 fallback values, 119 estimated as fuel or food.
+  51 items sit in recipe loops that kept making each other cheaper; they keep their first value. 0 had to be dropped. /emc loop lists them under settled loops.
+⚠ Free EMC: 40 items can be made for less than they're worth (the worst gives 3,757.29 free per craft).
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+⚠ Blacklist: 1 blacklisted items hold back 14 recipes.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+⚠ Metal tiers: 15 tool or armour families out of order.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+• Skipped recipes: 2 (unreadable, or naming an ingredient that doesn't exist).
+  Every skipped recipe and why (/emc diagnose skipped)
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 860 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 126 value(s) were copied from a look-alike variant in a family that doesn't agree (cover (48), color (46), colour (20), variant (9), stage (2), rock (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  cover: 48 copied value(s), e.g.
+    game:block-beam-plane-blackclay-snow (game:beam-plane-blackclay-snow) 0 ← Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free); the family runs from Black ceramic shingle roof beam (game:beam-plane-blackclay-free) 0 to Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free) 0
+    game:block-beam-plane-brownclay-snow (game:beam-plane-brownclay-snow) 0 ← Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free); the family runs from Brown ceramic shingle roof beam (game:beam-plane-brownclay-free) 0 to Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free) 0
+    game:block-beam-plane-creamclay-snow (game:beam-plane-creamclay-snow) 0 ← Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free); the family runs from Cream ceramic shingle roof beam (game:beam-plane-creamclay-free) 0 to Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free) 0
+    ... and 45 more
+  color: 46 copied value(s), e.g.
+    Temporal cooking pot (aldiclasses:metalpot-temporal-fired) 12,090.4 ← Gold plated cooking pot (aldiclasses:metalpot-gold-fired); the family runs from Copper cooking pot (aldiclasses:metalpot-copper-fired) 34.03 to Gold plated cooking pot (aldiclasses:metalpot-gold-fired) 12,090.4
+    Ceramic Honey Pot (Chthonic) (fromgoldencombs:hivetop-chthonic-harvestable) 878.08 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.08
+    Ceramic Honey Pot (Cowrie) (fromgoldencombs:hivetop-cowrie-harvestable) 878.08 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.08
+    ... and 43 more
+  colour: 20 copied value(s), e.g.
+    Throwable Glass Flask (alchemy:throwableflask-blue) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-red) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-yellow) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    ... and 17 more
+  variant: 9 copied value(s), e.g.
+    storagevessel-abyss (game:storagevessel-abyss) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-chains (game:storagevessel-chains) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-entrenched (game:storagevessel-entrenched) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    ... and 6 more
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+• Other mods: 8 were skipped by the game because something they need isn't installed: configlib (needs vsimgui@1.2.0), fagothic (needs facore@1.4.0, attributerenderinglibrary@3.2.0), fagreenwich (needs facore@1.4.0, attributerenderinglibrary@3.2.0), noticeboard (needs attributerenderinglibrary@3.2.0), playermodellib (needs overhaullib@2.0.10), tabletopgames (needs attributerenderinglibrary@3.0.0), vinconomy (needs commercially@0.1.1), xskillsfork (needs vsimgui)
+  The game leaves these mods out entirely, so this doesn't break Vintage-E, but their items and recipes don't exist in this world and can't have values.
+  → Install what they need from the Mod DB (the name after 'needs' is a mod id), or remove them.
+• Other mods: 1 JSON patch(es) failed to apply (by mod: aldiclasses (1)).
+  Not Vintage-E's doing: the game reports each patch that didn't fit. The items those patches change may be missing or odd, and their values with them. The mod's author can fix the patch.
+• Other mods: 10 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: armory (9), fromgoldencombs (1)).
+  The game ignores those recipes, so Vintage-E can't learn from them. Usually the mod named expects another mod, or an older version of one, to be installed.
+  Show everything other mods did at start-up (/emc diagnose startup)
+
+== Your game ==
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+
+== Server log ==
+✓ Server log: no Vintage-E errors or warnings.
+
+== Other mods changing recipes and items ==
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Alchemy (alchemy) (/emc diagnose mod alchemy): 1639 recipe patches
+    herbracks.json → alchemy:recipes/grid/herbrack.json
+    herbracks.json → alchemy:recipes/smithing/herbracktop.json
+    herbracks.json → alchemy:recipes/smithing/4hooks.json
+  BetterRuins (betterruins) (/emc diagnose mod betterruins): 430 recipe patches
+    makes_cupronickelnails_smithable.json → game:recipes/smithing/nails.json
+    makes_cupronickelnails_smithable.json → game:recipes/smithing/nails.json
+    bricklayers_anti_duplication_slateroofingjson → bricklayers:recipes/grid/recycle/block_slateroofing_to_stones.json
+  Wildcraft: Fruits and Nuts (wildcraftfruit) (/emc diagnose mod wildcraftfruit): 289 recipe patches, 12 patches to how items are processed (ground storage, squeezing, burning, drying)
+    tree_module_switch.json → wildcraftfruit:recipes/grid/cedarnut.json
+    tree_module_switch.json → wildcraftfruit:recipes/barrel/walnut_dye.json
+    tree_module_switch.json → wildcraftfruit:recipes/grid/acorn_amulet.json
+  Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 166 recipe patches
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+    hooknuggetrecipe.json → butchering:recipes/smithing/onebutcheringhook.json
+    hooknuggetrecipe.json → butchering:recipes/grid/butcherhook.json
+    dough.json → expandedfoods:recipes/kneading/doughball.json
+  Primitive Survival (primitivesurvival) (/emc diagnose mod primitivesurvival): 70 recipe patches, 21 patches to how items are processed (ground storage, squeezing, burning, drying)
+    ps-raft.json → primitivesurvival:recipes/grid/raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaperegion/recipes/grid/floralzonescaperegion-raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaribbeanregion/recipes/grid/floralzonescaribbeanregion-raft.json
+  Aldi's Classes (aldiclasses) (/emc diagnose mod aldiclasses): 77 recipe patches, 5 patches to how items are processed (ground storage, squeezing, burning, drying)
+    remove-hackle-recipe.json → aldiclasses:recipes/smithing/hackle.json
+    remove-threadweaver-recipes.json → aldiclasses:recipes/grid/threadweaver.json
+    remove-threadweaver-recipes.json → aldiclasses:recipes/grid/threadweaver.json
+  Millwright (millwright) (/emc diagnose mod millwright): 82 recipe patches
+    windmillrotorud-oils.json → millwright:recipes/grid/windmillrotorud.json
+    windmillrotorud.json → millwright:recipes/grid/windmillrotorud.json
+    windmillrotor.json → millwright:recipes/grid/windmillrotor.json
+  Wool & More (wool) (/emc diagnose mod wool): 64 recipe patches
+    survival-itemtypes-hoovedwearables-blanket.json → game:recipes/grid/clothes/blanket.json
+    survival-itemtypes-hoovedwearables-blanket.json → game:recipes/grid/clothes/blanket.json
+    survival-itemtypes-wearable-upperbodyover.json → wool:recipes/grid/clothing/wool/upperbodyover.json
+  RP Voice Chat (rpvoicechat) (/emc diagnose mod rpvoicechat): 51 recipe patches
+    additional-content-recipes.json → rpvoicechat:recipes/grid/handbell.json
+    additional-content-recipes.json → rpvoicechat:recipes/grid/callbell.json
+    additional-content-recipes.json → rpvoicechat:recipes/grid/royalhorn.json
+  Expanded Matter (em) (/emc diagnose mod em): 41 recipe patches, 9 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-barrel-dye-blue.json → game:recipes/barrel/dye/blue.json
+    survival-recipes-barrel-dye-pink.json → game:recipes/barrel/dye/pink.json
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+  Fauna of the Stone Age: Casuariidae Plus (casuariidae) (/emc diagnose mod casuariidae): 48 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Overhaul lib legacy compat (overhaulliblegacycompat) (/emc diagnose mod overhaulliblegacycompat): 42 recipe patches
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+  FoodShelves (foodshelves) (/emc diagnose mod foodshelves): 23 recipe patches
+    expandedfoods.json → foodshelves:recipes/grid/shelves/barshelf.json
+    expandedfoods.json → foodshelves:recipes/grid/shelves/barshelf.json
+    expandedfoods.json → foodshelves:recipes/grid/shelves/sushishelf.json
+  Fauna of the Stone Age: Bovinae (bovinae) (/emc diagnose mod bovinae): 16 recipe patches
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+  Fauna of the Stone Age: Capreolinae (capreolinae) (/emc diagnose mod capreolinae): 12 recipe patches
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+  Bricklayers (bricklayers) (/emc diagnose mod bricklayers): 7 recipe patches, 2 patches to how items are processed (ground storage, squeezing, burning, drying)
+    smelting_obsidian.json → em:itemtypes/resource/crushed-stone.json
+    survival-recipes-grid-stonebrick.json → game:recipes/grid/stonebrick.json
+    survival-itemtypes-resource-crushed-bonemeal.json → game:itemtypes/resource/crushed/bonemeal.json
+  Fauna of the Stone Age: Elephantidae (elephantidae) (/emc diagnose mod elephantidae): 8 recipe patches
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+  Rustbound Magic (rustboundmagic) (/emc diagnose mod rustboundmagic): 5 patches to how items are processed (ground storage, squeezing, burning, drying)
+    metalinfo-eldrathium.json → game:itemtypes/resource/workitem.json
+    metalinfo-eldrathium.json → game:itemtypes/resource/ingot.json
+    metalinfo-eldrathium.json → game:itemtypes/resource/metalplate.json
+  Tankards, Goblets and More! (tankardsandgoblets) (/emc diagnose mod tankardsandgoblets): 5 recipe patches
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+  Coinage (coinage) (/emc diagnose mod coinage): 2 patches to how items are processed (ground storage, squeezing, burning, drying)
+    smeltingratios.json → coinage:itemtypes/resource/planchet.json
+    smeltingratios.json → coinage:itemtypes/resource/coin.json
+  Molds (molds) (/emc diagnose mod molds): 1 recipe patches
+    butchering-hook.json → molds:recipes/clayforming/BurcheringHook.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Values out of line with their family ==
+⚠ Values out of line: 57 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Currant flower wine (wildcraftfruit:flowerwine-currant) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-currant + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-currant
+  Honeysuckle flower wine (wildcraftfruit:flowerwine-honeysuckle) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-honeysuckle + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-honeysuckle
+  Fruit vinegar (wildcraftfruit:vinegarportion-fruit) 0 (its family's middle value is 0.08)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1 wildcraftfruit:flowerwine-currant (or 6 more) + 1 wildcraftfruit:vinegarmother-fresh -> 500 wildcraftfruit:vinegarportion-fruit
+  Orange wool twine (wool:twine-wool-orange) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-orange -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Purple wool twine (wool:twine-wool-purple) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-purple -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Red wool twine (wool:twine-wool-red) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-red -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark blue wool twine (wool:twine-wool-darkblue) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkblue -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark brown wool twine (wool:twine-wool-darkbrown) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkbrown -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark green wool twine (wool:twine-wool-darkgreen) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkgreen -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark red wool twine (wool:twine-wool-darkred) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkred -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dirty copper pot (aldiclasses:metalpotdirty-copper-empty) 32.63 (its family's middle value is 2,397)
+    worked backwards from grid: 1 aldiclasses:metalpotdirty-copper-empty + 100 game:dilutedboraxportion -> 1 aldiclasses:metalpot-copper-fired
+  Honey-pots flowers (wildcraftfruit:flower-honeypots) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Honeysuckle flowers (wildcraftfruit:flower-honeysuckle) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Currant flowers (wildcraftfruit:flower-currant) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Red wool cloth (wool:cloth-wool-red) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-red + 1 wool:twine-wool-red + 1 game:stick + 1 wool:twine-wool-red + 1 wool:twine-wool-red -> 1 wool:cloth-wool-red
+  Orange wool cloth (wool:cloth-wool-orange) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-orange + 1 wool:twine-wool-orange + 1 game:stick + 1 wool:twine-wool-orange + 1 wool:twine-wool-orange -> 1 wool:cloth-wool-orange
+  Purple wool cloth (wool:cloth-wool-purple) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-purple + 1 wool:twine-wool-purple + 1 game:stick + 1 wool:twine-wool-purple + 1 wool:twine-wool-purple -> 1 wool:cloth-wool-purple
+  Dark blue wool cloth (wool:cloth-wool-darkblue) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue + 1 game:stick + 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue -> 1 wool:cloth-wool-darkblue
+  Dark brown wool cloth (wool:cloth-wool-darkbrown) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown + 1 game:stick + 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown -> 1 wool:cloth-wool-darkbrown
+  Dark green wool cloth (wool:cloth-wool-darkgreen) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen + 1 game:stick + 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen -> 1 wool:cloth-wool-darkgreen
+  Dark red wool cloth (wool:cloth-wool-darkred) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred + 1 game:stick + 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred -> 1 wool:cloth-wool-darkred
+  Passionflower (wildcraftfruit:flower-passionflower) 639.61 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 4 wildcraftfruit:flower-passionflower + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-passionflower
+  Rose petals (wildcraftfruit:flower-rose) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-rose + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-rose
+  Hibiscus petals (wildcraftfruit:flower-hibiscus) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-hibiscus + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-hibiscus
+  Orange blossoms (wildcraftfruit:flower-orangeblossom) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-orangeblossom + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-orangeblossom
+  ... and 32 more
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== What are you seeing? ==
+Pick the closest. Each opens a report for just that; Back returns here.
+An item shows no EMC value: walk me through it (/emc diagnose novalue)
+Describe what's happening (step by step) (/emc diagnose symptom)
+What the table and tablet refused lately, and why (/emc diagnose watch)
+Arcane Tablet: the Emc Craft link or crafting window isn't working (/emc diagnose emccraft)
+A machine, chute, the tablet's magnet, a Klein star or a trinket isn't doing what it should (/emc diagnose machines)
+One block or item has no value (hold it first) (/emc diagnose hand)
+Everything from one mod has no value (/emc diagnose mods)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Nothing has a value, or I want every mapping check (/emc diagnose mapping)
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+What changed since the previous mapping (/emc diagnose changes)
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+A player's state (knowledge, EMC, mode) (/emc diagnose players)
+Put together a bug report to post (/emc diagnose bugreport)
+The full list of missing items is in /emc missing, where values can be set from the window.
+From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping | trace hand | trace <code>.
