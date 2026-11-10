@@ -144,9 +144,18 @@ namespace VintageE
         /// A key for what an ingredient accepts. Not the ingredient object: the handbook copies some recipes each time
         /// it builds a page, so the same ingredient comes back as a new object and would miss the cache every time.
         /// </summary>
-        static string IngredientKey(CraftingRecipeIngredient ing) =>
+        internal static string IngredientKey(CraftingRecipeIngredient ing) =>
             ing.Type + "|" + ing.Code + "|" + ing.Name + "|" + (ing.AllowedVariants == null ? "" : string.Join(",", ing.AllowedVariants))
             + "|" + (ing.SkipVariants == null ? "" : string.Join(",", ing.SkipVariants)) + "|" + TagsKey(ing) + "|" + ing.ResolvedItemStack?.Attributes?.ToJsonToken();
+
+        // The key of each ingredient object, made once: while a recipe is on screen its ingredients are the same
+        // objects every frame, and the key (joined variants, the tags written out and encoded, the stack's data as
+        // JSON) was put together again for each of them on every frame.
+        static readonly ConditionalWeakTable<CraftingRecipeIngredient, string> ingredientKeys = new ConditionalWeakTable<CraftingRecipeIngredient, string>();
+        static readonly ConditionalWeakTable<CraftingRecipeIngredient, string>.CreateValueCallback makeIngredientKey = IngredientKey;
+
+        /// <summary><see cref="IngredientKey"/>, remembered for this ingredient object.</summary>
+        internal static string IngredientKeyCached(CraftingRecipeIngredient ing) => ingredientKeys.GetValue(ing, makeIngredientKey);
 
         static string TagsKey(CraftingRecipeIngredient ing)
         {
@@ -183,7 +192,7 @@ namespace VintageE
 
                 string[] known = PlayerEmc.GetKnown(player);
                 var cache = knownIngredients.GetValue(known, _ => new Dictionary<string, bool>());
-                string ingKey = IngredientKey(ing);
+                string ingKey = IngredientKeyCached(ing);
                 if (!cache.TryGetValue(ingKey, out bool learned))
                 {
                     learned = false;

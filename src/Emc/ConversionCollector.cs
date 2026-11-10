@@ -366,13 +366,13 @@ namespace VintageE
         }
 
         /// <summary>How to read each optional member of each type, found once (it was looked up by name for every ingredient of every recipe, in the mapping and again in the cache fingerprint).</summary>
-        static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), Func<object, object>> optionalMembers = new System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), Func<object, object>>();
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), System.Func<object, object>> optionalMembers = new System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), System.Func<object, object>>();
 
         /// <summary>A public field's value or, if there is none (or it is null), a public property's; null if the type has neither.</summary>
         public static object OptionalMember(object obj, string member)
         {
             if (obj == null) return null;
-            Func<object, object> read = optionalMembers.GetOrAdd((obj.GetType(), member), key =>
+            System.Func<object, object> read = optionalMembers.GetOrAdd((obj.GetType(), member), key =>
             {
                 System.Reflection.FieldInfo field = key.type.GetField(key.member);
                 System.Reflection.PropertyInfo property = key.type.GetProperty(key.member);

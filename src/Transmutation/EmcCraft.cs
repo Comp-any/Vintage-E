@@ -168,7 +168,7 @@ namespace VintageE
             var usedSlots = new HashSet<ItemSlot>();
             List<ItemSlot> carriedList = carried?.Where(s => s?.Itemstack != null).ToList() ?? new List<ItemSlot>();
             var cache = new Dictionary<CraftingRecipeIngredient, ItemStack>();
-            List<ItemStack> knownStacks = null;
+            KnownSet knownStacks = null;
 
             for (int row = 0; row < recipe.Height; row++)
             {
@@ -218,20 +218,53 @@ namespace VintageE
             return plan;
         }
 
-        readonly System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, List<ItemStack>> knownStacksCache = new System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, List<ItemStack>>();
+        /// <summary>
+        /// What one knowledge list can make: every learned key as a stack, and, for each ingredient asked about so far,
+        /// which of those stacks satisfy it. Which stacks fit an ingredient never changes (what they cost does, and is
+        /// read each time), so a recipe's ingredient is matched against everything the player knows once, not every
+        /// time a recipe with it is planned (the handbook plans the recipe on screen, and Fill plans it again).
+        /// </summary>
+        sealed class KnownSet
+        {
+            public List<ItemStack> Stacks = new List<ItemStack>();
+            public readonly Dictionary<string, ItemStack[]> Matches = new Dictionary<string, ItemStack[]>(StringComparer.Ordinal);
+        }
+
+        readonly System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, KnownSet> knownStacksCache = new System.Runtime.CompilerServices.ConditionalWeakTable<ICollection<string>, KnownSet>();
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CraftingRecipeIngredient, string> matchKeys = new System.Runtime.CompilerServices.ConditionalWeakTable<CraftingRecipeIngredient, string>();
+
+        /// <summary>When false, every ingredient is matched against the whole knowledge list each time, as before 1.21.1 (for the benchmark's comparison).</summary>
+        public bool RememberMatches = true;
 
         /// <summary>Every learned key as a stack that could be made (exact versions included), once per knowledge list.</summary>
-        List<ItemStack> KnownStacks(ICollection<string> known) => knownStacksCache.GetValue(known, BuildKnownStacks);
+        KnownSet KnownStacks(ICollection<string> known) => knownStacksCache.GetValue(known, BuildKnownStacks);
 
-        List<ItemStack> BuildKnownStacks(ICollection<string> known)
+        KnownSet BuildKnownStacks(ICollection<string> known)
         {
-            var list = new List<ItemStack>();
+            var set = new KnownSet();
             foreach (string key in known)
             {
                 ItemStack s = TransmutationService.Prototype(mod, api.World, key);
-                if (s?.Collectible != null) list.Add(s);
+                if (s?.Collectible != null) set.Stacks.Add(s);
             }
-            return list;
+            return set;
+        }
+
+        /// <summary>The known stacks that satisfy an ingredient, in the order they were learned.</summary>
+        ItemStack[] MatchesFor(CraftingRecipeIngredient ing, KnownSet known)
+        {
+            // By what the ingredient accepts, not by the object: the handbook hands out copies of the same recipe.
+            string key = matchKeys.GetValue(ing, i => (int)i.MatchingType + "|" + CollectibleBehaviorEmcTooltip.IngredientKey(i));
+            lock (known.Matches)
+            {
+                if (known.Matches.TryGetValue(key, out ItemStack[] matches)) return matches;
+                var list = new List<ItemStack>();
+                foreach (ItemStack s in known.Stacks)
+                {
+                    if (ing.SatisfiesAsIngredient(s, false)) list.Add(s); // stack size isn't checked, so no copy is needed
+                }
+                return known.Matches[key] = list.ToArray();
+            }
         }
 
         /// <summary>
@@ -251,14 +284,16 @@ namespace VintageE
             return value * cost / remaining;
         }
 
-        ItemStack Cheapest(CraftingRecipeIngredient ing, List<ItemStack> knownStacks, out bool anyKnown, bool byWear = false)
+        ItemStack Cheapest(CraftingRecipeIngredient ing, KnownSet knownStacks, out bool anyKnown, bool byWear = false)
         {
             anyKnown = false;
             ItemStack best = null;
             double bestValue = double.MaxValue, bestPrice = double.MaxValue;
-            foreach (ItemStack s in knownStacks)
+            IList<ItemStack> candidates = RememberMatches ? (IList<ItemStack>)MatchesFor(ing, knownStacks) : knownStacks.Stacks;
+            for (int index = 0; index < candidates.Count; index++)
             {
-                if (!ing.SatisfiesAsIngredient(s, false)) continue; // stack size isn't checked, so no copy is needed
+                ItemStack s = candidates[index];
+                if (!RememberMatches && !ing.SatisfiesAsIngredient(s, false)) continue;
                 anyKnown = true;
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
                 double price = mod.Emc.GetValue(s);
