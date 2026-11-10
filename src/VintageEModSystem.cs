@@ -858,12 +858,15 @@ namespace VintageE
             // background mapping enumerates them, which throws "collection was modified" and fails the mapping. The
             // mapper therefore works on a copy taken when the mapping starts.
             VintageEConfig config = snapshot ?? ConfigSnapshot();
+            var clock = Stopwatch.StartNew();
+            long rulesMs = 0, fingerprintMs = 0;
             mappingStage = "loading the value files";
             if (Rules.LoadedFiles.Count == 0 || Rules.DisabledKey != EmcRuleSet.DisabledKeyOf(config.DisabledCompat))
             {
                 Rules = EmcRuleSet.Load(Sapi, Mod.Logger, config.DisabledCompat);
                 worldTransmutation = null;
             }
+            rulesMs = clock.ElapsedMilliseconds;
             var mapper = new EmcMapper(Sapi, config, Rules, Mod.Logger);
             EmcMappingReport report = null;
             mappingStage = "checking the value cache";
@@ -872,6 +875,7 @@ namespace VintageE
                 try
                 {
                     fingerprint = EmcCache.Fingerprint(Sapi, this, Mod.Logger, config);
+                    fingerprintMs = clock.ElapsedMilliseconds - rulesMs;
                     if (allowCache && EmcCache.TryLoad(Sapi, fingerprint, Mod.Logger, out EmcCacheFile cached, out var cachedValues, out var cachedVariants))
                     {
                         report = mapper.FromValues(cachedValues);
@@ -900,8 +904,12 @@ namespace VintageE
                     Mod.Logger.Error("EMC mapping failed ({0}): {1}", reason, e);
                     return null;
                 }
+                long beforeSave = clock.ElapsedMilliseconds;
                 if (config.CacheEmcValues && fingerprint != null) EmcCache.Save(Sapi, fingerprint, report, Mod.Logger);
+                if (config.CacheEmcValues && fingerprint != null) report.AddTiming("writing the cache", clock.ElapsedMilliseconds - beforeSave);
             }
+            if (rulesMs > 0) report.Timings.Insert(0, new KeyValuePair<string, long>("value files", rulesMs));
+            if (config.CacheEmcValues) report.Timings.Insert(0, new KeyValuePair<string, long>("cache fingerprint", fingerprintMs));
             return report;
         }
 
@@ -924,7 +932,9 @@ namespace VintageE
             Emc.Replace(report.Values);
             MirrorSettings();
             Emc.World = Sapi.World;
+            long beforeStackData = sw.ElapsedMilliseconds;
             BuildStackData(report);
+            report.AddTiming("contents and materials table", sw.ElapsedMilliseconds - beforeStackData);
             sw.Stop();
             report.Milliseconds = sw.ElapsedMilliseconds;
             report.MappedAt = DateTime.Now;
@@ -933,8 +943,11 @@ namespace VintageE
                 MappingHistory.Add((report.MappedAt, reason, report.Milliseconds, report.FromCache));
                 if (MappingHistory.Count > 50) MappingHistory.RemoveAt(0);
             }
+            // What follows the mapping proper is timed too: it runs on the game thread whoever did the mapping.
+            var after = Stopwatch.StartNew();
             mappingStage = "writing the value snapshot";
             SnapshotValues(report);
+            report.AddTiming("(after) value snapshot", after.ElapsedMilliseconds);
             mappingStage = "logging the coverage";
             if (report.FromCache)
             {
@@ -959,21 +972,27 @@ namespace VintageE
             Mod.Logger.Notification("EMC: {0} blocks/items hold contents or keep a material ({1} item only, {2} item + contents, {3} item price only); {4} have material-specific values.",
                 data.Kinds.Count, data.Kinds.Keys.Count(c => data.ModeOf(c) == StackDataMode.Item), data.Kinds.Keys.Count(c => data.ModeOf(c) == StackDataMode.Full),
                 data.Kinds.Keys.Count(c => data.ModeOf(c) == StackDataMode.ItemPrice), data.Variants.Count);
+            long lap = after.ElapsedMilliseconds;
             LogCoverage(report);
+            report.AddTiming("(after) coverage log and missing file", after.ElapsedMilliseconds - lap);
             LastReport = report;
             if (Config.CheckupOnStart)
             {
+                lap = after.ElapsedMilliseconds;
                 try
                 {
                     CheckupProblems = EmcDiagnose.CountProblems(this, Sapi);
                     if (CheckupProblems > 0) Mod.Logger.Notification("EMC check-up: {0} thing(s) worth fixing. /emc diagnose lists them with their fixes.", CheckupProblems);
                 }
                 catch (Exception e) { Mod.Logger.Warning("EMC check-up failed: {0}", e.Message); }
+                report.AddTiming("(after) check-up", after.ElapsedMilliseconds - lap);
             }
             if (Config.DumpValuesOnStart)
             {
+                lap = after.ElapsedMilliseconds;
                 string file = WriteValuesFile(report);
                 if (file != null) Mod.Logger.Notification("EMC values written to {0}", file);
+                report.AddTiming("(after) value files (DumpValuesOnStart)", after.ElapsedMilliseconds - lap);
             }
             if (report.LoopFrozen > 0 || report.UnstableRemoved > 0)
             {
@@ -985,8 +1004,11 @@ namespace VintageE
                     report.Loops.Count, string.Join(" | ", report.Loops.Take(5).Select(MissingAnalysis.LoopText)));
             }
 
+            lap = after.ElapsedMilliseconds;
             serverChannel?.BroadcastPacket(Emc.ToPacket());
             OnEmcTableUpdated?.Invoke();
+            report.AddTiming("(after) sending the table", after.ElapsedMilliseconds - lap);
+            if (report.Timings.Count > 0) Mod.Logger.Notification("EMC mapping time: {0}.", report.TimingText());
             // Players joining later get the same line from PlayerNowPlaying.
             foreach (IPlayer online in Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>())
             {

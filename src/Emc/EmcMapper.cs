@@ -52,6 +52,21 @@ namespace VintageE
         public Dictionary<CollectibleObject, List<VariantValue>> Variants = new Dictionary<CollectibleObject, List<VariantValue>>();
         public double TraderRate;
         public long Milliseconds;
+        /// <summary>Where the mapping's time went, in order: stage → milliseconds (empty when the values came from the cache).</summary>
+        public List<KeyValuePair<string, long>> Timings = new List<KeyValuePair<string, long>>();
+        /// <summary>Adds to a stage's time (stages that run more than once add up).</summary>
+        public void AddTiming(string stage, long ms)
+        {
+            for (int i = 0; i < Timings.Count; i++)
+            {
+                if (Timings[i].Key != stage) continue;
+                Timings[i] = new KeyValuePair<string, long>(stage, Timings[i].Value + ms);
+                return;
+            }
+            Timings.Add(new KeyValuePair<string, long>(stage, ms));
+        }
+        /// <summary>"collecting recipes 840 ms, solving 900 ms, ..." for the log and the doctor.</summary>
+        public string TimingText() => string.Join(", ", Timings.Select(t => t.Key + " " + t.Value + " ms"));
         public SortedDictionary<string, int> Sources;
         /// <summary>Blocks/items that appear in the creative inventory (i.e. are real, obtainable content), excluding the blacklist.</summary>
         public int CreativeTotal;
@@ -138,12 +153,30 @@ namespace VintageE
             this.logger = logger;
         }
 
+        // The mapping's time breakdown: solving is counted on its own, whichever stage asked for it.
+        readonly System.Diagnostics.Stopwatch clock = new System.Diagnostics.Stopwatch();
+        long lapStart, solveMs, solveMsAtLap, forwardMs, inferMs;
+        int solves, solveRounds;
+
+        /// <summary>Books the time since the last lap, less what the solver took of it, to <paramref name="stage"/>.</summary>
+        void Lap(EmcMappingReport report, string stage)
+        {
+            long now = clock.ElapsedMilliseconds;
+            report.AddTiming(stage, Math.Max(0, now - lapStart - (solveMs - solveMsAtLap)));
+            lapStart = now;
+            solveMsAtLap = solveMs;
+        }
+
         public EmcMappingReport Run()
         {
             var report = new EmcMappingReport();
+            clock.Restart();
+            lapStart = solveMs = solveMsAtLap = forwardMs = inferMs = 0;
+            solves = solveRounds = 0;
             var index = new CollectibleIndex(sapi.World.Collectibles);
 
             Seed(index, report, out Dictionary<CollectibleObject, double> fixedValues, out HashSet<CollectibleObject> excluded);
+            Lap(report, "base values and lists");
 
             // 3. Every way of making things.
             var collector = new ConversionCollector(sapi, index, logger, config)
@@ -156,6 +189,7 @@ namespace VintageE
             report.SkippedRecipes = collector.SkippedRecipes;
             report.Skipped = collector.Skipped;
             report.CustomRecipeProblems = collector.CustomRecipeProblems;
+            Lap(report, "reading recipes");
 
             // 4. Propagate.
             var edges = new List<EmcSolver<CollectibleObject>.Edge>();
@@ -193,6 +227,7 @@ namespace VintageE
                 edges.Add(edge);
             }
             EmcSolver<CollectibleObject> solver = Solve(fixedValues, excluded, edges, joints);
+            Lap(report, "building the graph");
 
             // 5. Last resort for whatever is still unvalued: borrow from its closest variant sibling
             //    (ore-poor-galena-chalk ← ore-poor-galena-granite, bread-spelt-charred ← bread-spelt-perfect).
@@ -276,6 +311,7 @@ namespace VintageE
                 }
                 return next;
             }
+            Lap(report, "ratios and trader prices");
             solver = Stage(solver); // ratios and trader prices
 
             bool Skip(CollectibleObject c) => noGuess.Contains(c) || extra.ContainsKey(c);
@@ -384,6 +420,8 @@ namespace VintageE
             }
             solver = Stage(solver);
 
+            Lap(report, "guesses (variants, defaults, fuel and food)");
+
             // The cheapest real way to get an item is its value. A guessed value (a trader price, a default, a copy
             // from a variant, an estimate) is seeded as fixed, so a recipe whose ingredients only got values in a later
             // stage could never lower it: blasting powder stayed at its trader price (53.66) although saltpeter,
@@ -442,6 +480,8 @@ namespace VintageE
                 solver = Stage(solver, force: true);
             }
 
+            Lap(report, "guesses against recipes");
+
             report.Values = new Dictionary<CollectibleObject, double>();
             foreach (var kv in solver.Values)
             {
@@ -463,8 +503,10 @@ namespace VintageE
             }
             report.ConversionCount = solver.Edges.Count + solver.JointEdges.Count;
             report.Conversions = collector.Conversions;
+            Lap(report, "material-specific values");
             FillCoverage(index, report, excluded);
             MissingAnalysis.Run(report, collector.Conversions, solver.Frozen);
+            Lap(report, "coverage and missing items");
             report.Sources = collector.SourceCounts;
             report.SourceCount = collector.SourceCounts.Count(s => s.Value > 0);
             var compatSources = new HashSet<string>(rules.Compat.Select(f => f.Source), StringComparer.Ordinal);
@@ -505,6 +547,8 @@ namespace VintageE
                     logger.Notification("EMC {0} {1} = {2}", kv.Key.ItemClass == EnumItemClass.Block ? "block" : "item", kv.Key.Code, EmcFormat.Format(kv.Value));
                 }
             }
+            Lap(report, "origins");
+            report.AddTiming($"solving ({solves} solves, {solveRounds} rounds; relaxing {forwardMs} ms, inferring {inferMs} ms)", solveMs);
             return report;
         }
 
@@ -685,7 +729,13 @@ namespace VintageE
             };
             solver.Edges.AddRange(edges);
             solver.JointEdges.AddRange(joints);
+            long before = clock.ElapsedMilliseconds;
             solver.Solve();
+            solveMs += clock.ElapsedMilliseconds - before;
+            solves++;
+            solveRounds += solver.Rounds;
+            forwardMs += solver.ForwardMs;
+            inferMs += solver.InferMs;
             return solver;
         }
 

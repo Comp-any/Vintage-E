@@ -79,6 +79,8 @@ namespace VintageE
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
+                // Timings of the mod's hot paths (lines starting BENCH), away from the blocks the checks below place.
+                Benchmarks.Run(mod, sapi, new BlockPos(x - 20, y, z - 20), Line);
 
                 BlockEntityFirepit fuelled = PlaceFurnace(new BlockPos(x + 2, y, z), "dark");
                 BlockEntityFirepit onEmc = PlaceFurnace(new BlockPos(x + 4, y, z), "red");

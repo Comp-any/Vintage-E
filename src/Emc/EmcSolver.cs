@@ -86,6 +86,10 @@ namespace VintageE
         /// <summary>Items in self-cheapening loops that keep their first value instead of being lowered.</summary>
         public HashSet<T> Frozen { get; } = new HashSet<T>();
         public int TotalPasses { get; private set; }
+        /// <summary>How long the last <see cref="Solve"/> spent relaxing and inferring, and how many rounds it took (for the mapping's time breakdown).</summary>
+        public long ForwardMs { get; private set; }
+        public long InferMs { get; private set; }
+        public int Rounds { get; private set; }
 
         Dictionary<T, List<int>> dependentsByItem;
 
@@ -94,9 +98,14 @@ namespace VintageE
             BuildDependencyIndex();
             Values = new Dictionary<T, double>(Fixed);
 
+            var clock = System.Diagnostics.Stopwatch.StartNew();
             for (int round = 0; round < MaxRounds; round++)
             {
-                if (!Forward())
+                Rounds++;
+                long before = clock.ElapsedMilliseconds;
+                bool settled = Forward();
+                ForwardMs += clock.ElapsedMilliseconds - before;
+                if (!settled)
                 {
                     // Loop detected: freeze (or, second time round, drop) the offenders and start over from trusted values.
                     Values = new Dictionary<T, double>(Fixed);
@@ -105,7 +114,10 @@ namespace VintageE
                     foreach (T k in Via.Keys.Where(k => !Inferred.ContainsKey(k)).ToList()) Via.Remove(k);
                     continue;
                 }
-                if (InferOnce() == 0) break;
+                before = clock.ElapsedMilliseconds;
+                int inferred = InferOnce();
+                InferMs += clock.ElapsedMilliseconds - before;
+                if (inferred == 0) break;
             }
 
             // Never drop a value outright: anything that wouldn't settle keeps the first value it got, frozen,
