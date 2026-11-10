@@ -61,14 +61,12 @@ namespace VintageE
         protected override void strikeAnvil(EntityAgent byEntity, ItemSlot slot, ItemStack strikingItem)
         {
             base.strikeAnvil(byEntity, slot, strikingItem);
-            if (!MatterTier.IsRed(this)) return;
-            // Only the anvil's own work (as the game's strike does), not merging anvil parts.
-            IPlayer player = (byEntity as EntityPlayer)?.Player;
-            BlockSelection sel = player?.CurrentBlockSelection;
-            if (sel == null || api.World.Side != EnumAppSide.Client) return;
-            if (!(byEntity.World.BlockAccessor.GetBlock(sel.Position) is BlockAnvil)) return;
-            if (!(byEntity.World.BlockAccessor.GetBlockEntity(sel.Position) is BlockEntityAnvil anvil)) return;
-            anvil.OnUseOver(player, sel.SelectionBoxIndex);
+            // The game's strike works one voxel (on the anvil, from the client) or merges anvil parts; red matter does
+            // the anvil's work twice. Only on an anvil: merging parts is a one-off, not something to repeat.
+            if (!MatterTier.IsRed(this) || api.World.Side != EnumAppSide.Client) return;
+            BlockSelection sel = (byEntity as EntityPlayer)?.Player?.CurrentBlockSelection;
+            if (sel == null || !(byEntity.World.BlockAccessor.GetBlock(sel.Position) is BlockAnvil)) return;
+            base.strikeAnvil(byEntity, slot, strikingItem);
         }
     }
 }
