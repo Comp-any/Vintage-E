@@ -20,7 +20,8 @@ namespace VintageE
     {
         public override void OnBlockBroken(IWorldAccessor world, Vintagestory.API.MathTools.BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
-            // A Klein star inside a collector or relay comes out with it.
+            // A Klein star inside a collector or relay comes out with it (the block entity drops it too, for the
+            // ways a block goes that never come through here: explosions).
             if (world.Side == EnumAppSide.Server && world.BlockAccessor.GetBlockEntity(pos) is IStarHolder holder) holder.Star.Drop(world, pos);
             base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
         }

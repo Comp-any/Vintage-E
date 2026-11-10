@@ -117,6 +117,7 @@ namespace VintageE
 
         public double AcceptEmc(double amount)
         {
+            if (!EmcTransfer.Usable(amount)) return 0;
             double take = Math.Min(amount, Math.Max(0, EmcCapacity - emcBuffer));
             emcBuffer += take;
             return take;
@@ -175,7 +176,7 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            emcBuffer = tree.GetDouble("vintageeEmc");
+            emcBuffer = EmcTransfer.Clean(tree.GetDouble("vintageeEmc"));
             if (Api?.Side == EnumAppSide.Client) LowerSpitItem();
         }
 

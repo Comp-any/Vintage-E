@@ -922,12 +922,7 @@ namespace VintageE
         {
             mappingStage = "building the stack data (contents, materials)";
             Emc.Replace(report.Values);
-            Emc.DurabilityScales = Config.DurabilityScalesEmc;
-            Emc.ProjectESounds = Config.ProjectESounds;
-            Emc.TrinketCostMultiplier = Config.TrinketCostMultiplier;
-            Emc.MachineSpeedMultiplier = Config.MachineSpeedMultiplier;
-            Emc.WatchSpeedUp = Config.WatchSpeedUp;
-            Emc.WatchSlowDown = Config.WatchSlowDown;
+            MirrorSettings();
             Emc.World = Sapi.World;
             BuildStackData(report);
             sw.Stop();
@@ -1037,6 +1032,31 @@ namespace VintageE
                 else Config.NoTransmute.RemoveAll(k => k == key);
             }
             SaveConfig();
+            RefreshStackData();
+        }
+
+        /// <summary>
+        /// The settings players' games keep a copy of (they travel with the EMC table): whether wear lowers a value,
+        /// ProjectE's sounds, and the multipliers and watch speeds that tooltips quote.
+        /// </summary>
+        void MirrorSettings()
+        {
+            Emc.DurabilityScales = Config.DurabilityScalesEmc;
+            Emc.ProjectESounds = Config.ProjectESounds;
+            Emc.TrinketCostMultiplier = Config.TrinketCostMultiplier;
+            Emc.MachineSpeedMultiplier = Config.MachineSpeedMultiplier;
+            Emc.WatchSpeedUp = Config.WatchSpeedUp;
+            Emc.WatchSlowDown = Config.WatchSlowDown;
+        }
+
+        /// <summary>
+        /// After one of the mirrored settings changed (/emc configure): copy them and send everyone the table again.
+        /// Until 1.21.1 the cost and machine-speed multipliers and the watch's speeds only went out with the next
+        /// mapping, so tooltips kept quoting the old numbers until the server restarted.
+        /// </summary>
+        public void RefreshMirroredSettings()
+        {
+            MirrorSettings();
             RefreshStackData();
         }
 

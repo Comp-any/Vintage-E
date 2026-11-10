@@ -2,6 +2,17 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.21.1 — 2026-11-11
+
+Fixes from a bug check of 1.21.0:
+- **Fixed: creating a stack with shift-click could lose items you had paid for.** When your inventory only had room for part of the stack, the rest vanished, though all of it was paid for in EMC. What doesn't fit now drops at your feet.
+- **Fixed: a Klein star inside a collector or relay was destroyed with it in an explosion** (a Nova Catalyst or Cataclysm, a lens charge, the game's bombs). The star now drops, with the EMC it holds, as it does when you break the block by hand.
+- **Fixed: `/emc configure` changes to `TrinketCostMultiplier`, `MachineSpeedMultiplier`, `WatchSpeedUp` and `WatchSlowDown` didn't reach players' games** until the next mapping or restart, so tooltips kept quoting the old costs and speeds (the server itself used the new numbers at once).
+- **`/emc configure CraftingMethods`** takes only `Both`, `Grid` or `Realistic` (a mistyped word used to be saved as `Both` without a word), is a drop-down in the settings window, and answers that it takes effect the next time the server starts instead of "Saved and applied".
+- **Settings broken by a hand edit:** a `NaN` or infinite `CollectorDarkFactor`, `FallbackValue`, `TableUseRange` or Repair Talisman clothing setting goes back to a usable value. A NaN `CollectorDarkFactor` turned every collector's stored EMC into NaN, which spread to the relays, condensers and furnaces it fed and was saved with them; those machines now read such a store back as 0 and refuse EMC that isn't a number.
+- The Arcane Tablet's on-screen hint for its crafting window follows your sneak key, like the mod's other hints.
+- Building: `tools/validate_assets.py` (run by `build/package.sh`) no longer fails on three self-test lines that looked like missing language keys.
+
 ## 1.21.0 — 2026-11-10
 
 - **Realistic crafting: make the progression items with the game's own systems, for less.** Next to the crafting-grid recipes:

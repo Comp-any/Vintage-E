@@ -345,11 +345,12 @@ namespace VintageE
             if (EmcRegistry.ClothingCondition(made) >= 0) made.Attributes.SetFloat("condition", 1);
             if (mode == 2)
             {
-                // Same pattern as vanilla: whatever could not be given is dropped at the player's feet.
-                if (!player.InventoryManager.TryGiveItemstack(made, true))
-                {
-                    sapi.World.SpawnItemEntity(made, player.Entity.Pos.XYZ);
-                }
+                // Whatever could not be given is dropped at the player's feet. The game's TryGiveItemstack answers true
+                // as soon as any of the stack went in and leaves the rest in the stack it was handed, so the answer
+                // alone isn't enough: until 1.21.1 a stack that only partly fitted lost the rest, though all of it
+                // was paid for.
+                player.InventoryManager.TryGiveItemstack(made, true);
+                if (made.StackSize > 0) sapi.World.SpawnItemEntity(made, player.Entity.Pos.XYZ);
             }
             else
             {

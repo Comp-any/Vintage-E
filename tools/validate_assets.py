@@ -106,7 +106,10 @@ for f in os.listdir(os.path.join(A, "entities")):
     if obj: entity_codes.update(code for code, _ in expand(obj))
 
 lang = load(os.path.join(A, "lang", "en.json")) or {}
-for key in set(re.findall(r'"vintagee:([a-z0-9-]+)"', cs)):
+# Not the self-test's text.Contains("vintagee:diag-...") checks: those look for a key that was left untranslated
+# in a report (the start of a family of keys), and aren't keys themselves. They made this script fail, and
+# build/package.sh with it.
+for key in set(re.findall(r'(?<!Contains\()"vintagee:([a-z0-9-]+)"', cs)):
     if key.endswith("-") or key in codes or key in entity_codes: continue  # item/block/entity codes, not lang keys
     if key not in lang: errors.append(f"lang: missing key {key}")
 for code in re.findall(r'Fail\(player, "(\w+)"', cs):

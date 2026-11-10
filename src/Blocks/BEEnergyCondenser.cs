@@ -222,7 +222,7 @@ namespace VintageE
 
         public double AcceptEmc(double amount)
         {
-            if (amount <= 0) return 0;
+            if (!EmcTransfer.Usable(amount)) return 0;
             double take = Math.Min(amount, capacity - Stored);
             if (take <= 0) return 0;
             Stored += take;
@@ -330,8 +330,8 @@ namespace VintageE
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
             if (Api != null) inventory.AfterBlocksLoaded(Api.World);
-            Stored = tree.GetDouble("emc");
-            IncomingPerSecond = tree.GetDouble("incoming");
+            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
+            IncomingPerSecond = EmcTransfer.Clean(tree.GetDouble("incoming"));
             dialog?.UpdateInfo();
         }
 

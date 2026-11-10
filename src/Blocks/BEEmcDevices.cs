@@ -38,6 +38,7 @@ namespace VintageE
 
         public double AcceptEmc(double amount)
         {
+            if (!EmcTransfer.Usable(amount)) return 0;
             double take = Math.Min(amount, Math.Max(0, capacity - Stored));
             Stored += take;
             if (take > 0) MarkDirty(false);
@@ -76,6 +77,13 @@ namespace VintageE
             return true;
         }
 
+        /// <summary>The Klein star inside comes out however the relay goes, an explosion included (see BEEnergyCollector.OnBlockBroken).</summary>
+        public override void OnBlockBroken(IPlayer byPlayer = null)
+        {
+            if (Api?.Side == EnumAppSide.Server) Star.Drop(Api.World, Pos);
+            base.OnBlockBroken(byPlayer);
+        }
+
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.ToTreeAttributes(tree);
@@ -86,7 +94,7 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            Stored = tree.GetDouble("emc");
+            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
             Star.FromTree(tree, worldAccessForResolve);
         }
 
@@ -102,6 +110,16 @@ namespace VintageE
     /// <summary>Moving EMC out of machines: into a Klein star in the player's hand if there is one, otherwise their personal EMC.</summary>
     public static class EmcTransfer
     {
+        /// <summary>An amount of EMC a machine can take: a real number above zero (not NaN, not infinite).</summary>
+        public static bool Usable(double amount) => amount > 0 && !double.IsInfinity(amount);
+
+        /// <summary>
+        /// Stored EMC as read back from a save: NaN, an infinity or a negative number becomes 0. A NaN in a setting
+        /// a collector multiplies by ends up in its store, from there in every relay, condenser and furnace it
+        /// feeds, and is saved with them; this lets such machines work again once the setting is put right.
+        /// </summary>
+        public static double Clean(double stored) => double.IsNaN(stored) || double.IsInfinity(stored) || stored < 0 ? 0 : stored;
+
         /// <summary>Returns how much was moved.</summary>
         public static double ToPlayerOrStar(IPlayer player, double amount)
         {

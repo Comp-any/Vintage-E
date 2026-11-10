@@ -257,15 +257,23 @@ namespace VintageE
             StackDataModes ??= new Dictionary<string, string>();
             if (MaxExactKnowledge < 0) MaxExactKnowledge = 0;
             DisabledCompat ??= new List<string>();
+            // A hand-edited NaN or Infinity (Newtonsoft reads both) would poison every sum it touches: Klein stars
+            // emptied by a NaN cost, a collector stuck at NaN. Such values go back to their defaults.
+            static bool Bad(double v) => double.IsNaN(v) || double.IsInfinity(v);
+            // 1.21.1: the settings below were not covered. A NaN CollectorDarkFactor makes every collector's store NaN
+            // (Math.Max and Math.Clamp both hand a NaN on), a NaN TableUseRange shuts every table.
+            if (Bad(RepairTalismanClothingPercentPerMinute)) RepairTalismanClothingPercentPerMinute = 1;
+            if (Bad(RepairTalismanClothingMinCondition)) RepairTalismanClothingMinCondition = 0;
+            if (Bad(RepairTalismanClothingMaxCondition)) RepairTalismanClothingMaxCondition = 100;
+            if (Bad(CollectorDarkFactor) || CollectorDarkFactor < 0) CollectorDarkFactor = 0;
+            if (Bad(FallbackValue) || FallbackValue < 0) FallbackValue = 0;
+            if (Bad(TableUseRange)) TableUseRange = 8;
             RepairTalismanClothingPercentPerMinute = Math.Max(0, RepairTalismanClothingPercentPerMinute);
             RepairTalismanClothingMinCondition = Math.Clamp(RepairTalismanClothingMinCondition, 0, 100);
             RepairTalismanClothingMaxCondition = Math.Clamp(RepairTalismanClothingMaxCondition, RepairTalismanClothingMinCondition, 100);
             if (legacyProjectETextures == true) Look = ProjectELook.LookOriginal;
             legacyProjectETextures = null;
             Look = ProjectELook.NormalizeLook(Look);
-            // A hand-edited NaN or Infinity (Newtonsoft reads both) would poison every sum it touches: Klein stars
-            // emptied by a NaN cost, a collector stuck at NaN. Such values go back to their defaults.
-            static bool Bad(double v) => double.IsNaN(v) || double.IsInfinity(v);
             if (Bad(TrinketCostMultiplier)) TrinketCostMultiplier = 1;
             DiviningRodListsTop = Math.Clamp(DiviningRodListsTop, 0, 20);
             if (TrinketCostMultiplier < 0) TrinketCostMultiplier = 0;

@@ -155,6 +155,8 @@ namespace VintageE
         static readonly Dictionary<string, string[]> choices = new Dictionary<string, string[]>
         {
             ["Look"] = new[] { ProjectELook.LookNew, ProjectELook.LookMiddle, ProjectELook.LookOriginal },
+            // 1.21.1: a mistyped word used to be saved as Both without a word.
+            ["CraftingMethods"] = new[] { CraftingRoutes.Both, CraftingRoutes.Grid, CraftingRoutes.Realistic },
         };
 
         /// <summary>The words a setting can be set to, or null if it isn't one of those settings.</summary>
@@ -171,6 +173,8 @@ namespace VintageE
                 // The looks' other names (projecte, flat, classic...), and 1.13.0's "Auto" (now simply New).
                 if (new[] { "projecte", "old", "flat", "classic", "vintagee", "vintage", "vintagestory", "auto", "default" }.Contains(t.ToLowerInvariant())) match = ProjectELook.NormalizeLook(t);
             }
+            // The other words the setting has always read (CraftingRoutes.Normalize).
+            if (match == null && field.Name == "CraftingMethods" && new[] { "crafting", "craftinggrid", "game" }.Contains(t.ToLowerInvariant())) match = CraftingRoutes.Normalize(t);
             return match ?? throw new FormatException(Lang.GetL(lang, "vintagee:cfg-badchoice", t, string.Join(", ", allowed)));
         }
 
@@ -372,8 +376,14 @@ namespace VintageE
                     mod.RefreshStackData();
                     break;
                 case "DurabilityScalesEmc":
-                    mod.Emc.DurabilityScales = mod.Config.DurabilityScalesEmc;
-                    mod.RefreshStackData();
+                case "ProjectESounds":
+                case "TrinketCostMultiplier":
+                case "MachineSpeedMultiplier":
+                case "WatchSpeedUp":
+                case "WatchSlowDown":
+                    // Players' games keep a copy of these (values of worn tools, sounds, the numbers tooltips quote):
+                    // it travels with the table, so send that again.
+                    mod.RefreshMirroredSettings();
                     break;
                 case "HostileCreatures":
                     mod.Trinkets?.ResetHostile();
@@ -381,15 +391,12 @@ namespace VintageE
                 case "NoTransmute":
                     mod.RefreshStackData(); // matches the list again and tells every client
                     break;
-                case "ProjectESounds":
-                    mod.Emc.ProjectESounds = mod.Config.ProjectESounds;
-                    mod.RefreshStackData(); // sends the table, and with it the setting, to everyone
-                    break;
                 case "Look":
                     // Players' games read the default from the world's settings when they join.
                     mod.Sapi?.World?.Config?.SetString(VintageEModSystem.WorldLookKey, ProjectELook.NormalizeLook(mod.Config.Look));
                     return Lang.GetL(lang, "vintagee:cfg-rejoin");
                 case "SelfTestOnStart":
+                case "CraftingMethods": // recipes and item properties are switched when the server starts
                     return Lang.GetL(lang, "vintagee:cfg-restart");
             }
             return Lang.GetL(lang, "vintagee:cfg-applied");

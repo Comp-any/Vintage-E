@@ -90,6 +90,17 @@ namespace VintageE
             return true;
         }
 
+        /// <summary>
+        /// The Klein star inside comes out with the block however it goes. An explosion (a Nova Catalyst, a lens
+        /// charge, the game's bombs) never runs the block's own OnBlockBroken, only this one, so until 1.21.1 a
+        /// collector that was blown up took its star with it.
+        /// </summary>
+        public override void OnBlockBroken(IPlayer byPlayer = null)
+        {
+            if (Api?.Side == EnumAppSide.Server) Star.Drop(Api.World, Pos);
+            base.OnBlockBroken(byPlayer);
+        }
+
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.ToTreeAttributes(tree);
@@ -101,8 +112,8 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            Stored = tree.GetDouble("emc");
-            currentRate = tree.GetDouble("rate");
+            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
+            currentRate = EmcTransfer.Clean(tree.GetDouble("rate"));
             Star.FromTree(tree, worldAccessForResolve);
         }
 

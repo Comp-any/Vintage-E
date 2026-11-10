@@ -26,7 +26,7 @@ namespace VintageE
             return new[]
             {
                 new WorldInteraction { ActionLangCode = "vintagee:heldhelp-opentablet", MouseButton = EnumMouseButton.Right },
-                new WorldInteraction { ActionLangCode = "vintagee:heldhelp-openemccraft", MouseButton = EnumMouseButton.Right, HotKeyCode = "shift" }
+                new WorldInteraction { ActionLangCode = "vintagee:heldhelp-openemccraft", MouseButton = EnumMouseButton.Right, HotKeyCode = "sneak" }
             };
         }
     }

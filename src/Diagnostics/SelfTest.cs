@@ -72,6 +72,7 @@ namespace VintageE
                 Check1100();
                 Check1101();
                 Check1110();
+                Check1211();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -103,6 +104,19 @@ namespace VintageE
                 BEEnergyCollector collector = Place<BEEnergyCollector>(new BlockPos(x + 6, y, z), "vintagee:energycollector-mk1");
                 BEEnergyCondenser condenser = Place<BEEnergyCondenser>(new BlockPos(x + 7, y, z), "vintagee:energycondenser-mk1");
                 if (collector != null) collector.Stored = 500;
+
+                // 1.21.1: a Klein star in a relay comes out when the relay is blown up. The game's explosions call the
+                // block's OnBlockExploded, which tells the block entity and never the block's own OnBlockBroken.
+                BEAntimatterRelay starRelay = Place<BEAntimatterRelay>(new BlockPos(x + 12, y, z), "vintagee:antimatterrelay-mk1");
+                Item kleinStar = sapi.World.GetItem(new AssetLocation("vintagee:kleinstar-ein"));
+                Check(kleinStar != null, "vintagee:kleinstar-ein exists");
+                if (starRelay != null && kleinStar != null)
+                {
+                    starRelay.Star.Star = new ItemStack(kleinStar);
+                    starRelay.Block.OnBlockExploded(sapi.World, starRelay.Pos, starRelay.Pos, EnumBlastType.RockBlast, null);
+                    sapi.World.BulkBlockAccessor.Commit();
+                    Check(starRelay.Star.Star == null && ba.GetBlock(new BlockPos(x + 12, y, z)).Id == 0, "a Klein star in a relay comes out when the relay is blown up");
+                }
 
                 // 1.11.0: a hopper on top of a transmutation table feeds it (the owner isn't online, so it waits in the table).
                 BETransmutationTable table = Place<BETransmutationTable>(new BlockPos(x + 9, y, z), "vintagee:transmutationtable");
@@ -1302,6 +1316,49 @@ namespace VintageE
             Item darkMatter = sapi.World.GetItem(new AssetLocation("vintagee:matter-dark"));
             string burnErr = darkMatter == null ? "missing" : mod.Transmutation.PlanBurn(null, new ItemStack(darkMatter, 3), out TransmutationService.BurnPlan dmPlan, out _);
             Check(burnErr == null, "dark matter can be burned and learned: " + (burnErr ?? "yes"));
+        }
+
+        /// <summary>1.21.1: fixes from the bug check of 1.21.0.</summary>
+        void Check1211()
+        {
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+
+            // Settings a hand edit can break: NaN and infinities go back to something usable.
+            var broken = new VintageEConfig
+            {
+                CollectorDarkFactor = double.NaN, FallbackValue = double.NegativeInfinity, TableUseRange = double.NaN,
+                RepairTalismanClothingPercentPerMinute = double.NaN, RepairTalismanClothingMinCondition = double.NaN, RepairTalismanClothingMaxCondition = double.PositiveInfinity
+            };
+            broken.Normalize();
+            Check(broken.CollectorDarkFactor == 0 && broken.FallbackValue == 0 && broken.TableUseRange == 8 && broken.RepairTalismanClothingPercentPerMinute == 1
+                && broken.RepairTalismanClothingMinCondition == 0 && broken.RepairTalismanClothingMaxCondition == 100,
+                $"NaN and infinite settings go back to usable values (dark factor {broken.CollectorDarkFactor}, fallback {broken.FallbackValue}, table range {broken.TableUseRange}, clothing {broken.RepairTalismanClothingPercentPerMinute}/{broken.RepairTalismanClothingMinCondition}/{broken.RepairTalismanClothingMaxCondition})");
+
+            // Machines neither take a NaN nor keep one from a save.
+            double relayTook = new BEAntimatterRelay().AcceptEmc(double.NaN), condenserTook = new BEEnergyCondenser().AcceptEmc(double.PositiveInfinity);
+            Check(relayTook == 0 && condenserTook == 0 && EmcTransfer.Clean(double.NaN) == 0 && EmcTransfer.Clean(-5) == 0 && EmcTransfer.Clean(12.5) == 12.5,
+                $"machines refuse EMC that isn't a number (relay took {relayTook}, condenser {condenserTook}) and read a broken store back as 0");
+
+            // /emc configure: the multipliers tooltips quote reach players' games at once (they travel with the table).
+            double cost = mod.Config.TrinketCostMultiplier, speed = mod.Config.MachineSpeedMultiplier, slow = mod.Config.WatchSlowDown;
+            ConfigureCommand.SetFromText(mod, "TrinketCostMultiplier", "2.5", "en");
+            ConfigureCommand.SetFromText(mod, "MachineSpeedMultiplier", "3", "en");
+            ConfigureCommand.SetFromText(mod, "WatchSlowDown", "4", "en");
+            EmcTablePacket sent = mod.Emc.ToPacket();
+            bool mirrored = Math.Abs(sent.TrinketCostMultiplier - 2.5) < 1e-9 && Math.Abs(sent.MachineSpeedMultiplier - 3) < 1e-9 && Math.Abs(sent.WatchSlowDown - 4) < 1e-9;
+            ConfigureCommand.SetFromText(mod, "TrinketCostMultiplier", cost.ToString(inv), "en");
+            ConfigureCommand.SetFromText(mod, "MachineSpeedMultiplier", speed.ToString(inv), "en");
+            ConfigureCommand.SetFromText(mod, "WatchSlowDown", slow.ToString(inv), "en");
+            sent = mod.Emc.ToPacket();
+            Check(mirrored && Math.Abs(sent.TrinketCostMultiplier - cost) < 1e-9 && Math.Abs(sent.MachineSpeedMultiplier - speed) < 1e-9 && Math.Abs(sent.WatchSlowDown - slow) < 1e-9,
+                $"/emc configure sends changed cost, machine speed and watch settings to players with the table (changed: {mirrored})");
+
+            // CraftingMethods is one of three words; anything else is refused instead of quietly becoming Both.
+            string methods = mod.Config.CraftingMethods;
+            string refusedWord = RunCommand("/emc configure CraftingMethods banana");
+            string restart = RunCommand("/emc configure CraftingMethods " + methods);
+            Check(ConfigureCommand.KindOf(ConfigureCommand.Field("CraftingMethods")) == "choice" && refusedWord.Contains("Error") && mod.Config.CraftingMethods == methods && restart.Contains("next time the server starts"),
+                $"CraftingMethods takes only its three words and says it needs a restart ({refusedWord.Replace("\n", " | ")} / {restart.Replace("\n", " | ")})");
         }
 
         /// <summary>1.10.1: the ring's wind only plays on the ring's own flight, not another mod's (an angel belt).</summary>
