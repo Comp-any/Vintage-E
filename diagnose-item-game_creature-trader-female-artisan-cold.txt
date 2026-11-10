@@ -1,0 +1,14 @@
+== Artisan trader (cold) ==
+Code game:creature-trader-female-artisan-cold, from Vintage Story (game).
+⚠ It's blacklisted: it can't have a value, be burned or be created.
+  Vintage-E's value files blacklist it ('*:creature-*'). Creative, technical, loot and story items are kept out so transmutation can't duplicate them.
+  → If it should have a value here, add 'item:game:creature-trader-female-artisan-cold' to Allow in ModConfig/vintagee.json (or untick Blacklist in the hovered-item box), then give it a value with /emc set.
+  Allow it (take it off the blacklist) and remap (in the window)
+  Give it a value... (/emc set, holding it)
+
+== Next ==
+The full story of its value: Artisan trader (cold) (game:creature-trader-female-artisan-cold)
+Everything from Vintage Story (game) (/emc diagnose mod game)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
