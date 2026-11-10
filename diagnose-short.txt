@@ -1,0 +1,12 @@
+== In short ==
+5 thing(s) worth fixing, each with its fix:
+⚠ Value loops: 1, holding 2 items.
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+⚠ Free EMC: 1 items can be made for less than they're worth (the worst gives 127.9 free per craft).
+⚠ Blacklist: 3 blacklisted items hold back 28 recipes.
+⚠ Metal tiers: 1 tool or armour families out of order.
+⚠ Variants: 19 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1), model (1)).
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+⚠ Server log: 1 Vintage-E error or warning lines (latest last):
+  → An [Error] under 'EMC mapping failed' or 'could not' is the thing to fix; [Warning] lines are usually just information. If one doesn't make sense, the bug report below packs them up.
+The full check-up (/emc diagnose)
