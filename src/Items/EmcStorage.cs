@@ -35,11 +35,14 @@ namespace VintageE
     /// </summary>
     public static class EmcWallet
     {
+        /// <summary>The inventories that count as carried, in the order they are gone through.</summary>
+        public static readonly string[] CarriedInventories = { GlobalConstants.hotBarInvClassName, GlobalConstants.backpackInvClassName, GlobalConstants.characterInvClassName };
+
         public static IEnumerable<ItemSlot> CarriedSlots(IPlayer player)
         {
             var inv = player?.InventoryManager;
             if (inv == null) yield break;
-            foreach (string name in new[] { GlobalConstants.hotBarInvClassName, GlobalConstants.backpackInvClassName, GlobalConstants.characterInvClassName })
+            foreach (string name in CarriedInventories)
             {
                 IInventory own = inv.GetOwnInventory(name);
                 if (own == null) continue;
@@ -65,9 +68,17 @@ namespace VintageE
         {
             if (amount <= 0) return true;
             if (double.IsNaN(amount) || double.IsInfinity(amount)) return false;
-            if (player == null || Balance(player) + 1e-9 < amount) return false;
+            if (player == null) return false;
 
             double personal = PlayerEmc.GetEmc(player);
+            // Personal EMC covers it, as it nearly always does: nothing to take from Klein stars, so no need to go
+            // through the inventory looking for them (twice: once to add them up, once to take from them).
+            if (personal >= amount)
+            {
+                PlayerEmc.SetEmc(player, personal - amount);
+                return true;
+            }
+            if (Balance(player) + 1e-9 < amount) return false;
             double fromPersonal = Math.Min(personal, amount);
             if (fromPersonal > 0) PlayerEmc.SetEmc(player, personal - fromPersonal);
             double left = amount - fromPersonal;

@@ -34,9 +34,21 @@ namespace VintageE
         public const string EyeTargetKey = "vintageeEyeTarget";
         SkillItem[] modes;
 
-        public string Kind => Variant?["type"] ?? "";
+        string kind;
 
-        VintageEModSystem Mod(IWorldAccessor world) => world.Api.ModLoader.GetModSystem<VintageEModSystem>();
+        /// <summary>The "type" variant (which ring, stone or gadget this is). Kept once read: it's asked dozens of times a tick.</summary>
+        public string Kind
+        {
+            get
+            {
+                if (kind != null) return kind;
+                string k = Variant?["type"];
+                if (string.IsNullOrEmpty(k)) return ""; // not loaded yet: don't keep an empty answer
+                return kind = k;
+            }
+        }
+
+        VintageEModSystem Mod(IWorldAccessor world) => VintageEModSystem.Of(world.Api);
 
         /// <summary>Lens shot explosion radius and EMC cost by charge level (ProjectE: power 4/8/12/16, 384–2,304 EMC).</summary>
         public static readonly float[] LensRadius = { 4, 6, 8, 10 };
@@ -279,7 +291,7 @@ namespace VintageE
         {
             if (!(slot?.Itemstack?.Collectible is ItemEmcGadget gadget) || !gadget.IsLens) return false;
             IWorldAccessor world = player.Entity.World;
-            var mod = world.Api.ModLoader.GetModSystem<VintageEModSystem>();
+            var mod = VintageEModSystem.Of(world.Api);
             int charge = LensCharge(slot.Itemstack.Attributes.GetInt(ItemEmcTrinket.ModeKey));
             double cost = LensCost[charge] * (mod?.Config.TrinketCostMultiplier ?? 1);
             if (!EmcWallet.TryPay(player, cost))

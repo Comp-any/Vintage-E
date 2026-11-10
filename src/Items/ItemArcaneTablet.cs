@@ -15,7 +15,7 @@ namespace VintageE
             if (firstEvent && byEntity?.Controls?.Sneak == true)
             {
                 handling = EnumHandHandling.PreventDefault;
-                if (api is ICoreClientAPI) api.ModLoader.GetModSystem<VintageEModSystem>().OpenEmcCraftDialog();
+                if (api is ICoreClientAPI) VintageEModSystem.Of(api).OpenEmcCraftDialog();
                 return;
             }
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);

@@ -174,7 +174,7 @@ namespace VintageE
 
         void ChestTick()
         {
-            var mod = Api.ModLoader.GetModSystem<VintageEModSystem>();
+            var mod = VintageEModSystem.Of(Api);
             TrinketEffects fx = mod?.Trinkets;
             if (fx == null || inventory == null) return;
             bool pull = false, repair = false;
@@ -242,7 +242,7 @@ namespace VintageE
                 CollectibleObject c = stack.Collectible;
                 if (c == target || c is ItemEmcTrinket || c is IEmcStorageItem || c.GetMaxDurability(stack) > 0) continue;
                 if (StackContents.HasNestedStacks(stack)) continue;
-                if (!GemFilter.Passes(gemSlot.Itemstack, c)) continue;
+                if (!GemFilter.Passes(gemSlot.Itemstack, c, Api.World)) continue;
                 double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
                 if (value <= 0 || value > maxInput) continue;
                 stored += value * stack.StackSize;

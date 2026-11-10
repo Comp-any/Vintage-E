@@ -33,7 +33,7 @@ namespace VintageE
             inventory = new TableInputInventory(this);
         }
 
-        VintageEModSystem Mod => Api?.ModLoader.GetModSystem<VintageEModSystem>();
+        VintageEModSystem Mod => VintageEModSystem.Of(Api);
 
         public override void Initialize(ICoreAPI api)
         {

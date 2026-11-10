@@ -20,7 +20,7 @@ namespace VintageE
         /// <summary>Whether ProjectE's sounds are on (the server's setting; clients get it with the EMC table).</summary>
         public static bool On(IWorldAccessor world)
         {
-            VintageEModSystem mod = world?.Api?.ModLoader?.GetModSystem<VintageEModSystem>();
+            VintageEModSystem mod = VintageEModSystem.Of(world?.Api);
             if (mod == null) return false;
             return world.Side == EnumAppSide.Server ? mod.Config?.ProjectESounds == true : mod.Emc.ProjectESounds;
         }

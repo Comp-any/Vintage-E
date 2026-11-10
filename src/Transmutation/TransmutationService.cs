@@ -109,17 +109,19 @@ namespace VintageE
         public string PlanBurn(IServerPlayer player, ItemStack stack, out BurnPlan plan, out string[] args, bool learnOnly = false, bool byHand = false)
         {
             plan = null;
-            args = new[] { stack?.GetName() ?? "?" };
-            if (stack?.Collectible == null) return "novalue";
+            // The item's name is only looked up for a refusal's message: the magnet, hoppers and the condenser ask this
+            // for every stack they consider, and nearly always the answer is yes.
+            args = Array.Empty<string>();
+            if (stack?.Collectible == null) { args = new[] { stack?.GetName() ?? "?" }; return "novalue"; }
             // A Klein star is only burned by hand on Burn (its value counts what it holds, so nothing is lost), never by a
             // hopper into the table or the magnet, where someone would lose a charged star without meaning to.
-            if (stack.Collectible is IEmcStorageItem && !learnOnly && !byHand) return "star-noburn";
+            if (stack.Collectible is IEmcStorageItem && !learnOnly && !byHand) { args = new[] { stack.GetName() }; return "star-noburn"; }
             StackDataTable data = mod.Emc.StackData;
             StackDataMode mode = data.ModeOf(stack.Collectible);
             bool keepsData = data.CarriesData(stack.Collectible) && mode != StackDataMode.Item;
 
             // Item only: what's inside would be lost, so containers that hold something are refused.
-            if (!learnOnly && !keepsData && mod.Config.ProtectContainersWithContents && StackContents.HasNestedStacks(stack)) return "hascontents";
+            if (!learnOnly && !keepsData && mod.Config.ProtectContainersWithContents && StackContents.HasNestedStacks(stack)) { args = new[] { stack.GetName() }; return "hascontents"; }
 
             double each = mod.BurnValue(stack);
             if (each <= 0)
@@ -136,7 +138,7 @@ namespace VintageE
                 args = new[] { stack.GetName() + " (" + stack.Collectible.Code + ")" };
                 return "novalue";
             }
-            if (mod.Emc.IsNoTransmute(stack.Collectible)) return "notransmute";
+            if (mod.Emc.IsNoTransmute(stack.Collectible)) { args = new[] { stack.GetName() }; return "notransmute"; }
 
             // Items that keep their contents/material are learned as exactly this version (a liquid container as a full one).
             TreeAttribute kept = keepsData ? StackDataUtil.KeptData(StackDataUtil.FilledLiquid(stack, sapi.World)) : null;

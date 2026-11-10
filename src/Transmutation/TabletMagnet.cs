@@ -59,12 +59,46 @@ namespace VintageE
 
         public static bool Excludes(ItemStack tablet) => tablet?.Attributes?.GetBool(ExcludeKey) == true;
 
-        /// <summary>Whether the filter lets this item through.</summary>
+        /// <summary>Whether the filter lets this item through (by its knowledge key: the plain way, for a one-off question).</summary>
         public static bool Passes(ItemStack tablet, CollectibleObject c)
         {
             string key = PlayerEmc.KeyOf(c);
             bool listed = key != null && GetFilter(tablet).Contains(key);
             return Excludes(tablet) ? !listed : listed;
+        }
+
+        /// <summary>
+        /// Whether the filter lets this item through, for the ticks that ask it of every item lying around or carried:
+        /// the same answer as <see cref="Passes(ItemStack, CollectibleObject)"/>, from the filter's items found once
+        /// (<see cref="FilterItems"/>) instead of a key built and the filter read out again for every item.
+        /// </summary>
+        public static bool Passes(ItemStack tablet, CollectibleObject c, IWorldAccessor world)
+        {
+            bool listed = c != null && Array.IndexOf(FilterItems(tablet, world), c) >= 0;
+            return Excludes(tablet) ? !listed : listed;
+        }
+
+        /// <summary>The items each stored filter names, found once per filter (the stored list is replaced whenever the filter changes).</summary>
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<string[], CollectibleObject[]> filterItems = new System.Runtime.CompilerServices.ConditionalWeakTable<string[], CollectibleObject[]>();
+
+        /// <summary>The items a tablet's (or gem's) filter names that still exist.</summary>
+        public static CollectibleObject[] FilterItems(ItemStack holder, IWorldAccessor world)
+        {
+            string[] stored = (holder?.Attributes as TreeAttribute)?.GetStringArray(FilterKey);
+            if (stored == null || stored.Length == 0 || world == null) return Array.Empty<CollectibleObject>();
+            if (filterItems.TryGetValue(stored, out CollectibleObject[] items)) return items;
+            var found = new List<CollectibleObject>(FilterSlots);
+            for (int i = 0; i < FilterSlots && i < stored.Length; i++)
+            {
+                string key = stored[i];
+                if (string.IsNullOrEmpty(key) || key.Length < 3 || key[1] != ':' || (key[0] != 'i' && key[0] != 'b')) continue;
+                CollectibleObject c = PlayerEmc.Resolve(world, key);
+                // Only what would also match by key (so the two ways of asking can't differ).
+                if (c != null && PlayerEmc.KeyOf(c) == key && !found.Contains(c)) found.Add(c);
+            }
+            items = found.ToArray();
+            filterItems.AddOrUpdate(stored, items);
+            return items;
         }
 
         /// <summary>The tablet the player is using: the one in their hand if it's a tablet, otherwise the first one they carry.</summary>
@@ -125,29 +159,31 @@ namespace VintageE
             {
                 if (!(p is IServerPlayer player) || player.Entity == null || !player.Entity.Alive || player.ConnectionState != EnumClientState.Playing) continue;
                 // The same tablet the window edits: the one in hand first, then the first carried one with a magnet in it.
-                ItemStack tablet = null;
+                ItemStack tablet = null, magnet = null;
                 ItemStack held = player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
-                if (held?.Collectible is ItemTransmutationTablet && GetMagnet(held, sapi.World) != null) tablet = held;
+                if (held?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(held, sapi.World)) != null) tablet = held;
                 else
                 {
                     foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
                     {
-                        if (slot.Itemstack?.Collectible is ItemTransmutationTablet && GetMagnet(slot.Itemstack, sapi.World) != null) { tablet = slot.Itemstack; break; }
+                        if (slot.Itemstack?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(slot.Itemstack, sapi.World)) != null) { tablet = slot.Itemstack; break; }
                     }
                 }
                 if (tablet == null) continue;
-                string[] filter = GetFilter(tablet);
-                if (!Excludes(tablet) && filter.All(k => k == null)) continue; // "only these" with nothing chosen
+                // The filter's items, found once per filter (not a key built and the filter read out for every item lying around).
+                CollectibleObject[] filter = FilterItems(tablet, sapi.World);
+                bool excludes = Excludes(tablet);
+                if (!excludes && filter.Length == 0) continue; // "only these" with nothing chosen (or nothing that still exists)
 
                 Vec3d center = player.Entity.Pos.XYZ.Add(0, 0.5, 0);
                 long now = sapi.World.ElapsedMilliseconds;
                 int taken = 0;
-                float radius = RadiusOf(GetMagnet(tablet, sapi.World));
+                float radius = RadiusOf(magnet);
                 foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
                 {
                     var ei = (EntityItem)e;
                     ItemStack stack = ei.Itemstack;
-                    if (stack?.Collectible == null || !Passes(tablet, stack.Collectible)) continue;
+                    if (stack?.Collectible == null || (Array.IndexOf(filter, stack.Collectible) >= 0) == excludes) continue;
                     // Worth nothing: leave it lying there. (PlanBurn would log the refusal and resend the EMC table
                     // four times a second for as long as it lies within reach.)
                     if (mod.BurnValue(stack) <= 0) continue;

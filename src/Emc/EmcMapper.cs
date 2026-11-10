@@ -173,6 +173,8 @@ namespace VintageE
             clock.Restart();
             lapStart = solveMs = solveMsAtLap = forwardMs = inferMs = 0;
             solves = solveRounds = 0;
+            pinned = null;
+            sharedGraph = null;
             var index = new CollectibleIndex(sapi.World.Collectibles);
 
             Seed(index, report, out Dictionary<CollectibleObject, double> fixedValues, out HashSet<CollectibleObject> excluded);
@@ -730,7 +732,9 @@ namespace VintageE
             solver.Edges.AddRange(edges);
             solver.JointEdges.AddRange(joints);
             long before = clock.ElapsedMilliseconds;
+            solver.Shared = sharedGraph;
             solver.Solve();
+            sharedGraph = solver.Shared;
             solveMs += clock.ElapsedMilliseconds - before;
             solves++;
             solveRounds += solver.Rounds;
@@ -746,12 +750,20 @@ namespace VintageE
         /// <summary>True if the server owner set this item's value by hand (ModConfig BaseValues/FixedValues).</summary>
         bool PinnedByConfig(CollectibleIndex index, CollectibleObject c)
         {
-            foreach (string key in config.FixedValues.Keys.Concat(config.BaseValues.Keys))
+            // Matched once a mapping: this is asked for every guessed item in every one of up to eight rounds, and
+            // each time it matched every pattern in the settings against the whole item list again.
+            if (pinned == null)
             {
-                if (index.Match(key).Contains(c)) return true;
+                pinned = new HashSet<CollectibleObject>();
+                foreach (string key in config.FixedValues.Keys.Concat(config.BaseValues.Keys)) pinned.UnionWith(index.Match(key));
             }
-            return false;
+            return pinned.Contains(c);
         }
+
+        /// <summary>Everything the server owner's FixedValues and BaseValues name (see <see cref="PinnedByConfig"/>); null until asked for.</summary>
+        HashSet<CollectibleObject> pinned;
+        /// <summary>The solver's prepared graph, handed from one solve of a mapping to the next (the edges are the same every time).</summary>
+        EmcSolver<CollectibleObject>.Graph sharedGraph;
 
         /// <summary>
         /// Material-specific values: every recipe that puts data on what it makes (a round shield's metal and wood, a

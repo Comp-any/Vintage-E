@@ -27,7 +27,7 @@ namespace VintageE
             int gem = ArmorPieces(player, "gem", out bool gemBody), red = ArmorPieces(player, "red", out _);
 
             bool fall = damageSource.Source == EnumDamageSource.Fall || damageSource.Type == EnumDamageType.Gravity;
-            TrinketEffects fx = entity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+            TrinketEffects fx = VintageEModSystem.Of(entity.Api)?.Trinkets;
             if (fall && (gem >= 3 || TrinketEffects.HasGaleFlight(player) || fx?.FlightProtects(player) == true))
             {
                 damage = 0;

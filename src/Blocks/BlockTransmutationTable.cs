@@ -20,7 +20,7 @@ namespace VintageE
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
-            var mod = api.ModLoader.GetModSystem<VintageEModSystem>();
+            var mod = VintageEModSystem.Of(api);
             if (world.Side == EnumAppSide.Server)
             {
                 if (byPlayer is IServerPlayer sp) mod.Transmutation?.OpenTableSession(sp, blockSel.Position);

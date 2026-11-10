@@ -65,7 +65,19 @@ namespace VintageE
         SkillItem[] arcanaOn, arcanaOff;
         SkillItem[] galeOn, galeOff; // flight/shield choices then speeds, each drawn picked (on) or not
 
-        public string Kind => Variant?["type"] ?? "";
+        string kind;
+
+        /// <summary>The "type" variant (which ring, stone or gadget this is). Kept once read: it's asked dozens of times a tick.</summary>
+        public string Kind
+        {
+            get
+            {
+                if (kind != null) return kind;
+                string k = Variant?["type"];
+                if (string.IsNullOrEmpty(k)) return ""; // not loaded yet: don't keep an empty answer
+                return kind = k;
+            }
+        }
 
         public bool IsAmulet => Kind == "evertideamulet" || Kind == "volcaniteamulet";
 
@@ -83,7 +95,7 @@ namespace VintageE
         /// <summary>Whether the Ring of Arcana's effect <paramref name="index"/> is switched on (all are by default).</summary>
         public static bool ArcanaEnabled(ItemStack stack, int index) => ((stack?.Attributes?.GetInt(ArcanaOffKey) ?? 0) & (1 << index)) == 0;
 
-        TrinketEffects Effects(IWorldAccessor world) => world.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+        TrinketEffects Effects(IWorldAccessor world) => VintageEModSystem.Of(world.Api)?.Trinkets;
 
         public override void OnLoaded(ICoreAPI api)
         {
@@ -215,7 +227,7 @@ namespace VintageE
             if (UsesDensityModes && toolMode >= DensityTargets.Length)
             {
                 // "Filter...": the window, not a mode. The pick reaches both sides; only the client opens it.
-                if (api is ICoreClientAPI capi) capi.ModLoader.GetModSystem<VintageEModSystem>()?.OpenGemFilterDialog();
+                if (api is ICoreClientAPI capi) VintageEModSystem.Of(capi)?.OpenGemFilterDialog();
                 return;
             }
             if (Kind == "swiftwolfsrendinggale" && toolMode >= GaleModes.Length)
@@ -242,7 +254,7 @@ namespace VintageE
             // Gem of Eternal Density: sneak + right-click opens its filter window (the same as "Filter..." in its tool modes).
             if (Kind == "gemofeternaldensity" && byEntity.Controls.Sneak)
             {
-                if (world.Side == EnumAppSide.Client) (world.Api as ICoreClientAPI)?.ModLoader.GetModSystem<VintageEModSystem>()?.OpenGemFilterDialog();
+                if (world.Side == EnumAppSide.Client) VintageEModSystem.Of(world.Api)?.OpenGemFilterDialog();
                 return;
             }
             if (world.Side != EnumAppSide.Server) return;
@@ -296,7 +308,7 @@ namespace VintageE
             // The watch glows (a pulsing tint in this computer's chosen colour) while it's on: its sound is easy to miss.
             if (Kind == "watchofflowingtime" && IsActive(itemstack))
             {
-                LoadedTexture glow = (watchMod ??= capi.ModLoader.GetModSystem<VintageEModSystem>())?.WatchGlowTexture();
+                LoadedTexture glow = (watchMod ??= VintageEModSystem.Of(capi))?.WatchGlowTexture();
                 if (glow != null && glow.TextureId != 0)
                 {
                     renderinfo.OverlayTexture = glow;

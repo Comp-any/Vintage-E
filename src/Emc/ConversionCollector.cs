@@ -362,9 +362,24 @@ namespace VintageE
 
         static int? ReadOptionalInt(object obj, string member)
         {
-            Type t = obj.GetType();
-            object val = t.GetField(member)?.GetValue(obj) ?? t.GetProperty(member)?.GetValue(obj);
-            return val is int i ? i : (int?)null;
+            return OptionalMember(obj, member) is int i ? i : (int?)null;
+        }
+
+        /// <summary>How to read each optional member of each type, found once (it was looked up by name for every ingredient of every recipe, in the mapping and again in the cache fingerprint).</summary>
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), Func<object, object>> optionalMembers = new System.Collections.Concurrent.ConcurrentDictionary<(Type type, string member), Func<object, object>>();
+
+        /// <summary>A public field's value or, if there is none (or it is null), a public property's; null if the type has neither.</summary>
+        public static object OptionalMember(object obj, string member)
+        {
+            if (obj == null) return null;
+            Func<object, object> read = optionalMembers.GetOrAdd((obj.GetType(), member), key =>
+            {
+                System.Reflection.FieldInfo field = key.type.GetField(key.member);
+                System.Reflection.PropertyInfo property = key.type.GetProperty(key.member);
+                if (field == null && property == null) return _ => null;
+                return o => field?.GetValue(o) ?? property?.GetValue(o);
+            });
+            return read(obj);
         }
 
         /// <summary>All collectibles an ingredient accepts. Exact codes resolve directly; wildcards/tags are expanded once and cached.</summary>

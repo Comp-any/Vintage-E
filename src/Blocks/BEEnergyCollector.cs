@@ -37,7 +37,7 @@ namespace VintageE
             }
         }
 
-        VintageEModSystem Mod => Api.ModLoader.GetModSystem<VintageEModSystem>();
+        VintageEModSystem Mod => VintageEModSystem.Of(Api);
 
         void OnServerTick(float dt)
         {

@@ -48,7 +48,7 @@ namespace VintageE
             if (api.Side != EnumAppSide.Server) return;
 
             IPlayer player = ep.Player;
-            var mod = api.ModLoader.GetModSystem<VintageEModSystem>();
+            var mod = VintageEModSystem.Of(api);
             IBlockAccessor ba = api.World.BlockAccessor;
             Block clicked = ba.GetBlock(blockSel.Position);
             Block target = mod.WorldTransmutation?.GetTarget(clicked, byEntity.Controls.Sneak);

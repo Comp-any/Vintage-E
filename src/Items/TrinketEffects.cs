@@ -57,9 +57,20 @@ namespace VintageE
         readonly HashSet<string> statsCleaned = new HashSet<string>();
         readonly Random rand = new Random();
         AssetLocation[] hostile;
+        /// <summary>
+        /// Whether each kind of creature met so far is on the HostileCreatures list. The list's patterns used to be
+        /// matched against every creature in reach on every search (a shield searches ten times a second).
+        /// </summary>
+        readonly Dictionary<AssetLocation, bool> hostileByCode = new Dictionary<AssetLocation, bool>();
+        /// <summary>The searches' filters, made once (a new one used to be made for every search).</summary>
+        readonly ActionConsumable<Entity> hostileMatch, repelMatch;
 
         /// <summary>Forget the cached hostile creature list (after HostileCreatures changes).</summary>
-        public void ResetHostile() => hostile = null;
+        public void ResetHostile()
+        {
+            hostile = null;
+            hostileByCode.Clear();
+        }
 
         /// <summary>Name of this mod's time speed modifier on the world calendar (the Watch of Flowing Time).</summary>
         public const string TimeModifierName = "vintageewatch";
@@ -71,6 +82,8 @@ namespace VintageE
         {
             this.mod = mod;
             this.sapi = sapi;
+            hostileMatch = IsHostile;
+            repelMatch = e => e is IProjectile || IsHostile(e);
             sapi.Event.RegisterGameTickListener(OnTick, (int)(Interval * 1000));
             sapi.Event.RegisterGameTickListener(ShieldTick, ShieldTickMs);
             sapi.Event.PlayerDisconnect += p =>
@@ -175,12 +188,33 @@ namespace VintageE
         public bool IsHostile(Entity e)
         {
             if (e == null || !e.Alive || e is EntityPlayer || !(e is EntityAgent) || e.Code == null) return false;
+            if (hostileByCode.TryGetValue(e.Code, out bool known)) return known;
+            bool match = MatchesHostileList(e.Code, out bool settled);
+            if (settled) hostileByCode[e.Code] = match;
+            return match;
+        }
+
+        /// <summary>
+        /// The HostileCreatures patterns against one creature code, as it was done for every creature on every search
+        /// before 1.21.1. <paramref name="settled"/> is false when a pattern turned out unusable and was dropped (the
+        /// answer is then "no" for this once, and nothing is remembered).
+        /// </summary>
+        public bool MatchesHostileList(AssetLocation code, out bool settled)
+        {
+            settled = true;
             hostile ??= mod.Config.HostileCreatures.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => new AssetLocation(p)).ToArray();
             foreach (AssetLocation pattern in hostile)
             {
                 // A bad pattern (an unfinished @regex in the settings) must not take a tick listener down.
-                try { if (WildcardUtil.Match(pattern, e.Code)) return true; }
-                catch (Exception ex) { mod.Mod.Logger.Warning("Vintage-E: HostileCreatures entry {0} can't be used: {1}", pattern, ex.Message); hostile = hostile.Where(h => h != pattern).ToArray(); return false; }
+                try { if (WildcardUtil.Match(pattern, code)) return true; }
+                catch (Exception ex)
+                {
+                    mod.Mod.Logger.Warning("Vintage-E: HostileCreatures entry {0} can't be used: {1}", pattern, ex.Message);
+                    hostile = hostile.Where(h => h != pattern).ToArray();
+                    hostileByCode.Clear();
+                    settled = false;
+                    return false;
+                }
             }
             return false;
         }
@@ -316,6 +350,55 @@ namespace VintageE
             return flightEndedMs.TryGetValue(player?.PlayerUID ?? "", out long ms) && sapi.World.ElapsedMilliseconds - ms < FlightGraceSeconds * 1000;
         }
 
+        // What one player's tick works with, kept between players and ticks: every player's inventories were walked
+        // three times a tick through iterators, with new lists and sets each time, whether they carried a trinket or not.
+        readonly List<(ItemSlot slot, ItemEmcTrinket trinket)> carriedBuffer = new List<(ItemSlot slot, ItemEmcTrinket trinket)>();
+        readonly List<ItemSlot> paidGaleSlots = new List<ItemSlot>();
+        readonly HashSet<string> done = new HashSet<string>();
+        readonly string[] effectBuffer = new string[4];
+
+        /// <summary>The trinkets a player carries (hotbar, backpack, worn), in <see cref="EmcWallet.CarriedSlots"/> order, into <paramref name="into"/>.</summary>
+        public static void CollectTrinkets(IPlayer player, List<(ItemSlot slot, ItemEmcTrinket trinket)> into)
+        {
+            into.Clear();
+            var inv = player?.InventoryManager;
+            if (inv == null) return;
+            foreach (string name in EmcWallet.CarriedInventories)
+            {
+                IInventory own = inv.GetOwnInventory(name);
+                if (own == null) continue;
+                int count = own.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    ItemSlot slot = own[i];
+                    if (slot?.Itemstack?.Collectible is ItemEmcTrinket t) into.Add((slot, t));
+                }
+            }
+        }
+
+        /// <summary><see cref="EffectsOf"/> into a buffer of four; returns how many.</summary>
+        static int EffectsInto(ItemEmcTrinket t, ItemStack stack, string[] into)
+        {
+            string kind = t.Kind;
+            if (kind == "ringofarcana")
+            {
+                int n = 0;
+                for (int i = 0; i < ArcanaRings.Length; i++)
+                {
+                    if (ItemEmcTrinket.ArcanaEnabled(stack, i)) into[n++] = ArcanaRings[i];
+                }
+                return n;
+            }
+            if (kind == "voidring")
+            {
+                into[0] = "gemofeternaldensity";
+                into[1] = "voidpull";
+                return 2;
+            }
+            into[0] = kind;
+            return 1;
+        }
+
         void TickPlayer(IServerPlayer player)
         {
             string uid = player.PlayerUID;
@@ -324,14 +407,22 @@ namespace VintageE
 
             bool wantFlight = false, wantShield = false, flightFree = false, shieldFree = false;
             float speed = 1;
-            var paidGaleSlots = new List<ItemSlot>();
-            var done = new HashSet<string>(); // the same effect twice doesn't stack
+            paidGaleSlots.Clear();
+            done.Clear(); // the same effect twice doesn't stack
+            CollectTrinkets(player, carriedBuffer);
+            bool carriesHarvestBand = false;
 
-            foreach (var (slot, t) in ActiveTrinkets(player).ToList())
+            for (int carriedIndex = 0; carriedIndex < carriedBuffer.Count; carriedIndex++)
             {
+                var (slot, t) = carriedBuffer[carriedIndex];
+                if (t.Kind == "harvestgoddessband") carriesHarvestBand = true;
+                // Only the ones that are working: switched on, or the always-on talisman.
+                if (slot.Itemstack == null || !(t.IsAlwaysOn || (t.IsToggleable && ItemEmcTrinket.IsActive(slot.Itemstack)))) continue;
                 bool free = t.Kind == "ringofarcana"; // ProjectE's Arcana costs nothing
-                foreach (string effect in EffectsOf(t, slot.Itemstack))
+                int effects = EffectsInto(t, slot.Itemstack, effectBuffer);
+                for (int effectIndex = 0; effectIndex < effects; effectIndex++)
                 {
+                    string effect = effectBuffer[effectIndex];
                     if (effect == "swiftwolfsrendinggale")
                     {
                         int mode = free ? 0 : GameMath.Clamp(ItemEmcTrinket.GetMode(slot.Itemstack), 0, ItemEmcTrinket.GaleModes.Length - 1);
@@ -421,7 +512,7 @@ namespace VintageE
             }
 
             // ProjectE: a Harvest Goddess Band that is switched off still makes nearby crops grow, slowly and for free.
-            if (!done.Contains("harvestgoddessband") && CarriedTrinkets(player).Any(c => c.trinket.Kind == "harvestgoddessband") && Every(uid, "harvest-passive", 2))
+            if (!done.Contains("harvestgoddessband") && carriesHarvestBand && Every(uid, "harvest-passive", 2))
             {
                 Grow(entity.Pos.AsBlockPos, 5, 3, null, 0);
             }
@@ -579,20 +670,73 @@ namespace VintageE
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
             int grown = 0;
+            // One position moved from spot to spot (a new one used to be made for every try and every scanned block).
+            BlockPos pos = center.Copy();
             for (int i = 0; i < attempts; i++)
             {
-                BlockPos pos = center.AddCopy(rand.Next(-radius, radius + 1), rand.Next(-2, 3), rand.Next(-radius, radius + 1));
+                int dx = rand.Next(-radius, radius + 1), dy = rand.Next(-2, 3), dz = rand.Next(-radius, radius + 1);
+                pos.Set(center.X + dx, center.Y + dy, center.Z + dz);
                 Block block = ba.GetBlock(pos);
-                Block next = NextCropStage(block);
+                Block next = NextCropStageCached(block);
                 if (next == null) continue;
                 if (payer != null && !EmcWallet.TryPay(payer, costEach)) break;
-                ba.ExchangeBlock(next.BlockId, pos);
+                ba.ExchangeBlock(next.BlockId, pos.Copy());
                 grown++;
             }
             return grown;
         }
 
-        Block NextCropStage(Block block)
+        // What the scans ask of a block, remembered per block id (blocks don't change while a world runs): the
+        // next crop stage, whether a crop is ripe, whether a fluid is still water. 0 = not asked yet.
+        Block[] nextStageById;
+        byte[] nextStageKnown, ripeById, stillWaterById;
+        Block iceBlock, snowBlock;
+
+        byte[] PerBlock(ref byte[] cache)
+        {
+            int count = sapi.World.Blocks.Count;
+            if (cache == null || cache.Length < count) cache = new byte[count];
+            return cache;
+        }
+
+        Block NextCropStageCached(Block block)
+        {
+            if (block == null) return null;
+            int id = block.Id;
+            byte[] known = PerBlock(ref nextStageKnown);
+            if (nextStageById == null || nextStageById.Length < known.Length) nextStageById = new Block[known.Length];
+            if (id < 0 || id >= known.Length) return NextCropStage(block);
+            if (known[id] == 0)
+            {
+                nextStageById[id] = NextCropStage(block);
+                known[id] = 1;
+            }
+            return nextStageById[id];
+        }
+
+        bool IsRipeCropCached(Block block)
+        {
+            if (block == null) return false;
+            int id = block.Id;
+            byte[] cache = PerBlock(ref ripeById);
+            if (id < 0 || id >= cache.Length) return IsRipeCrop(block);
+            if (cache[id] == 0) cache[id] = IsRipeCrop(block) ? (byte)1 : (byte)2;
+            return cache[id] == 1;
+        }
+
+        bool IsStillWaterCached(Block fluid)
+        {
+            if (fluid == null) return false;
+            int id = fluid.Id;
+            byte[] cache = PerBlock(ref stillWaterById);
+            if (id < 0 || id >= cache.Length) return IsStillWater(fluid);
+            if (cache[id] == 0) cache[id] = IsStillWater(fluid) ? (byte)1 : (byte)2;
+            return cache[id] == 1;
+        }
+
+        static bool IsStillWater(Block fluid) => fluid?.Code != null && fluid.Code.Path.StartsWith("water-still", StringComparison.Ordinal);
+
+        public Block NextCropStage(Block block)
         {
             if (block?.Code == null || !block.Code.Path.StartsWith("crop-", StringComparison.Ordinal)) return null;
             string path = block.Code.Path;
@@ -602,7 +746,7 @@ namespace VintageE
             return next == null || next.Id == 0 ? null : next;
         }
 
-        static bool IsRipeCrop(Block block)
+        public static bool IsRipeCrop(Block block)
         {
             if (block?.CropProps == null || block.Code == null) return false;
             string path = block.Code.Path;
@@ -615,14 +759,16 @@ namespace VintageE
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
             int harvested = 0;
+            BlockPos scan = center.Copy();
             for (int dx = -radius; dx <= radius; dx++)
             {
                 for (int dz = -radius; dz <= radius; dz++)
                 {
                     for (int dy = -2; dy <= 2; dy++)
                     {
-                        BlockPos pos = center.AddCopy(dx, dy, dz);
-                        if (!IsRipeCrop(ba.GetBlock(pos))) continue;
+                        scan.Set(center.X + dx, center.Y + dy, center.Z + dz);
+                        if (!IsRipeCropCached(ba.GetBlock(scan))) continue;
+                        BlockPos pos = scan.Copy();
                         if (!MayChange(byPlayer, pos)) continue;
                         ba.BreakBlock(pos, byPlayer);
                         harvested++;
@@ -674,7 +820,7 @@ namespace VintageE
         public int Burn(Vec3d center, float radius, Entity source, IServerPlayer payer, double costEach, float damage = 3f)
         {
             int hit = 0;
-            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius / 2, IsHostile))
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius / 2, hostileMatch))
             {
                 if (payer != null && !EmcWallet.TryPay(payer, costEach)) break;
                 e.ReceiveDamage(new DamageSource
@@ -694,9 +840,10 @@ namespace VintageE
         public int Freeze(BlockPos center, int radius, IServerPlayer byPlayer)
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
-            Block ice = sapi.World.GetBlock(new AssetLocation("game:lakeice"));
+            Block ice = iceBlock ??= sapi.World.GetBlock(new AssetLocation("game:lakeice"));
             if (ice == null || ice.Id == 0) return 0;
             int frozen = 0;
+            BlockPos scan = center.Copy();
             for (int dx = -radius; dx <= radius; dx++)
             {
                 for (int dz = -radius; dz <= radius; dz++)
@@ -704,10 +851,10 @@ namespace VintageE
                     if (dx * dx + dz * dz > radius * radius) continue;
                     for (int dy = -2; dy <= 0; dy++)
                     {
-                        BlockPos pos = center.AddCopy(dx, dy, dz);
-                        Block fluid = ba.GetBlock(pos, BlockLayersAccess.Fluid);
-                        if (fluid?.Code == null || !fluid.Code.Path.StartsWith("water-still", StringComparison.Ordinal)) continue;
-                        if (ba.GetBlock(pos, BlockLayersAccess.Solid)?.Id > 0) continue;
+                        scan.Set(center.X + dx, center.Y + dy, center.Z + dz);
+                        if (!IsStillWaterCached(ba.GetBlock(scan, BlockLayersAccess.Fluid))) continue;
+                        if (ba.GetBlock(scan, BlockLayersAccess.Solid)?.Id > 0) continue;
+                        BlockPos pos = scan.Copy();
                         if (!MayChange(byPlayer, pos)) continue;
                         if (!ice.ForFluidsLayer) ba.SetBlock(0, pos, BlockLayersAccess.Fluid);
                         ba.SetBlock(ice.BlockId, pos);
@@ -730,7 +877,7 @@ namespace VintageE
         /// <summary>Damps the movement of hostile creatures around <paramref name="center"/> (watch in slow mode).</summary>
         public void Slow(Vec3d center, float radius)
         {
-            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius / 2, IsHostile))
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius / 2, hostileMatch))
             {
                 e.Pos.Motion.Mul(0.4, 1, 0.4);
             }
@@ -759,16 +906,31 @@ namespace VintageE
         /// </summary>
         public void Repel(Vec3d center, float radius)
         {
-            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, IsHostile))
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, hostileMatch)) Push(e, center, radius);
+        }
+
+        static void Push(Entity e, Vec3d center, float radius)
+        {
+            Vec3d dir = e.Pos.XYZ.SubCopy(center);
+            dir.Y = 0;
+            double dist = Math.Max(0.2, dir.Length());
+            dir.Mul(1 / dist);
+            double push = 0.15 + 0.45 * (1 - Math.Min(1, dist / radius));
+            double inward = e.Pos.Motion.X * dir.X + e.Pos.Motion.Z * dir.Z; // < 0: coming closer
+            double keep = inward < 0 ? -inward : 0;
+            e.Pos.Motion.Add(dir.X * (push + keep), e.OnGround ? 0.05 : 0, dir.Z * (push + keep));
+        }
+
+        /// <summary>
+        /// The Interdiction Torch's two pushes (hostile creatures away, other people's projectiles turned) from one
+        /// search of the area: it made two, four times a second, each going through every creature in the chunks around.
+        /// </summary>
+        public void RepelAll(Vec3d center, float radius)
+        {
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, repelMatch))
             {
-                Vec3d dir = e.Pos.XYZ.SubCopy(center);
-                dir.Y = 0;
-                double dist = Math.Max(0.2, dir.Length());
-                dir.Mul(1 / dist);
-                double push = 0.15 + 0.45 * (1 - Math.Min(1, dist / radius));
-                double inward = e.Pos.Motion.X * dir.X + e.Pos.Motion.Z * dir.Z; // < 0: coming closer
-                double keep = inward < 0 ? -inward : 0;
-                e.Pos.Motion.Add(dir.X * (push + keep), e.OnGround ? 0.05 : 0, dir.Z * (push + keep));
+                if (IsHostile(e)) Push(e, center, radius);
+                if (e is IProjectile) Turn(e, center, null);
             }
         }
 
@@ -778,17 +940,19 @@ namespace VintageE
         /// <summary>Turns projectiles within <paramref name="radius"/> of <paramref name="center"/> away from it; <paramref name="owner"/>'s own fly on (null: a player's are left alone - the interdiction torch).</summary>
         public void RepelProjectiles(Vec3d center, float radius, Entity owner)
         {
-            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is IProjectile))
-            {
-                Entity by = ((IProjectile)e).FiredBy;
-                if (owner != null ? by?.EntityId == owner.EntityId : by is EntityPlayer) continue;
-                Vec3d away = e.Pos.XYZ.SubCopy(center);
-                double dist = away.Length();
-                double speed = Math.Max(0.2, e.Pos.Motion.Length());
-                if (dist < 0.01) continue;
-                away.Mul(speed / dist);
-                e.Pos.Motion.Set(away.X, away.Y, away.Z);
-            }
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is IProjectile)) Turn(e, center, owner);
+        }
+
+        static void Turn(Entity e, Vec3d center, Entity owner)
+        {
+            Entity by = ((IProjectile)e).FiredBy;
+            if (owner != null ? by?.EntityId == owner.EntityId : by is EntityPlayer) return;
+            Vec3d away = e.Pos.XYZ.SubCopy(center);
+            double dist = away.Length();
+            double speed = Math.Max(0.2, e.Pos.Motion.Length());
+            if (dist < 0.01) return;
+            away.Mul(speed / dist);
+            e.Pos.Motion.Set(away.X, away.Y, away.Z);
         }
 
         /// <summary>EMC per point of saturation: plain feeding, and the nutrition mode (which also fills the food groups).</summary>
@@ -913,7 +1077,7 @@ namespace VintageE
                     CollectibleObject c = stack.Collectible;
                     if (c == target || c is ItemEmcTrinket || c is IEmcStorageItem || c.GetMaxDurability(stack) > 0) continue;
                     if (StackContents.HasNestedStacks(stack)) continue;
-                    if (!GemFilter.Passes(gemSlot.Itemstack, c)) continue;
+                    if (!GemFilter.Passes(gemSlot.Itemstack, c, sapi.World)) continue;
                     double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
                     if (value <= 0 || value > maxInput) continue;
                     stored += value * stack.StackSize;
@@ -941,15 +1105,18 @@ namespace VintageE
         public int LaySnow(BlockPos center, int radius, int attempts, IServerPlayer byPlayer)
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
-            Block snow = sapi.World.GetBlock(new AssetLocation("game:snowlayer-1"));
+            Block snow = snowBlock ??= sapi.World.GetBlock(new AssetLocation("game:snowlayer-1"));
             if (snow == null || snow.Id == 0) return 0;
             int laid = 0;
+            BlockPos scan = center.Copy();
             for (int i = 0; i < attempts; i++)
             {
-                BlockPos pos = center.AddCopy(rand.Next(-radius, radius + 1), rand.Next(-1, 2), rand.Next(-radius, radius + 1));
-                if (ba.GetBlock(pos).Id != 0 || ba.GetBlock(pos, BlockLayersAccess.Fluid).Id != 0) continue;
-                Block below = ba.GetBlock(pos.DownCopy());
+                int x = center.X + rand.Next(-radius, radius + 1), y = center.Y + rand.Next(-1, 2), z = center.Z + rand.Next(-radius, radius + 1);
+                scan.Set(x, y, z);
+                if (ba.GetBlock(scan).Id != 0 || ba.GetBlock(scan, BlockLayersAccess.Fluid).Id != 0) continue;
+                Block below = ba.GetBlock(scan.Set(x, y - 1, z));
                 if (below == null || below.Id == 0 || !below.SideSolid[BlockFacing.UP.Index]) continue;
+                BlockPos pos = scan.Set(x, y, z).Copy();
                 if (!MayChange(byPlayer, pos)) continue;
                 ba.SetBlock(snow.BlockId, pos);
                 laid++;
@@ -1139,6 +1306,13 @@ namespace VintageE
         {
             string key = PlayerEmc.KeyOf(c);
             bool listed = key != null && TabletMagnet.GetFilter(gem).Contains(key);
+            return Only(gem) ? listed : !listed;
+        }
+
+        /// <summary>The same answer for the ticks that ask it of every carried or stored stack, from the filter's items found once.</summary>
+        public static bool Passes(ItemStack gem, CollectibleObject c, IWorldAccessor world)
+        {
+            bool listed = c != null && Array.IndexOf(TabletMagnet.FilterItems(gem, world), c) >= 0;
             return Only(gem) ? listed : !listed;
         }
 

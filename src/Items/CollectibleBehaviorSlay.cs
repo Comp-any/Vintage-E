@@ -37,7 +37,7 @@ namespace VintageE
             long now = byEntity.World.ElapsedMilliseconds;
             if (lastMs.TryGetValue(player.PlayerUID, out long last) && now - last < 600) return; // once a swing
             lastMs[player.PlayerUID] = now;
-            TrinketEffects fx = byEntity.Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+            TrinketEffects fx = VintageEModSystem.Of(byEntity.Api)?.Trinkets;
             fx?.Slay(player, damage, byEntity.Controls.Sneak);
         }
 

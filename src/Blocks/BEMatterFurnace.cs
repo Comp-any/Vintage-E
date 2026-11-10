@@ -36,6 +36,9 @@ namespace VintageE
         /// </summary>
         const float SpitDrop = 0.55f;
         ModelTransform loweredTransform;
+        // The firepit renderer's fields, found once (every furnace on screen asked for them four times a second).
+        static Type rendererType;
+        static FieldInfo rendererStack, rendererChild, rendererTransform;
 
         static readonly FieldInfo InventoryField = typeof(BlockEntityFirepit).GetField("inventory", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
         static readonly MethodInfo SlotModifiedHandler = typeof(BlockEntityFirepit).GetMethod("OnSlotModified", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -105,7 +108,14 @@ namespace VintageE
             object r = ContentsRendererField?.GetValue(this);
             if (r == null) return;
             Type type = r.GetType();
-            FieldInfo stackField = type.GetField("ContentStack"), childField = type.GetField("contentStackRenderer"), transformField = type.GetField("Transform");
+            if (!ReferenceEquals(type, rendererType))
+            {
+                rendererStack = type.GetField("ContentStack");
+                rendererChild = type.GetField("contentStackRenderer");
+                rendererTransform = type.GetField("Transform");
+                rendererType = type;
+            }
+            FieldInfo stackField = rendererStack, childField = rendererChild, transformField = rendererTransform;
             if (stackField == null || childField == null || transformField == null) return;
             if (!(stackField.GetValue(r) is ItemStack stack) || stack.Class != EnumItemClass.Item || childField.GetValue(r) != null) return;
             if (!(transformField.GetValue(r) is ModelTransform current) || ReferenceEquals(current, loweredTransform)) return;

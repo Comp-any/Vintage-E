@@ -79,8 +79,7 @@ namespace VintageE
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
-                // Timings of the mod's hot paths (lines starting BENCH), away from the blocks the checks below place.
-                Benchmarks.Run(mod, sapi, new BlockPos(x - 20, y, z - 20), Line);
+                benchSite = new BlockPos(x - 20, y, z - 20);
 
                 BlockEntityFirepit fuelled = PlaceFurnace(new BlockPos(x + 2, y, z), "dark");
                 BlockEntityFirepit onEmc = PlaceFurnace(new BlockPos(x + 4, y, z), "red");
@@ -1656,8 +1655,18 @@ namespace VintageE
             return n;
         }
 
+        /// <summary>Where the benchmarks run their area scans: away from the blocks the checks place.</summary>
+        BlockPos benchSite;
+
         void Finish()
         {
+            // Timings of the mod's hot paths (lines starting BENCH). Last of all: they hold the game thread for
+            // seconds, and shots still in the air when that happened timed out instead of landing.
+            if (benchSite != null)
+            {
+                try { Benchmarks.Run(mod, sapi, benchSite, Line); }
+                catch (Exception e) { Line("BENCH failed: " + e); }
+            }
             Line(failures == 0 ? "ALL PASSED" : failures + " FAILED");
             try
             {

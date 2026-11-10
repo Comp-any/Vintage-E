@@ -75,10 +75,11 @@ namespace VintageE
             }
         }
 
-        VintageEModSystem Mod => Api.ModLoader.GetModSystem<VintageEModSystem>();
+        VintageEModSystem Mod => VintageEModSystem.Of(Api);
 
         void OnSlotModified(int slotId)
         {
+            if (slotId == TargetSlot) copyOfTarget = null; // the target changed: its copy is made again
             if (Api?.Side == EnumAppSide.Server)
             {
                 MarkDirty(false);
@@ -91,8 +92,33 @@ namespace VintageE
             get
             {
                 ItemStack target = inventory[TargetSlot].Itemstack;
-                return target == null || Mod == null ? 0 : Mod.Emc.GetValue(CopyOf(Mod, target));
+                VintageEModSystem mod = Mod;
+                if (target == null || mod == null) return 0;
+                TargetCopy(mod, target, out _, out double value);
+                return value;
             }
+        }
+
+        // The copy the condenser makes of its target and what one costs, kept while the target slot and the EMC
+        // table stay as they are: both used to be worked out again on every tick of every condenser (twice a second)
+        // and for every frame its block info was on screen.
+        ItemStack copyOfTarget, cachedCopy;
+        double cachedCopyValue;
+        int cachedCopyRevision = -1, cachedCopyAge;
+
+        void TargetCopy(VintageEModSystem mod, ItemStack target, out ItemStack copy, out double value)
+        {
+            int revision = mod.Emc.Revision;
+            if (cachedCopy == null || !ReferenceEquals(copyOfTarget, target) || cachedCopyRevision != revision)
+            {
+                cachedCopy = CopyOf(mod, target);
+                cachedCopyValue = mod.Emc.GetValue(cachedCopy);
+                copyOfTarget = target;
+                cachedCopyRevision = revision;
+                cachedCopyAge = 0;
+            }
+            copy = cachedCopy;
+            value = cachedCopyValue;
         }
 
         /// <summary>
@@ -130,9 +156,16 @@ namespace VintageE
                     changed = true;
                 }
             }
-            ItemStack copy = target == null || chargingStar ? null : CopyOf(mod, target);
+            ItemStack copy = null;
+            double copyValue = 0;
+            if (target != null && !chargingStar)
+            {
+                // Looked at afresh every ten seconds whatever happens, in case something changed the target where it lies.
+                if (++cachedCopyAge >= 20) copyOfTarget = null;
+                TargetCopy(mod, target, out copy, out copyValue);
+            }
             // Things on the NoTransmute list are never made from EMC (nor burned, below).
-            double targetValue = copy == null || mod.Emc.IsNoTransmute(copy.Collectible) ? 0 : mod.Emc.GetValue(copy);
+            double targetValue = copy == null || mod.Emc.IsNoTransmute(copy.Collectible) ? 0 : copyValue;
 
             // 1. Burn storage (anything that isn't the target) into EMC, while there's room for it.
             burnBudget = Math.Min(burnBudget + itemsPerSecond * speed * dt, itemsPerSecond * speed * 2 + 1);

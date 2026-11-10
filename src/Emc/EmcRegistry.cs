@@ -13,27 +13,42 @@ namespace VintageE
     {
         Dictionary<CollectibleObject, double> values = new Dictionary<CollectibleObject, double>();
 
+        int revision;
+        /// <summary>
+        /// Goes up whenever anything a player's game is sent changes: the values, the settings that travel with them,
+        /// the NoTransmute list, the contents modes. What is worked out from the table (the packet for players, a
+        /// condenser's copy of its target) is kept until this moves.
+        /// </summary>
+        public int Revision => revision;
+        /// <summary>Says the table changed. The setters here do it themselves; call it after changing <see cref="StackData"/> or <see cref="NoTransmute"/> in place.</summary>
+        public void Touch() => System.Threading.Interlocked.Increment(ref revision);
+
+        bool durabilityScales = true, projectESounds;
+        double trinketCostMultiplier = 1, machineSpeedMultiplier = 1, watchSpeedUp = 10, watchSlowDown = 3;
+        HashSet<CollectibleObject> noTransmute = new HashSet<CollectibleObject>();
+        StackDataTable stackData = new StackDataTable();
+
         /// <summary>Whether damaged tools are worth proportionally less (mirrors the server config on clients).</summary>
-        public bool DurabilityScales { get; set; } = true;
+        public bool DurabilityScales { get => durabilityScales; set { durabilityScales = value; Touch(); } }
 
         /// <summary>Whether ProjectE's sounds are on (mirrors the server config on clients).</summary>
-        public bool ProjectESounds { get; set; }
+        public bool ProjectESounds { get => projectESounds; set { projectESounds = value; Touch(); } }
         /// <summary>The server's multipliers (sent with the table), for tooltips that quote costs and speeds.</summary>
-        public double TrinketCostMultiplier { get; set; } = 1;
-        public double MachineSpeedMultiplier { get; set; } = 1;
-        public double WatchSpeedUp { get; set; } = 10;
-        public double WatchSlowDown { get; set; } = 3;
+        public double TrinketCostMultiplier { get => trinketCostMultiplier; set { trinketCostMultiplier = value; Touch(); } }
+        public double MachineSpeedMultiplier { get => machineSpeedMultiplier; set { machineSpeedMultiplier = value; Touch(); } }
+        public double WatchSpeedUp { get => watchSpeedUp; set { watchSpeedUp = value; Touch(); } }
+        public double WatchSlowDown { get => watchSlowDown; set { watchSlowDown = value; Touch(); } }
 
         /// <summary>
         /// Items that keep their EMC value (recipes still use it) but can't be burned for EMC, learned or created
         /// (the server's NoTransmute list, matched to codes; mirrored on clients).
         /// </summary>
-        public HashSet<CollectibleObject> NoTransmute { get; set; } = new HashSet<CollectibleObject>();
+        public HashSet<CollectibleObject> NoTransmute { get => noTransmute; set { noTransmute = value ?? new HashSet<CollectibleObject>(); Touch(); } }
 
-        public bool IsNoTransmute(CollectibleObject c) => c != null && NoTransmute.Contains(c);
+        public bool IsNoTransmute(CollectibleObject c) => c != null && noTransmute.Contains(c);
 
         /// <summary>Whether this item can be burned, learned or created: it has a value and isn't on the NoTransmute list.</summary>
-        public bool CanTransmute(CollectibleObject c) => c != null && !NoTransmute.Contains(c) && GetValue(c) > 0;
+        public bool CanTransmute(CollectibleObject c) => c != null && !noTransmute.Contains(c) && GetValue(c) > 0;
 
         public int Count => values.Count;
 
@@ -57,6 +72,7 @@ namespace VintageE
         public void Replace(Dictionary<CollectibleObject, double> newValues)
         {
             values = new Dictionary<CollectibleObject, double>(newValues);
+            Touch();
         }
 
         /// <summary>Value of one pristine item, or 0 if it has none.</summary>
@@ -81,7 +97,7 @@ namespace VintageE
         }
 
         /// <summary>Which items carry contents/materials and the mode each uses, plus material-specific values.</summary>
-        public StackDataTable StackData { get; set; } = new StackDataTable();
+        public StackDataTable StackData { get => stackData; set { stackData = value ?? new StackDataTable(); Touch(); } }
 
         /// <summary>The world, for resolving what's inside stacks and chiseled blocks' materials (set on both sides).</summary>
         public IWorldAccessor World { get; set; }
@@ -212,7 +228,31 @@ namespace VintageE
             return Math.Clamp(stack.Attributes?.GetFloat("condition", 1) ?? 1, 0, 1);
         }
 
+        sealed class PacketAt
+        {
+            public EmcTablePacket Packet;
+            public int Revision;
+        }
+
+        volatile PacketAt lastPacket;
+
+        /// <summary>
+        /// The table as players' games are sent it. Built once per change of the table (<see cref="Revision"/>): it
+        /// used to be put together again - 1.5 MB of lists for a base game - for every player who joined and every
+        /// resend. Nobody may change what this returns.
+        /// </summary>
         public EmcTablePacket ToPacket()
+        {
+            int at = revision;
+            PacketAt last = lastPacket;
+            if (last != null && last.Revision == at) return last.Packet;
+            EmcTablePacket packet = BuildPacket();
+            lastPacket = new PacketAt { Packet = packet, Revision = at };
+            return packet;
+        }
+
+        /// <summary>Puts the table's packet together from scratch (what <see cref="ToPacket"/> did every time before 1.21.1).</summary>
+        public EmcTablePacket BuildPacket()
         {
             var itemIds = new List<int>();
             var itemValues = new List<double>();
@@ -289,6 +329,7 @@ namespace VintageE
                 if (block?.Code != null) fresh[block] = vals[i];
             }
             values = fresh;
+            Touch();
             DurabilityScales = packet.DurabilityScales;
             ProjectESounds = packet.ProjectESounds;
             TrinketCostMultiplier = packet.TrinketCostMultiplier > 0 ? packet.TrinketCostMultiplier : 1;

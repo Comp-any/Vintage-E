@@ -50,7 +50,10 @@ namespace VintageE
             return shot;
         }
 
-        public string Kind => Code?.EndVariant() ?? "lens";
+        string kind;
+
+        /// <summary>lens, water, lava, fire or arrow: the end of the entity's code (read once, not several times a tick).</summary>
+        public string Kind => kind ?? (Code == null ? "lens" : kind = Code.EndVariant() ?? "lens");
 
         /// <summary>
         /// Turns the model to point where it flies (as the game's arrows do): the shape renderer turns the model's +x
@@ -94,7 +97,9 @@ namespace VintageE
         }
 
         float age;
-        bool done;
+        bool done, ageRestored;
+        /// <summary>The key the shot's age is saved under, so one that was saved with its chunk doesn't fly its full time again.</summary>
+        const string AgeKey = "vintageeAge";
 
         public override bool IsInteractable => false;
         public override bool ApplyGravity => false;
@@ -119,9 +124,15 @@ namespace VintageE
 
             age += dt;
             // A shot that was saved with its chunk (it flew into unloaded land) carries its age across the reload,
-            // instead of flying its full time again from there.
-            if (age < 0.5f && WatchedAttributes.HasAttribute("vintageeAge")) age = Math.Max(age, WatchedAttributes.GetFloat("vintageeAge"));
-            WatchedAttributes.SetFloat("vintageeAge", age);
+            // instead of flying its full time again from there. The age is kept in the entity's own attributes, which
+            // are saved but sent to nobody: until 1.21.1 it sat in the watched ones, so every shot in the air sent
+            // every player nearby an update on every tick (a smite volley is ten of them).
+            if (!ageRestored)
+            {
+                ageRestored = true;
+                age = Math.Max(age, Math.Max(Attributes.GetFloat(AgeKey), WatchedAttributes.GetFloat(AgeKey)));
+            }
+            Attributes.SetFloat(AgeKey, age);
             if (age > MaxLifeSeconds)
             {
                 Die(EnumDespawnReason.Expire);
@@ -195,7 +206,7 @@ namespace VintageE
             if (steerSearchIn <= 0 || steerTarget == null || !steerTarget.Alive)
             {
                 steerSearchIn = 0.2f;
-                TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+                TrinketEffects fx = VintageEModSystem.Of(Api)?.Trinkets;
                 if (fx == null) return;
                 steerTarget = World.GetNearestEntity(Pos.XYZ, 24, 24, fx.IsHostile);
             }

@@ -134,7 +134,7 @@ namespace VintageE
                 }
                 if (c.Attributes != null)
                 {
-                    foreach (string key in new[] { "emcValue", "bakingProperties", "juiceableProperties", "distillationProps", "waterTightContainerProps", "drop", "drops", "requiredUnits", "breaksWhenFilled", "beehivekiln", "carburizableProps" })
+                    foreach (string key in FingerprintAttributes)
                     {
                         var a = c.Attributes[key];
                         if (a != null && a.Exists) sb.Append('|').Append(key).Append('=').Append(a.Token?.ToString(Formatting.None));
@@ -172,6 +172,9 @@ namespace VintageE
             return Convert.ToHexString(hash.GetHashAndReset());
         }
 
+        /// <summary>The item attributes the mapper reads, which therefore go into the fingerprint.</summary>
+        static readonly string[] FingerprintAttributes = { "emcValue", "bakingProperties", "juiceableProperties", "distillationProps", "waterTightContainerProps", "drop", "drops", "requiredUnits", "breaksWhenFilled", "beehivekiln", "carburizableProps" };
+
         static void AppendStack(StringBuilder sb, string tag, ItemStack stack, double qty)
         {
             if (stack?.Collectible == null) return;
@@ -203,7 +206,7 @@ namespace VintageE
                       .Append('/').Append(ing.SkipVariants == null ? "" : string.Join(",", ing.SkipVariants));
                     ItemStack ret = ing.ReturnedStack?.ResolvedItemstack;
                     if (ret != null) sb.Append("ret=").Append(ret.Collectible?.Code);
-                    object consumeQty = ing.GetType().GetField("ConsumeQuantity")?.GetValue(ing) ?? ing.GetType().GetProperty("ConsumeQuantity")?.GetValue(ing);
+                    object consumeQty = ConversionCollector.OptionalMember(ing, "ConsumeQuantity");
                     if (consumeQty != null) sb.Append("cq=").Append(consumeQty);
                     if (ing.RecipeAttributes != null && ing.RecipeAttributes.Exists) sb.Append("ra=").Append(ing.RecipeAttributes.Token?.ToString(Formatting.None));
                 }

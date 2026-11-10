@@ -48,7 +48,7 @@ namespace VintageE
         void OnServerTick(float dt)
         {
             double before = Stored;
-            double speed = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Config.MachineSpeedMultiplier ?? 1;
+            double speed = VintageEModSystem.Of(Api)?.Config.MachineSpeedMultiplier ?? 1;
             if (Stored > 0) Stored = Math.Min(capacity, Stored + bonusPerSecond * speed * dt);
             double charged = Star.Charge(Math.Min(Stored, transferPerSecond * speed * dt)); // a Klein star inside is charged first, at the relay's rate
             if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
@@ -153,10 +153,9 @@ namespace VintageE
             {
                 try
                 {
-                    TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+                    TrinketEffects fx = VintageEModSystem.Of(Api)?.Trinkets;
                     Vec3d center = Pos.ToVec3d().Add(0.5, 0.5, 0.5);
-                    fx?.Repel(center, radius);
-                    fx?.RepelProjectiles(center, radius, null); // arrows and the like turn away too; players' own fly on
+                    fx?.RepelAll(center, radius); // hostile creatures pushed away; arrows and the like turned too (players' own fly on)
                 }
                 catch (Exception e) { Api.Logger.Warning("Vintage-E interdiction torch at {0}: {1}", Pos, e.Message); }
             }, 250);
@@ -297,7 +296,7 @@ namespace VintageE
         void ApplyWeather(bool placed)
         {
             if (!(Api is ICoreServerAPI)) return;
-            TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+            TrinketEffects fx = VintageEModSystem.Of(Api)?.Trinkets;
             fx?.SetPedestalWeather(Pos, placed ? (held?.Collectible as ItemEmcTrinket)?.Kind : null);
         }
 
@@ -343,7 +342,7 @@ namespace VintageE
         void PedestalTick(float dt)
         {
             if (!(held?.Collectible is ItemEmcTrinket t)) return;
-            TrinketEffects fx = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Trinkets;
+            TrinketEffects fx = VintageEModSystem.Of(Api)?.Trinkets;
             if (fx == null) return;
             acc += dt;
             bool everySecond = acc >= 1;
@@ -356,9 +355,23 @@ namespace VintageE
         }
 
         /// <summary>How much further the pedestal reaches than a Dark Matter Pedestal (block attribute "pedestalRange"; red matter: 2).</summary>
-        public float RangeMultiplier => Block?.Attributes?["pedestalRange"].AsFloat(1) ?? 1;
+        public float RangeMultiplier { get { ReadMultipliers(); return rangeMultiplier; } }
         /// <summary>How much stronger its effects are (block attribute "pedestalPower"; red matter: 2).</summary>
-        public float PowerMultiplier => Block?.Attributes?["pedestalPower"].AsFloat(1) ?? 1;
+        public float PowerMultiplier { get { ReadMultipliers(); return powerMultiplier; } }
+
+        // Read from the block's attributes once per block (it changes between the empty and active looks): they were
+        // parsed from JSON several times on every tick of every pedestal.
+        Block multipliersOf;
+        float rangeMultiplier = 1, powerMultiplier = 1;
+
+        void ReadMultipliers()
+        {
+            Block block = Block;
+            if (block != null && ReferenceEquals(block, multipliersOf)) return;
+            multipliersOf = block;
+            rangeMultiplier = block?.Attributes?["pedestalRange"].AsFloat(1) ?? 1;
+            powerMultiplier = block?.Attributes?["pedestalPower"].AsFloat(1) ?? 1;
+        }
 
         int R(float r) => (int)Math.Round(r * RangeMultiplier);
 
@@ -381,7 +394,8 @@ namespace VintageE
                     break;
                 case "ignitionring": if (everySecond) fx.Burn(center, 8 * range, null, null, 0, 3 * power); break;
                 case "zeroring":
-                    fx.Freeze(Pos.UpCopy(), R(6), null);
+                    // Once a second (it was twice): a red pedestal looks at 1,300 blocks of water each time.
+                    if (everySecond) fx.Freeze(Pos.UpCopy(), R(6), null);
                     fx.Extinguish(center, 6 * range);
                     break;
                 case "blackholeband":
@@ -470,7 +484,7 @@ namespace VintageE
                 }
                 if (effect == "repairtalisman")
                 {
-                    VintageEConfig config = Api.ModLoader.GetModSystem<VintageEModSystem>()?.Config;
+                    VintageEConfig config = VintageEModSystem.Of(Api)?.Config;
                     for (int n = 0; n < Math.Max(1, (int)Math.Round(power)); n++)
                     {
                         foreach (ItemSlot slot in EmcWallet.CarriedSlots(p)) TrinketEffects.RepairOnce(slot, config);

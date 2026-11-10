@@ -15,7 +15,8 @@ namespace VintageE
 {
     /// <summary>
     /// Entry point. Registers every class, owns the EMC table for its side, and wires up networking.
-    /// One instance exists per side (server and client each get their own), so nothing here is static.
+    /// One instance exists per side (server and client each get their own), so nothing here is static except the
+    /// reference to each side's running instance (<see cref="Of"/>).
     /// </summary>
     public class VintageEModSystem : ModSystem
     {
@@ -71,9 +72,26 @@ namespace VintageE
 
         public override double ExecuteOrder() => 1.0; // after the survival mod has registered its recipe registries
 
+        // The running instance on each side. The game's GetModSystem<T>() walks every loaded mod system on every call,
+        // and machines, sounds, tooltips and the damage hook asked it each time they ran.
+        static VintageEModSystem serverInstance, clientInstance;
+
+        /// <summary>
+        /// This mod's system on <paramref name="api"/>'s side, without the game's search. Only ever the instance that
+        /// was started with that same API object: in single player a world that was left can still be around while the
+        /// next one starts, and then the game is asked as before.
+        /// </summary>
+        public static VintageEModSystem Of(ICoreAPI api)
+        {
+            if (api == null) return null;
+            VintageEModSystem known = api.Side == EnumAppSide.Server ? serverInstance : clientInstance;
+            return known != null && ReferenceEquals(known.Api, api) ? known : api.ModLoader?.GetModSystem<VintageEModSystem>();
+        }
+
         public override void Start(ICoreAPI api)
         {
             Api = api;
+            if (api.Side == EnumAppSide.Server) serverInstance = this; else clientInstance = this;
             EmcCraft.RegisterGridClass(api);
             MatterToolRecipePatches.Patch(Mod.Logger); // matter tools count as the game's tools in recipes (both sides: the grid matches on each)
             if (api is ICoreClientAPI startCapi)
@@ -2421,7 +2439,7 @@ namespace VintageE
         /// </summary>
         public static void AppendServerScaling(IWorldAccessor world, StringBuilder dsc, bool costs, bool machine = false, bool watch = false)
         {
-            EmcRegistry emc = world?.Api?.ModLoader.GetModSystem<VintageEModSystem>()?.Emc;
+            EmcRegistry emc = VintageEModSystem.Of(world?.Api)?.Emc;
             if (emc == null) return;
             if (costs && Math.Abs(emc.TrinketCostMultiplier - 1) > 1e-9) dsc.AppendLine(Lang.Get("vintagee:server-costs", emc.TrinketCostMultiplier.ToString("0.##")));
             if (machine && Math.Abs(emc.MachineSpeedMultiplier - 1) > 1e-9) dsc.AppendLine(Lang.Get("vintagee:server-machinespeed", emc.MachineSpeedMultiplier.ToString("0.##")));
@@ -2791,6 +2809,8 @@ namespace VintageE
                 GuiDialogTransmutation.ForgetWorld();
             }
             PlayerEmc.ForgetWorld();
+            if (ReferenceEquals(serverInstance, this)) serverInstance = null;
+            if (ReferenceEquals(clientInstance, this)) clientInstance = null;
             try { (Sapi?.World ?? (IWorldAccessor)Capi?.World)?.Calendar?.RemoveTimeSpeedModifier(TrinketEffects.TimeModifierName); }
             catch { /* world already gone */ }
             base.Dispose();

@@ -16,7 +16,7 @@ namespace VintageE
             handling = EnumHandHandling.PreventDefault;
             if (api is ICoreClientAPI)
             {
-                api.ModLoader.GetModSystem<VintageEModSystem>().OpenTransmutationDialog(null);
+                VintageEModSystem.Of(api).OpenTransmutationDialog(null);
             }
         }
 

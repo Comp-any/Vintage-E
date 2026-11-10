@@ -18,7 +18,7 @@ namespace VintageE
         /// <summary>A doctor window's title with the running version, e.g. "EMC doctor (Vintage-E 1.19.1)".</summary>
         public static string TitleWithVersion(ICoreClientAPI capi, string title)
         {
-            string v = capi?.ModLoader?.GetModSystem<VintageEModSystem>()?.Version;
+            string v = VintageEModSystem.Of(capi)?.Version;
             return string.IsNullOrEmpty(v) ? title : Lang.Get("vintagee:diag-title-version", title, v);
         }
 

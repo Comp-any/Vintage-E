@@ -91,11 +91,63 @@ namespace VintageE
         public long InferMs { get; private set; }
         public int Rounds { get; private set; }
 
-        Dictionary<T, List<int>> dependentsByItem;
+        /// <summary>
+        /// What a solve works out about its edges before it starts, none of which depends on the values: which edges
+        /// use each item, which make it, each edge's ingredient slots without the excluded items (they can never
+        /// have a value) and the free slots (they add nothing), and the one-input processing steps. The mapper solves
+        /// the same edges eight times or more in a row, so it hands this from one solver to the next
+        /// (<see cref="Shared"/>) instead of having each build it again.
+        /// </summary>
+        public sealed class Graph
+        {
+            internal Edge[] Edges;
+            internal HashSet<T> Excluded, Free;
+            internal int ExcludedCount, FreeCount;
+            internal Dictionary<T, List<int>> Dependents, ByOutput;
+            internal T[][][] Slots;
+            internal double[][] Quantities;
+            internal T[][] Returned;
+            internal double[][] ReturnedQuantities;
+            /// <summary>Edges whose cost can never be worked out (a slot only excluded items could fill).</summary>
+            internal bool[] Never;
+            internal int[] ReversibleSingles;
+
+            /// <summary>Whether it was built for exactly these edges and lists.</summary>
+            internal bool Fits(EmcSolver<T> solver)
+            {
+                if (Edges.Length != solver.Edges.Count || !ReferenceEquals(Excluded, solver.Excluded) || !ReferenceEquals(Free, solver.Free)) return false;
+                if (ExcludedCount != solver.Excluded.Count || FreeCount != solver.Free.Count) return false;
+                for (int i = 0; i < Edges.Length; i++) if (!ReferenceEquals(Edges[i], solver.Edges[i])) return false;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// The prepared graph. Set it to an earlier solver's to reuse it: it is only used if it was built for the same
+        /// edges, excluded and free lists (the same objects, unchanged in size), and built afresh otherwise.
+        /// </summary>
+        public Graph Shared;
+
+        Graph graph;
+        // Which edges the next relaxing has to look at again. An edge that was worked out and none of whose
+        // ingredients has changed value since comes out the same, so it is left alone: every round used to start by
+        // working out all of them again (56 rounds of 27,700 recipes in a base game mapping). The values that come
+        // out are the same, in the same order: only work that changes nothing is skipped.
+        bool[] dirty;
+        /// <summary>Edges that last came out under the floor: looked at every time, as they name the loop suspects.</summary>
+        bool[] floorHit;
+        /// <summary>Edges every ingredient slot of which had a value the last time their cost was worked out (so crafting has nothing to infer from them).</summary>
+        bool[] slotsKnown;
+        bool allDirty;
 
         public void Solve()
         {
-            BuildDependencyIndex();
+            if (Shared == null || !Shared.Fits(this)) Shared = BuildGraph();
+            graph = Shared;
+            dirty = new bool[Edges.Count];
+            floorHit = new bool[Edges.Count];
+            slotsKnown = new bool[Edges.Count];
+            allDirty = true;
             Values = new Dictionary<T, double>(Fixed);
 
             var clock = System.Diagnostics.Stopwatch.StartNew();
@@ -112,6 +164,9 @@ namespace VintageE
                     foreach (var kv in Inferred) if (!Unstable.Contains(kv.Key)) Values[kv.Key] = kv.Value;
                     foreach (var kv in frozenValue) if (!Unstable.Contains(kv.Key)) Values[kv.Key] = kv.Value;
                     foreach (T k in Via.Keys.Where(k => !Inferred.ContainsKey(k)).ToList()) Via.Remove(k);
+                    // Values were taken away: everything is worked out again, and no slot is known to be filled.
+                    allDirty = true;
+                    Array.Clear(slotsKnown, 0, slotsKnown.Length);
                     continue;
                 }
                 before = clock.ElapsedMilliseconds;
@@ -132,28 +187,96 @@ namespace VintageE
                     KeptAtFirstValue.Add(item);
                 }
                 Unstable.ExceptWith(KeptAtFirstValue);
+                allDirty = true;
                 Forward();
             }
         }
 
-        void BuildDependencyIndex()
+        Graph BuildGraph()
         {
-            dependentsByItem = new Dictionary<T, List<int>>();
-            for (int i = 0; i < Edges.Count; i++)
+            int n = Edges.Count;
+            var g = new Graph
+            {
+                Edges = Edges.ToArray(), Excluded = Excluded, Free = Free, ExcludedCount = Excluded.Count, FreeCount = Free.Count,
+                Dependents = new Dictionary<T, List<int>>(), ByOutput = new Dictionary<T, List<int>>(),
+                Slots = new T[n][][], Quantities = new double[n][], Returned = new T[n][], ReturnedQuantities = new double[n][], Never = new bool[n]
+            };
+            var reversible = new List<int>();
+            var slots = new List<T[]>();
+            var quantities = new List<double>();
+            var members = new List<T>();
+            var back = new List<T>();
+            var backQuantities = new List<double>();
+            for (int i = 0; i < n; i++)
             {
                 Edge e = Edges[i];
+                // Every item an edge names, excluded ones too: the order edges are worked through in comes from this.
                 foreach (T[] choice in e.Choices)
                 {
-                    foreach (T c in choice) AddDependent(c, i);
+                    foreach (T c in choice) AddIndexed(g.Dependents, c, i);
                 }
-                if (e.Returned != null) foreach (T r in e.Returned) AddDependent(r, i);
+                if (e.Returned != null) foreach (T r in e.Returned) AddIndexed(g.Dependents, r, i);
+                if (e.Output != null) AddIndexed(g.ByOutput, e.Output, i);
+                if (e.Reversible && e.Choices.Length == 1 && e.Choices[0].Length == 1) reversible.Add(i);
+
+                slots.Clear();
+                quantities.Clear();
+                bool never = false;
+                for (int slot = 0; slot < e.Choices.Length; slot++)
+                {
+                    T[] choice = e.Choices[slot];
+                    double quantity = e.Quantities[slot];
+                    bool free = false;
+                    members.Clear();
+                    foreach (T c in choice)
+                    {
+                        if (Free.Contains(c)) { free = true; break; }
+                        if (!Excluded.Contains(c)) members.Add(c);
+                    }
+                    if (free)
+                    {
+                        // Costs nothing whatever else could fill it: 0 × the quantity, which adds nothing (unless the
+                        // quantity is not a number, and then the cost never is one either).
+                        if (double.IsNaN(quantity) || double.IsInfinity(quantity)) never = true;
+                        continue;
+                    }
+                    if (members.Count == 0) never = true; // nothing that can ever have a value fills it
+                    slots.Add(members.Count == choice.Length ? choice : members.ToArray());
+                    quantities.Add(quantity);
+                }
+                g.Never[i] = never;
+                g.Slots[i] = slots.ToArray();
+                g.Quantities[i] = quantities.ToArray();
+
+                if (e.Returned != null)
+                {
+                    back.Clear();
+                    backQuantities.Clear();
+                    for (int j = 0; j < e.Returned.Length; j++)
+                    {
+                        T r = e.Returned[j];
+                        if (Excluded.Contains(r) || Free.Contains(r)) continue;
+                        back.Add(r);
+                        backQuantities.Add(e.ReturnedQuantities[j]);
+                    }
+                    if (back.Count > 0) { g.Returned[i] = back.ToArray(); g.ReturnedQuantities[i] = backQuantities.ToArray(); }
+                }
             }
+            g.ReversibleSingles = reversible.ToArray();
+            return g;
         }
 
-        void AddDependent(T item, int edge)
+        static void AddIndexed(Dictionary<T, List<int>> index, T item, int edge)
         {
-            if (!dependentsByItem.TryGetValue(item, out var list)) dependentsByItem[item] = list = new List<int>();
+            if (!index.TryGetValue(item, out var list)) index[item] = list = new List<int>();
             if (list.Count == 0 || list[list.Count - 1] != edge) list.Add(edge);
+        }
+
+        /// <summary>An item's value changed: every edge that uses it has to be worked out again.</summary>
+        void MarkUsersDirty(T item)
+        {
+            if (!graph.Dependents.TryGetValue(item, out var deps)) return;
+            for (int k = 0; k < deps.Count; k++) dirty[deps[k]] = true;
         }
 
         /// <summary>Relaxes until nothing changes. Returns false (and fills <see cref="Unstable"/>) if it never settles.</summary>
@@ -164,48 +287,32 @@ namespace VintageE
         {
             var lowered = new Dictionary<T, int>();
             var suspects = new HashSet<T>();
-            var queued = new bool[Edges.Count];
-            var work = new List<int>(Edges.Count);
-            for (int i = 0; i < Edges.Count; i++) { work.Add(i); queued[i] = true; }
+            int count = Edges.Count;
+            var queued = new bool[count];
+            List<int> work = null;
 
             for (int pass = 0; pass < MaxPasses; pass++)
             {
                 TotalPasses++;
                 var changed = new HashSet<T>();
-                foreach (int i in work)
+                if (pass == 0)
                 {
-                    queued[i] = false;
-                    Edge e = Edges[i];
-                    if (Fixed.ContainsKey(e.Output) || Excluded.Contains(e.Output) || Unstable.Contains(e.Output)) continue;
-                    if (Frozen.Contains(e.Output) && Values.ContainsKey(e.Output)) continue;
-
-                    double cost = Cost(e);
-                    if (double.IsNaN(cost)) continue;
-                    double per = cost / e.OutputQuantity;
-                    if (double.IsInfinity(per)) continue;
-                    bool had = Values.TryGetValue(e.Output, out double current);
-                    if (per < MinValue)
+                    // The first pass goes through the edges in order. Those that can't come out differently are
+                    // skipped; one whose ingredient changes earlier in this same pass is marked as it happens, and
+                    // is worked out when its turn comes, as it always was.
+                    bool all = allDirty;
+                    allDirty = false;
+                    for (int i = 0; i < count; i++)
                     {
-                        // A recipe that would push a value below the floor: a loop that makes more than it takes (3 plates ->
-                        // 4 shingle blocks, 1 block -> 15 plates) ends here, so it counts as a loop and the value is frozen
-                        // at the first one it got, rather than settling at a millionth.
-                        if (had && current > MinValue) suspects.Add(e.Output);
-                        continue;
+                        if (all || dirty[i] || floorHit[i]) Relax(i, lowered, suspects, changed);
                     }
-                    if (!had || per < current * (1 - 1e-9))
+                }
+                else
+                {
+                    foreach (int i in work)
                     {
-                        if (had)
-                        {
-                            lowered.TryGetValue(e.Output, out int n);
-                            lowered[e.Output] = ++n;
-                            if (n > LoopLowerLimit) suspects.Add(e.Output);
-                            // Falling a thousandfold from the first derivation is a loop too, however few steps it took.
-                            if (firstValue.TryGetValue(e.Output, out double first) && per * 1000 < first) suspects.Add(e.Output);
-                        }
-                        Values[e.Output] = per;
-                        Via[e.Output] = e;
-                        if (!firstValue.ContainsKey(e.Output)) firstValue[e.Output] = per;
-                        changed.Add(e.Output);
+                        queued[i] = false;
+                        Relax(i, lowered, suspects, changed);
                     }
                 }
 
@@ -224,7 +331,7 @@ namespace VintageE
                 work = new List<int>();
                 foreach (T item in changed)
                 {
-                    if (!dependentsByItem.TryGetValue(item, out var deps)) continue;
+                    if (!graph.Dependents.TryGetValue(item, out var deps)) continue;
                     foreach (int d in deps)
                     {
                         if (!queued[d]) { queued[d] = true; work.Add(d); }
@@ -244,6 +351,47 @@ namespace VintageE
             return true;
         }
 
+        /// <summary>Works one edge out and, if it makes its output cheaper (or gives it its first value), takes that value.</summary>
+        void Relax(int i, Dictionary<T, int> lowered, HashSet<T> suspects, HashSet<T> changed)
+        {
+            dirty[i] = false;
+            Edge e = graph.Edges[i];
+            if (Fixed.ContainsKey(e.Output) || Excluded.Contains(e.Output) || Unstable.Contains(e.Output)) return;
+            if (Frozen.Contains(e.Output) && Values.ContainsKey(e.Output)) return;
+
+            double cost = Cost(i);
+            if (double.IsNaN(cost)) return;
+            double per = cost / e.OutputQuantity;
+            if (double.IsInfinity(per)) return;
+            bool had = Values.TryGetValue(e.Output, out double current);
+            if (per < MinValue)
+            {
+                // A recipe that would push a value below the floor: a loop that makes more than it takes (3 plates ->
+                // 4 shingle blocks, 1 block -> 15 plates) ends here, so it counts as a loop and the value is frozen
+                // at the first one it got, rather than settling at a millionth.
+                floorHit[i] = true;
+                if (had && current > MinValue) suspects.Add(e.Output);
+                return;
+            }
+            floorHit[i] = false;
+            if (!had || per < current * (1 - 1e-9))
+            {
+                if (had)
+                {
+                    lowered.TryGetValue(e.Output, out int n);
+                    lowered[e.Output] = ++n;
+                    if (n > LoopLowerLimit) suspects.Add(e.Output);
+                    // Falling a thousandfold from the first derivation is a loop too, however few steps it took.
+                    if (firstValue.TryGetValue(e.Output, out double first) && per * 1000 < first) suspects.Add(e.Output);
+                }
+                Values[e.Output] = per;
+                Via[e.Output] = e;
+                if (!firstValue.ContainsKey(e.Output)) firstValue[e.Output] = per;
+                changed.Add(e.Output);
+                MarkUsersDirty(e.Output);
+            }
+        }
+
         /// <summary>
         /// Items just frozen for sitting in a self-cheapening loop get the value of their cheapest recipe that does not
         /// go through another loop item, worked out from the values as they stand; only when every recipe runs
@@ -258,17 +406,18 @@ namespace VintageE
             {
                 double best = double.PositiveInfinity;
                 object via = null;
-                for (int i = 0; i < Edges.Count; i++)
+                graph.ByOutput.TryGetValue(item, out List<int> makers);
+                for (int m = 0; makers != null && m < makers.Count; m++)
                 {
-                    Edge e = Edges[i];
-                    if (!Equals(e.Output, item)) continue;
+                    int i = makers[m];
+                    Edge e = graph.Edges[i];
                     bool throughLoop = false;
                     foreach (T[] choice in e.Choices)
                     {
                         if (choice.Length == 1 && (set.Contains(choice[0]) || Frozen.Contains(choice[0]))) { throughLoop = true; break; }
                     }
                     if (throughLoop) continue;
-                    double cost = Cost(e);
+                    double cost = Cost(i);
                     if (double.IsNaN(cost) || e.OutputQuantity <= 0) continue;
                     double per = cost / e.OutputQuantity;
                     if (per >= MinValue && per < best) { best = per; via = e; }
@@ -279,32 +428,38 @@ namespace VintageE
         }
 
         /// <summary>Cost of one run of the edge, or NaN if some ingredient has no value yet.</summary>
-        double Cost(Edge e)
+        double Cost(int index)
         {
+            if (graph.Never[index]) return double.NaN;
+            T[][] slots = graph.Slots[index];
+            double[] quantities = graph.Quantities[index];
+            bool anyUnstable = Unstable.Count > 0;
             double sum = 0;
-            for (int i = 0; i < e.Choices.Length; i++)
+            for (int i = 0; i < slots.Length; i++)
             {
                 double best = double.PositiveInfinity;
-                foreach (T c in e.Choices[i])
+                T[] slot = slots[i];
+                for (int k = 0; k < slot.Length; k++)
                 {
-                    if (Free.Contains(c)) { best = 0; break; }
-                    if (Excluded.Contains(c) || Unstable.Contains(c)) continue;
+                    T c = slot[k];
+                    if (anyUnstable && Unstable.Contains(c)) continue;
                     if (Values.TryGetValue(c, out double v) && v < best) best = v;
                 }
                 if (double.IsPositiveInfinity(best)) return double.NaN;
-                sum += best * e.Quantities[i];
+                sum += best * quantities[i];
             }
-            sum += e.ExtraCost;
-            if (e.Returned != null)
+            slotsKnown[index] = true;
+            sum += graph.Edges[index].ExtraCost;
+            T[] returned = graph.Returned[index];
+            if (returned != null)
             {
-                for (int j = 0; j < e.Returned.Length; j++)
+                double[] returnedQuantities = graph.ReturnedQuantities[index];
+                for (int j = 0; j < returned.Length; j++)
                 {
-                    T r = e.Returned[j];
-                    if (Excluded.Contains(r) || Free.Contains(r)) continue;
                     // Something handed back that has no value yet: the net cost isn't known, so wait (counting it as
                     // nothing gave a bear's head pelt the whole pelt's value, with the body then worth as much again).
-                    if (!Values.TryGetValue(r, out double rv)) return double.NaN;
-                    sum -= rv * e.ReturnedQuantities[j];
+                    if (!Values.TryGetValue(returned[j], out double rv)) return double.NaN;
+                    sum -= rv * returnedQuantities[j];
                 }
             }
             return sum > 0 ? sum : double.NaN;
@@ -367,9 +522,9 @@ namespace VintageE
             }
 
             if (!InferBackwards) goto apply;
-            foreach (Edge e in Edges)
+            foreach (int single in graph.ReversibleSingles)
             {
-                if (!e.Reversible || e.Choices.Length != 1 || e.Choices[0].Length != 1) continue;
+                Edge e = graph.Edges[single];
                 T input = e.Choices[0][0];
                 if (Values.ContainsKey(input) || Excluded.Contains(input) || Unstable.Contains(input)) continue;
                 if (!Values.TryGetValue(e.Output, out double outValue)) continue;
@@ -381,8 +536,11 @@ namespace VintageE
                 // Only once processing has nothing more to say, so the more direct evidence always wins.
                 var craftProposals = new Dictionary<T, double>();
                 var craftVia = new Dictionary<T, object>();
-                foreach (Edge e in Edges)
+                for (int index = 0; index < graph.Edges.Length; index++)
                 {
+                    // Every slot filled: nothing is missing, so there is nothing to infer (most recipes, most rounds).
+                    if (slotsKnown[index]) continue;
+                    Edge e = graph.Edges[index];
                     if (!Values.TryGetValue(e.Output, out double outValue)) continue;
                     int unknownSlot = -1;
                     double known = 0;
@@ -428,6 +586,9 @@ namespace VintageE
                 Values[kv.Key] = kv.Value;
                 Inferred[kv.Key] = kv.Value;
                 Via[kv.Key] = proposalVia[kv.Key];
+                MarkUsersDirty(kv.Key);
+                // What makes it is looked at again too (it only ever had no value before, so nothing can change there; this costs next to nothing).
+                if (graph.ByOutput.TryGetValue(kv.Key, out List<int> makers)) foreach (int m in makers) dirty[m] = true;
             }
             return proposals.Count;
         }
