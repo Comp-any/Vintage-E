@@ -1,0 +1,51 @@
+[
+  {
+    "op": "add",
+    "path": "/combustiblePropsByType",
+    "value": {
+      "gear-temporal": {
+        "meltingPoint": 1100,
+        "meltingDuration": 60,
+        "smeltedRatio": 1,
+        "smeltingType": "smelt",
+        "requiresContainer": false,
+        "smeltedStack": {
+          "type": "item",
+          "code": "vintagee:philosophersstone"
+        }
+      }
+    },
+    "file": "game:itemtypes/resource/gear.json",
+    "side": "Universal"
+  },
+  {
+    "op": "add",
+    "path": "/grindingPropsByType",
+    "value": {
+      "ingot-iron": {
+        "groundStack": {
+          "type": "item",
+          "code": "vintagee:covalencedust-medium",
+          "stackSize": 48
+        }
+      }
+    },
+    "file": "game:itemtypes/resource/ingot.json",
+    "side": "Universal"
+  },
+  {
+    "op": "add",
+    "path": "/grindingPropsByType",
+    "value": {
+      "gem-diamond-rough": {
+        "groundStack": {
+          "type": "item",
+          "code": "vintagee:covalencedust-high",
+          "stackSize": 48
+        }
+      }
+    },
+    "file": "game:itemtypes/resource/gem-rough.json",
+    "side": "Universal"
+  }
+]

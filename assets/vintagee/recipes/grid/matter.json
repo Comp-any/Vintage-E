@@ -17,7 +17,7 @@
       "type": "item",
       "code": "vintagee:matter-dark"
     },
-    "name": "vintagee:darkmatter"
+    "name": "vintagee:gridroute-matter-dark"
   },
   {
     "ingredientPattern": "AAA,DDD,AAA",
@@ -37,7 +37,7 @@
       "type": "item",
       "code": "vintagee:matter-red"
     },
-    "name": "vintagee:redmatter"
+    "name": "vintagee:gridroute-matter-red"
   },
   {
     "ingredientPattern": "DD,DD",

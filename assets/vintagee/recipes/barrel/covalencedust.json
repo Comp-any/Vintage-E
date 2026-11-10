@@ -1,0 +1,24 @@
+[
+  {
+    "code": "vintagee:covalencedust-low",
+    "sealHours": 24,
+    "ingredients": [
+      {
+        "type": "item",
+        "code": "game:waterportion",
+        "litres": 1,
+        "consumeLitres": 1
+      },
+      {
+        "type": "item",
+        "code": "game:powder-charcoal",
+        "quantity": 1
+      }
+    ],
+    "output": {
+      "type": "item",
+      "code": "vintagee:covalencedust-low",
+      "stackSize": 40
+    }
+  }
+]

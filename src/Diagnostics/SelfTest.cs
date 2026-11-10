@@ -74,6 +74,7 @@ namespace VintageE
                 Check1110();
                 CheckDiagnose();
                 CheckMatterTools();
+                CheckCraftingRoutes();
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
@@ -877,6 +878,54 @@ namespace VintageE
         }
 
         /// <summary>1.9.0: handbook texts, nova ignition, pedestal weather, rings in the hand slot.</summary>
+        /// <summary>1.21.0: realistic crafting routes next to the grid ones, and the CraftingMethods setting.</summary>
+        void CheckCraftingRoutes()
+        {
+            string mode = CraftingRoutes.Normalize(mod.Config.CraftingMethods);
+            Check(CraftingRoutes.Normalize("grid") == CraftingRoutes.Grid && CraftingRoutes.Normalize("REALISTIC") == CraftingRoutes.Realistic && CraftingRoutes.Normalize("") == CraftingRoutes.Both,
+                "crafting methods: Grid / Realistic / Both are read from the setting (this server: " + mode + ")");
+            var problems = new List<string>();
+            foreach (string code in CraftingRoutes.SmeltInputs)
+            {
+                CollectibleObject c = (CollectibleObject)sapi.World.GetItem(new AssetLocation(code)) ?? sapi.World.GetBlock(new AssetLocation(code));
+                if (c?.CombustibleProps?.SmeltedStack?.ResolvedItemstack?.Collectible?.Code?.Domain != "vintagee") problems.Add(code + " doesn't smelt into a Vintage-E item");
+            }
+            foreach (string code in CraftingRoutes.GrindInputs)
+            {
+                Item c = sapi.World.GetItem(new AssetLocation(code));
+                if (c?.GrindingProps?.GroundStack?.ResolvedItemstack?.Collectible?.Code?.Domain != "vintagee") problems.Add(code + " doesn't grind into covalence dust");
+            }
+            int grid = CraftingRoutes.GridRoutes(sapi.World).Count(r => r.Enabled), smith = CraftingRoutes.SmithingRoutes(sapi).Count(), barrel = CraftingRoutes.BarrelRoutes(sapi).Count();
+            if (grid != 9) problems.Add(grid + " of the 9 grid routes found");
+            if (smith < 1) problems.Add("no smithing recipe for the iron band");
+            if (barrel < 1) problems.Add("no barrel recipe for covalence dust");
+            Check(mode != CraftingRoutes.Both || problems.Count == 0,
+                $"both crafting routes are there: 5 smelting, 2 quern, {smith} smithing, {barrel} barrel, {grid} grid" + (problems.Count > 0 ? " (" + string.Join("; ", problems) + ")" : ""));
+
+            // Switching: what Realistic and Grid would switch off (put back straight after; the mapping has already run).
+            if (mode == CraftingRoutes.Both)
+            {
+                var gridOn = CraftingRoutes.GridRoutes(sapi.World).Where(r => r.Enabled).ToList();
+                var smithOn = CraftingRoutes.SmithingRoutes(sapi).Where(r => r.Enabled).ToList();
+                var barrelOn = CraftingRoutes.BarrelRoutes(sapi).Where(r => r.Enabled).ToList();
+                int offRealistic = CraftingRoutes.ApplyRecipes(sapi, CraftingRoutes.Realistic);
+                bool gridAllOff = CraftingRoutes.GridRoutes(sapi.World).All(r => !r.Enabled), smithStillOn = smithOn.All(r => r.Enabled);
+                foreach (var r in gridOn) r.Enabled = true;
+                int offGrid = CraftingRoutes.ApplyRecipes(sapi, CraftingRoutes.Grid);
+                bool realisticAllOff = smithOn.All(r => !r.Enabled) && barrelOn.All(r => !r.Enabled);
+                foreach (var r in smithOn) r.Enabled = true;
+                foreach (var r in barrelOn) r.Enabled = true;
+                Check(offRealistic == gridOn.Count && gridAllOff && smithStillOn && offGrid == smithOn.Count + barrelOn.Count && realisticAllOff,
+                    $"crafting methods: Realistic switches off the {offRealistic} grid routes, Grid the {offGrid} smithing and barrel routes");
+            }
+
+            // EMC follows the cheapest route: the realistic ones cost less than the grid's.
+            double V(string code) { Item it = sapi.World.GetItem(new AssetLocation(code)); return it == null ? 0 : mod.Emc.GetValue(new ItemStack(it)); }
+            double aet = V("vintagee:alchemicalfuel-aeternalisfuel"), dark = V("vintagee:matter-dark"), red = V("vintagee:matter-red"), gear = V("game:gear-temporal"), stone = V("vintagee:philosophersstone");
+            Check(mode == CraftingRoutes.Grid || (dark > 0 && dark <= 6 * aet + 0.01 && red > 0 && red <= 3 * dark + 0.01 && stone > 0 && (gear <= 0 || stone <= gear + 0.01)),
+                $"EMC follows the cheaper realistic routes (aeternalis {aet:0.#}, dark matter {dark:0.#} ≤ 6×, red matter {red:0.#} ≤ 3× dark, philosopher's stone {stone:0.#} vs temporal gear {gear:0.#})");
+        }
+
         /// <summary>1.20.0: matter versions of the game's knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow.</summary>
         void CheckMatterTools()
         {

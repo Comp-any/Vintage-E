@@ -1,20 +1,87 @@
 {
   "code": "alchemicalfuel",
   "variantgroups": [
-    { "code": "type", "states": [ "alchemicalcoal", "mobiusfuel", "aeternalisfuel" ] }
+    {
+      "code": "type",
+      "states": [
+        "alchemicalcoal",
+        "mobiusfuel",
+        "aeternalisfuel"
+      ]
+    }
   ],
   "maxstacksize": 64,
-  "creativeinventory": { "general": [ "*" ], "vintagee": [ "*" ] },
-  "texture": { "base": "item/alchemicalfuel-{type}" },
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/alchemicalfuel-{type}"
+  },
   "combustiblePropsByType": {
-    "*-alchemicalcoal": { "burnTemperature": 1400, "burnDuration": 160 },
-    "*-mobiusfuel": { "burnTemperature": 1500, "burnDuration": 640 },
-    "*-aeternalisfuel": { "burnTemperature": 1600, "burnDuration": 2560 }
+    "*-alchemicalcoal": {
+      "burnTemperature": 1400,
+      "burnDuration": 160,
+      "meltingPoint": 900,
+      "meltingDuration": 40,
+      "smeltedRatio": 3,
+      "smeltingType": "smelt",
+      "requiresContainer": false,
+      "smeltedStack": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-mobiusfuel"
+      }
+    },
+    "*-mobiusfuel": {
+      "burnTemperature": 1500,
+      "burnDuration": 640,
+      "meltingPoint": 1100,
+      "meltingDuration": 40,
+      "smeltedRatio": 3,
+      "smeltingType": "smelt",
+      "requiresContainer": false,
+      "smeltedStack": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      }
+    },
+    "*-aeternalisfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 2560,
+      "meltingPoint": 1250,
+      "meltingDuration": 60,
+      "smeltedRatio": 6,
+      "smeltingType": "smelt",
+      "requiresContainer": false,
+      "smeltedStack": {
+        "type": "item",
+        "code": "vintagee:matter-dark"
+      }
+    }
   },
   "attributesByType": {
-    "*-alchemicalcoal": { "inForge": { "durationMul": 4, "tempGainDeg": 200 } },
-    "*-mobiusfuel": { "inForge": { "durationMul": 16, "tempGainDeg": 400 } },
-    "*-aeternalisfuel": { "inForge": { "durationMul": 64, "tempGainDeg": 600 } }
+    "*-alchemicalcoal": {
+      "inForge": {
+        "durationMul": 4,
+        "tempGainDeg": 200
+      }
+    },
+    "*-mobiusfuel": {
+      "inForge": {
+        "durationMul": 16,
+        "tempGainDeg": 400
+      }
+    },
+    "*-aeternalisfuel": {
+      "inForge": {
+        "durationMul": 64,
+        "tempGainDeg": 600
+      }
+    }
   },
   "materialDensity": 600
 }

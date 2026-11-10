@@ -128,6 +128,15 @@ namespace VintageE
         [System.ComponentModel.Description("Multiplies every collector's output and every condenser's speed. Per-tier base rates live in the block JSON attributes.")]
         public double MachineSpeedMultiplier = 1.0;
 
+        /// <summary>
+        /// How dark/red matter, alchemical fuels, the philosopher's stone, covalence dust and the iron band are made:
+        /// "Grid" (the crafting grid only, as in ProjectE), "Realistic" (only the game's own ways: heating in a firepit
+        /// or forge, the quern, the barrel, the anvil; cheaper) or "Both". EMC values follow the cheapest route that's on.
+        /// Takes effect after a restart.
+        /// </summary>
+        [System.ComponentModel.Description("How dark/red matter, alchemical fuels, the philosopher's stone, covalence dust and the iron band are made: \"Grid\" (the crafting grid only, as in ProjectE), \"Realistic\" (only the game's own ways: heating in a firepit or forge, the quern, the barrel, the anvil; cheaper) or \"Both\". EMC values follow the cheapest route that's on. Takes effect after a restart.")]
+        public string CraftingMethods = CraftingRoutes.Both;
+
         /// <summary>Fraction of output a collector keeps at night or underground (0 = nothing without sun).</summary>
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;
@@ -267,6 +276,7 @@ namespace VintageE
             if (Bad(MachineSpeedMultiplier) || MachineSpeedMultiplier <= 0) MachineSpeedMultiplier = 1.0;
             if (MaxMappingPasses < 4) MaxMappingPasses = 4;
             if (TableUseRange < 2) TableUseRange = 2;
+            CraftingMethods = CraftingRoutes.Normalize(CraftingMethods);
         }
     }
 }

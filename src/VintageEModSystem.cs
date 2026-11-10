@@ -196,6 +196,15 @@ namespace VintageE
             try { sapi.World.Config?.SetString(WorldLookKey, ActiveLook); }
             catch (Exception e) { Mod.Logger.Warning("Could not tell players the default look: {0}", e.Message); }
             Mod.Logger.Notification("Look: players get {0} unless they pick their own (.vintagee).", ActiveLook);
+            // Crafting routes: switched here, before the EMC mapping reads the recipes; players' games follow the world setting.
+            try
+            {
+                string methods = CraftingRoutes.Normalize(peek?.CraftingMethods);
+                sapi.World.Config?.SetString(CraftingRoutes.WorldKey, methods);
+                int props = CraftingRoutes.ApplyProperties(api, methods), recipes = CraftingRoutes.ApplyRecipes(api, methods);
+                Mod.Logger.Notification("Crafting methods: {0} ({1} item properties and {2} recipes switched off).", methods, props, recipes);
+            }
+            catch (Exception e) { Mod.Logger.Error("Crafting methods could not be applied: {0}", e); StartupErrors.Add("crafting methods: " + e.Message); }
             if (peek?.SelfTestOnStart == true)
             {
                 // For the self-test: both looks applied to copies of Vintage-E's blocks, items and projectiles (the real
@@ -658,6 +667,15 @@ namespace VintageE
         {
             if (mappingAttempted) return;
             mappingAttempted = true;
+            // Crafting methods again, now that every mod's recipes are in (some come after AssetsFinalize); switching
+            // something off twice is harmless.
+            try
+            {
+                string methods = CraftingRoutes.Normalize(Config?.CraftingMethods);
+                int props = CraftingRoutes.ApplyProperties(Sapi, methods), recipes = CraftingRoutes.ApplyRecipes(Sapi, methods);
+                if (props + recipes > 0) Mod.Logger.Notification("Crafting methods: {0}: {1} more item properties and {2} more recipes switched off before the mapping.", methods, props, recipes);
+            }
+            catch (Exception e) { Mod.Logger.Warning("Crafting methods could not be applied before the mapping: {0}", e.Message); }
             if (lateTrigger != null)
             {
                 MappingLateReason = lateTrigger;
@@ -2094,6 +2112,17 @@ namespace VintageE
             if (ClientConfig?.LookHooks != false && ClientLookPatches.PatchedCount < ClientLookPatches.HookCount) ClientLookPatches.Patch(Mod.Logger);
             ClientCheck.Log(this, "StartClientSide");
             capi.Event.LevelFinalize += () => ClientCheck.Log(this, "LevelFinalize");
+            // The server's crafting methods: its recipes are here by now, and the items (smelting, grinding) too.
+            capi.Event.LevelFinalize += () =>
+            {
+                try
+                {
+                    string methods = CraftingRoutes.Normalize(capi.World?.Config?.GetString(CraftingRoutes.WorldKey, null));
+                    int props = CraftingRoutes.ApplyProperties(capi, methods), recipes = CraftingRoutes.ApplyRecipes(capi, methods);
+                    if (props + recipes > 0) Mod.Logger.Notification("Crafting methods: {0} on this server ({1} item properties and {2} recipes switched off here).", methods, props, recipes);
+                }
+                catch (Exception e) { Mod.Logger.Warning("Crafting methods could not be applied on this computer: {0}", e.Message); }
+            };
             capi.Event.PlayerJoin += p => { if (p == capi.World.Player) ClientCheck.Log(this, "PlayerJoin"); };
             // Safety net, run once the game has finished loading shapes and textures (BlockTexturesLoaded: all three
             // atlases are done). LevelFinalize is too early for this: it can fire while the shape loaders are still

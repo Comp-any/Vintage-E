@@ -1,14 +1,50 @@
 {
   "code": "matter",
   "variantgroups": [
-    { "code": "type", "states": [ "dark", "red" ] }
+    {
+      "code": "type",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
   ],
   "maxstacksize": 64,
-  "creativeinventory": { "general": [ "*" ], "vintagee": [ "*" ] },
-  "texture": { "base": "item/{type}matter" },
-  "lightHsvByType": {
-    "*-dark": [ 48, 4, 4 ],
-    "*-red": [ 0, 5, 5 ]
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
   },
-  "materialDensity": 9000
+  "texture": {
+    "base": "item/{type}matter"
+  },
+  "lightHsvByType": {
+    "*-dark": [
+      48,
+      4,
+      4
+    ],
+    "*-red": [
+      0,
+      5,
+      5
+    ]
+  },
+  "materialDensity": 9000,
+  "combustiblePropsByType": {
+    "*-dark": {
+      "meltingPoint": 1450,
+      "meltingDuration": 90,
+      "smeltedRatio": 3,
+      "smeltingType": "smelt",
+      "requiresContainer": false,
+      "smeltedStack": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      }
+    }
+  }
 }

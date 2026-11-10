@@ -2,6 +2,15 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.21.0 — 2026-11-10
+
+- **Realistic crafting: make the progression items with the game's own systems, for less.** Next to the crafting-grid recipes:
+  - **Heating** (firepit or forge, no crucible): 3 alchemical coal → 1 mobius fuel (900°C), 3 mobius fuel → 1 aeternalis fuel (1100°C), 6 aeternalis fuel → 1 dark matter (1250°C), 3 dark matter → 1 red matter (1450°C, so burn an alchemical fuel), and a temporal gear → the philosopher's stone (1100°C, no gold or copper needed).
+  - **Quern:** an iron ingot → 48 medium covalence dust, a rough diamond → 48 high covalence dust.
+  - **Barrel:** charcoal powder in 1 L of water for a day → 40 low covalence dust.
+  - **Anvil:** the iron band is smithed from one iron ingot (the grid takes eight and alchemical coal).
+- **New server setting `CraftingMethods`:** `Both` (default), `Grid` (only the crafting grid, as in ProjectE) or `Realistic` (only the game's own ways). EMC values follow the cheapest route that's switched on, so in Both and Realistic the items above are worth less than before. Takes effect after a restart.
+
 ## 1.20.1 — 2026-11-10
 
 - **Red matter tools are an upgrade on dark matter, not just a stronger copy.** Where the game's own code fixes how far or fast a tool works:

@@ -62,7 +62,7 @@
       "type": "item",
       "code": "vintagee:alchemicalfuel-mobiusfuel"
     },
-    "name": "vintagee:mobiusfuel",
+    "name": "vintagee:gridroute-alchemicalfuel-mobiusfuel",
     "shapeless": true
   },
   {
@@ -84,7 +84,7 @@
       "type": "item",
       "code": "vintagee:alchemicalfuel-aeternalisfuel"
     },
-    "name": "vintagee:aeternalisfuel",
+    "name": "vintagee:gridroute-alchemicalfuel-aeternalisfuel",
     "shapeless": true
   },
   {

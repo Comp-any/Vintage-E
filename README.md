@@ -266,6 +266,22 @@ The ProjectE items (Klein stars, rings, gadgets, armour, chest, bags, furnaces, 
 
 Players' EMC and knowledge are saved on the player, so they persist across sessions and deaths.
 
+### Realistic routes (the game's own crafting, cheaper)
+
+Next to the grid recipes above, these use the game's own systems and cost less. The server setting `CraftingMethods` in `ModConfig/vintagee.json` picks `Both` (default), `Grid` or `Realistic`; EMC values follow the cheapest route that's on. A restart applies a change.
+
+| Makes | How |
+|---|---|
+| 1× Mobius Fuel | Heat 3 Alchemical Coal to 900°C (firepit or forge, no crucible) |
+| 1× Aeternalis Fuel | Heat 3 Mobius Fuel to 1100°C |
+| 1× Dark Matter | Heat 6 Aeternalis Fuel to 1250°C |
+| 1× Red Matter | Heat 3 Dark Matter to 1450°C (burn an alchemical fuel to get that hot) |
+| 1× Philosopher's Stone | Heat a Temporal Gear to 1100°C |
+| 48× Medium Covalence Dust | Grind an Iron Ingot in the quern |
+| 48× High Covalence Dust | Grind a Rough Diamond in the quern |
+| 40× Low Covalence Dust | Charcoal Powder in 1 L of water, sealed in a barrel for a day |
+| 1× Iron Band | Smith one Iron Ingot on the anvil |
+
 ## Installing
 
 See [CHANGELOG.md](CHANGELOG.md) (also shown on each [release](https://github.com/demonic69/Vintage-E/releases)) for what changed in each version.

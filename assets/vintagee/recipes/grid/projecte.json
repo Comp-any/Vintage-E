@@ -18,7 +18,7 @@
       "code": "vintagee:covalencedust-low",
       "quantity": 40
     },
-    "name": "vintagee:covalencedust-low",
+    "name": "vintagee:gridroute-covalencedust-low",
     "shapeless": true
   },
   {
@@ -40,7 +40,7 @@
       "code": "vintagee:covalencedust-medium",
       "quantity": 40
     },
-    "name": "vintagee:covalencedust-medium",
+    "name": "vintagee:gridroute-covalencedust-medium",
     "shapeless": true
   },
   {
@@ -62,7 +62,7 @@
       "code": "vintagee:covalencedust-high",
       "quantity": 40
     },
-    "name": "vintagee:covalencedust-high",
+    "name": "vintagee:gridroute-covalencedust-high",
     "shapeless": true
   },
   {
@@ -83,7 +83,7 @@
       "type": "item",
       "code": "vintagee:ironband"
     },
-    "name": "vintagee:ironband"
+    "name": "vintagee:gridroute-ironband"
   },
   {
     "ingredientPattern": "_M_,MDM,_M_",
