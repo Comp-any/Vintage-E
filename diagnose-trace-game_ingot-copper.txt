@@ -1,0 +1,12 @@
+== Where the value of Copper ingot comes from, all the way down ==
+Each line is one item, its value and where it got it. The lines under it are the ingredients of the recipe that made it (the cheapest choice where a recipe allows several), each traced in turn, down to something that rests on no ingredients: a base value, a fallback value, a trader price, a guess, or a value priced from a recipe that uses the item.
+Copper ingot (game:ingot-copper) 128 ← a base value (value file or settings)
+
+== What it rests on (1 raw materials) ==
+Change one of these and everything above it follows. The biggest ones matter most.
+  Copper ingot (game:ingot-copper) 128: a base value (value file or settings)
+
+== Next ==
+The short diagnosis for it (/emc diagnose item game:ingot-copper)
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)
