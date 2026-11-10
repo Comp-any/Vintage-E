@@ -10,3 +10,14 @@ path:itemtypes/resource/gear
 path:itemtypes/resource/crystal
 path:itemtypes/resource/clearquartz
 path:itemtypes/resource/powder
+path:itemtypes/tool/knife.json
+path:itemtypes/tool/saw.json
+path:itemtypes/tool/chisel.json
+path:itemtypes/tool/scythe.json
+path:itemtypes/tool/prospectingpick.json
+path:itemtypes/tool/hammer.json
+path:itemtypes/tool/spear.json
+path:itemtypes/tool/bow.json
+path:entities/nonliving/thrownspear
+path:entities/nonliving/projectile/spear
+"isTool": true
