@@ -1,0 +1,33 @@
+== An item shows no EMC value ==
+Work down the steps; most cases end at step 2. Each step links to the report or fix that does it.
+• Step 1: Does the tooltip say anything at all?
+  Hover the item. If the tooltip says 'No EMC value' (or shows a value), Vintage-E runs on your side and the only question is why that item has none: go to step 2. If there's no EMC line at all, your game hasn't got the values: rejoin (the table is sent on join and after every remap), or resend it from here.
+  The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+• Step 2: Ask the mod why
+  Hold the item and open its report. It says which of these it is and offers the fix:
+  One block or item has no value (hold it first) (/emc diagnose hand)
+  - Blacklisted: creative, technical and loot blocks, creatures, maps and story items are left without a value on purpose. If this one shouldn't be, the report offers 'Allow it'; /emc blacklist lists everything on the list.
+  - Nothing makes it (a raw material, or something another mod gives you another way). The report suggests a value with a one-click 'Pin it'; otherwise /emc set <value> while holding it, or BaseValues in the settings. For a whole mod, see step 4.
+  - Waiting on an ingredient: it has a recipe, but an ingredient has no value yet. Each is a 'why?' link; fix the ingredient and everything made from it follows.
+  - In a loop: it and some other items are only made from each other, so none can get a value first. Pin one of them; /emc loop lists every loop.
+  - Gray-listed (/emc graylist): left out on purpose until a real recipe makes it. Take it off the list to let it be guessed.
+• Step 3: Values are there, but not for this exact one
+  A worn, filled or differently made version (a half-used tool, a filled bucket, a gold round shield) can differ from the plain item: /emc dump hand explains the held stack's number. Only some variants missing (one colour, one wood) has its own report:
+  Some variants of an item have a value and others don't (/emc diagnose symptom somevariants)
+  Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+• Step 4: A whole mod has no values
+  The mod's report shows its coverage and the raw materials that would fix the most items at once, and can draft a compatibility file to post on the Mod DB page so it ships with Vintage-E. It also names the emcValue attribute the mod's own author could add.
+  Everything from one mod has no value (/emc diagnose mods)
+• Step 5: It had a value before
+  After a mod update or a settings change the values are mapped again (or loaded from the cache when nothing relevant changed). 'What changed' lists what the last mapping lost, changed and gained; a fresh mapping can be forced.
+  What changed since the previous mapping (/emc diagnose changes)
+  Map everything afresh now (in the window)
+• Step 6: It has a value, but the table won't take it
+  That's knowledge, not value. An item is learned by burning one (or /emc learn while holding it), and each player knows up to 500 exact versions of items that keep their contents or material. The watch shows every refusal the table made recently, and why.
+  What the table and tablet refused lately, and why (/emc diagnose watch)
+• Step 7: Still stuck
+  The bug report gathers versions, mods, the check-up, changed settings and the server log's Vintage-E lines. Post it on the Mod DB page or as a GitHub issue with the item's code and what you expected.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Next ==
+Back to the check-up (/emc diagnose)
