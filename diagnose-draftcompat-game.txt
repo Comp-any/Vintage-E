@@ -1,0 +1,3 @@
+== A compatibility file for Vintage Story (game) ==
+⚠ No other mod with the id 'game' is loaded, so there's nothing to draft a file for.
+Everything from one mod has no value (/emc diagnose mods)
