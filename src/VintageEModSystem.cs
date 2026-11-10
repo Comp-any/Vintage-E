@@ -75,6 +75,7 @@ namespace VintageE
         {
             Api = api;
             EmcCraft.RegisterGridClass(api);
+            MatterToolRecipePatches.Patch(Mod.Logger); // matter tools count as the game's tools in recipes (both sides: the grid matches on each)
             if (api is ICoreClientAPI startCapi)
             {
                 // The look hook must be in place before the game loads shapes. Start runs then; StartClientSide does

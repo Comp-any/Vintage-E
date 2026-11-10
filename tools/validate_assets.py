@@ -74,7 +74,7 @@ for dp, _, fs in os.walk(SRC):
     for f in fs:
         if f.endswith(".cs"): cs += open(os.path.join(dp, f), encoding="utf-8").read()
 registered = set(re.findall(r'Register(?:Item|Block|BlockEntity|CollectibleBehavior)Class\("(\w+)"', cs))
-vanilla_classes = {"ItemAxe", "ItemHoe", "ItemHammer", "ItemShears", "Item", "Block", "GroundStorable", "AnimationAuthoritative", "Wearable", "GenericTypedContainer", "Container", "HeldBag", "GroundStoredHeldBag", "Lockable", "BlockGeneric", "BlockContainer", "Unstable", "HorizontalOrientable", "OmniRotatable", "BlockFirepit", "Ignitable", "HeatSource", "FirepitAmbient", "TemperatureSensitive", "interpolateposition"}
+vanilla_classes = {"ItemAxe", "ItemHoe", "ItemHammer", "ItemShears", "ItemKnife", "ItemChisel", "ItemScythe", "ItemProspectingPick", "ItemSpear", "ItemBow", "EntityDeconstructTool", "Item", "Block", "GroundStorable", "AnimationAuthoritative", "Wearable", "GenericTypedContainer", "Container", "HeldBag", "GroundStoredHeldBag", "Lockable", "BlockGeneric", "BlockContainer", "Unstable", "HorizontalOrientable", "OmniRotatable", "BlockFirepit", "Ignitable", "HeatSource", "FirepitAmbient", "TemperatureSensitive", "interpolateposition"}
 for kind in ("itemtypes", "blocktypes"):
     for f in os.listdir(os.path.join(A, kind)):
         obj = load(os.path.join(A, kind, f)) or {}

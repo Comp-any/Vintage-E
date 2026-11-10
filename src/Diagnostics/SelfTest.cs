@@ -73,6 +73,7 @@ namespace VintageE
                 Check1101();
                 Check1110();
                 CheckDiagnose();
+                CheckMatterTools();
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
@@ -876,6 +877,78 @@ namespace VintageE
         }
 
         /// <summary>1.9.0: handbook texts, nova ignition, pedestal weather, rings in the hand slot.</summary>
+        /// <summary>1.20.0: matter versions of the game's knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow.</summary>
+        void CheckMatterTools()
+        {
+            var expected = new (string code, EnumTool tool, string cls)[]
+            {
+                ("matterknife", EnumTool.Knife, "ItemKnife"), ("mattersaw", EnumTool.Saw, null), ("matterchisel", EnumTool.Chisel, "ItemChisel"),
+                ("matterscythe", EnumTool.Scythe, "ItemScythe"), ("matterpropick", EnumTool.Pickaxe, "ItemProspectingPick"),
+                ("mattersmithinghammer", EnumTool.Hammer, "ItemHammer"), ("matterspear", EnumTool.Spear, "ItemSpear"), ("matterbow", EnumTool.Bow, "ItemBow"),
+            };
+            var problems = new List<string>();
+            foreach (var (code, tool, cls) in expected)
+                foreach (string mat in new[] { "dark", "red" })
+                {
+                    Item item = sapi.World.GetItem(new AssetLocation("vintagee:" + code + "-" + mat));
+                    if (item == null) { problems.Add(code + "-" + mat + " missing"); continue; }
+                    if (item.Tool != tool) problems.Add($"{item.Code} is a {item.Tool}, not a {tool}");
+                    if (cls != null && item.GetType().Name != cls) problems.Add($"{item.Code} is a {item.GetType().Name}, not {cls}");
+                    if (mod.Emc.GetValue(new ItemStack(item)) <= 0) problems.Add($"{item.Code} has no EMC value");
+                    if (!sapi.World.GridRecipes.Any(r => r.Output?.Code?.ToString() == item.Code.ToString() && r.ResolvedIngredients != null)) problems.Add($"{item.Code} has no recipe");
+                    var slot = new DummySlot(new ItemStack(item));
+                    item.DamageItem(sapi.World, null, slot, 5);
+                    if (slot.Itemstack == null || slot.Itemstack.Attributes.HasAttribute("durability") && slot.Itemstack.Attributes.GetInt("durability") < item.GetMaxDurability(slot.Itemstack)) problems.Add($"{item.Code} wore down");
+                }
+            Check(problems.Count == 0, "matter knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow: right tool and class, valued, craftable, never wear out"
+                + (problems.Count > 0 ? " (" + string.Join("; ", problems.Take(6)) + ")" : ""));
+            Check(sapi.World.GetEntityType(new AssetLocation("vintagee:matterspear-dark")) != null && sapi.World.GetEntityType(new AssetLocation("vintagee:matterspear-red")) != null,
+                "thrown matter spears have their entity");
+
+            // Recipes: the game names a tool by code ("saw-*"), by tag ("tool-saw") or both; matter tools must count either way.
+            Check(MatterToolRecipePatches.Patched, "matter tools are hooked into the recipe ingredient checks" + (MatterToolRecipePatches.Error != null ? " (" + MatterToolRecipePatches.Error + ")" : ""));
+            ItemStack S(string code) { Item it = sapi.World.GetItem(new AssetLocation(code)); return it == null ? null : new ItemStack(it); }
+            var tools = new Dictionary<string, ItemStack>
+            {
+                ["saw"] = S("vintagee:mattersaw-dark"), ["hammer"] = S("vintagee:mattersmithinghammer-red"), ["knife"] = S("vintagee:matterknife-dark"),
+                ["chisel"] = S("vintagee:matterchisel-dark"), ["axe"] = S("vintagee:mattertool-dark-axe"), ["shears"] = S("vintagee:redmattertool-katar"),
+            };
+            var vanilla = new Dictionary<string, ItemStack>
+            {
+                ["saw"] = S("game:saw-steel"), ["hammer"] = S("game:hammer-steel"), ["knife"] = S("game:knife-generic-steel"),
+                ["chisel"] = S("game:chisel-steel"), ["axe"] = S("game:axe-felling-steel"), ["shears"] = S("game:shears-iron"),
+            };
+            var byCode = new Dictionary<string, string>(); var byTag = new Dictionary<string, string>(); var refused = new List<string>();
+            foreach (GridRecipe r in sapi.World.GridRecipes)
+            {
+                if (r?.ResolvedIngredients == null || r.Output?.Code?.Domain != "game") continue;
+                foreach (CraftingRecipeIngredient ing in r.ResolvedIngredients)
+                {
+                    if (ing == null || ing.Consume && !ing.IsTool) continue;
+                    string fam = MatterToolRecipePatches.FamilyOf(ing.Code);
+                    foreach (var kv in tools)
+                    {
+                        if (kv.Value == null) continue;
+                        bool named = fam == kv.Key;
+                        bool tagged = fam == null && vanilla.TryGetValue(kv.Key, out ItemStack v) && v != null && ing.SatisfiesAsIngredient(v, false);
+                        if (!named && !tagged) continue;
+                        bool ok = ing.SatisfiesAsIngredient(kv.Value, false);
+                        if (!ok) refused.Add(kv.Value.Collectible.Code.Path + " for " + r.Output.Code.Path);
+                        else if (named) byCode.TryAdd(kv.Key, r.Output.Code.Path);
+                        else byTag.TryAdd(kv.Key, r.Output.Code.Path);
+                    }
+                }
+            }
+            Check(refused.Count == 0 && byCode.ContainsKey("saw") && byCode.ContainsKey("hammer"),
+                $"matter tools count as the game's tools in its recipes (by code: {string.Join(", ", byCode.Select(k => k.Key + "→" + k.Value))}; by tag: {string.Join(", ", byTag.Select(k => k.Key + "→" + k.Value))})"
+                + (refused.Count > 0 ? "; refused: " + string.Join(", ", refused.Distinct().Take(6)) : ""));
+            // The sledgehammer mines; it isn't the smith's hammer.
+            ItemStack sledge = S("vintagee:mattertool-dark-hammer");
+            var hammerIng = sapi.World.GridRecipes.Where(r => r?.ResolvedIngredients != null).SelectMany(r => r.ResolvedIngredients)
+                .FirstOrDefault(i => i != null && i.IsTool && MatterToolRecipePatches.FamilyOf(i.Code) == "hammer");
+            Check(sledge != null && hammerIng != null && !hammerIng.SatisfiesAsIngredient(sledge, false), "the sledgehammer doesn't count as a smithing hammer in recipes");
+        }
+
         void Check190()
         {
             Check(Lang.GetMatchingIfExists("vintagee:item-handbooktext-vintagee:trinket-voidring") != null

@@ -1,0 +1,207 @@
+{
+  "code": "matterknife",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "class": "ItemKnife",
+  "tags": [
+    "weapon",
+    "weapon-melee",
+    "tool-knife",
+    "tool-trimming",
+    "tool"
+  ],
+  "damagedby": [
+    "blockbreaking",
+    "attacking"
+  ],
+  "tool": "knife",
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "wallOffY": 1,
+        "ctrlKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        }
+      }
+    },
+    {
+      "name": "AnimationAuthoritative"
+    },
+    {
+      "name": "VintageEMatterTool",
+      "properties": {
+        "maxAreaRadius": 0
+      }
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/knife/copper"
+  },
+  "texturesByType": {
+    "*-dark": {
+      "material": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "handle": {
+        "base": "game:block/wood/debarked/ebony"
+      }
+    },
+    "*-red": {
+      "material": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "handle": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      }
+    }
+  },
+  "heldTpHitAnimation": "knifestab",
+  "guiTransform": {
+    "rotate": false,
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -158,
+      "y": 0,
+      "z": 48
+    },
+    "origin": {
+      "x": 0.48,
+      "y": 0.1,
+      "z": 0.5
+    },
+    "scale": 2.41
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.84,
+      "y": -0.11,
+      "z": -0.48
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": -15
+    },
+    "scale": 1
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -90,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.45
+    },
+    "scale": 3.6
+  },
+  "attributes": {
+    "attachableToEntity": {
+      "categoryCode": "toolholding"
+    },
+    "knifeHitBlockAnimation": "knifecut",
+    "knifeHitEntityAnimation": "knifestab",
+    "handbook": {
+      "groupBy": [
+        "matterknife-*"
+      ]
+    },
+    "toolrackTransform": {
+      "translation": {
+        "x": -0.3,
+        "y": 0.6,
+        "z": -0.1
+      },
+      "rotation": {
+        "x": 97,
+        "y": 180,
+        "z": 3
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0,
+        "z": 0.5
+      },
+      "scale": 1.8
+    },
+    "groundStorageTransform": {
+      "translation": {
+        "x": 0,
+        "y": 0.01,
+        "z": -0.074
+      },
+      "rotation": {
+        "x": 26,
+        "y": 88,
+        "z": -87
+      },
+      "scale": 1
+    },
+    "heldItemPitchFollow": 1
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "miningspeedByType": {
+    "*-dark": {
+      "plant": 6,
+      "leaves": 4
+    },
+    "*-red": {
+      "plant": 9,
+      "leaves": 6
+    }
+  },
+  "attackpowerByType": {
+    "*-dark": 5,
+    "*-red": 6.5
+  },
+  "materialDensity": 9000
+}

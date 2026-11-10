@@ -1,0 +1,84 @@
+{
+  "code": "matterspear",
+  "class": "EntityProjectile",
+  "tags": [
+    "inanimate",
+    "projectile"
+  ],
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "hitboxSize": {
+    "x": 0.125,
+    "y": 0.125
+  },
+  "attributes": {
+    "isProjectile": true
+  },
+  "client": {
+    "renderer": "Shape",
+    "shape": {
+      "base": "game:item/tool/spear/metal-iron",
+      "offsetX": -0.8125
+    },
+    "texturesByType": {
+      "*-dark": {
+        "iron": {
+          "base": "vintagee:item/tool/material/darkmatter"
+        },
+        "handle": {
+          "base": "game:block/wood/debarked/ebony"
+        },
+        "string": {
+          "base": "game:item/resource/string"
+        }
+      },
+      "*-red": {
+        "iron": {
+          "base": "vintagee:item/tool/material/redmatter"
+        },
+        "handle": {
+          "base": "vintagee:item/tool/material/darkmatter"
+        },
+        "string": {
+          "base": "game:item/resource/string"
+        }
+      }
+    },
+    "behaviors": [
+      {
+        "code": "passivephysics",
+        "groundDragFactor": 1,
+        "airDragFactor": 0.25,
+        "gravityFactor": 0.75
+      },
+      {
+        "code": "interpolateposition"
+      }
+    ]
+  },
+  "server": {
+    "behaviors": [
+      {
+        "code": "passivephysics",
+        "groundDragFactor": 1,
+        "airDragFactor": 0.25,
+        "gravityFactor": 0.75
+      },
+      {
+        "code": "despawn",
+        "minSeconds": 600
+      },
+      {
+        "code": "entitystatetags"
+      }
+    ]
+  },
+  "sounds": {}
+}

@@ -1,0 +1,195 @@
+{
+  "code": "mattersaw",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "tags": [
+    "tool",
+    "tool-saw"
+  ],
+  "damagedby": [
+    "blockbreaking",
+    "attacking"
+  ],
+  "tool": "saw",
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "wallOffY": 1,
+        "ctrlKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        }
+      }
+    },
+    {
+      "name": "EntityDeconstructTool"
+    },
+    {
+      "name": "VintageEMatterTool",
+      "properties": {
+        "maxAreaRadius": 0
+      }
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/saw"
+  },
+  "texturesByType": {
+    "*-dark": {
+      "metal": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "wood": {
+        "base": "game:block/wood/debarked/ebony"
+      }
+    },
+    "*-red": {
+      "metal": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "wood": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      }
+    }
+  },
+  "heldTpHitAnimation": "breaktool",
+  "guiTransform": {
+    "rotate": false,
+    "translation": {
+      "x": 1,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -77,
+      "y": 47,
+      "z": -151
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.38
+    },
+    "scale": 1.9
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.65,
+      "y": -0.62,
+      "z": -0.45
+    },
+    "rotation": {
+      "x": 90,
+      "y": -174,
+      "z": 0
+    },
+    "scale": 1
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.45,
+      "z": 0.5
+    },
+    "scale": 3.6
+  },
+  "attributes": {
+    "attachableToEntity": {
+      "categoryCode": "toolholding"
+    },
+    "handbook": {
+      "groupBy": [
+        "mattersaw-*"
+      ]
+    },
+    "toolrackTransform": {
+      "translation": {
+        "x": -0.15,
+        "y": 0.05,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1,
+        "z": -1
+      },
+      "scale": 1.35
+    },
+    "groundStorageTransform": {
+      "translation": {
+        "x": 0.03,
+        "y": -0.18,
+        "z": 0.29
+      },
+      "rotation": {
+        "x": 26,
+        "y": 90,
+        "z": -90
+      },
+      "scale": 0.88
+    }
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "miningspeedByType": {
+    "*-dark": {
+      "wood": 9,
+      "leaves": 6
+    },
+    "*-red": {
+      "wood": 14,
+      "leaves": 9
+    }
+  },
+  "attackpowerByType": {
+    "*-dark": 3.5,
+    "*-red": 4.5
+  },
+  "materialDensity": 9000
+}

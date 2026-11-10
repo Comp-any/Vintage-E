@@ -35,6 +35,32 @@
     "*-hammer": "pickaxe",
     "*-shears": "shears"
   },
+  "tagsByType": {
+    "*-axe": [
+      "tool",
+      "tool-axe"
+    ],
+    "*-pickaxe": [
+      "tool",
+      "tool-pickaxe"
+    ],
+    "*-shovel": [
+      "tool",
+      "tool-shovel"
+    ],
+    "*-hoe": [
+      "tool",
+      "tool-hoe"
+    ],
+    "*-shears": [
+      "tool-shears",
+      "tool-trimming",
+      "tool"
+    ],
+    "*": [
+      "tool"
+    ]
+  },
   "behaviorsByType": {
     "*-dark-pickaxe": [
       {

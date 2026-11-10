@@ -15,6 +15,7 @@ Burn items into **EMC**, learn them, and transmute your EMC back into anything y
 | **Alchemical Coal → Mobius Fuel → Aeternalis Fuel** | Each tier is 4× the last. Hotter and much longer burning than charcoal; they work in forges and fire pits. |
 | **Dark Matter / Red Matter** | Plus blocks of each. |
 | **Matter tools** | Pickaxe, shovel, axe, sword, hoe and **sledgehammer** in dark and red matter, as 3D tools held, swung and displayed like the game's own (they use the vanilla tool models and animations with matter textures; the sledgehammer has its own model). They **never wear out**. The pickaxe/shovel/axe dig 1×1 by default and 3×3 (dark) or up to 5×5 (red) with the tool-mode key **F**; the sledgehammers smash stone and ore **3×3 from the start** (red: 5×5 with **F**). Sneak to dig a single block. The axe still fells trees and the hoe still tills. |
+| **More matter tools** | Knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow in dark and red matter: the game's own tools (they butcher, saw, chisel, sweep, prospect, smith, throw and shoot exactly like them) that never wear out. Any matter tool counts as the game's tool of that kind in recipes. |
 | **Energy Collectors MK1–MK3** | Turn sunlight into EMC (4 / 12 / 40 EMC per second in full sun). They push it into a condenser next to them, or sneak + right-click with an empty hand to take it into your personal EMC. |
 | **Energy Condensers MK1–MK2** | Put an item in the target slot. The condenser burns everything else inside it (plus EMC from collectors) and makes copies of the target. Works with hoppers and chutes; automation only pulls out the finished copies. |
 | **Klein Stars** | Ein → Omega (50k to 51.2M EMC). Portable EMC: right-click to empty into your EMC, sneak + right-click to fill. Rings and gadgets draw from carried stars. Can be worn in the **emblem** slot, where it shows on your chest and still counts as carried. |
@@ -246,6 +247,15 @@ Value files can also hold:
 | 1× Red Matter Hoe | `RR· / ·T· / ·D·` | R = Red Matter, T = Dark Matter Hoe, D = Dark Matter |
 | 1× Dark Matter Sledgehammer | `MMM / MSM / ·S·` | M = Dark Matter, S = Stick |
 | 1× Red Matter Sledgehammer | `RRR / RTR / ·D·` | R = Red Matter, T = Dark Matter Sledgehammer, D = Dark Matter |
+| 1× Dark Matter Knife | `M / S` | M = Dark Matter, S = Stick |
+| 1× Dark Matter Saw | `MMS` | |
+| 1× Dark Matter Chisel | `M· / ·S` | |
+| 1× Dark Matter Scythe | `MMM / ··S / ·S·` | |
+| 1× Dark Matter Prospecting Pick | `MM / ·S` | |
+| 1× Dark Matter Smithing Hammer | `MM / MS` | |
+| 1× Dark Matter Spear | `··M / ·S· / S··` | |
+| 1× Dark Matter Bow | `·MT / M·T / ·MT` | T = Flax Twine |
+| 1× Red Matter version of each | `·R· / RTR / ·D·` | R = Red Matter, T = the dark matter tool, D = Dark Matter |
 | 1× Energy Collector MK1 | `GGG / AOA / III` | G = Any glass block, A = Alchemical Coal, O = Gold ingot, I = Iron ingot |
 | 1× Energy Collector MK2 | `GDG / GCG / GGG` | G = Any glass block, D = Dark Matter, C = Energy Collector MK1 |
 | 1× Energy Collector MK3 | `GRG / GCG / GGG` | G = Any glass block, R = Red Matter, C = Energy Collector MK2 |

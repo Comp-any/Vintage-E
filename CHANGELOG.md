@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.20.0 — 2026-11-10
+
+- **New matter tools: knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow**, in dark and red matter. Each is the game's own tool (same model, class and handling: the knife butchers and harvests, the smithing hammer works the anvil, the chisel chisels, the scythe sweeps, the prospecting pick finds ore, the spear can be thrown and picked up, the bow shoots like a recurve bow but harder) with matter textures, and like every matter tool it **never wears out**. Recipes: dark matter and sticks (the bow uses flax twine); red matter versions from the dark one, red matter and dark matter. The Sledgehammer stays a mining tool; the new Smithing Hammer is the one for the anvil.
+- **Matter tools count as the game's tools in recipes.** Recipes that name a tool by its code ("saw-*", "knife-*", "hammer-*", "axe-*" …) now take the matter tool of that kind too (the katar counts as an axe and shears, the morning star as a pickaxe and shovel), and the matter axe, pickaxe, shovel, hoe, shears, katar and morning star now carry the game's tool tags, so recipes that ask for a tool by tag take them as well.
+
 ## 1.19.7 — 2026-11-09
 
 Fixes from a bug and problem review of 1.19.1–1.19.6:

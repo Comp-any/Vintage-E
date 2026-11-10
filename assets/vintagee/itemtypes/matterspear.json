@@ -1,0 +1,236 @@
+{
+  "code": "matterspear",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "class": "ItemSpear",
+  "tags": [
+    "weapon",
+    "weapon-melee",
+    "weapon-spear"
+  ],
+  "damagedby": [
+    "attacking"
+  ],
+  "tool": "spear",
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "ctrlKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        },
+        "wallOffY": 3
+      }
+    },
+    {
+      "name": "AnimationAuthoritative"
+    },
+    {
+      "name": "VintageEMatterTool",
+      "properties": {
+        "maxAreaRadius": 0
+      }
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/spear/metal-iron"
+  },
+  "texturesByType": {
+    "*-dark": {
+      "iron": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "handle": {
+        "base": "game:block/wood/debarked/ebony"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    },
+    "*-red": {
+      "iron": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "handle": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    }
+  },
+  "heldTpHitAnimation": "spearhit",
+  "heldTpIdleAnimation": "spearidle",
+  "heldRightReadyAnimation": "spearidle",
+  "attackRange": 3.5,
+  "guiTransform": {
+    "rotation": {
+      "x": 33,
+      "y": 0,
+      "z": -127
+    },
+    "origin": {
+      "x": 1.39,
+      "y": 0.05,
+      "z": 0.52
+    },
+    "scale": 2.26
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -1.29,
+      "y": 0.03,
+      "z": -0.57
+    },
+    "rotation": {
+      "x": -90,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.6,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.8
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.05,
+      "z": 0
+    },
+    "rotation": {
+      "x": 90,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 3.4
+  },
+  "attributesByType": {
+    "*-dark": {
+      "groundStorageTransform": {
+        "translation": {
+          "x": -0.39,
+          "y": 0.78,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 16,
+          "y": 1,
+          "z": 90
+        },
+        "scale": 0.85
+      },
+      "handbook": {
+        "groupBy": [
+          "matterspear-*"
+        ]
+      },
+      "toolrackTransform": {
+        "rotation": {
+          "x": 90,
+          "y": 1,
+          "z": -1
+        },
+        "translation": {
+          "x": 0.31,
+          "y": 0.04,
+          "z": 0.7
+        },
+        "scale": 1.36
+      },
+      "heldItemPitchFollow": 1,
+      "rangedWeaponsSpeedMul": 0.5,
+      "damage": 9,
+      "damageTier": 3,
+      "spearEntityCode": "vintagee:matterspear-dark"
+    },
+    "*-red": {
+      "groundStorageTransform": {
+        "translation": {
+          "x": -0.39,
+          "y": 0.78,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 16,
+          "y": 1,
+          "z": 90
+        },
+        "scale": 0.85
+      },
+      "handbook": {
+        "groupBy": [
+          "matterspear-*"
+        ]
+      },
+      "toolrackTransform": {
+        "rotation": {
+          "x": 90,
+          "y": 1,
+          "z": -1
+        },
+        "translation": {
+          "x": 0.31,
+          "y": 0.04,
+          "z": 0.7
+        },
+        "scale": 1.36
+      },
+      "heldItemPitchFollow": 1,
+      "rangedWeaponsSpeedMul": 0.5,
+      "damage": 12,
+      "damageTier": 4,
+      "spearEntityCode": "vintagee:matterspear-red"
+    }
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "attackpowerByType": {
+    "*-dark": 8,
+    "*-red": 10.5
+  },
+  "materialDensity": 9000
+}

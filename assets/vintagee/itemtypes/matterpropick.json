@@ -1,0 +1,202 @@
+{
+  "code": "matterpropick",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "class": "ItemProspectingPick",
+  "tags": [
+    "tool",
+    "tool-pickaxe",
+    "tool-prospectingpick"
+  ],
+  "damagedby": [
+    "blockbreaking",
+    "attacking"
+  ],
+  "tool": "pickaxe",
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "wallOffY": 1,
+        "ctrlKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        }
+      }
+    },
+    {
+      "name": "VintageEMatterTool",
+      "properties": {
+        "maxAreaRadius": 0
+      }
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/prospectingpick"
+  },
+  "texturesByType": {
+    "*-dark": {
+      "metal": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "handle": {
+        "base": "game:block/wood/debarked/ebony"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    },
+    "*-red": {
+      "metal": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "handle": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    }
+  },
+  "heldTpHitAnimation": "smithing",
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 107,
+      "y": -58,
+      "z": -16
+    },
+    "origin": {
+      "x": 0.44,
+      "y": 0.3,
+      "z": 0.42
+    },
+    "scale": 1.68
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.78,
+      "y": -0.53,
+      "z": -0.11
+    },
+    "rotation": {
+      "x": 90,
+      "y": 0,
+      "z": -2
+    },
+    "scale": 0.9
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": -0.2
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.45,
+      "z": 0.5
+    },
+    "scale": 3.6
+  },
+  "attributes": {
+    "attachableToEntity": {
+      "categoryCode": "toolholding"
+    },
+    "handbook": {
+      "groupBy": [
+        "matterpropick-*"
+      ]
+    },
+    "toolrackTransform": {
+      "rotation": {
+        "y": 1,
+        "z": -1
+      },
+      "translation": {
+        "x": -0.3,
+        "y": 0.6
+      },
+      "scale": 1.25
+    },
+    "groundStorageTransform": {
+      "translation": {
+        "x": 0,
+        "y": 0.1,
+        "z": -0.123
+      },
+      "rotation": {
+        "x": 26,
+        "y": 88,
+        "z": -87
+      },
+      "scale": 0.88
+    },
+    "heldItemPitchFollow": 0.9,
+    "slotRefillIdentifier": "propick",
+    "rememberToolModeWhenBroken": true
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "miningspeedByType": {
+    "*-dark": {
+      "stone": 9,
+      "ore": 9,
+      "metal": 9
+    },
+    "*-red": {
+      "stone": 14,
+      "ore": 14,
+      "metal": 14
+    }
+  },
+  "attackpowerByType": {
+    "*-dark": 3.5,
+    "*-red": 4.5
+  },
+  "materialDensity": 9000
+}

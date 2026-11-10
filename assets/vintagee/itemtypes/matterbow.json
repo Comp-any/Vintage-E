@@ -1,0 +1,256 @@
+{
+  "code": "matterbow",
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "class": "ItemBow",
+  "tags": [
+    "weapon",
+    "weapon-ranged",
+    "weapon-bow"
+  ],
+  "tool": "bow",
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "WallHalves",
+        "ctrlKey": true,
+        "selectionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.1,
+          "z2": 1
+        },
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 0,
+          "y2": 0,
+          "z2": 0
+        },
+        "wallOffY": 2
+      }
+    },
+    {
+      "name": "VintageEMatterTool",
+      "properties": {
+        "maxAreaRadius": 0
+      }
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/bow/recurve",
+    "alternates": [
+      {
+        "base": "game:item/tool/bow/recurve-charge1"
+      },
+      {
+        "base": "game:item/tool/bow/recurve-charge2"
+      },
+      {
+        "base": "game:item/tool/bow/recurve-charge3"
+      }
+    ]
+  },
+  "texturesByType": {
+    "*-dark": {
+      "aged": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "bone": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "iron": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "leather": {
+        "base": "game:block/leather/plain"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    },
+    "*-red": {
+      "aged": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "bone": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "iron": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "leather": {
+        "base": "game:block/leather/plain"
+      },
+      "string": {
+        "base": "game:item/resource/string"
+      }
+    }
+  },
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -129,
+      "y": 25,
+      "z": 41
+    },
+    "origin": {
+      "x": 0.47,
+      "y": 0,
+      "z": 0.55
+    },
+    "scale": 1.36
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.56,
+      "y": 0.01,
+      "z": -0.54
+    },
+    "rotation": {
+      "x": 107,
+      "y": 11,
+      "z": 10
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.93
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 4.8
+  },
+  "attributesByType": {
+    "*-dark": {
+      "toolrackTransform": {
+        "translation": {
+          "x": 0.14,
+          "y": 0.93
+        },
+        "rotation": {
+          "x": 2,
+          "y": 5,
+          "z": 0
+        },
+        "scale": 1.76
+      },
+      "groundStorageTransform": {
+        "translation": {
+          "x": -0.4,
+          "y": 0.1,
+          "z": 0.28
+        },
+        "rotation": {
+          "x": 20,
+          "y": -180,
+          "z": -90
+        },
+        "scale": 0.83
+      },
+      "handbook": {
+        "groupBy": [
+          "matterbow-*"
+        ]
+      },
+      "heldItemPitchFollow": 1,
+      "aimAnimation": "bowaimrecurve",
+      "damage": 5.5,
+      "damageTier": 1,
+      "statModifier": {
+        "rangedWeaponsAcc": 0.35
+      }
+    },
+    "*-red": {
+      "toolrackTransform": {
+        "translation": {
+          "x": 0.14,
+          "y": 0.93
+        },
+        "rotation": {
+          "x": 2,
+          "y": 5,
+          "z": 0
+        },
+        "scale": 1.76
+      },
+      "groundStorageTransform": {
+        "translation": {
+          "x": -0.4,
+          "y": 0.1,
+          "z": 0.28
+        },
+        "rotation": {
+          "x": 20,
+          "y": -180,
+          "z": -90
+        },
+        "scale": 0.83
+      },
+      "handbook": {
+        "groupBy": [
+          "matterbow-*"
+        ]
+      },
+      "heldItemPitchFollow": 1,
+      "aimAnimation": "bowaimrecurve",
+      "damage": 7,
+      "damageTier": 2,
+      "statModifier": {
+        "rangedWeaponsAcc": 0.45
+      }
+    }
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "attackpowerByType": {
+    "*-dark": 2,
+    "*-red": 2.5
+  },
+  "materialDensity": 9000
+}

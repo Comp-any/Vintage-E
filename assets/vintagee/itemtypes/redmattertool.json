@@ -16,6 +16,21 @@
     "*-katar": "axe",
     "*-morningstar": "pickaxe"
   },
+  "tagsByType": {
+    "*-katar": [
+      "tool",
+      "tool-axe",
+      "tool-shears",
+      "tool-trimming",
+      "weapon",
+      "weapon-melee"
+    ],
+    "*-morningstar": [
+      "tool",
+      "tool-pickaxe",
+      "tool-shovel"
+    ]
+  },
   "behaviorsByType": {
     "*-katar": [
       {
