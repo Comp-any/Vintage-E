@@ -1,0 +1,92 @@
+== Other mods changing recipes and items ==
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Alchemy (alchemy) (/emc diagnose mod alchemy): 1639 recipe patches
+    herbracks.json → alchemy:recipes/grid/herbrack.json
+    herbracks.json → alchemy:recipes/smithing/herbracktop.json
+    herbracks.json → alchemy:recipes/smithing/4hooks.json
+  BetterRuins (betterruins) (/emc diagnose mod betterruins): 430 recipe patches
+    makes_cupronickelnails_smithable.json → game:recipes/smithing/nails.json
+    makes_cupronickelnails_smithable.json → game:recipes/smithing/nails.json
+    bricklayers_anti_duplication_slateroofingjson → bricklayers:recipes/grid/recycle/block_slateroofing_to_stones.json
+  Wildcraft: Fruits and Nuts (wildcraftfruit) (/emc diagnose mod wildcraftfruit): 289 recipe patches, 12 patches to how items are processed (ground storage, squeezing, burning, drying)
+    tree_module_switch.json → wildcraftfruit:recipes/grid/cedarnut.json
+    tree_module_switch.json → wildcraftfruit:recipes/barrel/walnut_dye.json
+    tree_module_switch.json → wildcraftfruit:recipes/grid/acorn_amulet.json
+  Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 166 recipe patches
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+    hooknuggetrecipe.json → butchering:recipes/smithing/onebutcheringhook.json
+    hooknuggetrecipe.json → butchering:recipes/grid/butcherhook.json
+    dough.json → expandedfoods:recipes/kneading/doughball.json
+  Primitive Survival (primitivesurvival) (/emc diagnose mod primitivesurvival): 70 recipe patches, 21 patches to how items are processed (ground storage, squeezing, burning, drying)
+    ps-raft.json → primitivesurvival:recipes/grid/raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaperegion/recipes/grid/floralzonescaperegion-raft.json
+    ps-raft.json → primitivesurvival:compatibility/floralzonescaribbeanregion/recipes/grid/floralzonescaribbeanregion-raft.json
+  Aldi's Classes (aldiclasses) (/emc diagnose mod aldiclasses): 77 recipe patches, 5 patches to how items are processed (ground storage, squeezing, burning, drying)
+    remove-hackle-recipe.json → aldiclasses:recipes/smithing/hackle.json
+    remove-threadweaver-recipes.json → aldiclasses:recipes/grid/threadweaver.json
+    remove-threadweaver-recipes.json → aldiclasses:recipes/grid/threadweaver.json
+  Millwright (millwright) (/emc diagnose mod millwright): 82 recipe patches
+    windmillrotorud-oils.json → millwright:recipes/grid/windmillrotorud.json
+    windmillrotorud.json → millwright:recipes/grid/windmillrotorud.json
+    windmillrotor.json → millwright:recipes/grid/windmillrotor.json
+  Wool & More (wool) (/emc diagnose mod wool): 64 recipe patches
+    survival-itemtypes-hoovedwearables-blanket.json → game:recipes/grid/clothes/blanket.json
+    survival-itemtypes-hoovedwearables-blanket.json → game:recipes/grid/clothes/blanket.json
+    survival-itemtypes-wearable-upperbodyover.json → wool:recipes/grid/clothing/wool/upperbodyover.json
+  RP Voice Chat (rpvoicechat) (/emc diagnose mod rpvoicechat): 51 recipe patches
+    additional-content-recipes.json → rpvoicechat:recipes/grid/handbell.json
+    additional-content-recipes.json → rpvoicechat:recipes/grid/callbell.json
+    additional-content-recipes.json → rpvoicechat:recipes/grid/royalhorn.json
+  Expanded Matter (em) (/emc diagnose mod em): 41 recipe patches, 9 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-barrel-dye-blue.json → game:recipes/barrel/dye/blue.json
+    survival-recipes-barrel-dye-pink.json → game:recipes/barrel/dye/pink.json
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+  Fauna of the Stone Age: Casuariidae Plus (casuariidae) (/emc diagnose mod casuariidae): 48 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Overhaul lib legacy compat (overhaulliblegacycompat) (/emc diagnose mod overhaulliblegacycompat): 42 recipe patches
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+    claycovering-armoryparts.json → game:recipes/grid/claycovering-armoryparts
+  FoodShelves (foodshelves) (/emc diagnose mod foodshelves): 23 recipe patches
+    expandedfoods.json → foodshelves:recipes/grid/shelves/barshelf.json
+    expandedfoods.json → foodshelves:recipes/grid/shelves/barshelf.json
+    expandedfoods.json → foodshelves:recipes/grid/shelves/sushishelf.json
+  Fauna of the Stone Age: Bovinae (bovinae) (/emc diagnose mod bovinae): 16 recipe patches
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+  Fauna of the Stone Age: Capreolinae (capreolinae) (/emc diagnose mod capreolinae): 12 recipe patches
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+    reindeer cheese meals.json → game:recipes/cooking/scrambledeggs
+  Bricklayers (bricklayers) (/emc diagnose mod bricklayers): 7 recipe patches, 2 patches to how items are processed (ground storage, squeezing, burning, drying)
+    smelting_obsidian.json → em:itemtypes/resource/crushed-stone.json
+    survival-recipes-grid-stonebrick.json → game:recipes/grid/stonebrick.json
+    survival-itemtypes-resource-crushed-bonemeal.json → game:itemtypes/resource/crushed/bonemeal.json
+  Fauna of the Stone Age: Elephantidae (elephantidae) (/emc diagnose mod elephantidae): 8 recipe patches
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+    elephant cheese meals.json → game:recipes/cooking/scrambledeggs
+  Rustbound Magic (rustboundmagic) (/emc diagnose mod rustboundmagic): 5 patches to how items are processed (ground storage, squeezing, burning, drying)
+    metalinfo-eldrathium.json → game:itemtypes/resource/workitem.json
+    metalinfo-eldrathium.json → game:itemtypes/resource/ingot.json
+    metalinfo-eldrathium.json → game:itemtypes/resource/metalplate.json
+  Tankards, Goblets and More! (tankardsandgoblets) (/emc diagnose mod tankardsandgoblets): 5 recipe patches
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+    geologyadditions.json → tankardsandgoblets:recipes/grid/jeweledgoblet.json
+  Coinage (coinage) (/emc diagnose mod coinage): 2 patches to how items are processed (ground storage, squeezing, burning, drying)
+    smeltingratios.json → coinage:itemtypes/resource/planchet.json
+    smeltingratios.json → coinage:itemtypes/resource/coin.json
+  Molds (molds) (/emc diagnose mod molds): 1 recipe patches
+    butchering-hook.json → molds:recipes/clayforming/BurcheringHook.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

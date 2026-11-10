@@ -1,0 +1,547 @@
+Vintage-E 1.21.1 self-test
+PASS value of game:fat = 16 (expected 1-64)
+PASS value of game:fat-rendered = 16 (expected 1-64)
+PASS value of game:gem-emerald-rough = 2048 (expected 2048-2048)
+PASS value of game:gem-diamond-rough = 8192 (expected 8192-8192)
+FAIL value of game:creature-fish-freshwater-bass-largemouth-adult = 150.4 (expected 118.39-118.41000000000001)
+PASS value of game:jonasparts-tank01 = 1024 (expected 1024-1024)
+PASS value of game:creature-trader-female-artisan-cold = 0 (expected 0-0)
+PASS value of game:locatormap-treasures = 0 (expected 0-0)
+PASS value of game:lore-paper = 0 (expected 0-0)
+PASS value of game:metal-parts = 40.96 (expected 1-1000)
+PASS value of game:nightvisiondevice = 4096 (expected 4096-4096)
+FAIL value of game:ore-fluorite = 16 (expected 32-64)
+PASS value of game:ore-fluorite-limestone = 20 (expected 1-1000)
+PASS value of game:blastingpowder = 18.9333 (expected 1-30)
+PASS value of game:bonyremains-ribcage = 96 (expected 96-96)
+PASS value of game:crystalizedore-poor-quartz_nativegold-andesite = 102.4 (expected 102-103)
+PASS value of game:ingot-steel = 336 (expected 256-400)
+PASS value of game:hide-pelt-bear-brown-head = 56 (expected 1-200)
+  value of game:altar-north = 64
+  value of vintagee:furnace-dark-cold = 98325
+  value of vintagee:trinket-voidring = 143626
+PASS player model loads
+  UpperTorso: [5.7, 19.4, 4.9] to [10.96, 24.13, 11.1] (own box 0,4.3,-0.1 to 5,9.3,6.1, rotation 0,0,-6)
+  Head: [5.32, 25.08, 5.5] to [10.64, 30.27, 10.5] (own box -1.7,2.1,-1 to 3.8,7.1,4, rotation 0,0,-7)
+  LowerArmL: [7.28, 10.23, 11.53] to [10.1, 18.2, 13.2] (own box 0.2,-7.3,-0.1 to 2.7,0.7,1.9, rotation 8,0,-6)
+  LowerArmR: [7.22, 10.26, 2.46] to [9.97, 18.09, 4.79] (own box 0.1,-7.3,0.1 to 2.6,0.7,2.1, rotation -8,0,-6)
+PASS vintagee:kleinstar-omega exists
+PASS vintagee:kleinstar-omega fits the Emblem slot
+PASS vintagee:kleinstar-omega can be put in a Emblem slot
+PASS vintagee:kleinstar-omega worn model vintagee:entity/worn/kleinstar-omega loads
+PASS vintagee:kleinstar-omega worn model hangs on UpperTorso
+    vintageetest-badge: [5.49, 21.01, 6.7] to [5.97, 23.59, 9.3]
+PASS vintagee:trinket-voidring exists
+PASS vintagee:trinket-voidring fits the Hand slot
+PASS vintagee:trinket-voidring can be put in a Hand slot
+PASS vintagee:trinket-voidring worn model vintagee:entity/worn/ring-voidring loads
+PASS vintagee:trinket-voidring worn model hangs on LowerArmL
+    vintageetest-bandW: [7, 11.03, 11.21] to [7.48, 11.81, 13.78]
+    vintageetest-bandE: [9.7, 10.93, 11.16] to [10.18, 11.71, 13.73]
+    vintageetest-bandN: [7.4, 11.02, 11.2] to [9.73, 11.65, 11.54]
+    vintageetest-bandS: [7.45, 11.09, 13.4] to [9.78, 11.72, 13.74]
+    vintageetest-gem: [8.25, 11.08, 13.74] to [8.98, 11.76, 14]
+  game:entity/humanoid/seraph/clothing/emblem/silver-star hangs on UpperTorso
+    vintageetest-breasts: [6.06, 22.38, 6.8] to [6.17, 24.38, 8.8]
+    vintageetest-pendant: [5.4, 21.32, 5.7] to [5.96, 22.9, 7.2]
+    vintageetest-ray1: [5.47, 21.87, 4.95] to [5.89, 22.25, 7.95]
+    vintageetest-ray2: [5.54, 23.86, 6.25] to [5.82, 20.25, 6.65]
+    vintageetest-ray3: [5.51, 22.98, 5.25] to [5.85, 21.13, 7.65]
+    vintageetest-ray4: [5.44, 20.86, 5.53] to [5.92, 23.25, 7.37]
+    vintageetest-gem1: [5.33, 22.12, 5.74] to [5.53, 22.11, 7.16]
+  game:entity/humanoid/seraph/clothing/arm/copper-bracelet hangs on LowerArmL
+    vintageetest-Cube19: [7.31, 11.21, 11] to [9.87, 12.64, 11.4]
+    vintageetest-Cube3: [7.35, 11.29, 13.2] to [9.91, 12.71, 13.6]
+    vintageetest-Cube1: [7.11, 11.22, 11.1] to [7.71, 12.79, 13.54]
+    vintageetest-Cube5: [9.41, 11.14, 10.96] to [10, 12.7, 13.4]
+  guesses: 2351 look/placement variants, 0 other mods' variants, 85 fuel, 34 food, 2468 other variants, 1602 defaults; 2139 missing
+  cinnabar ore: 132 (block drops: 1.25 game:ore-cinnabar -> 1 game:ore-cinnabar-andesite)
+PASS cinnabar ore isn't priced like quartz
+  loose cinnabar: 105.6 (block drops: 1 game:ore-cinnabar -> 1 game:looseores-cinnabar-andesite-free)
+PASS loose cinnabar isn't priced like gold-bearing quartz
+  hyperkinetic lens: 90694.7 (grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 game:gem-diamond-rough + 1 vintagee:novaexplosive-catalyst + 1 game:gem-diamond-rough + 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:gadget-hyperkineticlens)
+PASS the lenses are valued from their recipes
+  fence piece: 2 (placement state: 1 game:woodenfence-acacia-ew-free -> 1 game:woodenfence-acacia-e-free)
+PASS fence pieces are worth the fence
+  brown shingle: 0.007 (grid: 16 game:slantedroofinghalfright-brownclay-east-free -> 3 game:shingle-burned-brown), black shingle: 0.007
+FAIL kiln-coloured shingles cost the same clay as the others
+PASS aged thatch roofing has a value
+  oak sailboat: 9581 (built in stages (boatconstruction-sailed-oak): 8 game:firewood + 9 game:log-placed-aged-ud (or 38 more) + 16 game:plank-...)
+PASS sailboats are valued from their build stages
+  cheddar: 4 slices 402.1333, 2 slices 201.0667 (relativeValues rule: 0.5 x game:cheese-cheddar-4slice)
+PASS half a cheese is worth half a cheese
+  black axe mold: 56 (beehive kiln firing: 1 game:toolmold-blue-raw-axe -> 1 game:toolmold-black-fired-axe)
+PASS the axe mold isn't priced like the anvil mold
+  contents: 1734 carry data (1341 containers, 384 material, 9 chiseled); 133 with material values
+PASS game:shield-woodmetal is Material, Full (Material, Full)
+PASS game:woodbucket is Contents, Full (Contents, Full)
+PASS game:chiseledblock is Chiseled, Full (Chiseled, Full)
+  round shields by metal: tinbronze 287.6, bismuthbronze 364.4, blackbronze 814.96, gold 4,102, silver 1,030, iron 518, meteoriciron 774, steel 678
+PASS round shields made of different metals are worth different amounts
+PASS an exact copy of a gold shield is a gold shield at the same price
+  tapestry versions known to this server: none (the version check is skipped here)
+  chiseled granite: full 1, half 0.5, rock 1
+PASS chiseled blocks are worth their voxels of material
+  crucible with 200 units of copper, item + contents: 272 (expected 272); kind Contents
+PASS a crucible of molten metal counts its metal units
+  bucket of 10 L water: item only 11, item + contents 21, item price 11
+PASS filled buckets count their water only in item + contents mode
+  3 L bucket (capacity 10 L): learned as 10 L (60 chars), made as 10 L worth 21
+PASS a part-filled bucket is learned and made as a full one
+PASS a 3 L bucket burns for the bucket plus 3 EMC (14 vs 14)
+  liquid containers with no capacity (learned at whatever fill they had): 0 
+  attribute paths on exact-version things (22): coinShape x288 (coinage:planchet-bismuth-sm); type x229 (game:clutter-elevator-elevatorrail); FSAttributes.wood x144 (foodshelves:buckethook-normal-east); FSAttributes x144 (foodshelves:buckethook-normal-east); PSAttributes x124 (purposefulstorage:spearrack-normal-east); PSAttributes.wood x120 (purposefulstorage:spearrack-normal-east); material x81 (game:antlermount); wood x32 (game:cabinetdoor-1block-solid); lining x21 (game:lantern-small-up); glass x21 (game:lantern-small-up); metal x12 (game:shield-woodmetal); deco x12 (game:shield-woodmetal); variant x12 (game:clutteredbookshelf); color x4 (game:shield-woodmetalleather); companiontrainingexperience x4 (rustboundmagic:companiontrainingweapon-warrior); lidState x4 (game:crate); rock x4 (game:rocktyped-rubble-free); PSAttributes.rock x4 (purposefulstorage:swordpedestal-stone-east); label x3 (game:crate); destroyed x3 (game:trapcrate-wood); fish x2 (primitivesurvival:fishingspear-wood); ucontents x2 (game:bowl-blue-fired)
+  liquid sweep: 1034 containers x 811 valued liquids, 838574 combinations valued; 0 cheaper to make than they burn, 0 made aged
+PASS no liquid container can be burned for more than it costs to make, and made liquids are fresh
+  liquid transitions worth more after than before: 0
+PASS buckets of milk of different ages are one thing to learn (60 chars)
+PASS a bucket of an unvalued liquid (game:jamhoneyportion) is unvalued as a whole (0)
+  /emc configure tableuserange 9.5 -> TableUseRange changed to 9.5. Saved and applied. | TableUseRange = 9.5 [Success]
+PASS /emc configure changes a number setting
+PASS /emc configure adds and removes list entries
+PASS /emc configure sets a contents mode and puts it back (liquid containers default to full)
+PASS /emc configure refuses a bad value (lots isn't valid here: it needs a number. [Error])
+PASS /emc configure list shows the settings
+PASS the settings window replaces a list
+PASS the settings window refuses a bad table line and keeps the old value
+PASS the settings window changes a number
+Look: players get Original unless they pick their own; ProjectE sounds on
+PASS players are told the server's default look through the world settings: Original
+PASS the server sends Vintage-E's own blocks and items (each player's game applies their look)
+PASS ProjectE sound charge is there
+PASS ProjectE sound uncharge is there
+PASS ProjectE sound heal is there
+PASS ProjectE sound destruct is there
+PASS ProjectE sound power is there
+PASS ProjectE sound transmute is there
+PASS ProjectE sound watermagic is there
+PASS ProjectE sound windmagic is there
+PASS ProjectE sounds follow the setting
+PASS the Look setting accepts its three looks, and New is the default
+PASS Original look: every texture it names is there
+PASS Original look: every model it names is there
+PASS New look: every texture it names is there
+PASS New look: every model it names is there
+PASS New look: 67 blocks and items get a model
+PASS the game's LoadBlockShapes(blocks) is there for the look to hook into
+PASS the game's LoadItemShapes(items) is there for the look to hook into
+PASS the shape loader tells a player's game from a server (its game field)
+PASS New look applied (to copies) (67 models, 372 textures)
+PASS New look: nothing failed to apply
+PASS Zero Ring has the ring model: vintagee:newlook/item/ring
+PASS Zero Ring's gem is the game's aquamarine: game:block/stone/gem/aquamarine
+PASS Zero Ring's band is the game's silver: game:block/metal/plate/silver
+PASS Zero Ring keeps its own texture for wearing
+PASS Zero Ring is turned over like the game's gems in the inventory: 150
+PASS Klein Star Omega has the star model
+PASS collector MK3 is drawn from its model: JSON vintagee:newlook/block/energycollector
+PASS collector MK3's crystal is a ruby: game:block/stone/gem/ruby
+PASS transmutation table has the new model
+PASS lit red matter furnace has the lit fire pit model
+PASS red matter furnace burns red matter: vintagee:newlook/material/redmatter
+PASS matter blocks stay cubes
+PASS dark matter pickaxe head uses the new dark matter: vintagee:newlook/material/darkmatter
+PASS red alchemical bag is the game's red linen: game:block/cloth/linen/red
+PASS projectiles keep Vintage-E's look
+PASS the interdiction torch's outline fits its model: [0.2812, 0, 0.2812 => 0.7188, 0.9219, 0.7188]
+PASS the torch's collision box is unchanged
+PASS the alchemical chest's outline fits its lid: [0.0469, 0, 0.0219 => 0.9531, 0.8875, 0.9781]
+PASS Original look: ProjectE textures swapped (259 textures, 139 blocks/items, 6 entity types)
+PASS every ProjectE texture in the swap list is there
+PASS Zero Ring uses ProjectE's texture: vintagee:projecte/item/rings/zero_off
+PASS collector MK2 top is ProjectE's: vintagee:projecte/block/collectors/top_2
+PASS collector front is ProjectE's: vintagee:projecte/block/collectors/front
+PASS collector sides are ProjectE's plain face: vintagee:projecte/block/collectors/other
+PASS collector underside is ProjectE's plain face: vintagee:projecte/block/collectors/other
+PASS condenser MK2 underside is cut from ProjectE's chest texture: vintagee:projecte/derived/condenser_mk2-bottom
+PASS condenser MK1 top is cut from ProjectE's chest texture: vintagee:projecte/derived/condenser_mk1-top
+PASS transmutation table top is ProjectE's: vintagee:projecte/block/transmutation_stone/top
+PASS interdiction torch flame is ProjectE's: vintagee:projecte/derived/interdiction_torch-glow
+PASS red alchemical bag is ProjectE's flat bag: vintagee:projecte/item/alchemy_bags/red
+PASS red alchemical bag has no sack model
+PASS dark matter pickaxe head is ProjectE's dark matter: vintagee:projecte/block/dark_matter_block
+PASS fireball uses ProjectE's sprite: vintagee:projecte/entity/fireball
+PASS fireball is drawn whole: vintagee:entity/projectile-sprite
+PASS smite arrows (no ProjectE texture) keep their own look
+PASS Klein Stars (already ProjectE's art) are left alone
+PASS Zero Ring switched off keeps its texture
+PASS Zero Ring switched on lights up: vintagee:projecte/item/rings/zero_on
+PASS Ring of Arcana shows its mode: vintagee:projecte/item/rings/arcana_2_on
+PASS Swiftwolf's shield mode shows ProjectE's shield look: vintagee:projecte/item/rings/swrg_on3
+PASS switched-on looks found for the rings and stones (48)
+PASS bone arrow is worth a flint arrow: 16.66 / 16.66
+PASS custom translocator schematic is a free ingredient (blacklisted, no value)
+PASS translocator part is a free ingredient and 4 rickety translocators are off the blacklist
+PASS game:tobtlocator-north has a value: 16,641.6 EMC
+PASS Tome of Knowledge has no recipe and no EMC value
+PASS red matter pedestal: twice the range and power
+PASS red matter pedestal is worth more than the dark one: 933,888 > 344,064
+PASS the Arcane Tablet exists and counts as a tablet
+PASS the Arcane Tablet is worth a tablet and four red matter (196616 = 49160 + 4 × 36864)
+PASS the Arcane Tablet has a crafting recipe
+PASS Emc Craft with nothing learned names both ingredients as missing (Red Matter, Transmutation Tablet)
+PASS Emc Craft plans the Arcane Tablet: 5 cells for 196616 EMC
+PASS Emc Craft lays the ingredients out as the recipe wants, and it makes vintagee:arcanetablet
+PASS the game can rebuild a saved Emc Craft grid by its class name (EmcCraftGrid)
+PASS the game's handbook page builder is there for the Emc Craft link (CollectibleBehaviorHandbookTextAndExtraInfo.GetHandbookInfo, parameter 'capi')
+PASS the game's crafting grid takes Vintage-E's ID and goes away when closed (vintageeemccraft-selftest, 10 slots, removed on close True)
+PASS Emc Craft makes the tool for game:brickslabs-eight-black-down-free from EMC and marks it (game:chisel-copper)
+PASS Emc Craft counts only the tool's wear as the real cost (0.21 of 128; 10.53 real vs 138.31 up front)
+PASS Emc Craft picks the cheapest recipe for game:brickslabs-eight-black-down-free (10.53 EMC, game:recipes/grid/slabs/claybrickslab.json)
+PASS closing burns only the tools Emc Craft made, back into EMC (128); one it didn't make gives back 0
+PASS a Klein star holding 1,000 is burned only by hand, for the star plus what it holds (automatic: star-noburn, by hand: allowed, worth 11240 = 10240 + 1,000)
+PASS no-transmute: granite keeps its value but can't be burned (notransmute)
+PASS no-transmute list goes to clients
+PASS no-transmute: taken off again
+PASS magnet: an empty 'only these' filter pulls nothing
+PASS magnet: 'only these' pulls just the filtered item
+PASS magnet: 'all except these' skips the filtered item
+PASS magnet: Black Hole Band fits, a rock doesn't
+PASS tapestry: learned as its exact pattern (kind Material, key e:b:game:tapestry-north|BQR0eXBlC3NjaGVt)
+PASS clutter: the plain block isn't priced by a trader's typed stack (grid: 1 game:supportbeam-oak + 1 game:supportbeam-oak + 4 game:stick + 1 game:supportbeam-oak + 1 game:supportbeam-oak -> 16 game:clutter)
+PASS clutter: needs its type and keeps it (254 typed values from traders)
+PASS fruit tree cutting: BlockFruitTreeBranch, not in the creative inventory, kind Material; needs its type
+PASS typed-only blocks: 254 need their data (cabinetdoor-1block-solid, cabinetdoor-1block-glassframed, shield-woodmetal, shield-woodmetalleather, shield-metal, primitivesurvival:fishingspear-wood, primitivesurvival:fishingspear-bamboo, coinage:planchet-bismuth-sm, coinage:planchet-bismuthbronze-sm, coinage:planchet-blackbronze-sm, coinage:planchet-brass-sm, coinage:planchet-chromium-sm, …); all kept as material kinds
+PASS tapestry: an unsold pattern is priced like its siblings (292.69)
+PASS everlasting glue: exists, a use costs 32 EMC
+  value loops: 9, settled loops: 13
+    rustboundmagic:bloodstone -> rustboundmagic:runestone-bloodstone -> rustboundmagic:bloodstone
+    rustboundmagic:moonstone -> rustboundmagic:runestone-moonstone -> rustboundmagic:moonstone
+    rustboundmagic:riftanchor-riftbloom-rust-free -> rustboundmagic:riftanchor-riftbloom-rust-snow -> rustboundmagic:riftanchor-riftbloom-rust-free
+    rustboundmagic:riftanchor-rustcrystal-rust-free -> rustboundmagic:riftanchor-rustcrystal-rust-snow -> rustboundmagic:riftanchor-rustcrystal-rust-free
+    rustboundmagic:rustydust -> rustboundmagic:rustydust-compressed -> rustboundmagic:rustydust
+PASS every missing item has a reason
+PASS /emc dump writes ModData/vintagee/emc-values.csv and says where: Wrote 45125 values to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv [Success]
+PASS /emc answers are escaped for the chat's markup (unescaped breaks: True, escaped is plain text: True)
+PASS /emc loop writes emc-loops.txt: 9 value loop(s): in each, every item is only made from the next one, so none of them can get a value.
+PASS data folder is ModData/vintagee: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee
+PASS /emc configure <setting> default resets it: TableUseRange is back to its default: 8. Saved and applied. [Success]
+PASS every setting has a default for the window
+PASS Look is a drop-down of its three choices
+PASS /emc configure Look refuses a word that isn't a choice: banana isn't one of the choices: use New, Middle, Original. [Error]
+PASS /emc configure Look middle sets Middle: Middle
+PASS the window's drop-down value Original is saved: Original
+PASS Look put back to Original
+PASS long descriptions are in the handbook
+PASS tooltips stay one paragraph with the numbers in (319 characters for Swiftwolf's)
+PASS nova explosives are lit by torches and firestarters (ignitable)
+PASS diviningrodlow: 88 uses for 8.82 EMC, 16 deep
+PASS diviningrodmedium: 195 uses for 19.49 EMC, 32 deep
+PASS diviningrodhigh: 3608 uses for 360.82 EMC, 128 deep
+PASS divining rods look 16, 32 and 128 blocks deep
+PASS the box shows the manifold as a free ingredient from the value files
+PASS lore paper is blacklisted, and the box shows it
+PASS vintagee:alchemicalbagdark-red: 48 slots, upgraded from the smaller bag keeping its contents
+PASS vintagee:alchemicalbagred-red: 64 slots, upgraded from the smaller bag keeping its contents
+  recipe explanations checked: 300, not adding up: 0
+PASS /emc dump's recipe numbers add up to the value
+PASS a worked-backwards value says so: game:tuleroot
+PASS a shared-out value says so: game:honeyportion
+PASS base values name their value file or setting (60 of 60)
+PASS a half-worn game:armor-body-antique-blackguard-broken explains its durability (300/600) and comes to 961.7
+PASS a Klein star's stored EMC is listed
+PASS a filled bucket in item + contents mode lists its water
+PASS an item with no value lists its ways and what each lacks: bovinae:curdledmilkportion-antelope
+PASS the dump's 4 item references resolve, and the file text spells them out
+PASS the loop window has a section per loop (23) and its packet holds every line (105)
+  | Edible Herbs Archer (weak) (alchemy:herbball-archer): 64 EMC each
+  | Code: item:alchemy:herbball-archer (as the server config and value files write it)
+  | 
+  | == What a new one is worth, step by step ==
+  | The plain item's value: 64 EMC (where it comes from is further down)
+  | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+  | = 64 EMC each: what burning one gives, and what creating one costs
+  | 
+  | == Where the plain item's value comes from ==
+  | Made by the crafting grid (the cheapest way the mapper found):
+  |   + Archer's Flask (weak) base (alchemy:potionbase-archer-weak) x1 at 32 EMC = 32
+  |     from: the crafting grid: 1 Lupine (Blue) (game:flower-lupine-blue-free) (or 1 more) + 1 Orange mallow (game:flower-orangemallow-free) (or 1 more) -> 1 Archer's Flask (weak) base (alchemy:potionbase-archer-weak)
+  |   + Basic potion base (alchemy:potionbase-basic) x1 at 32 EMC = 32
+  |     from: the crafting grid: 1 Fly agaric (game:mushroom-flyagaric-normal) (or 2 more) + 1 Horsetail (game:flower-horsetail-free) -> 1 Basic potion base (alchemy:potionbase-basic)
+  |   = 64 for 1, so 64 EMC each
+  | Tule root (game:tuleroot): 4 EMC each
+  | Code: item:game:tuleroot (as the server config and value files write it)
+  | 
+  | == What a new one is worth, step by step ==
+  | The plain item's value: 4 EMC (where it comes from is further down)
+  | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+  | = 4 EMC each: what burning one gives, and what creating one costs
+  | 
+  | == Where the plain item's value comes from ==
+  | Worked backwards (InferValuesFromProcessing): nothing the mapper knows makes it, but smelting, firing or cooking uses it, so it's worth what that makes minus everything else that goes in:
+  |   Cooked wild rhizomes (game:vegetable-cookedcattailroot) x1 at 4 EMC = 4 (what it makes)
+  |   = 4 for the 1 it takes, so 4 EMC each
+  | Honey (game:honeyportion): 0.8 EMC each
+  | Code: item:game:honeyportion (as the server config and value files write it)
+  | 
+  | == What a new one is worth, step by step ==
+  | The plain item's value: 0.8 EMC (where it comes from is further down)
+  | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+  | A liquid: 100 portions make a litre, so a litre is worth 80 EMC.
+  | = 0.8 EMC each: what burning one gives, and what creating one costs
+  | 
+  | == Where the plain item's value comes from ==
+  | Shared out: fruit press makes several things at once; what isn't already valued gets an even share of what goes in:
+  |   Honeycomb (game:honeycomb) x1 at 32 EMC = 32
+  |   = 32 left, split evenly between the 2 things that had no value: 16 each; 20 of this make one share, so 0.8 EMC each
+  | 
+  | == Other ways to make it (2) ==
+  | The cheapest way sets the value, so nothing can be made for less than it burns for.
+  |   cooking in a pot: 20 Water (game:waterportion) (or 7 more) + 3 Crystallized honey (wildcraftfruit:molasses-honey) -> 80 Honey (game:honeyportion): 0.802 EMC each
+  |   squeezing: 1 Honeycomb (game:honeycomb) -> 20 Honey (game:honeyportion) + 1 Beeswax (game:beeswax) (shared out with other things)
+  | Aged firewood (game:agedfirewood): 8 EMC each
+  | Code: item:game:agedfirewood (as the server config and value files write it)
+  | 
+  | == What a new one is worth, step by step ==
+  | The plain item's value: 8 EMC (where it comes from is further down)
+  | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+  | = 8 EMC each: what burning one gives, and what creating one costs
+  | 
+  | == Where the plain item's value comes from ==
+  | A value file (vintagee:config/vintagee-emc.json): "game:agedfirewood" = 8.
+  |   A base value: the mapper starts from it, and everything made from it builds on it.
+  | 
+  | == Other ways to make it (1) ==
+  | Its value is set, so these don't change it.
+  |   the crafting grid: 1 Aged oak log (game:log-placed-aged-ud) -> 4 Aged firewood (game:agedfirewood): 8 EMC each
+  | Curdled antelope milk (bovinae:curdledmilkportion-antelope): no EMC value
+  | Code: item:bovinae:curdledmilkportion-antelope (as the server config and value files write it)
+  | 
+  | == Where the plain item's value comes from ==
+  | No value. 7 way(s) to make it, and what each is missing:
+  |   1. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled carrot (game:pickledvegetable-carrot) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |       Nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know. Give it a value with /emc set or BaseValues.
+  |   2. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled cabbage (game:pickledvegetable-cabbage) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |   3. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled onion (game:pickledvegetable-onion) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |   4. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled turnip (game:pickledvegetable-turnip) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |   5. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled parsnip (game:pickledvegetable-parsnip) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |   6. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled pumpkin slice (game:pickledvegetable-pumpkin) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  |   7. a barrel: 2500 Antelope milk (bovinae:milkportion-antelope) + 1 Pickled pepper (game:pickledvegetable-bellpepper) -> 2500 Curdled antelope milk (bovinae:curdledmilkportion-antelope)
+  |     Antelope milk (bovinae:milkportion-antelope) has no value
+  | To give it a value: Ctrl+K over it (or Set value below), a recipe in /emc recipe, or a value for a missing ingredient.
+  | Blackguard cuirass (Broken) (game:armor-body-antique-blackguard-broken): 961.7 EMC each
+  | Code: item:game:armor-body-antique-blackguard-broken (as the server config and value files write it)
+  | 
+  | == What this one is worth, step by step ==
+  | The plain item's value: 1,923.4 EMC (where it comes from is further down)
+  | Durability 300/600: worth 50% of new: 1,923.4 x 50% = 961.7 (DurabilityScalesEmc)
+  | = 961.7 EMC each: what burning one gives, and what creating one costs
+  | 
+  | == Where the plain item's value comes from ==
+  | from: trader price: 46 x 41.81 EMC per gear
+  |   (Server setting: UseTraderPrices)
+  | 9 value loop(s): in each, every item is only made from the next one, so none of them can get a value.
+  | Give any one item in a loop a value (Ctrl+K over it, or click it and Set value) and the rest follow. Click an item to see why it has none.
+  | 
+  | == Loop 1: 2 items ==
+  | Bloodstone (rustboundmagic:bloodstone) -> Bloodstone block (rustboundmagic:runestone-bloodstone) -> Bloodstone (rustboundmagic:bloodstone)
+  |   Bloodstone (rustboundmagic:bloodstone) is made from Bloodstone block (rustboundmagic:runestone-bloodstone) (the crafting grid)
+  |   Bloodstone block (rustboundmagic:runestone-bloodstone) is made from Bloodstone (rustboundmagic:bloodstone) (the crafting grid)
+  | 
+  | == Loop 2: 2 items ==
+  | Moonstone (rustboundmagic:moonstone) -> Moonstone block (rustboundmagic:runestone-moonstone) -> Moonstone (rustboundmagic:moonstone)
+  |   Moonstone (rustboundmagic:moonstone) is made from Moonstone block (rustboundmagic:runestone-moonstone) (the crafting grid)
+  |   Moonstone block (rustboundmagic:runestone-moonstone) is made from Moonstone (rustboundmagic:moonstone) (the crafting grid)
+  | 
+  | == Loop 3: 2 items ==
+  | Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) -> Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow) -> Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free)
+  |   Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) is made from Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow) (block drops (single item))
+  |   Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow) is made from Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) (breaking a block (what it drops))
+  | 
+  | == Loop 4: 2 items ==
+  | Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-free) -> Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-snow) -> Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-free)
+  |   Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-free) is made from Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-snow) (block drops (single item))
+  |   Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-snow) is made from Rift anchor (Rust crystal) (rustboundmagic:riftanchor-rustcrystal-rust-free) (breaking a block (what it drops))
+  | 
+  | == Loop 5: 2 items ==
+  | Rusty dust (rustboundmagic:rustydust) -> Compressed rusty dust (rustboundmagic:rustydust-compressed) -> Rusty dust (rustboundmagic:rustydust)
+PASS /emc dump game:stick explains the stick and writes its file
+PASS /emc dump with an unknown code says so
+PASS the ring's wind plays on ring flight (True), not on another mod's flight (False), with sounds off (False) or on the ground (False)
+PASS aldiclasses:heatcorepacked-andesite-hot at 25% condition is worth a quarter (4.5 of 18)
+PASS the philosopher's stone stays in all 20 recipes that use it, the table's included
+PASS a bucket of water burns for 11 with containers protected, 21 (with the water) without
+PASS EMC numbers keep two decimals, cut off: 1,234.56, 99.99, 1.15, 20,480
+PASS thatch has a value: 0.5
+PASS dark matter can be burned and learned: yes
+PASS NaN and infinite settings go back to usable values (dark factor 0, fallback 0, table range 8, clothing 1/0/100)
+PASS machines refuse EMC that isn't a number (relay took 0, condenser 0) and read a broken store back as 0
+PASS /emc configure sends changed cost, machine speed and watch settings to players with the table (changed: True)
+PASS CraftingMethods takes only its three words and says it needs a restart (banana isn't one of the choices: use Both, Grid, Realistic. [Error] / CraftingMethods changed to Both. Saved; it takes effect the next time the server starts. | CraftingMethods = Both [Success])
+PASS diagnose  : 118 lines, every lang key found
+PASS diagnose: the overview is a list of checks (26)
+PASS diagnose mapping : 263 lines, every lang key found
+PASS diagnose mods : 43 lines, every lang key found
+PASS diagnose mod game: 41 lines, every lang key found
+PASS diagnose: the base game's coverage is reported
+PASS diagnose mod nosuchmod: 6 lines, every lang key found
+PASS diagnose: an unknown mod id is reported
+PASS diagnose sporadic : 23 lines, every lang key found
+PASS diagnose item game:ingot-copper: 13 lines, every lang key found
+PASS diagnose: copper ingot has a value of 128 (✓ It has a value: 128 EMC.)
+PASS diagnose item game:creature-trader-female-artisan-cold: 13 lines, every lang key found
+PASS diagnose: the trader is reported as blacklisted
+PASS diagnose item game:nosuchitem: 19 lines, every lang key found
+PASS diagnose: an unknown code is reported
+PASS diagnose log : 5 lines, every lang key found
+PASS diagnose patches : 91 lines, every lang key found
+PASS diagnose: other mods' patches were scanned (• Other mods' patches: 22 mods patch things the mapper reads:)
+PASS diagnose outliers : 59 lines, every lang key found
+PASS diagnose clean : 482 lines, every lang key found
+PASS diagnose: the clean mapping compared base-game values (Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.)
+PASS diagnose players : 5 lines, every lang key found
+PASS diagnose player nobody: 7 lines, every lang key found
+PASS diagnose bugreport : 143 lines, every lang key found
+PASS diagnose: the bug report has the mod list and the changed settings, no advice, and stays short (152 lines)
+PASS diagnose changes : 5 lines, every lang key found
+PASS diagnose symptom : 14 lines, every lang key found
+PASS diagnose: ten symptoms are offered
+PASS diagnose symptom tooltipnoburn: 9 lines, every lang key found
+PASS diagnose symptom aftermod: 20 lines, every lang key found
+PASS diagnose symptom nothing: 8 lines, every lang key found
+PASS diagnose symptom onlyme: 7 lines, every lang key found
+PASS diagnose client : 5 lines, every lang key found
+PASS diagnose watch : 15 lines, every lang key found
+PASS diagnose: the watch lists the recorded refusals (2 refusals, 1 player(s):)
+PASS diagnose watch 60: 15 lines, every lang key found
+PASS diagnose draftcompat game: 3 lines, every lang key found
+PASS diagnose: no draft for the base game
+PASS diagnose draftcompat nosuchmod: 3 lines, every lang key found
+PASS diagnose emccraft : 9 lines, every lang key found
+PASS diagnose: the Emc Craft report checks the item and the saved-grid class (== Emc Craft (the Arcane Tablet) ==)
+PASS diagnose arcane : 9 lines, every lang key found
+PASS diagnose: the Emc Craft report checks the item and the saved-grid class (== Emc Craft (the Arcane Tablet) ==)
+PASS diagnose machines : 14 lines, every lang key found
+PASS diagnose: the machine report says the furnaces' hopper rules are in place (✓ Matter furnaces: from above into the input (things that smelt or cook), from the sides into the fuel, a chute underneath takes the output.)
+PASS diagnose trace game:ingot-tinbronze: 14 lines, every lang key found
+PASS diagnose: the trace of tin bronze reaches copper (== What it rests on (2 raw materials) ==)
+PASS diagnose trace game:ingot-copper: 10 lines, every lang key found
+PASS diagnose trace hand: 19 lines, every lang key found
+PASS diagnose trace game:hide-pelt-bear-brown-head: 16 lines, every lang key found
+PASS diagnose trace game:hide-pelt-bear-brown-complete: 18 lines, every lang key found
+PASS diagnose short : 12 lines, every lang key found
+PASS diagnose: the short form
+PASS diagnose checks : 149 lines, every lang key found
+PASS diagnose: the deeper checks all ran
+PASS diagnose profit : 129 lines, every lang key found
+PASS diagnose skipped : 10 lines, every lang key found
+PASS diagnose baseline : 18 lines, every lang key found
+PASS diagnose: the baseline compared (Vintage-E mapped once more with default settings and only the base game's recipes (what a fresh install gives), then once more with your settings but still without other mods. Comparing the three separates your settings' changes from your mods'.)
+PASS diagnose novalue : 32 lines, every lang key found
+PASS diagnose: the no-value walkthrough has its seven steps
+PASS diagnose troubleshoot : 32 lines, every lang key found
+PASS diagnose: the no-value walkthrough has its seven steps
+PASS diagnose startup : 11 lines, every lang key found
+PASS diagnose: the start-up of other mods was read from the log (== What other mods did at start-up ==)
+PASS diagnose health : 68 lines, every lang key found
+PASS diagnose: the health checks all ran (✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.)
+PASS diagnose draftcompat chiseltools: 141 lines, every lang key found
+PASS diagnose item game:arrow-erel: 22 lines, every lang key found
+PASS diagnose: game:arrow-erel is reported as having no value
+PASS diagnose: next steps point to the Mod DB page
+PASS diagnose mod chiseltools: 90 lines, every lang key found
+PASS diagnose mod bovinae: 71 lines, every lang key found
+PASS matter knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow: right tool and class, valued, craftable, never wear out
+PASS red matter upgrades: the scythe sweeps wider, the prospecting pick and smithing hammer are still the game's (so the anvil and prospecting work)
+PASS thrown matter spears have their entity
+PASS matter tools are hooked into the recipe ingredient checks
+PASS matter tools count as the game's tools in its recipes (by code: chisel→brickslabs-eight-black-down-free, hammer→cabinet-bottom, saw→cabinet-bottom, knife→hoovedwearables-face-face1, axe→vegetable-pumpkin, shears→flaxtwine; by tag: hammer→smokyquartz, chisel→polishedrockslab-whitemarble-down-free, saw→glassslab-green-down-free, knife→clothes-foot-arctichunter, shears→clothes-foot-arctichunter, axe→debarkedlog-aged-ud)
+PASS the sledgehammer doesn't count as a smithing hammer in recipes
+PASS crafting methods: Grid / Realistic / Both are read from the setting (this server: Both)
+PASS both crafting routes are there: 5 smelting, 2 quern, 1 smithing, 6 barrel, 9 grid
+PASS crafting methods: Realistic switches off the 9 grid routes, Grid the 7 smithing and barrel routes
+PASS alchemical fuels keep their 4:1 steps (coal 128, mobius 512, aeternalis 2048): no loop gains fuel
+PASS EMC follows the cheaper realistic routes (aeternalis 2048, dark matter 12288 ≤ 6×, red matter 36864 ≤ 3× dark, philosopher's stone 4096 vs temporal gear 4096)
+site 512000,138,512000
+BENCH machine: 4 cores, calibration 103.9 ms (lower is a faster machine)
+BENCH mapping (whole remap on the game thread): 18662 ms mapping, 21840 ms with what follows it (base values and lists 56 ms, reading recipes 423 ms, building the graph 27 ms, ratios and trader prices 33 ms, guesses (variants, defaults, fuel and food) 269 ms, guesses against recipes 64 ms, material-specific values 22 ms, coverage and missing items 114 ms, origins 65 ms, solving (12 solves, 271 rounds; relaxing 15599 ms, inferring 1393 ms) 17439 ms, contents and materials table 150 ms, (after) value snapshot 65 ms, (after) coverage log and missing file 96 ms, (after) check-up 382 ms, (after) value files (DumpValuesOnStart) 2627 ms, (after) sending the table 7 ms) | 19494 ms mapping, 22307 ms with what follows it (base values and lists 64 ms, reading recipes 348 ms, building the graph 25 ms, ratios and trader prices 35 ms, guesses (variants, defaults, fuel and food) 275 ms, guesses against recipes 56 ms, material-specific values 18 ms, coverage and missing items 105 ms, origins 65 ms, solving (12 solves, 271 rounds; relaxing 16514 ms, inferring 1431 ms) 18422 ms, contents and materials table 81 ms, (after) value snapshot 62 ms, (after) coverage log and missing file 102 ms, (after) check-up 195 ms, (after) value files (DumpValuesOnStart) 2446 ms, (after) sending the table 6 ms)
+BENCH cache fingerprint: 199.4 ms
+BENCH EMC table packet: 1.49 ms, 4469333 B/call to build, 860 KB on the wire
+BENCH PlanBurn (a stack of sticks): 246.5 ns, 720 B/call
+BENCH Emc Craft planning (25 recipes against 23607 learned items): 1538.1 ms the first time (learned items resolved), then 1344.06 ms, 29509432 B/call
+BENCH knowledge on the wire: the whole list is 7932 bytes for 300 learned items, 1001848 bytes for 23607
+BENCH IsHostile: a wolf (True) 103.9 ns, 144 B/call; a chicken (False) 161.2 ns, 240 B/call
+BENCH Harvest scan, radius 5 (a worn band: 605 blocks): 35.15 us, 19361 B/call
+BENCH Harvest scan, radius 16 (a red pedestal: 5,445 blocks): 260.81 us, 174341 B/call
+BENCH Freeze scan, radius 3 (a worn Zero Ring): 5.75 us, 2888 B/call
+BENCH Freeze scan, radius 12 (a red pedestal): 58.97 us, 42442 B/call
+BENCH Grow, 80 tries in radius 16 (a red pedestal): 7.68 us, 2561 B/call
+BENCH finding the mod system (203 mod systems loaded): 1.24 us, 120 B/call
+BENCH a trinket's Kind: 12.2 ns, 0 B/call
+PASS furnace-dark-cold exists
+PASS dark furnace has its block entity (BEMatterFurnace)
+PASS furnace-red-cold exists
+PASS red furnace has its block entity (BEMatterFurnace)
+PASS found charcoal and raw red meat
+PASS red furnace accepts 500 EMC
+PASS vintagee:energycollector-mk1 exists
+PASS vintagee:energycollector-mk1 has its block entity
+PASS vintagee:energycondenser-mk1 exists
+PASS vintagee:energycondenser-mk1 has its block entity
+PASS vintagee:antimatterrelay-mk1 exists
+PASS vintagee:antimatterrelay-mk1 has its block entity
+PASS vintagee:kleinstar-ein exists
+PASS a Klein star in a relay comes out when the relay is blown up
+PASS vintagee:transmutationtable exists
+PASS vintagee:transmutationtable has its block entity
+PASS game:hopper exists
+PASS game:hopper has its block entity
+PASS a straight up-down chute exists (game:chute-cross-ns)
+PASS vintagee:alchemicalchest exists
+PASS vintagee:alchemicalchest has its block entity
+PASS game:hopper exists
+PASS game:hopper has its block entity
+PASS vintagee:alchemicalchest exists
+PASS vintagee:alchemicalchest has its block entity
+PASS game:chute-cross-ns exists
+PASS game:chute-cross-ns has its block entity
+PASS vintagee:energycondenser-mk1 exists
+PASS vintagee:energycondenser-mk1 has its block entity
+PASS game:hopper exists
+PASS game:hopper has its block entity
+PASS vintagee:energycondenser-mk1 exists
+PASS vintagee:energycondenser-mk1 has its block entity
+PASS game:chute-cross-ns exists
+PASS game:chute-cross-ns has its block entity
+PASS furnace-dark-cold exists
+PASS dark furnace has its block entity (BEMatterFurnace)
+PASS game:hopper exists
+PASS game:hopper has its block entity
+PASS furnace-dark-cold exists
+PASS dark furnace has its block entity (BEMatterFurnace)
+PASS game:chute-cross-ns exists
+PASS game:chute-cross-ns has its block entity
+PASS entity type vintagee:projectile-lens exists
+PASS projectile-lens uses the projectile class
+PASS entity type vintagee:projectile-water exists
+PASS projectile-water uses the projectile class
+PASS entity type vintagee:projectile-fire exists
+PASS projectile-fire uses the projectile class
+PASS entity type vintagee:projectile-fire exists
+PASS projectile-fire uses the projectile class
+PASS lens charge hit the ground and is gone
+FAIL lens explosion broke blocks (65 -> 65 solid around the impact)
+PASS water shot landed
+  fluid where the water shot landed: game:air
+PASS fireball landed
+FAIL fireball set the planks alight (game:air on top)
+PASS condenser took the collector's EMC: 657.79 stored, 3.87 a second coming in
+PASS a hopper on the table fed it sticks to burn (6 waiting for its owner to come online, 0 left in the hopper)
+PASS a hopper on an alchemical chest fills it (4 sticks in the chest)
+PASS a chute under an alchemical chest takes from it (0 sticks in the chute, 0 left in the chest)
+PASS a hopper on a condenser fills its storage, not the target (0 sticks in the condenser, 16 EMC, target )
+PASS a chute under a condenser takes copies of its target, never the target (0 sticks in the chute, 1 left in the condenser, target still game:stick)
+PASS a hopper on a matter furnace puts food in its input (input game:redmeat-raw x2, chute inventory True)
+PASS a chute under a matter furnace takes its output (0 sticks in the chute, output 0)
+  dark furnace on charcoal: block vintagee:furnace-dark-lit, 1411 °C, max 1820, burning True, input  x, output game:redmeat-cooked x1
+PASS dark furnace on charcoal cooked the meat
+  red furnace on EMC: block vintagee:furnace-red-extinct, 280 °C, max 2600, burning False, input  x, output game:redmeat-cooked x1
+PASS red furnace on EMC cooked the meat
+PASS Evertide Amulet on a pedestal sets rain (1) and taking it off gives the weather back (null, was null)
+5 FAILED

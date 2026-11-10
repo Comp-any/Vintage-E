@@ -1,0 +1,60 @@
+== Values out of line with their family ==
+⚠ Values out of line: 57 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Currant flower wine (wildcraftfruit:flowerwine-currant) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-currant + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-currant
+  Honeysuckle flower wine (wildcraftfruit:flowerwine-honeysuckle) 0.035 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-honeysuckle + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-honeysuckle
+  Fruit vinegar (wildcraftfruit:vinegarportion-fruit) 0 (its family's middle value is 0.08)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1 wildcraftfruit:flowerwine-currant (or 6 more) + 1 wildcraftfruit:vinegarmother-fresh -> 500 wildcraftfruit:vinegarportion-fruit
+  Orange wool twine (wool:twine-wool-orange) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-orange -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Purple wool twine (wool:twine-wool-purple) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-purple -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Red wool twine (wool:twine-wool-red) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-red -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark blue wool twine (wool:twine-wool-darkblue) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkblue -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark brown wool twine (wool:twine-wool-darkbrown) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkbrown -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark green wool twine (wool:twine-wool-darkgreen) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkgreen -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dark red wool twine (wool:twine-wool-darkred) 0.5 (its family's middle value is 69.4)
+    worked backwards from grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkred -> 1 primitivesurvival:trussedmeat-bushmeat-raw
+  Dirty copper pot (aldiclasses:metalpotdirty-copper-empty) 32.63 (its family's middle value is 2,397)
+    worked backwards from grid: 1 aldiclasses:metalpotdirty-copper-empty + 100 game:dilutedboraxportion -> 1 aldiclasses:metalpot-copper-fired
+  Honey-pots flowers (wildcraftfruit:flower-honeypots) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Honeysuckle flowers (wildcraftfruit:flower-honeysuckle) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Currant flowers (wildcraftfruit:flower-currant) 0.266 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) -> 100 wildcraftfruit:sweetwaterportion
+  Red wool cloth (wool:cloth-wool-red) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-red + 1 wool:twine-wool-red + 1 game:stick + 1 wool:twine-wool-red + 1 wool:twine-wool-red -> 1 wool:cloth-wool-red
+  Orange wool cloth (wool:cloth-wool-orange) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-orange + 1 wool:twine-wool-orange + 1 game:stick + 1 wool:twine-wool-orange + 1 wool:twine-wool-orange -> 1 wool:cloth-wool-orange
+  Purple wool cloth (wool:cloth-wool-purple) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-purple + 1 wool:twine-wool-purple + 1 game:stick + 1 wool:twine-wool-purple + 1 wool:twine-wool-purple -> 1 wool:cloth-wool-purple
+  Dark blue wool cloth (wool:cloth-wool-darkblue) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue + 1 game:stick + 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue -> 1 wool:cloth-wool-darkblue
+  Dark brown wool cloth (wool:cloth-wool-darkbrown) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown + 1 game:stick + 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown -> 1 wool:cloth-wool-darkbrown
+  Dark green wool cloth (wool:cloth-wool-darkgreen) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen + 1 game:stick + 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen -> 1 wool:cloth-wool-darkgreen
+  Dark red wool cloth (wool:cloth-wool-darkred) 6 (its family's middle value is 273.86)
+    worked backwards from grid: 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred + 1 game:stick + 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred -> 1 wool:cloth-wool-darkred
+  Passionflower (wildcraftfruit:flower-passionflower) 639.61 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 4 wildcraftfruit:flower-passionflower + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-passionflower
+  Rose petals (wildcraftfruit:flower-rose) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-rose + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-rose
+  Hibiscus petals (wildcraftfruit:flower-hibiscus) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-hibiscus + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-hibiscus
+  Orange blossoms (wildcraftfruit:flower-orangeblossom) 511.69 (its family's middle value is 18.99)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 5 wildcraftfruit:flower-orangeblossom + 100 wildcraftfruit:sweetwaterportion -> 80 wildcraftfruit:flowerwine-orangeblossom
+  ... and 32 more
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
