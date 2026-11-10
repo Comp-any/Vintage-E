@@ -922,6 +922,9 @@ namespace VintageE
             // EMC follows the cheapest route: the realistic ones cost less than the grid's.
             double V(string code) { Item it = sapi.World.GetItem(new AssetLocation(code)); return it == null ? 0 : mod.Emc.GetValue(new ItemStack(it)); }
             double aet = V("vintagee:alchemicalfuel-aeternalisfuel"), dark = V("vintagee:matter-dark"), red = V("vintagee:matter-red"), gear = V("game:gear-temporal"), stone = V("vintagee:philosophersstone");
+            // No route may make more than it takes: 1 aeternalis → 4 mobius on the grid, so heating must take at least 4 back.
+            double mob = V("vintagee:alchemicalfuel-mobiusfuel"), coal = V("vintagee:alchemicalfuel-alchemicalcoal");
+            Check(coal > 0.5 && mob >= 3.99 * coal && aet >= 3.99 * mob, $"alchemical fuels keep their 4:1 steps (coal {coal:0.#}, mobius {mob:0.#}, aeternalis {aet:0.#}): no loop gains fuel");
             Check(mode == CraftingRoutes.Grid || (dark > 0 && dark <= 6 * aet + 0.01 && red > 0 && red <= 3 * dark + 0.01 && stone > 0 && (gear <= 0 || stone <= gear + 0.01)),
                 $"EMC follows the cheaper realistic routes (aeternalis {aet:0.#}, dark matter {dark:0.#} ≤ 6×, red matter {red:0.#} ≤ 3× dark, philosopher's stone {stone:0.#} vs temporal gear {gear:0.#})");
         }

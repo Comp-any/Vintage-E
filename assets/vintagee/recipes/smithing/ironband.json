@@ -1,5 +1,6 @@
 [
   {
+    "code": "vintagee:ironband",
     "ingredient": {
       "type": "item",
       "code": "game:ingot-iron"

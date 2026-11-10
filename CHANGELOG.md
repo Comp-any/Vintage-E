@@ -5,7 +5,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 ## 1.21.0 — 2026-11-10
 
 - **Realistic crafting: make the progression items with the game's own systems, for less.** Next to the crafting-grid recipes:
-  - **Heating** (firepit or forge, no crucible): 3 alchemical coal → 1 mobius fuel (900°C), 3 mobius fuel → 1 aeternalis fuel (1100°C), 6 aeternalis fuel → 1 dark matter (1250°C), 3 dark matter → 1 red matter (1450°C, so burn an alchemical fuel), and a temporal gear → the philosopher's stone (1100°C, no gold or copper needed).
+  - **Heating** (firepit or forge, no crucible): 4 alchemical coal → 1 mobius fuel (900°C) and 4 mobius fuel → 1 aeternalis fuel (1100°C), without the philosopher's stone (the same 4 as the grid: fewer would let you gain fuel by turning it back down), 6 aeternalis fuel → 1 dark matter (1250°C), 3 dark matter → 1 red matter (1450°C, so burn an alchemical fuel), and a temporal gear → the philosopher's stone (1100°C, no gold or copper needed).
   - **Quern:** an iron ingot → 48 medium covalence dust, a rough diamond → 48 high covalence dust.
   - **Barrel:** charcoal powder in 1 L of water for a day → 40 low covalence dust.
   - **Anvil:** the iron band is smithed from one iron ingot (the grid takes eight and alchemical coal).

@@ -28,7 +28,7 @@
       "burnDuration": 160,
       "meltingPoint": 900,
       "meltingDuration": 40,
-      "smeltedRatio": 3,
+      "smeltedRatio": 4,
       "smeltingType": "smelt",
       "requiresContainer": false,
       "smeltedStack": {
@@ -41,7 +41,7 @@
       "burnDuration": 640,
       "meltingPoint": 1100,
       "meltingDuration": 40,
-      "smeltedRatio": 3,
+      "smeltedRatio": 4,
       "smeltingType": "smelt",
       "requiresContainer": false,
       "smeltedStack": {

@@ -272,8 +272,8 @@ Next to the grid recipes above, these use the game's own systems and cost less. 
 
 | Makes | How |
 |---|---|
-| 1× Mobius Fuel | Heat 3 Alchemical Coal to 900°C (firepit or forge, no crucible) |
-| 1× Aeternalis Fuel | Heat 3 Mobius Fuel to 1100°C |
+| 1× Mobius Fuel | Heat 4 Alchemical Coal to 900°C (firepit or forge, no crucible; no philosopher's stone needed) |
+| 1× Aeternalis Fuel | Heat 4 Mobius Fuel to 1100°C |
 | 1× Dark Matter | Heat 6 Aeternalis Fuel to 1250°C |
 | 1× Red Matter | Heat 3 Dark Matter to 1450°C (burn an alchemical fuel to get that hot) |
 | 1× Philosopher's Stone | Heat a Temporal Gear to 1100°C |
