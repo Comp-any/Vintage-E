@@ -95,6 +95,9 @@ namespace VintageE
             api.RegisterItemClass("ItemPhilosophersStone", typeof(ItemPhilosophersStone));
             api.RegisterItemClass("ItemTransmutationTablet", typeof(ItemTransmutationTablet));
             api.RegisterItemClass("ItemArcaneTablet", typeof(ItemArcaneTablet));
+            api.RegisterItemClass("VintageEMatterScythe", typeof(ItemMatterScythe));
+            api.RegisterItemClass("VintageEMatterPropick", typeof(ItemMatterPropick));
+            api.RegisterItemClass("VintageEMatterHammer", typeof(ItemMatterHammer));
             api.RegisterBlockClass("BlockTransmutationTable", typeof(BlockTransmutationTable));
             api.RegisterBlockClass("BlockEmcMachine", typeof(BlockEmcMachine));
             api.RegisterBlockEntityClass("VintageEEnergyCollector", typeof(BEEnergyCollector));

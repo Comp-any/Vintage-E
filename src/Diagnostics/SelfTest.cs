@@ -883,8 +883,8 @@ namespace VintageE
             var expected = new (string code, EnumTool tool, string cls)[]
             {
                 ("matterknife", EnumTool.Knife, "ItemKnife"), ("mattersaw", EnumTool.Saw, null), ("matterchisel", EnumTool.Chisel, "ItemChisel"),
-                ("matterscythe", EnumTool.Scythe, "ItemScythe"), ("matterpropick", EnumTool.Pickaxe, "ItemProspectingPick"),
-                ("mattersmithinghammer", EnumTool.Hammer, "ItemHammer"), ("matterspear", EnumTool.Spear, "ItemSpear"), ("matterbow", EnumTool.Bow, "ItemBow"),
+                ("matterscythe", EnumTool.Scythe, "ItemMatterScythe"), ("matterpropick", EnumTool.Pickaxe, "ItemMatterPropick"),
+                ("mattersmithinghammer", EnumTool.Hammer, "ItemMatterHammer"), ("matterspear", EnumTool.Spear, "ItemSpear"), ("matterbow", EnumTool.Bow, "ItemBow"),
             };
             var problems = new List<string>();
             foreach (var (code, tool, cls) in expected)
@@ -902,6 +902,10 @@ namespace VintageE
                 }
             Check(problems.Count == 0, "matter knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow: right tool and class, valued, craftable, never wear out"
                 + (problems.Count > 0 ? " (" + string.Join("; ", problems.Take(6)) + ")" : ""));
+            Check(sapi.World.GetItem(new AssetLocation("vintagee:matterscythe-red")) is ItemMatterScythe sc && sc.MultiBreakQuantity > 5 && sc is ItemScythe
+                  && sapi.World.GetItem(new AssetLocation("vintagee:matterpropick-red")) is ItemProspectingPick
+                  && sapi.World.GetItem(new AssetLocation("vintagee:mattersmithinghammer-red")) is ItemHammer,
+                "red matter upgrades: the scythe sweeps wider, the prospecting pick and smithing hammer are still the game's (so the anvil and prospecting work)");
             Check(sapi.World.GetEntityType(new AssetLocation("vintagee:matterspear-dark")) != null && sapi.World.GetEntityType(new AssetLocation("vintagee:matterspear-red")) != null,
                 "thrown matter spears have their entity");
 

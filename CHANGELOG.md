@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.20.1 — 2026-11-10
+
+- **Red matter tools are an upgrade on dark matter, not just a stronger copy.** Where the game's own code fixes how far or fast a tool works:
+  - **Scythe:** dark matter cuts every plant in the 3×3×3 around the one you cut (the game's scythe takes 5); red matter sweeps 5×5, three blocks high.
+  - **Prospecting pick:** red matter's node search reaches twice as far as the server's setting.
+  - **Smithing hammer:** red matter strikes the anvil twice per swing.
+  - As before, red matter is a tier higher, digs and cuts faster (the knife butchers and harvests about three times as fast as steel, dark about twice), and hits harder (spear, bow, knife).
+
 ## 1.20.0 — 2026-11-10
 
 - **New matter tools: knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow**, in dark and red matter. Each is the game's own tool (same model, class and handling: the knife butchers and harvests, the smithing hammer works the anvil, the chisel chisels, the scythe sweeps, the prospecting pick finds ore, the spear can be thrown and picked up, the bow shoots like a recurve bow but harder) with matter textures, and like every matter tool it **never wears out**. Recipes: dark matter and sticks (the bow uses flax twine); red matter versions from the dark one, red matter and dark matter. The Sledgehammer stays a mining tool; the new Smithing Hammer is the one for the anvil.

@@ -84,8 +84,9 @@ SHAPE = {
     "spear": O([("base", "game:item/tool/spear/metal-iron")]),
     "bow": O([("base", "game:item/tool/bow/recurve"), ("alternates", [O([("base", f"game:item/tool/bow/recurve-charge{i}")]) for i in (1, 2, 3)])]),
 }
-CLASS = {"knife": "ItemKnife", "chisel": "ItemChisel", "scythe": "ItemScythe", "propick": "ItemProspectingPick",
-         "smithinghammer": "ItemHammer", "spear": "ItemSpear", "bow": "ItemBow"}
+# The scythe, prospecting pick and smithing hammer are the game's classes with red matter's upgrade (src/Items/MatterToolUpgrades.cs).
+CLASS = {"knife": "ItemKnife", "chisel": "ItemChisel", "scythe": "VintageEMatterScythe", "propick": "VintageEMatterPropick",
+         "smithinghammer": "VintageEMatterHammer", "spear": "ItemSpear", "bow": "ItemBow"}
 TOOLTYPE = {"knife": "knife", "saw": "saw", "chisel": "chisel", "scythe": "scythe", "propick": "pickaxe",
             "smithinghammer": "hammer", "spear": "spear", "bow": "bow"}
 TAGS = {

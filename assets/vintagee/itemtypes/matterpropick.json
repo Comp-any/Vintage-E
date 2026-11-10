@@ -9,7 +9,7 @@
       ]
     }
   ],
-  "class": "ItemProspectingPick",
+  "class": "VintageEMatterPropick",
   "tags": [
     "tool",
     "tool-pickaxe",
