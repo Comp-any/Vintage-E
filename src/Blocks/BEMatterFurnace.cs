@@ -24,6 +24,16 @@ namespace VintageE
         const float EmcBurnSeconds = 10;
 
         double emcBuffer;
+
+        /// <summary>The button in the bottom right of the furnace's window sends this to switch the mode.</summary>
+        public const int PacketToggleMode = 1350;
+
+        /// <summary>
+        /// Heating mode (the window's mode button): keeps the furnace at its top temperature, lighting itself from its
+        /// fuel or its EMC whenever the fire would go out, with or without anything to heat. Normal mode is the firepit's
+        /// own behaviour: it lights on EMC only when there is something to heat, and fuel burns out and goes cold.
+        /// </summary>
+        public bool HeatingMode { get; private set; }
         float heatModifier = 1.4f, burnDurationModifier = 3f, cookingSpeed = 4f, emcTemperature = 1300;
         double emcPerSecond = 2;
 
@@ -133,15 +143,55 @@ namespace VintageE
             return take;
         }
 
-        /// <summary>Keeps the fire going on EMC while there is something to heat and no fuel is burning.</summary>
+        /// <summary>Switches between normal and heating mode, saved with the furnace and sent to players.</summary>
+        public void SetHeatingMode(bool on)
+        {
+            if (HeatingMode == on) return;
+            HeatingMode = on;
+            if (on) KeepHot();
+            MarkDirty(false);
+        }
+
+        public override void OnReceivedClientPacket(IPlayer player, int packetid, byte[] data)
+        {
+            if (packetid == PacketToggleMode)
+            {
+                // Anyone who may use the furnace (claims) may switch its mode.
+                if (Api.World.Claims.TryAccess(player, Pos, EnumBlockAccessFlags.Use)) SetHeatingMode(!HeatingMode);
+                return;
+            }
+            base.OnReceivedClientPacket(player, packetid, data);
+        }
+
+        /// <summary>Heating mode: lets the fuel light even after the furnace has gone cold (the firepit only relights while still smouldering).</summary>
+        void KeepHot()
+        {
+            if (!HeatingMode || IsBurning) return;
+            var fuel = fuelSlot.Itemstack?.Collectible.GetCombustibleProperties(Api.World, fuelSlot.Itemstack, null);
+            if (fuel?.BurnTemperature > 0 && !canIgniteFuel)
+            {
+                canIgniteFuel = true; // the firepit's own tick lights it next
+                MarkDirty(false);
+            }
+        }
+
+        /// <summary>
+        /// Keeps the fire going on EMC while no fuel is burning: in normal mode only while there is something to heat, in
+        /// heating mode always. Heating mode also relights from fuel when the furnace went cold.
+        /// </summary>
         void OnEmcTick(float dt)
         {
+            KeepHot();
             double cost = emcPerSecond * EmcBurnSeconds;
-            if (emcBuffer < cost || inputStack == null) return;
-            bool wantsHeat;
-            try { wantsHeat = canHeatInput(); }
-            catch { wantsHeat = false; }
-            if (!wantsHeat) return;
+            if (emcBuffer < cost) return;
+            if (!HeatingMode)
+            {
+                if (inputStack == null) return;
+                bool wantsHeat;
+                try { wantsHeat = canHeatInput(); }
+                catch { wantsHeat = false; }
+                if (!wantsHeat) return;
+            }
 
             if (!IsBurning)
             {
@@ -162,6 +212,33 @@ namespace VintageE
             }
         }
 
+        static readonly FieldInfo ClientDialogField = typeof(BlockEntityFirepit).GetField("clientDialog", BindingFlags.Instance | BindingFlags.NonPublic);
+        static readonly MethodInfo SetDialogValuesMethod = typeof(BlockEntityFirepit).GetMethod("SetDialogValues", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        /// <summary>
+        /// Opens Vintage-E's furnace window: the game's firepit window plus the mode button (only matter furnaces get it;
+        /// the game's firepits keep theirs). Kept in the firepit's own dialog field, so it gets the firepit's updates.
+        /// If this game version's firepit changed and that can't be done, the game's own window opens.
+        /// </summary>
+        public override bool OnPlayerRightClick(IPlayer byPlayer, BlockSelection blockSel)
+        {
+            if (Api.Side != EnumAppSide.Client || ClientDialogField == null || SetDialogValuesMethod == null)
+                return base.OnPlayerRightClick(byPlayer, blockSel);
+            toggleInventoryDialogClient(byPlayer, () =>
+            {
+                var tree = new SyncedTreeAttribute();
+                SetDialogValuesMethod.Invoke(this, new object[] { tree });
+                var dlg = new GuiDialogMatterFurnace(DialogTitle, Inventory, Pos, tree, Api as ICoreClientAPI, this);
+                ClientDialogField.SetValue(this, dlg);
+                return dlg;
+            });
+            return true;
+        }
+
+        /// <summary>Client: asks the server to switch the mode (the furnace's window button).</summary>
+        public void RequestToggleMode() =>
+            (Api as ICoreClientAPI)?.Network.SendBlockEntityPacket(Pos.X, Pos.Y, Pos.Z, PacketToggleMode, null);
+
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
         {
             // Draw whatever sits on the fire the way the firepit does, but our own furnace instead of the logs.
@@ -181,19 +258,28 @@ namespace VintageE
         {
             base.ToTreeAttributes(tree);
             tree.SetDouble("vintageeEmc", emcBuffer);
+            tree.SetBool("vintageeHeating", HeatingMode);
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
             emcBuffer = EmcTransfer.Clean(tree.GetDouble("vintageeEmc"));
-            if (Api?.Side == EnumAppSide.Client) LowerSpitItem();
+            bool heating = tree.GetBool("vintageeHeating");
+            bool changed = heating != HeatingMode;
+            HeatingMode = heating;
+            if (Api?.Side == EnumAppSide.Client)
+            {
+                LowerSpitItem();
+                if (changed) (ClientDialogField?.GetValue(this) as GuiDialogMatterFurnace)?.UpdateModeButton();
+            }
         }
 
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
         {
             base.GetBlockInfo(forPlayer, dsc);
             dsc.AppendLine(Lang.Get("vintagee:furnace-info", (int)furnaceTemperature, EmcFormat.Format(emcBuffer), EmcFormat.Format(EmcCapacity)));
+            dsc.AppendLine(Lang.Get(HeatingMode ? "vintagee:furnace-mode-heating-info" : "vintagee:furnace-mode-normal-info"));
         }
     }
 

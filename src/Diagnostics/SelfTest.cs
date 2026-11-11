@@ -102,6 +102,44 @@ namespace VintageE
                     emcFurnace.MarkDirty(true);
                 }
 
+                // 1.22.0: the furnace window's mode button. Heating mode keeps a furnace at its top temperature with
+                // nothing to heat (on EMC, or relighting cold fuel); normal mode leaves an empty furnace alone.
+                var heatEmc = PlaceFurnace(new BlockPos(x + 2, y, z + 3), "dark") as BEMatterFurnace;
+                var idleEmc = PlaceFurnace(new BlockPos(x + 4, y, z + 3), "dark") as BEMatterFurnace;
+                var heatFuel = PlaceFurnace(new BlockPos(x + 6, y, z + 3), "dark") as BEMatterFurnace;
+                if (heatEmc != null && idleEmc != null)
+                {
+                    heatEmc.AcceptEmc(500);
+                    idleEmc.AcceptEmc(500);
+                    heatEmc.SetHeatingMode(true);
+                    var saved = new TreeAttribute();
+                    heatEmc.ToTreeAttributes(saved);
+                    Check(saved.GetBool("vintageeHeating") && !idleEmc.HeatingMode, "a furnace's mode is saved with it (heating " + saved.GetBool("vintageeHeating") + ")");
+                    var reloaded = new TreeAttribute();
+                    idleEmc.ToTreeAttributes(reloaded);
+                    Check(!reloaded.GetBool("vintageeHeating"), "a furnace is in normal mode until switched");
+                }
+                if (heatFuel != null && charcoal != null)
+                {
+                    heatFuel.fuelSlot.Itemstack = new ItemStack(charcoal, 4);
+                    heatFuel.canIgniteFuel = false; // cold: the firepit would wait for a firestarter
+                    heatFuel.SetHeatingMode(true);
+                    heatFuel.MarkDirty(true);
+                }
+                sapi.Event.RegisterCallback(_ =>
+                {
+                    try
+                    {
+                        Check(heatEmc != null && heatEmc.IsBurning && heatEmc.furnaceTemperature > 300,
+                            $"a furnace in heating mode with nothing to heat keeps itself hot on EMC ({heatEmc?.furnaceTemperature:0} °C, burning {heatEmc?.IsBurning})");
+                        Check(idleEmc != null && !idleEmc.IsBurning && idleEmc.furnaceTemperature < 100,
+                            $"a furnace in normal mode with nothing to heat stays cold ({idleEmc?.furnaceTemperature:0} °C, burning {idleEmc?.IsBurning})");
+                        Check(heatFuel != null && heatFuel.IsBurning && heatFuel.furnaceTemperature > 300,
+                            $"a cold furnace with fuel lights itself in heating mode ({heatFuel?.furnaceTemperature:0} °C, burning {heatFuel?.IsBurning}, fuel left {heatFuel?.fuelSlot?.StackSize})");
+                    }
+                    catch (Exception e) { Check(false, "heating mode check threw " + e); }
+                }, 30000);
+
                 // A collector feeding a condenser next to it (1.9.0: the condenser shows and keeps what it's given).
                 BEEnergyCollector collector = Place<BEEnergyCollector>(new BlockPos(x + 6, y, z), "vintagee:energycollector-mk1");
                 BEEnergyCondenser condenser = Place<BEEnergyCondenser>(new BlockPos(x + 7, y, z), "vintagee:energycondenser-mk1");

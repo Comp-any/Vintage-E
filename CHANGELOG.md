@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.22.0 — 2026-11-12
+
+### Added
+- **A Mode button on the matter furnaces' window** (bottom right), switching between **Normal** and **Heating**. Normal is how the furnaces worked until now. Heating keeps the furnace at its top temperature: it relights from its fuel or its EMC whenever the fire would go out, even with nothing in it to heat, and lights cold fuel without a firestarter. The mode is saved with each furnace and shown when you look at it. Only Vintage-E's furnaces get the button; the game's firepits are unchanged.
+
 ## 1.21.1 — 2026-11-11
 
 Fixes from a bug check of 1.21.0:
