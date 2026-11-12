@@ -2,6 +2,16 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.22.1 — 2026-11-12
+
+### Fixed
+- **A straight chute on a condenser's side, or a hopper under it, took nothing** ("the items don't even make it into the chute"). The game's chutes only take from a container through an opening that pulls, which a straight chute lying flat and a hopper don't have; only a chute underneath worked (or an elbow on the side turning down). The condenser now hands its copies to:
+  - one or two straight chutes on its side that run into a chest or other container, or into a chute piece that drops things down;
+  - a hopper underneath that has a container (or chute) below it.
+
+  It gives nothing to a chute that may be bringing things in (a line fed by a hopper, a T, another condenser at the far end), nothing upwards, and nothing where the copies would spill on the ground, so existing set-ups that feed a condenser through its side keep working.
+- The doctor (`/emc diagnose`, Machines, while looking at a condenser) now lists every chute and hopper touching it and says whether it takes the copies out, brings things in, or does nothing and why. The condenser's handbook page says where chutes go.
+
 ## 1.22.0 — 2026-11-12
 
 ### Added

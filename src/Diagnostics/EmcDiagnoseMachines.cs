@@ -59,6 +59,31 @@ namespace VintageE
             Back(x);
         }
 
+        /// <summary>
+        /// For the condenser being looked at: every chute, hopper or screw touching it, and whether it takes the copies
+        /// out, brings things in, or does nothing and why (1.22.1: "the items don't even make it into the chute").
+        /// </summary>
+        static void CondenserChutes(Ctx x, BlockPos pos)
+        {
+            IBlockAccessor ba = x.Sapi.World.BlockAccessor;
+            bool any = false, explain = false;
+            foreach (BlockFacing dir in BlockFacing.ALLFACES)
+            {
+                ChuteLink link = ChuteOutput.Link(ba, pos, dir, out _, out _);
+                if (link == ChuteLink.None) continue;
+                any = true;
+                BlockPos at = pos.AddCopy(dir);
+                string what = ba.GetBlock(at)?.GetPlacedBlockName(x.Sapi.World, at) ?? "?";
+                string side = x.L("diag-mach-side-" + dir.Code);
+                string key = "diag-mach-chute-" + link.ToString().ToLowerInvariant();
+                if (link == ChuteLink.Pulls || link == ChuteLink.HandedTo) x.Ok(x.L(key, what, side));
+                else if (link == ChuteLink.BringsIn) { x.Info(x.L(key, what, side)); explain = true; }
+                else { x.Warn(x.L(key, what, side)); explain = true; }
+            }
+            if (!any) { x.Info(x.L("diag-mach-chute-nothing")); explain = true; }
+            if (explain) x.Explain(x.L("diag-mach-chute-how"));
+        }
+
         /// <summary>The Vintage-E block the asking player is looking at, and why it might not be doing anything.</summary>
         static void LookedAt(Ctx x, EmcDiagnoseRequestPacket client)
         {
@@ -107,6 +132,7 @@ namespace VintageE
                             if (v > 0 && cd.Stored < v && filled == 0 && cd.IncomingPerSecond <= 0) { x.Warn(x.L("diag-mach-condenser-starved")); x.Explain(x.L("diag-mach-condenser-starved-why")); }
                         }
                         if (free == 0) { x.Warn(x.L("diag-mach-condenser-full")); x.Explain(x.L("diag-mach-condenser-full-why")); }
+                        CondenserChutes(x, pos);
                         break;
                     }
                 case BETransmutationTable t:

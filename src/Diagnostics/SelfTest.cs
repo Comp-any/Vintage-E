@@ -221,6 +221,100 @@ namespace VintageE
                     var hopFurn = Chute(new BlockPos(x + 10, y, cz));
                     if (furnOut != null) { furnOut.outputSlot.Itemstack = new ItemStack(stickItem, 3); furnOut.outputSlot.MarkDirty(); }
                     chuteChecks.Add(("a chute under a matter furnace takes its output", () => (furnOut?.outputSlot?.StackSize ?? 3) < 3, () => $"{Count(hopFurn?.Inventory, stickItem)} sticks in the chute, output {furnOut?.outputSlot?.StackSize}"));
+
+                    // 1.22.1: "the items don't even make it into the chute". The game's chutes only take from a container
+                    // through an opening that pulls; a straight chute lying flat and a hopper have none, so on a
+                    // condenser's side or under it they took nothing. The condenser now hands its copies to chutes that
+                    // can only lead away (ChuteOutput), and to nothing that might be bringing things in.
+                    string[] Faces(Block b, string key) => b?.Attributes?[key].AsArray<string>(null) ?? new string[0];
+                    bool Same(string[] have, params string[] want) => have.OrderBy(v => v).SequenceEqual(want.OrderBy(v => v));
+                    Block Piece(string[] pull, string[] push, string[] accept) => sapi.World.Blocks.FirstOrDefault(b => b?.Code != null && b.Code.Domain == "game" && b.Code.Path.StartsWith("chute")
+                        && Same(Faces(b, "pullFaces"), pull) && Same(Faces(b, "pushFaces"), push) && Same(Faces(b, "acceptFromFaces"), accept));
+                    string[] none = new string[0], we = { "west", "east" };
+                    Block flat = Piece(none, we, we);                                   // a straight chute lying west-east
+                    Block dropFromWest = Piece(new[] { "west" }, new[] { "down" }, none); // an elbow: in from the west, out underneath
+                    Block bringsEast = Piece(new[] { "up" }, new[] { "east" }, none);     // an elbow: in from above, out to the east
+                    Block tee = Piece(new[] { "up" }, we, we);                            // a T: in from above, out west and east
+                    Check(flat != null && dropFromWest != null && bringsEast != null && tee != null,
+                        $"the game's chute pieces were found (flat {flat?.Code}, drop {dropFromWest?.Code}, feeder {bringsEast?.Code}, T {tee?.Code})");
+                    // The game's rule this is all about: a flat straight chute has no opening that pulls.
+                    Check(flat != null && Faces(flat, "pullFaces").Length == 0 && Faces(hopperBlock, "pullFaces").Length == 0,
+                        "in the game, a straight chute lying flat and a hopper never pull from a container (which is why they took nothing)");
+                    BlockEntityContainer Put(BlockPos at, Block b) => b == null ? null : Place<BlockEntityContainer>(at, b.Code.ToString());
+                    BEEnergyCondenser Cond(BlockPos at, int copies, double emc = 0)
+                    {
+                        var c = Place<BEEnergyCondenser>(at, "vintagee:energycondenser-mk1");
+                        if (c == null) return null;
+                        c.Inventory[0].Itemstack = new ItemStack(stickItem, 1); c.Inventory[0].MarkDirty();
+                        if (copies > 0) { c.Inventory[3].Itemstack = new ItemStack(stickItem, copies); c.Inventory[3].MarkDirty(); }
+                        c.Stored = emc;
+                        return c;
+                    }
+                    BEAlchemicalChest Chest(BlockPos at) => Place<BEAlchemicalChest>(at, "vintagee:alchemicalchest");
+                    ChuteLink LinkOf(BEEnergyCondenser c, BlockFacing dir) => c == null ? ChuteLink.None : ChuteOutput.Link(ba, c.Pos, dir, out _, out _);
+                    void Arrives(string label, BEEnergyCondenser from, BEAlchemicalChest chest) =>
+                        chuteChecks.Add((label, () => Count(chest?.Inventory, stickItem) > 0, () => $"{Count(chest?.Inventory, stickItem)} sticks in the chest, {Count(from?.Inventory, stickItem)} left in the condenser"));
+                    void Keeps(string label, BEEnergyCondenser c, int sticks, params BlockEntityContainer[] chutes) =>
+                        chuteChecks.Add((label, () => Count(c?.Inventory, stickItem) >= sticks && chutes.All(ch => Count(ch?.Inventory, stickItem) <= 0),
+                            () => $"{Count(c?.Inventory, stickItem)} sticks in the condenser (it had {sticks}), {chutes.Sum(ch => Math.Max(0, Count(ch?.Inventory, stickItem)))} in the chutes"));
+
+                    int r1 = z - 8, r2 = z - 10, r3 = z - 12;
+                    // Condenser, chute underneath, chest under that: the condenser makes the copies itself here.
+                    var c1 = Cond(new BlockPos(x, y + 2, r1), 0, 5000); var ch1 = Chest(new BlockPos(x, y, r1)); Chute(new BlockPos(x, y + 1, r1));
+                    Check(LinkOf(c1, BlockFacing.DOWN) == ChuteLink.Pulls, "a chute under a condenser pulls for itself: " + LinkOf(c1, BlockFacing.DOWN));
+                    Arrives("condenser, chute underneath, alchemical chest below: the copies it makes reach the chest", c1, ch1);
+                    // Condenser, hopper underneath, chest under that.
+                    var c2 = Cond(new BlockPos(x + 2, y + 2, r1), 6); var ch2 = Chest(new BlockPos(x + 2, y, r1)); Hopper(new BlockPos(x + 2, y + 1, r1), null);
+                    Check(LinkOf(c2, BlockFacing.DOWN) == ChuteLink.HandedTo, "a hopper under a condenser with a chest below is handed the copies: " + LinkOf(c2, BlockFacing.DOWN));
+                    Arrives("condenser, hopper underneath, alchemical chest below: the copies reach the chest", c2, ch2);
+                    // Condenser and chest side by side with one straight chute between them (the layout that did nothing).
+                    var c3 = Cond(new BlockPos(x + 4, y + 1, r1), 6); var ch3 = Chest(new BlockPos(x + 6, y + 1, r1)); Put(new BlockPos(x + 5, y + 1, r1), flat);
+                    Check(LinkOf(c3, BlockFacing.EAST) == ChuteLink.HandedTo, "a straight chute from a condenser's side into a chest is handed the copies: " + LinkOf(c3, BlockFacing.EAST));
+                    Arrives("condenser, straight chute on its side, alchemical chest: the copies reach the chest", c3, ch3);
+                    // Two straight chutes.
+                    var c4 = Cond(new BlockPos(x + 8, y + 1, r1), 6); var ch4 = Chest(new BlockPos(x + 11, y + 1, r1));
+                    Put(new BlockPos(x + 10, y + 1, r1), flat); Put(new BlockPos(x + 9, y + 1, r1), flat);
+                    Check(LinkOf(c4, BlockFacing.EAST) == ChuteLink.HandedTo, "two straight chutes into a chest are handed the copies: " + LinkOf(c4, BlockFacing.EAST));
+                    Arrives("condenser, two straight chutes, alchemical chest: the copies reach the chest", c4, ch4);
+                    // A straight chute, then an elbow that drops into a chest one lower.
+                    var c5 = Cond(new BlockPos(x, y + 1, r2), 6); var ch5 = Chest(new BlockPos(x + 2, y, r2));
+                    Put(new BlockPos(x + 1, y + 1, r2), flat); Put(new BlockPos(x + 2, y + 1, r2), dropFromWest);
+                    Check(LinkOf(c5, BlockFacing.EAST) == ChuteLink.HandedTo, "a straight chute into an elbow that drops into a chest is handed the copies: " + LinkOf(c5, BlockFacing.EAST));
+                    Arrives("condenser, straight chute, elbow down, alchemical chest: the copies reach the chest", c5, ch5);
+
+                    // What must not change. A line that brings things in (hopper, elbow, straight chute, condenser):
+                    // the condenser gives it nothing, and what the hopper holds still gets in.
+                    var c6 = Cond(new BlockPos(x + 6, y + 1, r2), 6); var feed = Put(new BlockPos(x + 5, y + 1, r2), flat);
+                    var elbow6 = Put(new BlockPos(x + 4, y + 1, r2), bringsEast);
+                    var hop6 = charcoal == null ? null : Hopper(new BlockPos(x + 4, y + 2, r2), new ItemStack(charcoal, 3));
+                    Check(LinkOf(c6, BlockFacing.WEST) == ChuteLink.BringsIn, "a straight chute fed by an elbow brings things in, so it's handed nothing: " + LinkOf(c6, BlockFacing.WEST));
+                    Keeps("a condenser gives no copies to a chute line that feeds it", c6, 7, feed, elbow6, hop6);
+                    chuteChecks.Add(("and that line still feeds it", () => c6 != null && (c6.Stored > 0 || Count(c6.Inventory, charcoal) > 0), () => $"{c6?.Stored} EMC, {Count(c6?.Inventory, charcoal)} charcoal in the condenser, {Count(hop6?.Inventory, charcoal)} left in the hopper"));
+                    // A straight chute that leads nowhere: nothing is handed over, so nothing spills.
+                    var c7 = Cond(new BlockPos(x + 8, y + 1, r2), 6); var stub = Put(new BlockPos(x + 9, y + 1, r2), flat);
+                    ba.SetBlock(0, new BlockPos(x + 10, y + 1, r2));
+                    Check(LinkOf(c7, BlockFacing.EAST) == ChuteLink.NoEnd, "a straight chute with an open end leads nowhere, so it's handed nothing: " + LinkOf(c7, BlockFacing.EAST));
+                    Keeps("a condenser spills nothing through a chute with an open end", c7, 7, stub);
+                    // Two condensers joined by a straight chute, and by a T: neither gives the other anything.
+                    var c8 = Cond(new BlockPos(x, y + 1, r3), 6); var c9 = Cond(new BlockPos(x + 2, y + 1, r3), 6); var between = Put(new BlockPos(x + 1, y + 1, r3), flat);
+                    Check(LinkOf(c8, BlockFacing.EAST) == ChuteLink.OtherCondenser && LinkOf(c9, BlockFacing.WEST) == ChuteLink.OtherCondenser,
+                        $"two condensers joined by a straight chute hand each other nothing: {LinkOf(c8, BlockFacing.EAST)}, {LinkOf(c9, BlockFacing.WEST)}");
+                    Keeps("two condensers joined by a straight chute keep their copies (first)", c8, 7, between);
+                    Keeps("two condensers joined by a straight chute keep their copies (second)", c9, 7, between);
+                    var c10 = Cond(new BlockPos(x + 4, y + 1, r3), 6); var c11 = Cond(new BlockPos(x + 6, y + 1, r3), 6); var teeBe = Put(new BlockPos(x + 5, y + 1, r3), tee);
+                    Check(LinkOf(c10, BlockFacing.EAST) == ChuteLink.BringsIn && LinkOf(c11, BlockFacing.WEST) == ChuteLink.BringsIn,
+                        $"a T between two condensers may be feeding them both, so it's handed nothing: {LinkOf(c10, BlockFacing.EAST)}, {LinkOf(c11, BlockFacing.WEST)}");
+                    Keeps("two condensers joined by a T keep their copies (first)", c10, 7, teeBe);
+                    Keeps("two condensers joined by a T keep their copies (second)", c11, 7, teeBe);
+                    // A hopper with nothing under it would spill: not handed anything.
+                    var c12 = Cond(new BlockPos(x + 8, y + 3, r3), 6); var hop12 = Hopper(new BlockPos(x + 8, y + 2, r3), null);
+                    ba.SetBlock(0, new BlockPos(x + 8, y + 1, r3));
+                    Check(LinkOf(c12, BlockFacing.DOWN) == ChuteLink.OpenEnd, "a hopper under a condenser with nothing below it would spill, so it's handed nothing: " + LinkOf(c12, BlockFacing.DOWN));
+                    Keeps("a condenser spills nothing through a hopper with nothing below it", c12, 7, hop12);
+                    // The doctor names what each chute touching a condenser does: every answer and side has its text.
+                    string[] untold = Enum.GetValues(typeof(ChuteLink)).Cast<ChuteLink>().Where(l => l != ChuteLink.None).Select(l => "diag-mach-chute-" + l.ToString().ToLowerInvariant())
+                        .Concat(BlockFacing.ALLFACES.Select(f => "diag-mach-side-" + f.Code)).Where(k => Lang.GetMatchingIfExists("vintagee:" + k) == null).ToArray();
+                    Check(untold.Length == 0, "the doctor has words for everything a chute next to a condenser can be doing" + (untold.Length == 0 ? "" : ": missing " + string.Join(", ", untold)));
                 }
 
                 // Projectiles fired straight down at the ground a little way off. The lens aims at its own column's

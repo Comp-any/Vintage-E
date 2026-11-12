@@ -14,7 +14,9 @@ namespace VintageE
     /// <summary>
     /// Put an item in the target slot and the condenser makes copies of it: it burns everything else
     /// in its storage into EMC (and takes EMC from neighbouring collectors), then spends that EMC on
-    /// copies of the target. Works with hoppers and chutes like any container.
+    /// copies of the target. Works with hoppers and chutes like any container: they fill its storage from any side,
+    /// chutes that pull (underneath, or an elbow on its side) take the copies, and it hands copies to the chutes and
+    /// hoppers that can only lead away (see <see cref="ChuteOutput"/>).
     /// Rates come from block attributes: <c>itemsPerSecond</c>, <c>outputsPerSecond</c>, <c>capacity</c>, <c>storageSlots</c>.
     /// </summary>
     public class BEEnergyCondenser : BlockEntityContainer, IEmcAcceptor, IEmcInteractable
@@ -207,6 +209,9 @@ namespace VintageE
                 makeBudget = 0;
             }
 
+            // 3. Hand copies to the chutes and hoppers that lead away but can't pull for themselves.
+            if (target != null && HandOutCopies()) changed = true;
+
             windowSeconds += dt;
             if (windowSeconds >= 3)
             {
@@ -223,6 +228,47 @@ namespace VintageE
                 lastSyncMs = now;
                 MarkDirty(false);
             }
+        }
+
+        static readonly BlockFacing[] HandOutFaces = { BlockFacing.DOWN, BlockFacing.NORTH, BlockFacing.EAST, BlockFacing.SOUTH, BlockFacing.WEST };
+
+        /// <summary>How many copies one chute is handed per tick (twice a second): about what a chute moves on in that time.</summary>
+        const int HandOutPerTick = 2;
+
+        /// <summary>
+        /// Pushes copies of the target into the chutes and hoppers next to the condenser that <see cref="ChuteOutput"/>
+        /// says can only lead away: a straight chute on its side that runs into a chest, a hopper underneath. The game's
+        /// chutes take from a container only through an opening that pulls, which a flat straight chute and a hopper
+        /// don't have, so before 1.22.1 those took nothing. Marked the way the game's chutes mark what they pass on
+        /// (direction and distance travelled sideways), so the chute carries it away from the condenser.
+        /// </summary>
+        bool HandOutCopies()
+        {
+            ItemSlot source = inventory.GetAutoPullFromSlot(BlockFacing.DOWN);
+            if (source == null) return false;
+            IBlockAccessor ba = Api.World.BlockAccessor;
+            bool moved = false;
+            foreach (BlockFacing dir in HandOutFaces)
+            {
+                if (ChuteOutput.Link(ba, Pos, dir, out BlockEntityItemFlow chute, out BlockEntityContainer end) != ChuteLink.HandedTo) continue;
+                BlockFacing back = dir.Opposite;
+                ItemSlot into = chute.Inventory?.GetAutoPushIntoSlot(back, source);
+                // Like the game's chutes among themselves: only into an empty chute.
+                if (into == null || !into.Empty) continue;
+                // A full chest at the end: keep the copies here instead of leaving them stuck in the chute.
+                if (!(end is BlockEntityItemFlow) && end.Inventory?.GetAutoPushIntoSlot(back, source) == null) continue;
+                var op = new ItemStackMoveOperation(Api.World, EnumMouseButton.Left, 0, EnumMergePriority.DirectMerge, HandOutPerTick);
+                if (source.TryPutInto(into, ref op) <= 0 || into.Itemstack == null) continue;
+                into.Itemstack.Attributes.SetInt("chuteQHTravelled", dir.IsHorizontal ? 1 : 0);
+                into.Itemstack.Attributes.SetInt("chuteDir", dir.Index);
+                source.MarkDirty();
+                into.MarkDirty();
+                chute.MarkDirty(false);
+                moved = true;
+                source = inventory.GetAutoPullFromSlot(BlockFacing.DOWN);
+                if (source == null) break;
+            }
+            return moved;
         }
 
         bool Insert(ItemStack stack)
