@@ -1,18 +1,21 @@
 {
-  "//": "TEST VARIANT 2 (temporary): Butchering's kneading recipes read without the enabled flag and without A Culinary Artillery, with the named * of each input.",
+  "//": "Butchering's recipes/kneading holds recipes for A Culinary Artillery's mixing bowl (its kneading recipes, which A Culinary Artillery reads from every mod's recipes/kneading). Butchering ships them switched off (\"enabled\": false) and switches them on with patches (patches/compatibility/expandedfoods/kneadingrecipesenabled.json): washing bloody offal when A Culinary Artillery is loaded, the sausages when Expanded Foods is. So this file waits for A Culinary Artillery and reads each recipe's enabled flag: a recipe the game leaves switched off is left out here too.",
+  "//alternatives": "An ingredient may be one of a short list (rendered fat or 10 lard; a cheddar or a blue cheese slice). A reader can't choose between them, so the first of each list counts.",
+  "//costs": "The recipes give no time, and A Culinary Artillery declares no energy unit, so there are no extra costs.",
   "format": 1,
-  "requiresMod": "butchering",
+  "requiresMod": [ "butchering", "aculinaryartillery" ],
   "methods": [
     {
       "code": "butchering:kneading",
       "name": "Kneading in A Culinary Artillery's mixing bowl",
-      "description": "Butchering's recipes for A Culinary Artillery's mixing bowl: sausages from offal, blood, meat or fish nuggets and fat, and washing bloody offal.",
+      "description": "Butchering's recipes for A Culinary Artillery's mixing bowl: sausages from offal, blood, meat or fish nuggets and fat (with Expanded Foods), and washing bloody offal.",
       "readers": [
         {
           "from": "assets",
           "folder": "recipes/kneading",
           "domain": "butchering",
           "recipe": {
+            "enabled": "$enabled",
             "inputs": [ {
               "each": "$ingredients",
               "code": "$inputs.0.code", "type": "$inputs.0.type", "quantity": "$inputs.0.quantity",
