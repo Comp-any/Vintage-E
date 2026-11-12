@@ -9,6 +9,9 @@ on:
       types:
         description: Regex of full type names to decompile (e.g. "Clutter|Glue|Repair")
         required: true
+      assets:
+        description: Regex of the game's asset file paths to copy as well (e.g. "blocktypes/.*/chute\.json|hopper\.json"); empty = none
+        default: ""
       gameVersion:
         description: Game version
         default: "1.22.7"
@@ -26,6 +29,7 @@ jobs:
     env:
       VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
       TYPES: ${{ inputs.types }}
+      ASSETS: ${{ inputs.assets }}
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-decompile-{0}', github.run_number) }}
     steps:
       - uses: actions/setup-dotnet@v4
@@ -57,6 +61,12 @@ jobs:
             find proj -name "*.cs" | sed "s|^proj/||" > "out/all-types-$dll.txt"
             tail -5 "ilspy-$dll.log" || true
           done
+          # The game's own json (block and item definitions), for reading how a block is set up.
+          if [ -n "$ASSETS" ]; then
+            find "$VSDIR/assets" -type f | grep -E "$ASSETS" | while read -r f; do
+              rel=${f#"$VSDIR/assets/"}; mkdir -p "out/assets/$(dirname "$rel")"; cp "$f" "out/assets/$rel"
+            done
+          fi
           ls out | head -80
 
       - name: Push to the branch
