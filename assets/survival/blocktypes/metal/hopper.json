@@ -1,0 +1,35 @@
+{
+	code: "hopper",
+	class: "BlockHopper",
+	behaviors: [{name: "Lockable" }, {name: "Container"}],
+	entityclass: "ItemFlow",
+	attributes: {
+		"pullFaces": [],
+		"acceptFromFaces": ["up"],
+		"pushFaces": ["down"],
+		openSound: { path: "block/hopperopen", pitch: { avg: 1.0, var: 0.25 } },
+		tumbleSound: { path: "block/hoppertumble", pitch: { avg: 1.0, var: 0.25 }, range: 8, volume: { avg: 0.5, var: 0.0 } }
+	},
+	creativeinventory: { "general": ["*"], "mechanics": ["*"] },
+	blockmaterial: "Metal",
+	lightAbsorption: 0,
+	shape: { base: "block/metal/hopperh" },
+	textures: 
+	{
+		all: { base: "block/metal/sheet/copper1" },
+	},
+	sidesolid: {
+		all: false
+	},
+	sideopaque: {
+		all: false
+	},
+	resistance: 1.75,
+	sounds: {
+		"place": "block/chute",
+		"break": "block/chute",
+		"hit": "block/chute",
+		"walk": "walk/stone"
+	}
+	
+}
