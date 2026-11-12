@@ -2,6 +2,31 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.23.0 — 2026-11-13
+
+### Added
+- **Other mods can tell Vintage-E about their crafting methods**: machines and processes whose recipes Vintage-E can't find by itself (in a block's attributes, a folder of the mod's own recipe files, its code). A mod sends a **method document**: a file in `assets/<modid>/config/vintagee-methods/`, or the same JSON from its code over the game's event bus (`vintagee:collectmethods`), with no reference to Vintage-E needed. [docs/crafting-methods.md](docs/crafting-methods.md) has the format (version 1) and a C# example.
+  - **What each recipe uses and makes:** ingredients (wildcards, litres, `{name}` for what an ingredient's `*` matched, allowed and skipped variants, things handed back), tools, outputs and byproducts.
+  - **Outputs that only come some of the time:** a chance (`0.25` or `"25%"`), an average amount (the game's `{ "avg", "var" }`) or a weighted `oneOf` table. Everything counts as its average, so an output that comes 25% of the time costs four runs, and burning what comes out never earns more than went in.
+  - **Extra costs, priced in EMC and added to what's made:** power in the mod's own energy unit, heat (at what fuel for that fire would cost), machine time, a flat EMC amount, and tools that wear out or break (their share of the tool). An energy unit's price comes from the server's `EnergyEmc` setting, else from what the mod's own engines burn to make it, else from the mod's suggested price.
+  - **Readers:** a method can point at the mod's own recipe data (a block attribute, a folder of recipe files) and Vintage-E reads the recipes from it at every start.
+  - **`supersedes`:** a method can replace a recipe list Vintage-E already reads by itself, so the copy with the power cost is the one that counts.
+  - The cheapest way of making something still sets its value: a machine's costs only show where it is the cheapest way.
+- **New settings:** `EnergyEmc`, `ChargeMethodEnergy`, `ChargeMethodHeat`, `ChargeMethodWear` (all on), `MethodEmcPerSecond` (0) and `DisabledMethods` (a mod, a method or one recipe), in `/emc configure`.
+- **`/emc dump`** explains a method's recipe line by line: the machine, every ingredient, tool wear, chances, byproducts taken off, and each cost with its price and where the price came from.
+- **`/emc methods`** (in the doctor's window): every method and recipe on the server, what each uses and makes, its costs and their prices, whether it gives something its value, is beaten by a cheaper way or waits for a value, with switches to turn methods off. `export <modid>` writes what Vintage-E understood; `reload` asks the mods again.
+- **The doctor** (`/emc diagnose`) has a section for other mods' crafting methods:
+  - nine cards in the check-up: the documents and what's wrong with them (with where, and a "did you mean"), recipes read and left out, power prices, **free power** (a warning when a recipe in use earns more than 1 EMC a second from power alone, since windmills make power for nothing), whether costs count, recipes stuck on a byproduct or ingredient with no value, free copies of a method's recipes, recipe data Vintage-E can't read, and what's switched off;
+  - "Made by" and "Used in" lines in item reports, a section in mod reports, power costs and weak power prices in traces;
+  - four new questions: something a machine makes has no value, the power cost looks wrong, players farm EMC from free power, something from a chance roll is worth a lot;
+  - fixes: set an energy unit's price, lower it to the most that stays under the free-power limit, switch a method off or on, switch a kind of cost off, ask the mods again;
+  - **`/emc diagnose methodcheck <modid>`** for a mod's author: every problem with its JSON path, which recipes are used, beaten or waiting, a worked example, and the export;
+  - **`/emc diagnose draftmethods <modid>`**: a starting method file drafted from recipe data Vintage-E can't read, guessed from the field names, with notes on what to check;
+  - "what changed" names mods whose methods changed, the clean and baseline mappings count method recipes as the sending mod's, the bug report and start-up check include them.
+- The solver can share out recipes with several ingredients and several results (none of them the main one), and never works a tool's value out backwards from its wear.
+
+With no mod sending crafting methods, every value is the same as in 1.22.1.
+
 ## 1.22.1 — 2026-11-12
 
 ### Fixed
