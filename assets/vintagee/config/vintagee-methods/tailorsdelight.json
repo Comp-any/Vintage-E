@@ -1,19 +1,20 @@
 {
-  "//": "PROBE (work in progress): lists what tailorsdelight:recipes/butchering holds.",
+  "//": "PROBE (temporary): where the game puts Tailor's Delight's compatibility/butchering recipe files.",
   "format": 1,
   "requiresMod": [ "tailorsdelight", "butchering" ],
   "methods": [
     {
-      "code": "tailorsdelight:butcheringprobe",
+      "code": "tailorsdelight:locationprobe",
       "name": "probe",
-      "kind": "processing",
       "readers": [
-        {
-          "from": "assets",
-          "folder": "recipes/butchering",
-          "domain": "tailorsdelight",
-          "recipe": { "code": "${code}", "inputs": [ { "code": "${code}" } ], "outputs": [] }
-        }
+        { "from": "assets", "folder": "compatibility/butchering/recipes/grid", "domain": "tailorsdelight",
+          "recipe": { "inputs": [], "outputs": [ { "code": "$output.code" } ] } },
+        { "from": "assets", "folder": "recipes/grid/td", "domain": "tailorsdelight",
+          "recipe": { "inputs": [], "outputs": [ { "code": "$output.code" } ] } },
+        { "from": "assets", "folder": "recipes/grid/td", "domain": "butchering",
+          "recipe": { "inputs": [], "outputs": [ { "code": "$output.code" } ] } },
+        { "from": "assets", "folder": "compatibility/butchering", "domain": "tailorsdelight",
+          "recipe": { "inputs": [], "outputs": [ { "code": "$output.code" } ] } }
       ]
     }
   ]

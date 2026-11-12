@@ -1,0 +1,23 @@
+{
+  "//": "TEST VARIANT (temporary): Butchering's kneading recipes read without the enabled flag and without A Culinary Artillery, to check the template.",
+  "format": 1,
+  "requiresMod": "butchering",
+  "methods": [
+    {
+      "code": "butchering:kneading",
+      "name": "Kneading in A Culinary Artillery's mixing bowl",
+      "description": "Butchering's recipes for A Culinary Artillery's mixing bowl: sausages from offal, blood, meat or fish nuggets and fat, and washing bloody offal.",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/kneading",
+          "domain": "butchering",
+          "recipe": {
+            "inputs": [ { "each": "$ingredients", "code": "$inputs.0.code", "type": "$inputs.0.type", "quantity": "$inputs.0.quantity" } ],
+            "outputs": [ { "code": "$output.code", "type": "$output.type", "quantity": "$output.stackSize" } ]
+          }
+        }
+      ]
+    }
+  ]
+}
