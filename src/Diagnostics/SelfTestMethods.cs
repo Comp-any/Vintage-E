@@ -22,6 +22,21 @@ namespace VintageE
             try { CheckMethodReaders(); } catch (Exception e) { Check(false, "methods: the reader checks threw " + e); }
             try { CheckMethodSolver(); } catch (Exception e) { Check(false, "methods: the solver checks threw " + e); }
             try { CheckMethodsLive(); } catch (Exception e) { Check(false, "methods: the live checks threw " + e); }
+            try { DraftForUnseenMods(); } catch (Exception e) { Check(false, "methods: drafting for other mods threw " + e); }
+        }
+
+        /// <summary>A drafted method file for every loaded mod whose recipe data Vintage-E can't read (the 50-mod test reads them to write Vintage-E's own method files).</summary>
+        void DraftForUnseenMods()
+        {
+            List<string> domains = EmcDiagnose.UnseenDomains(mod, sapi);
+            Line("methods: " + domains.Count + " mod(s) keep recipe data Vintage-E can't read: " + string.Join(", ", domains));
+            foreach (string domain in domains.Take(40))
+            {
+                EmcReport r = EmcDiagnose.Run(mod, sapi, null, "en", "draftmethods", domain, null);
+                string text = r.PlainText(sapi.World);
+                File.WriteAllText(Path.Combine(VintageEModSystem.DataFolder(sapi), "diagnose-draftmethods-" + domain + ".txt"), text);
+                Check(!text.Contains("vintagee:diag-"), "methods: drafted a method file for " + domain + " (" + Line1(text, "Drafted") + ")");
+            }
         }
 
         static MethodDoc ParseTest(string json) => MethodParser.Parse(json, "vintagee", "self-test", "file", null);

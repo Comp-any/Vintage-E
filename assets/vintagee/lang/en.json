@@ -2202,5 +2202,6 @@
   "diag-sym-meth-2": "Step 2: were the recipes read?",
   "diag-sym-meth-3": "Step 3: is anything switched off?",
   "diag-sym-meth-4": "Step 4: what are they waiting for, or what beat them?",
-  "diag-meth-variants": "({0} copies: one per variant or tool)"
+  "diag-meth-variants": "({0} copies: one per variant or tool)",
+  "diag-sec-draftmethods-samples": "What the guesses were made from (the first entry of each)"
 }

@@ -485,6 +485,13 @@ namespace VintageE
         static readonly HashSet<string> KnownRecipeFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "grid", "smithing", "knapping", "clayforming", "barrel", "alloy", "cooking", "cookingpot" };
         static readonly HashSet<string> BaseDomains = new HashSet<string>(StringComparer.Ordinal) { "game", "survival", "creative", "vintagee" };
 
+        /// <summary>The mods whose recipe data Vintage-E can't read (for the self-test, which drafts a method file for each).</summary>
+        public static List<string> UnseenDomains(VintageEModSystem mod, ICoreServerAPI sapi)
+        {
+            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = "en", R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(sapi.World.Collectibles) };
+            return UnseenRecipeData(x).Select(u => u.Domain).ToList();
+        }
+
         static List<Unseen> UnseenRecipeData(Ctx x)
         {
             var byDomain = new Dictionary<string, Unseen>(StringComparer.Ordinal);
@@ -950,6 +957,7 @@ namespace VintageE
             }
             var methods = new JArray();
             var allNotes = new List<string>();
+            var samples = new List<(string where, JObject sample)>();
             foreach (var kv in u.Attributes)
             {
                 var notes = new List<string>();
@@ -959,6 +967,7 @@ namespace VintageE
                 JObject sample = (first.Attributes?.Token?[kv.Key] as JArray)?.FirstOrDefault() as JObject;
                 if (sample == null) continue;
                 JObject tmpl = GuessTemplate(sample, notes);
+                samples.Add((kv.Key + " on " + first.Code, sample));
                 string mcode = modId + ":" + Regex.Replace(kv.Key.ToLowerInvariant().Replace("recipes", ""), "[^a-z0-9_]", "");
                 if (mcode.EndsWith(":")) mcode += family;
                 methods.Add(new JObject
@@ -985,6 +994,7 @@ namespace VintageE
                 catch (Exception e) { notes.Add("its first file could not be read (" + e.Message + ")"); }
                 if (sample == null) continue;
                 JObject tmpl = GuessTemplate(sample, notes);
+                samples.Add(("recipes/" + kv.Key, sample));
                 methods.Add(new JObject
                 {
                     ["//"] = "Drafted from the folder recipes/" + kv.Key + " (" + kv.Value + " files). " + string.Join(" ", notes.Select(n => "Check: " + n + ".")),
@@ -1023,6 +1033,14 @@ namespace VintageE
             x.Note(x.L("diag-meth-unseen-comment", VintageEModSystem.ModDbUrl), 1);
             r.Section(x.L("diag-draft-text"));
             foreach (string line in json.Split('\n')) r.Add(line.Replace("[[", "").Replace("{{", "").Replace("}}", ""), EmcLineStyle.Note);
+            // What the guesses were made from, so the field names can be checked against the real data.
+            r.Section(x.L("diag-sec-draftmethods-samples"));
+            foreach (var (where, sample) in samples)
+            {
+                string text = sample.ToString(Formatting.None);
+                if (text.Length > 1500) text = text.Substring(0, 1500) + " …";
+                r.Add(where + ": " + text.Replace("[[", "").Replace("{{", "").Replace("}}", ""), EmcLineStyle.Note);
+            }
             MethodsBack(x);
         }
 
