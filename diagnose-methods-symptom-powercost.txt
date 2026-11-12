@@ -1,0 +1,15 @@
+== A machine's power cost isn't in the value, or looks wrong ==
+A value only includes a recipe's power when that recipe is the cheapest way of making it, and the power's price comes from your setting, the mod's engines or the mod's suggestion. Hold the item.
+Hold the block or item, then run /emc diagnose hand (or click the question below).
+✓ Power prices: 2 energy unit(s), each with a price
+  An energy unit's price comes from your EnergyEmc setting first, then from what the mod's own engines burn to make it (a base value ÷ the energy made), then from the mod's suggested price. With none of these its power costs nothing.
+  vintagee:testgen (generator power): 2 EMC a unit, from the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each
+    the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each
+  vintagee:testpower (test power): 2 EMC a unit, from vintagee's suggested price
+  Heat costs 0.0006 EMC per °C·s (the median of 5 reference fuels' value per °C·s (charcoal, coke, ore-lignite)).
+/emc dump hand shows every cost line of the recipe behind a value with where its price came from.
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
