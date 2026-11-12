@@ -134,7 +134,7 @@ namespace VintageE
             }
             MethodOutcome outcome = OutcomeOf(x, convs, out Conversion used, out List<CollectibleObject> lacking);
             Conversion shown = used ?? convs[0];
-            string variants = convs.Count > 1 ? " " + x.L("diag-meth-copies", convs.Count) : "";
+            string variants = convs.Count > 1 ? " " + x.L("diag-meth-variants", convs.Count) : "";
             var missing = new List<CollectibleObject>();
             double? cost = RunCost(x, shown, missing);
             double per = cost.HasValue && shown.JointOutputs == null && shown.OutputQuantity > 0 ? cost.Value / shown.OutputQuantity : double.NaN;
@@ -280,7 +280,7 @@ namespace VintageE
             foreach (MethodUnitPrice p in units)
             {
                 r.Add(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?"), p.Price <= 0 && used.Contains(p.Code) ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
-                foreach (string g in p.Generators) x.Note(g, 2);
+                foreach (string g in p.Generators) if (g != p.SourceText) x.Note(g, 2);
                 if (!p.Declared)
                 {
                     string near = x.Mod.Methods.Units.Keys.OrderBy(k => MethodParser.Distance(k, p.Code)).FirstOrDefault();

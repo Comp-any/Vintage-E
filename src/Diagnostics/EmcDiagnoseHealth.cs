@@ -181,6 +181,10 @@ namespace VintageE
             if (mod.PreviousValues == null || x.Report?.Values == null) return result;
             bool sameMods = mod.PreviousMods != null && mod.CurrentMods != null && mod.PreviousMods.Count == mod.CurrentMods.Count && mod.PreviousMods.All(kv => mod.CurrentMods.TryGetValue(kv.Key, out string v) && v == kv.Value);
             if (!sameMods) return result;
+            // Other mods' crafting methods changing (a mod updated its document, a reader found new recipes) is a change too.
+            var pm = mod.PreviousMethods ?? new Dictionary<string, string>();
+            var cm = mod.CurrentMethods ?? new Dictionary<string, string>();
+            if (pm.Count != cm.Count || !pm.All(kv => cm.TryGetValue(kv.Key, out string h) && h == kv.Value)) return result;
             foreach (var kv in x.Report.Values)
             {
                 if (kv.Key?.Code == null || kv.Value <= 0) continue;
