@@ -51,7 +51,7 @@ Energy Collectors, Anti-Matter Relays, pedestals, the Interdiction Torch and the
 
 It never pushes upwards; into a chute that could be bringing things in (a T, a 3-way that splits sideways or a flat cross on its side, or a straight run that ends at an elbow or screw pointing back at it); into a run that ends at another condenser (the two would pass copies back and forth or burn each other's); into a run that ends in air, against a wall or over nothing (the copies would spill); into more than two straight chutes in a row (the game stops items travelling more than 3 blocks sideways); or while the chest at the end is full (the copies wait in the condenser instead). Before 1.22.1, a straight chute lying flat on a condenser's side and a hopper underneath it got nothing.
 
-The doctor shows what a layout does: an admin looks at the condenser and runs `/emc diagnose machines` (or opens the doctor with **Ctrl+H**); it lists every chute and hopper touching it and whether it takes the copies, gets handed them, or gets nothing and why.
+The doctor shows what a layout does: an admin looks at the condenser and types `/emc diagnose chutes` (or presses **Ctrl+H** and picks "A machine, chute… isn't doing what it should" while looking at it); it lists every chute and hopper touching it and whether it takes the copies, gets handed them, or gets nothing and why.
 
 ## How EMC values are calculated
 
