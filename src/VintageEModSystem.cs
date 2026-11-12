@@ -51,6 +51,38 @@ namespace VintageE
 
         /// <summary>Result of the most recent mapping run (server only).</summary>
         public EmcMappingReport LastReport { get; private set; }
+        /// <summary>Other mods' crafting methods as last collected (game thread; mappings read it from any thread).</summary>
+        public MethodSnapshot Methods { get; private set; } = MethodSnapshot.Empty;
+        /// <summary>Mods that said their crafting methods changed (the id they sent, or "?") → how many times; and whether one did before the first mapping.</summary>
+        public Dictionary<string, int> MethodChangeRequests { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
+        public bool MethodChangeBeforeStart { get; private set; }
+        bool methodsChangePending;
+
+        /// <summary>Gathers other mods' crafting methods again (files and the event). Game thread only: it calls into other mods.</summary>
+        public MethodSnapshot CollectMethods(string reason)
+        {
+            if (Sapi == null) return Methods;
+            try { Methods = MethodRegistry.Collect(Sapi, Mod.Logger, reason, Version); }
+            catch (Exception e) { Mod.Logger.Error("EMC: crafting methods could not be collected ({0}): {1}", reason, e); }
+            return Methods;
+        }
+
+        /// <summary>Another mod pushed vintagee:methodschanged: collect again and remap, once for a burst of them.</summary>
+        void OnMethodsChanged(string eventName, ref EnumHandling handling, IAttribute data)
+        {
+            string who = (data?.GetValue() as string)?.Trim().ToLowerInvariant();
+            if (string.IsNullOrEmpty(who)) who = "?";
+            MethodChangeRequests[who] = MethodChangeRequests.TryGetValue(who, out int n) ? n + 1 : 1;
+            if (!mappingAttempted) { MethodChangeBeforeStart = true; return; } // the start-up mapping collects them anyway
+            if (methodsChangePending) return;
+            methodsChangePending = true;
+            Sapi.Event.RegisterCallback(_ =>
+            {
+                methodsChangePending = false;
+                CollectMethods("crafting methods changed (" + who + ")");
+                RecalculateEmcAsync("crafting methods changed (" + who + ")");
+            }, 1000);
+        }
         /// <summary>The last mapping that threw (its message) and when, for /emc diagnose; null if none has.</summary>
         public string LastMappingError { get; private set; }
         public DateTime LastMappingErrorAt { get; private set; }
@@ -637,6 +669,7 @@ namespace VintageE
             // player to join starts the mapping instead, and the doctor says so.
             Step("start-up hooks", () =>
             {
+                sapi.Event.RegisterEventBusListener(OnMethodsChanged, 0.5, MethodRegistry.ChangedEvent);
                 sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
                 {
                     Trinkets?.ReconcileAfterStart();
@@ -703,6 +736,8 @@ namespace VintageE
                 if (props + recipes > 0) Mod.Logger.Notification("Crafting methods: {0}: {1} more item properties and {2} more recipes switched off before the mapping.", methods, props, recipes);
             }
             catch (Exception e) { Mod.Logger.Warning("Crafting methods could not be applied before the mapping: {0}", e.Message); }
+            // Other mods' crafting methods: every mod has registered its listener by now.
+            CollectMethods(lateTrigger == null ? "server start" : "late start");
             if (lateTrigger != null)
             {
                 MappingLateReason = lateTrigger;
@@ -1769,12 +1804,14 @@ namespace VintageE
                     PreviousValues = LastReport.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv.Value);
                     PreviousValuesAt = LastReport.MappedAt;
                     PreviousMods = CurrentMods;
+                    PreviousMethods = CurrentMethods;
                 }
                 else if (System.IO.File.Exists(last))
                 {
-                    PreviousValues = LoadSnapshot(last, out DateTime at, out Dictionary<string, string> mods);
+                    PreviousValues = LoadSnapshot(last, out DateTime at, out Dictionary<string, string> mods, out Dictionary<string, string> methods);
                     PreviousValuesAt = at;
                     PreviousMods = mods;
+                    PreviousMethods = methods;
                 }
                 CurrentMods = Sapi.ModLoader.Mods.Where(m => m.Info?.ModID != null && Sapi.ModLoader.IsModEnabled(m.Info.ModID)).GroupBy(m => m.Info.ModID).ToDictionary(g => g.Key, g => g.First().Info.Version ?? "");
                 if (System.IO.File.Exists(last)) System.IO.File.Copy(last, prev, true);
@@ -1786,6 +1823,14 @@ namespace VintageE
                     if (!firstMod) sb.Append(',');
                     firstMod = false;
                     sb.Append(Newtonsoft.Json.JsonConvert.ToString(m.Info.ModID)).Append(':').Append(Newtonsoft.Json.JsonConvert.ToString(m.Info.Version ?? ""));
+                }
+                sb.Append("},\"methods\":{");
+                bool firstMethod = true;
+                foreach (var kv in (CurrentMethods = Methods.HashByMod()).OrderBy(kv => kv.Key, StringComparer.Ordinal))
+                {
+                    if (!firstMethod) sb.Append(',');
+                    firstMethod = false;
+                    sb.Append(Newtonsoft.Json.JsonConvert.ToString(kv.Key)).Append(':').Append(Newtonsoft.Json.JsonConvert.ToString(kv.Value));
                 }
                 sb.Append("},\"values\":{");
                 bool first = true;
@@ -1805,6 +1850,9 @@ namespace VintageE
         /// <summary>The mods (id → version) loaded for the previous and the current mapping, so "what changed" can name a mod added, removed or updated.</summary>
         public Dictionary<string, string> PreviousMods { get; private set; }
         public Dictionary<string, string> CurrentMods { get; private set; }
+        /// <summary>Other mods' crafting methods (mod id → a hash of its documents) for the previous and the current mapping.</summary>
+        public Dictionary<string, string> PreviousMethods { get; private set; }
+        public Dictionary<string, string> CurrentMethods { get; private set; }
 
         /// <summary>When each mapping ran, why, how long it took and whether it was the cache (the last 50), for /emc diagnose.</summary>
         public List<(DateTime at, string reason, long ms, bool cached)> MappingHistory { get; } = new List<(DateTime, string, long, bool)>();
@@ -1812,16 +1860,22 @@ namespace VintageE
         /// <summary>The check-up's count of things worth fixing after the last mapping (−1 = not run), for the join message.</summary>
         public int CheckupProblems { get; private set; } = -1;
 
-        static Dictionary<string, double> LoadSnapshot(string file, out DateTime at, out Dictionary<string, string> mods)
+        static Dictionary<string, double> LoadSnapshot(string file, out DateTime at, out Dictionary<string, string> mods, out Dictionary<string, string> methods)
         {
             at = DateTime.MinValue;
             mods = null;
+            methods = null;
             var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(file));
             DateTime.TryParse((string)o["at"], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out at);
             if (o["mods"] is Newtonsoft.Json.Linq.JObject ms)
             {
                 mods = new Dictionary<string, string>();
                 foreach (var kv in ms) mods[kv.Key] = (string)kv.Value ?? "";
+            }
+            if (o["methods"] is Newtonsoft.Json.Linq.JObject mh)
+            {
+                methods = new Dictionary<string, string>();
+                foreach (var kv in mh) methods[kv.Key] = (string)kv.Value ?? "";
             }
             var result = new Dictionary<string, double>();
             if (o["values"] is Newtonsoft.Json.Linq.JObject values)

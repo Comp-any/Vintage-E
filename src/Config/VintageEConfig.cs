@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VintageE
 {
@@ -230,6 +231,30 @@ namespace VintageE
         [System.ComponentModel.Description("Recipes of your own, for things the mapper can't see being made (another mod's boats built on the spot, say). One per entry: \"output = ingredients\", like \"item:shipwright:longship-oak = 40 game:plank-oak + 8 game:rope\"; a number before a code is how many (2 game:stick), and an ingredient may be a wildcard (the cheapest match counts). Easiest made with the /emc recipe window.")]
         public List<string> CustomRecipes = new List<string>();
 
+        /// <summary>Other mods' crafting methods: EMC per unit of each energy unit (unit code → EMC), e.g. "vintagecreation:work": 0.002. Wins over a price worked out from the mod's engines or the mod's suggestion. /emc diagnose methods lists the units and their prices.</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods: EMC per unit of each energy unit (unit code → EMC), e.g. \"vintagecreation:work\": 0.002. Wins over a price worked out from the mod's engines or the mod's suggestion. /emc diagnose methods lists the units and their prices.")]
+        public Dictionary<string, double> EnergyEmc = new Dictionary<string, double>();
+
+        /// <summary>Other mods' crafting methods: charge the energy (power) a machine's recipe uses as part of what it makes.</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods: charge the energy (power) a machine's recipe uses as part of what it makes.")]
+        public bool ChargeMethodEnergy = true;
+
+        /// <summary>Other mods' crafting methods: charge the heat a recipe asks for, at what the fuel for it would cost (charcoal and coal's EMC per °C·s).</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods: charge the heat a recipe asks for, at what the fuel for it would cost (charcoal and coal's EMC per °C·s).")]
+        public bool ChargeMethodHeat = true;
+
+        /// <summary>Other mods' crafting methods: charge the share of a tool a recipe wears out or breaks (its wear ÷ its durability, plus its chance of breaking).</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods: charge the share of a tool a recipe wears out or breaks (its wear ÷ its durability, plus its chance of breaking).")]
+        public bool ChargeMethodWear = true;
+
+        /// <summary>Other mods' crafting methods: EMC per second of machine time a recipe takes (0 = time is free; energy already covers most machines).</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods: EMC per second of machine time a recipe takes (0 = time is free; energy already covers most machines).")]
+        public double MethodEmcPerSecond = 0;
+
+        /// <summary>Other mods' crafting methods to leave out: a mod id (all of its methods), a method ("vintagecreation:press") or one recipe ("vintagecreation:press/plate"). /emc diagnose methods switches them here.</summary>
+        [System.ComponentModel.Description("Other mods' crafting methods to leave out: a mod id (all of its methods), a method (\"vintagecreation:press\") or one recipe (\"vintagecreation:press/plate\"). /emc diagnose methods switches them here.")]
+        public List<string> DisabledMethods = new List<string>();
+
         /// <summary>The look players get unless they pick their own in the .vintagee window: "New" (the default; models in Vintage Story's own style, built from the game's planks, metals, stone and gems), "Middle" (Vintage-E's own flat textures) or "Original" (ProjectE's original textures; rings and stones light up while switched on). Looks are applied on each player's own computer, so changing this reaches players the next time they join.</summary>
         [System.ComponentModel.Description("The look players get unless they pick their own in the .vintagee window: New (the default; models in Vintage Story's own style, built from the game's planks, metals, stone and gems), Middle (Vintage-E's own flat textures) or Original (ProjectE's original textures; rings and stones light up while switched on). Players see a change the next time they join.")]
         public string Look = ProjectELook.LookDefault;
@@ -257,6 +282,10 @@ namespace VintageE
             StackDataModes ??= new Dictionary<string, string>();
             if (MaxExactKnowledge < 0) MaxExactKnowledge = 0;
             DisabledCompat ??= new List<string>();
+            EnergyEmc ??= new Dictionary<string, double>();
+            DisabledMethods ??= new List<string>();
+            foreach (string k in EnergyEmc.Where(kv => double.IsNaN(kv.Value) || double.IsInfinity(kv.Value) || kv.Value < 0).Select(kv => kv.Key).ToList()) EnergyEmc.Remove(k);
+            if (double.IsNaN(MethodEmcPerSecond) || double.IsInfinity(MethodEmcPerSecond) || MethodEmcPerSecond < 0) MethodEmcPerSecond = 0;
             // A hand-edited NaN or Infinity (Newtonsoft reads both) would poison every sum it touches: Klein stars
             // emptied by a NaN cost, a collector stuck at NaN. Such values go back to their defaults.
             static bool Bad(double v) => double.IsNaN(v) || double.IsInfinity(v);

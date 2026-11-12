@@ -26,7 +26,7 @@ namespace VintageE
         {
             ActionItem, ActionHand, ActionMod, ActionMods, ActionSporadic, ActionMapping, ActionOverview, ActionClient, ActionLog, ActionPatches,
             ActionOutliers, ActionClean, ActionPlayer, ActionPlayers, ActionBugReport, ActionSymptom, ActionChanges, ActionWatch, ActionDraft, ActionTrace, ActionShort, ActionChecks, ActionBaseline, ActionProfit, ActionSkipped,
-            ActionNoValue, ActionStartup, ActionHealth, ActionEmcCraft, ActionMachines
+            ActionNoValue, ActionStartup, ActionHealth, ActionEmcCraft, ActionMachines, ActionMethods, ActionMethodCheck, ActionDraftMethods
         };
 
         /// <summary>A link that does something and then shows the report the player is on again: {{fix-<what>|target;then;thenArg|label}}.</summary>
@@ -299,6 +299,8 @@ namespace VintageE
 
         static bool BaseOnly(Conversion conv)
         {
+            // Another mod's crafting method is that mod's, even when every item in it is the game's (a press making plates from ingots).
+            if (conv.Method != null) return false;
             if (conv.Output != null && !BaseDomain(conv.Output)) return false;
             if (conv.JointOutputs != null && conv.JointOutputs.Any(o => !BaseDomain(o.Key))) return false;
             foreach (ConversionInput input in conv.Inputs)
@@ -379,6 +381,7 @@ namespace VintageE
                 CollectibleObject cur = queue.Dequeue();
                 if (!seen.Add(cur)) continue;
                 if (!live.Via.TryGetValue(cur, out Conversion conv) || conv == null) continue;
+                if (conv.Method != null) return conv.Method.ModId;
                 foreach (CollectibleObject o in Involved(conv))
                 {
                     if (!BaseDomain(o)) return o.Code.Domain;
@@ -572,7 +575,7 @@ namespace VintageE
                             return PlayerEmc.Learn(player, target) ? L("diag-done-learn", EmcExplain.NameOf(c)) : L("diag-done-learn-already", EmcExplain.NameOf(c));
                         }
                     default:
-                        return L("diag-done-nothing", what);
+                        return ApplyMethodFix(mod, what, target, lang) ?? L("diag-done-nothing", what);
                 }
             }
             catch (Exception e)
@@ -801,7 +804,8 @@ namespace VintageE
 
         // ---------------------------------------------------------------- 11: symptoms
 
-        static readonly string[] Symptoms = { "tooltipnoburn", "noclientvalues", "aftermod", "afterrestart", "onlyme", "somevariants", "wrongvalue", "containers", "cantcreate", "nothing" };
+        static readonly string[] Symptoms = { "tooltipnoburn", "noclientvalues", "aftermod", "afterrestart", "onlyme", "somevariants", "wrongvalue", "containers", "cantcreate", "nothing",
+            "methodnovalue", "powercost", "powerfarm", "chancevalue" };
 
         static void Symptom(Ctx x, string id, EmcDiagnoseRequestPacket client)
         {
@@ -890,6 +894,9 @@ namespace VintageE
                     Log(x, false);
                     r.Add(Link(ActionMapping, "", x.L("diag-q-mapping")));
                     break;
+                default:
+                    MethodSymptom(x, id);
+                    break;
             }
             r.Section(x.L("diag-sec-next"));
             r.Add(Link(ActionSymptom, "", x.L("diag-q-symptoms")));
@@ -926,6 +933,7 @@ namespace VintageE
             }
             r.Add(x.L("diag-changes-help", x.Mod.PreviousValuesAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture), x.Report.MappedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)), EmcLineStyle.Note);
             ModListChanges(x);
+            MethodListChanges(x);
             var now = x.Report.Values.Where(kv => kv.Key?.Code != null).ToDictionary(kv => PlayerEmc.KeyOf(kv.Key), kv => kv);
             var gained = new List<(CollectibleObject c, double v)>();
             var lost = new List<(string key, double v)>();

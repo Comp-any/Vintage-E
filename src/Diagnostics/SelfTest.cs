@@ -19,7 +19,7 @@ namespace VintageE
     /// fires lens, water and fire projectiles at the ground, checks a few EMC values, and writes what happened to
     /// <c>ModData/vintagee/selftest.txt</c>. Never runs on normal servers.
     /// </summary>
-    public class SelfTest
+    public partial class SelfTest
     {
         readonly VintageEModSystem mod;
         readonly ICoreServerAPI sapi;
@@ -77,6 +77,7 @@ namespace VintageE
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
+                CheckMethods();
                 IBlockAccessor ba = sapi.World.BlockAccessor;
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");

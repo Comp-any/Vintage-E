@@ -96,7 +96,8 @@ namespace VintageE
                 double gain;
                 if (conv.JointOutputs != null)
                 {
-                    if (conv.Inputs.Count != 1) continue;
+                    // A shared-out recipe with several ingredients (another mod's machine) only once every output has a value.
+                    if (conv.Inputs.Count != 1 && conv.JointOutputs.Any(o => !x.Report.Values.ContainsKey(o.Key))) continue;
                     gain = conv.JointOutputs.Sum(o => x.V(o.Key) * o.Value);
                 }
                 else

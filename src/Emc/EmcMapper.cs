@@ -95,6 +95,14 @@ namespace VintageE
         public HashSet<CollectibleObject> Frozen = new HashSet<CollectibleObject>();
         /// <summary>Every recipe and process the mapper read (for /emc dump's "other ways to make it"). Empty from the cache.</summary>
         public List<Conversion> Conversions = new List<Conversion>();
+        /// <summary>What became of every recipe of other mods' crafting methods (read, skipped and why, switched off). Empty from the cache.</summary>
+        public List<MethodRecipeResult> MethodResults = new List<MethodRecipeResult>();
+        /// <summary>The price of each energy unit, of heat and of machine time used for this mapping (null from the cache).</summary>
+        public MethodPrices MethodPrices;
+        /// <summary>Recipe lists left out because a crafting method describes them (label → the method that superseded it).</summary>
+        public Dictionary<string, string> SupersededLists = new Dictionary<string, string>();
+        /// <summary>The "supersedes" entries that matched a recipe list.</summary>
+        public HashSet<string> SupersedeHits = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         Dictionary<CollectibleObject, List<Conversion>> byOutput;
 
@@ -142,6 +150,8 @@ namespace VintageE
         readonly Dictionary<CollectibleObject, string> ruleSourceOf = new Dictionary<CollectibleObject, string>();
         /// <summary>When set, only conversions it accepts are used (/emc diagnose clean maps without other mods' recipes).</summary>
         public System.Func<Conversion, bool> ConversionFilter;
+        /// <summary>Other mods' crafting methods to use; null = the ones the mod system collected last.</summary>
+        public MethodSnapshot Methods;
         /// <summary>Material-specific values from traders' typed stacks, merged into the report's variants after the recipe ones.</summary>
         readonly Dictionary<CollectibleObject, List<VariantValue>> traderVariants = new Dictionary<CollectibleObject, List<VariantValue>>();
 
@@ -180,13 +190,22 @@ namespace VintageE
             Seed(index, report, out Dictionary<CollectibleObject, double> fixedValues, out HashSet<CollectibleObject> excluded);
             Lap(report, "base values and lists");
 
-            // 3. Every way of making things.
+            // 3. Every way of making things, other mods' crafting methods included. Their extra costs (power, heat) are
+            //    priced from the base values alone, so the prices are known before anything is solved.
+            MethodSnapshot methods = Methods ?? VintageEModSystem.Of(sapi)?.Methods ?? MethodSnapshot.Empty;
+            MethodPrices prices = MethodPricing.Compute(methods, config, fixedValues, index, rules.FuelReference);
+            report.MethodPrices = prices;
             var collector = new ConversionCollector(sapi, index, logger, config)
             {
                 Constructions = rules.Constructions,
-                CustomRecipes = rules.Recipes.Concat(config.CustomRecipes ?? new List<string>()).ToList()
+                CustomRecipes = rules.Recipes.Concat(config.CustomRecipes ?? new List<string>()).ToList(),
+                Methods = methods,
+                Prices = prices
             };
             collector.CollectAll();
+            report.MethodResults = collector.MethodResults;
+            report.SupersededLists = collector.SupersededLists;
+            report.SupersedeHits = collector.SupersedeHits;
             if (ConversionFilter != null) collector.Conversions.RemoveAll(c => !ConversionFilter(c));
             report.SkippedRecipes = collector.SkippedRecipes;
             report.Skipped = collector.Skipped;
@@ -200,14 +219,29 @@ namespace VintageE
             {
                 if (conv.JointOutputs != null)
                 {
-                    joints.Add(new EmcSolver<CollectibleObject>.JointEdge
+                    var joint = new EmcSolver<CollectibleObject>.JointEdge
                     {
                         Input = conv.Inputs[0].Choices[0],
                         InputQuantity = conv.Inputs[0].Quantity,
                         Outputs = conv.JointOutputs.Select(o => o.Key).ToArray(),
                         OutputQuantities = conv.JointOutputs.Select(o => o.Value).ToArray(),
                         Tag = conv
-                    });
+                    };
+                    if (!conv.IsSimpleJoint)
+                    {
+                        // Several ingredients (or choices, costs, things handed back): the solver shares out what they all cost.
+                        joint.Input = null;
+                        joint.Choices = conv.Inputs.Select(i => i.Choices).ToArray();
+                        joint.Quantities = conv.Inputs.Select(i => i.Quantity).ToArray();
+                        joint.NoInfer = conv.Inputs.Any(i => i.NoInfer) ? conv.Inputs.Select(i => i.NoInfer).ToArray() : null;
+                        joint.ExtraCost = conv.ExtraCost;
+                        if (conv.Returned != null)
+                        {
+                            joint.Returned = conv.Returned.Select(r => r.Key).ToArray();
+                            joint.ReturnedQuantities = conv.Returned.Select(r => r.Value).ToArray();
+                        }
+                    }
+                    joints.Add(joint);
                     continue;
                 }
                 if (excluded.Contains(conv.Output)) continue;
@@ -219,6 +253,7 @@ namespace VintageE
                     Quantities = conv.Inputs.Select(i => i.Quantity).ToArray(),
                     Reversible = conv.Kind == ConversionKind.Processing,
                     ExtraCost = conv.ExtraCost,
+                    NoInfer = conv.Inputs.Any(i => i.NoInfer) ? conv.Inputs.Select(i => i.NoInfer).ToArray() : null,
                     Tag = conv
                 };
                 if (conv.Returned != null)
@@ -690,7 +725,11 @@ namespace VintageE
                 {
                     foreach (CollectibleObject[] choice in e.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
                 }
-                else if (via is EmcSolver<CollectibleObject>.JointEdge j && j.Input != null) stack.Push((j.Input, depth + 1));
+                else if (via is EmcSolver<CollectibleObject>.JointEdge j)
+                {
+                    if (j.Input != null) stack.Push((j.Input, depth + 1));
+                    if (j.Choices != null) foreach (CollectibleObject[] choice in j.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                }
             }
             return false;
         }
@@ -825,7 +864,9 @@ namespace VintageE
             string outputs = conv.JointOutputs != null
                 ? string.Join(" + ", conv.JointOutputs.Select(o => Num(o.Value) + " " + o.Key.Code))
                 : Num(conv.OutputQuantity) + " " + conv.Output?.Code;
-            string extra = conv.ExtraCost > 0 ? " (+" + Num(conv.ExtraCost) + " time bonus)" : "";
+            string extra = conv.ExtraCost > 0
+                ? " (+" + Num(conv.ExtraCost) + (conv.Costs != null && conv.Costs.Count > 0 ? " " + string.Join(", ", conv.Costs.Where(k => k.Emc > 0).Select(k => k.Kind).Distinct()) : " time bonus") + ")"
+                : "";
             string returned = conv.Returned != null && conv.Returned.Count > 0 ? " (returns " + string.Join(", ", conv.Returned.Select(r => r.Key.Code)) + ")" : "";
             return $"{conv.Source}: {inputs}{extra} -> {outputs}{returned}";
         }

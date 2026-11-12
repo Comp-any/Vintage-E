@@ -97,6 +97,8 @@ namespace VintageE
             foreach (EmcValueRule r in mod.Rules.Defaults) sb.Append("default=").Append(r.Source).Append('|').Append(r.Pattern).Append(r.PerLitre ? "/L=" : "=").Append(r.Value.ToString("R")).Append('\n');
             foreach (RelativeValueRule r in mod.Rules.Relative) sb.Append("rel=").Append(r.Source).Append('|').Append(r.Code).Append('=').Append(r.Of).Append('*').Append(r.Ratio.ToString("R")).Append('\n');
             sb.Append("hoursPerDay=").Append(sapi.World.Calendar?.HoursPerDay).Append('\n');
+            // Other mods' crafting methods (files, what their code sent, the recipes their readers found).
+            sb.Append("methods=").Append(mod.Methods?.Fingerprint ?? "").Append('\n');
             Flush();
 
             // Every block/item with the per-item data the mapper reads

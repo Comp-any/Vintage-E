@@ -135,6 +135,7 @@ namespace VintageE
                 x.Explain(x.L("diag-startup-command-why"));
                 x.Fix(x.L("diag-startup-command-fix"));
             }
+            problems += MethodStartup(x);
 
             StartupLog log = ReadStartupLog(x);
             if (log.Error != null) { x.Note(log.Error, 0); return problems; }

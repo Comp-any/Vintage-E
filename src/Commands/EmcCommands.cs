@@ -113,6 +113,13 @@ namespace VintageE
                     .WithArgs(parsers.OptionalWord("what"), parsers.OptionalWord("which"))
                     .HandleWith(Safe(args => Diagnose(mod, sapi, args, args[0] as string, args[1] as string)))
                 .EndSubCommand()
+                .BeginSubCommand("methods")
+                    .WithAlias("method")
+                    .WithDescription("Other mods' crafting methods: every method and recipe, what each uses and makes, its extra costs (power, heat) and their prices, with switches; or one mod or method; 'export <modid>' writes what Vintage-E understood, 'reload' asks the mods again")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(parsers.OptionalWord("what"), parsers.OptionalWord("which"))
+                    .HandleWith(Safe(args => Methods(mod, sapi, args, args[0] as string, args[1] as string)))
+                .EndSubCommand()
                 .BeginSubCommand("compat")
                     .WithAlias("compatibility")
                     .WithDescription("Open a window of the compatibility value files (last-resort values for other mods' raw materials): which are active, and switch them off or on; or: /emc compat disable|enable <name>")
@@ -205,6 +212,7 @@ namespace VintageE
             ("/emc graylist add|remove", "cmdhelp-graylistset", true),
             ("/emc recipe", "cmdhelp-recipe", true),
             ("/emc recipe add|remove <output = ingredients>", "cmdhelp-recipeset", true),
+            ("/emc methods [<mod id>|<method>|export <mod id>|reload]", "cmdhelp-methods", true),
             ("/emc compat", "cmdhelp-compat", true),
             ("/emc compat disable|enable <name>", "cmdhelp-compatset", true),
             ("/emc add <amount> [player]", "cmdhelp-add", true),
@@ -312,6 +320,7 @@ namespace VintageE
 
         static TextCommandResult Recalc(VintageEModSystem mod, TextCommandCallingArgs args)
         {
+            mod.CollectMethods("/emc recalc"); // other mods' crafting methods may have changed too
             return AfterRemap(mod, args, "/emc recalc", report => report == null
                 ? TextCommandResult.Error("Mapping failed, see server log")
                 : TextCommandResult.Success(Lang.Get("vintagee:cmd-recalc", report.Values.Count, report.Milliseconds, report.ConversionCount)));
@@ -473,6 +482,20 @@ namespace VintageE
         }
 
         /// <summary>/emc diagnose: the window for a player; the same text for the console (answers shown as commands).</summary>
+        /// <summary>/emc methods [modid|method|export modid|reload]: the doctor's crafting-methods report.</summary>
+        static TextCommandResult Methods(VintageEModSystem mod, ICoreServerAPI sapi, TextCommandCallingArgs args, string what, string which)
+        {
+            string arg = ((what ?? "") + " " + (which ?? "")).Trim();
+            if (arg.Equals("reload", StringComparison.OrdinalIgnoreCase))
+            {
+                mod.CollectMethods("/emc methods reload");
+                return AfterRemap(mod, args, "/emc methods reload", report => report == null
+                    ? TextCommandResult.Error("Mapping failed, see server log")
+                    : TextCommandResult.Success(Lang.GetL(args.LanguageCode, "vintagee:cmd-methods-reloaded", mod.Methods.MethodCount, mod.Methods.RecipeCount, mod.Methods.Mods.Count())));
+            }
+            return Diagnose(mod, sapi, args, EmcDiagnose.ActionMethods, arg);
+        }
+
         static TextCommandResult Diagnose(VintageEModSystem mod, ICoreServerAPI sapi, TextCommandCallingArgs args, string what, string which)
         {
             string lang = args.LanguageCode;

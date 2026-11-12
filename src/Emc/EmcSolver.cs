@@ -33,8 +33,10 @@ namespace VintageE
             public double[] ReturnedQuantities;
             /// <summary>Processing edges may be used backwards to infer an unvalued input from its output.</summary>
             public bool Reversible;
-            /// <summary>Flat EMC added per run on top of the ingredients (time bonuses).</summary>
+            /// <summary>Flat EMC added per run on top of the ingredients (time bonuses, a machine's power).</summary>
             public double ExtraCost;
+            /// <summary>By slot (or null): never work that slot's value out backwards from this edge (a tool's wear).</summary>
+            public bool[] NoInfer;
             /// <summary>Caller data (the conversion this edge came from), reported back through <see cref="Via"/>.</summary>
             public object Tag;
         }
@@ -50,6 +52,18 @@ namespace VintageE
             public double InputQuantity = 1;
             public T[] Outputs;
             public double[] OutputQuantities;
+            /// <summary>
+            /// When set, the edge has these ingredient slots instead of <see cref="Input"/> (each slot: the cheapest valued
+            /// choice counts), plus <see cref="ExtraCost"/>, less what's handed back: another mod's machine recipe with
+            /// several ingredients and several results, none of them the main one. What it all costs is shared out the same
+            /// way. Worked backwards only with <see cref="InferFromCrafting"/>, and only into one unknown slot.
+            /// </summary>
+            public T[][] Choices;
+            public double[] Quantities;
+            public bool[] NoInfer;
+            public double ExtraCost;
+            public T[] Returned;
+            public double[] ReturnedQuantities;
             public object Tag;
         }
 
@@ -260,7 +274,7 @@ namespace VintageE
                 if (e.Returned != null) foreach (T r in e.Returned) { AddIndexed(dependents, r, i); IdOf(r); }
                 g.OutputIds[i] = IdOf(e.Output);
                 AddIndexed(g.ByOutput, e.Output, i);
-                if (e.Reversible && e.Choices.Length == 1 && e.Choices[0].Length == 1) reversible.Add(i);
+                if (e.Reversible && e.Choices.Length == 1 && e.Choices[0].Length == 1 && (e.NoInfer == null || !e.NoInfer[0])) reversible.Add(i);
 
                 slots.Clear();
                 quantities.Clear();
@@ -560,6 +574,78 @@ namespace VintageE
         ///   value, and the <i>highest</i> proposal wins, so no recipe that already had a value gets cheaper.</item>
         /// </list>
         /// </summary>
+        /// <summary>
+        /// A shared-out edge with several ingredient slots: once every slot (and everything handed back) has a value, the
+        /// outputs without one share what's left of the cost after the valued ones; with every output valued and exactly
+        /// one slot open, that slot is worth what's left (only with <see cref="InferFromCrafting"/>).
+        /// </summary>
+        void InferJoint(JointEdge j, Action<T, double, object> propose, Func<T, bool> open)
+        {
+            double known = j.ExtraCost;
+            int unknownSlot = -1;
+            for (int s = 0; s < j.Choices.Length; s++)
+            {
+                double best = double.PositiveInfinity;
+                bool anyOpen = false;
+                foreach (T c in j.Choices[s])
+                {
+                    if (c == null) continue;
+                    if (Free.Contains(c)) { best = 0; break; }
+                    if (Excluded.Contains(c) || Unstable.Contains(c)) continue;
+                    if (Values.TryGetValue(c, out double v)) { if (v < best) best = v; }
+                    else if (open(c)) anyOpen = true;
+                }
+                double q = j.Quantities[s];
+                if (!double.IsPositiveInfinity(best)) known += best * q;
+                else if (anyOpen && unknownSlot < 0 && (j.NoInfer == null || !j.NoInfer[s])) unknownSlot = s;
+                else return; // a second open slot, a slot nothing can fill, or a tool's wear with no value yet
+            }
+            double back = 0;
+            if (j.Returned != null)
+            {
+                for (int k = 0; k < j.Returned.Length; k++)
+                {
+                    T r = j.Returned[k];
+                    if (r == null || Excluded.Contains(r) || Free.Contains(r)) continue;
+                    if (!Values.TryGetValue(r, out double rv)) return; // wait until what's handed back has a value
+                    back += rv * j.ReturnedQuantities[k];
+                }
+            }
+            if (unknownSlot < 0)
+            {
+                double remaining = known - back;
+                var openOutputs = new List<int>();
+                for (int k = 0; k < j.Outputs.Length; k++)
+                {
+                    T o = j.Outputs[k];
+                    if (o == null || Excluded.Contains(o)) continue;
+                    if (Values.TryGetValue(o, out double ov)) remaining -= ov * j.OutputQuantities[k];
+                    else if (open(o)) openOutputs.Add(k);
+                }
+                if (openOutputs.Count == 0 || remaining <= MinValue) return;
+                double share = remaining / openOutputs.Count;
+                foreach (int k in openOutputs) propose(j.Outputs[k], share / j.OutputQuantities[k], j);
+                return;
+            }
+            if (!InferBackwards || !InferFromCrafting) return;
+            double sum = 0;
+            for (int k = 0; k < j.Outputs.Length; k++)
+            {
+                T o = j.Outputs[k];
+                if (o == null || Excluded.Contains(o)) continue;
+                if (!Values.TryGetValue(o, out double ov)) return;
+                sum += ov * j.OutputQuantities[k];
+            }
+            double qty = j.Quantities[unknownSlot];
+            if (qty <= 0) return;
+            double each = (sum + back - known) / qty;
+            if (each < MinValue || double.IsNaN(each) || double.IsInfinity(each)) return;
+            foreach (T c in j.Choices[unknownSlot])
+            {
+                if (c != null && open(c)) propose(c, each, j);
+            }
+        }
+
         int InferOnce()
         {
             var proposals = new Dictionary<T, double>();
@@ -576,6 +662,11 @@ namespace VintageE
 
             foreach (JointEdge j in JointEdges)
             {
+                if (j.Choices != null)
+                {
+                    InferJoint(j, Propose, Open);
+                    continue;
+                }
                 if (Excluded.Contains(j.Input) || Unstable.Contains(j.Input)) continue;
                 if (Values.TryGetValue(j.Input, out double inputValue))
                 {
@@ -641,8 +732,8 @@ namespace VintageE
                             else if (Open(c)) anyOpen = true;
                         }
                         if (!double.IsPositiveInfinity(best)) known += best * e.Quantities[i];
-                        else if (anyOpen && unknownSlot < 0) unknownSlot = i;
-                        else usable = false; // a second unknown slot, or a slot nothing can fill
+                        else if (anyOpen && unknownSlot < 0 && (e.NoInfer == null || !e.NoInfer[i])) unknownSlot = i;
+                        else usable = false; // a second unknown slot, a slot nothing can fill, or a tool's wear
                     }
                     if (!usable || unknownSlot < 0) continue;
                     double total = outValue * e.OutputQuantity - e.ExtraCost - known;

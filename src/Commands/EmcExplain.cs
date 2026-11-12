@@ -629,12 +629,79 @@ namespace VintageE
             return sign + x.L("dumpgui-extra", F(conv.ExtraCost));
         }
 
+        /// <summary>One extra cost of a crafting method's recipe, with its price and where that came from.</summary>
+        static string CostLine(Ctx x, MethodCostLine k, string sign)
+        {
+            switch (k.Kind)
+            {
+                case "energy":
+                    string unit = x.Report?.MethodPrices != null && x.Report.MethodPrices.Units.TryGetValue(k.Unit ?? "", out MethodUnitPrice up) && !string.IsNullOrEmpty(up.Name) ? up.Name : k.Unit;
+                    return sign + (k.Charged ? x.L("dumpgui-cost-energy", N(k.Amount), unit, N(k.Price), F(k.Emc), k.PriceSource ?? "?") : x.L("dumpgui-cost-energy-off", N(k.Amount), unit));
+                case "heat":
+                    return sign + (k.Charged ? x.L("dumpgui-cost-heat", N(k.Amount), N(k.Price), F(k.Emc), k.PriceSource ?? "?") : x.L("dumpgui-cost-heat-off", N(k.Amount)));
+                case "time":
+                    return sign + x.L("dumpgui-cost-time", N(k.Amount), N(k.Price), F(k.Emc));
+                default:
+                    return sign + x.L("dumpgui-cost-emc", F(k.Emc));
+            }
+        }
+
+        /// <summary>The extra cost of a recipe: each of a crafting method's costs, or the time bonus. Returns what it adds.</summary>
+        static double ExtraLines(Ctx x, Conversion conv, string sign, int indent)
+        {
+            if (conv.Costs != null && conv.Costs.Count > 0)
+            {
+                foreach (MethodCostLine k in conv.Costs) x.R.Add(CostLine(x, k, sign), EmcLineStyle.Text, indent);
+                return conv.ExtraCost;
+            }
+            if (conv.ExtraCost > 0) x.R.Add(TimeBonus(x, conv, sign), EmcLineStyle.Text, indent);
+            return conv.ExtraCost;
+        }
+
+        /// <summary>Which crafting method made this: the machine, the recipe, what its *s stood for.</summary>
+        static void MethodHeader(Ctx x, Conversion conv)
+        {
+            MethodRef m = conv.Method;
+            if (m?.Method == null) return;
+            EmcReport r = x.R;
+            r.Add(x.L("dumpgui-method-recipe", m.Recipe?.Code ?? "?", m.ModId ?? "?", m.Method.Code), EmcLineStyle.Note, 1);
+            if (!string.IsNullOrEmpty(m.Method.Machine))
+            {
+                CollectibleObject machine = MethodParser.FindOne(x.Sapi.World, m.Method.Machine);
+                r.Add(x.L("dumpgui-method-machine", machine != null ? EmcReport.Ref(machine) : m.Method.Machine), EmcLineStyle.Note, 1);
+            }
+            if (!string.IsNullOrEmpty(m.Method.Description)) r.Add(m.Method.Description, EmcLineStyle.Note, 2);
+            if (m.Captures != null && m.Captures.Count > 0) r.Add(x.L("dumpgui-method-variant", string.Join(", ", m.Captures.Select(kv => kv.Key + " = " + kv.Value))), EmcLineStyle.Note, 1);
+        }
+
+        /// <summary>What a crafting method's recipe uses without using it up, its own note, and notes on the output asked about.</summary>
+        static void MethodFooter(Ctx x, Conversion conv, CollectibleObject c)
+        {
+            MethodRef m = conv.Method;
+            if (m == null) return;
+            EmcReport r = x.R;
+            if (m.OutputNotes != null && c != null && m.OutputNotes.TryGetValue(c, out string note)) r.Add(x.L("dumpgui-outnote", EmcReport.Ref(c), note), EmcLineStyle.Note, 1);
+            if (m.Catalysts != null && m.Catalysts.Count > 0)
+                r.Add(x.L("dumpgui-method-catalyst", string.Join(", ", m.Catalysts.Take(3).Select(EmcReport.Ref)) + (m.Catalysts.Count > 3 ? " (+" + (m.Catalysts.Count - 3) + ")" : "")), EmcLineStyle.Note, 1);
+            if (!string.IsNullOrEmpty(m.Recipe?.Note)) r.Add(x.L("dumpgui-method-note", m.ModId ?? "?", m.Recipe.Note), EmcLineStyle.Note, 1);
+        }
+
+        /// <summary>An ingredient line with what the slot stands for (a tool's wear, a chance), when it says.</summary>
+        static void InputNote(Ctx x, ConversionInput input, int indent)
+        {
+            if (!string.IsNullOrEmpty(input.Note)) x.R.Add(input.Note, EmcLineStyle.Note, indent);
+        }
+
         /// <summary>The recipe/process behind a value, with every number: forwards, worked backwards, or shared out.</summary>
         static void Recipe(Ctx x, CollectibleObject c, Conversion conv)
         {
             EmcReport r = x.R;
             double computed;
-            if (conv.JointOutputs != null)
+            if (conv.JointOutputs != null && !conv.IsSimpleJoint)
+            {
+                computed = JointRecipe(x, c, conv);
+            }
+            else if (conv.JointOutputs != null)
             {
                 CollectibleObject input = conv.Inputs[0].Choices[0];
                 double inQ = conv.Inputs[0].Quantity;
@@ -687,6 +754,7 @@ namespace VintageE
                 if (slot < 0)
                 {
                     r.Add(x.L("dumpgui-made", Friendly(x, conv.Source)));
+                    MethodHeader(x, conv);
                     double sum = 0;
                     foreach (ConversionInput input in conv.Inputs)
                     {
@@ -705,14 +773,11 @@ namespace VintageE
                         string line = Term(x, "+ ", pick, input.Quantity, v);
                         if (input.Choices.Length > 1) line += " " + x.L("dumpgui-cheapestof", input.Choices.Length);
                         r.Add(line, EmcLineStyle.Text, 1);
+                        InputNote(x, input, 2);
                         string po = ShortOrigin(x, pick);
                         if (po != null) r.Add(x.L("dump-from", po), EmcLineStyle.Note, 2);
                     }
-                    if (conv.ExtraCost > 0)
-                    {
-                        sum += conv.ExtraCost;
-                        r.Add(TimeBonus(x, conv, "+ "), EmcLineStyle.Text, 1);
-                    }
+                    sum += ExtraLines(x, conv, "+ ", 1);
                     if (conv.Returned != null)
                     {
                         foreach (var ret in conv.Returned)
@@ -720,17 +785,21 @@ namespace VintageE
                             double v = x.V(ret.Key);
                             if (v <= 0) continue;
                             sum -= v * ret.Value;
-                            r.Add(Term(x, "- ", ret.Key, ret.Value, v) + " " + x.L("dumpgui-returned"), EmcLineStyle.Text, 1);
+                            bool byproduct = conv.Method?.Byproducts != null && conv.Method.Byproducts.Contains(ret.Key);
+                            r.Add(Term(x, "- ", ret.Key, ret.Value, v) + " " + x.L(byproduct ? "dumpgui-byproduct" : "dumpgui-returned"), EmcLineStyle.Text, 1);
+                            if (byproduct && conv.Method.OutputNotes != null && conv.Method.OutputNotes.TryGetValue(ret.Key, out string bn)) r.Add(bn, EmcLineStyle.Note, 2);
                         }
                     }
                     double outQ = conv.OutputQuantity > 0 ? conv.OutputQuantity : 1;
                     computed = sum / outQ;
                     r.Add(x.L("dumpgui-per", F(sum), N(outQ), F(computed)), EmcLineStyle.Total, 1);
+                    MethodFooter(x, conv, c);
                 }
                 else
                 {
                     string setting = conv.Kind == ConversionKind.Processing ? "InferValuesFromProcessing" : "InferValuesFromCrafting";
                     r.Add(x.L("dumpgui-back", Friendly(x, conv.Source), setting));
+                    MethodHeader(x, conv);
                     double outV = x.V(conv.Output);
                     double total = outV * conv.OutputQuantity;
                     r.Add(Term(x, "", conv.Output, conv.OutputQuantity, outV) + " " + x.L("dumpgui-whatitmakes"), EmcLineStyle.Text, 1);
@@ -742,11 +811,7 @@ namespace VintageE
                         total -= v * conv.Inputs[i].Quantity;
                         r.Add(Term(x, "- ", pick, conv.Inputs[i].Quantity, v), EmcLineStyle.Text, 1);
                     }
-                    if (conv.ExtraCost > 0)
-                    {
-                        total -= conv.ExtraCost;
-                        r.Add(TimeBonus(x, conv, "- "), EmcLineStyle.Text, 1);
-                    }
+                    total -= ExtraLines(x, conv, "- ", 1);
                     if (conv.Returned != null)
                     {
                         foreach (var ret in conv.Returned)
@@ -765,6 +830,75 @@ namespace VintageE
             if (x.Report.Frozen.Contains(c)) r.Add(x.L("dumpgui-frozen"), EmcLineStyle.Note, 1);
             double actual = x.V(c);
             if (actual > 0 && Math.Abs(computed - actual) > Math.Max(0.01, actual * 0.01)) r.Add(x.L("dumpgui-differs", F(actual)), EmcLineStyle.Note, 1);
+        }
+
+        /// <summary>
+        /// A shared-out recipe with several ingredients (another mod's machine making several things, none the main one):
+        /// what it all costs, less what's valued already, shared between the rest; or, for an ingredient worked out
+        /// backwards, what's left of the outputs' worth.
+        /// </summary>
+        static double JointRecipe(Ctx x, CollectibleObject c, Conversion conv)
+        {
+            EmcReport r = x.R;
+            int slot = conv.Inputs.FindIndex(i => Array.IndexOf(i.Choices, c) >= 0);
+            if (slot >= 0)
+            {
+                r.Add(x.L("dumpgui-joint-back", Friendly(x, conv.Source)));
+                MethodHeader(x, conv);
+                double total = 0;
+                foreach (var o in conv.JointOutputs)
+                {
+                    double v = x.V(o.Key);
+                    total += v * o.Value;
+                    r.Add(Term(x, "+ ", o.Key, o.Value, v), EmcLineStyle.Text, 1);
+                }
+                for (int i = 0; i < conv.Inputs.Count; i++)
+                {
+                    if (i == slot) continue;
+                    var (pick, v, free) = Cheapest(x, conv.Inputs[i]);
+                    if (pick == null || free) continue;
+                    total -= v * conv.Inputs[i].Quantity;
+                    r.Add(Term(x, "- ", pick, conv.Inputs[i].Quantity, v), EmcLineStyle.Text, 1);
+                }
+                total -= ExtraLines(x, conv, "- ", 1);
+                if (conv.Returned != null) foreach (var ret in conv.Returned) { double v = x.V(ret.Key); if (v <= 0) continue; total += v * ret.Value; r.Add(Term(x, "+ ", ret.Key, ret.Value, v) + " " + x.L("dumpgui-returned"), EmcLineStyle.Text, 1); }
+                double q = conv.Inputs[slot].Quantity > 0 ? conv.Inputs[slot].Quantity : 1;
+                double each = total / q;
+                r.Add(x.L("dumpgui-perback", F(total), N(q), F(each)), EmcLineStyle.Total, 1);
+                MethodFooter(x, conv, c);
+                return each;
+            }
+            r.Add(x.L("dumpgui-joint", Friendly(x, conv.Source)));
+            MethodHeader(x, conv);
+            double rest = 0;
+            foreach (ConversionInput input in conv.Inputs)
+            {
+                var (pick, v, free) = Cheapest(x, input);
+                if (pick == null) { r.Add(x.L("dumpgui-term-novalue", EmcReport.Ref(input.Choices.FirstOrDefault()), N(input.Quantity)), EmcLineStyle.Warn, 1); continue; }
+                if (free) { r.Add("+ " + x.L("dumpgui-term-free", EmcReport.Ref(pick), N(input.Quantity)), EmcLineStyle.Text, 1); continue; }
+                rest += v * input.Quantity;
+                r.Add(Term(x, "+ ", pick, input.Quantity, v), EmcLineStyle.Text, 1);
+                InputNote(x, input, 2);
+            }
+            rest += ExtraLines(x, conv, "+ ", 1);
+            if (conv.Returned != null) foreach (var ret in conv.Returned) { double v = x.V(ret.Key); if (v <= 0) continue; rest -= v * ret.Value; r.Add(Term(x, "- ", ret.Key, ret.Value, v) + " " + x.L("dumpgui-returned"), EmcLineStyle.Text, 1); }
+            var sharers = conv.JointOutputs.Where(o => x.Report.Via.TryGetValue(o.Key, out Conversion cv) && cv == conv).Select(o => o.Key).ToList();
+            if (!sharers.Contains(c)) sharers.Add(c);
+            foreach (var o in conv.JointOutputs)
+            {
+                if (sharers.Contains(o.Key)) continue;
+                double v = x.V(o.Key);
+                if (v <= 0) continue;
+                rest -= v * o.Value;
+                r.Add(Term(x, "- ", o.Key, o.Value, v) + " " + x.L("dumpgui-hasvalue"), EmcLineStyle.Text, 1);
+            }
+            double myQ = conv.JointOutputs.FirstOrDefault(o => o.Key == c).Value;
+            if (myQ <= 0) myQ = 1;
+            double share = rest / sharers.Count;
+            double computed = share / myQ;
+            r.Add(x.L("dumpgui-share", F(rest), sharers.Count, F(share), N(myQ), F(computed)), EmcLineStyle.Total, 1);
+            MethodFooter(x, conv, c);
+            return computed;
         }
 
         /// <summary>Per-item cost of a way of making <paramref name="c"/> at today's values, or null (with what's missing).</summary>

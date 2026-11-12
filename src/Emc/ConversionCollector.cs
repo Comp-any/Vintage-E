@@ -23,7 +23,7 @@ namespace VintageE
     ///   curing, ripening, hardening, melting and converting transitions.</item>
     /// </list>
     /// </summary>
-    public class ConversionCollector
+    public partial class ConversionCollector
     {
         // Voxels per material unit in the layered-voxel recipe types.
         const double VoxelsPerIngot = 42;     // ItemIngot.VoxelCount in VSSurvivalMod
@@ -81,6 +81,7 @@ namespace VintageE
             CollectFromMolds();
             CollectFromBehaviors();
             CollectCustomRecipes();
+            CollectFromMethods();
         }
 
         /// <summary>Recipes written by hand, as ordinary crafting recipes.</summary>
@@ -122,8 +123,16 @@ namespace VintageE
 
         void CollectFromModSystems()
         {
+            // A crafting method that describes a recipe list (with its power cost) replaces the free copy read here.
+            Dictionary<string, string> supersede = SupersedeTargets();
             foreach (DiscoveredRecipeList found in DiscoverRecipeLists(sapi, logger))
             {
+                string by = SupersededBy(found, supersede);
+                if (by != null)
+                {
+                    SupersededLists[found.Label] = by;
+                    continue;
+                }
                 if (found.Alloy != null) CollectAlloys(found.Recipes, found.Alloy, found.Label);
                 else if (found.Cooking != null) CollectCooking(found.Recipes, found.Cooking, found.Label);
                 else CollectRecipeList(found.Recipes, found.Label);
@@ -135,6 +144,8 @@ namespace VintageE
         {
             public string Label;
             public IEnumerable Recipes;
+            /// <summary>The recipe type the list holds.</summary>
+            public Type ElementType;
             internal AlloyShape Alloy;
             internal CookingShape Cooking;
         }
@@ -183,7 +194,7 @@ namespace VintageE
                 CookingShape cooking = null;
                 if (!typeof(IRecipeBase).IsAssignableFrom(element) && !AlloyShape.TryCreate(element, out shape) && !CookingShape.TryCreate(element, out cooking)) return;
                 if (!(getter() is IEnumerable list) || !seen.Add(list)) return;
-                result.Add(new DiscoveredRecipeList { Label = label, Recipes = list, Alloy = shape, Cooking = cooking });
+                result.Add(new DiscoveredRecipeList { Label = label, Recipes = list, Alloy = shape, Cooking = cooking, ElementType = element });
             }
             catch (Exception e)
             {

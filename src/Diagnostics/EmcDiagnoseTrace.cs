@@ -80,8 +80,12 @@ namespace VintageE
                 : origin.StartsWith("guessed", StringComparison.Ordinal) || origin.StartsWith("same as", StringComparison.Ordinal) ? x.L("diag-trace-k-guess")
                 : viaRecipe ? x.L("diag-trace-k-recipe") : x.L("diag-trace-k-other");
             bool backwardsMulti = origin.StartsWith("worked backwards", StringComparison.Ordinal) && origin.Contains(" + ");
-            r.Add(EmcReport.Ref(c) + " " + F(v) + " ← " + kind, backwardsMulti ? EmcLineStyle.Warn : EmcLineStyle.Text, depth);
-            if (backwardsMulti) suspicious.Add(c);
+            // A crafting method's value resting on a power price nobody set, or on a rare chance, is a weak link too.
+            string methodWeak = viaRecipe ? MethodWeakness(x, conv, c) : null;
+            r.Add(EmcReport.Ref(c) + " " + F(v) + " ← " + kind, backwardsMulti || methodWeak != null ? EmcLineStyle.Warn : EmcLineStyle.Text, depth);
+            if (backwardsMulti || methodWeak != null) suspicious.Add(c);
+            if (methodWeak != null) x.Note(methodWeak, depth + 1);
+            if (viaRecipe && conv.Costs != null) foreach (MethodCostLine k in conv.Costs) x.Note(CostText(x, k), depth + 1);
             if (!viaRecipe)
             {
                 // Something that doesn't rest on ingredients: a root of the chain.
@@ -155,6 +159,7 @@ namespace VintageE
                 n += cfg.BaseValues.Keys.Concat(cfg.FixedValues.Keys).Concat(cfg.Blacklist).Concat(cfg.Allow).Concat(cfg.NoTransmute).Concat(cfg.GrayList).Concat(cfg.FreeIngredients).Count(k => !string.IsNullOrWhiteSpace(k) && !x.Index.Match(k).Any());
             }
             n += x.Mod.Rules.Compat.Count(f => f.Disabled);
+            n += MethodSafeFixCount(x.Mod);
             return n;
         }
 
@@ -171,6 +176,7 @@ namespace VintageE
             {
                 foreach (string k in list.Where(Dead).ToList()) { list.Remove(k); removed.Add(k); }
             }
+            ApplyMethodSafeFixes(mod, removed);
             var enabled = new List<string>();
             foreach (var f in mod.Rules.Compat.Where(f => f.Disabled).ToList())
             {

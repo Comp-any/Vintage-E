@@ -91,6 +91,8 @@ namespace VintageE
             catch (Exception e) { sapi.Logger.Warning("Vintage-E: /emc diagnose could not index the collectibles: {0}", e.Message); }
 
             if (action == "troubleshoot" || action == "help" || action == "guide") action = ActionNoValue;
+            if (action == "method") action = ActionMethods;
+            if (action == "lint") action = ActionMethodCheck;
             if (action == "arcane" || action == "arcanetablet" || action == "handbook") action = ActionEmcCraft;
             if (action == "machine" || action == "block" || action == "magnet" || action == "stars" || action == "trinkets" || action == "chutes") action = ActionMachines;
             // An item code or a mod id given straight: "/emc diagnose game:ingot-copper", "/emc diagnose primitivesurvival".
@@ -121,7 +123,8 @@ namespace VintageE
 
             // Cached values come without the recipes behind them; item and mod reports need those, so map once more.
             if ((action == ActionHand || action == ActionItem || action == ActionMod || action == ActionSporadic || action == ActionClean || action == ActionOutliers || action == ActionSymptom || action == ActionChanges
-                || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace || action == ActionHealth) && x.Report.FromCache)
+                || action == ActionChecks || action == ActionBaseline || action == ActionProfit || action == ActionSkipped || action == ActionTrace || action == ActionHealth
+                || action == ActionMethods || action == ActionMethodCheck || action == ActionDraftMethods) && x.Report.FromCache)
             {
                 // Compute only: the report needs the recipes, the live table needn't change (and this may run off the game thread).
                 EmcMappingReport fresh = null;
@@ -173,6 +176,9 @@ namespace VintageE
                 case ActionEmcCraft: EmcCraftReport(x, client); break;
                 case ActionMachines: MachinesReport(x, client); break;
                 case ActionChanges: Changes(x); break;
+                case ActionMethods: MethodsReport(x, arg); break;
+                case ActionMethodCheck: MethodCheck(x, arg); break;
+                case ActionDraftMethods: DraftMethods(x, arg); break;
                 case ActionMod:
                     if (arg.Length == 0) { Mods(x); break; }
                     ModReport(x, arg);
@@ -386,6 +392,7 @@ namespace VintageE
                 if (report.UnstableRemoved > 0 || report.LoopFrozen > 0) x.Note(x.L("diag-unstable", report.LoopFrozen, report.UnstableRemoved));
             }
 
+            problems += MethodsSummary(x, full);
             problems += ChecksSummary(x);
             problems += HealthSummary(x);
             problems += Startup(x, false);
@@ -523,6 +530,7 @@ namespace VintageE
             int valued = cov.total - cov.missing;
             r.Add(x.L("diag-mod-cover", valued, cov.total, Pct(valued, cov.total), cov.blacklisted), cov.missing * 4 > cov.total ? EmcLineStyle.Warn : EmcLineStyle.Total);
             CompatFor(x, domain);
+            MethodLinesForMod(x, domain);
 
             var missing = report.Missing.Where(c => c.Code.Domain == domain).ToList();
             if (missing.Count == 0)
@@ -699,6 +707,9 @@ namespace VintageE
                 r.Add(x.L("diag-item-seems-fine"), EmcLineStyle.Note);
                 r.Add(x.L("diag-item-clientcheck"), EmcLineStyle.Note);
             }
+
+            // Other mods' crafting methods that make it or use it, and what became of each.
+            MethodLinesForItem(x, c);
 
             // Pins and value-file entries that nearly match (a typo).
             if (x.Index != null && !report.Values.ContainsKey(c))
@@ -934,6 +945,7 @@ namespace VintageE
             r.Add(Link(ActionWatch, "", x.L("diag-q-watch")));
             r.Add(Link(ActionEmcCraft, "", x.L("diag-q-emccraft")));
             r.Add(Link(ActionMachines, "", x.L("diag-q-machines")));
+            r.Add(Link(ActionMethods, "", x.L("diag-q-methods")));
             if (held?.Collectible?.Code != null)
             {
                 r.Add(Link(ActionHand, "", x.L("diag-q-held", EmcExplain.NameOf(held.Collectible))));
