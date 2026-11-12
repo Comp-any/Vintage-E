@@ -979,8 +979,8 @@ namespace VintageE
                 try
                 {
                     IAsset asset = x.Sapi.Assets.GetMany("recipes/" + kv.Key + "/", modId, true).FirstOrDefault(a => a.Location.Path.EndsWith(".json", StringComparison.OrdinalIgnoreCase));
-                    JToken file = asset == null ? null : JToken.Parse(asset.ToText());
-                    sample = file as JObject ?? (file as JArray)?.FirstOrDefault() as JObject;
+                    JToken fileToken = asset == null ? null : JToken.Parse(asset.ToText());
+                    sample = fileToken as JObject ?? (fileToken as JArray)?.FirstOrDefault() as JObject;
                 }
                 catch (Exception e) { notes.Add("its first file could not be read (" + e.Message + ")"); }
                 if (sample == null) continue;

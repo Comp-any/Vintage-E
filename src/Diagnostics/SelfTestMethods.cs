@@ -123,7 +123,9 @@ namespace VintageE
             var s2 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["a"] = 10 } };
             s2.JointEdges.Add(new EmcSolver<string>.JointEdge { Choices = new[] { new[] { "a" } }, Quantities = new[] { 2.0 }, Outputs = new[] { "p", "q" }, OutputQuantities = new[] { 1.0, 0.5 } });
             s2.Solve();
-            Check(s2.Values.TryGetValue("p", out double pv) && s2.Values.TryGetValue("q", out double qv) && Math.Abs(pv - 10) < 1e-9 && Math.Abs(qv - 20) < 1e-9, "methods: two unvalued outputs share the cost evenly (" + pv + ", " + qv + ")");
+            s2.Values.TryGetValue("p", out double pv);
+            s2.Values.TryGetValue("q", out double qv);
+            Check(Math.Abs(pv - 10) < 1e-9 && Math.Abs(qv - 20) < 1e-9, "methods: two unvalued outputs share the cost evenly (" + pv + ", " + qv + ")");
             // Worked backwards into its one unvalued ingredient, when every output has a value.
             var s3 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["a"] = 10, ["x"] = 50, ["y"] = 20 } };
             s3.JointEdges.Add(new EmcSolver<string>.JointEdge { Choices = new[] { new[] { "a" }, new[] { "m" } }, Quantities = new[] { 1.0, 2.0 }, Outputs = new[] { "x", "y" }, OutputQuantities = new[] { 1.0, 1.0 } });
