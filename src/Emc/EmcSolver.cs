@@ -579,7 +579,11 @@ namespace VintageE
         /// outputs without one share what's left of the cost after the valued ones; with every output valued and exactly
         /// one slot open, that slot is worth what's left (only with <see cref="InferFromCrafting"/>).
         /// </summary>
-        void InferJoint(JointEdge j, Action<T, double, object> propose, Func<T, bool> open)
+        /// <summary>How often each output of a several-ingredient shared-out edge was lowered by it again (each is lowered a few times at most).</summary>
+        readonly Dictionary<T, int> jointLowered = new Dictionary<T, int>();
+        const int MaxJointLowerings = 8;
+
+        void InferJoint(JointEdge j, Action<T, double, object> propose, Action<T, double, object> proposeShare, Func<T, bool> open)
         {
             double known = j.ExtraCost;
             int unknownSlot = -1;
@@ -613,18 +617,31 @@ namespace VintageE
             }
             if (unknownSlot < 0)
             {
+                // The outputs without a value share what's left, and so do the ones that got theirs from this edge before:
+                // if what goes in got cheaper since, their share is lowered (never raised; a few times at most).
                 double remaining = known - back;
-                var openOutputs = new List<int>();
+                var sharers = new List<int>();
                 for (int k = 0; k < j.Outputs.Length; k++)
                 {
                     T o = j.Outputs[k];
                     if (o == null || Excluded.Contains(o)) continue;
-                    if (Values.TryGetValue(o, out double ov)) remaining -= ov * j.OutputQuantities[k];
-                    else if (open(o)) openOutputs.Add(k);
+                    bool mine = Values.ContainsKey(o) && !Fixed.ContainsKey(o) && Via.TryGetValue(o, out object via) && ReferenceEquals(via, j);
+                    if (mine) sharers.Add(k);
+                    else if (Values.TryGetValue(o, out double ov)) remaining -= ov * j.OutputQuantities[k];
+                    else if (open(o)) sharers.Add(k);
                 }
-                if (openOutputs.Count == 0 || remaining <= MinValue) return;
-                double share = remaining / openOutputs.Count;
-                foreach (int k in openOutputs) propose(j.Outputs[k], share / j.OutputQuantities[k], j);
+                if (sharers.Count == 0 || remaining <= MinValue) return;
+                double share = remaining / sharers.Count;
+                foreach (int k in sharers)
+                {
+                    T o = j.Outputs[k];
+                    double each = share / j.OutputQuantities[k];
+                    if (Values.TryGetValue(o, out double current))
+                    {
+                        if (each < current * (1 - 1e-9) && (!jointLowered.TryGetValue(o, out int n) || n < MaxJointLowerings)) proposeShare(o, each, j);
+                    }
+                    else proposeShare(o, each, j);
+                }
                 return;
             }
             if (!InferBackwards || !InferFromCrafting) return;
@@ -659,12 +676,21 @@ namespace VintageE
                 if (!proposals.TryGetValue(item, out double prev) || v > prev) { proposals[item] = v; proposalVia[item] = via; }
             }
             bool Open(T item) => !Values.ContainsKey(item) && !Excluded.Contains(item) && !Unstable.Contains(item) && !Fixed.ContainsKey(item);
+            // What a shared-out edge with several ingredients makes is costed forwards: of two such edges sharing an output,
+            // the cheaper share wins (the highest-wins rule above is for working backwards).
+            var shares = new Dictionary<T, double>();
+            var shareVia = new Dictionary<T, object>();
+            void ProposeShare(T item, double v, object via)
+            {
+                if (v < MinValue || double.IsInfinity(v) || double.IsNaN(v)) return;
+                if (!shares.TryGetValue(item, out double prev) || v < prev) { shares[item] = v; shareVia[item] = via; }
+            }
 
             foreach (JointEdge j in JointEdges)
             {
                 if (j.Choices != null)
                 {
-                    InferJoint(j, Propose, Open);
+                    InferJoint(j, Propose, ProposeShare, Open);
                     continue;
                 }
                 if (Excluded.Contains(j.Input) || Unstable.Contains(j.Input)) continue;
@@ -703,7 +729,21 @@ namespace VintageE
                 T input = e.Choices[0][0];
                 if (Values.ContainsKey(input) || Excluded.Contains(input) || Unstable.Contains(input)) continue;
                 if (!Values.TryGetValue(e.Output, out double outValue)) continue;
-                Propose(input, (outValue * e.OutputQuantity - e.ExtraCost) / e.Quantities[0], e);
+                // What the process also hands back is part of what the input yields; wait until that has a value too.
+                double back = 0;
+                bool backKnown = true;
+                if (e.Returned != null)
+                {
+                    for (int r = 0; r < e.Returned.Length && backKnown; r++)
+                    {
+                        T item = e.Returned[r];
+                        if (Excluded.Contains(item) || Free.Contains(item)) continue;
+                        if (Values.TryGetValue(item, out double rv)) back += rv * e.ReturnedQuantities[r];
+                        else backKnown = false;
+                    }
+                }
+                if (!backKnown) continue;
+                Propose(input, (outValue * e.OutputQuantity + back - e.ExtraCost) / e.Quantities[0], e);
             }
 
             if (InferFromCrafting && proposals.Count == 0)
@@ -756,6 +796,15 @@ namespace VintageE
             }
 
             apply:
+            // Forward shares: a lower one also replaces a value the same kind of share gave before; with a proposal from
+            // working backwards for the same item, the lower counts (the cheapest way to make it wins).
+            foreach (var kv in shares)
+            {
+                double v = proposals.TryGetValue(kv.Key, out double back) ? Math.Min(back, kv.Value) : kv.Value;
+                if (Values.ContainsKey(kv.Key)) jointLowered[kv.Key] = jointLowered.TryGetValue(kv.Key, out int n) ? n + 1 : 1;
+                proposals[kv.Key] = v;
+                proposalVia[kv.Key] = v == kv.Value ? shareVia[kv.Key] : proposalVia[kv.Key];
+            }
             foreach (var kv in proposals)
             {
                 SetValue(kv.Key, kv.Value);

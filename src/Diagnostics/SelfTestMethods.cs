@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
@@ -35,7 +36,8 @@ namespace VintageE
                 EmcReport r = EmcDiagnose.Run(mod, sapi, null, "en", "draftmethods", domain, null);
                 string text = r.PlainText(sapi.World);
                 File.WriteAllText(Path.Combine(VintageEModSystem.DataFolder(sapi), "diagnose-draftmethods-" + domain + ".txt"), text);
-                Check(!text.Contains("vintagee:diag-"), "methods: drafted a method file for " + domain + " (" + Line1(text, "Drafted") + ")");
+                // A draft with nothing in it must say why (a folder whose files aren't recipe objects, say).
+                Check(!text.Contains("vintagee:diag-") && (!text.Contains("Drafted 0 method(s)") || text.Contains("left out of the draft")), "methods: drafted a method file for " + domain + " (" + Line1(text, "Drafted") + ")");
             }
             // And the author's check for every mod that sends crafting methods (Vintage-E's own files for other mods included).
             foreach (string domain in mod.Methods.Mods.Where(m => m != VintageEModSystem.ModId).Take(40).ToList())
@@ -99,6 +101,23 @@ namespace VintageE
             Check(bad.Methods.Count == 1 && bad.Methods[0].Recipes.Count == 1 && bad.Methods[0].Recipes[0].Code == "ok" && bad.Problems.Any(p => p.Path.EndsWith("quantiy") && p.Message.Contains("\"quantity\"")),
                 "methods: only the good recipe is kept, a misspelt key is a warning with a suggestion (" + bad.Methods.FirstOrDefault()?.Recipes.Count + " kept)");
 
+            // Named inputs: a name on an exact code is ignored, two inputs with one name and more than 8 names are refused,
+            // "true" as a string, an empty input list with a worn tool, a typed machine code, the default code by position.
+            MethodDoc rules = ParseTest(@"{ ""format"": 1, ""methods"": [ { ""code"": ""r"", ""machine"": ""block:mypress-*"", ""recipes"": [
+                { ""inputs"": [ { ""code"": ""game:stone-granite"", ""name"": ""rock"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"", ""main"": ""true"" } ] },
+                { ""code"": ""off"", ""enabled"": ""false"", ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"" } ] },
+                { ""code"": ""dup"", ""inputs"": [ { ""code"": ""game:ingot-*"", ""name"": ""m"" }, { ""code"": ""game:plate-*"", ""name"": ""m"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"" } ] },
+                { ""code"": ""many"", ""inputs"": [ { ""code"": ""game:a-*"", ""name"": ""a"" }, { ""code"": ""game:b-*"", ""name"": ""b"" }, { ""code"": ""game:c-*"", ""name"": ""c"" }, { ""code"": ""game:d-*"", ""name"": ""d"" }, { ""code"": ""game:e-*"", ""name"": ""e"" },
+                    { ""code"": ""game:f-*"", ""name"": ""f"" }, { ""code"": ""game:g-*"", ""name"": ""g"" }, { ""code"": ""game:h-*"", ""name"": ""h"" }, { ""code"": ""game:i-*"", ""name"": ""i"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"" } ] },
+                { ""code"": ""toolonly"", ""tools"": [ { ""code"": ""game:hammer-copper"", ""wear"": 1 } ], ""outputs"": [ { ""code"": ""game:gravel-granite"" } ] }
+            ] } ] }");
+            MethodDef rm = rules.Methods.FirstOrDefault();
+            Check(rm != null && rm.Machine == "block:vintagee:mypress-*", "methods: a typed machine code gets its domain after \"block:\" (" + rm?.Machine + ")");
+            Check(rm != null && rm.Recipes.Any(rc => rc.Code == "#1" && rc.Inputs[0].Name == null && rc.Outputs[0].Main), "methods: a name on an exact code is ignored, and \"true\" as a string counts (" + string.Join("; ", rules.Problems) + ")");
+            Check(rm != null && rm.SwitchedOffInDocument == 1 && !rm.Recipes.Any(rc => rc.Code == "off"), "methods: \"enabled\": \"false\" switches a recipe off, and is counted");
+            Check(rules.Problems.Any(p => p.Error && p.Message.Contains("two inputs are named")) && rules.Problems.Any(p => p.Error && p.Message.Contains("more than 8 named inputs")), "methods: two inputs with one name, and more than 8 names, are refused");
+            Check(rm != null && rm.Recipes.Any(rc => rc.Code == "toolonly"), "methods: a recipe with only a worn tool is kept (its wear is the cost)");
+
             MethodDoc newer = ParseTest(@"{ ""format"": 2, ""methods"": [] }");
             Check(!newer.Usable && newer.Error != null && newer.Error.Contains("newer"), "methods: a newer format is left out, saying to update (" + newer.Error + ")");
             MethodDoc notJson = ParseTest("{ not json");
@@ -129,10 +148,18 @@ namespace VintageE
             MethodDoc d = MethodParser.Parse(@"{ ""format"": 1, ""methods"": [ { ""code"": ""reader"", ""readers"": [ { ""from"": ""attribute"", ""collectible"": ""block:game:nosuchblock-*"", ""attribute"": ""x"", ""recipe"": { ""inputs"": [], ""outputs"": [] } } ] } ] }",
                 "vintagee", "self-test", "file", sapi);
             Check(d.Problems.Any(p => p.Error && p.Message.Contains("no block or item matches")), "methods: a reader whose blocks don't exist says so");
-            MethodDoc assets = MethodParser.Parse(@"{ ""format"": 1, ""methods"": [ { ""code"": ""grid"", ""readers"": [ { ""from"": ""assets"", ""folder"": ""recipes/grid"", ""domain"": ""game"",
-                ""recipe"": { ""code"": ""$code"", ""inputs"": [ { ""each"": ""$ingredients.P"", ""code"": ""$code"" } ], ""outputs"": [ { ""code"": ""$output.code"", ""type"": ""$output.type"" } ] } } ] } ] }",
+            // The game's barrel recipes, read the way a mod's own would be: stacks without a domain get the files' ("game").
+            MethodDoc assets = MethodParser.Parse(@"{ ""format"": 1, ""methods"": [ { ""code"": ""barrel"", ""readers"": [ { ""from"": ""assets"", ""folder"": ""recipes/barrel"", ""domain"": ""game"",
+                ""recipe"": { ""code"": ""$code"", ""inputs"": [ { ""each"": ""$ingredients"", ""code"": ""$code"", ""type"": ""$type"", ""quantity"": ""$quantity"", ""litres"": ""$litres"", ""name"": ""$name"", ""allowedVariants"": ""$allowedVariants"", ""skipVariants"": ""$skipVariants"" } ],
+                    ""outputs"": [ { ""code"": ""$output.code"", ""type"": ""$output.type"", ""quantity"": ""$output.stackSize"", ""litres"": ""$output.litres"" } ] } } ] } ] }",
                 "vintagee", "self-test", "file", sapi);
-            Check(assets.Usable && assets.Methods.Count == 1 && !assets.Problems.Any(p => p.Message.Contains("no recipe files")), "methods: an assets reader finds the game's own recipe files (" + assets.Methods.FirstOrDefault()?.ReadRecipes + " recipes made, " + assets.Problems.Count + " problems)");
+            MethodRecipe read = assets.Methods.FirstOrDefault()?.Recipes.FirstOrDefault();
+            Check(assets.Usable && assets.Methods.Count == 1 && assets.Methods[0].ReadRecipes > 0 && read != null && read.Outputs.All(o => o.Code.StartsWith("game:", StringComparison.Ordinal)),
+                "methods: an assets reader makes recipes from the game's own recipe files, in their domain (" + assets.Methods.FirstOrDefault()?.ReadRecipes + " recipes made, " + assets.Problems.Count(p => p.Error) + " left out; first: " + read?.Outputs.FirstOrDefault()?.Code
+                + (assets.Problems.Count > 0 ? "; e.g. " + assets.Problems[0] : "") + ")");
+            // "each" over an object goes through its values (grid recipes keep their ingredients as a map).
+            var mapped = MethodParser.Eval(JObject.Parse(@"{ ""inputs"": [ { ""each"": ""$ingredients"", ""code"": ""$code"" } ] }"), JObject.Parse(@"{ ""ingredients"": { ""P"": { ""code"": ""game:a"" }, ""S"": { ""code"": ""game:b"" } } }")) as JObject;
+            Check((mapped?["inputs"] as JArray)?.Count == 2, "methods: \"each\" over a map makes one per value");
         }
 
         void CheckMethodSolver()
@@ -184,7 +211,11 @@ namespace VintageE
                       ""outputs"": [ { ""code"": ""game:metalplate-{metal}"" } ], ""costs"": { ""energy"": { ""unit"": ""testgen"", ""amount"": 10 } } },
                     { ""code"": ""stone"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""tools"": [ { ""code"": ""game:hammer-copper"", ""wear"": 1 } ],
                       ""outputs"": [ { ""code"": ""vintagee:philosophersstone"" } ], ""costs"": { ""energy"": { ""unit"": ""testpower"", ""amount"": 100 }, ""seconds"": 10 } },
-                    { ""code"": ""typo"", ""inputs"": [ { ""code"": ""game:ingot-coper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-dark"" } ] }
+                    { ""code"": ""typo"", ""inputs"": [ { ""code"": ""game:ingot-coper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-dark"" } ] },
+                    { ""code"": ""split"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""game:metalbit-copper"", ""quantity"": 5 }, { ""code"": ""game:nugget-nativecopper"" } ], ""costs"": { ""emc"": 50000 } },
+                    { ""code"": ""byproduct"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"", ""main"": true }, { ""code"": ""game:metalbit-copper"", ""quantity"": 2 } ], ""costs"": { ""emc"": 50000 } },
+                    { ""code"": ""table"", ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""oneOf"": [ { ""code"": ""game:nugget-nativecopper"", ""weight"": 3 }, { ""code"": ""game:nugget-nativegold"", ""weight"": 1 } ], ""costs"": { ""emc"": 50000 } },
+                    { ""code"": ""heated"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-dark"" } ], ""costs"": { ""heat"": { ""temperature"": 1000, ""seconds"": 10 }, ""emc"": 50000 } }
                   ] },
                 { ""code"": ""selftest-off"", ""name"": ""Switched off"", ""recipes"": [ { ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ] } ] }
             ] }";
@@ -203,6 +234,7 @@ namespace VintageE
             Check(mod.Methods.Collected, "methods: crafting methods were collected at start-up (" + mod.Methods.Docs.Count + " documents)");
             var savedOff = mod.Config.DisabledMethods.ToList();
             var savedPrices = new Dictionary<string, double>(mod.Config.EnergyEmc);
+            bool savedEnergy = mod.Config.ChargeMethodEnergy, savedHeat = mod.Config.ChargeMethodHeat, savedWear = mod.Config.ChargeMethodWear;
             Item plateItem = sapi.World.GetItem(new AssetLocation("game:metalplate-copper"));
             double copperPlate = plateItem != null && before.Values.TryGetValue(plateItem, out double cp) ? cp : 0;
             EventBusListenerDelegate listener = OnTestCollect;
@@ -212,7 +244,7 @@ namespace VintageE
                 mod.Config.DisabledMethods.Add("vintagee:selftest-off");
                 mod.CollectMethods("self-test");
                 MethodDoc doc = mod.Methods.Docs.FirstOrDefault(dd => dd.Route == "code" && dd.ModId == "vintagee");
-                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 6, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
+                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 10, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
                 Check(mod.Methods.Fingerprint != fingerprintBefore, "methods: the cache's fingerprint changes with the methods");
                 EmcMappingReport report = mod.RecalculateEmc("self-test: crafting methods");
                 Check(report != null, "methods: mapped with the test methods");
@@ -245,6 +277,22 @@ namespace VintageE
                 Check(typo != null && typo.Skipped != null && typo.BadCode == "game:ingot-coper", "methods: a code that matches nothing leaves the recipe out and names the code (" + typo?.Skipped + ")");
                 Check(results.Any(rr => rr.Recipe.Method.Code == "vintagee:selftest-off" && rr.Disabled) && !convs.Any(c => c.Method.Method.Code == "vintagee:selftest-off"), "methods: a switched-off method makes nothing");
                 Check(!report.SupersedeHits.Contains("NoSuchRecipeList"), "methods: a supersede entry that matches nothing is noted");
+                Check(report.Methods == mod.Methods, "methods: the report keeps the methods it was mapped with");
+
+                // Shared out, a byproduct, a weighted table, heat: through the mapper on a live server.
+                Conversion split = convs.FirstOrDefault(c => c.Method.Recipe.Code == "split");
+                Check(split != null && split.Output == null && split.JointOutputs != null && split.JointOutputs.Count() == 2, "methods: two outputs and no main are shared out (" + (split == null ? "no conversion" : (split.JointOutputs?.Count() ?? 0) + " shared") + ")");
+                Conversion by = convs.FirstOrDefault(c => c.Method.Recipe.Code == "byproduct");
+                Check(by != null && by.Output?.Code.ToString() == "vintagee:matter-red" && by.Returned != null && by.Returned.Any(b => b.Key.Code.ToString() == "game:metalbit-copper" && Math.Abs(b.Value - 2) < 1e-9)
+                    && by.Method.Byproducts != null && by.Method.Byproducts.Any(b => b.Code.ToString() == "game:metalbit-copper"), "methods: a main output and a byproduct: the byproduct is taken off its cost");
+                Conversion table = convs.FirstOrDefault(c => c.Method.Recipe.Code == "table");
+                double Share(Conversion c, string code) => c?.JointOutputs?.Where(o => o.Key.Code.ToString() == code).Select(o => o.Value).DefaultIfEmpty(0).First() ?? 0;
+                Check(table != null && Math.Abs(Share(table, "game:nugget-nativecopper") - 0.75) < 1e-9 && Math.Abs(Share(table, "game:nugget-nativegold") - 0.25) < 1e-9,
+                    "methods: a oneOf table makes each by its weight: 3 to 1 is 0.75 and 0.25 (" + Share(table, "game:nugget-nativecopper") + ", " + Share(table, "game:nugget-nativegold") + ")");
+                Conversion heated = convs.FirstOrDefault(c => c.Method.Recipe.Code == "heated");
+                MethodCostLine heat = heated?.Costs?.FirstOrDefault(k => k.Kind == "heat");
+                Check(heat != null && Math.Abs(heat.Amount - 10000) < 1e-6 && Math.Abs(heat.Emc - 10000 * report.MethodPrices.HeatRate) < 1e-6 && Math.Abs(heated.ExtraCost - 50000 - heat.Emc) < 1e-6,
+                    "methods: heat costs 1000 °C × 10 s at the fuel rate (" + heat?.Emc + " EMC at " + report.MethodPrices?.HeatRate + " per °C·s)");
 
                 // The explanation and the doctor.
                 Item dark = sapi.World.GetItem(new AssetLocation("vintagee:matter-dark"));
@@ -261,9 +309,14 @@ namespace VintageE
                     return text;
                 }
                 string overview = Diag("", "");
-                Check(overview.Contains("Other mods' crafting methods") && overview.Contains("Crafting methods: 1 mod(s)"), "methods: the check-up has the crafting-methods cards (" + Line1(overview, "Crafting methods:") + ")");
-                Check(overview.Contains("Free power:") && overview.Contains("more than 1 EMC a second"), "methods: the check-up warns about the stone at 20 EMC a second from power (" + Line1(overview, "Free power") + ")");
-                Check(overview.Contains("Recipes:") && overview.Contains("left out"), "methods: the check-up lists the recipe left out (" + Line1(overview, "Recipes:") + ")");
+                // Other mods (Vintage-E's own files for them) may send methods too: at least this one.
+                Check(overview.Contains("Other mods' crafting methods") && Regex.IsMatch(Line1(overview, "Crafting methods:"), @"Crafting methods: [1-9]\d* mod\(s\)"), "methods: the check-up has the crafting-methods cards (" + Line1(overview, "Crafting methods:") + ")");
+                Check(Line1(overview, "Free power:").Contains("from power alone (up to 20)"), "methods: the check-up warns about the stone at 20 EMC a second from power (" + Line1(overview, "Free power") + ")");
+                Check(Regex.IsMatch(Line1(overview, "Recipes:"), @", [1-9]\d* left out"), "methods: the check-up counts the recipe left out (" + Line1(overview, "Recipes:") + ")");
+                Check(overview.Contains("\"supersedes\" entries match no recipe list") && overview.Contains("NoSuchRecipeList"), "methods: the check-up names the supersede entry that matches nothing");
+                // The check-up's own cards stay under its heading: the crafting methods come after them.
+                int checkup = overview.IndexOf("Check-up", StringComparison.Ordinal), methodsAt = overview.IndexOf("Other mods' crafting methods", StringComparison.Ordinal), swings = overview.IndexOf("Value swings", StringComparison.Ordinal);
+                Check(checkup >= 0 && methodsAt > checkup && (swings < 0 || swings < methodsAt), "methods: the crafting-methods heading comes after the check-up's own cards");
                 string all = Diag("methods", "");
                 Check(all.Contains("selftest-press") && all.Contains("dark") && all.Contains("Used: this is where the value comes from"), "methods: /emc methods lists the recipes and what became of them");
                 string one = Diag("methods", "vintagee:selftest-press");
@@ -282,19 +335,40 @@ namespace VintageE
                 foreach (string sym in new[] { "methodnovalue", "powercost", "powerfarm", "chancevalue" }) Diag("symptom", sym);
                 string chance = Diag("symptom", "chancevalue");
                 Check(chance.Contains("25%") && chance.Contains("about 4 runs"), "methods: the chance symptom explains the 1 / chance rule (" + Line1(chance, "runs") + ")");
+                Diag("item", "game:nugget-nativecopper");
+                string bits = Diag("item", "game:metalbit-copper");
+                Check(bits.Contains("Made by Self-test press"), "methods: the item report lists a recipe that makes it as a byproduct (" + Line1(bits, "Made by") + ")");
+                Diag("trace", "game:nugget-nativecopper");
+                string bitsDump = EmcExplain.Dump(mod, sapi, new ItemStack(sapi.World.GetItem(new AssetLocation("game:metalbit-copper"))), null, false, "en").PlainText(sapi.World);
+                Check(!bitsDump.Contains("vintagee:dumpgui"), "methods: /emc dump of something a method shares out has every lang key");
 
-                // Fixes: a price, a cost kind, a method off.
-                string outcome = EmcDiagnose.ApplyFix(mod, null, "energyprice", "vintagee:testpower=1", "en");
+                // Fixes: the safe price (the stone's 100 units in 10 s at 2 EMC is 20 EMC a second: 0.1 a unit is 1 a second),
+                // a price, the cost kinds, a method off and on, asking the mods again.
+                string outcome = EmcDiagnose.ApplyFix(mod, null, "safeprice", "vintagee:testpower", "en");
+                Check(mod.Config.EnergyEmc.TryGetValue("vintagee:testpower", out double safe) && Math.Abs(safe - 0.1) < 1e-9, "methods: the safe-price fix sets the most that stays under 1 EMC a second (" + outcome + ")");
+                outcome = EmcDiagnose.ApplyFix(mod, null, "methodcost", "heat=false", "en");
+                Check(!mod.Config.ChargeMethodHeat, "methods: the cost-kind fix switches heat costs off (" + outcome + ")");
+                outcome = EmcDiagnose.ApplyFix(mod, null, "methodcost", "heat=true", "en");
+                Check(mod.Config.ChargeMethodHeat, "methods: and on again (" + outcome + ")");
+                outcome = EmcDiagnose.ApplyFix(mod, null, "energyprice", "vintagee:testpower=1", "en");
                 Check(mod.Config.EnergyEmc.TryGetValue("vintagee:testpower", out double set) && set == 1 && outcome.Contains("testpower"), "methods: the price fix sets EnergyEmc (" + outcome + ")");
                 outcome = EmcDiagnose.ApplyFix(mod, null, "method", "off:vintagee:selftest-press", "en");
                 Check(mod.Config.DisabledMethods.Contains("vintagee:selftest-press"), "methods: the switch-off fix adds to DisabledMethods (" + outcome + ")");
                 outcome = EmcDiagnose.ApplyFix(mod, null, "method", "on:vintagee:selftest-press", "en");
                 Check(!mod.Config.DisabledMethods.Contains("vintagee:selftest-press"), "methods: the switch-on fix takes it out again (" + outcome + ")");
+                // A wildcard entry is taken out by the method's own "switch on" link too, and the answer says which.
+                mod.Config.DisabledMethods.Add("vintagee:selftest-p*");
+                outcome = EmcDiagnose.ApplyFix(mod, null, "method", "on:vintagee:selftest-press", "en");
+                Check(!mod.Config.DisabledMethods.Contains("vintagee:selftest-p*") && outcome.Contains("vintagee:selftest-p*"), "methods: switching a method on takes out a wildcard entry that switched it off (" + outcome + ")");
+                outcome = EmcDiagnose.ApplyFix(mod, null, "methodsreload", "", "en");
+                Check(outcome != null && !outcome.Contains("vintagee:diag") && mod.Methods.Docs.Any(dd => dd.Route == "code" && dd.ModId == "vintagee"), "methods: the fix that asks the mods again collects the methods (" + outcome + ")");
                 report = mod.RecalculateEmc("self-test: crafting methods, price 1");
                 convs = report?.Conversions.Where(c => c.Method != null).ToList() ?? new List<Conversion>();
                 Check(report != null && Math.Abs(Each("dark") - 228) < 0.01 && V("vintagee:matter-dark") <= 228.01, "methods: with the price at 1, dark matter costs 128 + 100 = 228 (" + Each("dark") + ")");
 
                 // A mod saying its methods changed is counted (the remap it asks for comes a second later).
+                // When it comes, the methods are those of the last mapping again (the clean-up below maps with them), so it
+                // collects and doesn't remap.
                 int asked = mod.MethodChangeRequests.TryGetValue("vintagee", out int n0) ? n0 : 0;
                 sapi.Event.PushEvent(MethodRegistry.ChangedEvent, new StringAttribute("vintagee"));
                 Check(mod.MethodChangeRequests.TryGetValue("vintagee", out int n1) && n1 == asked + 1, "methods: vintagee:methodschanged is heard");
@@ -306,6 +380,9 @@ namespace VintageE
                 mod.Config.DisabledMethods.AddRange(savedOff);
                 mod.Config.EnergyEmc.Clear();
                 foreach (var kv in savedPrices) mod.Config.EnergyEmc[kv.Key] = kv.Value;
+                mod.Config.ChargeMethodEnergy = savedEnergy;
+                mod.Config.ChargeMethodHeat = savedHeat;
+                mod.Config.ChargeMethodWear = savedWear;
                 mod.SaveConfig();
                 mod.CollectMethods("self-test: done");
             }

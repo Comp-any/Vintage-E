@@ -99,10 +99,18 @@ namespace VintageE
         public List<MethodRecipeResult> MethodResults = new List<MethodRecipeResult>();
         /// <summary>The price of each energy unit, of heat and of machine time used for this mapping (null from the cache).</summary>
         public MethodPrices MethodPrices;
+        /// <summary>Other mods' crafting methods this mapping was made with (reports tie MethodResults to these recipes).</summary>
+        public MethodSnapshot Methods;
+        /// <summary>Every recipe list found on a mod system when mapping: its label → the mod it belongs to (null = the game).</summary>
+        public Dictionary<string, string> RecipeListOwners = new Dictionary<string, string>(StringComparer.Ordinal);
+        /// <summary>The same lists' recipe class names (label → type name), for the doctor's "recipe data Vintage-E can't read".</summary>
+        public Dictionary<string, string> RecipeListTypes = new Dictionary<string, string>(StringComparer.Ordinal);
         /// <summary>Recipe lists left out because a crafting method describes them (label → the method that superseded it).</summary>
         public Dictionary<string, string> SupersededLists = new Dictionary<string, string>();
         /// <summary>The "supersedes" entries that matched a recipe list.</summary>
         public HashSet<string> SupersedeHits = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>"supersedes" entries that named another mod's recipe list (entry → that list's mod).</summary>
+        public Dictionary<string, string> SupersedeRefused = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         Dictionary<CollectibleObject, List<Conversion>> byOutput;
 
@@ -195,6 +203,7 @@ namespace VintageE
             MethodSnapshot methods = Methods ?? VintageEModSystem.Of(sapi)?.Methods ?? MethodSnapshot.Empty;
             MethodPrices prices = MethodPricing.Compute(methods, config, fixedValues, index, rules.FuelReference);
             report.MethodPrices = prices;
+            report.Methods = methods;
             var collector = new ConversionCollector(sapi, index, logger, config)
             {
                 Constructions = rules.Constructions,
@@ -208,6 +217,9 @@ namespace VintageE
             report.MethodResults = collector.MethodResults;
             report.SupersededLists = collector.SupersededLists;
             report.SupersedeHits = collector.SupersedeHits;
+            report.SupersedeRefused = collector.SupersedeRefused;
+            report.RecipeListOwners = collector.RecipeListOwners;
+            report.RecipeListTypes = collector.RecipeListTypes;
             if (ConversionFilter != null) collector.Conversions.RemoveAll(c => !ConversionFilter(c));
             report.SkippedRecipes = collector.SkippedRecipes;
             report.Skipped = collector.Skipped;
@@ -221,15 +233,17 @@ namespace VintageE
             {
                 if (conv.JointOutputs != null)
                 {
+                    bool simple = conv.IsSimpleJoint;
                     var joint = new EmcSolver<CollectibleObject>.JointEdge
                     {
-                        Input = conv.Inputs[0].Choices[0],
-                        InputQuantity = conv.Inputs[0].Quantity,
+                        // A crafting method's shared-out recipe may have no ingredient at all (power alone): only the simple kind has one.
+                        Input = simple ? conv.Inputs[0].Choices[0] : null,
+                        InputQuantity = simple ? conv.Inputs[0].Quantity : 1,
                         Outputs = conv.JointOutputs.Select(o => o.Key).ToArray(),
                         OutputQuantities = conv.JointOutputs.Select(o => o.Value).ToArray(),
                         Tag = conv
                     };
-                    if (!conv.IsSimpleJoint)
+                    if (!simple)
                     {
                         // Several ingredients (or choices, costs, things handed back): the solver shares out what they all cost.
                         joint.Input = null;
@@ -274,6 +288,8 @@ namespace VintageE
             //    Then, only if the server owner asked for it, a flat fallback value for anything still left.
             var extra = new Dictionary<CollectibleObject, double>();
             var extraOrigin = new Dictionary<CollectibleObject, string>();
+            // A guess lowered to what a recipe makes it for: that recipe, so reports see where the value comes from.
+            var extraVia = new Dictionary<CollectibleObject, Conversion>();
             var currency = new HashSet<CollectibleObject>();
             // The gray list is valued by recipes only: every guessing step below leaves it alone.
             var noGuess = new HashSet<CollectibleObject>(excluded);
@@ -506,6 +522,7 @@ namespace VintageE
                     double oldValue = extra[kv.Key];
                     extra[kv.Key] = kv.Value.per;
                     extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "recipe ({0}), cheaper than its {1} of {2:0.##}", kv.Value.conv.Source, was ?? "guessed value", oldValue);
+                    extraVia[kv.Key] = kv.Value.conv;
                     report.CheaperRecipeCount++;
                 }
                 foreach (var kv in dearer)
@@ -515,6 +532,7 @@ namespace VintageE
                     double oldValue = extra[kv.Key];
                     extra[kv.Key] = kv.Value.yield;
                     extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "what it yields ({0}), more than its {1} of {2:0.##}", kv.Value.conv.Source, was ?? "guessed value", oldValue);
+                    extraVia.Remove(kv.Key);
                     report.CheaperRecipeCount++;
                 }
                 solver = Stage(solver, force: true);
@@ -561,7 +579,11 @@ namespace VintageE
             foreach (CollectibleObject c in report.Values.Keys)
             {
                 string origin;
-                if (extraOrigin.TryGetValue(c, out string how)) origin = how;
+                if (extraOrigin.TryGetValue(c, out string how))
+                {
+                    origin = how;
+                    if (extraVia.TryGetValue(c, out Conversion lowered)) report.Via[c] = lowered;
+                }
                 else if (fixedValues.ContainsKey(c)) origin = "base value";
                 else if (solver.Via.TryGetValue(c, out object via))
                 {

@@ -71,6 +71,8 @@ namespace VintageE
 
         public void CollectAll()
         {
+            // Other mods' crafting methods first: what they supersede depends on whether they made anything.
+            CollectFromMethods();
             CollectRecipeList(sapi.World.GridRecipes, "grid");
             CollectFromModSystems();
             CollectFromCollectibleProperties();
@@ -81,7 +83,6 @@ namespace VintageE
             CollectFromMolds();
             CollectFromBehaviors();
             CollectCustomRecipes();
-            CollectFromMethods();
         }
 
         /// <summary>Recipes written by hand, as ordinary crafting recipes.</summary>
@@ -124,9 +125,11 @@ namespace VintageE
         void CollectFromModSystems()
         {
             // A crafting method that describes a recipe list (with its power cost) replaces the free copy read here.
-            Dictionary<string, string> supersede = SupersedeTargets();
+            Dictionary<string, MethodDef> supersede = SupersedeTargets();
             foreach (DiscoveredRecipeList found in DiscoverRecipeLists(sapi, logger))
             {
+                RecipeListOwners[found.Label] = found.Owner;
+                RecipeListTypes[found.Label] = found.ElementType?.Name;
                 string by = SupersededBy(found, supersede);
                 if (by != null)
                 {
@@ -146,6 +149,8 @@ namespace VintageE
             public IEnumerable Recipes;
             /// <summary>The recipe type the list holds.</summary>
             public Type ElementType;
+            /// <summary>The mod whose mod system holds the list.</summary>
+            public string Owner;
             internal AlloyShape Alloy;
             internal CookingShape Cooking;
         }
@@ -159,23 +164,25 @@ namespace VintageE
             foreach (ModSystem system in sapi.ModLoader.Systems)
             {
                 if (system == null || system is VintageEModSystem) continue;
+                string owner = null;
+                try { owner = system.Mod?.Info?.ModID; } catch { /* no mod info */ }
                 for (Type t = system.GetType(); t != null && t != typeof(ModSystem) && t != typeof(object); t = t.BaseType)
                 {
                     foreach (FieldInfo field in t.GetFields(flags))
                     {
-                        Discover(field.FieldType, () => field.GetValue(system), $"{system.GetType().Name}.{field.Name}", result, seen, logger);
+                        Discover(field.FieldType, () => field.GetValue(system), $"{system.GetType().Name}.{field.Name}", result, seen, logger, owner);
                     }
                     foreach (PropertyInfo prop in t.GetProperties(flags))
                     {
                         if (!prop.CanRead || prop.GetIndexParameters().Length > 0) continue;
-                        Discover(prop.PropertyType, () => prop.GetValue(system), $"{system.GetType().Name}.{prop.Name}", result, seen, logger);
+                        Discover(prop.PropertyType, () => prop.GetValue(system), $"{system.GetType().Name}.{prop.Name}", result, seen, logger, owner);
                     }
                 }
             }
             return result;
         }
 
-        static void Discover(Type declaredType, Func<object> getter, string label, List<DiscoveredRecipeList> result, HashSet<object> seen, ILogger logger)
+        static void Discover(Type declaredType, Func<object> getter, string label, List<DiscoveredRecipeList> result, HashSet<object> seen, ILogger logger, string owner = null)
         {
             try
             {
@@ -183,7 +190,7 @@ namespace VintageE
                 {
                     object registry = getter();
                     FieldInfo recipesField = registry?.GetType().GetField("Recipes");
-                    if (recipesField != null) Discover(recipesField.FieldType, () => recipesField.GetValue(registry), label, result, seen, logger);
+                    if (recipesField != null) Discover(recipesField.FieldType, () => recipesField.GetValue(registry), label, result, seen, logger, owner);
                     return;
                 }
 
@@ -194,7 +201,7 @@ namespace VintageE
                 CookingShape cooking = null;
                 if (!typeof(IRecipeBase).IsAssignableFrom(element) && !AlloyShape.TryCreate(element, out shape) && !CookingShape.TryCreate(element, out cooking)) return;
                 if (!(getter() is IEnumerable list) || !seen.Add(list)) return;
-                result.Add(new DiscoveredRecipeList { Label = label, Recipes = list, Alloy = shape, Cooking = cooking, ElementType = element });
+                result.Add(new DiscoveredRecipeList { Label = label, Recipes = list, Alloy = shape, Cooking = cooking, ElementType = element, Owner = owner });
             }
             catch (Exception e)
             {

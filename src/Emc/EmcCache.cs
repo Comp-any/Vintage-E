@@ -64,9 +64,10 @@ namespace VintageE
             return Path.Combine(dir, "emc-" + world + ".json");
         }
 
-        public static string Fingerprint(ICoreServerAPI sapi, VintageEModSystem mod, ILogger logger, VintageEConfig config = null)
+        public static string Fingerprint(ICoreServerAPI sapi, VintageEModSystem mod, ILogger logger, VintageEConfig config = null, MethodSnapshot methods = null)
         {
             config ??= mod.Config;
+            methods ??= mod.Methods;
             using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
             var sb = new StringBuilder(4096);
             void Flush()
@@ -98,7 +99,7 @@ namespace VintageE
             foreach (RelativeValueRule r in mod.Rules.Relative) sb.Append("rel=").Append(r.Source).Append('|').Append(r.Code).Append('=').Append(r.Of).Append('*').Append(r.Ratio.ToString("R")).Append('\n');
             sb.Append("hoursPerDay=").Append(sapi.World.Calendar?.HoursPerDay).Append('\n');
             // Other mods' crafting methods (files, what their code sent, the recipes their readers found).
-            sb.Append("methods=").Append(mod.Methods?.Fingerprint ?? "").Append('\n');
+            sb.Append("methods=").Append(methods?.Fingerprint ?? "").Append('\n');
             Flush();
 
             // Every block/item with the per-item data the mapper reads
@@ -106,6 +107,9 @@ namespace VintageE
             {
                 if (c?.Code == null) continue;
                 sb.Append(c.ItemClass == EnumItemClass.Block ? "b:" : "i:").Append(c.Code).Append('#').Append(c.GetType().Name);
+                // Methods price tool wear by durability and heat by what fuels burn.
+                sb.Append("|dur=").Append(c.Durability);
+                if (c.CombustibleProps != null) sb.Append("|burn=").Append(c.CombustibleProps.BurnTemperature).Append('x').Append(c.CombustibleProps.BurnDuration.ToString("R"));
                 AppendStack(sb, "smelt", c.CombustibleProps?.SmeltedStack?.ResolvedItemstack, c.CombustibleProps?.SmeltedRatio ?? 0);
                 AppendStack(sb, "grind", c.GrindingProps?.GroundStack?.ResolvedItemstack, 1);
                 AppendStack(sb, "crush", c.CrushingProps?.CrushedStack?.ResolvedItemstack, c.CrushingProps?.Quantity?.avg ?? 0);

@@ -43,7 +43,8 @@ namespace VintageE
         public List<MethodCostLine> Costs;
 
         /// <summary>A shared-out process with one ingredient slot, one choice, nothing handed back and no extra cost: the old kind the solver has always handled.</summary>
-        public bool IsSimpleJoint => JointOutputs != null && Inputs.Count == 1 && Inputs[0].Choices.Length == 1 && Returned == null && ExtraCost == 0 && !Inputs[0].NoInfer;
+        /// <remarks>Other mods' crafting methods never take this path: theirs are costed forwards, the cheapest share winning, and a crafting-kind one is only worked backwards as crafting is.</remarks>
+        public bool IsSimpleJoint => JointOutputs != null && Method == null && Inputs.Count == 1 && Inputs[0].Choices.Length == 1 && Returned == null && ExtraCost == 0 && !Inputs[0].NoInfer;
 
         public override string ToString() => $"{Source}: {string.Join(" + ", Inputs)} -> {OutputQuantity}x {Output?.Code}";
     }

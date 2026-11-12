@@ -182,9 +182,7 @@ namespace VintageE
             bool sameMods = mod.PreviousMods != null && mod.CurrentMods != null && mod.PreviousMods.Count == mod.CurrentMods.Count && mod.PreviousMods.All(kv => mod.CurrentMods.TryGetValue(kv.Key, out string v) && v == kv.Value);
             if (!sameMods) return result;
             // Other mods' crafting methods changing (a mod updated its document, a reader found new recipes) is a change too.
-            var pm = mod.PreviousMethods ?? new Dictionary<string, string>();
-            var cm = mod.CurrentMethods ?? new Dictionary<string, string>();
-            if (pm.Count != cm.Count || !pm.All(kv => cm.TryGetValue(kv.Key, out string h) && h == kv.Value)) return result;
+            if (MethodsChangedSinceLast(mod)) return result;
             foreach (var kv in x.Report.Values)
             {
                 if (kv.Key?.Code == null || kv.Value <= 0) continue;
@@ -195,10 +193,19 @@ namespace VintageE
             return result.OrderByDescending(s => Math.Max(s.after / s.before, s.before / s.after)).ToList();
         }
 
+        /// <summary>Whether other mods' crafting methods differ from those of the mapping before (then values move on purpose).</summary>
+        static bool MethodsChangedSinceLast(VintageEModSystem mod)
+        {
+            var pm = mod.PreviousMethods ?? new Dictionary<string, string>();
+            var cm = mod.CurrentMethods ?? new Dictionary<string, string>();
+            return pm.Count != cm.Count || !pm.All(kv => cm.TryGetValue(kv.Key, out string h) && h == kv.Value);
+        }
+
         static void Swings(Ctx x, bool full)
         {
             var swings = SwingList(x);
             if (x.Mod.PreviousValues == null) { x.Info(x.L("diag-swing-none-yet")); return; }
+            if (swings.Count == 0 && MethodsChangedSinceLast(x.Mod)) { x.Info(x.L("diag-swing-methods")); return; }
             if (swings.Count == 0) { x.Ok(x.L("diag-swing-ok")); return; }
             x.Warn(x.L("diag-swing-found", swings.Count));
             x.Explain(x.L("diag-swing-why"));

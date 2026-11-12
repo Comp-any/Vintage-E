@@ -19,6 +19,11 @@ namespace VintageE
         /// <summary>The code that matched nothing, when that's why.</summary>
         public string BadCode;
         public bool Disabled;
+        /// <summary>Copies left out for a reason of their own (it makes itself, it nets to nothing), and the last such reason.</summary>
+        public int FailedVariants;
+        public string VariantFailure;
+        /// <summary>Things worth knowing about how it was read (a tool with no durability, so its wear is free).</summary>
+        public List<string> Notes = new List<string>();
     }
 
     public partial class ConversionCollector
@@ -32,31 +37,56 @@ namespace VintageE
         public readonly Dictionary<string, string> SupersededLists = new Dictionary<string, string>(StringComparer.Ordinal);
         /// <summary>The "supersedes" entries that matched a recipe list (the rest name nothing, for the doctor).</summary>
         public readonly HashSet<string> SupersedeHits = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>"supersedes" entries that named another mod's recipe list (entry → the list's mod), which a method may not replace.</summary>
+        public readonly Dictionary<string, string> SupersedeRefused = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>Every recipe list found on a mod system: its label → the mod it belongs to (null = unknown).</summary>
+        public readonly Dictionary<string, string> RecipeListOwners = new Dictionary<string, string>(StringComparer.Ordinal);
+        public readonly Dictionary<string, string> RecipeListTypes = new Dictionary<string, string>(StringComparer.Ordinal);
 
         /// <summary>Most combinations of named *s one recipe may expand to, and of tool durabilities per combination.</summary>
         const int MaxVariants = 4000, MaxToolCombos = 32;
 
-        /// <summary>Recipe list names (labels, recipe class names) a switched-on method supersedes → that method's code.</summary>
-        Dictionary<string, string> SupersedeTargets()
+        /// <summary>
+        /// Recipe list names (labels, recipe class names) → the method that supersedes them. Only methods that made at
+        /// least one conversion this mapping count: one whose recipes are all switched off or left out replaces nothing,
+        /// so the list it describes stays.
+        /// </summary>
+        Dictionary<string, MethodDef> SupersedeTargets()
         {
-            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var result = new Dictionary<string, MethodDef>(StringComparer.OrdinalIgnoreCase);
             if (Methods == null) return result;
+            var made = new HashSet<MethodDef>(MethodResults.Where(r => r.Conversions > 0).Select(r => r.Recipe.Method));
             foreach (MethodDef m in Methods.AllMethods)
             {
-                if (MethodSnapshot.IsDisabled(m, null, config.DisabledMethods)) continue;
-                foreach (string s in m.Supersedes) if (!result.ContainsKey(s)) result[s] = m.Code;
+                if (!made.Contains(m)) continue;
+                foreach (string s in m.Supersedes) if (!result.ContainsKey(s)) result[s] = m;
             }
             return result;
         }
 
-        string SupersededBy(DiscoveredRecipeList found, Dictionary<string, string> targets)
+        /// <summary>
+        /// The method that supersedes this list, or null. A method may only replace a list held by its own mod (or one
+        /// its document requires): another mod's, or the game's, stays, so one document can't wipe out smithing.
+        /// </summary>
+        string SupersededBy(DiscoveredRecipeList found, Dictionary<string, MethodDef> targets)
         {
             if (targets.Count == 0) return null;
             foreach (string key in new[] { found.Label ?? "", found.ElementType?.Name ?? "", found.ElementType?.FullName ?? "" })
             {
-                if (key.Length > 0 && targets.TryGetValue(key, out string by)) { SupersedeHits.Add(key); return by; }
+                if (key.Length == 0 || !targets.TryGetValue(key, out MethodDef by)) continue;
+                string owner = found.Owner ?? "?";
+                if (owner != by.ModId && !by.Doc.RequiresMods.Contains(owner)) { SupersedeRefused[key] = owner; continue; }
+                SupersedeHits.Add(key);
+                return by.Code;
             }
             return null;
+        }
+
+        /// <summary>One copy (variant) of a recipe was left out for a reason of its own; the others still count.</summary>
+        static void VariantFailed(MethodRecipeResult result, string why)
+        {
+            result.FailedVariants++;
+            result.VariantFailure = why;
         }
 
         /// <summary>Every recipe of every switched-on crafting method, as conversions with their extra costs.</summary>
@@ -78,7 +108,7 @@ namespace VintageE
                         logger.Warning("EMC: crafting method {0}, recipe {1}: {2}", m.Code, recipe.Code, e);
                     }
                     if (result.Conversions == 0 && result.Skipped == null)
-                        result.Skipped = result.MissingVariants > 0 ? "none of its " + result.MissingVariants + " variants has every output and ingredient it names" : "nothing could be made from it";
+                        result.Skipped = result.VariantFailure ?? (result.MissingVariants > 0 ? "none of its " + result.MissingVariants + " variants has every output and ingredient it names" : "nothing could be made from it");
                     made += result.Conversions;
                 }
                 Count("method " + m.Code, made);
@@ -113,8 +143,11 @@ namespace VintageE
                 groups.Add((s.Name, s, byValue.OrderBy(kv => kv.Key, StringComparer.Ordinal).Select(kv => (kv.Key, kv.Value.ToArray())).ToList()));
             }
             long combos = 1;
-            foreach (var g in groups) combos *= g.values.Count;
-            if (combos > MaxVariants) { result.Skipped = "its named *s make " + combos + " combinations, more than " + MaxVariants; return; }
+            foreach (var g in groups)
+            {
+                combos *= g.values.Count;
+                if (combos > MaxVariants) { result.Skipped = "its named *s make more than " + MaxVariants + " combinations"; return; }
+            }
 
             var captures = new Dictionary<string, string>(StringComparer.Ordinal);
             var picked = new Dictionary<MethodStack, CollectibleObject[]>();
@@ -153,12 +186,14 @@ namespace VintageE
                 if (choices.Length == 0) { Missing(s.Code); return; }
                 double qty = s.IsLitres ? s.Quantity * PortionsPerLitre(choices[0]) : s.Quantity;
                 qty *= s.Chance;
-                inputs.Add(new ConversionInput { Choices = choices, Quantity = qty, Note = s.Chance < 1 ? Pct(s.Chance) + " chance of being used up: counts as " + Num(qty) : null });
+                // An ingredient that is rarely used up is like a tool's wear: never worked out backwards from the recipe.
+                inputs.Add(new ConversionInput { Choices = choices, Quantity = qty, NoInfer = s.Chance < 0.1, Note = s.Chance < 1 ? Pct(s.Chance) + " chance of being used up: counts as " + Num(qty) : null });
                 if (s.Returns != null)
                 {
                     CollectibleObject back = ResolveOne(Fill(s.Returns.Code, captures), s.Returns.Type);
                     if (back == null) { Missing(s.Returns.Code); return; }
-                    double rq = (s.Returns.IsLitres ? s.Returns.Quantity * PortionsPerLitre(back) : s.Returns.Quantity) * s.Returns.Chance;
+                    // Handed back only when the ingredient is used up.
+                    double rq = (s.Returns.IsLitres ? s.Returns.Quantity * PortionsPerLitre(back) : s.Returns.Quantity) * s.Returns.Chance * s.Chance;
                     returned.Add(new KeyValuePair<CollectibleObject, double>(back, rq));
                 }
             }
@@ -175,7 +210,13 @@ namespace VintageE
                 var byQty = new List<(double qty, CollectibleObject[] choices, string note)>();
                 foreach (var g in choices.GroupBy(c => WearShare(c, t)).OrderBy(g => g.Key))
                 {
-                    if (g.Key <= 0) { catalysts.AddRange(g); continue; }
+                    if (g.Key <= 0)
+                    {
+                        catalysts.AddRange(g);
+                        string note = "the tool " + g.First().Code + " has no durability, so its wear costs nothing";
+                        if (t.Wear > 0 && !result.Notes.Contains(note)) result.Notes.Add(note);
+                        continue;
+                    }
                     int dur = Durability(g.First());
                     string note = (t.Wear > 0 && dur > 0 ? "tool wear: " + Num(t.Wear) + " of " + dur + " durability" : "") + (t.BreakChance > 0 ? (t.Wear > 0 && dur > 0 ? ", " : "") + "breaks " + Pct(t.BreakChance) + " of the time" : "");
                     byQty.Add((g.Key, g.ToArray(), note));
@@ -220,7 +261,7 @@ namespace VintageE
             merged.RemoveAll(o => o.qty <= 1e-9 && !o.main);
             if (merged.Count == 0 || merged.Any(o => o.main && o.qty <= 1e-9))
             {
-                result.Skipped = "every output is also an ingredient: it makes nothing new";
+                VariantFailed(result, "every output is also an ingredient: it makes nothing new");
                 return;
             }
 
@@ -228,7 +269,7 @@ namespace VintageE
             double extra = costs.Sum(c => c.Emc);
             if (inputs.Count == 0 && worn.Count == 0 && extra <= 0)
             {
-                result.Skipped = "it has no ingredients and its costs come to 0 EMC here (an energy unit with no price?), so it would make something from nothing";
+                VariantFailed(result, "it has no ingredients and its costs come to 0 EMC here (an energy unit with no price?), so it would make something from nothing");
                 return;
             }
 
@@ -260,7 +301,7 @@ namespace VintageE
                     Costs = costs,
                     Method = new MethodRef { Method = m, Recipe = recipe, Captures = hasCaptures ? new Dictionary<string, string>(captures) : null, Catalysts = catalysts.Distinct().ToList(), OutputNotes = notes }
                 };
-                foreach (ConversionInput inp in inputs) conv.Inputs.Add(new ConversionInput { Choices = inp.Choices, Quantity = inp.Quantity, Note = inp.Note });
+                foreach (ConversionInput inp in inputs) conv.Inputs.Add(new ConversionInput { Choices = inp.Choices, Quantity = inp.Quantity, NoInfer = inp.NoInfer, Note = inp.Note });
                 foreach (var (qty, choices, note) in combo) conv.Inputs.Add(new ConversionInput { Choices = choices, Quantity = qty, NoInfer = true, Note = note });
                 var back = new List<KeyValuePair<CollectibleObject, double>>(returned);
                 if (joint)
@@ -277,9 +318,8 @@ namespace VintageE
                 }
                 if (back.Count > 0) conv.Returned = back.GroupBy(b => b.Key).Select(g => new KeyValuePair<CollectibleObject, double>(g.Key, g.Sum(b => b.Value))).ToList();
                 string why = AddMethodConversion(conv);
-                if (why != null) { if (result.Conversions == 0) result.Skipped = why; continue; }
+                if (why != null) { VariantFailed(result, why); continue; }
                 result.Conversions++;
-                if (result.Skipped != null && result.Conversions > 0) result.Skipped = null;
             }
         }
 

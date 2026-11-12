@@ -83,7 +83,8 @@ namespace VintageE
             // A crafting method's value resting on a power price nobody set, or on a rare chance, is a weak link too.
             string methodWeak = viaRecipe ? MethodWeakness(x, conv, c) : null;
             r.Add(EmcReport.Ref(c) + " " + F(v) + " ← " + kind, backwardsMulti || methodWeak != null ? EmcLineStyle.Warn : EmcLineStyle.Text, depth);
-            if (backwardsMulti || methodWeak != null) suspicious.Add(c);
+            // Not a weak link to pin: what's weak is the method's price or chance, and the note says what to change.
+            if (backwardsMulti) suspicious.Add(c);
             if (methodWeak != null) x.Note(methodWeak, depth + 1);
             if (viaRecipe && conv.Costs != null) foreach (MethodCostLine k in conv.Costs) x.Note(CostText(x, k), depth + 1);
             if (!viaRecipe)

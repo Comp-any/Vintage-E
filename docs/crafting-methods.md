@@ -21,7 +21,8 @@ never fires.
 ### 1. A file
 
 Put the document in your mod at `assets/<yourmodid>/config/vintagee-methods/<any name>.json`. Data only, no code. Codes
-without a domain are your mod's (as in the game's own asset files).
+without a domain are your mod's (as in the game's own asset files), except in recipes a reader makes: there they get the
+domain of the data read (below).
 
 ### 2. From your code, with no reference to VintageE.dll
 
@@ -100,7 +101,8 @@ and is ignored.
 | Key | |
 |---|---|
 | `format` | `1`. Missing reads as 1 with a warning. |
-| `requiresMod` | A mod id or a list: the document is only used when all of them are loaded. |
+| `name`, `description` | Optional, for people reading the file. |
+| `requiresMod` | A mod id or a list: the document is only used when all of them are loaded. It also lets a method supersede those mods' recipe lists (below). |
 | `energyUnits` | Energy units your recipes use: code → unit (below). |
 | `methods` | The list of methods. |
 
@@ -110,10 +112,10 @@ and is ignored.
 |---|---|
 | `code` | Unique, `modid:name` (the domain is added when left out). |
 | `name` | A lang key (looked up on the server) or plain text. Shown in explanations. |
-| `machine` | The block or item that does it (wildcards allowed), shown and linked in explanations. |
+| `machine` | The block or item that does it (wildcards allowed, `block:`/`item:` in front if you like; the domain is added after it), shown and linked in explanations. |
 | `description` | A line about what it does. |
-| `kind` | `crafting` (the default) or `processing`. A processing recipe with one ingredient may be worked backwards: if the ingredient has no value but what it makes does, the ingredient gets that value (as with smelting). |
-| `supersedes` | Recipe lists Vintage-E already reads by itself that this method describes, by list name (as `/emc diagnose mapping` shows the sources, e.g. `MyModSystem.PressRecipes`) or by recipe class name (`PressRecipe` or its full name). Those free copies are left out, so the copy with the power cost is the one that counts. |
+| `kind` | `crafting` (the default) or `processing`. Either way, an ingredient with no value can be worked out from the rest when it is the recipe's only unknown (the server's `InferValuesFromCrafting`, on by default), and a recipe with several outputs and none marked main shares backwards as below. A processing recipe with one ingredient also gives that ingredient what its output is worth when it has no value (as smelting does). |
+| `supersedes` | Recipe lists Vintage-E already reads by itself that this method describes, by list name (as `/emc diagnose mapping` shows the sources, e.g. `MyModSystem.PressRecipes`) or by recipe class name (`PressRecipe` or its full name). Those free copies are left out, so the copy with the power cost is the one that counts. Only lists of your own mod, or of a mod in `requiresMod`, can be superseded: an entry naming the game's or another mod's list is refused (the doctor says so). A method switched off, or with no recipe read, supersedes nothing. |
 | `recipes` | The list of recipes. |
 | `readers` | Recipes read from your mod's own data instead of listed (below). |
 
@@ -121,16 +123,21 @@ and is ignored.
 
 | Key | |
 |---|---|
-| `code` | Its name inside the method (defaults to its position, `#1`). `DisabledMethods` and the doctor name it as `method/recipe`. |
-| `inputs` | What it uses up (below). May be empty if the recipe has a cost (a pump: power → water). |
+| `code` | Its name inside the method (defaults to its position in the list, `#1`, `#2`…; a reader's recipes `r1#1`, `r1#2`… for the first reader). `DisabledMethods` and the doctor name it as `method/recipe`. |
+| `inputs` | What it uses up (below). May be empty if the recipe has a cost or wears a tool (a pump: power → water). |
 | `tools` | What it needs but doesn't use up. Costs nothing unless it has `wear` or `breakChance`. |
 | `outputs` | What it makes. |
 | `oneOf` | A weighted table: exactly one entry comes out per run. |
 | `costs` | Its extra costs. |
 | `note` | A line shown with the recipe in explanations. |
-| `enabled` | `false` leaves it out (handy for readers). |
+| `enabled` | `false` leaves it out (handy for readers: `"enabled": "$enabled"` copies the data's own flag). `methodcheck` counts these. |
+
+`true` and `false` may also be written as strings (`"true"`), as readers copy them from data.
 
 ### Ingredients, tools and outputs
+
+Inputs and outputs take the keys below. Tools take only `code`, `type`, `wear`, `breakChance`, `allowedVariants` and
+`skipVariants` (one of each is needed; another key is an unknown-key warning).
 
 | Key | |
 |---|---|
@@ -138,10 +145,10 @@ and is ignored.
 | `type` | `item` or `block` (when a code could be both). |
 | `quantity` | How many (default 1), or the game's `{ "avg": 3, "var": 1 }` (its average counts). |
 | `litres` | For a liquid instead of `quantity`: converted with the liquid's own items per litre. |
-| `name` (inputs) | Names what this input's single `*` matched, so other codes in the recipe can use `{name}`. One copy of the recipe is made for each match; a copy whose output (or other code) doesn't exist is skipped, as the game would. |
+| `name` (inputs) | Names what this input's single `*` matched, so other codes in the recipe can use `{name}`. One copy of the recipe is made for each match; a copy whose output (or other code) doesn't exist is skipped, as the game would. A `name` on a code with no `*` is ignored; two or more `*` with a name, two inputs with the same name, or more than 8 named inputs in one recipe leave the recipe out (each name multiplies its copies; at most 4000 in all). |
 | `allowedVariants`, `skipVariants` | Which values of the `*` count (as in the game's recipes). |
 | `returns` (inputs) | What's handed back after the run (an empty bucket): its value is taken off. |
-| `chance` | `0.25` or `"25%"`. For an output: how often it comes. For an input: how often it is used up. |
+| `chance` | `0.25` or `"25%"`. For an output: how often it comes. For an input: how often it is used up (below 10%, an input is never worked out backwards from the recipe, like a tool's wear). |
 | `main` (outputs) | Marks the output the recipe is for (see below). |
 | `weight` (oneOf) | The entry's weight in the table. |
 | `wear` (tools) | Durability lost per run. |
@@ -170,10 +177,12 @@ and is ignored.
   as its share of the weights, an input with a chance as that fraction of it, a tool as wear ÷ its durability plus its
   break chance. So if 1 ingot gives a gear 25% of the time, one gear is worth 4 ingots, and burning what comes out never
   earns more than went in.
-- **Main output and byproducts.** With one output, or one marked `"main": true`, the recipe values that output; the other
-  outputs' values are taken off (like a bucket handed back), and the recipe waits until they have values. With several
-  outputs and none marked main, the cost is shared out like squeezing honeycomb: outputs that already have a value keep
-  it, the rest share what's left evenly.
+- **Main output and byproducts.** With exactly one output and no `oneOf`, or with one marked `"main": true`, the recipe
+  values that output; the other outputs' values (and the `oneOf` entries') are taken off, like a bucket handed back, and
+  the recipe waits until they have values. Otherwise (several outputs, or a `oneOf` table, and none marked main), the
+  cost is shared out like squeezing honeycomb: outputs that already have a value keep it, the rest share what's left
+  evenly. When several recipes share out to the same thing, the lowest share wins, as with any value. If every output
+  has a value and one ingredient doesn't, that ingredient is worked out backwards from them.
 - **The cheapest way still wins.** A value is the cheapest way of making the item, so a recipe's power cost only shows in
   a value when your machine is the cheapest way to make it.
 - **An energy unit's price**: the server's `EnergyEmc` setting, else what your generators make it cost (the cheapest; only
@@ -184,6 +193,8 @@ and is ignored.
   quarter of an Energy Collector MK1). Keep prices modest.
 - A recipe whose output is also one of its single-choice inputs has that amount netted off (a catalyst written as an
   ingredient).
+- An input slot is one code (with its wildcard), not a list of alternatives with their own amounts ("1 fat or 10 lard"):
+  give the usual one, or one recipe per alternative.
 
 ## Readers: recipes from your mod's own data
 
@@ -218,16 +229,21 @@ the method stays current when you add recipes:
 - `from: assets` reads every JSON file in `folder` (of `domain`, default your mod); a file that is a list gives one recipe
   per entry. `list` (a dotted path) picks a list inside each file.
 - In the template, `"$Field"` is a field of the source entry (dots go deeper, `"$Output.Code"`, `"$Steps.0.Item"`; names
-  ignore case), and `"${Field}"` puts a field's text inside a longer string. A stack whose code is missing is left out
-  (an optional second ingredient). In a list, `{ "each": "$List", ... }` makes one entry per element of that list, with
-  fields relative to the element.
+  ignore case; `"$"` alone is the entry itself), and `"${Field}"` puts a field's text inside a longer string. A stack
+  whose code is missing is left out (an optional second ingredient). In a list, `{ "each": "$List", ... }` makes one
+  entry per element of that list (per value, for an object such as a grid recipe's ingredient map), with fields
+  relative to the element.
+- Codes without a domain in the recipes a reader makes get the domain of the data: the block's or item's, or the file's.
+  The same recipe read twice (the same text) counts once.
 - Your `{wildcard}` placeholders work as they are if the input reading the `*` has `"name": "wildcard"`.
 
 ## Checking what Vintage-E understood
 
 - `/emc diagnose methodcheck <yourmodid>`: every problem in your documents with its JSON path and a "did you mean", which
-  recipes are used, beaten by a cheaper way or waiting for a value, a worked example, and a file of what Vintage-E
-  understood (`ModData/vintagee/methods-<modid>.json`). From the console it is plain text.
+  recipes are used, beaten by a cheaper way, making something whose value is set (a base value, a pin) or waiting for
+  a value, whether each `supersedes` entry matched, a worked example, and a file of what Vintage-E understood
+  (`ModData/vintagee/methods-<modid>.json`). From the console it is plain text. A recipe whose missing code belongs to a
+  mod that isn't loaded (one for an optional mod) is counted, not flagged.
 - `/emc methods [<modid>|<method>]`: every recipe with what it uses and makes, its costs and their prices, and switches.
 - `/emc dump hand` on something your machine makes: the recipe behind its value, line by line.
 - `/emc diagnose draftmethods <modid>`: a starting document drafted from recipe data Vintage-E can't read (guessed from

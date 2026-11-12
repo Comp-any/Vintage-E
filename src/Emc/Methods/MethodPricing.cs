@@ -83,7 +83,7 @@ namespace VintageE
             {
                 rates.Sort();
                 prices.HeatRate = rates.Count % 2 == 1 ? rates[rates.Count / 2] : (rates[rates.Count / 2 - 1] + rates[rates.Count / 2]) / 2;
-                prices.HeatSource = string.Format(CultureInfo.InvariantCulture, "the median of {0} reference fuels' value per °C·s ({1})", rates.Count, string.Join(", ", named));
+                prices.HeatSource = string.Format(CultureInfo.InvariantCulture, "the median of {0} reference fuels' value per °C·s ({1})", rates.Count, string.Join(", ", named) + (rates.Count > named.Count ? ", …" : ""));
             }
             else prices.HeatSource = "no reference fuel (fuelReference in the value files) has a base value, so heat costs nothing";
 

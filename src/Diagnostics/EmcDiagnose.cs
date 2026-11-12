@@ -392,12 +392,13 @@ namespace VintageE
                 if (report.UnstableRemoved > 0 || report.LoopFrozen > 0) x.Note(x.L("diag-unstable", report.LoopFrozen, report.UnstableRemoved));
             }
 
-            problems += MethodsSummary(x, full);
             problems += ChecksSummary(x);
             problems += HealthSummary(x);
             problems += Startup(x, false);
             // No verdict line: the chips at the top of the window count the checks, and each ⚠ card says what to do.
             if (SafeFixCount(x) > 0) r.Add(FixLink(x, "safe", "", x.L("diag-fix-safe", SafeFixCount(x))), EmcLineStyle.Text, 1);
+            // Last, under a heading of its own (it opens one), so the check-up's own cards stay under "Check-up".
+            problems += MethodsSummary(x, full);
             return problems;
         }
 

@@ -25,31 +25,94 @@ namespace VintageE
         /// <summary>EMC per second of machine time from power alone above which the doctor warns (a quarter of an Energy Collector MK1).</summary>
         public const double FreePowerLimit = 1.0;
 
-        static string N(double d) => d.ToString("0.####", CultureInfo.InvariantCulture);
+        /// <summary>A number as the reports show it: up to 4 decimals, and 4 significant digits below 0.01 (a price of 0.00002 isn't 0).</summary>
+        static string N(double d)
+        {
+            if (d == 0 || double.IsNaN(d) || double.IsInfinity(d)) return d.ToString(CultureInfo.InvariantCulture);
+            if (Math.Abs(d) >= 0.01) return d.ToString("0.####", CultureInfo.InvariantCulture);
+            int decimals = Math.Min(15, 3 - (int)Math.Floor(Math.Log10(Math.Abs(d))));
+            return Math.Round(d, decimals).ToString("0." + new string('#', decimals), CultureInfo.InvariantCulture);
+        }
+
+        /// <summary><paramref name="v"/> rounded down to 3 significant digits, so the price shown is never above the real one.</summary>
+        static double FloorSignificant(double v)
+        {
+            if (v <= 0 || double.IsNaN(v) || double.IsInfinity(v)) return 0;
+            double step = Math.Pow(10, Math.Floor(Math.Log10(v)) - 2);
+            return Math.Floor(v / step * (1 + 1e-12)) * step;
+        }
+
+        /// <summary>
+        /// The methods a report talks about: those the mapping was made with, so its MethodResults and conversions match
+        /// (a collect since then, waiting for its remap, would otherwise make every recipe "not read").
+        /// </summary>
+        static MethodSnapshot Snap(Ctx x) => x.Report?.Methods ?? x.Mod.Methods ?? MethodSnapshot.Empty;
+
+        /// <summary>A copy of a list the game thread may change while a report is built on a worker.</summary>
+        static List<T> Copy<T>(IEnumerable<T> items)
+        {
+            for (int i = 0; ; i++)
+            {
+                try { return items == null ? new List<T>() : new List<T>(items); }
+                catch (InvalidOperationException) when (i < 3) { }
+            }
+        }
 
         // ---------------------------------------------------------------- what became of each recipe
 
-        enum MethodOutcome { Used, Beaten, Waiting }
+        /// <summary>Used (it gave something its value), beaten (a cheaper way won), set (its outputs have a set value: base, pinned, a value file) or waiting.</summary>
+        enum MethodOutcome { Used, Beaten, Set, Waiting }
 
-        /// <summary>The method conversions of a mapping, by recipe.</summary>
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<EmcMappingReport, Dictionary<MethodRecipe, List<Conversion>>> conversionsByReport = new System.Runtime.CompilerServices.ConditionalWeakTable<EmcMappingReport, Dictionary<MethodRecipe, List<Conversion>>>();
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<EmcMappingReport, HashSet<CollectibleObject>> freeByReport = new System.Runtime.CompilerServices.ConditionalWeakTable<EmcMappingReport, HashSet<CollectibleObject>>();
+
+        /// <summary>The method conversions of a mapping, by recipe (worked out once per mapping).</summary>
         static Dictionary<MethodRecipe, List<Conversion>> MethodConversions(Ctx x)
         {
-            var result = new Dictionary<MethodRecipe, List<Conversion>>();
-            foreach (Conversion conv in x.Report?.Conversions ?? new List<Conversion>())
+            if (x.Report == null) return new Dictionary<MethodRecipe, List<Conversion>>();
+            return conversionsByReport.GetValue(x.Report, report =>
             {
-                if (conv.Method?.Recipe == null) continue;
-                if (!result.TryGetValue(conv.Method.Recipe, out var list)) result[conv.Method.Recipe] = list = new List<Conversion>();
-                list.Add(conv);
-            }
-            return result;
+                var result = new Dictionary<MethodRecipe, List<Conversion>>();
+                foreach (Conversion conv in report.Conversions ?? new List<Conversion>())
+                {
+                    if (conv.Method?.Recipe == null) continue;
+                    if (!result.TryGetValue(conv.Method.Recipe, out var list)) result[conv.Method.Recipe] = list = new List<Conversion>();
+                    list.Add(conv);
+                }
+                return result;
+            });
         }
 
+        static HashSet<CollectibleObject> FreeSet(Ctx x) => freeByReport.GetValue(x.Report, report => new HashSet<CollectibleObject>(report.Free ?? new List<CollectibleObject>()));
+
         static IEnumerable<CollectibleObject> OutputsOf(Conversion conv) => conv.JointOutputs != null ? conv.JointOutputs.Select(o => o.Key) : new[] { conv.Output };
+
+        /// <summary>Whether a conversion makes <paramref name="c"/>: as its output, one it shares out, or a byproduct taken off its cost.</summary>
+        static bool MakesIt(Conversion conv, CollectibleObject c)
+            => OutputsOf(conv).Contains(c) || (conv.Returned != null && conv.Method?.Byproducts != null && conv.Method.Byproducts.Contains(c) && conv.Returned.Any(r => r.Key == c));
+
+        /// <summary>The mod a code belongs to ("item:", "block:" and wildcards allowed).</summary>
+        static string DomainOf(string code)
+        {
+            code = code ?? "";
+            if (code.StartsWith("item:", StringComparison.OrdinalIgnoreCase) || code.StartsWith("block:", StringComparison.OrdinalIgnoreCase)) code = code.Substring(code.IndexOf(':') + 1);
+            int colon = code.IndexOf(':');
+            return colon > 0 ? code.Substring(0, colon).ToLowerInvariant() : "game";
+        }
+
+        /// <summary>A code that matches nothing because its mod isn't loaded (a recipe for an optional mod): nothing to fix.</summary>
+        static bool ForAbsentMod(Ctx x, string badCode)
+        {
+            if (badCode == null) return false;
+            string domain = DomainOf(badCode);
+            if (domain == "game" || domain.Contains('*')) return false;
+            try { return x.Sapi.ModLoader.GetMod(domain) == null; } catch { return false; }
+        }
 
         /// <summary>What one conversion costs per run at today's values (ingredients, costs, less what's handed back), or null with what's missing.</summary>
         static double? RunCost(Ctx x, Conversion conv, List<CollectibleObject> lacking)
         {
-            var free = new HashSet<CollectibleObject>(x.Report.Free);
+            var free = FreeSet(x);
             double cost = conv.ExtraCost;
             foreach (ConversionInput input in conv.Inputs)
             {
@@ -87,11 +150,28 @@ namespace VintageE
                 }
             }
             Conversion first = convs.FirstOrDefault();
-            if (first != null && OutputsOf(first).All(o => o != null && x.Report.Values.ContainsKey(o))) return MethodOutcome.Beaten;
+            if (first != null && OutputsOf(first).All(o => o != null && x.Report.Values.ContainsKey(o)))
+                // Beaten by another recipe, or nothing to beat: a value that is set (base, pinned, a value file) isn't made at all.
+                return OutputsOf(first).Any(o => x.Report.Via.TryGetValue(o, out Conversion via) && via != null) ? MethodOutcome.Beaten : MethodOutcome.Set;
             if (first != null) RunCost(x, first, lacking);
             lacking = lacking.Where(l => l != null).Distinct().ToList();
             return MethodOutcome.Waiting;
         }
+
+        /// <summary>Why a waiting recipe gives nothing a value, in words (what it needs, or why it needs nothing and still waits).</summary>
+        static string WaitingText(Ctx x, Conversion conv, List<CollectibleObject> lacking)
+        {
+            if (lacking.Count > 0) return x.L("diag-meth-waiting", string.Join(", ", lacking.Take(4).Select(EmcReport.Ref)));
+            CollectibleObject black = conv == null ? null : OutputsOf(conv).FirstOrDefault(o => o != null && x.Report.Blacklisted.Contains(o));
+            if (black != null) return x.L("diag-meth-waiting-blacklisted", EmcReport.Ref(black));
+            double? cost = conv == null ? null : RunCost(x, conv, new List<CollectibleObject>());
+            if (cost.HasValue && cost.Value <= 0) return x.L("diag-meth-waiting-free", F(cost.Value));
+            return x.L("diag-meth-waiting-unknown");
+        }
+
+        /// <summary>A waiting recipe there's nothing to do about: its output is blacklisted.</summary>
+        static bool WaitsOnBlacklist(Ctx x, Conversion conv, List<CollectibleObject> lacking)
+            => lacking.Count == 0 && conv != null && OutputsOf(conv).Any(o => o != null && x.Report.Blacklisted.Contains(o));
 
         /// <summary>"2 [[copper ingot]] + 400 kN·s → 1 [[plate]] + 0.5 [[bits]]" for one conversion.</summary>
         static string RecipeText(Ctx x, Conversion conv)
@@ -118,7 +198,7 @@ namespace VintageE
         {
             if (unit == null) return "?";
             if (x.Report?.MethodPrices != null && x.Report.MethodPrices.Units.TryGetValue(unit, out MethodUnitPrice p) && !string.IsNullOrEmpty(p.Name)) return p.Name;
-            return x.Mod.Methods.Units.TryGetValue(unit, out MethodEnergyUnit u) && !string.IsNullOrEmpty(u.Name) ? u.Name : unit;
+            return Snap(x).Units.TryGetValue(unit, out MethodEnergyUnit u) && !string.IsNullOrEmpty(u.Name) ? u.Name : unit;
         }
 
         /// <summary>One line for a recipe with what became of it.</summary>
@@ -129,7 +209,9 @@ namespace VintageE
             if (result != null && result.Disabled) { r.Add(head + ": " + x.L("diag-meth-off"), EmcLineStyle.Note, indent); return; }
             if (convs == null || convs.Count == 0)
             {
-                r.Add(head + ": " + x.L("diag-meth-skipped", result?.Skipped ?? x.L("diag-meth-notread")) + (result?.BadCode != null ? Suggest(x, result.BadCode) : ""), EmcLineStyle.Warn, indent);
+                bool absent = ForAbsentMod(x, result?.BadCode);
+                r.Add(head + ": " + x.L("diag-meth-skipped", result?.Skipped ?? x.L("diag-meth-notread")) + (result?.BadCode != null && !absent ? Suggest(x, result.BadCode) : ""), absent ? EmcLineStyle.Note : EmcLineStyle.Warn, indent);
+                if (absent) x.Note(x.L("diag-meth-absentmod", DomainOf(result.BadCode)), indent + 1);
                 return;
             }
             MethodOutcome outcome = OutcomeOf(x, convs, out Conversion used, out List<CollectibleObject> lacking);
@@ -139,20 +221,31 @@ namespace VintageE
             double? cost = RunCost(x, shown, missing);
             double per = cost.HasValue && shown.JointOutputs == null && shown.OutputQuantity > 0 ? cost.Value / shown.OutputQuantity : double.NaN;
             string costText = !double.IsNaN(per) ? " = " + x.L("diag-meth-each", F(per)) : cost.HasValue ? " = " + x.L("diag-meth-run", F(cost.Value)) : "";
-            r.Add(head + variants + ": " + RecipeText(x, shown) + costText, outcome == MethodOutcome.Waiting ? EmcLineStyle.Warn : EmcLineStyle.Text, indent);
+            r.Add(head + variants + ": " + RecipeText(x, shown) + costText, outcome == MethodOutcome.Waiting && !WaitsOnBlacklist(x, shown, lacking) ? EmcLineStyle.Warn : EmcLineStyle.Text, indent);
             switch (outcome)
             {
                 case MethodOutcome.Used: x.Note(x.L("diag-meth-used"), indent + 1); break;
                 case MethodOutcome.Beaten:
-                    CollectibleObject o = OutputsOf(shown).FirstOrDefault();
-                    string by = o != null && x.Report.Via.TryGetValue(o, out Conversion via) && via != null ? Linkify(x, EmcMapper.Describe(via)) : o != null && x.Report.Origins.TryGetValue(o, out string orig) ? Linkify(x, orig) : "?";
-                    x.Note(x.L("diag-meth-beaten", o != null ? EmcReport.Ref(o) + " " + F(x.V(o)) : "?", by), indent + 1);
-                    break;
+                    {
+                        CollectibleObject o = OutputsOf(shown).FirstOrDefault(oo => oo != null && x.Report.Via.TryGetValue(oo, out Conversion vv) && vv != null) ?? OutputsOf(shown).FirstOrDefault();
+                        string by = o != null && x.Report.Via.TryGetValue(o, out Conversion via) && via != null ? Linkify(x, EmcMapper.Describe(via)) : o != null && x.Report.Origins.TryGetValue(o, out string orig) ? Linkify(x, orig) : "?";
+                        x.Note(x.L("diag-meth-beaten", o != null ? EmcReport.Ref(o) + " " + F(x.V(o)) : "?", by), indent + 1);
+                        break;
+                    }
+                case MethodOutcome.Set:
+                    {
+                        CollectibleObject o = OutputsOf(shown).FirstOrDefault();
+                        string from = o != null && x.Report.Origins.TryGetValue(o, out string orig) ? Linkify(x, orig) : "?";
+                        x.Note(x.L("diag-meth-setvalue", o != null ? EmcReport.Ref(o) + " " + F(x.V(o)) : "?", from), indent + 1);
+                        break;
+                    }
                 default:
-                    x.Note(x.L("diag-meth-waiting", lacking.Count == 0 ? "?" : string.Join(", ", lacking.Take(4).Select(EmcReport.Ref))), indent + 1);
+                    x.Note(WaitingText(x, shown, lacking), indent + 1);
                     break;
             }
             if (result != null && result.MissingVariants > 0) x.Note(x.L("diag-meth-missingvariants", result.MissingVariants), indent + 1);
+            if (result != null && result.FailedVariants > 0) x.Note(x.L("diag-meth-failedvariants", result.FailedVariants, result.VariantFailure ?? "?"), indent + 1);
+            if (result != null) foreach (string note in result.Notes) x.Note(note, indent + 1);
         }
 
         // ---------------------------------------------------------------- the check-up's cards
@@ -160,13 +253,14 @@ namespace VintageE
         /// <summary>The check-up's cards for other mods' crafting methods. Returns how many found something worth fixing.</summary>
         static int MethodsSummary(Ctx x, bool full)
         {
-            MethodSnapshot snap = x.Mod.Methods;
+            MethodSnapshot snap = Snap(x);
             var unseen = UnseenRecipeData(x);
             if (snap.Docs.Count == 0 && unseen.Count == 0) return 0;
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-meth"));
             int problems = 0;
-            problems += DocumentsCard(x, snap);
+            // Listener errors are a start-up problem the check-up's start-up card already shows (and counts).
+            problems += DocumentsCard(x, snap, full, true);
             bool fresh = x.Report != null && !x.Report.FromCache && x.Report.MethodPrices != null;
             if (snap.MethodCount > 0 && !fresh)
             {
@@ -190,18 +284,20 @@ namespace VintageE
         }
 
         /// <summary>Card 1: the documents, by mod, and what's wrong with them.</summary>
-        static int DocumentsCard(Ctx x, MethodSnapshot snap)
+        static int DocumentsCard(Ctx x, MethodSnapshot snap, bool full, bool listenerErrorsElsewhere)
         {
             EmcReport r = x.R;
             var docs = snap.Docs;
-            int files = docs.Count(d => d.Route == "file"), code = docs.Count(d => d.Route == "code");
+            // By file and by code count the documents in use, like the mods before them; broken and waiting ones have lines of their own.
+            int files = docs.Count(d => d.Usable && d.Route == "file"), code = docs.Count(d => d.Usable && d.Route == "code");
             var broken = docs.Where(d => d.Error != null).ToList();
             var waiting = docs.Where(d => d.Error == null && d.MissingMod != null).ToList();
             int warnings = docs.Where(d => d.Usable).Sum(d => d.Problems.Count(p => !p.Error));
-            int left = docs.Where(d => d.Usable).Sum(d => d.Problems.Count(p => p.Error)) + snap.Problems.Count(p => p.Error);
+            int left = docs.Where(d => d.Usable).Sum(d => d.Problems.Count(p => p.Error && !ForAbsentMod(x, p.BadCode))) + snap.Problems.Count(p => p.Error);
+            bool listener = snap.ListenerErrors.Count > 0 && !listenerErrorsElsewhere;
             string line = x.L("diag-meth-docs", snap.Mods.Count(), files, code, snap.MethodCount, snap.RecipeCount);
             int problems = 0;
-            if (broken.Count > 0 || snap.ListenerErrors.Count > 0 || left > 0) { problems++; x.Warn(line); }
+            if (broken.Count > 0 || listener || left > 0) { problems++; x.Warn(line); }
             else if (docs.Count == 0) x.Info(x.L("diag-meth-docs-none"));
             else if (warnings > 0) x.Info(line);
             else x.Ok(line);
@@ -213,13 +309,17 @@ namespace VintageE
                     + "  " + Link(ActionMethods, g.Key, x.L("diag-meth-look")) + " " + Link(ActionMethodCheck, g.Key, x.L("diag-meth-check")), errs > 0 ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
             }
             foreach (MethodDoc d in broken) r.Add(x.L("diag-meth-broken", d.Source, d.Error), EmcLineStyle.Warn, 1);
-            foreach (var (mod, error) in snap.ListenerErrors)
-            {
-                r.Add(x.L("diag-meth-listener", mod == "?" ? x.L("diag-meth-unknownmod") : ModName(x, mod), error), EmcLineStyle.Warn, 1);
-                x.Fix(x.L("diag-meth-listener-fix"));
-            }
+            if (!listenerErrorsElsewhere)
+                foreach (var (mod, error) in snap.ListenerErrors)
+                {
+                    r.Add(x.L("diag-meth-listener", mod == "?" ? x.L("diag-meth-unknownmod") : ModName(x, mod), error), EmcLineStyle.Warn, 1);
+                    x.Fix(x.L("diag-meth-listener-fix"));
+                }
             foreach (MethodProblem p in snap.Problems) r.Add(p.ToString(), p.Error ? EmcLineStyle.Warn : EmcLineStyle.Note, 1);
-            foreach (MethodDoc d in waiting) x.Note(x.L("diag-meth-waitingmod", d.Source, d.MissingMod), 1);
+            // Files for mods that aren't loaded (Vintage-E's own for other mods among them) are normal: a few by name, the rest counted.
+            int waitShown = full ? 30 : 3;
+            foreach (MethodDoc d in waiting.Take(waitShown)) x.Note(x.L("diag-meth-waitingmod", d.Source, d.MissingMod), 1);
+            if (waiting.Count > waitShown) x.Note(x.L("diag-meth-waitingmore", waiting.Count - waitShown), 1);
             if (left > 0 || warnings > 0) x.Fix(x.L("diag-meth-docs-fix"));
             return problems;
         }
@@ -230,12 +330,15 @@ namespace VintageE
             EmcReport r = x.R;
             var results = x.Report.MethodResults;
             int read = results.Count, off = results.Count(rr => rr.Disabled);
-            var skipped = results.Where(rr => !rr.Disabled && rr.Skipped != null).ToList();
-            var parseSkipped = x.Mod.Methods.UsableDocs.SelectMany(d => d.Problems.Where(p => p.Error).Select(p => (d, p))).ToList();
+            var allSkipped = results.Where(rr => !rr.Disabled && rr.Skipped != null).ToList();
+            // A recipe for a mod that isn't loaded (an optional extra) is left out as it should be: counted, not a problem.
+            var optional = allSkipped.Where(rr => ForAbsentMod(x, rr.BadCode)).ToList();
+            var skipped = allSkipped.Except(optional).ToList();
+            var parseProblems = Snap(x).UsableDocs.SelectMany(d => d.Problems.Where(p => p.Error && !ForAbsentMod(x, p.BadCode)).Select(p => (d, p))).ToList();
             int used = results.Count(rr => !rr.Disabled && rr.Skipped == null && convs.TryGetValue(rr.Recipe, out var cl) && OutcomeOf(x, cl, out _, out _) == MethodOutcome.Used);
-            string line = x.L("diag-meth-recipes", read, used, skipped.Count + parseSkipped.Count, off);
+            string line = x.L("diag-meth-recipes", read, used, allSkipped.Count, off);
             int problems = 0;
-            if (skipped.Count + parseSkipped.Count > 0) { problems++; x.Warn(line); } else x.Ok(line);
+            if (skipped.Count + parseProblems.Count > 0) { problems++; x.Warn(line); } else x.Ok(line);
             x.Explain(x.L("diag-meth-recipes-why"));
             foreach (var g in skipped.GroupBy(s => Regex.Replace(s.Skipped, @"\S+:\S+", "…")).OrderByDescending(g => g.Count()).Take(8))
             {
@@ -244,8 +347,10 @@ namespace VintageE
                 foreach (var s in g.Take(3))
                     x.Note(s.Recipe.Method.Doc.Source + " " + s.Recipe.Path + (s.BadCode != null ? Suggest(x, s.BadCode) : ""), 2);
             }
-            foreach (var (d, p) in parseSkipped.Take(8)) r.Add(d.Source + " " + p, EmcLineStyle.Text, 1);
-            if (parseSkipped.Count > 8) x.Note(x.L("diag-more", parseSkipped.Count - 8));
+            if (optional.Count > 0) x.Note(x.L("diag-meth-optional", optional.Count, string.Join(", ", optional.Select(o => DomainOf(o.BadCode)).Distinct().Take(6))), 1);
+            if (parseProblems.Count > 0) r.Add(x.L("diag-meth-parseproblems", parseProblems.Count), EmcLineStyle.Text, 1);
+            foreach (var (d, p) in parseProblems.Take(8)) r.Add(d.Source + " " + p, EmcLineStyle.Text, 2);
+            if (parseProblems.Count > 8) x.Note(x.L("diag-more", parseProblems.Count - 8), 2);
             if (problems > 0) x.Fix(x.L("diag-meth-recipes-fix"));
             return problems;
         }
@@ -271,34 +376,58 @@ namespace VintageE
             var prices = x.Report.MethodPrices;
             var units = UsedUnits(x);
             var used = new HashSet<string>(x.Report.Conversions.Where(c => c.Costs != null).SelectMany(c => c.Costs).Where(k => k.Kind == "energy").Select(k => k.Unit), StringComparer.Ordinal);
-            var unpriced = units.Where(p => p.Price <= 0 && used.Contains(p.Code)).ToList();
+            // A price of 0 set on purpose (EnergyEmc) is a choice, not something missing.
+            var unpriced = units.Where(p => p.Price <= 0 && used.Contains(p.Code) && p.Source != "setting").ToList();
             int problems = 0;
             if (units.Count == 0) x.Ok(x.L("diag-meth-prices-none"));
-            else if (unpriced.Count > 0 && prices.ChargeEnergy) { problems++; x.Warn(x.L("diag-meth-prices-unpriced", unpriced.Count, units.Count)); }
-            else x.Ok(x.L("diag-meth-prices", units.Count));
+            else if (unpriced.Count > 0 && prices.ChargeEnergy) { problems++; x.Warn(x.L("diag-meth-prices-unpriced", unpriced.Count, units.Count(p => used.Contains(p.Code)))); }
+            else x.Ok(x.L("diag-meth-prices", units.Count(p => used.Contains(p.Code)), units.Count));
             x.Explain(x.L("diag-meth-prices-why"));
             foreach (MethodUnitPrice p in units)
             {
-                r.Add(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?"), p.Price <= 0 && used.Contains(p.Code) ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
+                bool missing = p.Price <= 0 && used.Contains(p.Code) && p.Source != "setting";
+                r.Add(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?") + (used.Contains(p.Code) ? "" : " " + x.L("diag-meth-unit-unused")), missing ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
                 foreach (string g in p.Generators) if (g != p.SourceText) x.Note(g, 2);
                 if (!p.Declared)
                 {
-                    string near = x.Mod.Methods.Units.Keys.OrderBy(k => MethodParser.Distance(k, p.Code)).FirstOrDefault();
+                    string near = Snap(x).Units.Keys.OrderBy(k => MethodParser.Distance(k, p.Code)).FirstOrDefault();
                     if (near != null && MethodParser.Distance(near, p.Code) <= Math.Max(3, p.Code.Length / 3)) x.Note(x.L("diag-meth-unit-maybe", near), 2);
                 }
                 double s = SuggestedPrice(p);
-                if (p.Price <= 0 && s > 0) r.Add(FixLink(x, "energyprice", p.Code + "=" + s.ToString("R", CultureInfo.InvariantCulture), x.L("diag-fix-energyprice", N(s))), EmcLineStyle.Text, 2);
-                if (p.Price <= 0) x.Note(x.L("diag-meth-price-byhand", p.Code), 2);
+                if (missing && s > 0) r.Add(FixLink(x, "energyprice", p.Code + "=" + s.ToString("R", CultureInfo.InvariantCulture), x.L("diag-fix-energyprice", N(s))), EmcLineStyle.Text, 2);
+                if (missing) x.Note(x.L("diag-meth-price-byhand", p.Code), 2);
             }
-            if (!prices.ChargeEnergy) x.Note(x.L("diag-meth-energy-off"), 1);
-            if (!prices.ChargeHeat) x.Note(x.L("diag-meth-heat-off"), 1);
-            if (!prices.ChargeWear) x.Note(x.L("diag-meth-wear-off"), 1);
+            if (!prices.ChargeEnergy) { x.Note(x.L("diag-meth-energy-off"), 1); r.Add(FixLink(x, "methodcost", "energy=true", x.L("diag-fix-methodcost", "ChargeMethodEnergy", "true")), EmcLineStyle.Text, 2); }
+            if (!prices.ChargeHeat) { x.Note(x.L("diag-meth-heat-off"), 1); r.Add(FixLink(x, "methodcost", "heat=true", x.L("diag-fix-methodcost", "ChargeMethodHeat", "true")), EmcLineStyle.Text, 2); }
+            if (!prices.ChargeWear) { x.Note(x.L("diag-meth-wear-off"), 1); r.Add(FixLink(x, "methodcost", "wear=true", x.L("diag-fix-methodcost", "ChargeMethodWear", "true")), EmcLineStyle.Text, 2); }
             x.Note(x.L("diag-meth-heatrate", N(prices.HeatRate), prices.HeatSource), 1);
             if (prices.SecondRate > 0) x.Note(x.L("diag-meth-secondrate", N(prices.SecondRate)), 1);
             return problems;
         }
 
-        sealed class PowerFarm { public MethodRecipe Recipe; public double PerSecond, EnergyEmc, Seconds; public string Unit; public double Price; }
+        sealed class PowerFarm
+        {
+            public MethodRecipe Recipe;
+            public double PerSecond, EnergyEmc, Seconds;
+            /// <summary>The unit that adds the most, and its price.</summary>
+            public string Unit;
+            public double Price;
+            /// <summary>Every unit the recipe uses → (its EMC per run, its price a unit).</summary>
+            public Dictionary<string, (double emc, double price)> ByUnit = new Dictionary<string, (double, double)>(StringComparer.Ordinal);
+        }
+
+        static PowerFarm PowerUse(MethodRecipe recipe, Conversion conv)
+        {
+            if (conv?.Costs == null) return null;
+            var energy = conv.Costs.Where(k => k.Kind == "energy" && k.Emc > 0).ToList();
+            double secs = recipe.Costs.Seconds;
+            if (energy.Count == 0 || secs <= 0) return null;
+            var top = energy.OrderByDescending(k => k.Emc).First();
+            var f = new PowerFarm { Recipe = recipe, EnergyEmc = energy.Sum(k => k.Emc), Seconds = secs, Unit = top.Unit, Price = top.Price };
+            f.PerSecond = f.EnergyEmc / secs;
+            foreach (var g in energy.GroupBy(k => k.Unit ?? "")) f.ByUnit[g.Key] = (g.Sum(k => k.Emc), g.First().Price);
+            return f;
+        }
 
         /// <summary>Recipes in use whose power cost alone adds more than the limit per second of machine time.</summary>
         static List<PowerFarm> PowerFarms(Ctx x, Dictionary<MethodRecipe, List<Conversion>> convs, out int unknown)
@@ -308,27 +437,36 @@ namespace VintageE
             foreach (var kv in convs)
             {
                 if (OutcomeOf(x, kv.Value, out Conversion used, out _) != MethodOutcome.Used || used.Costs == null) continue;
-                var energy = used.Costs.Where(k => k.Kind == "energy" && k.Emc > 0).ToList();
-                if (energy.Count == 0) continue;
-                double secs = kv.Key.Costs.Seconds;
-                if (secs <= 0) { unknown++; continue; }
-                var top = energy.OrderByDescending(k => k.Emc).First();
-                double emc = energy.Sum(k => k.Emc);
-                result.Add(new PowerFarm { Recipe = kv.Key, PerSecond = emc / secs, EnergyEmc = emc, Seconds = secs, Unit = top.Unit, Price = top.Price });
+                if (!used.Costs.Any(k => k.Kind == "energy" && k.Emc > 0)) continue;
+                PowerFarm f = PowerUse(kv.Key, used);
+                if (f == null) { unknown++; continue; }
+                result.Add(f);
             }
             return result.OrderByDescending(f => f.PerSecond).ToList();
         }
 
-        /// <summary>The highest price for a unit at which none of its recipes in use makes more than the limit a second from power.</summary>
-        static double SafePrice(List<PowerFarm> farms, string unit)
+        /// <summary>
+        /// The highest price for a unit at which no recipe using it makes more than the limit a second from power: every
+        /// copy of every recipe with a time, beaten ones too (a lower price can make one the cheapest way), with the other
+        /// units it uses at their prices. 0 when lowering this unit alone can't get one under the limit.
+        /// </summary>
+        static double SafePrice(Ctx x, Dictionary<MethodRecipe, List<Conversion>> convs, string unit)
         {
             double best = double.PositiveInfinity;
-            foreach (PowerFarm f in farms.Where(f => f.Unit == unit && f.PerSecond > 0))
+            foreach (var kv in convs)
             {
-                double p = f.Price * FreePowerLimit / f.PerSecond;
-                if (p < best) best = p;
+                foreach (Conversion conv in kv.Value)
+                {
+                    PowerFarm f = PowerUse(kv.Key, conv);
+                    if (f == null || !f.ByUnit.TryGetValue(unit, out var mine) || mine.emc <= 0 || mine.price <= 0) continue;
+                    double others = f.EnergyEmc - mine.emc;
+                    double room = FreePowerLimit * f.Seconds - others;
+                    if (room <= 0) return 0;
+                    double p = mine.price * room / mine.emc;
+                    if (p < best) best = p;
+                }
             }
-            return double.IsPositiveInfinity(best) ? 0 : Math.Floor(best * 1e6) / 1e6;
+            return double.IsPositiveInfinity(best) ? 0 : FloorSignificant(best);
         }
 
         /// <summary>Card 4: windmills and water wheels make power for nothing, so power charged into a value is EMC from nothing.</summary>
@@ -351,7 +489,7 @@ namespace VintageE
                 r.Add(x.L("diag-meth-power-line", f.Recipe.FullCode, F(f.EnergyEmc), N(f.Seconds), F(f.PerSecond)), EmcLineStyle.Text, 1);
             foreach (string unit in over.Select(f => f.Unit).Distinct())
             {
-                double safe = SafePrice(farms, unit);
+                double safe = SafePrice(x, convs, unit);
                 if (safe > 0) r.Add(FixLink(x, "safeprice", unit, x.L("diag-fix-safeprice", unit, N(safe))), EmcLineStyle.Text, 1);
             }
             foreach (string method in over.Select(f => f.Recipe.Method.Code).Distinct().Take(4))
@@ -367,25 +505,27 @@ namespace VintageE
             EmcReport r = x.R;
             var byMethod = convs.GroupBy(kv => kv.Key.Method).ToList();
             if (byMethod.Count == 0) return;
-            int usedTotal = 0, beatenTotal = 0;
+            int usedTotal = 0, beatenTotal = 0, setTotal = 0;
             var lines = new List<(string text, MethodDef m)>();
             foreach (var g in byMethod)
             {
-                int used = 0, beaten = 0, waiting = 0;
+                int used = 0, beaten = 0, set = 0, waiting = 0;
                 foreach (var kv in g)
                 {
                     switch (OutcomeOf(x, kv.Value, out _, out _))
                     {
                         case MethodOutcome.Used: used++; break;
                         case MethodOutcome.Beaten: beaten++; break;
+                        case MethodOutcome.Set: set++; break;
                         default: waiting++; break;
                     }
                 }
                 usedTotal += used;
                 beatenTotal += beaten;
-                lines.Add((x.L("diag-meth-countline", g.Key.DisplayName, g.Key.Code, used, beaten, waiting), g.Key));
+                setTotal += set;
+                lines.Add((x.L("diag-meth-countline", g.Key.DisplayName, g.Key.Code, used, beaten, waiting, set), g.Key));
             }
-            x.Info(x.L("diag-meth-count", usedTotal, beatenTotal));
+            x.Info(x.L("diag-meth-count", usedTotal, beatenTotal, setTotal));
             x.Explain(x.L("diag-meth-count-why"));
             foreach (var (text, m) in lines) r.Add(text + "  " + Link(ActionMethods, m.Code, x.L("diag-meth-look")), EmcLineStyle.Text, 1);
         }
@@ -399,7 +539,9 @@ namespace VintageE
             {
                 if (OutcomeOf(x, kv.Value, out _, out List<CollectibleObject> lacking) != MethodOutcome.Waiting) continue;
                 Conversion first = kv.Value[0];
-                bool byproduct = lacking.Count > 0 && first.Returned != null && lacking.All(l => first.Returned.Any(b => b.Key == l));
+                if (WaitsOnBlacklist(x, first, lacking)) continue; // blacklisted on purpose: nothing to fix
+                // What it also makes, not what it hands back (a bucket): those are the recipe's byproducts.
+                bool byproduct = lacking.Count > 0 && first.Method?.Byproducts != null && lacking.All(l => first.Method.Byproducts.Contains(l));
                 stuck.Add((kv.Key, lacking, byproduct));
             }
             if (stuck.Count == 0) return 0;
@@ -407,7 +549,7 @@ namespace VintageE
             x.Explain(x.L("diag-meth-stuck-why"));
             foreach (var s in stuck.Take(8))
             {
-                r.Add(s.recipe.FullCode + ": " + x.L(s.byproduct ? "diag-meth-stuck-byproduct" : "diag-meth-stuck-ingredient", string.Join(", ", s.lacking.Take(4).Select(EmcReport.Ref))), EmcLineStyle.Text, 1);
+                r.Add(s.recipe.FullCode + ": " + (s.lacking.Count == 0 ? WaitingText(x, convs[s.recipe][0], s.lacking) : x.L(s.byproduct ? "diag-meth-stuck-byproduct" : "diag-meth-stuck-ingredient", string.Join(", ", s.lacking.Take(4).Select(EmcReport.Ref)))), EmcLineStyle.Text, 1);
                 foreach (CollectibleObject l in s.lacking.Take(2))
                 {
                     r.Add(Link(ActionItem, l.Code.ToString(), x.L("diag-why-link")), EmcLineStyle.Text, 2);
@@ -429,21 +571,32 @@ namespace VintageE
         static int FreeCopiesCard(Ctx x)
         {
             EmcReport r = x.R;
+            var owners = x.Report.RecipeListOwners ?? new Dictionary<string, string>();
+            // Only a copy read from one of the method's own mod's recipe lists (or a mod it names in requiresMod) can be
+            // superseded; hand crafting, the game's lists and other mods' lists are other ways of making it, which may be cheaper.
+            bool OwnList(Conversion copy, MethodDef def) => copy.Source != null && owners.TryGetValue(copy.Source, out string owner) && owner != null
+                && (owner == def.ModId || def.Doc.RequiresMods.Contains(owner));
             var withCost = x.Report.Conversions.Where(c => c.Method != null && c.Output != null && c.ExtraCost > 0).ToList();
-            var others = x.Report.Conversions.Where(c => c.Method == null && c.Output != null).GroupBy(c => c.Output).ToDictionary(g => g.Key, g => g.ToList());
+            var others = x.Report.Conversions.Where(c => c.Method == null && c.Output != null && c.Source != null && owners.ContainsKey(c.Source)).GroupBy(c => c.Output).ToDictionary(g => g.Key, g => g.ToList());
             var copies = new List<(Conversion method, Conversion copy)>();
             foreach (Conversion m in withCost)
             {
                 if (!others.TryGetValue(m.Output, out var candidates)) continue;
                 string sig = Signature(m);
-                Conversion copy = candidates.FirstOrDefault(c => c.ExtraCost < m.ExtraCost && Signature(c) == sig);
+                Conversion copy = candidates.FirstOrDefault(c => c.ExtraCost < m.ExtraCost && Signature(c) == sig && OwnList(c, m.Method.Method));
                 if (copy != null) copies.Add((m, copy));
             }
+            // Entries that named nothing, of methods in use this mapping (a switched-off method's entries replace nothing on purpose).
+            var inUse = new HashSet<MethodDef>(x.Report.Conversions.Where(c => c.Method?.Method != null).Select(c => c.Method.Method));
             var dead = new List<(MethodDef m, string entry)>();
-            foreach (MethodDef m in x.Mod.Methods.AllMethods)
+            var refused = new List<(MethodDef m, string entry, string owner)>();
+            foreach (MethodDef m in Snap(x).AllMethods.Where(inUse.Contains))
                 foreach (string s in m.Supersedes)
-                    if (!x.Report.SupersedeHits.Contains(s)) dead.Add((m, s));
-            if (copies.Count == 0 && dead.Count == 0)
+                {
+                    if (x.Report.SupersedeRefused.TryGetValue(s, out string owner)) refused.Add((m, s, owner));
+                    else if (!x.Report.SupersedeHits.Contains(s)) dead.Add((m, s));
+                }
+            if (copies.Count == 0 && dead.Count == 0 && refused.Count == 0)
             {
                 if (x.Report.SupersededLists.Count > 0) { x.Ok(x.L("diag-meth-copies-superseded", x.Report.SupersededLists.Count)); foreach (var kv in x.Report.SupersededLists) x.Note(kv.Key + " ← " + kv.Value); }
                 return 0;
@@ -469,6 +622,13 @@ namespace VintageE
                 x.Warn(x.L("diag-meth-supersede-dead", dead.Count));
                 foreach (var (m, entry) in dead.Take(8)) r.Add(m.Code + ": \"" + entry + "\"", EmcLineStyle.Text, 1);
                 x.Fix(x.L("diag-meth-supersede-dead-fix"));
+            }
+            if (refused.Count > 0)
+            {
+                problems++;
+                x.Warn(x.L("diag-meth-supersede-refused-head", refused.Count));
+                foreach (var (m, entry, owner) in refused.Take(8)) r.Add(x.L("diag-meth-supersede-refused", m.Code, entry, ModName(x, owner)), EmcLineStyle.Text, 1);
+                x.Fix(x.L("diag-meth-supersede-refused-fix"));
             }
             return problems;
         }
@@ -496,15 +656,26 @@ namespace VintageE
         {
             var byDomain = new Dictionary<string, Unseen>(StringComparer.Ordinal);
             Unseen Of(string d) => byDomain.TryGetValue(d, out Unseen u) ? u : byDomain[d] = new Unseen { Domain = d };
-            var covered = new HashSet<string>(x.Mod.Methods.Docs.Select(d => d.ModId), StringComparer.Ordinal);
+            var snap = Snap(x);
+            // A mod is covered by its own documents, and by Vintage-E's files for it (they say so with requiresMod).
+            var covered = new HashSet<string>(snap.Docs.Select(d => d.ModId).Concat(snap.Docs.SelectMany(d => d.RequiresMods)), StringComparer.Ordinal);
             try
             {
-                // Recipe lists Vintage-E finds by reflection, by a squashed name, so a folder that one of them loads isn't listed.
-                var labels = ConversionCollector.DiscoverRecipeLists(x.Sapi, x.Sapi.Logger).Select(l => Regex.Replace((l.Label ?? "") + " " + (l.ElementType?.Name ?? ""), "[^a-z0-9]", "", RegexOptions.IgnoreCase).ToLowerInvariant()).ToList();
+                // Recipe lists Vintage-E found on mod systems when mapping (by a squashed name), so a folder that one of them
+                // loads isn't listed. Taken from the mapping: reading mod systems' properties here would run other mods'
+                // code on the report's worker thread. (A mapping from the cache has none: then they're read here, as a
+                // background mapping does anyway.)
+                IEnumerable<string> names = x.Report?.RecipeListOwners != null && x.Report.RecipeListOwners.Count > 0
+                    ? x.Report.RecipeListOwners.Keys.Select(l => l + " " + (x.Report.RecipeListTypes != null && x.Report.RecipeListTypes.TryGetValue(l, out string t) ? t : ""))
+                    : ConversionCollector.DiscoverRecipeLists(x.Sapi, x.Sapi.Logger).Select(l => (l.Label ?? "") + " " + (l.ElementType?.Name ?? ""));
+                var labels = names.Select(l => Regex.Replace(l, "[^a-z0-9]", "", RegexOptions.IgnoreCase).ToLowerInvariant()).ToList();
                 foreach (IAsset asset in x.Sapi.Assets.GetMany("recipes/", null, false))
                 {
                     string domain = asset.Location.Domain;
                     if (BaseDomains.Contains(domain) || covered.Contains(domain)) continue;
+                    // A mod's files for another mod (compatibility/<mod>/recipes/...) are listed under that mod's recipes
+                    // but keep their own path: those are the game's recipe types (grid ones, usually), which are read.
+                    if (!asset.Location.Path.StartsWith("recipes/", StringComparison.OrdinalIgnoreCase)) continue;
                     string[] parts = asset.Location.Path.Split('/');
                     if (parts.Length < 3) continue;
                     string folder = parts[1];
@@ -551,16 +722,16 @@ namespace VintageE
         static int SwitchedOffCard(Ctx x)
         {
             EmcReport r = x.R;
-            var cfg = x.Mod.Config;
-            var methods = x.Mod.Methods.AllMethods.ToList();
-            var off = methods.Where(m => MethodSnapshot.IsDisabled(m, null, cfg.DisabledMethods)).ToList();
+            var disabled = Copy(x.Mod.Config.DisabledMethods);
+            var methods = Snap(x).AllMethods.ToList();
+            var off = methods.Where(m => MethodSnapshot.IsDisabled(m, null, disabled)).ToList();
             var deadOff = DeadDisabledMethods(x.Mod);
             var deadPrices = DeadEnergyPrices(x.Mod);
-            if (off.Count == 0 && deadOff.Count == 0 && deadPrices.Count == 0 && cfg.DisabledMethods.Count == 0) return 0;
-            if (off.Count > 0 || cfg.DisabledMethods.Count > 0)
+            if (off.Count == 0 && deadOff.Count == 0 && deadPrices.Count == 0 && disabled.Count == 0) return 0;
+            if (off.Count > 0 || disabled.Count > 0)
             {
-                x.Info(x.L("diag-meth-off-card", off.Count, cfg.DisabledMethods.Count));
-                foreach (string entry in cfg.DisabledMethods.Where(e => !deadOff.Contains(e)))
+                x.Info(x.L("diag-meth-off-card", off.Count, disabled.Count));
+                foreach (string entry in disabled.Where(e => !deadOff.Contains(e)))
                     r.Add(entry + "  " + FixLink(x, "method", "on:" + entry, x.L("diag-fix-method-on", entry)), EmcLineStyle.Text, 1);
             }
             if (deadOff.Count + deadPrices.Count > 0)
@@ -574,12 +745,15 @@ namespace VintageE
             return 0;
         }
 
+        /// <summary>Whether the switched-off card would show nothing at all (nothing switched off, no stale entries).</summary>
+        static bool SwitchedOffCardShowsNothing(Ctx x) => Copy(x.Mod.Config.DisabledMethods).Count == 0 && DeadEnergyPrices(x.Mod).Count == 0;
+
         /// <summary>DisabledMethods entries that name no loaded mod, method or recipe.</summary>
         static List<string> DeadDisabledMethods(VintageEModSystem mod)
         {
             var methods = mod.Methods.AllMethods.ToList();
             var result = new List<string>();
-            foreach (string e in mod.Config.DisabledMethods ?? new List<string>())
+            foreach (string e in Copy(mod.Config.DisabledMethods))
             {
                 if (string.IsNullOrWhiteSpace(e)) continue;
                 var single = new[] { e };
@@ -595,7 +769,7 @@ namespace VintageE
             if (!mod.Methods.Collected) return new List<string>();
             var known = new HashSet<string>(mod.Methods.Units.Keys, StringComparer.Ordinal);
             foreach (MethodDef m in mod.Methods.AllMethods) foreach (MethodRecipe rc in m.Recipes) foreach (var (unit, _) in rc.Costs.Energy) known.Add(unit);
-            return (mod.Config.EnergyEmc ?? new Dictionary<string, double>()).Keys.Where(k => !string.IsNullOrWhiteSpace(k) && !known.Contains(k.Trim().ToLowerInvariant()) && !known.Contains("game:" + k.Trim().ToLowerInvariant())).ToList();
+            return Copy(mod.Config.EnergyEmc?.Keys).Where(k => !string.IsNullOrWhiteSpace(k) && !known.Contains(k.Trim().ToLowerInvariant()) && !known.Contains("game:" + k.Trim().ToLowerInvariant())).ToList();
         }
 
         // ---------------------------------------------------------------- /emc methods
@@ -604,8 +778,8 @@ namespace VintageE
         {
             EmcReport r = x.R;
             arg = (arg ?? "").Trim();
-            MethodSnapshot snap = x.Mod.Methods;
-            if (arg.StartsWith("export", StringComparison.OrdinalIgnoreCase))
+            MethodSnapshot snap = Snap(x);
+            if (arg.Equals("export", StringComparison.OrdinalIgnoreCase) || arg.StartsWith("export ", StringComparison.OrdinalIgnoreCase))
             {
                 string modId = arg.Substring(6).Trim().ToLowerInvariant();
                 r.Section(x.L("diag-sec-meth-export", modId));
@@ -634,7 +808,7 @@ namespace VintageE
                 r.Section(x.L("diag-sec-meth"));
                 r.Add(x.L("diag-meth-help"), EmcLineStyle.Note);
                 if (snap.Docs.Count == 0) x.Note(x.L("diag-meth-docs-none-why"), 0);
-                DocumentsCard(x, snap);
+                DocumentsCard(x, snap, true, false);
                 if (x.Report != null && !x.Report.FromCache && x.Report.MethodPrices != null && snap.MethodCount > 0)
                 {
                     var convsAll = MethodConversions(x);
@@ -648,10 +822,23 @@ namespace VintageE
             }
             var convs = MethodConversions(x);
             var results = (x.Report?.MethodResults ?? new List<MethodRecipeResult>()).GroupBy(rr => rr.Recipe).ToDictionary(g => g.Key, g => g.First());
+            var disabled = Copy(x.Mod.Config.DisabledMethods);
+            if (mod != null && !snap.AllMethods.Any(m => m.ModId == mod))
+            {
+                // Every document of the mod is broken or waiting for a mod: say so rather than show nothing.
+                r.Section(x.L("diag-sec-mod-methods"));
+                foreach (MethodDoc d in snap.Docs.Where(d => d.ModId == mod))
+                {
+                    if (d.Error != null) x.Warn(x.L("diag-meth-broken", d.Source, d.Error));
+                    else if (d.MissingMod != null) x.Info(x.L("diag-meth-waitingmod", d.Source, d.MissingMod));
+                    else x.Info(x.L("diag-methodcheck-doc", d.Source, d.Route, d.Format, d.Methods.Count, d.RecipeCount));
+                }
+                r.Add(Link(ActionMethodCheck, mod, x.L("diag-meth-check")), EmcLineStyle.Text, 1);
+            }
             foreach (MethodDef m in snap.AllMethods.Where(m => (mod == null || m.ModId == mod) && (method == null || m.Code == method)))
             {
                 r.Section(x.L("diag-sec-meth-one", m.DisplayName, m.Code));
-                bool off = MethodSnapshot.IsDisabled(m, null, x.Mod.Config.DisabledMethods);
+                bool off = MethodSnapshot.IsDisabled(m, null, disabled);
                 string head = x.L("diag-meth-head", ModName(x, m.ModId), m.Recipes.Count, x.L(m.Kind == ConversionKind.Processing ? "diag-meth-kind-processing" : "diag-meth-kind-crafting"), m.Doc.Source);
                 if (off) x.Info(head + " " + x.L("diag-meth-isoff")); else x.Ok(head);
                 if (!string.IsNullOrEmpty(m.Machine))
@@ -693,7 +880,7 @@ namespace VintageE
         {
             x.R.Section(x.L("diag-sec-next"));
             x.R.Add(Link(ActionMethods, "", x.L("diag-q-methods")));
-            foreach (string mod in x.Mod.Methods.Mods.Take(6)) x.R.Add(Link(ActionMethodCheck, mod, x.L("diag-q-methodcheck", ModName(x, mod))));
+            foreach (string mod in Snap(x).Mods.Take(6)) x.R.Add(Link(ActionMethodCheck, mod, x.L("diag-q-methodcheck", ModName(x, mod))));
             x.R.Add(FixLink(x, "methodsreload", "", x.L("diag-fix-methodsreload")));
             x.R.Add(Link(ActionOverview, "", x.L("diag-q-back")));
         }
@@ -703,7 +890,7 @@ namespace VintageE
         /// <summary>Writes ModData/vintagee/methods-&lt;modid&gt;.json: every recipe as Vintage-E read it, with its costs, prices and what became of it.</summary>
         static string Export(Ctx x, string modId)
         {
-            var docs = x.Mod.Methods.Docs.Where(d => d.ModId == modId).ToList();
+            var docs = Snap(x).Docs.Where(d => d.ModId == modId).ToList();
             if (docs.Count == 0) { x.Warn(x.L("diag-meth-nodocs", modId)); return null; }
             var convs = MethodConversions(x);
             var results = (x.Report?.MethodResults ?? new List<MethodRecipeResult>()).GroupBy(rr => rr.Recipe).ToDictionary(g => g.Key, g => g.First());
@@ -733,6 +920,9 @@ namespace VintageE
                         results.TryGetValue(recipe, out MethodRecipeResult res);
                         if (res?.Disabled == true) o["state"] = "switched off";
                         else if (res?.Skipped != null) { o["state"] = "skipped"; o["why"] = res.Skipped; }
+                        if (res != null && res.MissingVariants > 0) o["variantsMissing"] = res.MissingVariants;
+                        if (res != null && res.FailedVariants > 0) { o["variantsLeftOut"] = res.FailedVariants; o["variantsLeftOutWhy"] = res.VariantFailure; }
+                        if (res != null && res.Notes.Count > 0) o["notes"] = new JArray(res.Notes);
                         if (convs.TryGetValue(recipe, out var list) && list.Count > 0)
                         {
                             MethodOutcome outcome = OutcomeOf(x, list, out Conversion used, out var lacking);
@@ -745,7 +935,8 @@ namespace VintageE
                             else o["output"] = new JObject { ["code"] = c.Output?.Code.ToString(), ["quantity"] = c.OutputQuantity };
                             if (c.Returned != null) o["takenOff"] = new JArray(c.Returned.Select(b => (JToken)new JObject { ["code"] = b.Key.Code.ToString(), ["quantity"] = b.Value }));
                             if (c.Costs != null) o["costs"] = new JArray(c.Costs.Select(k => (JToken)new JObject { ["kind"] = k.Kind, ["unit"] = k.Unit, ["amount"] = k.Amount, ["price"] = k.Price, ["emc"] = k.Emc, ["priceFrom"] = k.PriceSource, ["charged"] = k.Charged }));
-                            double? cost = RunCost(x, c, null);
+                            // Only a whole cost: one with an ingredient or byproduct still unvalued would be too low.
+                            double? cost = RunCost(x, c, new List<CollectibleObject>());
                             if (cost.HasValue) o["costPerRun"] = cost.Value;
                             foreach (CollectibleObject outC in OutputsOf(c)) if (outC != null && x.Report.Values.TryGetValue(outC, out double v)) { o["outputValue"] = v; break; }
                         }
@@ -782,7 +973,7 @@ namespace VintageE
             modId = (modId ?? "").Trim().ToLowerInvariant();
             r.Section(x.L("diag-sec-methodcheck", ModName(x, modId)));
             r.Add(x.L("diag-methodcheck-help"), EmcLineStyle.Note);
-            var docs = x.Mod.Methods.Docs.Where(d => d.ModId == modId).ToList();
+            var docs = Snap(x).Docs.Where(d => d.ModId == modId).ToList();
             if (docs.Count == 0)
             {
                 x.Warn(x.L("diag-meth-nodocs", modId));
@@ -815,7 +1006,7 @@ namespace VintageE
             foreach (MethodDef m in docs.Where(d => d.Usable).SelectMany(d => d.Methods))
             {
                 r.Section(x.L("diag-sec-meth-one", m.DisplayName, m.Code));
-                int used = 0, beaten = 0, waiting = 0, skipped = 0, off = 0;
+                int used = 0, beaten = 0, set = 0, waiting = 0, skipped = 0, off = 0, optional = 0;
                 Conversion example = null;
                 foreach (MethodRecipe recipe in m.Recipes)
                 {
@@ -823,6 +1014,7 @@ namespace VintageE
                     if (res?.Disabled == true) { off++; continue; }
                     if (!convs.TryGetValue(recipe, out var list) || list.Count == 0)
                     {
+                        if (ForAbsentMod(x, res?.BadCode)) { optional++; continue; }
                         skipped++;
                         r.Add(recipe.Code + ": " + x.L("diag-meth-skipped", res?.Skipped ?? x.L("diag-meth-notread")) + (res?.BadCode != null ? Suggest(x, res.BadCode) : ""), EmcLineStyle.Warn, 1);
                         x.Note(recipe.Path, 2);
@@ -830,12 +1022,21 @@ namespace VintageE
                     }
                     switch (OutcomeOf(x, list, out Conversion u, out var lacking))
                     {
-                        case MethodOutcome.Used: used++; example ??= u; break;
+                        case MethodOutcome.Used: used++; example ??= u; if (res != null && (res.FailedVariants > 0 || res.Notes.Count > 0)) RecipeLine(x, recipe, list, res, 1); break;
                         case MethodOutcome.Beaten: beaten++; if (beaten <= 10) RecipeLine(x, recipe, list, res, 1); break;
+                        case MethodOutcome.Set: set++; if (set <= 5) RecipeLine(x, recipe, list, res, 1); break;
                         default: waiting++; if (waiting <= 10) RecipeLine(x, recipe, list, res, 1); break;
                     }
                 }
-                x.Info(x.L("diag-methodcheck-counts", used, beaten, waiting, skipped, off));
+                x.Info(x.L("diag-methodcheck-counts", used, beaten, waiting, skipped, off, set));
+                if (m.SwitchedOffInDocument > 0) x.Note(x.L("diag-methodcheck-enabledoff", m.SwitchedOffInDocument), 1);
+                if (optional > 0) x.Note(x.L("diag-meth-optional", optional, string.Join(", ", m.Recipes.Select(rc => results.TryGetValue(rc, out var rr) ? rr.BadCode : null).Where(b => ForAbsentMod(x, b)).Select(DomainOf).Distinct().Take(6))), 1);
+                foreach (string s in m.Supersedes)
+                {
+                    if (x.Report.SupersedeRefused.TryGetValue(s, out string owner)) r.Add(x.L("diag-meth-supersede-refused", m.Code, s, ModName(x, owner)), EmcLineStyle.Warn, 1);
+                    else if (!x.Report.SupersedeHits.Contains(s)) r.Add(x.L("diag-methodcheck-supersede-dead", s), EmcLineStyle.Warn, 1);
+                    else x.Note(x.L("diag-methodcheck-supersede-ok", s), 1);
+                }
                 if (example != null)
                 {
                     x.Note(x.L("diag-methodcheck-example"), 1);
@@ -848,7 +1049,7 @@ namespace VintageE
                     }
                     foreach (MethodCostLine k in example.Costs ?? new List<MethodCostLine>()) r.Add("+ " + CostText(x, k), EmcLineStyle.Text, 3);
                     if (example.Returned != null) foreach (var b in example.Returned) r.Add("- " + N(b.Value) + " " + EmcReport.Ref(b.Key) + " × " + F(x.V(b.Key)) + " = " + F(x.V(b.Key) * b.Value), EmcLineStyle.Text, 3);
-                    double? cost = RunCost(x, example, null);
+                    double? cost = RunCost(x, example, new List<CollectibleObject>());
                     if (cost.HasValue && example.JointOutputs == null) r.Add(x.L("diag-methodcheck-total", F(cost.Value), N(example.OutputQuantity), F(cost.Value / Math.Max(1e-9, example.OutputQuantity)), EmcReport.Ref(example.Output)), EmcLineStyle.Total, 3);
                     else if (cost.HasValue) r.Add(x.L("diag-meth-run", F(cost.Value)), EmcLineStyle.Total, 3);
                 }
@@ -860,8 +1061,8 @@ namespace VintageE
 
         // ---------------------------------------------------------------- draftmethods: a starting document from data Vintage-E can't read
 
-        static readonly Regex InputField = new Regex(@"^(input|ingredient|in)(\d*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        static readonly Regex OutputField = new Regex(@"^(output|result|out|product)(\d*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        static readonly Regex InputField = new Regex(@"^(inputs?|ingredients?|in)(\d*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        static readonly Regex OutputField = new Regex(@"^(outputs?|results?|out|products?)(\d*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         static readonly Regex LiquidField = new Regex(@"^(liquid|fluid)(\d*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         static readonly Regex LiquidOutField = new Regex(@"^(liquidoutput|outputliquid|fluidoutput|outputfluid)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         static readonly Regex TimeField = new Regex(@"^(seconds|time|duration|processingtime|processseconds|crafttime)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -877,15 +1078,80 @@ namespace VintageE
             return null;
         }
 
+        /// <summary>
+        /// A stack template for a stack written the game's way, as an object ({ "type", "code", "stackSize" or "quantity",
+        /// "litres", "name" }): each field read from <paramref name="prefix"/> ("$output." for a field, "$" inside "each").
+        /// Null when the object has no code.
+        /// </summary>
+        static JObject StackFromObject(JObject stack, string prefix, bool input, ref bool wildcard)
+        {
+            string code = FieldLike(stack, "code", "item", "block");
+            if (code == null || stack[code]?.Type != JTokenType.String) return null;
+            var s = new JObject { ["code"] = prefix + code };
+            string t = FieldLike(stack, "type");
+            if (t != null) s["type"] = prefix + t;
+            string q = FieldLike(stack, "stackSize", "quantity", "count", "qty");
+            if (q != null) s["quantity"] = prefix + q;
+            string l = FieldLike(stack, "litres", "liters");
+            if (l != null) s["litres"] = prefix + l;
+            if (input)
+            {
+                string n = FieldLike(stack, "name");
+                if (n != null) s["name"] = prefix + n;
+                string av = FieldLike(stack, "allowedVariants");
+                if (av != null) s["allowedVariants"] = prefix + av;
+                string sv = FieldLike(stack, "skipVariants");
+                if (sv != null) s["skipVariants"] = prefix + sv;
+                if (((string)stack[code]).Contains('*')) wildcard = true;
+            }
+            return s;
+        }
+
         /// <summary>A reader's recipe template guessed from one sample recipe's field names; notes say what was guessed.</summary>
         static JObject GuessTemplate(JObject sample, List<string> notes)
         {
             var inputs = new JArray();
             var outputs = new JArray();
             var tmpl = new JObject();
+            var usedFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             bool wildcardIn = false, wildcardOut = false;
             foreach (JProperty p in sample.Properties())
             {
+                bool isIn = InputField.IsMatch(p.Name), isOut = !isIn && OutputField.IsMatch(p.Name) && !LiquidOutField.IsMatch(p.Name);
+                // Stacks written the game's way: an object, a list of them, or (grid recipes) a map of keys to them.
+                if ((isIn || isOut) && p.Value is JObject one)
+                {
+                    JObject first = one.Properties().All(pp => pp.Value is JObject) && one.Count > 0 && FieldLike(one, "code", "item", "block") == null ? (JObject)one.Properties().First().Value : null;
+                    JObject st = first != null ? StackFromObject(first, "$", isIn, ref wildcardIn) : StackFromObject(one, "$" + p.Name + ".", isIn, ref wildcardIn);
+                    if (st == null) continue;
+                    if (first != null)
+                    {
+                        st = new JObject(new JProperty("each", "$" + p.Name), st.Properties());
+                        notes.Add(p.Name + " is a map of keys to stacks, as grid recipes have: each is counted once, so check the quantities against the pattern");
+                    }
+                    JObject src = first ?? one;
+                    if (isOut && ((string)src[FieldLike(src, "code", "item", "block")] ?? "").Contains("{")) wildcardOut = true;
+                    (isIn ? inputs : outputs).Add(st);
+                    usedFields.Add(p.Name);
+                    continue;
+                }
+                if ((isIn || isOut) && p.Value is JArray list && list.Count > 0)
+                {
+                    if (list[0] is JObject el)
+                    {
+                        JObject st = StackFromObject(el, "$", isIn, ref wildcardIn);
+                        if (st == null) continue;
+                        (isIn ? inputs : outputs).Add(new JObject(new JProperty("each", "$" + p.Name), st.Properties()));
+                        usedFields.Add(p.Name);
+                    }
+                    else if (list[0].Type == JTokenType.String)
+                    {
+                        (isIn ? inputs : outputs).Add(new JObject { ["each"] = "$" + p.Name, ["code"] = "$" });
+                        usedFields.Add(p.Name);
+                        notes.Add(p.Name + " is a list of codes: each counts as one; check the quantities");
+                    }
+                    continue;
+                }
                 if (p.Value.Type != JTokenType.String) continue;
                 string val = (string)p.Value;
                 Match m;
@@ -893,53 +1159,60 @@ namespace VintageE
                 {
                     var s = new JObject { ["code"] = "$" + p.Name };
                     string q = FieldLike(sample, p.Name + "Quantity", p.Name + "Qty", p.Name + "Count", p.Name + "StackSize", m.Groups[2].Value.Length == 0 ? "Quantity" : "\0");
-                    if (q != null) s["quantity"] = "$" + q;
+                    if (q != null) { s["quantity"] = "$" + q; usedFields.Add(q); }
                     string t = FieldLike(sample, p.Name + "Type");
-                    if (t != null) s["type"] = "$" + t;
+                    if (t != null) { s["type"] = "$" + t; usedFields.Add(t); }
                     if (val.Contains('*')) { s["name"] = "wildcard"; wildcardIn = true; }
                     inputs.Add(s);
+                    usedFields.Add(p.Name);
                 }
                 else if (LiquidOutField.IsMatch(p.Name))
                 {
                     var s = new JObject { ["code"] = "$" + p.Name };
                     string l = FieldLike(sample, p.Name + "Litres", p.Name + "Liters", "OutputLitres");
-                    if (l != null) s["litres"] = "$" + l; else notes.Add("the liquid output " + p.Name + " has no litres field: check its amount");
+                    if (l != null) { s["litres"] = "$" + l; usedFields.Add(l); } else notes.Add("the liquid output " + p.Name + " has no litres field: check its amount");
                     outputs.Add(s);
+                    usedFields.Add(p.Name);
                 }
                 else if ((m = OutputField.Match(p.Name)).Success)
                 {
                     var s = new JObject { ["code"] = "$" + p.Name };
                     string q = FieldLike(sample, p.Name + "Quantity", p.Name + "Qty", p.Name + "Count", p.Name + "StackSize");
-                    if (q != null) s["quantity"] = "$" + q;
+                    if (q != null) { s["quantity"] = "$" + q; usedFields.Add(q); }
                     string t = FieldLike(sample, p.Name + "Type");
-                    if (t != null) s["type"] = "$" + t;
+                    if (t != null) { s["type"] = "$" + t; usedFields.Add(t); }
                     if (val.Contains("{wildcard}")) wildcardOut = true;
                     outputs.Add(s);
+                    usedFields.Add(p.Name);
                 }
                 else if (LiquidField.IsMatch(p.Name))
                 {
                     var s = new JObject { ["code"] = "$" + p.Name };
                     string l = FieldLike(sample, p.Name + "Litres", p.Name + "Liters", "Litres", "Liters");
-                    if (l != null) s["litres"] = "$" + l; else notes.Add("the liquid " + p.Name + " has no litres field: check its amount");
+                    if (l != null) { s["litres"] = "$" + l; usedFields.Add(l); } else notes.Add("the liquid " + p.Name + " has no litres field: check its amount");
                     inputs.Add(s);
+                    usedFields.Add(p.Name);
                 }
             }
             string time = sample.Properties().Select(p => p.Name).FirstOrDefault(n => TimeField.IsMatch(n));
             string code = FieldLike(sample, "Code", "Name", "Id");
-            if (code != null) tmpl["code"] = "$" + code;
+            string enabled = FieldLike(sample, "enabled");
+            if (code != null) { tmpl["code"] = "$" + code; usedFields.Add(code); }
+            if (enabled != null) { tmpl["enabled"] = "$" + enabled; usedFields.Add(enabled); }
             tmpl["inputs"] = inputs;
             tmpl["outputs"] = outputs;
-            if (time != null) tmpl["costs"] = new JObject { ["seconds"] = "$" + time };
+            if (time != null) { tmpl["costs"] = new JObject { ["seconds"] = "$" + time }; usedFields.Add(time); }
             if (inputs.Count == 0) notes.Add("no field looked like an ingredient: fill \"inputs\" by hand");
             if (outputs.Count == 0) notes.Add("no field looked like a result: fill \"outputs\" by hand");
-            if (wildcardOut && !wildcardIn) notes.Add("an output uses {wildcard} but no input has a *: check which input it comes from");
+            if (wildcardOut && !wildcardIn) notes.Add("an output uses a {placeholder} but no input has a *: check which input it comes from");
             notes.Add("no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit");
-            var unknown = sample.Properties().Where(p => !InputField.IsMatch(p.Name) && !OutputField.IsMatch(p.Name) && !LiquidField.IsMatch(p.Name) && !LiquidOutField.IsMatch(p.Name)
-                && !TimeField.IsMatch(p.Name) && !p.Name.EndsWith("Quantity", StringComparison.OrdinalIgnoreCase) && !p.Name.EndsWith("Type", StringComparison.OrdinalIgnoreCase)
-                && !p.Name.EndsWith("Litres", StringComparison.OrdinalIgnoreCase) && p.Name != code).Select(p => p.Name).ToList();
+            var unknown = sample.Properties().Select(p => p.Name).Where(n => !usedFields.Contains(n)).ToList();
             if (unknown.Count > 0) notes.Add("fields not used (a tool, a die, a heat level, a second ingredient?): " + string.Join(", ", unknown));
             return tmpl;
         }
+
+        /// <summary>JSON shown as report text: "{{", "}}" and "[[" are the report's own link marks, so they get a space, not removed.</summary>
+        static string NoMarkup(string text) => text.Replace("[[", "[ [").Replace("]]", "] ]").Replace("{{", "{ {").Replace("}}", "} }");
 
         static void DraftMethods(Ctx x, string modId)
         {
@@ -949,7 +1222,7 @@ namespace VintageE
             Unseen u = UnseenRecipeData(x).FirstOrDefault(un => un.Domain == modId);
             if (u == null)
             {
-                bool has = x.Mod.Methods.Docs.Any(d => d.ModId == modId);
+                bool has = Snap(x).Docs.Any(d => d.ModId == modId);
                 x.Ok(has ? x.L("diag-draftmethods-has", modId) : x.L("diag-draftmethods-nothing", modId));
                 if (has) r.Add(Link(ActionMethodCheck, modId, x.L("diag-q-methodcheck", ModName(x, modId))));
                 MethodsBack(x);
@@ -992,7 +1265,12 @@ namespace VintageE
                     sample = fileToken as JObject ?? (fileToken as JArray)?.FirstOrDefault() as JObject;
                 }
                 catch (Exception e) { notes.Add("its first file could not be read (" + e.Message + ")"); }
-                if (sample == null) continue;
+                if (sample == null)
+                {
+                    // Say why the folder has no method in the draft, rather than leave it out without a word.
+                    allNotes.Add("recipes/" + kv.Key + ": left out of the draft: " + (notes.Count > 0 ? string.Join("; ", notes) : "its first file isn't a recipe object (or a list of them)"));
+                    continue;
+                }
                 JObject tmpl = GuessTemplate(sample, notes);
                 samples.Add(("recipes/" + kv.Key, sample));
                 methods.Add(new JObject
@@ -1032,14 +1310,14 @@ namespace VintageE
             r.Add(x.L("diag-draftmethods-how"), EmcLineStyle.Text, 1);
             x.Note(x.L("diag-meth-unseen-comment", VintageEModSystem.ModDbUrl), 1);
             r.Section(x.L("diag-draft-text"));
-            foreach (string line in json.Split('\n')) r.Add(line.Replace("[[", "").Replace("{{", "").Replace("}}", ""), EmcLineStyle.Note);
+            foreach (string line in json.Split('\n')) r.Add(NoMarkup(line), EmcLineStyle.Note);
             // What the guesses were made from, so the field names can be checked against the real data.
             r.Section(x.L("diag-sec-draftmethods-samples"));
             foreach (var (where, sample) in samples)
             {
                 string text = sample.ToString(Formatting.None);
                 if (text.Length > 1500) text = text.Substring(0, 1500) + " …";
-                r.Add(where + ": " + text.Replace("[[", "").Replace("{{", "").Replace("}}", ""), EmcLineStyle.Note);
+                r.Add(where + ": " + NoMarkup(text), EmcLineStyle.Note);
             }
             MethodsBack(x);
         }
@@ -1052,7 +1330,7 @@ namespace VintageE
             if (x.Report == null || x.Report.FromCache || x.Report.Conversions == null) return;
             EmcReport r = x.R;
             var convs = MethodConversions(x);
-            var makes = convs.Where(kv => kv.Value.Any(conv => OutputsOf(conv).Contains(c))).ToList();
+            var makes = convs.Where(kv => kv.Value.Any(conv => MakesIt(conv, c))).ToList();
             var results = x.Report.MethodResults.GroupBy(rr => rr.Recipe).ToDictionary(g => g.Key, g => g.First());
             // Recipes that would make it but weren't read (skipped, switched off).
             var notMade = results.Values.Where(rr => (rr.Disabled || rr.Skipped != null) && !convs.ContainsKey(rr.Recipe)
@@ -1064,7 +1342,7 @@ namespace VintageE
             {
                 results.TryGetValue(kv.Key, out MethodRecipeResult res);
                 r.Add(x.L("diag-item-madeby", kv.Key.Method.DisplayName, ModName(x, kv.Key.Method.ModId)), EmcLineStyle.Text, 0);
-                var mine = kv.Value.Where(conv => OutputsOf(conv).Contains(c)).ToList();
+                var mine = kv.Value.Where(conv => MakesIt(conv, c)).ToList();
                 RecipeLine(x, kv.Key, mine, res, 1);
                 Conversion shown = mine.FirstOrDefault(conv => x.Report.Via.TryGetValue(c, out Conversion v) && v == conv) ?? mine[0];
                 foreach (MethodCostLine k in shown.Costs ?? new List<MethodCostLine>()) x.Note(CostText(x, k), 2);
@@ -1072,14 +1350,14 @@ namespace VintageE
             }
             if (makes.Count > 8) x.Note(x.L("diag-more", makes.Count - 8));
             foreach (MethodRecipeResult rr in notMade.Take(6))
-                r.Add(x.L("diag-item-notmadeby", rr.Recipe.FullCode, rr.Disabled ? x.L("diag-meth-off") : rr.Skipped) + (rr.Disabled ? "  " + FixLink(x, "method", "on:" + rr.Recipe.Method.Code, x.L("diag-fix-method-on", rr.Recipe.Method.Code)) : ""), EmcLineStyle.Warn, 1);
+                r.Add(x.L("diag-item-notmadeby", rr.Recipe.FullCode, rr.Disabled ? x.L("diag-meth-off") : rr.Skipped) + (rr.Disabled ? "  " + FixLink(x, "method", "on:" + rr.Recipe.FullCode, x.L("diag-fix-method-on", rr.Recipe.FullCode)) : ""), EmcLineStyle.Warn, 1);
             foreach (var kv in uses) r.Add(x.L("diag-item-usedin", kv.Key.FullCode, kv.Key.Method.DisplayName), EmcLineStyle.Note, 1);
         }
 
         /// <summary>The mod report's section on the mod's own crafting methods.</summary>
         static void MethodLinesForMod(Ctx x, string domain)
         {
-            MethodSnapshot snap = x.Mod.Methods;
+            MethodSnapshot snap = Snap(x);
             var docs = snap.Docs.Where(d => d.ModId == domain).ToList();
             EmcReport r = x.R;
             if (docs.Count == 0)
@@ -1095,8 +1373,10 @@ namespace VintageE
             }
             r.Section(x.L("diag-sec-mod-methods"));
             int methods = docs.Where(d => d.Usable).Sum(d => d.Methods.Count), recipes = docs.Where(d => d.Usable).Sum(d => d.RecipeCount);
-            int errs = docs.Sum(d => d.Problems.Count(p => p.Error));
-            string line = x.L("diag-mod-methods", methods, recipes, errs);
+            int errs = docs.Sum(d => d.Problems.Count(p => p.Error && !ForAbsentMod(x, p.BadCode))) + docs.Count(d => d.Error != null);
+            int leftOut = x.Report?.MethodResults?.Count(rr => rr.Recipe.Method.ModId == domain && rr.Skipped != null && !rr.Disabled && !ForAbsentMod(x, rr.BadCode)) ?? 0;
+            string line = x.L("diag-mod-methods", methods, recipes, errs, leftOut);
+            errs += leftOut;
             if (errs > 0) x.Warn(line); else x.Ok(line);
             if (x.Report != null && !x.Report.FromCache && x.Report.Via != null)
             {
@@ -1127,8 +1407,8 @@ namespace VintageE
             {
                 if (k.Kind != "energy") continue;
                 MethodUnitPrice p = x.Report?.MethodPrices != null && x.Report.MethodPrices.Units.TryGetValue(k.Unit ?? "", out MethodUnitPrice up) ? up : null;
+                // A mod's suggested price is the usual way a unit is priced, so only a unit with none is worth a word.
                 if (p == null || p.Source == "none" || p.Source == "undeclared") weak.Add(x.L("diag-trace-meth-noprice", UnitName(x, k.Unit)));
-                else if (p.Source == "suggestion") weak.Add(x.L("diag-trace-meth-suggested", UnitName(x, k.Unit)));
             }
             MethodStack main = conv.Method.Recipe?.Outputs.FirstOrDefault(o => o.Main) ?? (conv.Method.Recipe?.Outputs.Count == 1 ? conv.Method.Recipe.Outputs[0] : null);
             if (main != null && main.Chance < 0.1 && conv.Output == c) weak.Add(x.L("diag-trace-meth-rare", (main.Chance * 100).ToString("0.##", CultureInfo.InvariantCulture)));
@@ -1140,14 +1420,14 @@ namespace VintageE
         static int MethodStartup(Ctx x)
         {
             int problems = 0;
-            foreach (var (mod, error) in x.Mod.Methods.ListenerErrors)
+            foreach (var (mod, error) in Snap(x).ListenerErrors)
             {
                 problems++;
                 x.Problem(x.L("diag-meth-listener", mod == "?" ? x.L("diag-meth-unknownmod") : ModName(x, mod), error));
                 x.Explain(x.L("diag-meth-listener-why"));
                 x.Fix(x.L("diag-meth-listener-fix"));
             }
-            if (x.Mod.MethodChangeBeforeStart) x.Info(x.L("diag-meth-earlychange", string.Join(", ", x.Mod.MethodChangeRequests.Keys)));
+            if (x.Mod.MethodChangeBeforeStart) x.Info(x.L("diag-meth-earlychange", string.Join(", ", Copy(x.Mod.MethodChangeRequests.Keys))));
             return problems;
         }
 
@@ -1188,7 +1468,7 @@ namespace VintageE
                 case "methodnovalue":
                     {
                         // Step by step: is there a document, was the recipe read, is it switched off, what is it waiting for, did something beat it.
-                        MethodSnapshot snap = x.Mod.Methods;
+                        MethodSnapshot snap = Snap(x);
                         x.Info(x.L("diag-sym-meth-1", snap.Docs.Count, snap.MethodCount));
                         if (held != null && !snap.Docs.Any(d => d.ModId == held.Code.Domain))
                         {
@@ -1198,9 +1478,10 @@ namespace VintageE
                         x.Info(x.L("diag-sym-meth-2"));
                         if (fresh) RecipesCard(x, convs);
                         x.Info(x.L("diag-sym-meth-3"));
-                        SwitchedOffCard(x);
+                        if (SwitchedOffCardShowsNothing(x)) x.Ok(x.L("diag-sym-meth-3-none"));
+                        else SwitchedOffCard(x);
                         x.Info(x.L("diag-sym-meth-4"));
-                        if (fresh) StuckCard(x, convs);
+                        if (fresh && StuckCard(x, convs) == 0) x.Ok(x.L("diag-sym-meth-4-none"));
                         if (held != null) MethodLinesForItem(x, held);
                         else r.Add(Link(ActionHand, "", x.L("diag-q-item")), EmcLineStyle.Text, 1);
                         if (!fresh) r.Add(FixLink(x, "recalc", "", x.L("diag-fix-recalc")), EmcLineStyle.Text, 1);
@@ -1214,23 +1495,26 @@ namespace VintageE
                     break;
                 case "powerfarm":
                     if (fresh) FreePowerCard(x, convs);
-                    r.Add(FixLink(x, "methodcost", "energy=false", x.L("diag-fix-methodcost", "ChargeMethodEnergy", "false")), EmcLineStyle.Text, 1);
+                    if (x.Mod.Config.ChargeMethodEnergy) r.Add(FixLink(x, "methodcost", "energy=false", x.L("diag-fix-methodcost", "ChargeMethodEnergy", "false")), EmcLineStyle.Text, 1);
+                    else r.Add(FixLink(x, "methodcost", "energy=true", x.L("diag-fix-methodcost", "ChargeMethodEnergy", "true")), EmcLineStyle.Text, 1);
                     x.Note(x.L("diag-sym-powerfarm-also"), 0);
                     break;
                 case "chancevalue":
                     {
+                        // chance here is what one run makes on average (quantity × chance): one item takes 1 / that many runs.
                         var rare = new List<(MethodRecipe recipe, CollectibleObject c, double chance)>();
                         foreach (var kv in convs)
                         {
                             if (OutcomeOf(x, kv.Value, out Conversion used, out _) != MethodOutcome.Used || used.Output == null) continue;
                             MethodStack main = kv.Key.Outputs.FirstOrDefault(o => o.Main) ?? (kv.Key.Outputs.Count == 1 ? kv.Key.Outputs[0] : null);
-                            if (main != null && main.Chance < 1) rare.Add((kv.Key, used.Output, main.Chance));
+                            if (main != null && main.Chance < 1) rare.Add((kv.Key, used.Output, used.OutputQuantity));
                         }
                         if (held != null) rare = rare.OrderByDescending(t => t.c == held).ThenBy(t => t.chance).ToList(); else rare = rare.OrderBy(t => t.chance).ToList();
                         if (rare.Count == 0) x.Ok(x.L("diag-sym-chance-none"));
                         foreach (var (recipe, c, chance) in rare.Take(8))
                         {
-                            r.Add(x.L("diag-sym-chance-line", EmcReport.Ref(c), F(x.V(c)), recipe.FullCode, (chance * 100).ToString("0.##", CultureInfo.InvariantCulture), N(1 / chance)), EmcLineStyle.Text, 1);
+                            MethodStack mainOut = recipe.Outputs.FirstOrDefault(o => o.Main) ?? recipe.Outputs.FirstOrDefault();
+                            r.Add(x.L("diag-sym-chance-line", EmcReport.Ref(c), F(x.V(c)), recipe.FullCode, ((mainOut?.Chance ?? 1) * 100).ToString("0.##", CultureInfo.InvariantCulture), N(1 / Math.Max(1e-9, chance))), EmcLineStyle.Text, 1);
                             SuggestPinValued(x, c);
                         }
                         x.Note(x.L("diag-sym-chance-also"), 0);
@@ -1257,11 +1541,25 @@ namespace VintageE
                         if (key.Length == 0) return L("diag-done-nothing", target);
                         if (verb == "on")
                         {
-                            int n = cfg.DisabledMethods.RemoveAll(e => string.Equals(e?.Trim(), key, StringComparison.OrdinalIgnoreCase));
-                            if (n == 0) return L("diag-done-nothing", key);
+                            // The key is an entry, a method's code or one recipe's: take out every entry that switches it off
+                            // (the mod's id, a wildcard), and say which, as an entry may switch off more than this.
+                            string k = key.ToLowerInvariant();
+                            MethodDef def = mod.Methods.AllMethods.FirstOrDefault(m => m.Code == k) ?? mod.Methods.AllMethods.FirstOrDefault(m => m.Recipes.Any(rc => rc.FullCode.ToLowerInvariant() == k));
+                            MethodRecipe rec = def?.Recipes.FirstOrDefault(rc => rc.FullCode.ToLowerInvariant() == k);
+                            bool Hits(string e)
+                            {
+                                if (string.Equals(e?.Trim(), key, StringComparison.OrdinalIgnoreCase)) return true;
+                                if (def == null) return false;
+                                var one = new[] { e };
+                                // For a whole method: entries for it or for any of its recipes; for a recipe: those for it.
+                                return rec != null ? MethodSnapshot.IsDisabled(def, rec, one) : MethodSnapshot.IsDisabled(def, null, one) || def.Recipes.Any(rc => MethodSnapshot.IsDisabled(def, rc, one));
+                            }
+                            var removed = cfg.DisabledMethods.Where(Hits).ToList();
+                            if (removed.Count == 0) return L("diag-done-nothing", key);
+                            cfg.DisabledMethods.RemoveAll(e => removed.Contains(e));
                             mod.SaveConfig();
                             mod.RequestRemap("/emc diagnose method on");
-                            return L("diag-done-method-on", key);
+                            return L("diag-done-method-on", key, string.Join(", ", removed));
                         }
                         if (!cfg.DisabledMethods.Any(e => string.Equals(e?.Trim(), key, StringComparison.OrdinalIgnoreCase))) cfg.DisabledMethods.Add(key);
                         mod.SaveConfig();
@@ -1283,7 +1581,7 @@ namespace VintageE
                         string unit = target.Trim().ToLowerInvariant();
                         var x = new Ctx { Mod = mod, Sapi = mod.Sapi, LangCode = lang, R = new EmcReport(), Report = mod.LastReport, Index = new CollectibleIndex(mod.Sapi.World.Collectibles) };
                         if (x.Report == null || x.Report.FromCache || x.Report.MethodPrices == null) return L("diag-meth-cached");
-                        double safe = SafePrice(PowerFarms(x, MethodConversions(x), out _), unit);
+                        double safe = SafePrice(x, MethodConversions(x), unit);
                         if (safe <= 0) return L("diag-done-nothing", unit);
                         cfg.EnergyEmc[unit] = safe;
                         mod.SaveConfig();

@@ -56,14 +56,16 @@ namespace VintageE
         /// <summary>Mods that said their crafting methods changed (the id they sent, or "?") → how many times; and whether one did before the first mapping.</summary>
         public Dictionary<string, int> MethodChangeRequests { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
         public bool MethodChangeBeforeStart { get; private set; }
-        bool methodsChangePending;
+        bool methodsChangePending, collectingMethods;
 
         /// <summary>Gathers other mods' crafting methods again (files and the event). Game thread only: it calls into other mods.</summary>
         public MethodSnapshot CollectMethods(string reason)
         {
             if (Sapi == null) return Methods;
+            collectingMethods = true;
             try { Methods = MethodRegistry.Collect(Sapi, Mod.Logger, reason, Version); }
             catch (Exception e) { Mod.Logger.Error("EMC: crafting methods could not be collected ({0}): {1}", reason, e); }
+            finally { collectingMethods = false; }
             return Methods;
         }
 
@@ -72,14 +74,22 @@ namespace VintageE
         {
             string who = (data?.GetValue() as string)?.Trim().ToLowerInvariant();
             if (string.IsNullOrEmpty(who)) who = "?";
+            // A mod that says so while answering the collect event itself: what it sends now is in this collection.
+            if (collectingMethods) return;
             MethodChangeRequests[who] = MethodChangeRequests.TryGetValue(who, out int n) ? n + 1 : 1;
             if (!mappingAttempted) { MethodChangeBeforeStart = true; return; } // the start-up mapping collects them anyway
             if (methodsChangePending) return;
             methodsChangePending = true;
             Sapi.Event.RegisterCallback(_ =>
             {
-                methodsChangePending = false;
-                CollectMethods("crafting methods changed (" + who + ")");
+                try { CollectMethods("crafting methods changed (" + who + ")"); }
+                finally { methodsChangePending = false; }
+                // Nothing to redo when the methods are what the last mapping used (a mod that says so on every load).
+                if (!mappingInFlight && waitingRemaps.Count == 0 && LastReport?.Methods != null && LastReport.Methods.Fingerprint == Methods.Fingerprint)
+                {
+                    Mod.Logger.Notification("EMC: {0} said its crafting methods changed, but they are the same as in the last mapping; no remap.", who);
+                    return;
+                }
                 RecalculateEmcAsync("crafting methods changed (" + who + ")");
             }, 1000);
         }
@@ -976,6 +986,8 @@ namespace VintageE
             // background mapping enumerates them, which throws "collection was modified" and fails the mapping. The
             // mapper therefore works on a copy taken when the mapping starts.
             VintageEConfig config = snapshot ?? ConfigSnapshot();
+            // One set of other mods' methods for the fingerprint, the mapping and the report, though a collect may replace Methods meanwhile.
+            MethodSnapshot methods = Methods ?? MethodSnapshot.Empty;
             var clock = Stopwatch.StartNew();
             long rulesMs = 0, fingerprintMs = 0;
             mappingStage = "loading the value files";
@@ -985,18 +997,19 @@ namespace VintageE
                 worldTransmutation = null;
             }
             rulesMs = clock.ElapsedMilliseconds;
-            var mapper = new EmcMapper(Sapi, config, Rules, Mod.Logger);
+            var mapper = new EmcMapper(Sapi, config, Rules, Mod.Logger) { Methods = methods };
             EmcMappingReport report = null;
             mappingStage = "checking the value cache";
             if (config.CacheEmcValues)
             {
                 try
                 {
-                    fingerprint = EmcCache.Fingerprint(Sapi, this, Mod.Logger, config);
+                    fingerprint = EmcCache.Fingerprint(Sapi, this, Mod.Logger, config, methods);
                     fingerprintMs = clock.ElapsedMilliseconds - rulesMs;
                     if (allowCache && EmcCache.TryLoad(Sapi, fingerprint, Mod.Logger, out EmcCacheFile cached, out var cachedValues, out var cachedVariants))
                     {
                         report = mapper.FromValues(cachedValues);
+                        report.Methods = methods;
                         report.Variants = cachedVariants;
                         EmcCache.CopyCounts(cached, report);
                         EmcCache.CopyAnalysis(cached, report, Sapi.World);
@@ -1826,7 +1839,7 @@ namespace VintageE
                 }
                 sb.Append("},\"methods\":{");
                 bool firstMethod = true;
-                foreach (var kv in (CurrentMethods = Methods.HashByMod()).OrderBy(kv => kv.Key, StringComparer.Ordinal))
+                foreach (var kv in (CurrentMethods = (report.Methods ?? Methods).HashByMod()).OrderBy(kv => kv.Key, StringComparer.Ordinal))
                 {
                     if (!firstMethod) sb.Append(',');
                     firstMethod = false;

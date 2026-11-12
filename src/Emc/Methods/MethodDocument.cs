@@ -82,6 +82,8 @@ namespace VintageE
         public List<MethodRecipe> Recipes = new List<MethodRecipe>();
         /// <summary>Recipes its readers made, of all its recipes.</summary>
         public int ReadRecipes;
+        /// <summary>Recipes the document itself switches off ("enabled": false), which aren't in <see cref="Recipes"/>.</summary>
+        public int SwitchedOffInDocument;
         public string ModId;
         public string Path;
         public MethodDoc Doc;
@@ -273,7 +275,7 @@ namespace VintageE
                             double makes = 0, qty = 1;
                             if (go["quantity"] != null && (!Number(go["quantity"], out qty) || qty <= 0)) { doc.Problems.Add(new MethodProblem { Path = gp + ".quantity", Message = "\"quantity\" must be more than 0" }); continue; }
                             if (burns == null || !Number(go["makes"], out makes) || makes <= 0) { doc.Problems.Add(new MethodProblem { Path = gp, Message = "a generator needs \"burns\" (a code) and \"makes\" (more than 0)" }); continue; }
-                            unit.Generators.Add(new MethodGenerator { Burns = WithDomain(burns, doc.ModId), Quantity = qty, Makes = makes, Note = Str(go["note"]) });
+                            unit.Generators.Add(new MethodGenerator { Burns = WithDomainTyped(burns, doc.ModId), Quantity = qty, Makes = makes, Note = Str(go["note"]) });
                         }
                     }
                     else if (uo["generators"] != null) doc.Problems.Add(new MethodProblem { Path = path + ".generators", Message = "\"generators\" must be a list" });
@@ -302,7 +304,7 @@ namespace VintageE
                 code = WithDomain(code.Trim().ToLowerInvariant(), doc.ModId);
                 if (!codes.Add(code)) { doc.Problems.Add(new MethodProblem { Path = path + ".code", Message = "the method " + code + " is in this document twice; the second is left out", Error = true }); continue; }
                 var m = new MethodDef { Code = code, Name = Str(mo["name"]), Machine = Str(mo["machine"]), Description = Str(mo["description"]), ModId = doc.ModId, Path = path, Doc = doc };
-                if (m.Machine != null) m.Machine = WithDomain(m.Machine, doc.ModId);
+                if (m.Machine != null) m.Machine = WithDomainTyped(m.Machine, doc.ModId);
                 string kind = Str(mo["kind"]);
                 if (kind == null || kind.Equals("crafting", StringComparison.OrdinalIgnoreCase)) m.Kind = ConversionKind.Crafting;
                 else if (kind.Equals("processing", StringComparison.OrdinalIgnoreCase)) m.Kind = ConversionKind.Processing;
@@ -313,13 +315,13 @@ namespace VintageE
 
                 if (mo["recipes"] is JArray recipes)
                 {
-                    for (int r = 0; r < recipes.Count; r++) ReadRecipe(doc, m, recipes[r], path + ".recipes[" + r + "]", null);
+                    for (int r = 0; r < recipes.Count; r++) ReadRecipe(doc, m, recipes[r], path + ".recipes[" + r + "]", null, null, "#" + (r + 1));
                 }
                 else if (mo["recipes"] != null) doc.Problems.Add(new MethodProblem { Path = path + ".recipes", Message = "\"recipes\" must be a list", Error = true });
 
                 if (mo["readers"] is JArray readers)
                 {
-                    for (int k = 0; k < readers.Count; k++) ReadReader(doc, m, readers[k], path + ".readers[" + k + "]", sapi, index, generated);
+                    for (int k = 0; k < readers.Count; k++) ReadReader(doc, m, readers[k], path + ".readers[" + k + "]", sapi, index, generated, k);
                 }
                 else if (mo["readers"] != null) doc.Problems.Add(new MethodProblem { Path = path + ".readers", Message = "\"readers\" must be a list", Error = true });
                 if (mo["recipes"] == null && mo["readers"] == null) doc.Problems.Add(new MethodProblem { Path = path, Message = "the method " + code + " has no \"recipes\" and no \"readers\"" });
@@ -336,28 +338,37 @@ namespace VintageE
             doc.Canonical = sb.ToString();
         }
 
-        /// <summary>One recipe. <paramref name="readFrom"/> is set for recipes a reader made.</summary>
-        static void ReadRecipe(MethodDoc doc, MethodDef m, JToken token, string path, string readFrom)
+        /// <summary>
+        /// One recipe. <paramref name="readFrom"/> is set for recipes a reader made; <paramref name="domain"/> is the domain
+        /// codes without one get (the data's own, for a reader; null = the document's mod); <paramref name="defaultCode"/>
+        /// its name when it has no "code" (its place in the list, so a DisabledMethods entry keeps naming the same one).
+        /// </summary>
+        static void ReadRecipe(MethodDoc doc, MethodDef m, JToken token, string path, string readFrom, string domain, string defaultCode)
         {
             if (!(token is JObject ro)) { doc.Problems.Add(new MethodProblem { Path = path, Message = "a recipe must be an object", Error = true }); return; }
             Unknown(doc, ro, RecipeKeys, path);
-            if (ro["enabled"] != null && ro["enabled"].Type == JTokenType.Boolean && !(bool)ro["enabled"]) return;
+            if (ro["enabled"] != null && Bool(ro["enabled"]) == false) { m.SwitchedOffInDocument++; return; }
             var recipe = new MethodRecipe { Method = m, Path = path, ReadFrom = readFrom, Note = Str(ro["note"]) };
             recipe.Code = (Str(ro["code"]) ?? "").Trim();
-            if (recipe.Code.Length == 0) recipe.Code = "#" + (m.Recipes.Count + 1);
+            if (recipe.Code.Length == 0) recipe.Code = defaultCode ?? "#" + (m.Recipes.Count + 1);
             if (m.Recipes.Any(r => r.Code == recipe.Code)) recipe.Code += "#" + (m.Recipes.Count + 1);
             int before = doc.Problems.Count(p => p.Error);
+            string dom = string.IsNullOrEmpty(domain) ? doc.ModId : domain;
 
-            ReadStacks(doc, ro["inputs"], path + ".inputs", InputKeys, recipe.Inputs, "input");
-            ReadStacks(doc, ro["tools"], path + ".tools", ToolKeys, recipe.Tools, "tool");
-            ReadStacks(doc, ro["outputs"], path + ".outputs", OutputKeys, recipe.Outputs, "output");
-            ReadStacks(doc, ro["oneOf"], path + ".oneOf", OneOfKeys, recipe.OneOf, "oneof");
+            ReadStacks(doc, ro["inputs"], path + ".inputs", InputKeys, recipe.Inputs, "input", dom);
+            ReadStacks(doc, ro["tools"], path + ".tools", ToolKeys, recipe.Tools, "tool", dom);
+            ReadStacks(doc, ro["outputs"], path + ".outputs", OutputKeys, recipe.Outputs, "output", dom);
+            ReadStacks(doc, ro["oneOf"], path + ".oneOf", OneOfKeys, recipe.OneOf, "oneof", dom);
+            var names = recipe.Inputs.Where(i => i.Name != null).Select(i => i.Name).ToList();
+            if (names.Count > MaxNames) doc.Problems.Add(new MethodProblem { Path = path + ".inputs", Message = "more than " + MaxNames + " named inputs; the recipe is left out", Error = true });
+            foreach (string dup in names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key))
+                doc.Problems.Add(new MethodProblem { Path = path + ".inputs", Message = "two inputs are named \"" + dup + "\"; the recipe is left out", Error = true });
             if (recipe.Outputs.Count == 0 && recipe.OneOf.Count == 0 && doc.Problems.Count(p => p.Error) == before)
                 doc.Problems.Add(new MethodProblem { Path = path, Message = "the recipe has no \"outputs\" (or \"oneOf\"); it is left out", Error = true });
             int mains = recipe.Outputs.Count(o => o.Main);
             if (mains > 1) doc.Problems.Add(new MethodProblem { Path = path + ".outputs", Message = "more than one output is marked \"main\"; the recipe is left out", Error = true });
             ReadCosts(doc, ro["costs"], path + ".costs", recipe.Costs);
-            if (recipe.Inputs.Count == 0 && !recipe.Costs.Any && doc.Problems.Count(p => p.Error) == before)
+            if (recipe.Inputs.Count == 0 && !recipe.Costs.Any && !recipe.Tools.Any(t => t.Wear > 0 || t.BreakChance > 0) && doc.Problems.Count(p => p.Error) == before)
                 doc.Problems.Add(new MethodProblem { Path = path, Message = "the recipe has no inputs and no costs: it would make something from nothing; it is left out", Error = true });
 
             // Every {name} used must be named by an input's *.
@@ -376,18 +387,21 @@ namespace VintageE
 
         internal static readonly Regex Placeholder = new Regex(@"\{([a-z0-9_]+)\}", RegexOptions.Compiled);
 
-        static void ReadStacks(MethodDoc doc, JToken token, string path, HashSet<string> keys, List<MethodStack> into, string role)
+        /// <summary>Most named inputs one recipe may have (each multiplies its copies).</summary>
+        const int MaxNames = 8;
+
+        static void ReadStacks(MethodDoc doc, JToken token, string path, HashSet<string> keys, List<MethodStack> into, string role, string domain)
         {
             if (token == null) return;
             if (!(token is JArray arr)) { doc.Problems.Add(new MethodProblem { Path = path, Message = "must be a list", Error = true }); return; }
             for (int i = 0; i < arr.Count; i++)
             {
-                MethodStack s = ReadStack(doc, arr[i], path + "[" + i + "]", keys, role);
+                MethodStack s = ReadStack(doc, arr[i], path + "[" + i + "]", keys, role, domain);
                 if (s != null) into.Add(s);
             }
         }
 
-        static MethodStack ReadStack(MethodDoc doc, JToken token, string path, HashSet<string> keys, string role)
+        static MethodStack ReadStack(MethodDoc doc, JToken token, string path, HashSet<string> keys, string role, string domain)
         {
             if (!(token is JObject so)) { doc.Problems.Add(new MethodProblem { Path = path, Message = "must be an object { \"code\": ... }", Error = true }); return null; }
             Unknown(doc, so, keys, path);
@@ -397,7 +411,7 @@ namespace VintageE
             code = code.Trim();
             if (code.StartsWith("item:", StringComparison.OrdinalIgnoreCase)) { s.Type = EnumItemClass.Item; code = code.Substring(5); }
             else if (code.StartsWith("block:", StringComparison.OrdinalIgnoreCase)) { s.Type = EnumItemClass.Block; code = code.Substring(6); }
-            s.Code = WithDomain(code, doc.ModId);
+            s.Code = WithDomain(code, domain ?? doc.ModId);
             string type = Str(so["type"]);
             if (type != null)
             {
@@ -421,20 +435,22 @@ namespace VintageE
             if (so["breakChance"] != null && !Chance(doc, so["breakChance"], path + ".breakChance", out s.BreakChance, allowZero: true)) return null;
             if (so["wear"] != null && (!Number(so["wear"], out s.Wear) || s.Wear < 0)) { doc.Problems.Add(new MethodProblem { Path = path + ".wear", Message = "\"wear\" must be 0 or more (durability per run)", Error = true }); return null; }
             if (so["weight"] != null && (!Number(so["weight"], out s.Weight) || s.Weight <= 0)) { doc.Problems.Add(new MethodProblem { Path = path + ".weight", Message = "\"weight\" must be more than 0", Error = true }); return null; }
-            if (so["main"] != null) s.Main = so["main"].Type == JTokenType.Boolean && (bool)so["main"];
+            if (so["main"] != null) s.Main = Bool(so["main"]) == true;
             string name = Str(so["name"]);
             if (name != null)
             {
                 name = name.Trim().ToLowerInvariant();
                 if (!NameRule.IsMatch(name)) { doc.Problems.Add(new MethodProblem { Path = path + ".name", Message = "\"name\" may only have letters, digits and _", Error = true }); return null; }
-                if (CountStars(s.Code) != 1) { doc.Problems.Add(new MethodProblem { Path = path + ".name", Message = "a named input needs exactly one * in its code (in the path, not the domain)", Error = true }); return null; }
-                s.Name = name;
+                int stars = CountStars(s.Code);
+                // A reader's template names every input the same way; one with an exact code has nothing to capture.
+                if (stars > 1) { doc.Problems.Add(new MethodProblem { Path = path + ".name", Message = "a named input needs exactly one * in its code (in the path, not the domain)", Error = true }); return null; }
+                if (stars == 1) s.Name = name;
             }
             s.AllowedVariants = Strings(so["allowedVariants"]);
             s.SkipVariants = Strings(so["skipVariants"]);
             if (so["returns"] != null)
             {
-                s.Returns = ReadStack(doc, so["returns"], path + ".returns", ReturnKeys, "return");
+                s.Returns = ReadStack(doc, so["returns"], path + ".returns", ReturnKeys, "return", domain);
                 if (s.Returns == null) return null;
             }
             if (role == "output" || role == "oneof" || role == "return")
@@ -514,14 +530,14 @@ namespace VintageE
         /// "$a.0.b"; any case) and "${Field}" puts a field's text into a longer string. An object with "each": "$List" in a
         /// list stands for one entry per element of that list.
         /// </summary>
-        static void ReadReader(MethodDoc doc, MethodDef m, JToken token, string path, ICoreServerAPI sapi, CollectibleIndex index, List<JObject> generated)
+        static void ReadReader(MethodDoc doc, MethodDef m, JToken token, string path, ICoreServerAPI sapi, CollectibleIndex index, List<JObject> generated, int readerIndex)
         {
             if (!(token is JObject rd)) { doc.Problems.Add(new MethodProblem { Path = path, Message = "a reader must be an object", Error = true }); return; }
             Unknown(doc, rd, ReaderKeys, path);
             string from = (Str(rd["from"]) ?? "").Trim().ToLowerInvariant();
             if (!(rd["recipe"] is JObject template)) { doc.Problems.Add(new MethodProblem { Path = path + ".recipe", Message = "a reader needs a \"recipe\" template", Error = true }); return; }
             if (sapi == null) { doc.Problems.Add(new MethodProblem { Path = path, Message = "readers can only be read on a running server", Error = true }); return; }
-            var sources = new List<(JToken data, string where)>();
+            var sources = new List<(JToken data, string where, string domain)>();
             if (from == "attribute")
             {
                 string pattern = Str(rd["collectible"]), attribute = Str(rd["attribute"]);
@@ -537,8 +553,8 @@ namespace VintageE
                     JToken data = Walk(c.Attributes?.Token, attribute);
                     if (data == null) continue;
                     string where = (c.ItemClass == EnumItemClass.Block ? "block " : "item ") + c.Code + ", " + attribute;
-                    if (data is JArray arr) for (int i = 0; i < arr.Count; i++) sources.Add((arr[i], where + "[" + i + "]"));
-                    else sources.Add((data, where));
+                    if (data is JArray arr) for (int i = 0; i < arr.Count; i++) sources.Add((arr[i], where + "[" + i + "]", c.Code.Domain));
+                    else sources.Add((data, where, c.Code.Domain));
                 }
                 if (sources.Count == 0) { doc.Problems.Add(new MethodProblem { Path = path + ".attribute", Message = "none of the " + matches.Count + " matching blocks/items has the attribute " + attribute, Error = true }); return; }
             }
@@ -560,8 +576,8 @@ namespace VintageE
                     JToken data = list == null ? file : Walk(file, list);
                     if (data == null) continue;
                     string where = asset.Location.ToString();
-                    if (data is JArray arr) for (int i = 0; i < arr.Count; i++) sources.Add((arr[i], where + "[" + i + "]"));
-                    else sources.Add((data, where));
+                    if (data is JArray arr) for (int i = 0; i < arr.Count; i++) sources.Add((arr[i], where + "[" + i + "]", asset.Location.Domain));
+                    else sources.Add((data, where, asset.Location.Domain));
                 }
                 if (sources.Count == 0) { doc.Problems.Add(new MethodProblem { Path = path + ".folder", Message = "no recipe files in " + domain + ":" + folder, Error = true }); return; }
             }
@@ -573,7 +589,7 @@ namespace VintageE
             var body = (JObject)template.DeepClone();
             JToken codeTemplate = body["code"];
             body.Remove("code");
-            foreach (var (data, where) in sources)
+            foreach (var (data, where, sourceDomain) in sources)
             {
                 JToken result = Eval(body, data);
                 if (!(result is JObject recipe)) continue;
@@ -581,8 +597,8 @@ namespace VintageE
                 string key = recipe.ToString(Formatting.None);
                 if (!seen.Add(key)) continue; // the same list on every variant of a block
                 generated.Add(recipe);
-                ReadRecipe(doc, m, recipe, path + " (" + where + ")", where);
                 made++;
+                ReadRecipe(doc, m, recipe, path + " (" + where + ")", where, sourceDomain, "r" + (readerIndex + 1) + "#" + made);
             }
             if (made == 0) doc.Problems.Add(new MethodProblem { Path = path, Message = "the reader found " + sources.Count + " source entries but made no recipe from them (check the template's $fields)", Error = true });
         }
@@ -664,6 +680,8 @@ namespace VintageE
                                 string each = (string)eo["each"];
                                 JToken list = Walk(source, each.StartsWith("$", StringComparison.Ordinal) ? each.Substring(1) : each);
                                 if (list is JArray items) foreach (JToken item in items) { JToken one = Eval(eo, item); if (one != null) result.Add(one); }
+                                // An object (a map of keys to stacks, as grid recipes keep their ingredients): one per value.
+                                else if (list is JObject map) foreach (JProperty item in map.Properties()) { JToken one = Eval(eo, item.Value); if (one != null) result.Add(one); }
                                 continue;
                             }
                             JToken val = Eval(el, source);
@@ -697,6 +715,24 @@ namespace VintageE
             {
                 if (c?.Code != null && CollectibleIndex.Matches(pattern, c)) return c;
             }
+            return null;
+        }
+
+        /// <summary>Like <see cref="WithDomain"/>, keeping an "item:"/"block:" prefix in front.</summary>
+        internal static string WithDomainTyped(string code, string domain)
+        {
+            code = (code ?? "").Trim();
+            foreach (string prefix in new[] { "item:", "block:" })
+                if (code.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return code.Substring(0, prefix.Length) + WithDomain(code.Substring(prefix.Length), domain);
+            return WithDomain(code, domain);
+        }
+
+        /// <summary>true/false, also written as a string ("true"); null for anything else.</summary>
+        static bool? Bool(JToken t)
+        {
+            if (t == null) return null;
+            if (t.Type == JTokenType.Boolean) return (bool)t;
+            if (t.Type == JTokenType.String && bool.TryParse(((string)t).Trim(), out bool b)) return b;
             return null;
         }
 

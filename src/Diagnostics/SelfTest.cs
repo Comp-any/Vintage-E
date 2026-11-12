@@ -35,7 +35,7 @@ namespace VintageE
         void Line(string text)
         {
             log.AppendLine(text);
-            sapi.Logger.Notification("[Vintage-E self-test] " + text);
+            sapi.Logger.Notification("[Vintage-E self-test] {0}", text); // the text may hold braces: never a format string
         }
 
         void Check(bool ok, string what)
@@ -1235,7 +1235,7 @@ namespace VintageE
                 string t = Text(EmcExplain.Dump(mod, sapi, new ItemStack(back), null, false, "en"));
                 Check(t.Contains("Worked backwards"), "a worked-backwards value says so: " + back.Code);
             }
-            CollectibleObject shared = report.Via.Where(kv => kv.Value.JointOutputs != null && kv.Value.Inputs[0].Choices[0] != kv.Key).Select(kv => kv.Key).FirstOrDefault();
+            CollectibleObject shared = report.Via.Where(kv => kv.Value.JointOutputs != null && kv.Value.Inputs.Count > 0 && kv.Value.Inputs[0].Choices[0] != kv.Key).Select(kv => kv.Key).FirstOrDefault();
             if (shared != null)
             {
                 string t = Text(EmcExplain.Dump(mod, sapi, new ItemStack(shared), null, false, "en"));
