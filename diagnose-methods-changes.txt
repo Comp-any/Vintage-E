@@ -1,0 +1,64 @@
+== What the last mapping changed ==
+The mapping of 2026-11-12 18:22 compared with the current one (2026-11-12 18:23).
+✓ The same 10 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  5 values now come through those mods' methods
+0 items gained a value, 0 lost theirs, 713 changed.
+
+== Changed value (713), by family ==
+  primitivesurvival:woodlantern (78): primitivesurvival:woodlantern-aged-up (primitivesurvival:woodlantern-aged-up) 354.66 → 246.66
+    grid: 1 game:plank-aged + 1 game:candle + 1 game:plank-aged + 1 game:plank-aged + 1 game:metalplate-copper + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged -> 1 primitivesurvival:woodlantern-aged-up
+  game:ore (62): Poor chunk of Native copper (game:ore-poor-nativecopper-andesite) 19.2 → 11.1
+    worked backwards from pulverizer crushing: 1 game:ore-poor-nativecopper-andesite -> 3 em:crushed-metal-copper
+  game:door (56): 2 by 4 gate (Aged) (game:door-2x4gate-aged) 405.33 → 135.33
+    grid: 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 10 game:metalnailsandstrips-tinbronze -> 1 game:door-2x4gate-aged
+  game:plaque (52): Tin bronze plaque (game:plaque-fancy-tinbronze-wall-north) 313.6 → 45
+    grid: 1 game:metalplate-tinbronze + 1 game:metalnailsandstrips-bismuth (or 13 more) -> 1 game:plaque-fancy-tinbronze-wall-north
+  game:chute (28): Elbow Chute (game:chute-elbow-down-east) 256 → 237.6
+    grid: 1 game:chutesection-copper + 1 game:chutesection-copper -> 1 game:chute-elbow-down-east
+  game:armor (21): Chain head armor (Tin bronze) (game:armor-head-chain-tinbronze) 844.8 → 120
+    grid: 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze -> 1 game:armor-head-chain-tinbronze
+  game:hoovedwearables (17): Elk medallion (Trident) (game:hoovedwearables-face-face13) 113.6 → 53.2
+    grid: 1 game:leather-normal-plain + 1 game:metalnailsandstrips-tinbronze + 1 game:metalnailsandstrips-tinbronze -> 1 game:hoovedwearables-face-face13
+  butchering:butcherhook (16): Skinning Hook (butchering:butcherhook-tinbronze-north) 193.06 → 78.66
+    grid: 4 game:stick + 4 game:plank-aged (or 13 more) + 4 game:stick + 1 game:resin + 2 butchering:hook-tinbronze + 2 game:metalnailsandstrips-bismuth (or 13 more) -> 1 butchering:butcherhook-tinbronze-north
+  butchering:butcherhookceiling (16): Ceiling Skinning Hook (butchering:butcherhookceiling-tinbronze-north) 193.06 → 78.66
+    grid: 1 butchering:butcherhook-tinbronze-north -> 1 butchering:butcherhookceiling-tinbronze-north
+  vintagee:trinket (15): Body Stone (vintagee:trinket-bodystone) 73,920 → 1,392
+    grid: 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb -> 1 vintagee:trinket-bodystone
+  vintagee:mattertool (14): Red Matter Shears (vintagee:mattertool-red-shears) 98,304 → 1,856
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:mattertool-dark-shears -> 1 vintagee:mattertool-red-shears
+  game:metalsheet (12): Tin bronze sheet (game:metalsheet-tinbronze-down) 281.6 → 40
+    relativeValues rule: 1 x game:metalplate-tinbronze
+  vintagee:alchemicalbagdark (12): Dark Matter Alchemical Bag (plain) (vintagee:alchemicalbagdark-plain) 61,382.8 → 13,542.8
+    grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:alchemicalbag-plain + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:alchemicalbagdark-plain
+  vintagee:alchemicalbagred (12): Red Matter Alchemical Bag (plain) (vintagee:alchemicalbagred-plain) 208,838.8 → 15,942.8
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:alchemicalbagdark-plain + 1 vintagee:matter-red + 1 vintagee:matter-red -> 1 vintagee:alchemicalbagred-plain
+  game:lantern (12): lantern-large-up (game:lantern-large-up) 848 → 416
+    grid: 2 game:clearquartz + 1 game:candle + 2 game:clearquartz + 4 game:metalnailsandstrips-tinbronze + 1 game:metalplate-tinbronze + 4 game:metalnailsandstrips-tinbronze -> 1 game:lantern-large-up
+  vintagee:matterarmor (9): Red Matter Helmet (vintagee:matterarmor-red-head) 245,760 → 4,640
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matterarmor-dark-head + 1 vintagee:matter-red -> 1 vintagee:matterarmor-red-head
+  game:clothes (9): Bronze gem necklace (game:clothes-neck-bronze-gem-necklace) 70.4 → 10
+    worked backwards from grid: 1 game:clothes-neck-bronze-gem-necklace -> 10 game:metalbit-tinbronze
+  game:metalblock (8): Corroded tin bronze block (game:metalblock-corroded-plain-tinbronze) 1,689.6 → 240
+    relativeValues rule: 1 x game:metalblock-new-riveted-tinbronze
+  game:slantedroofingcornerouter (8): Copper roof corner (outer) (game:slantedroofingcornerouter-copper-north-snow) 192 → 111
+    same as its variant game:slantedroofingcornerouter-copper-north-free (differs in: cover)
+  game:slantedroofingcornerinner (8): Copper roof corner (inner) (game:slantedroofingcornerinner-copper-north-snow) 192 → 111
+    same as its variant game:slantedroofingcornerinner-copper-north-free (differs in: cover)
+  game:slantedroofing (8): Slanted copper roof (game:slantedroofing-copper-east-free) 192 → 111
+    grid: 1 game:metalplate-copper + 1 game:metalplate-copper + 1 game:metalplate-copper -> 4 game:slantedroofing-copper-east-free
+  game:slantedroofingbottom (8): Copper roof bottom (game:slantedroofingbottom-copper-east-free) 192 → 111
+    grid: 1 game:slantedroofing-copper-east-free -> 1 game:slantedroofingbottom-copper-east-free
+  game:slantedroofingtop (8): Copper roof top (game:slantedroofingtop-copper-east-free) 192 → 111
+    grid: 1 game:slantedroofing-copper-east-free -> 1 game:slantedroofingtop-copper-east-free
+  game:slantedroofinghalfleft (8): Copper roof half (left) (game:slantedroofinghalfleft-copper-east-free) 96 → 55.5
+    grid: 1 game:slantedroofing-copper-east-free -> 2 game:slantedroofinghalfleft-copper-east-free
+  game:slantedroofinghalfright (8): Copper roof half (right) (game:slantedroofinghalfright-copper-east-free) 96 → 55.5
+    grid: 1 game:slantedroofing-copper-east-free -> 2 game:slantedroofinghalfright-copper-east-free
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)
