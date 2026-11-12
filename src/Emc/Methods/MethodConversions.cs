@@ -213,8 +213,8 @@ namespace VintageE
                     if (g.Key <= 0)
                     {
                         catalysts.AddRange(g);
-                        string note = "the tool " + g.First().Code + " has no durability, so its wear costs nothing";
-                        if (t.Wear > 0 && !result.Notes.Contains(note)) result.Notes.Add(note);
+                        string freeWear = "the tool " + g.First().Code + " has no durability, so its wear costs nothing";
+                        if (t.Wear > 0 && !result.Notes.Contains(freeWear)) result.Notes.Add(freeWear);
                         continue;
                     }
                     int dur = Durability(g.First());

@@ -635,12 +635,12 @@ namespace VintageE
                 foreach (int k in sharers)
                 {
                     T o = j.Outputs[k];
-                    double each = share / j.OutputQuantities[k];
+                    double per = share / j.OutputQuantities[k];
                     if (Values.TryGetValue(o, out double current))
                     {
-                        if (each < current * (1 - 1e-9) && (!jointLowered.TryGetValue(o, out int n) || n < MaxJointLowerings)) proposeShare(o, each, j);
+                        if (per < current * (1 - 1e-9) && (!jointLowered.TryGetValue(o, out int n) || n < MaxJointLowerings)) proposeShare(o, per, j);
                     }
-                    else proposeShare(o, each, j);
+                    else proposeShare(o, per, j);
                 }
                 return;
             }
