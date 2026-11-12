@@ -1,0 +1,24 @@
+== Checking Tailor's Delight (tailorsdelight)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+⚠ assets/vintagee/config/vintagee-methods/tailorsdelight.json (file, format 1): 1 methods, 0 recipes 8 left out, 0 warnings
+  Left out: methods[0].readers[0] (tailorsdelight:compatibility/butchering/recipes/grid/td/needle_conversion.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+  Left out: methods[0].readers[0] (tailorsdelight:compatibility/butchering/recipes/grid/td/sewingkit.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+  Left out: methods[0].readers[1].folder: no recipe files in tailorsdelight:recipes/grid/td
+  Left out: methods[0].readers[2] (tailorsdelight:compatibility/butchering/recipes/grid/td/needle_conversion.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+  Left out: methods[0].readers[2] (tailorsdelight:compatibility/butchering/recipes/grid/td/sewingkit.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+  Left out: methods[0].readers[3] (tailorsdelight:compatibility/butchering/patches/td_boneneedle.json[0]): the recipe has no "outputs" (or "oneOf"); it is left out
+  Left out: methods[0].readers[3] (tailorsdelight:compatibility/butchering/recipes/grid/td/needle_conversion.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+  Left out: methods[0].readers[3] (tailorsdelight:compatibility/butchering/recipes/grid/td/sewingkit.json[0]): the recipe has no inputs and no costs: it would make something from nothing; it is left out
+
+== probe (tailorsdelight:locationprobe) ==
+• 0 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off
+
+== What Vintage-E understood from tailorsdelight ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-tailorsdelight.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Butchering (butchering)'s crafting methods (for its author) (/emc diagnose methodcheck butchering)
+Check Tailor's Delight (tailorsdelight)'s crafting methods (for its author) (/emc diagnose methodcheck tailorsdelight)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
