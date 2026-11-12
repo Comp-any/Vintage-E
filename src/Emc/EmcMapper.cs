@@ -582,7 +582,10 @@ namespace VintageE
                 if (extraOrigin.TryGetValue(c, out string how))
                 {
                     origin = how;
-                    if (extraVia.TryGetValue(c, out Conversion lowered)) report.Via[c] = lowered;
+                    // Only while the recipe still costs that (what it's made from may have moved in a later round):
+                    // a Via is where the value comes from, and the explanation adds its numbers up to the value.
+                    if (extraVia.TryGetValue(c, out Conversion lowered) && ViableCostPer(lowered, solver.Values) is double per
+                        && Math.Abs(per - report.Values[c]) <= 0.001 * Math.Max(1, report.Values[c])) report.Via[c] = lowered;
                 }
                 else if (fixedValues.ContainsKey(c)) origin = "base value";
                 else if (solver.Via.TryGetValue(c, out object via))
