@@ -478,7 +478,8 @@ namespace VintageE
                 {
                     // One input, one choice, nothing handed back: processing, or a grid recipe that just converts
                     // (a strong bone into a bone).
-                    if (conv.Inputs.Count != 1 || conv.Inputs[0].Choices.Length != 1 || conv.Returned != null) continue;
+                    // A tool's wear (a thousandth of a hammer) is never what something is worth backwards.
+                    if (conv.Inputs.Count != 1 || conv.Inputs[0].Choices.Length != 1 || conv.Returned != null || conv.Inputs[0].NoInfer) continue;
                     CollectibleObject i = conv.Inputs[0].Choices[0];
                     if (i == null || !extra.ContainsKey(i) || currency.Contains(i) || PinnedByConfig(index, i) || raised.Contains(i)) continue;
                     double? y = YieldPer(conv, solver.Values);
