@@ -1,0 +1,25 @@
+== Self-test press (vintagee:selftest-press) ==
+✓ From Vintage-E (vintagee): 5 recipe(s), processing (an input may be worked out backwards), in code (vintagee)
+  Machine: Transmutation Table (vintagee:transmutationtable)
+  Switch vintagee:selftest-press off (in the window)
+  dark: 1 Copper ingot (game:ingot-copper) + 100 test power → 1 Dark Matter (vintagee:matter-dark) = 328 EMC each
+    Used: this is where the value comes from.
+    100 test power of power at 2 EMC each = 200 (price: vintagee's suggested price)
+    made by the self-test
+  red: 1 Copper ingot (game:ingot-copper) + 22 EMC → 0.25 Red Matter (vintagee:matter-red) = 600 EMC each
+    Used: this is where the value comes from.
+    22 EMC that the recipe itself costs
+  plates (2 copies: one per variant or tool): 1 Copper ingot (game:ingot-copper) + 10 generator power → 1 Copper plate (game:metalplate-copper) = 148 EMC each
+    Used: this is where the value comes from.
+    10 generator power of power at 2 EMC each = 20 (price: the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each)
+  stone: 1 Copper ingot (game:ingot-copper) + 0.002 Copper hammer (game:hammer-copper) (tool wear) + 100 test power → 1 Philosopher's Stone (vintagee:philosophersstone) = 328.26 EMC each
+    Used: this is where the value comes from.
+    100 test power of power at 2 EMC each = 200 (price: vintagee's suggested price)
+  typo: left out: nothing has the code game:ingot-coper - did you mean Copper ingot (game:ingot-copper)?
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Butchering (butchering)'s crafting methods (for its author) (/emc diagnose methodcheck butchering)
+Check Vintage-E (vintagee)'s crafting methods (for its author) (/emc diagnose methodcheck vintagee)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,39 @@
+== Checking Butchering (butchering)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+✓ assets/vintagee/config/vintagee-methods/butchering.json (file, format 1): 1 methods, 12 recipes
+
+== Kneading in A Culinary Artillery's mixing bowl (butchering:kneading) ==
+  #1: left out: nothing has the code expandedfoods:meatnugget-bushmeat-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/bloodmeatnuggetsausages.json[0])
+  #2: left out: nothing has the code expandedfoods:meatnugget-redmeat-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/bloodmeatnuggetsausages.json[1])
+  #3 (read from butchering:recipes/kneading/bloodmeatnuggetsausages.json[2]): 1 Clean Offal (butchering:offal-clean) + 80 Blood (butchering:bloodportion) + 1 Lump of rendered fat (game:fat-rendered) → 1 Raw Black Pudding (butchering:sausage-blackpudding-raw) = 110.2 EMC each
+    Not used: Raw Black Pudding (butchering:sausage-blackpudding-raw) 110.2 comes from a cheaper way: grid: 1 butchering:offal-clean + 80 butchering:bloodportion + 1 game:fat-rendered -> 1 butchering:sausage-blackpudding-raw
+  #4 (read from butchering:recipes/kneading/cleaningoffal.json[0]): 1 Bloody Offal (butchering:offal-bloody) + 20 Water (game:waterportion) → 1 Clean Offal (butchering:offal-clean) = 8.2 EMC each
+    Not used: Clean Offal (butchering:offal-clean) 8.2 comes from a cheaper way: recipe (Kneading in A Culinary Artillery's mixing bowl (Butchering)), cheaper than its default value (butchering:offal-clean) of 12
+  #5: left out: nothing has the code expandedfoods:fishnugget-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/fishnuggetsausages.json[0])
+  #6: left out: nothing has the code expandedfoods:fishnugget-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/fishnuggetsausages.json[1])
+  #7: left out: nothing has the code expandedfoods:fishnugget-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/fishnuggetsausages.json[2])
+  #8: left out: nothing has the code expandedfoods:fishnugget-raw (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/fishnuggetsausages.json[3])
+  #9: left out: the input expandedfoods:meatnugget-*-raw matches nothing (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/meatnuggetsausages.json[0])
+  #10: left out: the input expandedfoods:meatnugget-*-raw matches nothing (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/meatnuggetsausages.json[1])
+  #11: left out: the input expandedfoods:meatnugget-*-raw matches nothing (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/meatnuggetsausages.json[2])
+  #12: left out: the input expandedfoods:meatnugget-*-raw matches nothing (no mod with that id is loaded)
+    methods[0].readers[0] (butchering:recipes/kneading/meatnuggetsausages.json[3])
+• 0 used, 2 beaten by a cheaper way, 0 waiting, 10 left out, 0 switched off
+
+== What Vintage-E understood from butchering ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-butchering.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Butchering (butchering)'s crafting methods (for its author) (/emc diagnose methodcheck butchering)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

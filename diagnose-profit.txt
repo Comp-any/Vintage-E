@@ -1,0 +1,14 @@
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 2 items can be made for less than they're worth (0 of them by processing):
+  Dark red cloth (tailorsdelight:cloth-darkred): worth 235.17, costs 120.13: 115.03 free each time
+    grid: 1 tailorsdelight:twine-darkred + 1 tailorsdelight:twine-darkred + 1 game:stick + 1 tailorsdelight:twine-darkred + 1 tailorsdelight:twine-darkred -> 1 tailorsdelight:cloth-darkred (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace tailorsdelight:cloth-darkred)
+  Bone (game:bone): worth 24, costs 8: 16 free each time
+    grid: 1 butchering:strongbone -> 1 game:bone
+    Trace its value down to the raw materials (/emc diagnose trace game:bone)
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,138 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 1112 base-game values differ with the 2 other mods loaded:
+
+== Through no single mod (713 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Orange-brown aged book (game:book-aged-orangebrown): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Orange aged book (game:book-aged-orange): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Dark green aged book (game:book-aged-darkgreen): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Dark gray aged book (game:book-aged-darkgray): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Cherry red aged book (game:book-aged-cherryred): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Brick red aged book (game:book-aged-brickred): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Dark olive aged book (game:book-aged-darkolive): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Dark beige aged book (game:book-aged-darkbeige): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Olive aged book (game:book-aged-olive): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Purple-orange aged book (game:book-aged-purpleorange): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Gray aged book (game:book-aged-gray): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Gray rotten book (game:book-rotten-gray): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Brown rotten book (game:book-rotten-brown): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Rust rotten book (game:book-rotten-rust): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Purple rotten book (game:book-rotten-purple): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Green rotten book (game:book-rotten-green): 4 → 786.5
+    same as its variant game:book-normal-orange (differs in: color)
+  Aged wooden chair (game:chair-aged): 87.79 → 427.33
+    guessed: the middle value of its 12 valued variants that differ in type (game:chair-blue)
+  Cheddar cheese (2 slices) (game:cheese-cheddar-2slice): 211.49 → 253.3
+    relativeValues rule: 0.5 x game:cheese-cheddar-4slice
+  Cheddar cheese (3 slices) (game:cheese-cheddar-3slice): 317.24 → 379.95
+    relativeValues rule: 0.75 x game:cheese-cheddar-4slice
+  Cheddar cheese (4 slices) (game:cheese-cheddar-4slice): 422.98 → 506.6
+    transitions (ripen): 1 game:rawcheese-salted -> 1 game:cheese-cheddar-4slice
+  ... and 693 more
+
+== Through Tailor's Delight (tailorsdelight): 321 values ==
+  Sturdy mining bag (game:miningbagsturdy): none → 2,836.1
+    grid: 1 game:flaxtwine + 1 tailorsdelight:twine-brown + 1 game:metalplate-iron (or 2 more) + 2 game:linen-diamond-north (or 23 more) + 1 game:metalplate-iron (or 2 more) + 3 game:leather-sturdy-plain + 3 game:leather-sturdy-plain + 3 game:leather-sturdy-plain -> 1 game:miningbagsturdy
+  Sturdy saddlebags (game:hoovedwearables-lowerbackside-saddlebags2): none → 2,303
+    grid: 2 game:metalnailsandstrips-copper + 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-sturdy-plain + 5 game:leather-sturdy-plain + 5 game:leather-sturdy-plain + 4 game:leather-sturdy-plain + 2 game:metalnailsandstrips-copper + 4 game:leather-sturdy-plain -> 1 game:hoovedwearables-lowerbackside-saddlebags2
+  Saddlebags (game:hoovedwearables-lowerbackside-saddlebags1): none → 1,110.7
+    grid: 2 game:metalnailsandstrips-copper + 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 4 game:leather-normal-plain + 2 game:metalnailsandstrips-copper + 4 game:leather-normal-plain -> 1 game:hoovedwearables-lowerbackside-saddlebags1
+  Large windmill sail (game:sail-large-oak): none → 887.5
+    grid: 3 game:flaxtwine + 4 game:supportbeam-oak + 4 game:plank-birch + 4 game:supportbeam-oak + 4 game:plank-birch + 4 game:linen-diamond-north (or 23 more) + 4 game:plank-birch + 4 game:linen-diamond-north (or 23 more) + 1 tailorsdelight:needle-bone (or 1 more) -> 4 game:sail-large-oak
+  Saddle (game:hoovedwearables-middleback-saddle1): none → 885.86
+    grid: 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 2 game:leather-normal-plain + 2 game:metalnailsandstrips-copper + 2 game:leather-normal-plain -> 1 game:hoovedwearables-middleback-saddle1
+  Windmill sail (game:sail): none → 433.83
+    grid: 1 game:flaxtwine + 2 game:supportbeam-birch + 2 game:stick + 2 game:supportbeam-birch + 2 game:stick + 2 game:linen-diamond-north (or 23 more) + 2 game:stick + 2 game:linen-diamond-north (or 23 more) + 1 tailorsdelight:needle-bone (or 1 more) -> 4 game:sail
+  Bridle with snaffle bit (game:hoovedwearables-head-bridle1): none → 363.26
+    grid: 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:twine-mordant (or 17 more) + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 game:metalnailsandstrips-copper + 2 tailorsdelight:leatherstrips-plain -> 1 game:hoovedwearables-head-bridle1
+  Bridle with curb bit (game:hoovedwearables-head-bridle2): none → 363.26
+    grid: 2 tailorsdelight:leatherstrips-plain + 2 game:metalnailsandstrips-copper + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:twine-mordant (or 17 more) + 2 tailorsdelight:leatherstrips-plain -> 1 game:hoovedwearables-head-bridle2
+  Plate body armor (Gold) (game:armor-body-plate-gold): 128 → 78,714.3
+    grid: 1 game:metalplate-gold + 1 game:armor-body-chain-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold -> 1 game:armor-body-plate-gold
+  Plate leg armor (Gold) (game:armor-legs-plate-gold): 128 → 46,153.2
+    grid: 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:armor-legs-chain-gold + 1 game:metalplate-gold -> 1 game:armor-legs-plate-gold
+  Chain body armor (Gold) (game:armor-body-chain-gold): 128 → 45,946.3
+    grid: 1 game:metalchain-gold + 1 game:armor-body-jerkin-leather + 1 game:metalchain-gold + 2 game:metalchain-gold + 2 game:metalchain-gold + 2 game:metalchain-gold + 1 game:metalchain-gold + 1 game:metalchain-gold + 1 game:metalchain-gold -> 1 game:armor-body-chain-gold
+  Chain leg armor (Gold) (game:armor-legs-chain-gold): 128 → 25,673.2
+    grid: 1 game:metalchain-gold + 2 game:metalchain-gold + 1 game:metalchain-gold + 1 game:metalchain-gold + 1 game:armor-legs-jerkin-leather + 1 game:metalchain-gold -> 1 game:armor-legs-chain-gold
+  Orange book (game:book-normal-orange): 4 → 786.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-orange -> 1 game:book-normal-orange
+  Cherry red book (game:book-normal-cherryred): 4 → 780.06
+    grid: 1 game:flaxtwine + 1 game:leather-normal-red + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-red -> 1 game:book-normal-cherryred
+  Purple-orange book (game:book-normal-purpleorange): 4 → 706.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-purple -> 1 game:book-normal-purpleorange
+  Plate body armor (Silver) (game:armor-body-plate-silver): 128 → 20,346.3
+    grid: 1 game:metalplate-silver + 1 game:armor-body-chain-silver + 1 game:metalplate-silver + 1 game:metalplate-silver + 1 game:metalplate-silver + 1 game:metalplate-silver + 1 game:metalplate-silver + 1 game:metalplate-silver + 1 game:metalplate-silver -> 1 game:armor-body-plate-silver
+  Brick red book (game:book-normal-brickred): 4 → 633.08
+    grid: 1 game:flaxtwine + 1 tailorsdelight:leather-darkred + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-plain -> 1 game:book-normal-brickred
+  Purple book (game:book-normal-purple): 4 → 626.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-purple + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-purple -> 1 game:book-normal-purple
+  Orange-brown book (game:book-normal-orangebrown): 4 → 621.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-plain -> 1 game:book-normal-orangebrown
+  Olive book (game:book-normal-olive): 4 → 549
+    grid: 1 game:flaxtwine + 1 game:leather-normal-yellow + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-green -> 1 game:book-normal-olive
+  ... and 301 more
+
+== Through Butchering (butchering): 78 values ==
+  Nomad trousers (game:clothes-lowerbody-nomad-trousers): 87.79 → 3,420.2
+    grid: 2 game:cloth-green + 2 game:cloth-green + 2 game:cloth-green + 1 game:sewingkit + 2 game:cloth-green -> 1 game:clothes-lowerbody-nomad-trousers
+  Nomad mantle (game:clothes-upperbodyover-nomad-mantle): 87.79 → 2,158.8
+    grid: 1 game:cloth-plain + 1 game:sewingkit + 1 game:cloth-plain + 1 game:cloth-green + 1 game:cloth-green + 1 game:cloth-green -> 1 game:clothes-upperbodyover-nomad-mantle
+  Nomad boots (game:clothes-foot-nomad-boots): 87.79 → 1,812.3
+    grid: 1 game:cloth-black + 1 game:cloth-black + 1 game:cloth-green + 1 game:sewingkit + 1 game:cloth-green -> 1 game:clothes-foot-nomad-boots
+  Spice merchants coat (game:clothes-upperbodyover-spice-merchants-coat): 175.59 → 2,194.8
+    grid: 1 game:cloth-green + 1 game:sewingkit + 1 game:cloth-green + 1 game:cloth-blue + 1 game:cloth-green + 1 game:cloth-blue -> 1 game:clothes-upperbodyover-spice-merchants-coat
+  Minstrel shirt (game:clothes-upperbody-minstrel-shirt): 219.49 → 2,168.7
+    grid: 1 game:cloth-blue + 1 game:sewingkit + 1 game:cloth-blue + 1 game:cloth-plain + 1 game:cloth-blue + 1 game:cloth-plain -> 1 game:clothes-upperbody-minstrel-shirt
+  Minstrel pants (game:clothes-lowerbody-minstrel-pants): 219.49 → 1,901.5
+    grid: 1 game:cloth-purple + 1 game:cloth-purple + 1 game:cloth-purple + 1 game:sewingkit + 1 game:cloth-purple -> 1 game:clothes-lowerbody-minstrel-pants
+  Mooncloth robe (game:clothes-shoulder-mooncloth-robe): 482.88 → 2,674.1
+    grid: 1 game:cloth-blue + 1 game:cloth-purple + 1 game:cloth-blue + 1 game:cloth-blue + 1 game:cloth-purple + 1 game:cloth-blue + 1 game:sewingkit -> 1 game:clothes-shoulder-mooncloth-robe
+  Longbow (game:bow-long): 310.66 → 844
+    grid: 1 game:fat-rendered + 6 butchering:sinew-dry + 1 game:bowstave-long-dry + 1 game:hide-pelt-small (or 1 more) + 6 butchering:sinew-dry + 1 game:fat-rendered + 6 butchering:sinew-dry -> 1 game:bow-long
+  Tailored gamboised helmet (game:armor-head-tailored-red-linen): 1,208.5 → 587.9
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-red + 1 game:cloth-red -> 1 game:armor-head-tailored-red-linen
+  Red apron (game:clothes-shoulder-apronred): 1,208.5 → 587.9
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-red + 1 game:cloth-red -> 1 game:clothes-shoulder-apronred
+  Fortune teller hip scarf (game:clothes-waist-fortune-teller-hip-scarf): 3,575.7 → 2,287.5
+    grid: 4 game:nugget-nativegold + 4 game:nugget-nativegold + 4 game:nugget-nativegold + 1 game:sewingkit + 2 game:cloth-red + 2 game:cloth-red + 4 game:nugget-nativegold -> 1 game:clothes-waist-fortune-teller-hip-scarf
+  Sewing kit (game:sewingkit): 87.79 → 134.66
+    grid: 2 butchering:sinew-dry + 2 butchering:sinew-dry + 1 game:stick + 2 butchering:sinew-dry + 2 butchering:sinew-dry + 1 tailorsdelight:needle-bone (or 1 more) -> 1 game:sewingkit
+  Simple bow (game:bow-simple): 306 → 204
+    grid: 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry -> 1 game:bow-simple
+  Sleeveless chemise top (game:clothes-upperbody-chemisesleeveless): 912.19 → 959.06
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white -> 1 game:clothes-upperbody-chemisesleeveless
+  Large pile of junk metal (game:metalpartpile-large-north): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-north
+  Large pile of junk metal (game:metalpartpile-large-east): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-east
+  Large pile of junk metal (game:metalpartpile-large-south): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-south
+  Large pile of junk metal (game:metalpartpile-large-west): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-west
+  Tiny pile of junk metal (game:metalpartpile-tiny): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-tiny
+  Small pile of junk metal (game:metalpartpile-small): 129.84 → 136.13
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-small
+  ... and 58 more
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)
