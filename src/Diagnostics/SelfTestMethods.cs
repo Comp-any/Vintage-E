@@ -37,6 +37,13 @@ namespace VintageE
                 File.WriteAllText(Path.Combine(VintageEModSystem.DataFolder(sapi), "diagnose-draftmethods-" + domain + ".txt"), text);
                 Check(!text.Contains("vintagee:diag-"), "methods: drafted a method file for " + domain + " (" + Line1(text, "Drafted") + ")");
             }
+            // And the author's check for every mod that sends crafting methods (Vintage-E's own files for other mods included).
+            foreach (string domain in mod.Methods.Mods.Where(m => m != VintageEModSystem.ModId).Take(40).ToList())
+            {
+                string text = EmcDiagnose.Run(mod, sapi, null, "en", "methodcheck", domain, null).PlainText(sapi.World);
+                File.WriteAllText(Path.Combine(VintageEModSystem.DataFolder(sapi), "diagnose-methodcheck-" + domain + ".txt"), text);
+                Check(!text.Contains("vintagee:diag-"), "methods: checked the crafting methods of " + domain + " (" + Line1(text, " used, ") + ")");
+            }
         }
 
         static MethodDoc ParseTest(string json) => MethodParser.Parse(json, "vintagee", "self-test", "file", null);

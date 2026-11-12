@@ -199,7 +199,9 @@ namespace VintageE
             {
                 Constructions = rules.Constructions,
                 CustomRecipes = rules.Recipes.Concat(config.CustomRecipes ?? new List<string>()).ToList(),
-                Methods = methods,
+                // A mapping without other mods' recipes (/emc diagnose clean, baseline) leaves their methods out entirely,
+                // including what they supersede, so the recipe lists they replace come back.
+                Methods = ConversionFilter == null ? methods : null,
                 Prices = prices
             };
             collector.CollectAll();
