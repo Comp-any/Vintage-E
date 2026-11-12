@@ -1,0 +1,20 @@
+{
+  "//": "PROBE (work in progress): lists what tailorsdelight:recipes/butchering holds.",
+  "format": 1,
+  "requiresMod": [ "tailorsdelight", "butchering" ],
+  "methods": [
+    {
+      "code": "tailorsdelight:butcheringprobe",
+      "name": "probe",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/butchering",
+          "domain": "tailorsdelight",
+          "recipe": { "code": "${code}", "inputs": [ { "code": "${code}" } ], "outputs": [] }
+        }
+      ]
+    }
+  ]
+}

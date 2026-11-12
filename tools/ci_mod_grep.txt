@@ -29,3 +29,5 @@ strongbone
 file:recipes/kneading/
 file:recipes/butchering/
 kneading
+file:tailors_delight[^/]*/.*butcher
+file:butchering_[^/]*/.*tailor
