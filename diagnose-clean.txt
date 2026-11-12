@@ -1,0 +1,375 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 1297 base-game values differ with the 35 other mods loaded:
+
+== Through Tailor's Delight (tailorsdelight): 615 values ==
+  Sturdy mining bag (game:miningbagsturdy): none → 2,994.6
+    grid: 1 game:flaxtwine + 1 tailorsdelight:twine-brown + 1 game:metalplate-iron (or 2 more) + 2 game:linen-diamond-north (or 29 more) + 1 game:metalplate-iron (or 2 more) + 3 game:leather-sturdy-plain + 3 game:leather-sturdy-plain + 3 game:leather-sturdy-plain -> 1 game:miningbagsturdy
+  Sturdy saddlebags (game:hoovedwearables-lowerbackside-saddlebags2): none → 2,851.9
+    grid: 2 game:metalnailsandstrips-copper + 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-sturdy-plain + 5 game:leather-sturdy-plain + 5 game:leather-sturdy-plain + 4 game:leather-sturdy-plain + 2 game:metalnailsandstrips-copper + 4 game:leather-sturdy-plain -> 1 game:hoovedwearables-lowerbackside-saddlebags2
+  Saddlebags (game:hoovedwearables-lowerbackside-saddlebags1): none → 1,254.4
+    grid: 2 game:metalnailsandstrips-copper + 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 4 game:leather-normal-plain + 2 game:metalnailsandstrips-copper + 4 game:leather-normal-plain -> 1 game:hoovedwearables-lowerbackside-saddlebags1
+  Saddle (game:hoovedwearables-middleback-saddle1): none → 1,029.6
+    grid: 2 tailorsdelight:twine-mordant (or 17 more) + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 5 game:leather-normal-plain + 2 game:leather-normal-plain + 2 game:metalnailsandstrips-copper + 2 game:leather-normal-plain -> 1 game:hoovedwearables-middleback-saddle1
+  Large windmill sail (game:sail-large-oak): none → 873.27
+    grid: 3 game:flaxtwine + 4 game:supportbeam-oak + 4 game:plank-birch + 4 game:supportbeam-oak + 4 game:plank-birch + 4 game:linen-diamond-north (or 29 more) + 4 game:plank-birch + 4 game:linen-diamond-north (or 29 more) + 1 tailorsdelight:needle-bone (or 1 more) -> 4 game:sail-large-oak
+  Bridle with snaffle bit (game:hoovedwearables-head-bridle1): none → 507.04
+    grid: 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:twine-mordant (or 17 more) + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 game:metalnailsandstrips-copper + 2 tailorsdelight:leatherstrips-plain -> 1 game:hoovedwearables-head-bridle1
+  Bridle with curb bit (game:hoovedwearables-head-bridle2): none → 507.04
+    grid: 2 tailorsdelight:leatherstrips-plain + 2 game:metalnailsandstrips-copper + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:leatherstrips-plain + 2 tailorsdelight:twine-mordant (or 17 more) + 2 tailorsdelight:leatherstrips-plain -> 1 game:hoovedwearables-head-bridle2
+  Plate body armor (Gold) (game:armor-body-plate-gold): 128 → 78,714.3
+    grid: 1 game:metalplate-gold + 1 game:armor-body-chain-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold -> 1 game:armor-body-plate-gold
+  Orange book (game:book-normal-orange): 1.88 → 786.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-orange -> 1 game:book-normal-orange
+  Purple-orange book (game:book-normal-purpleorange): 1.88 → 706.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-purple -> 1 game:book-normal-purpleorange
+  Plate leg armor (Gold) (game:armor-legs-plate-gold): 128 → 46,153.2
+    grid: 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:metalplate-gold + 1 game:armor-legs-chain-gold + 1 game:metalplate-gold -> 1 game:armor-legs-plate-gold
+  Chain body armor (Gold) (game:armor-body-chain-gold): 128 → 45,946.3
+    grid: 1 game:metalchain-gold + 1 game:armor-body-jerkin-leather + 1 game:metalchain-gold + 2 game:metalchain-gold + 2 game:metalchain-gold + 2 game:metalchain-gold + 1 game:metalchain-gold + 1 game:metalchain-gold + 1 game:metalchain-gold -> 1 game:armor-body-chain-gold
+  Purple book (game:book-normal-purple): 1.88 → 626.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-purple + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-purple -> 1 game:book-normal-purple
+  Orange-brown book (game:book-normal-orangebrown): 1.88 → 621.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-orange + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-plain -> 1 game:book-normal-orangebrown
+  Olive book (game:book-normal-olive): 1.88 → 549
+    grid: 1 game:flaxtwine + 1 game:leather-normal-yellow + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-green -> 1 game:book-normal-olive
+  Dark beige book (game:book-normal-darkbeige): 1.88 → 541.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-yellow + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-plain -> 1 game:book-normal-darkbeige
+  Dark gray book (game:book-normal-darkgray): 1.88 → 535.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-gray + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-black -> 1 game:book-normal-darkgray
+  Dark green book (game:book-normal-darkgreen): 1.88 → 535.4
+    grid: 1 game:flaxtwine + 1 tailorsdelight:leather-darkgreen + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-black -> 1 game:book-normal-darkgreen
+  Gray book (game:book-normal-gray): 1.88 → 512.5
+    grid: 1 game:flaxtwine + 1 game:leather-normal-gray + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-gray -> 1 game:book-normal-gray
+  Dark olive book (game:book-normal-darkolive): 1.88 → 512.4
+    grid: 1 game:flaxtwine + 1 tailorsdelight:leather-darkgreen + 8 game:paper-parchment + 1 tailorsdelight:leatherstrips-plain + 1 game:flaxtwine + 1 game:leather-normal-gray -> 1 game:book-normal-darkolive
+  ... and 595 more
+
+== Through no single mod (276 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Arapaima (game:creature-fish-freshwater-arapaima-arapaima-adult): none → 414.4
+    relativeValues rule: 1 x game:fishraw-freshwater-arapaima-arapaima-adult
+  Greater arapaima (game:creature-fish-freshwater-arapaima-gigas-adult): none → 414.4
+    relativeValues rule: 1 x game:fishraw-freshwater-arapaima-gigas-adult
+  Coelacanth (game:creature-fish-saltwater-coelacanth-common-adult): none → 270.4
+    relativeValues rule: 1 x game:fishraw-saltwater-coelacanth-common-adult
+  Mahi-mahi (game:creature-fish-saltwater-mahi-mahi-common-adult): none → 254.4
+    relativeValues rule: 1 x game:fishraw-saltwater-mahi-mahi-common-adult
+  Black grouper (game:creature-fish-saltwater-grouper-black-adult): none → 254.4
+    relativeValues rule: 1 x game:fishraw-saltwater-grouper-black-adult
+  Barracuda (game:creature-fish-saltwater-barracuda-great-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-saltwater-barracuda-great-adult
+  Yellowtail amberjack (game:creature-fish-saltwater-amberjack-yellowtail-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-saltwater-amberjack-yellowtail-adult
+  Northern pike (game:creature-fish-freshwater-pike-northern-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-freshwater-pike-northern-adult
+  Haddock (game:creature-fish-saltwater-haddock-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-haddock-common-adult
+  Carp (game:creature-fish-freshwater-carp-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-carp-common-adult
+  Walleye (game:creature-fish-freshwater-walleye-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-walleye-common-adult
+  Pollock (game:creature-fish-saltwater-pollock-alaska-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-pollock-alaska-adult
+  Cape gurnard (game:creature-fish-saltwater-gurnard-cape-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-gurnard-cape-adult
+  Sea bream (game:creature-fish-saltwater-bream-sea-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-bream-sea-adult
+  Silver Hake (game:creature-fish-saltwater-hake-silver-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-hake-silver-adult
+  Wolf fish (game:creature-fish-saltwater-wolf-bering-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-wolf-bering-adult
+  Pink salmon (game:creature-fish-saltwater-salmon-pink-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-salmon-pink-adult
+  Red snapper (game:creature-fish-saltwater-snapper-red-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-snapper-red-adult
+  Skipjack tuna (game:creature-fish-saltwater-tuna-skipjack-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-tuna-skipjack-adult
+  Blue catfish (game:creature-fish-freshwater-catfish-blue-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-catfish-blue-adult
+  ... and 256 more
+
+== Through Primitive Survival (primitivesurvival): 155 values ==
+  Taxidermied arapaima (adult) (game:taxidermy-fish-freshwater-arapaima-arapaima-adult): none → 416.4
+    RecipeRegistrySystem.BarrelRecipes: 100 game:dilutedboraxportion + 1 game:fishraw-freshwater-arapaima-arapaima-adult -> 1 game:taxidermy-fish-freshwater-arapaima-arapaima-adult
+  Taxidermied greater arapaima (adult) (game:taxidermy-fish-freshwater-arapaima-gigas-adult): none → 416.4
+    RecipeRegistrySystem.BarrelRecipes: 100 game:dilutedboraxportion + 1 game:fishraw-freshwater-arapaima-gigas-adult -> 1 game:taxidermy-fish-freshwater-arapaima-gigas-adult
+  Dead arapaima (adult) (game:fishraw-freshwater-arapaima-arapaima-adult): none → 414.4
+    worked backwards from ground-storage processing: 1 game:fishraw-freshwater-arapaima-arapaima-adult -> 15 game:fish-raw + 0.2 primitivesurvival:fisheggs-raw-normal + 0.2 primitivesurvival:fisheggs-raw-ovulated + 6 game:bone-fish
+  Dead greater arapaima (adult) (game:fishraw-freshwater-arapaima-gigas-adult): none → 414.4
+    worked backwards from ground-storage processing: 1 game:fishraw-freshwater-arapaima-gigas-adult -> 15 game:fish-raw + 0.2 primitivesurvival:fisheggs-raw-normal + 0.2 primitivesurvival:fisheggs-raw-ovulated + 6 game:bone-fish
+  Green glass slab (game:glassslab-green-north-free): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-north-free
+  Green glass slab (game:glassslab-green-east-free): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-east-free
+  Green glass slab (game:glassslab-green-south-free): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-south-free
+  Green glass slab (game:glassslab-green-west-free): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-west-free
+  Green glass slab (game:glassslab-green-up-free): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-up-free
+  Green glass slab (game:glassslab-green-down-free): 4.58 → 64
+    worked backwards from grid: 1 game:log-grown-aged-ud (or 81 more) + 1 game:glassslab-green-down-free -> 4 primitivesurvival:fireflies-empty-straight
+  Green glass slab (game:glassslab-green-north-snow): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-north-snow
+  Green glass slab (game:glassslab-green-east-snow): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-east-snow
+  Green glass slab (game:glassslab-green-south-snow): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-south-snow
+  Green glass slab (game:glassslab-green-west-snow): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-west-snow
+  Green glass slab (game:glassslab-green-down-snow): 4.58 → 64
+    block drops: 1 game:glassslab-green-down-free -> 1 game:glassslab-green-down-snow
+  Blue glass slab (game:glassslab-blue-north-free): 5.34 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-north-free
+  Red glass slab (game:glassslab-red-north-free): 5.34 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-north-free
+  Yellow glass slab (game:glassslab-yellow-north-free): 5.34 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-north-free
+  Brown glass slab (game:glassslab-brown-north-free): 5.34 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-north-free
+  Blue glass slab (game:glassslab-blue-east-free): 5.34 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-east-free
+  ... and 135 more
+
+== Through Butchering (butchering): 95 values ==
+  Longbow (game:bow-long): 259.29 → 844
+    grid: 1 game:fat-rendered + 6 butchering:sinew-dry + 1 game:bowstave-long-dry + 1 game:hide-pelt-small (or 1 more) + 6 butchering:sinew-dry + 1 game:fat-rendered + 6 butchering:sinew-dry -> 1 game:bow-long
+  Sewing kit (game:sewingkit): 73.28 → 134.66
+    grid: 2 butchering:sinew-dry + 2 butchering:sinew-dry + 1 game:stick + 2 butchering:sinew-dry + 2 butchering:sinew-dry + 1 tailorsdelight:needle-bone (or 1 more) -> 1 game:sewingkit
+  Simple bow (game:bow-simple): 306 → 204
+    grid: 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry -> 1 game:bow-simple
+  Large pile of junk metal (game:metalpartpile-large-north): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-north
+  Large pile of junk metal (game:metalpartpile-large-east): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-east
+  Large pile of junk metal (game:metalpartpile-large-south): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-south
+  Large pile of junk metal (game:metalpartpile-large-west): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large-west
+  Tiny pile of junk metal (game:metalpartpile-tiny): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-tiny
+  Small pile of junk metal (game:metalpartpile-small): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-small
+  Medium pile of junk metal (game:metalpartpile-medium): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-medium
+  Large pile of junk metal (game:metalpartpile-large): 118.96 → 153.74
+    block drops: 1 game:metal-scraps + 1 game:metal-parts + 1 game:gear-rusty -> 1 game:metalpartpile-large
+  Noble fillet (game:clothes-head-noble-fillet): 484.97 → 546.36
+    grid: 1 game:cloth-green + 1 game:rope + 1 game:sewingkit -> 1 game:clothes-head-noble-fillet
+  Arctic fisher shirt (game:clothes-upperbody-arcticfisher): 970.85 → 1,048.2
+    grid: 1 game:cloth-red + 1 game:cloth-red + 1 game:sewingkit + 1 game:hide-pelt-medium (or 2 more) + 1 game:hide-pelt-medium (or 2 more) -> 1 game:clothes-upperbody-arcticfisher
+  Tailored gamboised helmet (game:armor-head-tailored-black-linen): 1,118 → 1,186.9
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-black + 1 game:cloth-black -> 1 game:armor-head-tailored-black-linen
+  Black apron (game:clothes-shoulder-apronblack): 1,118 → 1,186.9
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-black + 1 game:cloth-black -> 1 game:clothes-shoulder-apronblack
+  Tailored gamboised helmet (game:armor-head-tailored-gray-linen): 1,103.3 → 1,168.5
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-gray + 1 game:cloth-gray -> 1 game:armor-head-tailored-gray-linen
+  Gray apron (game:clothes-shoulder-aprongray): 1,103.3 → 1,168.5
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-gray + 1 game:cloth-gray -> 1 game:clothes-shoulder-aprongray
+  Tailored gamboised helmet (game:armor-head-tailored-plain-linen): 1,061.3 → 1,122.7
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-plain + 1 game:cloth-plain -> 1 game:armor-head-tailored-plain-linen
+  Tailored gamboised helmet (game:armor-head-tailored-green-linen): 1,090.7 → 1,152.1
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-green + 1 game:cloth-green -> 1 game:armor-head-tailored-green-linen
+  Green apron (game:clothes-shoulder-aprongreen): 1,090.7 → 1,152.1
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-green + 1 game:cloth-green -> 1 game:clothes-shoulder-aprongreen
+  ... and 75 more
+
+== Through Tankards, Goblets and More! (tankardsandgoblets): 64 values ==
+  Crushed olivine (game:crushed-olivine): 2.29 → 32
+    pulverizer crushing: 1 game:ore-olivine -> 1 game:crushed-olivine
+  Olivine (game:ore-olivine): 2.29 → 32
+    grid: 1 tankardsandgoblets:t&g-winebottle-green -> 4 game:ore-olivine
+  Olivine (game:ore-olivine-peridotite): 2.86 → 40
+    block drops: 1.25 game:ore-olivine -> 1 game:ore-olivine-peridotite
+  Large olivine crystal (variant 1) (game:crystal-olivine-large1-up): 16.03 → 224
+    worked backwards from grid: 1 game:crystal-olivine-large1-up -> 7 game:ore-olivine
+  Large olivine crystal (variant 2) (game:crystal-olivine-large2-up): 16.03 → 224
+    worked backwards from grid: 1 game:crystal-olivine-large2-up -> 7 game:ore-olivine
+  Olivine cluster (variant 1) (game:crystal-olivine-cluster1-up): 11.45 → 160
+    worked backwards from grid: 1 game:crystal-olivine-cluster1-up -> 5 game:ore-olivine
+  Olivine cluster (variant 2) (game:crystal-olivine-cluster2-up): 11.45 → 160
+    worked backwards from grid: 1 game:crystal-olivine-cluster2-up -> 5 game:ore-olivine
+  game:block-crystal-olivine-large1-down (game:crystal-olivine-large1-down): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large1-up -> 1 game:crystal-olivine-large1-down
+  game:block-crystal-olivine-large2-down (game:crystal-olivine-large2-down): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large2-up -> 1 game:crystal-olivine-large2-down
+  game:block-crystal-olivine-cluster1-down (game:crystal-olivine-cluster1-down): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster1-up -> 1 game:crystal-olivine-cluster1-down
+  game:block-crystal-olivine-cluster2-down (game:crystal-olivine-cluster2-down): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster2-up -> 1 game:crystal-olivine-cluster2-down
+  game:block-crystal-olivine-large1-north (game:crystal-olivine-large1-north): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large1-up -> 1 game:crystal-olivine-large1-north
+  game:block-crystal-olivine-large2-north (game:crystal-olivine-large2-north): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large2-up -> 1 game:crystal-olivine-large2-north
+  game:block-crystal-olivine-cluster1-north (game:crystal-olivine-cluster1-north): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster1-up -> 1 game:crystal-olivine-cluster1-north
+  game:block-crystal-olivine-cluster2-north (game:crystal-olivine-cluster2-north): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster2-up -> 1 game:crystal-olivine-cluster2-north
+  game:block-crystal-olivine-large1-east (game:crystal-olivine-large1-east): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large1-up -> 1 game:crystal-olivine-large1-east
+  game:block-crystal-olivine-large2-east (game:crystal-olivine-large2-east): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large2-up -> 1 game:crystal-olivine-large2-east
+  game:block-crystal-olivine-cluster1-east (game:crystal-olivine-cluster1-east): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster1-up -> 1 game:crystal-olivine-cluster1-east
+  game:block-crystal-olivine-cluster2-east (game:crystal-olivine-cluster2-east): 11.45 → 160
+    block drops: 1 game:crystal-olivine-cluster2-up -> 1 game:crystal-olivine-cluster2-east
+  game:block-crystal-olivine-large1-south (game:crystal-olivine-large1-south): 16.03 → 224
+    block drops: 1 game:crystal-olivine-large1-up -> 1 game:crystal-olivine-large1-south
+  ... and 44 more
+
+== Through Hydrate Or Diedrate (hydrateordiedrate): 39 values ==
+  Sulfuric acid (game:acid-full-sulfuric): 0.353 → 0.607
+    RecipeRegistrySystem.CookingRecipes: 100 game:waterportion (or 7 more) + 1 game:saltpeter + 2 game:powder-sulfur -> 100 game:acid-full-sulfuric
+  Zinc sulfate (game:sulfate-full-zinc): 0.816 → 1.32
+    RecipeRegistrySystem.CookingRecipes: 200 game:acid-full-sulfuric + 2 game:crushed-sphalerite -> 100 game:sulfate-full-zinc
+  Chromium sulfate (game:sulfate-full-chromite): 1.19 → 1.69
+    RecipeRegistrySystem.CookingRecipes: 200 game:acid-full-sulfuric + 2 game:crushed-chromite -> 100 game:sulfate-full-chromite
+  Refractory bricks (Tier 2) (game:refractorybricks-good-tier2): 301.56 → 420.4
+    grid: 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:mortar + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 -> 2 game:refractorybricks-good-tier2
+  Refractory brick grating (Tier 2) (game:refractorybrickgrating-good-tier2): 150.85 → 210.27
+    grid: 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:mortar + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 + 1 game:refractorybrick-fired-tier2 -> 3 game:refractorybrickgrating-good-tier2
+  Chromium tanned hide (Large) (game:hide-chromium-large): 417.37 → 569.92
+    RecipeRegistrySystem.CookingRecipes: 300 game:sulfate-full-chromite + 1 game:hide-scraped-large -> 1 game:hide-chromium-large
+  Chromium tanned hide (Huge) (game:hide-chromium-huge): 457.37 → 609.92
+    RecipeRegistrySystem.CookingRecipes: 300 game:sulfate-full-chromite + 1 game:hide-scraped-huge -> 1 game:hide-chromium-huge
+  Sturdy leather (game:leather-sturdy-plain): 84.22 → 109.65
+    RecipeRegistrySystem.CookingRecipes: 3 game:beeswax + 1 game:hide-chromium-huge -> 6 game:leather-sturdy-plain
+  Refractory bricks (Tier 3) (game:refractorybricks-good-tier3): 398.53 → 517.37
+    grid: 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:mortar + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 -> 2 game:refractorybricks-good-tier3
+  Refractory brick grating (Tier 3) (game:refractorybrickgrating-good-tier3): 199.33 → 258.75
+    grid: 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:mortar + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 + 1 game:refractorybrick-fired-tier3 -> 3 game:refractorybrickgrating-good-tier3
+  Green leather (game:leather-normal-green): 50.7 → 47.7
+    RecipeRegistrySystem.BarrelRecipes: 500 game:dye-green + 1 game:leather-normal-plain -> 1 game:leather-normal-green
+  Black cuffs (game:clothes-hand-cuffsblack): 848.7 → 856.19
+    grid: 1 game:cloth-black + 1 game:cloth-black -> 1 game:clothes-hand-cuffsblack
+  Blindfold (game:clothes-face-blindfold): 424.35 → 428.09
+    grid: 1 game:cloth-black -> 1 game:clothes-face-blindfold
+  Black cloth (game:cloth-black): 424.35 → 428.09
+    RecipeRegistrySystem.BarrelRecipes: 200 game:dye-black + 1 game:cloth-mordant -> 1 game:cloth-black
+  Small black carpet (game:smallcarpet-black): 456.35 → 460.09
+    grid: 1 game:cloth-black + 1 game:rushmat -> 1 game:smallcarpet-black
+  Black liripipe (game:clothes-head-liripipeblack): 1,371.1 → 1,382.3
+    grid: 1 game:cloth-black + 1 game:cloth-black + 1 game:cloth-black + 1 game:flaxtwine -> 1 game:clothes-head-liripipeblack
+  Black carpet (game:mediumcarpet-black-ns): 488.35 → 492.09
+    grid: 1 game:cloth-black + 1 game:rushmat + 1 game:rushmat -> 1 game:mediumcarpet-black-ns
+  game:block-mediumcarpet-black-we (game:mediumcarpet-black-we): 488.35 → 492.09
+    block drops: 1 game:mediumcarpet-black-ns -> 1 game:mediumcarpet-black-we
+  Black kirtle top (game:clothes-upperbody-kirtleblack): 1,640.7 → 1,648.2
+    grid: 1 game:cloth-black + 1 game:cloth-black + 1 game:cloth-plain + 1 game:cloth-plain -> 1 game:clothes-upperbody-kirtleblack
+  Gray cuffs (game:clothes-hand-cuffsgray): 834.04 → 837.79
+    grid: 1 game:cloth-gray + 1 game:cloth-gray -> 1 game:clothes-hand-cuffsgray
+  ... and 19 more
+
+== Through FoodShelves (foodshelves): 22 values ==
+  Slush (game:slush): 0.25 → 0.125
+    transitions (melt): 1 foodshelves:cutice -> 1 game:slush
+  Snowball (game:snowball-snow): 0.25 → 0.125
+    worked backwards from transitions (melt): 1 game:snowball-snow -> 1 game:slush
+  Travertine stone in snowball (game:snowball-travertine): 1.25 → 1.12
+    grid: 1 game:stone-travertine + 1 game:snowball-snow -> 1 game:snowball-travertine
+  White cloth (game:cloth-white): 412.19 → 396
+    worked backwards from grid: 1 game:plank-aged + 2 game:cloth-white + 1 game:plank-aged + 1 game:plank-aged + 4 game:stick + 1 game:plank-aged -> 1 foodshelves:floursack-normal-east
+  White cuffs (game:clothes-hand-cuffswhite): 824.39 → 792
+    grid: 1 game:cloth-white + 1 game:cloth-white -> 1 game:clothes-hand-cuffswhite
+  Hawk patterned shawl (game:clothes-shoulder-shawlhawk): 1,326.9 → 1,377.7
+    grid: 1 game:cloth-gray + 1 game:cloth-black + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-shoulder-shawlhawk
+  White liripipe (game:clothes-head-liripipewhite): 1,334.6 → 1,286
+    grid: 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-white + 1 game:flaxtwine -> 1 game:clothes-head-liripipewhite
+  Moth patterned shawl (game:clothes-shoulder-shawlmoth): 1,320.6 → 1,369.6
+    grid: 1 game:cloth-brown + 1 game:cloth-black + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-shoulder-shawlmoth
+  Sleeveless chemise top (game:clothes-upperbody-chemisesleeveless): 897.67 → 926.66
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white -> 1 game:clothes-upperbody-chemisesleeveless
+  Short chemise top (game:clothes-upperbody-chemiseshort): 1,093.7 → 1,122.7
+    grid: 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiseshort
+  Off shoulder short chemise top (game:clothes-upperbody-chemiseshouldershort): 1,093.7 → 1,122.7
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine -> 1 game:clothes-upperbody-chemiseshouldershort
+  Off shoulder chemise top (game:clothes-upperbody-chemiseshoulderlong): 1,093.7 → 1,122.7
+    grid: 1 game:cloth-white + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiseshoulderlong
+  Long chemise top (game:clothes-upperbody-chemiselong): 1,289.7 → 1,318.7
+    grid: 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiselong
+  White kirtle top (game:clothes-upperbody-kirtlewhite): 1,616.4 → 1,584
+    grid: 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-plain + 1 game:cloth-plain -> 1 game:clothes-upperbody-kirtlewhite
+  Light green wallpaper (game:wallpaper-lightgreen): 25.71 → 25.2
+    grid: 1 game:cloth-green + 1 game:cloth-white -> 32 game:wallpaper-lightgreen
+  White and red hose (game:clothes-lowerbody-hoseredwhite): 1,894 → 1,861.6
+    grid: 1 game:cloth-white + 1 game:cloth-red + 1 game:cloth-white + 1 game:cloth-red + 1 game:flaxtwine + 1 game:flaxtwine -> 1 game:clothes-lowerbody-hoseredwhite
+  Orange and white hose (game:clothes-lowerbody-hosewhiteorange): 1,967.8 → 1,935.4
+    grid: 1 game:cloth-orange + 1 game:cloth-white + 1 game:cloth-orange + 1 game:cloth-white + 1 game:flaxtwine + 1 game:flaxtwine -> 1 game:clothes-lowerbody-hosewhiteorange
+  Alchemical Bag (vintagee:alchemicalbag-white): 11,711.8 → 11,630.8
+    grid: 1 vintagee:covalencedust-high + 1 vintagee:covalencedust-high + 1 vintagee:covalencedust-high + 1 game:cloth-white + 1 vintagee:alchemicalchest + 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-white -> 1 vintagee:alchemicalbag-white
+  Tailored gamboised leg armor (game:armor-legs-tailored-white-linen): 1,918.1 → 1,914.7
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-white + 1 game:flaxtwine + 1 game:flaxtwine -> 1 game:armor-legs-tailored-white-linen
+  Dark Matter Alchemical Bag (vintagee:alchemicalbagdark-white): 60,863.8 → 60,782.8
+    grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:alchemicalbag-white + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:alchemicalbagdark-white
+  ... and 2 more
+
+== Through Fauna of the Stone Age: Bovinae (bovinae): 22 values ==
+  Powdered borax (game:powder-borax): 2.5 → 23.6
+    worked backwards from grid: 1 bovinae:pelt-pelt-male-bubalusquarlesi + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 bovinae:headmount-male-bubalusquarlesi-00
+  Borax (game:ore-borax): 5 → 47.2
+    worked backwards from quern grinding: 1 game:ore-borax -> 2 game:powder-borax
+  Borax bits (game:looseores-borax-chalk-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-chalk-free
+  Borax bits (game:looseores-borax-chert-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-chert-free
+  Borax bits (game:looseores-borax-conglomerate-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-conglomerate-free
+  Borax bits (game:looseores-borax-limestone-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-limestone-free
+  Borax bits (game:looseores-borax-claystone-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-claystone-free
+  Borax bits (game:looseores-borax-sandstone-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-sandstone-free
+  Borax bits (game:looseores-borax-shale-free): 5 → 47.2
+    block drops: 1 game:ore-borax -> 1 game:looseores-borax-shale-free
+  Borax (game:ore-borax-chalk): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-chalk
+  Borax (game:ore-borax-chert): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-chert
+  Borax (game:ore-borax-conglomerate): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-conglomerate
+  Borax (game:ore-borax-limestone): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-limestone
+  Borax (game:ore-borax-claystone): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-claystone
+  Borax (game:ore-borax-sandstone): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-sandstone
+  Borax (game:ore-borax-shale): 6.25 → 59
+    block drops: 1.25 game:ore-borax -> 1 game:ore-borax-shale
+  Granite stone coffin lid (game:stonecoffinlid-granite): 3.5 → 24.6
+    grid: 1 game:rock-granite + 1 game:powder-borax -> 1 game:stonecoffinlid-granite
+  Andesite stone coffin lid (game:stonecoffinlid-andesite): 3.5 → 24.6
+    grid: 1 game:rock-andesite + 1 game:powder-borax -> 1 game:stonecoffinlid-andesite
+  Basalt stone coffin lid (game:stonecoffinlid-basalt): 3.5 → 24.6
+    grid: 1 game:rock-basalt + 1 game:powder-borax -> 1 game:stonecoffinlid-basalt
+  Peridotite stone coffin lid (game:stonecoffinlid-peridotite): 3.5 → 24.6
+    grid: 1 game:rock-peridotite + 1 game:powder-borax -> 1 game:stonecoffinlid-peridotite
+  ... and 2 more
+
+== Through chiseltools (chiseltools): 8 values ==
+  White dye (game:dye-white): 0.022 → 0.128
+    worked backwards from grid: 4 game:quicklime + 1000 game:dye-white + 1 game:ingot-silver -> 1 chiseltools:palette-glow
+  Flowerpot (Celadon) (game:flowerpot-celadon): 26.12 → 31.4
+    grid: 50 game:dye-white + 1 game:flowerpot-black-fired -> 1 game:flowerpot-celadon
+  Planter (Amber) (game:clayplanter-amber): 82.25 → 92.8
+    grid: 100 game:dye-white + 1 game:clayplanter-fire-fired -> 1 game:clayplanter-amber
+  Planter (Loam) (game:clayplanter-loam): 82.25 → 92.8
+    grid: 100 game:dye-white + 1 game:clayplanter-black-fired -> 1 game:clayplanter-loam
+  Planter (Rime) (game:clayplanter-rime): 82.25 → 92.8
+    grid: 100 game:dye-white + 1 game:clayplanter-blue-fired -> 1 game:clayplanter-rime
+  storagevessel-cowrie (game:storagevessel-cowrie): 150.25 → 160.8
+    grid: 100 game:dye-white + 1 game:storagevessel-gray-fired -> 1 game:storagevessel-cowrie
+  storagevessel-rime (game:storagevessel-rime): 150.25 → 160.8
+    grid: 100 game:dye-white + 1 game:storagevessel-blue-fired -> 1 game:storagevessel-rime
+  storagevessel-talik (game:storagevessel-talik): 150.25 → 160.8
+    grid: 100 game:dye-white + 1 game:storagevessel-black-fired -> 1 game:storagevessel-talik
+
+== Through Alchemy (alchemy): 1 values ==
+  Bundle of chamomile (game:herbbundle-chamomile): 32 → 16
+    worked backwards from grid: 1 game:herbbundle-chamomile + 1 game:flower-lupine-blue-free (or 1 more) -> 1 alchemy:potionbase-looter-weak
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)

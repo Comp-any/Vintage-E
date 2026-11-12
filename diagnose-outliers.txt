@@ -1,0 +1,25 @@
+== Values out of line with their family ==
+⚠ Values out of line: 8 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Salted Moose Hide (Male) (capreolinae:pelt-salted-alceini-male-alcesalces) 600 (its family's middle value is 40)
+    worked backwards from grid: 30 game:salt + 1 capreolinae:pelt-raw-alceini-male-alcesalces -> 1 capreolinae:pelt-salted-alceini-male-alcesalces
+  Salted Stag Moose Hide (Male) (capreolinae:pelt-salted-alceini-male-cervalcesscotti) 600 (its family's middle value is 40)
+    worked backwards from grid: 30 game:salt + 1 capreolinae:pelt-raw-alceini-male-cervalcesscotti -> 1 capreolinae:pelt-salted-alceini-male-cervalcesscotti
+  Crushed cinnabar (game:crushed-cinnabar) 441.71 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 1 game:crushed-cinnabar -> 500 game:dye-red
+  Salted Moose Hide (Female) (capreolinae:pelt-salted-alceini-female-alcesalces) 400 (its family's middle value is 40)
+    worked backwards from grid: 20 game:salt + 1 capreolinae:pelt-raw-alceini-female-alcesalces -> 1 capreolinae:pelt-salted-alceini-female-alcesalces
+  Salted Stag Moose Hide (Female) (capreolinae:pelt-salted-alceini-female-cervalcesscotti) 400 (its family's middle value is 40)
+    worked backwards from grid: 20 game:salt + 1 capreolinae:pelt-raw-alceini-female-cervalcesscotti -> 1 capreolinae:pelt-salted-alceini-female-cervalcesscotti
+  Salted Pygmy Mammoth Hide (Calf) (elephantidae:pelt-salted-baby-mammuthusexilis) 60 (its family's middle value is 600)
+    worked backwards from grid: 3 game:salt + 1 elephantidae:pelt-raw-baby-mammuthusexilis -> 1 elephantidae:pelt-salted-baby-mammuthusexilis
+  Redwood seed (game:treeseed-redwood) 460 (its family's middle value is 46)
+    worked backwards from block drops: 0.002 game:treeseed-redwood + 0.02 game:stick -> 1 game:leaves-grown-redwood
+  Salted American Mountain Deer Hide (Male) (capreolinae:pelt-salted-odocoileini-male-odocoileuslucasi) 360 (its family's middle value is 40)
+    worked backwards from grid: 18 game:salt + 1 capreolinae:pelt-raw-odocoileini-male-odocoileuslucasi -> 1 capreolinae:pelt-salted-odocoileini-male-odocoileuslucasi
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

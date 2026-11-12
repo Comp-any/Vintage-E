@@ -1,0 +1,21 @@
+== Values changed or vanished after I added or updated a mod ==
+Another mod's recipes and patches feed into the mapping. These show what it changed, and where it comes through.
+• Other mods' patches: 14 mods patch things the mapper reads:
+  Alchemy (alchemy) (/emc diagnose mod alchemy): 1639 recipe patches
+  Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 151 recipe patches
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+  Primitive Survival (primitivesurvival) (/emc diagnose mod primitivesurvival): 70 recipe patches, 21 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Millwright (millwright) (/emc diagnose mod millwright): 82 recipe patches
+  RP Voice Chat (rpvoicechat) (/emc diagnose mod rpvoicechat): 51 recipe patches
+  FoodShelves (foodshelves) (/emc diagnose mod foodshelves): 23 recipe patches
+  Fauna of the Stone Age: Bovinae (bovinae) (/emc diagnose mod bovinae): 16 recipe patches
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+Which other mods change recipes, processing or values (/emc diagnose patches)
+✓ Server log: no Vintage-E errors or warnings.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+What changed since the previous mapping (/emc diagnose changes)
+Everything from one mod has no value (/emc diagnose mods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

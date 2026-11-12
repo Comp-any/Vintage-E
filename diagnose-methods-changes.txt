@@ -1,0 +1,64 @@
+== What the last mapping changed ==
+The mapping of 2026-11-12 17:17 compared with the current one (2026-11-12 17:17).
+✓ The same 39 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  5 values now come through those mods' methods
+0 items gained a value, 0 lost theirs, 5332 changed.
+
+== Changed value (5332), by family ==
+  alchemy:herbrack (382): Herb Rack (alchemy:herbrack-agedacacia-tinbronze) 407.46 → 70.66
+    same as its variant alchemy:herbrack-veryaged-tinbronze (differs in: wood)
+  capreolinae:headmount (341): Western Roe Deer Head Mount (Fawn) (capreolinae:headmount-capreolini-baby-capreoluscapreolus-00) 210.26 → 204.6
+    grid: 1 capreolinae:pelt-pelt-capreolini-baby-capreoluscapreolus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 capreolinae:headmount-capreolini-baby-capreoluscapreolus-00
+  capreolinae:taxidermy (341): Western Roe Deer Taxidermy (Fawn) (capreolinae:taxidermy-capreolini-baby-capreoluscapreolus-00) 222.26 → 216.6
+    grid: 1 capreolinae:pelt-pelt-capreolini-baby-capreoluscapreolus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 capreolinae:taxidermy-capreolini-baby-capreoluscapreolus-00
+  rpvoicechat:speaker (336): Speaker (Aged) (rpvoicechat:speaker-aged-up-north) 591.65 → 590.75
+    grid: 2 game:plank-aged + 1 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 2 game:plank-aged + 3 game:metal-parts + 2 game:plank-aged + 2 game:plank-aged + 4 rpvoicechat:telegraphwire + 2 game:plank-aged -> 1 rpvoicechat:speaker-aged-up-north
+  bovinae:headmount (335): Mountain Anoa Head Mount (Calf) (bovinae:headmount-baby-bubalusquarlesi-00) 210.26 → 204.6
+    grid: 1 bovinae:pelt-pelt-baby-bubalusquarlesi + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 bovinae:headmount-baby-bubalusquarlesi-00
+  bovinae:taxidermy (335): Mountain Anoa Taxidermy (Calf) (bovinae:taxidermy-baby-bubalusquarlesi-00) 222.26 → 216.6
+    grid: 1 bovinae:pelt-pelt-baby-bubalusquarlesi + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 bovinae:taxidermy-baby-bubalusquarlesi-00
+  rustboundmagic:spellcipher (246): Cipher: Plunder I (rustboundmagic:spellcipher-plunder1) 437.44 → 434.46
+    trader price: 5 x 86.89 EMC per gear
+  caninae:headmount (138): Dire Wolf Head Mount (Pup) (caninae:headmount-canina-baby-aenocyon-dirus) 210.26 → 204.6
+    grid: 1 caninae:pelt-pelt-canina-baby-aenocyon-dirus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 caninae:headmount-canina-baby-aenocyon-dirus
+  caninae:taxidermy (138): Dire Wolf Taxidermy (Pup) (caninae:taxidermy-canina-baby-aenocyon-dirus) 222.26 → 216.6
+    grid: 1 caninae:pelt-pelt-canina-baby-aenocyon-dirus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 caninae:taxidermy-canina-baby-aenocyon-dirus
+  tankardsandgoblets:goblet (131): Tin Bronze Goblet (tankardsandgoblets:goblet-tinbronze) 151.46 → 25
+    ?
+  game:metalsheet (120): Tin bronze sheet (game:metalsheet-tinbronze-down) 302.93 → 50
+    grid: 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:metalplate-tinbronze + 1 game:metalnailsandstrips-bismuth (or 14 more) -> 1 game:metalsheet-tinbronze-down
+  elephantidae:headmount (118): Cyprus Dwarf Elephant Head Mount (Calf) (elephantidae:headmount-baby-palaeoloxodoncypriotes-00) 218.93 → 213.26
+    grid: 1 elephantidae:pelt-pelt-baby-palaeoloxodoncypriotes + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 elephantidae:headmount-baby-palaeoloxodoncypriotes-00
+  elephantidae:taxidermy (118): Cyprus Dwarf Elephant Taxidermy (Calf)  (elephantidae:taxidermy-baby-palaeoloxodoncypriotes-00) 230.93 → 225.26
+    grid: 1 elephantidae:pelt-pelt-baby-palaeoloxodoncypriotes + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 2 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-green (or 10 more) + 1 game:powder-borax -> 1 elephantidae:taxidermy-baby-palaeoloxodoncypriotes-00
+  stonebakeoven:ovencontrollercobble (114): Cobble stone oven heat source (Andesite) (stonebakeoven:ovencontrollercobble-andesite-extinct-north) 582 → 366
+    same as its variant stonebakeoven:ovencontrollercobble-andesite-extinct-east (differs in: side)
+  stonebakeoven:ovencontrollerplain (114): Plain stone oven heat source (Andesite) (stonebakeoven:ovencontrollerplain-andesite-extinct-north) 577 → 361
+    same as its variant stonebakeoven:ovencontrollerplain-andesite-extinct-east (differs in: side)
+  stonebakeoven:ovencontrollerbrick (90): Brick stone oven heat source (Andesite) (stonebakeoven:ovencontrollerbrick-andesite-extinct-north) 576.9 → 360.9
+    same as its variant stonebakeoven:ovencontrollerbrick-andesite-extinct-east (differs in: side)
+  primitivesurvival:woodlantern (78): primitivesurvival:woodlantern-aged-up (primitivesurvival:woodlantern-aged-up) 354.66 → 246.66
+    grid: 1 game:plank-aged + 1 game:candle + 1 game:plank-aged + 1 game:plank-aged + 1 game:metalplate-copper + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged -> 1 primitivesurvival:woodlantern-aged-up
+  game:painting (72): Painting (Bog Fort) (game:painting-bogfort-north) 699.91 → 695.15
+    trader price: 8 x 86.89 EMC per gear
+  rpvoicechat:telegraph (56): Telegraph Key (Aged) (rpvoicechat:telegraph-aged-north) 174.41 → 174.11
+    grid: 1 game:metal-parts + 1 game:ingot-copper + 1 game:plank-aged -> 1 rpvoicechat:telegraph-aged-north
+  rpvoicechat:radioemitter (56): Radio transmitter (Aged) (rpvoicechat:radioemitter-aged-north) 3,438.6 → 3,438
+    grid: 2 game:plank-aged + 1 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:jonasparts-tank02 + 1 game:jonasparts-cylinder01 + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioemitter-aged-north
+  rpvoicechat:radiomicrophone (56): Radio microphone (Aged) (rpvoicechat:radiomicrophone-aged-north) 1,377.2 → 1,376.6
+    grid: 1 game:jonasparts-cylinder02 + 1 rpvoicechat:connector-plain-north (or 65 more) + 2 game:metal-parts + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged -> 1 rpvoicechat:radiomicrophone-aged-north
+  game:door (56): 2 by 4 gate (Aged) (game:door-2x4gate-aged) 405.33 → 135.33
+    grid: 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 10 game:metalnailsandstrips-tinbronze -> 1 game:door-2x4gate-aged
+  rpvoicechat:radioconsole (56): Radio station console (Aged) (rpvoicechat:radioconsole-aged-north) 2,755 → 2,754.4
+    grid: 2 game:plank-aged + 2 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:jonasparts-tank02 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioconsole-aged-north
+  rpvoicechat:radiomixingconsole (56): Mixing console (Aged) (rpvoicechat:radiomixingconsole-aged-north) 2,074.1 → 2,073.5
+    grid: 2 game:plank-aged + 3 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 2 rpvoicechat:telegraphwire + 1 game:jonasparts-valve01 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radiomixingconsole-aged-north
+  rpvoicechat:radioreceiver (56): Radio receiver (Aged) (rpvoicechat:radioreceiver-aged-north) 1,348.8 → 1,348.2
+    grid: 2 game:plank-aged + 1 game:rod-copper + 2 game:plank-aged + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioreceiver-aged-north
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,124 @@
+== Bug report ==
+Everything a report needs in one short text: versions, the mod list, the check-up's results, other mods' patches, values out of line, the server log's Vintage-E lines and the settings you changed. Addresses, player ids and user folders are taken out.
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/bug-report.txt. Copy puts the same text on the clipboard.
+Post it as a comment on the Mod DB page (https://mods.vintagestory.at/show/mod/74355) or as a GitHub issue, with a line on what you expected to happen. Read it over first: your settings are in it.
+
+== The report ==
+Vintage-E 1.23.0 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-12 17:17
+
+
+== Mods (36) ==
+alchemy 2.1.25, betterruins 0.6.4, bettertraders 0.2.2, bloodtrail 1.2.13, bovinae 1.0.3, butchering 1.14.3
+caninae 1.1.10, capreolinae 2.0.21, carryon 1.14.3, cbr 2.0.1, chiseltools 1.17.9, coinage 2.4.0
+dressmakers 1.8.0, elephantidae 1.0.23, foodshelves 3.1.1, footprints 1.2.16, fromgoldencombs 2.1.0
+hydrateordiedrate 2.5.11, knapster 4.1.1, machairodontinae 1.1.13, millwright 1.3.5, pantherinae 1.2.18
+primitivesurvival 5.1.4, prospecttogether 2.2.1, purposefulstorage 2.3.1, realsmoke 1.3.1, rpvoicechat 2.6.6
+rustboundmagic 4.0.7, sortablestorage 3.0.0, stonebakeoven 1.4.0, tailorsdelight 2.2.2
+tankardsandgoblets 1.4.4, translocatorengineeringredux 1.6.7, vintagee 1.23.0, vsroofing 2.1.1
+watersheds 7.0.6
+
+
+== Diagnosis ==
+⚠ EMC mapped: 32989 values, worked out in 2955 ms.
+  16994 of the 19089 blocks and items in the creative inventory have a value (89.0%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 4 loaded, giving 2519 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+✓ Compatibility files: 3 active, valuing 1589 items.
+  Butchering 84, From Golden Combs 1400, Primitive Survival 105
+  Files waiting for a mod that isn't loaded: Expanded Matter, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+⚠ Mod coverage: 4 mods have values for less than three quarters of their items:
+    Rustbound Magic (rustboundmagic): 504 of 2360 valued (21.4%)
+    chiseltools (chiseltools): 97 of 158 valued (61.4%)
+    BetterRuins (betterruins): 0 of 30 valued (0.0%)
+    Translocator Engineering Redux (translocatorengineeringredux): 1 of 7 valued (14.3%)
+⚠ Value loops: 9, holding 18 items.
+    Bloodstone (rustboundmagic:bloodstone) → Bloodstone block (rustboundmagic:runestone-bloodstone)
+    Moonstone (rustboundmagic:moonstone) → Moonstone block (rustboundmagic:runestone-moonstone)
+    Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) → Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow)
+⚠ Items without a value: 2095 (1863 that nothing makes, 220 waiting on an ingredient, 12 in loops).
+  rustboundmagic:toolstaff 396 e.g. rustboundmagic:toolstaff-apprentice-staffcrude-plain; rustboundmagic:grimoire 246 e.g. rustboundmagic:grimoire-befriendanimal1; rustboundmagic:toolspellscroll 246 e.g. rustboundmagic:toolspellscroll-befriendanimal1; rustboundmagic:armorbody 108 e.g. rustboundmagic:armorbody-basic-plain-tier1; rustboundmagic:armorhead 108 e.g. rustboundmagic:armorhead-basic-plain-tier1; rustboundmagic:armorlegs 108 e.g. rustboundmagic:armorlegs-basic-plain-tier1; rustboundmagic:itementityfamiliar 69 e.g. rustboundmagic:itementityfamiliar-bear-1; rustboundmagic:spellcipherempty 33 e.g. rustboundmagic:spellcipherempty-tier1-light-none; rustboundmagic:magicstationancientmarker 32 e.g. rustboundmagic:magicstationancientmarker-inert-1; rustboundmagic:magicstationancientmonolith 32 e.g. rustboundmagic:magicstationancientmonolith-inert-1; rustboundmagic:magicstationancientpylon 32 e.g. rustboundmagic:magicstationancientpylon-inert-1; rustboundmagic:magicstationancientspire 32 e.g. rustboundmagic:magicstationancientspire-inert-1; betterruins:br 30 e.g. betterruins:br-schematic-door; chiseltools:halfcreativelight 29 e.g. chiseltools:halfcreativelight-32; alchemy:herbrack 26 e.g. alchemy:herbrack-agedacacia-platinum
+• Mapping statistics: 51179 recipes and processes from 23 sources.
+  20666 values from recipes and processing, 2611 priced from a recipe that uses them, 1554 from fixed ratios, 136 from trader prices, 4265 copied from a look-alike variant, 1209 fallback values, 29 estimated as fuel or food.
+
+== Other mods' crafting methods ==
+• Crafting methods: no mod sends any
+• Recipes Vintage-E can't see: 2 mod(s) keep recipe data it doesn't read (butchering, tailorsdelight)
+  Butchering (butchering): recipes/kneading (4)  Draft a method file for it
+  Tailor's Delight (tailorsdelight): recipes/butchering (3)  Draft a method file for it
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+⚠ Free EMC: 1 items can be made for less than they're worth (the worst gives 16 free per craft).
+⚠ Blacklist: 1 blacklisted items hold back 14 recipes.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 697 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 139 value(s) were copied from a look-alike variant in a family that doesn't agree (color (61), cover (48), colour (20), variant (9), rock (1)).
+  color: 61 copied value(s), e.g.
+    Ceramic Honey Pot (Chthonic) (fromgoldencombs:hivetop-chthonic-harvestable) 1,837.3 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,837.3
+    Ceramic Honey Pot (Cowrie) (fromgoldencombs:hivetop-cowrie-harvestable) 1,837.3 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,837.3
+    Ceramic Honey Pot (Rime) (fromgoldencombs:hivetop-rime-harvestable) 1,837.3 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 1,837.3
+    ... and 58 more
+  cover: 48 copied value(s), e.g.
+    game:block-beam-plane-copper-snow (game:beam-plane-copper-snow) 16 ← Copper ridge beam (game:beam-ridge-copper-free); the family runs from Copper roof beam (game:beam-plane-copper-free) 8 to Copper ridge beam (game:beam-ridge-copper-free) 16
+    game:block-beam-plane-slate-snow (game:beam-plane-slate-snow) 0.125 ← Slate ridge beam (game:beam-ridge-slate-free); the family runs from Slate roof beam (game:beam-plane-slate-free) 0.062 to Slate ridge beam (game:beam-ridge-slate-free) 0.125
+    game:block-beam-plane-blackclay-snow (game:beam-plane-blackclay-snow) 0.25 ← Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free); the family runs from Black ceramic shingle roof beam (game:beam-plane-blackclay-free) 0.125 to Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free) 0.25
+    ... and 45 more
+  colour: 20 copied value(s), e.g.
+    Throwable Glass Flask (alchemy:throwableflask-blue) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 96 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-red) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 96 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-yellow) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 96 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    ... and 17 more
+  variant: 9 copied value(s), e.g.
+    storagevessel-abyss (game:storagevessel-abyss) 354.3 ← storagevessel-cloisonne (game:storagevessel-cloisonne); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.18 to storagevessel-cloisonne (game:storagevessel-cloisonne) 354.3
+    storagevessel-chains (game:storagevessel-chains) 354.3 ← storagevessel-cloisonne (game:storagevessel-cloisonne); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.18 to storagevessel-cloisonne (game:storagevessel-cloisonne) 354.3
+    storagevessel-entrenched (game:storagevessel-entrenched) 354.3 ← storagevessel-cloisonne (game:storagevessel-cloisonne); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.18 to storagevessel-cloisonne (game:storagevessel-cloisonne) 354.3
+    ... and 6 more
+• Other mods: 9 were skipped by the game because something they need isn't installed: bricklayers (needs em@3.8.0), fagreenwich (needs facore@1.5.0, attributerenderinglibrary@3.2.0), fatemplar (needs facore@1.5.0, attributerenderinglibrary@3.2.0), noticeboard (needs attributerenderinglibrary@3.2.0), tabletopgames (needs attributerenderinglibrary@3.0.0), vinconomy (needs commercially@0.1.1), wildcraftfruit (needs herbarium@1.4.4), wool (needs shearlib@1.3.0), …
+• Other mods: 1 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: fromgoldencombs (1)).
+
+== Other mods changing recipes and items ==
+• Other mods' patches: 14 mods patch things the mapper reads:
+  Alchemy (alchemy): 1639 recipe patches
+  Tailor's Delight (tailorsdelight): 151 recipe patches
+  Butchering (butchering): 120 recipe patches
+  Primitive Survival (primitivesurvival): 70 recipe patches, 21 processing patches
+  Millwright (millwright): 82 recipe patches
+  RP Voice Chat (rpvoicechat): 51 recipe patches
+  FoodShelves (foodshelves): 23 recipe patches
+  Fauna of the Stone Age: Bovinae (bovinae): 16 recipe patches
+  Fauna of the Stone Age: Capreolinae (capreolinae): 12 recipe patches
+  Fauna of the Stone Age: Elephantidae (elephantidae): 8 recipe patches
+  Rustbound Magic (rustboundmagic): 5 processing patches
+  Tankards, Goblets and More! (tankardsandgoblets): 5 recipe patches
+  BetterRuins (betterruins): 2 recipe patches
+  Coinage (coinage): 2 processing patches
+
+== Values out of line with their family ==
+⚠ Values out of line: 8 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  capreolinae:pelt-salted-alceini-male-alcesalces 600 (family 40) ← grid: 30 game:salt + 1 capreolinae:pelt-raw-alceini-male-alcesalces → 1 capreolinae:pelt-salted-alceini-male-alcesalces
+  capreolinae:pelt-salted-alceini-male-cervalcesscotti 600 (family 40) ← grid: 30 game:salt + 1 capreolinae:pelt-raw-alceini-male-cervalcesscotti → 1 capreolinae:pelt-salted-alceini-male-cervalcesscotti
+  game:crushed-cinnabar 441.71 (family 32) ← BarrelRecipes: 500 game:waterportion + 1 game:crushed-cinnabar → 500 game:dye-red
+  capreolinae:pelt-salted-alceini-female-alcesalces 400 (family 40) ← grid: 20 game:salt + 1 capreolinae:pelt-raw-alceini-female-alcesalces → 1 capreolinae:pelt-salted-alceini-female-alcesalces
+  capreolinae:pelt-salted-alceini-female-cervalcesscotti 400 (family 40) ← grid: 20 game:salt + 1 capreolinae:pelt-raw-alceini-female-cervalcesscotti → 1 capreolinae:pelt-salted-alceini-female-cervalcesscotti
+  elephantidae:pelt-salted-baby-mammuthusexilis 60 (family 600) ← grid: 3 game:salt + 1 elephantidae:pelt-raw-baby-mammuthusexilis → 1 elephantidae:pelt-salted-baby-mammuthusexilis
+  game:treeseed-redwood 460 (family 46) ← block drops: 0.002 game:treeseed-redwood + 0.02 game:stick → 1 game:leaves-grown-redwood
+  capreolinae:pelt-salted-odocoileini-male-odocoileuslucasi 360 (family 40) ← grid: 18 game:salt + 1 capreolinae:pelt-raw-odocoileini-male-odocoileuslucasi → 1 capreolinae:pelt-salted-odocoileini-male-odocoileuslucasi
+
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, SelfTestOnStart=true, ProjectESounds=true
+
+
+== Next ==
+Back to the check-up (/emc diagnose)

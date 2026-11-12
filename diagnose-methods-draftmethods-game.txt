@@ -1,0 +1,8 @@
+== A crafting method file for Vintage Story (game) ==
+✓ Vintage-E finds no recipe data it can't read in game: nothing to draft.
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Vintage-E (vintagee)'s crafting methods (for its author) (/emc diagnose methodcheck vintagee)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,10 @@
+== What other mods did at start-up ==
+• Other mods: 9 were skipped by the game because something they need isn't installed: bricklayers (needs em@3.8.0), fagreenwich (needs facore@1.5.0, attributerenderinglibrary@3.2.0), fatemplar (needs facore@1.5.0, attributerenderinglibrary@3.2.0), noticeboard (needs attributerenderinglibrary@3.2.0), tabletopgames (needs attributerenderinglibrary@3.0.0), vinconomy (needs commercially@0.1.1), wildcraftfruit (needs herbarium@1.4.4), wool (needs shearlib@1.3.0), xskillsfork (needs xlibfork@1.0.44, vsimgui)
+  The game leaves these mods out entirely, so this doesn't break Vintage-E, but their items and recipes don't exist in this world and can't have values.
+  → Install what they need from the Mod DB (the name after 'needs' is a mod id), or remove them.
+• Other mods: 1 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: fromgoldencombs (1)).
+  The game ignores those recipes, so Vintage-E can't learn from them. Usually the mod named expects another mod, or an older version of one, to be installed.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
