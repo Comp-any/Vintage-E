@@ -1,0 +1,136 @@
+Vintage-E 1.23.0 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-12 18:14
+
+== Mods (56) ==
+alchemy 2.1.25, aldiclasses 2.4.5, attributerenderinglibrary 3.2.0, betterruins 0.6.4, bettertraders 0.2.2
+bloodtrail 1.2.13, bovinae 1.0.3, bricklayers 3.3.4, butchering 1.14.3, caninae 1.1.10, capreolinae 2.0.21
+carryon 1.14.3, cbr 2.0.1, chiseltools 1.17.9, coinage 2.4.0, dressmakers 1.8.0, elephantidae 1.0.23, em 3.8.2
+foodshelves 3.1.1, footprints 1.2.16, fromgoldencombs 2.1.0, genelib 3.2.1, herbarium 1.4.4
+hydrateordiedrate 2.5.11, jaunt 3.3.1, jsonpatcheslib 1.5.9, knapster 4.1.1, machairodontinae 1.1.13
+millwright 1.3.5, molds 0.3.7, noticeboard 3.0.4, overhaulliblegacycompat 1.2.15, pantherinae 1.2.18
+petai 5.1.2, plainsandvalleys 1.0.13, primitivesurvival 5.1.4, prospecttogether 2.2.1, purposefulstorage 2.3.1
+realsmoke 1.3.1, rhinocerotidae 1.0.29, rpvoicechat 2.6.6, rustboundmagic 4.0.7, shearlib 1.3.0
+sirenia 1.0.33, sortablestorage 3.0.0, stonebakeoven 1.4.0, tabletopgames 4.0.1, tailorsdelight 2.2.2
+tankardsandgoblets 1.4.4, translocatorengineeringredux 1.6.7, vintagee 1.23.0, vsroofing 2.1.1
+watersheds 7.0.6, wildcraftfruit 1.5.0, wool 1.9.6, xlibfork 1.0.44
+
+== Diagnosis ==
+✓ EMC mapped: 45106 values, worked out in 10042 ms.
+  23525 of the 25656 blocks and items in the creative inventory have a value (91.7%).
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 6 loaded, giving 2571 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  2 recipes were skipped because the mapper couldn't read them (an ingredient or output it doesn't know). The server log lists them at Debug level.
+✓ Compatibility files: 5 active, valuing 2073 items.
+  Butchering 84, Expanded Matter 0, From Golden Combs 1400, Primitive Survival 105, Wildcraft: Fruits and Nuts 484
+  Files waiting for a mod that isn't loaded: Wildcraft: Trees and Shrubs. Nothing to do.
+⚠ Mod coverage: 6 mods have values for less than three quarters of their items:
+    Rustbound Magic (rustboundmagic): 516 of 2360 valued (21.9%)
+    chiseltools (chiseltools): 97 of 158 valued (61.4%)
+    BetterRuins (betterruins): 0 of 30 valued (0.0%)
+    xlib: 0 of 29 valued (0.0%)
+    Tabletop Games (tabletopgames): 9 of 19 valued (47.4%)
+    Translocator Engineering Redux (translocatorengineeringredux): 1 of 7 valued (14.3%)
+⚠ Value loops: 9, holding 18 items.
+    Bloodstone (rustboundmagic:bloodstone) → Bloodstone block (rustboundmagic:runestone-bloodstone)
+    Moonstone (rustboundmagic:moonstone) → Moonstone block (rustboundmagic:runestone-moonstone)
+    Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) → Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow)
+• Items without a value: 2131 (1910 that nothing makes, 209 waiting on an ingredient, 12 in loops).
+  rustboundmagic:toolstaff 396 e.g. rustboundmagic:toolstaff-apprentice-staffcrude-plain; rustboundmagic:grimoire 246 e.g. rustboundmagic:grimoire-befriendanimal1; rustboundmagic:toolspellscroll 246 e.g. rustboundmagic:toolspellscroll-befriendanimal1; rustboundmagic:armorbody 108 e.g. rustboundmagic:armorbody-basic-plain-tier1; rustboundmagic:armorhead 108 e.g. rustboundmagic:armorhead-basic-plain-tier1; rustboundmagic:armorlegs 108 e.g. rustboundmagic:armorlegs-basic-plain-tier1; rustboundmagic:itementityfamiliar 69 e.g. rustboundmagic:itementityfamiliar-bear-1; rustboundmagic:spellcipherempty 33 e.g. rustboundmagic:spellcipherempty-tier1-light-none; rustboundmagic:magicstationancientmarker 32 e.g. rustboundmagic:magicstationancientmarker-inert-1; rustboundmagic:magicstationancientmonolith 32 e.g. rustboundmagic:magicstationancientmonolith-inert-1; rustboundmagic:magicstationancientpylon 32 e.g. rustboundmagic:magicstationancientpylon-inert-1; rustboundmagic:magicstationancientspire 32 e.g. rustboundmagic:magicstationancientspire-inert-1; betterruins:br 30 e.g. betterruins:br-schematic-door; chiseltools:halfcreativelight 29 e.g. chiseltools:halfcreativelight-32; xlib:skillbook 29 e.g. xlib:skillbook-normal-brickred
+• Mapping statistics: 81461 recipes and processes from 23 sources.
+  30515 values from recipes and processing, 3601 priced from a recipe that uses them, 1547 from fixed ratios, 259 from trader prices, 4910 copied from a look-alike variant, 1584 fallback values, 119 estimated as fuel or food.
+  53 items sit in recipe loops that kept making each other cheaper; they keep their first value. 0 had to be dropped. /emc loop lists them under settled loops.
+⚠ Free EMC: 41 items can be made for less than they're worth (the worst gives 3,757.29 free per craft).
+⚠ Blacklist: 1 blacklisted items hold back 14 recipes.
+⚠ Metal tiers: 15 tool or armour families out of order.
+• Skipped recipes: 2 (unreadable, or naming an ingredient that doesn't exist).
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 919 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 126 value(s) were copied from a look-alike variant in a family that doesn't agree (cover (48), color (46), colour (20), variant (9), stage (2), rock (1)).
+  cover: 48 copied value(s), e.g.
+    game:block-beam-plane-blackclay-snow (game:beam-plane-blackclay-snow) 0 ← Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free); the family runs from Black ceramic shingle roof beam (game:beam-plane-blackclay-free) 0 to Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free) 0
+    game:block-beam-plane-brownclay-snow (game:beam-plane-brownclay-snow) 0 ← Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free); the family runs from Brown ceramic shingle roof beam (game:beam-plane-brownclay-free) 0 to Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free) 0
+    game:block-beam-plane-creamclay-snow (game:beam-plane-creamclay-snow) 0 ← Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free); the family runs from Cream ceramic shingle roof beam (game:beam-plane-creamclay-free) 0 to Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free) 0
+    ... and 45 more
+  color: 46 copied value(s), e.g.
+    Temporal cooking pot (aldiclasses:metalpot-temporal-fired) 12,090.4 ← Gold plated cooking pot (aldiclasses:metalpot-gold-fired); the family runs from Copper cooking pot (aldiclasses:metalpot-copper-fired) 34.03 to Gold plated cooking pot (aldiclasses:metalpot-gold-fired) 12,090.4
+    Ceramic Honey Pot (Chthonic) (fromgoldencombs:hivetop-chthonic-harvestable) 878.08 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.08
+    Ceramic Honey Pot (Cowrie) (fromgoldencombs:hivetop-cowrie-harvestable) 878.08 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.08
+    ... and 43 more
+  colour: 20 copied value(s), e.g.
+    Throwable Glass Flask (alchemy:throwableflask-blue) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-red) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-yellow) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    ... and 17 more
+  variant: 9 copied value(s), e.g.
+    storagevessel-abyss (game:storagevessel-abyss) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-chains (game:storagevessel-chains) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-entrenched (game:storagevessel-entrenched) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    ... and 6 more
+• Other mods: 7 were skipped by the game because something they need isn't installed: configlib (needs vsimgui@1.2.0), fagothic (needs facore@1.5.0), fagreenwich (needs facore@1.5.0), fatemplar (needs facore@1.5.0), playermodellib (needs overhaullib@2.0.10), vinconomy (needs commercially@0.1.1), xskillsfork (needs vsimgui)
+• Other mods: 1 JSON patch(es) failed to apply (by mod: aldiclasses (1)).
+• Other mods: 10 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: armory (9), fromgoldencombs (1)).
+== Other mods changing recipes and items ==
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Alchemy (alchemy): 1639 recipe patches
+  BetterRuins (betterruins): 430 recipe patches
+  Wildcraft: Fruits and Nuts (wildcraftfruit): 289 recipe patches, 12 processing patches
+  Tailor's Delight (tailorsdelight): 166 recipe patches
+  Butchering (butchering): 120 recipe patches
+  Primitive Survival (primitivesurvival): 70 recipe patches, 21 processing patches
+  Aldi's Classes (aldiclasses): 77 recipe patches, 5 processing patches
+  Millwright (millwright): 82 recipe patches
+  Wool & More (wool): 64 recipe patches
+  RP Voice Chat (rpvoicechat): 51 recipe patches
+  Expanded Matter (em): 41 recipe patches, 9 processing patches
+  Overhaul lib legacy compat (overhaulliblegacycompat): 42 recipe patches
+  FoodShelves (foodshelves): 23 recipe patches
+  Fauna of the Stone Age: Bovinae (bovinae): 16 recipe patches
+  Fauna of the Stone Age: Capreolinae (capreolinae): 12 recipe patches
+  Bricklayers (bricklayers): 7 recipe patches, 2 processing patches
+  Fauna of the Stone Age: Elephantidae (elephantidae): 8 recipe patches
+  Tabletop Games (tabletopgames): 7 recipe patches
+  Rustbound Magic (rustboundmagic): 5 processing patches
+  Tankards, Goblets and More! (tankardsandgoblets): 5 recipe patches
+  Coinage (coinage): 2 processing patches
+  Molds (molds): 1 recipe patches
+== Values out of line with their family ==
+⚠ Values out of line: 57 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  wildcraftfruit:flowerwine-currant 0.035 (family 32) ← BarrelRecipes: 5 wildcraftfruit:flower-currant + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-currant
+  wildcraftfruit:flowerwine-honeysuckle 0.035 (family 32) ← BarrelRecipes: 5 wildcraftfruit:flower-honeysuckle + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-honeysuckle
+  wildcraftfruit:vinegarportion-fruit 0 (family 0.08) ← BarrelRecipes: 1 wildcraftfruit:flowerwine-currant (or 6 more) + 1 wildcraftfruit:vinegarmother-fresh → 500 wildcraftfruit:vinegarportion-fruit
+  wool:twine-wool-orange 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-orange → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-purple 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-purple → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-red 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-red → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-darkblue 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkblue → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-darkbrown 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkbrown → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-darkgreen 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkgreen → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  wool:twine-wool-darkred 0.5 (family 69.4) ← grid: 4 game:bushmeat-raw + 1 wool:twine-wool-darkred → 1 primitivesurvival:trussedmeat-bushmeat-raw
+  aldiclasses:metalpotdirty-copper-empty 32.63 (family 2,397) ← grid: 1 aldiclasses:metalpotdirty-copper-empty + 100 game:dilutedboraxportion → 1 aldiclasses:metalpot-copper-fired
+  wildcraftfruit:flower-honeypots 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wildcraftfruit:flower-honeysuckle 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wildcraftfruit:flower-currant 0.266 (family 18.99) ← CookingRecipes: 100 game:waterportion (or 7 more) + 2 wildcraftfruit:flower-honeypots (or 2 more) → 100 wildcraftfruit:sweetwaterportion
+  wool:cloth-wool-red 6 (family 273.86) ← grid: 1 wool:twine-wool-red + 1 wool:twine-wool-red + 1 game:stick + 1 wool:twine-wool-red + 1 wool:twine-wool-red → 1 wool:cloth-wool-red
+  wool:cloth-wool-orange 6 (family 273.86) ← grid: 1 wool:twine-wool-orange + 1 wool:twine-wool-orange + 1 game:stick + 1 wool:twine-wool-orange + 1 wool:twine-wool-orange → 1 wool:cloth-wool-orange
+  wool:cloth-wool-purple 6 (family 273.86) ← grid: 1 wool:twine-wool-purple + 1 wool:twine-wool-purple + 1 game:stick + 1 wool:twine-wool-purple + 1 wool:twine-wool-purple → 1 wool:cloth-wool-purple
+  wool:cloth-wool-darkblue 6 (family 273.86) ← grid: 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue + 1 game:stick + 1 wool:twine-wool-darkblue + 1 wool:twine-wool-darkblue → 1 wool:cloth-wool-darkblue
+  wool:cloth-wool-darkbrown 6 (family 273.86) ← grid: 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown + 1 game:stick + 1 wool:twine-wool-darkbrown + 1 wool:twine-wool-darkbrown → 1 wool:cloth-wool-darkbrown
+  wool:cloth-wool-darkgreen 6 (family 273.86) ← grid: 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen + 1 game:stick + 1 wool:twine-wool-darkgreen + 1 wool:twine-wool-darkgreen → 1 wool:cloth-wool-darkgreen
+  wool:cloth-wool-darkred 6 (family 273.86) ← grid: 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred + 1 game:stick + 1 wool:twine-wool-darkred + 1 wool:twine-wool-darkred → 1 wool:cloth-wool-darkred
+  wildcraftfruit:flower-passionflower 639.61 (family 18.99) ← BarrelRecipes: 4 wildcraftfruit:flower-passionflower + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-passionflower
+  wildcraftfruit:flower-rose 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-rose + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-rose
+  wildcraftfruit:flower-hibiscus 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-hibiscus + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-hibiscus
+  wildcraftfruit:flower-orangeblossom 511.69 (family 18.99) ← BarrelRecipes: 5 wildcraftfruit:flower-orangeblossom + 100 wildcraftfruit:sweetwaterportion → 80 wildcraftfruit:flowerwine-orangeblossom
+  ... and 32 more
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, SelfTestOnStart=true, ProjectESounds=true

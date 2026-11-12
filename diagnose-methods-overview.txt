@@ -1,0 +1,154 @@
+== Is EMC mapped at all? ==
+✓ EMC mapped: 45106 values, worked out in 9169 ms.
+  23525 of the 25656 blocks and items in the creative inventory have a value (91.7%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 6 loaded, giving 2571 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  2 recipes were skipped because the mapper couldn't read them (an ingredient or output it doesn't know). The server log lists them at Debug level.
+✓ Compatibility files: 5 active, valuing 2073 items.
+  Butchering: 84
+  Expanded Matter: 0
+  From Golden Combs: 1400
+  Primitive Survival: 105
+  Wildcraft: Fruits and Nuts: 484
+⚠ Mod coverage: 6 mods have values for less than three quarters of their items:
+    Rustbound Magic (rustboundmagic) (/emc diagnose mod rustboundmagic): 516 of 2360 valued (21.9%)
+    chiseltools (chiseltools) (/emc diagnose mod chiseltools): 97 of 158 valued (61.4%)
+    BetterRuins (betterruins) (/emc diagnose mod betterruins): 0 of 30 valued (0.0%)
+    xlib (/emc diagnose mod xlib): 0 of 29 valued (0.0%)
+    Tabletop Games (tabletopgames) (/emc diagnose mod tabletopgames): 9 of 19 valued (47.4%)
+    Translocator Engineering Redux (translocatorengineeringredux) (/emc diagnose mod translocatorengineeringredux): 1 of 7 valued (14.3%)
+  → Click a mod to see why, and which raw materials would fix the most items at once.
+⚠ Value loops: 9, holding 18 items.
+  In a loop, each item is only made from the next one, so none of them can get a value first.
+    Bloodstone (rustboundmagic:bloodstone) → Bloodstone block (rustboundmagic:runestone-bloodstone)
+    Moonstone (rustboundmagic:moonstone) → Moonstone block (rustboundmagic:runestone-moonstone)
+    Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-free) → Rift anchor (Riftbloom) (rustboundmagic:riftanchor-riftbloom-rust-snow)
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+• Items without a value: 2131 (1910 that nothing makes, 209 waiting on an ingredient, 12 in loops).
+  The biggest families:
+    rustboundmagic:toolstaff (396): Arcanus staff (rustboundmagic:toolstaff-apprentice-staffcrude-plain)
+    rustboundmagic:grimoire (246): Befriend Animal I (rustboundmagic:grimoire-befriendanimal1)
+    rustboundmagic:toolspellscroll (246): Spell Scroll: Befriend Animal I (rustboundmagic:toolspellscroll-befriendanimal1)
+    rustboundmagic:armorbody (108): Apprentice robe (rustboundmagic:armorbody-basic-plain-tier1)
+    rustboundmagic:armorhead (108): Apprentice hat (rustboundmagic:armorhead-basic-plain-tier1)
+    rustboundmagic:armorlegs (108): Apprentice trousers (rustboundmagic:armorlegs-basic-plain-tier1)
+  → Click a family's example to see why it has no value and what fixes it. /emc missing lists them all and can set values from its window.
+⚠ Free EMC: 41 items can be made for less than they're worth (the worst gives 3,757.31 free per craft).
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+⚠ Blacklist: 1 blacklisted items hold back 14 recipes.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+⚠ Metal tiers: 31 tool or armour families out of order.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+• Skipped recipes: 2 (unreadable, or naming an ingredient that doesn't exist).
+  Every skipped recipe and why (/emc diagnose skipped)
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 919 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: not compared, because other mods' crafting methods changed since the last mapping (a change there moves values on purpose).
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 126 value(s) were copied from a look-alike variant in a family that doesn't agree (cover (48), color (46), colour (20), variant (9), stage (2), rock (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  cover: 48 copied value(s), e.g.
+    game:block-beam-plane-blackclay-snow (game:beam-plane-blackclay-snow) 0 ← Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free); the family runs from Black ceramic shingle roof beam (game:beam-plane-blackclay-free) 0 to Black ceramic shingle ridge beam (game:beam-ridge-blackclay-free) 0
+    game:block-beam-plane-brownclay-snow (game:beam-plane-brownclay-snow) 0 ← Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free); the family runs from Brown ceramic shingle roof beam (game:beam-plane-brownclay-free) 0 to Brown ceramic shingle ridge beam (game:beam-ridge-brownclay-free) 0
+    game:block-beam-plane-creamclay-snow (game:beam-plane-creamclay-snow) 0 ← Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free); the family runs from Cream ceramic shingle roof beam (game:beam-plane-creamclay-free) 0 to Cream ceramic shingle ridge beam (game:beam-ridge-creamclay-free) 0
+    ... and 45 more
+  color: 46 copied value(s), e.g.
+    Temporal cooking pot (aldiclasses:metalpot-temporal-fired) 12,090.4 ← Gold plated cooking pot (aldiclasses:metalpot-gold-fired); the family runs from Copper cooking pot (aldiclasses:metalpot-copper-fired) 34.01 to Gold plated cooking pot (aldiclasses:metalpot-gold-fired) 12,090.4
+    Ceramic Honey Pot (Chthonic) (fromgoldencombs:hivetop-chthonic-harvestable) 878.01 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.01
+    Ceramic Honey Pot (Cowrie) (fromgoldencombs:hivetop-cowrie-harvestable) 878.01 ← Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable); the family runs from Ceramic Honey Pot (Red) (fromgoldencombs:hivetop-red-harvestable) 40 to Ceramic Honey Pot (Volcanic) (fromgoldencombs:hivetop-volcanic-harvestable) 878.01
+    ... and 43 more
+  colour: 20 copied value(s), e.g.
+    Throwable Glass Flask (alchemy:throwableflask-blue) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-red) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    Throwable Glass Flask (alchemy:throwableflask-yellow) 384 ← Throwable Glass Flask (alchemy:throwableflask-violet); the family runs from Throwable Glass Flask (alchemy:throwableflask-green) 60.91 to Throwable Glass Flask (alchemy:throwableflask-violet) 384
+    ... and 17 more
+  variant: 9 copied value(s), e.g.
+    storagevessel-abyss (game:storagevessel-abyss) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-chains (game:storagevessel-chains) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    storagevessel-entrenched (game:storagevessel-entrenched) 291.44 ← storagevessel-forlorn (game:storagevessel-forlorn); the family runs from storagevessel-rattlesnake (game:storagevessel-rattlesnake) 148.04 to storagevessel-forlorn (game:storagevessel-forlorn) 291.44
+    ... and 6 more
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+• Other mods: 7 were skipped by the game because something they need isn't installed: configlib (needs vsimgui@1.2.0), fagothic (needs facore@1.5.0), fagreenwich (needs facore@1.5.0), fatemplar (needs facore@1.5.0), playermodellib (needs overhaullib@2.0.10), vinconomy (needs commercially@0.1.1), xskillsfork (needs vsimgui)
+  The game leaves these mods out entirely, so this doesn't break Vintage-E, but their items and recipes don't exist in this world and can't have values.
+  → Install what they need from the Mod DB (the name after 'needs' is a mod id), or remove them.
+• Other mods: 1 JSON patch(es) failed to apply (by mod: aldiclasses (1)).
+  Not Vintage-E's doing: the game reports each patch that didn't fit. The items those patches change may be missing or odd, and their values with them. The mod's author can fix the patch.
+• Other mods: 10 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: armory (9), fromgoldencombs (1)).
+  The game ignores those recipes, so Vintage-E can't learn from them. Usually the mod named expects another mod, or an older version of one, to be installed.
+  Show everything other mods did at start-up (/emc diagnose startup)
+
+== Other mods' crafting methods ==
+✓ Crafting methods: 1 mod(s) send them (0 by file, 1 by code): 2 methods, 10 recipes
+  A mod sends its crafting methods in a file (assets/<modid>/config/vintagee-methods/) or from its code (the game's event bus, no reference to Vintage-E needed). docs/crafting-methods.md in Vintage-E's repository describes the format.
+  Vintage-E (vintagee): code, format 1: 2 methods, 10 recipes (0 problem(s) that left something out, 0 warning(s))  look (/emc diagnose methods vintagee) check (/emc diagnose methodcheck vintagee)
+  assets/vintagee/config/vintagee-methods/butchering.json waits for aculinaryartillery, which isn't loaded
+⚠ Recipes: 10 read, 3 giving something its value, 1 left out, 1 switched off
+  A recipe is left out when a code in it matches nothing, a chance or amount is impossible, or it would make something from nothing. The rest are used where they're the cheapest way to make something.
+  1 × nothing has the code game:ingot-coper
+    code (vintagee) methods[0].recipes[4] - did you mean Copper ingot (game:ingot-copper)?
+  → Fix the codes in the mod's document (the nearest real code is shown), or tell its author: /emc diagnose methodcheck <modid> makes a list to send.
+✓ Power prices: 2 energy unit(s) in use, each with a price (2 listed)
+  An energy unit's price comes from your EnergyEmc setting first, then from what the mod's own engines burn to make it (a base value ÷ the energy made), then from the mod's suggested price. With none of these its power costs nothing.
+  vintagee:testgen (generator power): 2 EMC a unit, from the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each
+  vintagee:testpower (test power): 2 EMC a unit, from vintagee's suggested price
+  Heat costs 0.000597 EMC per °C·s (the median of 5 reference fuels' value per °C·s (charcoal, coke, ore-lignite, …)).
+⚠ Free power: 1 recipe(s) in use make more than 1 EMC a second from power alone (up to 20)
+  Windmills and water wheels make power for nothing. A recipe whose value includes its power cost turns that power into EMC when what it makes is burned, so a high price makes a machine an EMC farm. The limit is 1 EMC a second, a quarter of what an Energy Collector MK1 makes (4 EMC a second).
+  vintagee:selftest-press/stone: 200 EMC of power in 10 s = 20 EMC a second
+  Lower vintagee:testpower to 0.1 EMC a unit (the most that stays under the limit) (in the window)
+  Switch vintagee:selftest-press off (in the window)
+  → Lower the unit's price, switch the method off, or turn ChargeMethodEnergy off.
+• Costs that count: 3 recipe(s) give something its value, 2 are beaten by a cheaper way, 3 make something whose value is set
+  Something's value is the cheapest way of making it, so a recipe's power cost only shows in a value when that recipe is the cheapest way. A beaten recipe changes nothing, and nor does one whose output has a set value (a base value, a pin, a value file).
+  Self-test press (vintagee:selftest-press): 3 used, 2 beaten, 0 waiting, 3 set  look (/emc diagnose methods vintagee:selftest-press)
+⚠ 1 "supersedes" entries match no recipe list
+  vintagee:selftest-press: "NoSuchRecipeList"
+  → Use the recipe list's name as /emc diagnose mapping lists its sources, or the recipe class's name.
+• Switched off: 1 method(s) (1 DisabledMethods entries)
+  vintagee:selftest-off  Switch vintagee:selftest-off back on (in the window)
+  Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Your game ==
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+✓ Server log: no Vintage-E errors or warnings.
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Alchemy (alchemy) (/emc diagnose mod alchemy): 1639 recipe patches
+  BetterRuins (betterruins) (/emc diagnose mod betterruins): 430 recipe patches
+  Wildcraft: Fruits and Nuts (wildcraftfruit) (/emc diagnose mod wildcraftfruit): 289 recipe patches, 12 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 166 recipe patches
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+  Primitive Survival (primitivesurvival) (/emc diagnose mod primitivesurvival): 70 recipe patches, 21 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Aldi's Classes (aldiclasses) (/emc diagnose mod aldiclasses): 77 recipe patches, 5 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Millwright (millwright) (/emc diagnose mod millwright): 82 recipe patches
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+Which other mods change recipes, processing or values (/emc diagnose patches)
+✓ Chutes and hoppers: the alchemical chest, condensers and matter furnaces all take part.
+  Machines, chutes, magnet, stars and trinkets in detail (/emc diagnose machines)
+
+== What are you seeing? ==
+Pick the closest. Each opens a report for just that; Back returns here.
+An item shows no EMC value: walk me through it (/emc diagnose novalue)
+Describe what's happening (step by step) (/emc diagnose symptom)
+What the table and tablet refused lately, and why (/emc diagnose watch)
+Arcane Tablet: the Emc Craft link or crafting window isn't working (/emc diagnose emccraft)
+A machine, chute, the tablet's magnet, a Klein star or a trinket isn't doing what it should (/emc diagnose machines)
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+One block or item has no value (hold it first) (/emc diagnose hand)
+Everything from one mod has no value (/emc diagnose mods)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Nothing has a value, or I want every mapping check (/emc diagnose mapping)
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+What changed since the previous mapping (/emc diagnose changes)
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+A player's state (knowledge, EMC, mode) (/emc diagnose players)
+Put together a bug report to post (/emc diagnose bugreport)
+The full list of missing items is in /emc missing, where values can be set from the window.
+From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping | trace hand | trace <code>.

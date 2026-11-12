@@ -1,0 +1,19 @@
+== Vintage-E (vintagee) ==
+142 of its 142 blocks and items have a value (100.0%); 1 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'vintagee'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Its crafting methods ==
+⚠ Its crafting methods: 2 methods, 10 recipes (0 problem(s) in the documents, 1 recipe(s) left out)
+  3 values come through them; 2 of those include power
+    Dark Matter (vintagee:matter-dark) 328
+    Red Matter (vintagee:matter-red) 600
+    Philosopher's Stone (vintagee:philosophersstone) 328.26
+  vintagee:testgen (generator power): 2 EMC a unit, from the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each
+  vintagee:testpower (test power): 2 EMC a unit, from vintagee's suggested price
+  look (/emc diagnose methods vintagee) check (/emc diagnose methodcheck vintagee)
+✓ Everything this mod adds has a value.
+If one of its items still shows no value in the game, hold it and run /emc diagnose hand. The exact stack (its contents, wear or material) may be the reason.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

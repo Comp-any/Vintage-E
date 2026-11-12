@@ -1,0 +1,64 @@
+== What the last mapping changed ==
+The mapping of 2026-11-12 18:14 compared with the current one (2026-11-12 18:14).
+✓ The same 59 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  3 values now come through those mods' methods
+0 items gained a value, 0 lost theirs, 2616 changed.
+
+== Changed value (2616), by family ==
+  rustboundmagic:spellcipher (246): Cipher: Plunder I (rustboundmagic:spellcipher-plunder1) 209.06 → 209.05
+    trader price: 5 x 41.81 EMC per gear
+  game:clothes (208): Bronze gem necklace (game:clothes-neck-bronze-gem-necklace) 70.4 → 10
+    worked backwards from grid: 1 game:clothes-neck-bronze-gem-necklace -> 10 game:metalbit-tinbronze
+  wildcraftfruit:clipping (192): Oroblanco clipping (green) (wildcraftfruit:clipping-oroblanco-green) 83.62 → 83.62
+    trader price: 2 x 41.81 EMC per gear
+  stonebakeoven:ovencontrollercobble (114): Cobble stone oven heat source (Andesite) (stonebakeoven:ovencontrollercobble-andesite-extinct-north) 67.06 → 67.03
+    same as its variant stonebakeoven:ovencontrollercobble-andesite-extinct-east (differs in: side)
+  stonebakeoven:ovencontrollerplain (114): Plain stone oven heat source (Andesite) (stonebakeoven:ovencontrollerplain-andesite-extinct-north) 65.06 → 65.03
+    same as its variant stonebakeoven:ovencontrollerplain-andesite-extinct-east (differs in: side)
+  wildcraftfruit:clippingbucket (110): Marita clipping in a bucket (wildcraftfruit:clippingbucket-marita) 104.62 → 104.62
+    grid: 1000 game:waterportion + 1 game:woodbucket + 1 wildcraftfruit:clipping-marita-green -> 1 wildcraftfruit:clippingbucket-marita
+  stonebakeoven:ovencontrollerbrick (90): Brick stone oven heat source (Andesite) (stonebakeoven:ovencontrollerbrick-andesite-extinct-north) 64.43 → 64.41
+    same as its variant stonebakeoven:ovencontrollerbrick-andesite-extinct-east (differs in: side)
+  primitivesurvival:woodlantern (78): primitivesurvival:woodlantern-aged-up (primitivesurvival:woodlantern-aged-up) 94.03 → 94.01
+    grid: 1 game:plank-aged + 1 game:candle + 1 game:plank-aged + 1 game:plank-aged + 1 game:metalplate-copper + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged -> 1 primitivesurvival:woodlantern-aged-up
+  game:painting (72): Painting (Bog Fort) (game:painting-bogfort-north) 334.5 → 334.48
+    trader price: 8 x 41.81 EMC per gear
+  tailorsdelight:panel (58): White table cloth (tailorsdelight:panel-cloth-table-none-white) 275.28 → 275.26
+    grid: 1 wool:cloth-wool-white + 1 tailorsdelight:needle-bone (or 1 more) -> 1 tailorsdelight:panel-cloth-table-none-white
+  game:door (56): 2 by 4 gate (Aged) (game:door-2x4gate-aged) 384 → 114
+    grid: 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 10 game:metalnailsandstrips-tinbronze -> 1 game:door-2x4gate-aged
+  fromgoldencombs:ceramicbroodpot (50): Ceramic Hive (Copper) (fromgoldencombs:ceramicbroodpot-copper-notop) 334.5 → 334.48
+    trader price: 8 x 41.81 EMC per gear
+  fromgoldencombs:hivetop (50): Ceramic Honey Pot (Copper) (fromgoldencombs:hivetop-copper-fired) 334.5 → 334.48
+    trader price: 8 x 41.81 EMC per gear
+  tankardsandgoblets:tankard (40): Tin Bronze Tankard (tankardsandgoblets:tankard-metal-tinbronze) 140.8 → 20
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-tinbronze -> 1 tankardsandgoblets:tankard-metal-tinbronze
+  game:armor (36): Chain head armor (Tin bronze) (game:armor-head-chain-tinbronze) 844.8 → 120
+    grid: 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze -> 1 game:armor-head-chain-tinbronze
+  game:hoovedwearables (35): Elk medallion (Night Sky) (game:hoovedwearables-face-face6) 183.6 → 93
+    guessed: the middle value of its 8 valued variants that differ in type (game:hoovedwearables-face-face13)
+  wildcraftfruit:vineclipping (30): Black grape clipping (green) (wildcraftfruit:vineclipping-blackgrape-green) 41.81 → 41.81
+    trader price: 1 x 41.81 EMC per gear
+  molds:toolmold (30): Mold for 4 ingots made of blue ceramic (molds:toolmold-blue-burnedmini) 345.85 → 104.25
+    grid: 2 game:ingotmold-blue-fired + 1 game:metalplate-tinbronze + 2 game:ingotmold-blue-fired + 1 game:metalnailsandstrips-bismuth (or 14 more) -> 1 molds:toolmold-blue-burnedmini
+  rustboundmagic:armorarm (25): Lesser bracelet of Knowledge (rustboundmagic:armorarm-tier1-eldrathium-maxmana) 501.76 → 501.72
+    trader price: 12 x 41.81 EMC per gear
+  rustboundmagic:armorneck (25): Lesser necklace of Knowledge (rustboundmagic:armorneck-tier1-eldrathium-maxmana) 501.76 → 501.72
+    trader price: 12 x 41.81 EMC per gear
+  rustboundmagic:armorwaist (25): Lesser belt of Knowledge (rustboundmagic:armorwaist-tier1-eldrathium-maxmana) 501.76 → 501.72
+    trader price: 12 x 41.81 EMC per gear
+  wildcraftfruit:fruit (24): Whole cashew (wildcraftfruit:fruit-cashewwhole) 1.96 → 1.96
+    worked backwards from grid: 3 wildcraftfruit:fruit-cashewwhole -> 1 wildcraftfruit:nut-cashewnut (returns wildcraftfruit:fruit-cashewapple)
+  alchemy:potioncauldron (24): Brewing Cauldron (alchemy:potioncauldron-tinbronze-construct0) 844.8 → 120
+    grid: 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze -> 1 alchemy:potioncauldron-tinbronze-construct0
+  stonebakeoven:ovenbakingtopplain (19): Plain stone oven baking space (Andesite) (stonebakeoven:ovenbakingtopplain-andesite) 33.78 → 33.76
+    grid: 1 game:rockpolished-andesite + 4 game:clay-fire + 1 game:metalplate-copper + 4 game:clay-fire + 1 game:rock-andesite -> 1 stonebakeoven:ovenbakingtopplain-andesite
+  stonebakeoven:ovenbakingtopcobble (19): Cobble stone oven baking space (Andesite) (stonebakeoven:ovenbakingtopcobble-andesite) 35.78 → 35.76
+    grid: 1 game:rockpolished-andesite + 4 game:clay-fire + 1 game:metalplate-copper + 4 game:clay-fire + 1 game:cobblestone-andesite -> 1 stonebakeoven:ovenbakingtopcobble-andesite
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)

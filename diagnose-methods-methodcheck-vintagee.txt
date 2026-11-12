@@ -1,0 +1,36 @@
+== Checking Vintage-E (vintagee)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+✓ code (vintagee) (code, format 1): 2 methods, 10 recipes
+
+== Self-test press (vintagee:selftest-press) ==
+  plates (2 copies: one per variant or tool): 1 Copper ingot (game:ingot-copper) + 10 generator power → 1 Copper plate (game:metalplate-copper) = 148 EMC each
+    Not needed: Copper plate (game:metalplate-copper) 0.018 has a set value (?), which no recipe changes
+  typo: left out: nothing has the code game:ingot-coper - did you mean Copper ingot (game:ingot-copper)?
+    methods[0].recipes[4]
+  split: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 5 Copper bits (game:metalbit-copper) + 1 Nugget (Native copper) (game:nugget-nativecopper) = 50,128 EMC a run
+    Not needed: Copper bits (game:metalbit-copper) 0 has a set value (?), which no recipe changes
+  byproduct: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Red Matter (vintagee:matter-red) + 2 Copper bits (game:metalbit-copper) = 50,127.99 EMC each
+    Not used: Red Matter (vintagee:matter-red) 600 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+  table: 1 Granite stone (game:stone-granite) + 50000 EMC → 0.75 Nugget (Native copper) (game:nugget-nativecopper) + 0.25 Nugget (Native gold) (game:nugget-nativegold) = 50,001 EMC a run
+    Not needed: Nugget (Native copper) (game:nugget-nativecopper) 6.4 has a set value (base value), which no recipe changes
+  heated: 1 Copper ingot (game:ingot-copper) + 10000 °C·s + 50000 EMC → 1 Dark Matter (vintagee:matter-dark) = 50,133.97 EMC each
+    Not used: Dark Matter (vintagee:matter-dark) 328 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+200 energy) -> 1 vintagee:matter-dark
+• 3 used, 2 beaten by a cheaper way, 0 waiting, 1 left out, 0 switched off, 3 making something whose value is set
+  "supersedes": "NoSuchRecipeList" matches no recipe list, so nothing is replaced
+  A worked example (the first recipe in use):
+    1 Copper ingot (game:ingot-copper) + 100 test power → 1 Dark Matter (vintagee:matter-dark)
+      + 1 Copper ingot (game:ingot-copper) × 128 = 128
+      + 100 test power of power at 2 EMC each = 200 (price: vintagee's suggested price)
+      = 328 EMC for 1, so 328 EMC each Dark Matter (vintagee:matter-dark)
+
+== Switched off (vintagee:selftest-off) ==
+• 0 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 1 switched off, 0 making something whose value is set
+
+== What Vintage-E understood from vintagee ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-vintagee.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Vintage-E (vintagee)'s crafting methods (for its author) (/emc diagnose methodcheck vintagee)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
