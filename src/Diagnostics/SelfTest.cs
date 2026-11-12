@@ -289,7 +289,9 @@ namespace VintageE
                     var hop6 = charcoal == null ? null : Hopper(new BlockPos(x + 4, y + 2, r2), new ItemStack(charcoal, 3));
                     Check(LinkOf(c6, BlockFacing.WEST) == ChuteLink.BringsIn, "a straight chute fed by an elbow brings things in, so it's handed nothing: " + LinkOf(c6, BlockFacing.WEST));
                     Keeps("a condenser gives no copies to a chute line that feeds it", c6, 7, feed, elbow6, hop6);
-                    chuteChecks.Add(("and that line still feeds it", () => c6 != null && (c6.Stored > 0 || Count(c6.Inventory, charcoal) > 0), () => $"{c6?.Stored} EMC, {Count(c6?.Inventory, charcoal)} charcoal in the condenser, {Count(hop6?.Inventory, charcoal)} left in the hopper"));
+                    // The charcoal goes in and is burned; its EMC becomes more sticks (the target), so those show it arrived.
+                    chuteChecks.Add(("and that line still feeds it", () => c6 != null && Count(hop6?.Inventory, charcoal) == 0 && (c6.Stored > 0 || Count(c6.Inventory, charcoal) > 0 || Count(c6.Inventory, stickItem) > 7),
+                        () => $"{Count(hop6?.Inventory, charcoal)} charcoal left in the hopper, {Count(c6?.Inventory, charcoal)} in the condenser, {c6?.Stored} EMC, {Count(c6?.Inventory, stickItem)} sticks (it had 7)"));
                     // A straight chute that leads nowhere: nothing is handed over, so nothing spills.
                     var c7 = Cond(new BlockPos(x + 8, y + 1, r2), 6); var stub = Put(new BlockPos(x + 9, y + 1, r2), flat);
                     ba.SetBlock(0, new BlockPos(x + 10, y + 1, r2));
