@@ -25,3 +25,7 @@ file:recipes/grid/hide-pelt-divide
 file:itemtypes/resource/crystalizedore-graded
 file:itemtypes/resource/hide\.json
 strongbone
+# Crafting-method files for Butchering (recipes/kneading) and Tailor's Delight (recipes/butchering)
+file:recipes/kneading/
+file:recipes/butchering/
+kneading
