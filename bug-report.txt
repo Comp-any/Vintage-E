@@ -1,0 +1,62 @@
+Vintage-E 1.23.0 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-12 17:48
+
+== Mods (3) ==
+butchering 1.14.3, tailorsdelight 2.2.2, vintagee 1.23.0
+
+== Diagnosis ==
+✓ EMC mapped: 17612 values, worked out in 1505 ms.
+  8966 of the 8983 blocks and items in the creative inventory have a value (99.8%).
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 2 loaded, giving 2091 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+✓ Compatibility files: 1 active, valuing 84 items.
+  Butchering 84
+  Files waiting for a mod that isn't loaded: Expanded Matter, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+✓ Mod coverage: every mod that adds items (4) has values for at least three quarters of them.
+⚠ Value loops: 1, holding 2 items.
+    Platinum ingot (game:ingot-platinum) → Platinum bits (game:metalbit-platinum)
+• Items without a value: 17 (12 that nothing makes, 3 waiting on an ingredient, 2 in loops).
+  game:figurehead 4 e.g. game:figurehead-eidolon; game:ingot 3 e.g. game:ingot-platinum; game:metalbit 3 e.g. game:metalbit-platinum; game:metalplate 3 e.g. game:metalplate-platinum; game:arrow 1 e.g. game:arrow-erel; game:bonyremains 1 e.g. game:bonyremains-cowskull-up; game:crushed 1 e.g. game:crushed-peridotite; game:spear 1 e.g. game:spear-generic-erel
+• Mapping statistics: 29153 recipes and processes from 23 sources.
+  11315 values from recipes and processing, 1199 priced from a recipe that uses them, 224 from fixed ratios, 334 from trader prices, 764 copied from a look-alike variant, 1682 fallback values, 3 estimated as fuel or food.
+== Other mods' crafting methods ==
+✓ Crafting methods: 0 mod(s) send them (1 by file, 0 by code): 0 methods, 0 recipes
+  assets/vintagee/config/vintagee-methods/butchering.json waits for aculinaryartillery, which isn't loaded
+• Recipes Vintage-E can't see: 1 mod(s) keep recipe data it doesn't read (tailorsdelight)
+  Tailor's Delight (tailorsdelight): recipes/butchering (3)  Draft a method file for it
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+⚠ Free EMC: 2 items can be made for less than they're worth (the worst gives 115.03 free per craft).
+⚠ Blacklist: 3 blacklisted items hold back 28 recipes.
+⚠ Metal tiers: 1 tool or armour families out of order.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 264 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 18 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1)).
+  color: 17 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 256 ← Smoky glass (game:glass-smoky); the family runs from Green glass (game:glass-green) 13.06 to Smoky glass (game:glass-smoky) 256
+    Orange-brown aged book (game:book-aged-orangebrown) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Orange aged book (game:book-aged-orange) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    ... and 14 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+✓ Other mods: nothing went wrong at start-up.
+== Other mods changing recipes and items ==
+• Other mods' patches: 2 mods patch things the mapper reads:
+  Tailor's Delight (tailorsdelight): 151 recipe patches
+  Butchering (butchering): 120 recipe patches
+== Values out of line with their family ==
+⚠ Values out of line: 2 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  game:powder-borax 2.5 (family 32) ← BarrelRecipes: 500 game:waterportion + 2 game:powder-borax → 500 game:dilutedboraxportion
+  game:treeseed-redwood 460 (family 46) ← block drops: 0.002 game:treeseed-redwood + 0.02 game:stick → 1 game:leaves-grown-redwood
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, SelfTestOnStart=true, ProjectESounds=true

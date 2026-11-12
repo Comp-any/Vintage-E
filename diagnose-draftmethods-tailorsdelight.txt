@@ -1,0 +1,20 @@
+== A crafting method file for Tailor's Delight (tailorsdelight) ==
+Drafted 0 method(s); read back, they make 0 recipe(s) with 0 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-tailorsdelight.json
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-12 for Tailor's Delight (tailorsdelight) 2.2.2 with Vintage-E 1.23.0. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/tailorsdelight/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "tailorsdelight",
+  "methods": []
+}
+
+== What the guesses were made from (the first entry of each) ==
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

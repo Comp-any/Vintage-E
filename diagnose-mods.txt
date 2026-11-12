@@ -1,0 +1,9 @@
+== Mods and their coverage ==
+Every mod that adds blocks or items, and how many of them have a value. Click one for its own report.
+Vintage Story (game) (/emc diagnose mod game): 8128 of 8145 valued (99.8%) (648 blacklisted on purpose)
+Butchering (butchering) (/emc diagnose mod butchering): 393 of 393 valued (100.0%)
+Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 303 of 303 valued (100.0%)
+Vintage-E (vintagee) (/emc diagnose mod vintagee): 142 of 142 valued (100.0%) (1 blacklisted on purpose)
+
+== Next ==
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,115 @@
+== Is EMC mapped at all? ==
+✓ EMC mapped: 17612 values, worked out in 1505 ms.
+  8966 of the 8983 blocks and items in the creative inventory have a value (99.8%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 2 loaded, giving 2091 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+✓ Compatibility files: 1 active, valuing 84 items.
+  Butchering: 84
+  Files waiting for a mod that isn't loaded: Expanded Matter, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+✓ Mod coverage: every mod that adds items (4) has values for at least three quarters of them.
+⚠ Value loops: 1, holding 2 items.
+  In a loop, each item is only made from the next one, so none of them can get a value first.
+    Platinum ingot (game:ingot-platinum) → Platinum bits (game:metalbit-platinum)
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+• Items without a value: 17 (12 that nothing makes, 3 waiting on an ingredient, 2 in loops).
+  The biggest families:
+    game:figurehead (4): figurehead-eidolon (game:figurehead-eidolon)
+    game:ingot (3): Platinum ingot (game:ingot-platinum)
+    game:metalbit (3): Platinum bits (game:metalbit-platinum)
+    game:metalplate (3): Platinum plate (game:metalplate-platinum)
+    game:arrow (1): Short erel feather stem (game:arrow-erel)
+    game:bonyremains (1): Bony Cow Skull (game:bonyremains-cowskull-up)
+    game:crushed (1): Crushed peridotite (game:crushed-peridotite)
+    game:spear (1): Long erel feather stem (game:spear-generic-erel)
+  → Click a family's example to see why it has no value and what fixes it. /emc missing lists them all and can set values from its window.
+• Mapping statistics: 29153 recipes and processes from 23 sources.
+  11315 values from recipes and processing, 1199 priced from a recipe that uses them, 224 from fixed ratios, 334 from trader prices, 764 copied from a look-alike variant, 1682 fallback values, 3 estimated as fuel or food.
+
+== Other mods' crafting methods ==
+✓ Crafting methods: 0 mod(s) send them (1 by file, 0 by code): 0 methods, 0 recipes
+  A mod sends its crafting methods in a file (assets/<modid>/config/vintagee-methods/) or from its code (the game's event bus, no reference to Vintage-E needed). docs/crafting-methods.md in Vintage-E's repository describes the format.
+  assets/vintagee/config/vintagee-methods/butchering.json waits for aculinaryartillery, which isn't loaded
+• Recipes Vintage-E can't see: 1 mod(s) keep recipe data it doesn't read (tailorsdelight)
+  These folders under recipes/ and block or item attributes named like ...Recipes hold recipes of a kind Vintage-E doesn't know, so what those machines make is valued another way or guessed. It's a guess from the names, so it may list data the game does read.
+  Tailor's Delight (tailorsdelight): recipes/butchering (3)  Draft a method file for it (/emc diagnose draftmethods tailorsdelight)
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+  Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+⚠ Free EMC: 2 items can be made for less than they're worth (the worst gives 115.03 free per craft).
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+⚠ Blacklist: 3 blacklisted items hold back 28 recipes.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+⚠ Metal tiers: 1 tool or armour families out of order.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 264 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 18 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  color: 17 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 256 ← Smoky glass (game:glass-smoky); the family runs from Green glass (game:glass-green) 13.06 to Smoky glass (game:glass-smoky) 256
+    Orange-brown aged book (game:book-aged-orangebrown) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Orange aged book (game:book-aged-orange) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    ... and 14 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+✓ Other mods: nothing went wrong at start-up.
+  No mod was skipped, none crashed while starting, and every JSON patch and recipe the game loaded resolved.
+  Show everything other mods did at start-up (/emc diagnose startup)
+
+== Your game ==
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+
+== Server log ==
+✓ Server log: no Vintage-E errors or warnings.
+
+== Other mods changing recipes and items ==
+• Other mods' patches: 2 mods patch things the mapper reads:
+  Tailor's Delight (tailorsdelight) (/emc diagnose mod tailorsdelight): 151 recipe patches
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+    survival-recipes-grid-medallions.json → game:recipes/grid/tack.json
+  Butchering (butchering) (/emc diagnose mod butchering): 120 recipe patches
+    hooknuggetrecipe.json → butchering:recipes/smithing/onebutcheringhook.json
+    hooknuggetrecipe.json → butchering:recipes/grid/butcherhook.json
+    dough.json → expandedfoods:recipes/kneading/doughball.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Values out of line with their family ==
+⚠ Values out of line: 2 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Powdered borax (game:powder-borax) 2.5 (its family's middle value is 32)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 2 game:powder-borax -> 500 game:dilutedboraxportion
+  Redwood seed (game:treeseed-redwood) 460 (its family's middle value is 46)
+    worked backwards from block drops: 0.002 game:treeseed-redwood + 0.02 game:stick -> 1 game:leaves-grown-redwood
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== What are you seeing? ==
+Pick the closest. Each opens a report for just that; Back returns here.
+An item shows no EMC value: walk me through it (/emc diagnose novalue)
+Describe what's happening (step by step) (/emc diagnose symptom)
+What the table and tablet refused lately, and why (/emc diagnose watch)
+Arcane Tablet: the Emc Craft link or crafting window isn't working (/emc diagnose emccraft)
+A machine, chute, the tablet's magnet, a Klein star or a trinket isn't doing what it should (/emc diagnose machines)
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+One block or item has no value (hold it first) (/emc diagnose hand)
+Everything from one mod has no value (/emc diagnose mods)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Nothing has a value, or I want every mapping check (/emc diagnose mapping)
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+What changed since the previous mapping (/emc diagnose changes)
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+A player's state (knowledge, EMC, mode) (/emc diagnose players)
+Put together a bug report to post (/emc diagnose bugreport)
+The full list of missing items is in /emc missing, where values can be set from the window.
+From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping | trace hand | trace <code>.
