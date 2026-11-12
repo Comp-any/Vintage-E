@@ -1,0 +1,53 @@
+== Deeper checks ==
+Checks of the values themselves and of how the server behaves, not just of what's missing.
+
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+✓ No recipe gives more EMC than its ingredients cost.
+
+== Blacklisted ingredients holding recipes back ==
+⚠ 3 blacklisted items are the only thing 28 recipes wait for:
+  A blacklisted item has no value, so no recipe that needs it can value its output. Often that's right (a creative-only part). When the blacklist entry is a mistake, allowing the item values everything made from it.
+  Work item (Platinum) (game:workitem-platinum): 10 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work item (Stainless steel) (game:workitem-stainlesssteel): 9 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work item (Uranium) (game:workitem-uranium): 9 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  → Allow the item (or give it a value) if players can really get it. Leave it if it's creative-only or a story item.
+
+== Containers that give their contents away ==
+✓ No container is set to 'item price' while it holds contents.
+
+== Metal tiers out of order ==
+⚠ 1 families are worth more in a cheaper metal than in a dearer one:
+  The order is this server's own: the metals ranked by what their ingot is worth (copper, the bronzes, iron, meteoric iron, steel, with the gold-bearing black bronze wherever its ingot lands). A family where the cheaper metal's version is worth more usually lost an ingredient in one recipe, or took a guessed value in the other.
+  Tin bronze block (riveted) (game:metalblock-new-riveted-tinbronze) 1,689.6 > Chromium block (riveted) (game:metalblock-new-riveted-chromium) 512
+    grid: 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze -> 1 game:metalblock-new-riveted-tinbronze
+  → Open the dearer one's trace: the odd ingredient is in there. A wrong value for a metal itself is fixed in the settings (BaseValues).
+
+== How long and how often the mapping runs ==
+Last mapping at 02:09:53 (server start): 1156 ms 
+✓ 1 mappings this session, none unusually slow or frequent.
+
+== The EMC table sent to players ==
+✓ Table size: the table sent to each player is 256 KB (16867 values, 979 material-specific).
+
+== Tooltips that crashed ==
+Needs your game's details: click a question in the window.
+
+== Skipped recipes ==
+✓ Skipped recipes: none, the mapper read every recipe.
+
+== Compatibility files and their mods ==
+No compatibility file is active, so none can have fallen behind its mod.
+
+== Values defined twice ==
+✓ Values defined twice: none with different numbers.
+
+== Next ==
+Health checks: game version, files, join cost, players, value swings, solver, traders, variants (/emc diagnose health)
+What your settings and your mods change against a fresh install (maps twice more) (/emc diagnose baseline)
+Every recipe that gives more EMC than it costs (/emc diagnose profit)
+Every skipped recipe and why (/emc diagnose skipped)
+Back to the check-up (/emc diagnose)
