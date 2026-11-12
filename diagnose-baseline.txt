@@ -1,0 +1,13 @@
+== The live values against a fresh install ==
+Vintage-E mapped once more with default settings and only the base game's recipes (what a fresh install gives), then once more with your settings but still without other mods. Comparing the three separates your settings' changes from your mods'.
+Your settings change 0 base-game values; your other mods change 1112.
+
+== Changed by other mods (1112) ==
+  Through no single mod (713 values: another mod's patch to a base-game recipe or item, or a guess that moved)
+  Through Tailor's Delight (tailorsdelight): 321 values
+  Through Butchering (butchering): 78 values
+  Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

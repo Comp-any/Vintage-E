@@ -1,0 +1,16 @@
+== Checking Tailor's Delight (tailorsdelight)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+⚠ assets/vintagee/config/vintagee-methods/tailorsdelight.json (file, format 1): 1 methods, 0 recipes 1 left out, 0 warnings
+  Left out: methods[0].readers[0].folder: no recipe files in tailorsdelight:recipes/butchering
+
+== probe (tailorsdelight:butcheringprobe) ==
+• 0 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off
+
+== What Vintage-E understood from tailorsdelight ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-tailorsdelight.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check Tailor's Delight (tailorsdelight)'s crafting methods (for its author) (/emc diagnose methodcheck tailorsdelight)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

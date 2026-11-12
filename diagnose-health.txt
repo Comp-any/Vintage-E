@@ -1,0 +1,32 @@
+== Health: the game, the files, the players, and values that moved ==
+Checks around the mapping rather than of it. Each line says what it looked at; open one for what it means and what to do.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 264 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 18 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  color: 17 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 256 ← Smoky glass (game:glass-smoky); the family runs from Green glass (game:glass-green) 13.06 to Smoky glass (game:glass-smoky) 256
+    Orange-brown aged book (game:book-aged-orangebrown) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Orange aged book (game:book-aged-orange) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Dark green aged book (game:book-aged-darkgreen) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Dark gray aged book (game:book-aged-darkgray) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Cherry red aged book (game:book-aged-cherryred) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Brick red aged book (game:book-aged-brickred) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Dark olive aged book (game:book-aged-darkolive) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Dark beige aged book (game:book-aged-darkbeige) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    Olive aged book (game:book-aged-olive) 786.5 ← Orange book (game:book-normal-orange); the family runs from Teal book (game:book-normal-teal) 509 to Orange book (game:book-normal-orange) 786.5
+    ... and 7 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+
+== Next ==
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+Back to the check-up (/emc diagnose)
