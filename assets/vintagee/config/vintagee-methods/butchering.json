@@ -1,5 +1,5 @@
 {
-  "//": "TEST VARIANT (temporary): Butchering's kneading recipes read without the enabled flag and without A Culinary Artillery, to check the template.",
+  "//": "TEST VARIANT 2 (temporary): Butchering's kneading recipes read without the enabled flag and without A Culinary Artillery, with the named * of each input.",
   "format": 1,
   "requiresMod": "butchering",
   "methods": [
@@ -13,7 +13,11 @@
           "folder": "recipes/kneading",
           "domain": "butchering",
           "recipe": {
-            "inputs": [ { "each": "$ingredients", "code": "$inputs.0.code", "type": "$inputs.0.type", "quantity": "$inputs.0.quantity" } ],
+            "inputs": [ {
+              "each": "$ingredients",
+              "code": "$inputs.0.code", "type": "$inputs.0.type", "quantity": "$inputs.0.quantity",
+              "name": "$inputs.0.name", "allowedVariants": "$inputs.0.allowedVariants", "skipVariants": "$inputs.0.skipVariants"
+            } ],
             "outputs": [ { "code": "$output.code", "type": "$output.type", "quantity": "$output.stackSize" } ]
           }
         }
