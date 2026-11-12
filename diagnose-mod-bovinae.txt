@@ -1,0 +1,75 @@
+== Fauna of the Stone Age: Bovinae (bovinae) ==
+1026 of its 1058 blocks and items have a value (97.0%); 129 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'bovinae'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Why the rest has no value ==
+⚠ 16 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    rawcheese (8): Raw antelope cheese (salted) (bovinae:rawcheese-antelope-salted), Raw bison cheese (salted) (bovinae:rawcheese-bison-salted), Raw buffalo cheese (salted) (bovinae:rawcheese-buffalo-salted), ...
+    milkportion (4): Antelope milk (bovinae:milkportion-antelope), Bison milk (bovinae:milkportion-bison), Buffalo milk (bovinae:milkportion-buffalo), ...
+    cheese (4): Antelope blue cheese (4 slices) (bovinae:cheese-antelope-blue-4slice), Bison blue cheese (4 slices) (bovinae:cheese-bison-blue-4slice), Buffalo blue cheese (4 slices) (bovinae:cheese-buffalo-blue-4slice), ...
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/bovinae.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 16 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Antelope milk (bovinae:milkportion-antelope): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:milkportion-antelope)
+    Bison milk (bovinae:milkportion-bison): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:milkportion-bison)
+    Buffalo milk (bovinae:milkportion-buffalo): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:milkportion-buffalo)
+    Eland milk (bovinae:milkportion-eland): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:milkportion-eland)
+    Curdled antelope milk (bovinae:curdledmilkportion-antelope): 1 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item bovinae:curdledmilkportion-antelope)
+    Curdled bison milk (bovinae:curdledmilkportion-bison): 1 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item bovinae:curdledmilkportion-bison)
+    Curdled buffalo milk (bovinae:curdledmilkportion-buffalo): 1 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item bovinae:curdledmilkportion-buffalo)
+    Curdled eland milk (bovinae:curdledmilkportion-eland): 1 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item bovinae:curdledmilkportion-eland)
+    Raw antelope cheese (salted) (bovinae:rawcheese-antelope-salted): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:rawcheese-antelope-salted)
+    Raw bison cheese (salted) (bovinae:rawcheese-bison-salted): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item bovinae:rawcheese-bison-salted)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+Draft a compatibility file for its 16 raw materials (/emc diagnose draftcompat bovinae)
+Pin all 12 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are Fauna of the Stone Age: Bovinae (bovinae) items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.22.1 with Fauna of the Stone Age: Bovinae (bovinae) 1.0.3: these items have no value: bovinae:milkportion-antelope, bovinae:milkportion-bison, bovinae:milkportion-buffalo, bovinae:milkportion-eland, bovinae:cheese-antelope-blue-4slice, bovinae:cheese-bison-blue-4slice, bovinae:cheese-buffalo-blue-4slice, bovinae:cheese-eland-blue-4slice, bovinae:rawcheese-antelope-salted, bovinae:rawcheese-bison-salted, bovinae:rawcheese-buffalo-salted, bovinae:rawcheese-eland-salted, ... (16). /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (32) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Antelope blue cheese (4 slices) (bovinae:cheese-antelope-blue-4slice)  why? (/emc diagnose item bovinae:cheese-antelope-blue-4slice)
+  Antelope cheddar (4 slices) (bovinae:cheese-antelope-cheddar-4slice)  why? (/emc diagnose item bovinae:cheese-antelope-cheddar-4slice)
+  Waxed antelope cheddar (bovinae:cheese-antelope-waxedcheddar-4slice)  why? (/emc diagnose item bovinae:cheese-antelope-waxedcheddar-4slice)
+  Bison blue cheese (4 slices) (bovinae:cheese-bison-blue-4slice)  why? (/emc diagnose item bovinae:cheese-bison-blue-4slice)
+  Bison cheddar (4 slices) (bovinae:cheese-bison-cheddar-4slice)  why? (/emc diagnose item bovinae:cheese-bison-cheddar-4slice)
+  Waxed bison cheddar (bovinae:cheese-bison-waxedcheddar-4slice)  why? (/emc diagnose item bovinae:cheese-bison-waxedcheddar-4slice)
+  Buffalo blue cheese (4 slices) (bovinae:cheese-buffalo-blue-4slice)  why? (/emc diagnose item bovinae:cheese-buffalo-blue-4slice)
+  Buffalo cheddar (4 slices) (bovinae:cheese-buffalo-cheddar-4slice)  why? (/emc diagnose item bovinae:cheese-buffalo-cheddar-4slice)
+  Waxed buffalo cheddar (bovinae:cheese-buffalo-waxedcheddar-4slice)  why? (/emc diagnose item bovinae:cheese-buffalo-waxedcheddar-4slice)
+  Eland blue cheese (4 slices) (bovinae:cheese-eland-blue-4slice)  why? (/emc diagnose item bovinae:cheese-eland-blue-4slice)
+  Eland cheddar (4 slices) (bovinae:cheese-eland-cheddar-4slice)  why? (/emc diagnose item bovinae:cheese-eland-cheddar-4slice)
+  Waxed eland cheddar (bovinae:cheese-eland-waxedcheddar-4slice)  why? (/emc diagnose item bovinae:cheese-eland-waxedcheddar-4slice)
+  Antelope cottage cheese (bovinae:cottagecheeseportion-antelope)  why? (/emc diagnose item bovinae:cottagecheeseportion-antelope)
+  Bison cottage cheese (bovinae:cottagecheeseportion-bison)  why? (/emc diagnose item bovinae:cottagecheeseportion-bison)
+  Buffalo cottage cheese (bovinae:cottagecheeseportion-buffalo)  why? (/emc diagnose item bovinae:cottagecheeseportion-buffalo)
+  Eland cottage cheese (bovinae:cottagecheeseportion-eland)  why? (/emc diagnose item bovinae:cottagecheeseportion-eland)
+  Curdled antelope milk (bovinae:curdledmilkportion-antelope)  why? (/emc diagnose item bovinae:curdledmilkportion-antelope)
+  Curdled bison milk (bovinae:curdledmilkportion-bison)  why? (/emc diagnose item bovinae:curdledmilkportion-bison)
+  Curdled buffalo milk (bovinae:curdledmilkportion-buffalo)  why? (/emc diagnose item bovinae:curdledmilkportion-buffalo)
+  Curdled eland milk (bovinae:curdledmilkportion-eland)  why? (/emc diagnose item bovinae:curdledmilkportion-eland)
+  Antelope milk (bovinae:milkportion-antelope)  why? (/emc diagnose item bovinae:milkportion-antelope)
+  Bison milk (bovinae:milkportion-bison)  why? (/emc diagnose item bovinae:milkportion-bison)
+  Buffalo milk (bovinae:milkportion-buffalo)  why? (/emc diagnose item bovinae:milkportion-buffalo)
+  Eland milk (bovinae:milkportion-eland)  why? (/emc diagnose item bovinae:milkportion-eland)
+  Raw antelope cheese (salted) (bovinae:rawcheese-antelope-salted)  why? (/emc diagnose item bovinae:rawcheese-antelope-salted)
+  Raw antelope cheese (waxed) (bovinae:rawcheese-antelope-waxed)  why? (/emc diagnose item bovinae:rawcheese-antelope-waxed)
+  Raw bison cheese (salted) (bovinae:rawcheese-bison-salted)  why? (/emc diagnose item bovinae:rawcheese-bison-salted)
+  Raw bison cheese (waxed) (bovinae:rawcheese-bison-waxed)  why? (/emc diagnose item bovinae:rawcheese-bison-waxed)
+  Raw buffalo cheese (salted) (bovinae:rawcheese-buffalo-salted)  why? (/emc diagnose item bovinae:rawcheese-buffalo-salted)
+  Raw buffalo cheese (waxed) (bovinae:rawcheese-buffalo-waxed)  why? (/emc diagnose item bovinae:rawcheese-buffalo-waxed)
+  Raw eland cheese (salted) (bovinae:rawcheese-eland-salted)  why? (/emc diagnose item bovinae:rawcheese-eland-salted)
+  Raw eland cheese (waxed) (bovinae:rawcheese-eland-waxed)  why? (/emc diagnose item bovinae:rawcheese-eland-waxed)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

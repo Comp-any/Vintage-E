@@ -1,0 +1,24 @@
+== Values that come and go ==
+The same item can be worth different amounts, or nothing, depending on the exact stack and on who holds it. These are the reasons, and how this server is set:
+Wear: DurabilityScalesEmc is on.
+  When it's on, a worn tool is worth only its remaining durability's share, so a nearly broken one is worth almost nothing. Repair it, or switch the setting off to get the full value regardless of wear.
+Contents: ProtectContainersWithContents is on.
+  Containers, meals and crates are worth the item plus what's inside. One thing inside with no value makes the total look wrong. With the protection on, a container with contents can't be burned at all. /emc contents shows and changes how each container counts.
+Material: shields, chests and chiseled blocks are worth what they're made of.
+  A gold round shield and a copper one are the same item with different data. If that material has no recipe value, the stack is worth 0 even though the plain item isn't. Pinning the item with /emc set gives every material the same value.
+Knowledge: a player can only create what they've learned (MaxExactKnowledge 500).
+  An item one player can make and another can't is usually just not learned yet: burn one, or run /emc learn. Exact stacks (with contents or material) are learned one by one, up to the limit.
+No-transmute list: 0 items keep their value but can't be burned, learned or created.
+  These are story and progression items, kept off the table so it can't duplicate them. /emc notransmute lists them; the hovered-item box can take one off.
+Remaps: /emc set, /emc recalc, the compatibility window and most settings changes work every value out again.
+  A value that changed after one of those isn't a glitch: pinning a raw material changes everything made from it. /emc dump hand shows the recipe behind the new number.
+Cache: CacheEmcValues is off.
+  Cached values are the same values, just not worked out again at start-up. The cache is tied to the mods, value files and settings, so any change remaps. /emc recalc never hurts.
+53 items are in recipe loops that kept making each other cheaper (they keep their first value), and 0 had to be dropped.
+  Those values can differ between two mappings when the recipes are read in another order. Pinning one item of the loop makes it stable. /emc loop lists them under settled loops.
+Hold the item whose value comes and goes, then click the question again. The report then compares that exact stack with the plain item.
+
+== Next ==
+Check the stack I'm holding now (/emc diagnose sporadic)
+One block or item has no value (hold it first) (/emc diagnose hand)
+Back to the check-up (/emc diagnose)
