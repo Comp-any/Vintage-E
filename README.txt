@@ -1,0 +1,1 @@
+game=1.22.7 commit=a0d8656772fe3cf4feb3df20fdc34979ed65e403 run=43274008616 extraMods=butchering,tailorsdelight
