@@ -255,7 +255,8 @@ namespace VintageE
         {
             MethodSnapshot snap = Snap(x);
             var unseen = UnseenRecipeData(x);
-            if (snap.Docs.Count == 0 && unseen.Count == 0) return 0;
+            // Documents that wait for a mod that isn't loaded (Vintage-E's own files for other mods) are normal: no section for them alone.
+            if (!snap.Docs.Any(d => d.Usable || d.Error != null) && snap.ListenerErrors.Count == 0 && snap.Problems.Count == 0 && unseen.Count == 0) return 0;
             EmcReport r = x.R;
             r.Section(x.L("diag-sec-meth"));
             int problems = 0;

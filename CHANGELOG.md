@@ -20,10 +20,14 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
   - "Made by" and "Used in" lines in item reports, a section in mod reports, power costs and weak power prices in traces;
   - four new questions: something a machine makes has no value, the power cost looks wrong, players farm EMC from free power, something from a chance roll is worth a lot;
   - fixes: set an energy unit's price, lower it to the most that stays under the free-power limit, switch a method off or on, switch a kind of cost off, ask the mods again;
-  - **`/emc diagnose methodcheck <modid>`** for a mod's author: every problem with its JSON path, which recipes are used, beaten or waiting, a worked example, and the export;
+  - **`/emc diagnose methodcheck <modid>`** for a mod's author: every problem with its JSON path, which recipes are used, beaten, making something whose value is set, or waiting (and why), whether each `supersedes` entry matched, a worked example, and the export. A recipe for a mod that isn't loaded is counted, not flagged;
   - **`/emc diagnose draftmethods <modid>`**: a starting method file drafted from recipe data Vintage-E can't read, guessed from the field names, with notes on what to check;
   - "what changed" names mods whose methods changed, the clean and baseline mappings count method recipes as the sending mod's, the bug report and start-up check include them.
 - The solver can share out recipes with several ingredients and several results (none of them the main one), and never works a tool's value out backwards from its wear.
+- A method file for **Butchering**'s kneading recipes (for A Culinary Artillery's mixing bowl), used when both mods are loaded. It reads each recipe's own on/off switch, as the game does.
+
+### Changed
+- A guessed value that a recipe lowers ("cheaper than its default value") now shows that recipe in `/emc dump` and in traces, line by line, instead of only naming it.
 
 With no mod sending crafting methods, every value is the same as in 1.22.1.
 

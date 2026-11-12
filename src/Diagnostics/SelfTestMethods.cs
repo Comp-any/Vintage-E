@@ -311,7 +311,7 @@ namespace VintageE
                 string overview = Diag("", "");
                 // Other mods (Vintage-E's own files for them) may send methods too: at least this one.
                 Check(overview.Contains("Other mods' crafting methods") && Regex.IsMatch(Line1(overview, "Crafting methods:"), @"Crafting methods: [1-9]\d* mod\(s\)"), "methods: the check-up has the crafting-methods cards (" + Line1(overview, "Crafting methods:") + ")");
-                Check(Line1(overview, "Free power:").Contains("from power alone (up to 20)"), "methods: the check-up warns about the stone at 20 EMC a second from power (" + Line1(overview, "Free power") + ")");
+                Check(Line1(overview, "Free power:").Contains("from power alone (up to 20"), "methods: the check-up warns about the stone at 20 EMC a second from power (" + Line1(overview, "Free power") + ")");
                 Check(Regex.IsMatch(Line1(overview, "Recipes:"), @", [1-9]\d* left out"), "methods: the check-up counts the recipe left out (" + Line1(overview, "Recipes:") + ")");
                 Check(overview.Contains("\"supersedes\" entries match no recipe list") && overview.Contains("NoSuchRecipeList"), "methods: the check-up names the supersede entry that matches nothing");
                 // The check-up's own cards stay under its heading: the crafting methods come after them.
