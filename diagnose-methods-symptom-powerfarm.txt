@@ -1,0 +1,16 @@
+== Players make EMC out of free power ==
+Windmills make power for nothing; a high power price turns it into EMC when what the machine makes is burned.
+⚠ Free power: 1 recipe(s) in use make more than 1 EMC a second from power alone (up to 20)
+  Windmills and water wheels make power for nothing. A recipe whose value includes its power cost turns that power into EMC when what it makes is burned, so a high price makes a machine an EMC farm. The limit is 1 EMC a second, a quarter of what an Energy Collector MK1 makes (4 EMC a second).
+  vintagee:selftest-press/stone: 200 EMC of power in 10 s = 20 EMC a second
+  Lower vintagee:testpower to 0.1 EMC a unit (the most that stays under the limit) (in the window)
+  Switch vintagee:selftest-press off (in the window)
+  1 powered recipe(s) don't say how long they take (costs.seconds), so they can't be checked.
+  → Lower the unit's price, switch the method off, or turn ChargeMethodEnergy off.
+  Set ChargeMethodEnergy to false (in the window)
+A lower price, or no power cost at all, closes it; values made with power then go down.
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

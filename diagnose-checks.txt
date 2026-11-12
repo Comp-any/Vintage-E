@@ -1,0 +1,121 @@
+== Deeper checks ==
+Checks of the values themselves and of how the server behaves, not just of what's missing.
+
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 10 items can be made for less than they're worth (8 of them by processing):
+  Crushed graphite (em:crushed-ore-graphite): worth 128, costs 64: 64 free each time (processing: smelting, grinding, drying...)
+    pulverizer crushing: 1 game:ore-graphite -> 2 em:crushed-ore-graphite
+    Trace its value down to the raw materials (/emc diagnose trace em:crushed-ore-graphite)
+  Pitted jackfruit (wildcraftfruit:fruit-pittedjackfruit): worth 88, costs 48: 40 free each time (processing: smelting, grinding, drying...)
+    ground-storage processing: 1 wildcraftfruit:fruit-jackfruit -> 2 wildcraftfruit:fruit-pittedjackfruit + 1 wildcraftfruit:jackfruitrags-raw + 1 wildcraftfruit:nut-breadnut (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedjackfruit)
+  Pitted cempedak (wildcraftfruit:fruit-pittedcempedak): worth 88, costs 48: 40 free each time (processing: smelting, grinding, drying...)
+    ground-storage processing: 1 wildcraftfruit:fruit-cempedak -> 2 wildcraftfruit:fruit-pittedcempedak + 1 wildcraftfruit:jackfruitrags-raw + 1 wildcraftfruit:nut-breadnut (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedcempedak)
+  Pitted apricot (wildcraftfruit:fruit-pittedapricot): worth 32, costs 14.22: 17.77 free each time
+    grid: 2 wildcraftfruit:fruit-apricot -> 2 wildcraftfruit:fruit-pittedapricot (returns wildcraftfruit:nut-apricotpit)
+    Ingredients whose value is a guess or a trader price: Apricot (wildcraftfruit:fruit-apricot) 16
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedapricot)
+  Bone (game:bone): worth 24, costs 8: 16 free each time
+    grid: 1 butchering:strongbone -> 1 game:bone
+    Trace its value down to the raw materials (/emc diagnose trace game:bone)
+  Tomato juice (wildcraftfruit:juiceportion-tomato): worth 28.48, costs 18.99: 9.49 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:vegetable-oxheart -> 62.5 wildcraftfruit:juiceportion-tomato + 1 wildcraftfruit:pressedmash-tomato
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-tomato)
+  Breadfruit juice (game:juiceportion-breadfruit): worth 12, costs 4: 8 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-pittedbreadfruit -> 31.25 game:juiceportion-breadfruit + 1 game:pressedmash-breadfruit (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:juiceportion-breadfruit)
+  Mulberry juice (wildcraftfruit:juiceportion-blackmulberry): worth 9.76, costs 4.16: 5.6 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-blackmulberry -> 31.25 wildcraftfruit:juiceportion-blackmulberry + 1 wildcraftfruit:pressedmash-blackmulberry
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-blackmulberry)
+  Grapefruit juice (wildcraftfruit:juiceportion-grapefruit): worth 20.83, costs 16.33: 4.5 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-bloodorange -> 31.25 wildcraftfruit:juiceportion-grapefruit + 1 wildcraftfruit:pressedmash-grapefruit
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-grapefruit)
+  Pomelo juice (wildcraftfruit:juiceportion-pomelo): worth 20.83, costs 16.33: 4.5 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-oroblanco -> 31.25 wildcraftfruit:juiceportion-pomelo + 1 wildcraftfruit:pressedmash-pomelo
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-pomelo)
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+
+== Blacklisted ingredients holding recipes back ==
+⚠ 2 blacklisted items are the only thing 19 recipes wait for:
+  A blacklisted item has no value, so no recipe that needs it can value its output. Often that's right (a creative-only part). When the blacklist entry is a mistake, allowing the item values everything made from it.
+  Work item (Platinum) (game:workitem-platinum): 10 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work item (Stainless steel) (game:workitem-stainlesssteel): 9 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  → Allow the item (or give it a value) if players can really get it. Leave it if it's creative-only or a story item.
+
+== Containers that give their contents away ==
+✓ No container is set to 'item price' while it holds contents.
+
+== Metal tiers out of order ==
+⚠ 1 families are worth more in a cheaper metal than in a dearer one:
+  The order is this server's own: the metals ranked by what their ingot is worth (copper, the bronzes, iron, meteoric iron, steel, with the gold-bearing black bronze wherever its ingot lands). A family where the cheaper metal's version is worth more usually lost an ingredient in one recipe, or took a guessed value in the other.
+  Tin bronze block (riveted) (game:metalblock-new-riveted-tinbronze) 1,689.6 > Chromium block (riveted) (game:metalblock-new-riveted-chromium) 512
+    grid: 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze + 1 game:metalplate-tinbronze -> 1 game:metalblock-new-riveted-tinbronze
+  → Open the dearer one's trace: the odd ingredient is in there. A wrong value for a metal itself is fixed in the settings (BaseValues).
+
+== How long and how often the mapping runs ==
+Last mapping at 18:05:11 (server start): 2649 ms 
+✓ 1 mappings this session, none unusually slow or frequent.
+
+== The EMC table sent to players ==
+✓ Table size: the table sent to each player is 377 KB (28063 values, 1007 material-specific).
+
+== Tooltips that crashed ==
+Needs your game's details: click a question in the window.
+
+== Skipped recipes ==
+✓ Skipped recipes: none, the mapper read every recipe.
+
+== Compatibility files and their mods ==
+Butchering (the mod is at 1.14.3): 8 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: butchering:deadelephantidae-*
+  matches nothing: butchering:deadrhinocerotidae-*
+  matches nothing: butchering:healingprimemeat-*
+  matches nothing: butchering:fat*
+  matches nothing: butchering:renderedfat*
+  matches nothing: butchering:tinybone*
+  matches nothing: butchering:bloodbait*
+  matches nothing: butchering:bloodpie-*
+Expanded Matter (the mod is at 3.8.2): 21 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: em:powdered-ore-lapislazuli
+  matches nothing: em:powdered-ore-cinnabar
+  matches nothing: em:powdered-metal-titanium
+  matches nothing: em:ash-*
+  matches nothing: em:ash-organic-sludge
+  matches nothing: em:gypsum*
+  matches nothing: em:soda*
+  matches nothing: em:lye*
+From Golden Combs (the mod is at 2.1.0): 1 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: fromgoldencombs:plushy-*
+Primitive Survival (the mod is at 5.1.4): 35 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: primitivesurvival:psfish-*
+  matches nothing: primitivesurvival:psfish-bass-*
+  matches nothing: primitivesurvival:psfish-bluegill-*
+  matches nothing: primitivesurvival:psfish-mutant-*
+  matches nothing: primitivesurvival:psfish-catfish-*
+  matches nothing: primitivesurvival:caviar
+  matches nothing: primitivesurvival:earthworm
+  matches nothing: primitivesurvival:trussedmeat
+Wildcraft: Fruits and Nuts (the mod is at 1.5.0): 9 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: wildcraftfruit:berry-*
+  matches nothing: wildcraftfruit:seed-*
+  matches nothing: wildcraftfruit:fruitingbush-*
+  matches nothing: wildcraftfruit:*cutting-*
+  matches nothing: wildcraftfruit:sapling-*
+  matches nothing: wildcraftfruit:log-*
+  matches nothing: wildcraftfruit:leaves-*
+  matches nothing: wildcraftfruit:vine-*
+
+== Values defined twice ==
+✓ Values defined twice: none with different numbers.
+
+== Next ==
+Health checks: game version, files, join cost, players, value swings, solver, traders, variants (/emc diagnose health)
+What your settings and your mods change against a fresh install (maps twice more) (/emc diagnose baseline)
+Every recipe that gives more EMC than it costs (/emc diagnose profit)
+Every skipped recipe and why (/emc diagnose skipped)
+Back to the check-up (/emc diagnose)
