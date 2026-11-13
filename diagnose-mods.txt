@@ -1,0 +1,7 @@
+== Mods and their coverage ==
+Every mod that adds blocks or items, and how many of them have a value. Click one for its own report.
+Vintage Story (game) (/emc diagnose mod game): 8128 of 8145 valued (99.8%) (648 blacklisted on purpose)
+Vintage-E (vintagee) (/emc diagnose mod vintagee): 142 of 142 valued (100.0%) (1 blacklisted on purpose)
+
+== Next ==
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,1167 @@
+13.11.2026 11:47:49 [Server Notification] Server logger started.
+13.11.2026 11:47:49 [Server Notification] Game Version: v1.22.7 (Stable)
+13.11.2026 11:47:49 [Server Notification] C# Framework: .net 10.0.15
+13.11.2026 11:47:49 [Server Notification] Zstd Version: 1.5.7
+13.11.2026 11:47:49 [Server Notification] Operating System: Linux (Ubuntu 26.04.1 LTS) [Kernel 7.0.0.1019]
+13.11.2026 11:47:49 [Server Notification] CPU Cores: 4
+13.11.2026 11:47:49 [Server Notification] CPU: AMD EPYC 9V45 96-Core Processor
+13.11.2026 11:47:49 [Server Notification] Available RAM: 15983 MB
+13.11.2026 11:47:49 [Server Event] Launching server...
+13.11.2026 11:47:49 [Server Event] Server v1.22.7, network v1.22.6, api v1.22.0
+13.11.2026 11:47:49 [Server Notification] Entering runphase Initialization
+13.11.2026 11:47:49 [Server Event] Loading configuration...
+13.11.2026 11:47:49 [Server Notification] Entering runphase Configuration
+13.11.2026 11:47:49 [Server Notification] serverconfig.json not found, creating new one
+13.11.2026 11:47:49 [Server Notification] Loading savegame
+13.11.2026 11:47:49 [Server Notification] Create new save game data. Playstyle: surviveandbuild
+13.11.2026 11:47:49 [Server Notification] Savegame ~/work/Vintage-E/Vintage-E/data/Saves/default.vcdbs loaded
+13.11.2026 11:47:49 [Server Notification] World size = 1024000 256 1024000
+13.11.2026 11:47:49 [Server Notification] Start discovering assets
+13.11.2026 11:47:49 [Server Notification] Found 2 base assets in category blocktypes
+13.11.2026 11:47:49 [Server Notification] Found 0 base assets in category itemtypes
+13.11.2026 11:47:49 [Server Notification] Found 35 base assets in category lang
+13.11.2026 11:47:49 [Server Notification] Found 0 base assets in category patches
+13.11.2026 11:47:49 [Server Notification] Found 24 base assets in category config
+13.11.2026 11:47:49 [Server Notification] Found 0 base assets in category worldproperties
+13.11.2026 11:47:49 [Server Notification] Found 1 base assets in category sounds
+13.11.2026 11:47:49 [Server Notification] Found 230 base assets in category shapes
+13.11.2026 11:47:49 [Server Notification] Found 21 base assets in category textures
+13.11.2026 11:47:49 [Server Notification] Found 0 base assets in category recipes
+13.11.2026 11:47:49 [Server Notification] Found 0 base assets in category worldgen
+13.11.2026 11:47:49 [Server Notification] Found 3 base assets in category entities
+13.11.2026 11:47:49 [Server Notification] Found 316 base assets in total
+13.11.2026 11:47:49 [Server Event] Building assets...
+13.11.2026 11:47:49 [Server Notification] Entering runphase LoadAssets
+13.11.2026 11:47:49 [Server Notification] Will search the following paths for mods:
+13.11.2026 11:47:49 [Server Notification]     ~/work/Vintage-E/Vintage-E/vs/Mods
+13.11.2026 11:47:49 [Server Notification]     ~/work/Vintage-E/Vintage-E/data/Mods
+13.11.2026 11:47:49 [Server Notification] Found 4 mods (0 disabled)
+13.11.2026 11:47:49 [Server Notification] Mods, sorted by dependency: game, vintagee, creative, survival
+13.11.2026 11:47:49 [Server Notification] Instantiated 149 mod systems from 4 enabled mods
+13.11.2026 11:47:49 [Server Notification] External Origins in load order: modorigin@~/work/Vintage-E/Vintage-E/vs/assets/creative/, modorigin@~/work/Vintage-E/Vintage-E/vs/assets/survival/, mod@vintagee
+13.11.2026 11:47:49 [Server Notification] Found 554 external assets in category blocktypes
+13.11.2026 11:47:49 [Server Notification] Found 339 external assets in category itemtypes
+13.11.2026 11:47:49 [Server Notification] Found 1 external assets in category lang
+13.11.2026 11:47:49 [Server Notification] Found 11 external assets in category patches
+13.11.2026 11:47:49 [Server Notification] Found 138 external assets in category config
+13.11.2026 11:47:49 [Server Notification] Found 25 external assets in category worldproperties
+13.11.2026 11:47:49 [Server Notification] Found 9 external assets in category sounds
+13.11.2026 11:47:49 [Server Notification] Found 6175 external assets in category shapes
+13.11.2026 11:47:49 [Server Notification] Found 256 external assets in category textures
+13.11.2026 11:47:49 [Server Notification] Found 428 external assets in category recipes
+13.11.2026 11:47:49 [Server Notification] Found 1455 external assets in category worldgen
+13.11.2026 11:47:49 [Server Notification] Found 76 external assets in category entities
+13.11.2026 11:47:49 [Server Notification] Found 0 external assets in category compatibility
+13.11.2026 11:47:49 [Server Notification] Reloaded lang file with mod assets
+13.11.2026 11:47:50 [Server Notification] [vintagee] Vintage-E: matter tools: hooked the recipe ingredient checks, so they count as the game's tools in recipes.
+13.11.2026 11:47:50 [Server Notification] Compatibility lib: 0 assets added, 0 assets replaced.
+13.11.2026 11:47:50 [Server Notification] JsonPatch Loader: 17 patches total, successfully applied 17 patches, unmet conditions on 23 patches, no errors
+13.11.2026 11:47:51 [Server Notification] Loaded 4589 unique items
+13.11.2026 11:47:54 [Server Notification] Loaded 14119 unique blocks
+13.11.2026 11:47:55 [Server Notification] Loaded 828 unique entitiess
+13.11.2026 11:47:55 [Server Notification] BlockLoader: Entities, Blocks and Items loaded
+13.11.2026 11:47:55 [Server Event] Remapping blocks and items...
+13.11.2026 11:47:55 [Server Debug] Block IDs not found in savegame.
+13.11.2026 11:47:55 [Server Debug] Found 0 missing blocks
+13.11.2026 11:47:55 [Server Debug] Added 14121 new blocks to the mapping
+13.11.2026 11:47:55 [Server Debug] Block IDs have been written to savegame. Saved max BlockID was 14120
+13.11.2026 11:47:55 [Server Debug] ItemID Remapper: Begin
+13.11.2026 11:47:55 [Server Debug] Item IDs not found in savegame.
+13.11.2026 11:47:55 [Server Debug] Found 0 Item requiring remapping
+13.11.2026 11:47:55 [Server Debug] Found 0 missing Items
+13.11.2026 11:47:55 [Server Debug] Added 4589 new Items to the mapping
+13.11.2026 11:47:55 [Server Debug] Item IDs have been written to savegame
+13.11.2026 11:47:55 [Server Event] 15 cooking recipes loaded
+13.11.2026 11:47:55 [Server Event] 9 metal alloys loaded
+13.11.2026 11:47:56 [Server Event] 1311 grid recipes loaded from 275 files
+13.11.2026 11:47:56 [Server Event] 45 smithing recipes loaded from 44 files
+13.11.2026 11:47:56 [Server Event] 31 clay forming recipes loaded from 31 files
+13.11.2026 11:47:56 [Server Event] 12 knapping recipes loaded from 12 files
+13.11.2026 11:47:56 [Server Event] 91 barrel recipe recipes loaded from 42 files
+13.11.2026 11:47:56 [Server Notification] Tags registry was locked.
+13.11.2026 11:47:56 [Server Notification] Entering runphase AssetsFinalize
+13.11.2026 11:47:56 [Server Notification] [vintagee] Loaded 140 EMC base value rules and 108 last-resort rules from 1 file(s): vintagee:config/vintagee-emc.json
+13.11.2026 11:47:56 [Server Notification] [vintagee] EMC: 6 compatibility file(s) not loaded: Butchering (butchering isn't loaded), Expanded Matter (em isn't loaded), From Golden Combs (fromgoldencombs isn't loaded), Primitive Survival (primitivesurvival isn't loaded), Wildcraft: Fruits and Nuts (wildcraftfruit isn't loaded), Wildcraft: Trees and Shrubs (wildcrafttree isn't loaded)
+13.11.2026 11:47:56 [Server Notification] [vintagee] Look: players get Original unless they pick their own (.vintagee).
+13.11.2026 11:47:56 [Server Notification] [vintagee] Crafting methods: Both (0 item properties and 0 recipes switched off).
+13.11.2026 11:47:56 [Server Notification] [vintagee] Original look on: 0 new models, swapped 259 textures on 139 blocks/items and 6 entity types.
+13.11.2026 11:47:56 [Server Notification] [vintagee] New look on: 67 new models, swapped 372 textures on 151 blocks/items and 2 entity types.
+13.11.2026 11:47:56 [Server Event] Server assets loaded, parsed, registered and finalized
+13.11.2026 11:47:56 [Server Event] Initialising systems...
+13.11.2026 11:47:56 [Server Notification] Entering runphase LoadGamePre
+13.11.2026 11:47:56 [Server Notification] Reloaded 19 weather patterns, 5 wind patterns and 5 weather events
+13.11.2026 11:47:56 [Server Notification] Started 126 systems on Server:
+13.11.2026 11:47:56 [Server Notification]     Mod 'VSEssentials.dll' (game):
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.Core
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenTerra
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenSnowLayer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.EntityPartitioning
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ErrorReporter
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenTerraPostProcess
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ModCompatiblityUtil
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.NoObf.ModJsonPatchLoader
+13.11.2026 11:47:56 [Server Notification]         FluffyClouds.FluffyCloudsModSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Systems.ModSystemTfEditFromAttributes
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Essentials.PathfindSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Essentials.PathFindDebug
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Essentials.PathfindingAsync
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.JsonExport
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ModBasicBlocksLoader
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenMaps
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenRockStrataNew
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenHotSprings
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenCreatures
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ModSystemWorldGenStructures
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemItemRendererOptimizer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.AiRuntimeConfig
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSyncHarvestableDropsToClient
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemEmotes
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.LeafBlockDecay
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.POIRegistry
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.RoomRegistry
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.WeatherSystemCommands
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.WeatherSystemServer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.SystemRemotePlayerTracking
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.WorldMapManager
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenDeposits
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.NoObf.ModRegistryObjectTypeLoader
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.LoadColorMaps
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenCaves
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenStructures
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.WgenCommands
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenBlockLayers
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenPonds
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ClothManager
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenStructuresPosPass
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenVegetationAndPatches
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenRivulets
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenLightSurvival
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.CollectibleBuffDebug
+13.11.2026 11:47:56 [Server Notification]     Mod 'VSSurvivalMod.dll' (survival):
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemControlPoints
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.SurvivalCoreSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Systems.StoryLockableDoor
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.Client.NoObf.StoryGenFailedSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.UpgradeTasks
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ChiselBlockBulkSetMaterial
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ModSystemDetailModeSync
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.NpcControl
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.ModSystemTiledDungeons
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemExplosionAffectedStability
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.MyceliumSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModsystemButterflySpawnCondsExtra
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemFishInstaFlee
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemCatchCreature
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.FishingSupportModSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemGliding
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSnowShoveling
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSubTongsDurability
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSwoopDev
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.Timeswitch
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ClutterBookshelfUtil
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ScreenshakeToClientModSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemResoArchiveCommands
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.StoryStructuresSpawnConditions
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemNPCHairStyling
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSkinnableAdditions
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemVillagerDebug
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemAuction
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemBlockReinforcement
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.Core
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemBoatingSoundAndRatlineStamina
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.CharacterSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.CustomSpawnConditions
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.VariablesModSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModsystemElevator
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ActivityModSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ActivityEditorSystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemFarming
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemCommandHandbook
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemTutorial
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.HeldItemMouseInputHandler
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemCorpseReturnTeleporter
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemNightVision
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.TobiasTeleporter
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModJournal
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.LiquidItemStackRenderer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemStructureLocator
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModLootRandomizer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemEntityOwnership
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemRifts
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemRiftWeather
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSleeping
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSupportBeamPlacer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.TeleporterManager
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModTemperature
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.SystemTemporalStability
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.TemporalStabilityEffects
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemClimateSpecificTraderTypes
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemWearableStats
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemEditableBook
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.Mechanics.ModSystemWindTurbulence
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.Mechanics.MechanicalPowerMod
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenDungeons
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.GenStoryStructures
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.WgenCommandsExt
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenDevastationLayer
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.RecipeRegistrySystem
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.RecipeLoader
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemFishDepletion
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemWormGrunting
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemFireFromLightning
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemOreMap
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemSnowballs
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.HumanoidOutfits
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.ModSystemDevastationEffects
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.GameContent.DisableRecipeRegisteringSystem
+13.11.2026 11:47:56 [Server Notification]     Mod 'VSCreativeMod.dll' (creative):
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.Core
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.WorldEdit.WorldEdit
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenBlockLayersFlat
+13.11.2026 11:47:56 [Server Notification]         Vintagestory.ServerMods.GenLightCreative
+13.11.2026 11:47:56 [Server Notification]     Mod 'vintagee' (vintagee):
+13.11.2026 11:47:56 [Server Notification]         VintageE.VintageEModSystem
+13.11.2026 11:47:56 [Server Event] 26 traits loaded from 1 files
+13.11.2026 11:47:56 [Server Event] 6 classes loaded from 1 files
+13.11.2026 11:47:58 [Server Debug] Loading leaf block decay system
+13.11.2026 11:47:58 [Server Debug] Finished loading leaf block decay system
+13.11.2026 11:47:58 [Server Debug] Block simulation loaded blocks
+13.11.2026 11:47:58 [Server Debug] Block simulation loaded items
+13.11.2026 11:47:58 [Server Notification] Server map set
+13.11.2026 11:47:58 [Server Debug] Unique crafting ingredients count: 1977
+13.11.2026 11:47:58 [Server Notification] Entering runphase GameReady
+13.11.2026 11:47:58 [Server Notification] Entering runphase WorldReady
+13.11.2026 11:47:58 [Server Event] Starting world generators...
+13.11.2026 11:47:59 [Server Debug] Dungeon TileGenerator-big66-blastfurnace-main Setting RequireClosed to c-ul-smy,c-ul-ste,m-ste,s-lr-wop,s-ud-ste,inc-dl-smy,m-smy,inc-ur-ste,c-dl-smy,s-ud-wop,m-wop,s-ud-smy,inc-dr-smy,c-ul-gec,m-ene,c-ur-smy,s-lr-smy,66gm,c-ul-wop,inc-dr-ste,inc-dl-wop,s-lr-ste,,66gc-rp-lw,66gs-lp-lw,66gs-rp-rw,66gc-lp-lw,66gs-rp-lw,epstr-ud-ene,epstd-lr-ene,66gs-lp-rw,66gc-lp-rw,66gc-rp-rw,lpstr-ud-ene,lpstd-lr-ene,lpctr-ul-ene,lpctd-ul-ene,rpctr-ul-ene,rpctd-ul-ene,rpstd-lr-ene,rpstr-ud-ene
+13.11.2026 11:48:00 [Server Debug] Dungeon TileGenerator-big66-blastfurnace-main Setting RequireClosed to c-ul-smy,m-ste,s-lr-wop,s-ud-ste,inc-dl-smy,m-smy,c-ul-ste,s-ud-wop,s-ud-smy,inc-dr-smy,c-ul-gec,m-ene,s-lr-smy,c-ur-smy,66gm,m-wop,c-ul-wop,inc-dl-wop,s-lr-ste,66gs-lp-lw,,66gc-lp-lw,epstr-ud-ene,epstd-lr-ene,66gc-rp-rw,66gc-rp-lw,66gs-rp-lw,lpstr-ud-ene,lpstd-lr-ene,lpctr-ul-ene,lpctd-ul-ene,rpctr-ul-ene,rpctd-ul-ene,rpstd-lr-ene,rpstr-ud-ene
+13.11.2026 11:48:01 [Server Notification] Reloaded 35 tree generators
+13.11.2026 11:48:01 [Server Event] Loading 7x7x8 spawn chunks...
+13.11.2026 11:48:01 [Server Event] 0% (49 in queue)
+13.11.2026 11:48:03 [Server Event] 0% (49 in queue)
+13.11.2026 11:48:06 [Server Event] 0% (113 in queue)
+13.11.2026 11:48:07 [Server Event] 0% (163 in queue)
+13.11.2026 11:48:08 [Server Event] Begin game ticking...
+13.11.2026 11:48:08 [Server Notification] Entering runphase RunGame
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC mapped (server start) in 936 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27701 conversions from 23 sources.
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:48:09 [Server Notification] [vintagee] EMC check-up: 4 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:48:11 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:48:11 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:48:11 [Server Notification] [vintagee] EMC mapping time: base values and lists 40 ms, reading recipes 256 ms, building the graph 37 ms, ratios and trader prices 41 ms, guesses (variants, defaults, fuel and food) 168 ms, guesses against recipes 13 ms, material-specific values 34 ms, coverage and missing items 33 ms, origins 50 ms, solving (8 solves, 56 rounds; relaxing 64 ms, inferring 61 ms) 183 ms, contents and materials table 73 ms, (after) value snapshot 28 ms, (after) coverage log and missing file 6 ms, (after) check-up 191 ms, (after) value files (DumpValuesOnStart) 1552 ms, (after) sending the table 1 ms.
+13.11.2026 11:48:11 [Server Notification] Starting server threads
+13.11.2026 11:48:11 [Server Event] Dedicated Server now running on Port 42420 and all ips!
+13.11.2026 11:48:11 [Server Notification] Please be aware that as of 1.20, servers default configurations have changed - servers no longer register themselves to the public servers list and are invite-only (whitelisted) out of the box. If you desire so, you can enable server advertising with '/serverconfig advertise on' and disable the whitelist mode with '/serverconfig whitelistmode off'
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] Vintage-E 1.24.1 self-test
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:fat = 16 (expected 1-64)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:fat-rendered = 16 (expected 1-64)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:gem-emerald-rough = 2048 (expected 2048-2048)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:gem-diamond-rough = 8192 (expected 8192-8192)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:creature-fish-freshwater-bass-largemouth-adult = 112 (expected 111.99-112.01)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:jonasparts-tank01 = 1024 (expected 1024-1024)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:creature-trader-female-artisan-cold = 0 (expected 0-0)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:locatormap-treasures = 0 (expected 0-0)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:lore-paper = 0 (expected 0-0)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:metal-parts = 25.4 (expected 1-1000)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:nightvisiondevice = 4096 (expected 4096-4096)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:ore-fluorite = 32 (expected 32-64)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:ore-fluorite-limestone = 40 (expected 1-1000)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:blastingpowder = 25.5667 (expected 1-30)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:bonyremains-ribcage = 96 (expected 96-96)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:crystalizedore-poor-quartz_nativegold-andesite = 102.4 (expected 102-103)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:ingot-steel = 336 (expected 256-400)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS value of game:hide-pelt-bear-brown-head = 56 (expected 1-200)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   value of game:altar-north = 64
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   value of vintagee:furnace-dark-cold = 98346
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   value of vintagee:trinket-voidring = 143638
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS player model loads
+13.11.2026 11:48:16 [Server Warning] Shape file seraph: Found duplicated attachment point code 'Eyes' (attached to element eyesroot), this will result in undefined behavior. Ensure a unique code for each AP.
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   UpperTorso: [5.7, 19.4, 4.9] to [10.96, 24.13, 11.1] (own box 0,4.3,-0.1 to 5,9.3,6.1, rotation 0,0,-6)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   Head: [5.32, 25.08, 5.5] to [10.64, 30.27, 10.5] (own box -1.7,2.1,-1 to 3.8,7.1,4, rotation 0,0,-7)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   LowerArmL: [7.28, 10.23, 11.53] to [10.1, 18.2, 13.2] (own box 0.2,-7.3,-0.1 to 2.7,0.7,1.9, rotation 8,0,-6)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   LowerArmR: [7.22, 10.26, 2.46] to [9.97, 18.09, 4.79] (own box 0.1,-7.3,0.1 to 2.6,0.7,2.1, rotation -8,0,-6)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-omega exists
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-omega fits the Emblem slot
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-omega can be put in a Emblem slot
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-omega worn model vintagee:entity/worn/kleinstar-omega loads
+13.11.2026 11:48:16 [Server Warning] Shape file seraph: Found duplicated attachment point code 'Eyes' (attached to element eyesroot), this will result in undefined behavior. Ensure a unique code for each AP.
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-omega worn model hangs on UpperTorso
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-badge: [5.49, 21.01, 6.7] to [5.97, 23.59, 9.3]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:trinket-voidring exists
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:trinket-voidring fits the Hand slot
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:trinket-voidring can be put in a Hand slot
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:trinket-voidring worn model vintagee:entity/worn/ring-voidring loads
+13.11.2026 11:48:16 [Server Warning] Shape file seraph: Found duplicated attachment point code 'Eyes' (attached to element eyesroot), this will result in undefined behavior. Ensure a unique code for each AP.
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS vintagee:trinket-voidring worn model hangs on LowerArmL
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-bandW: [7, 11.03, 11.21] to [7.48, 11.81, 13.78]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-bandE: [9.7, 10.93, 11.16] to [10.18, 11.71, 13.73]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-bandN: [7.4, 11.02, 11.2] to [9.73, 11.65, 11.54]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-bandS: [7.45, 11.09, 13.4] to [9.78, 11.72, 13.74]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-gem: [8.25, 11.08, 13.74] to [8.98, 11.76, 14]
+13.11.2026 11:48:16 [Server Warning] Shape file seraph: Found duplicated attachment point code 'Eyes' (attached to element eyesroot), this will result in undefined behavior. Ensure a unique code for each AP.
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   game:entity/humanoid/seraph/clothing/emblem/silver-star hangs on UpperTorso
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-breasts: [6.06, 22.38, 6.8] to [6.17, 24.38, 8.8]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-pendant: [5.4, 21.32, 5.7] to [5.96, 22.9, 7.2]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-ray1: [5.47, 21.87, 4.95] to [5.89, 22.25, 7.95]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-ray2: [5.54, 23.86, 6.25] to [5.82, 20.25, 6.65]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-ray3: [5.51, 22.98, 5.25] to [5.85, 21.13, 7.65]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-ray4: [5.44, 20.86, 5.53] to [5.92, 23.25, 7.37]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-gem1: [5.33, 22.12, 5.74] to [5.53, 22.11, 7.16]
+13.11.2026 11:48:16 [Server Warning] Shape file seraph: Found duplicated attachment point code 'Eyes' (attached to element eyesroot), this will result in undefined behavior. Ensure a unique code for each AP.
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   game:entity/humanoid/seraph/clothing/arm/copper-bracelet hangs on LowerArmL
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-Cube19: [7.31, 11.21, 11] to [9.87, 12.64, 11.4]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-Cube3: [7.35, 11.29, 13.2] to [9.91, 12.71, 13.6]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-Cube1: [7.11, 11.22, 11.1] to [7.71, 12.79, 13.54]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]     vintageetest-Cube5: [9.41, 11.14, 10.96] to [10, 12.7, 13.4]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   guesses: 468 look/placement variants, 0 other mods' variants, 0 fuel, 0 food, 100 other variants, 1638 defaults; 17 missing
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   cinnabar ore: 190.5 (block drops: 1.25 game:ore-cinnabar -> 1 game:ore-cinnabar-andesite)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS cinnabar ore isn't priced like quartz
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   loose cinnabar: 152.4 (block drops: 1 game:ore-cinnabar -> 1 game:looseores-cinnabar-andesite-free)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS loose cinnabar isn't priced like gold-bearing quartz
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   hyperkinetic lens: 90640.9 (grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 game:gem-diamond-rough + 1 vintagee:novaexplosive-catalyst + 1 game:gem-diamond-rough + 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:gadget-hyperkineticlens)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS the lenses are valued from their recipes
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   fence piece: 2.3333 (placement state: 1 game:woodenfence-acacia-ew-free -> 1 game:woodenfence-acacia-e-free)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS fence pieces are worth the fence
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   brown shingle: 2 (beehive kiln firing: 1 game:shingle-raw-red -> 1 game:shingle-burned-brown), black shingle: 2
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS kiln-coloured shingles cost the same clay as the others
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS aged thatch roofing has a value
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   oak sailboat: 12733.7 (built in stages (boatconstruction-sailed-oak): 8 game:firewood + 9 game:log-placed-aged-ud (or 38 more) + 16 game:plank-...)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS sailboats are valued from their build stages
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   cheddar: 4 slices 492, 2 slices 246 (relativeValues rule: 0.5 x game:cheese-cheddar-4slice)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS half a cheese is worth half a cheese
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   black axe mold: 56 (beehive kiln firing: 1 game:toolmold-blue-raw-axe -> 1 game:toolmold-black-fired-axe)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS the axe mold isn't priced like the anvil mold
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   contents: 262 carry data (132 containers, 126 material, 4 chiseled); 60 with material values
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS game:shield-woodmetal is Material, Full (Material, Full)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS game:woodbucket is Contents, Full (Contents, Full)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS game:chiseledblock is Chiseled, Full (Chiseled, Full)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   round shields by metal: tinbronze 289.6, bismuthbronze 366.4, blackbronze 816.96, gold 4,104, silver 1,032, iron 520, meteoriciron 776, steel 680
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS round shields made of different metals are worth different amounts
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS an exact copy of a gold shield is a gold shield at the same price
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   tapestry versions known to this server: none (the version check is skipped here)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   chiseled granite: full 1, half 0.5, rock 1
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS chiseled blocks are worth their voxels of material
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   crucible with 200 units of copper, item + contents: 272 (expected 272); kind Contents
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS a crucible of molten metal counts its metal units
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   bucket of 10 L water: item only 16.3333, item + contents 26.3333, item price 16.3333
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS filled buckets count their water only in item + contents mode
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   3 L bucket (capacity 10 L): learned as 10 L (60 chars), made as 10 L worth 26.3333
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS a part-filled bucket is learned and made as a full one
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS a 3 L bucket burns for the bucket plus 3 EMC (19.3333 vs 19.3333)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   liquid containers with no capacity (learned at whatever fill they had): 0 
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   attribute paths on exact-version things (14): type x116 (game:clutter-elevator-elevatorrail); material x56 (game:antlermount); wood x32 (game:cabinetdoor-1block-solid); metal x12 (game:shield-woodmetal); deco x12 (game:shield-woodmetal); variant x12 (game:clutteredbookshelf); lining x8 (game:lantern-small-up); glass x8 (game:lantern-small-up); color x4 (game:shield-woodmetalleather); lidState x4 (game:crate); rock x4 (game:rocktyped-rubble-free); label x3 (game:crate); destroyed x3 (game:trapcrate-wood); ucontents x2 (game:bowl-blue-fired)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   liquid sweep: 30 containers x 103 valued liquids, 3090 combinations valued; 0 cheaper to make than they burn, 0 made aged
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS no liquid container can be burned for more than it costs to make, and made liquids are fresh
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   liquid transitions worth more after than before: 0
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS buckets of milk of different ages are one thing to learn (60 chars)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS a bucket of an unvalued liquid (game:jamhoneyportion) is unvalued as a whole (0)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test]   /emc configure tableuserange 9.5 -> TableUseRange changed to 9.5. Saved and applied. | TableUseRange = 9.5 [Success]
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS /emc configure changes a number setting
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS /emc configure adds and removes list entries
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS /emc configure sets a contents mode and puts it back (liquid containers default to full)
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS /emc configure refuses a bad value (lots isn't valid here: it needs a number. [Error])
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS /emc configure list shows the settings
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS the settings window replaces a list
+13.11.2026 11:48:16 [Server Notification] [Vintage-E self-test] PASS the settings window refuses a bad table line and keeps the old value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the settings window changes a number
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] Look: players get Original unless they pick their own; ProjectE sounds on
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS players are told the server's default look through the world settings: Original
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the server sends Vintage-E's own blocks and items (each player's game applies their look)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound charge is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound uncharge is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound heal is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound destruct is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound power is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound transmute is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound watermagic is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sound windmagic is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS ProjectE sounds follow the setting
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the Look setting accepts its three looks, and New is the default
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Original look: every texture it names is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Original look: every model it names is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS New look: every texture it names is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS New look: every model it names is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS New look: 67 blocks and items get a model
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the game's LoadBlockShapes(blocks) is there for the look to hook into
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the game's LoadItemShapes(items) is there for the look to hook into
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the shape loader tells a player's game from a server (its game field)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS New look applied (to copies) (67 models, 372 textures)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS New look: nothing failed to apply
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring has the ring model: vintagee:newlook/item/ring
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring's gem is the game's aquamarine: game:block/stone/gem/aquamarine
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring's band is the game's silver: game:block/metal/plate/silver
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring keeps its own texture for wearing
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring is turned over like the game's gems in the inventory: 150
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Klein Star Omega has the star model
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector MK3 is drawn from its model: JSON vintagee:newlook/block/energycollector
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector MK3's crystal is a ruby: game:block/stone/gem/ruby
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS transmutation table has the new model
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS lit red matter furnace has the lit fire pit model
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red matter furnace burns red matter: vintagee:newlook/material/redmatter
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS matter blocks stay cubes
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS dark matter pickaxe head uses the new dark matter: vintagee:newlook/material/darkmatter
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red alchemical bag is the game's red linen: game:block/cloth/linen/red
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS projectiles keep Vintage-E's look
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the interdiction torch's outline fits its model: [0.2812, 0, 0.2812 => 0.7188, 0.9219, 0.7188]
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the torch's collision box is unchanged
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the alchemical chest's outline fits its lid: [0.0469, 0, 0.0219 => 0.9531, 0.8875, 0.9781]
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Original look: ProjectE textures swapped (259 textures, 139 blocks/items, 6 entity types)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS every ProjectE texture in the swap list is there
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring uses ProjectE's texture: vintagee:projecte/item/rings/zero_off
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector MK2 top is ProjectE's: vintagee:projecte/block/collectors/top_2
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector front is ProjectE's: vintagee:projecte/block/collectors/front
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector sides are ProjectE's plain face: vintagee:projecte/block/collectors/other
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS collector underside is ProjectE's plain face: vintagee:projecte/block/collectors/other
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS condenser MK2 underside is cut from ProjectE's chest texture: vintagee:projecte/derived/condenser_mk2-bottom
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS condenser MK1 top is cut from ProjectE's chest texture: vintagee:projecte/derived/condenser_mk1-top
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS transmutation table top is ProjectE's: vintagee:projecte/block/transmutation_stone/top
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS interdiction torch flame is ProjectE's: vintagee:projecte/derived/interdiction_torch-glow
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red alchemical bag is ProjectE's flat bag: vintagee:projecte/item/alchemy_bags/red
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red alchemical bag has no sack model
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS dark matter pickaxe head is ProjectE's dark matter: vintagee:projecte/block/dark_matter_block
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS fireball uses ProjectE's sprite: vintagee:projecte/entity/fireball
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS fireball is drawn whole: vintagee:entity/projectile-sprite
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS smite arrows (no ProjectE texture) keep their own look
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Klein Stars (already ProjectE's art) are left alone
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring switched off keeps its texture
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Zero Ring switched on lights up: vintagee:projecte/item/rings/zero_on
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Ring of Arcana shows its mode: vintagee:projecte/item/rings/arcana_2_on
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Swiftwolf's shield mode shows ProjectE's shield look: vintagee:projecte/item/rings/swrg_on3
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS switched-on looks found for the rings and stones (48)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS bone arrow is worth a flint arrow: 16.66 / 16.66
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS custom translocator schematic is a free ingredient (blacklisted, no value)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS translocator part is a free ingredient and 4 rickety translocators are off the blacklist
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS game:tobtlocator-north has a value: 16,785.1 EMC
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Tome of Knowledge has no recipe and no EMC value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red matter pedestal: twice the range and power
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS red matter pedestal is worth more than the dark one: 933,888 > 344,064
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the Arcane Tablet exists and counts as a tablet
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the Arcane Tablet is worth a tablet and four red matter (196616 = 49160 + 4 × 36864)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the Arcane Tablet has a crafting recipe
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft with nothing learned names both ingredients as missing (Red Matter, Transmutation Tablet)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft plans the Arcane Tablet: 5 cells for 196616 EMC
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft lays the ingredients out as the recipe wants, and it makes vintagee:arcanetablet
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the game can rebuild a saved Emc Craft grid by its class name (EmcCraftGrid)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the game's handbook page builder is there for the Emc Craft link (CollectibleBehaviorHandbookTextAndExtraInfo.GetHandbookInfo, parameter 'capi')
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the game's crafting grid takes Vintage-E's ID and goes away when closed (vintageeemccraft-selftest, 10 slots, removed on close True)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft makes the tool for game:brickslabs-eight-black-down-free from EMC and marks it (game:chisel-copper)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft counts only the tool's wear as the real cost (0.21 of 128; 21.23 real vs 149.02 up front)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Emc Craft picks the cheapest recipe for game:brickslabs-eight-black-down-free (21.23 EMC, game:recipes/grid/slabs/claybrickslab.json)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS closing burns only the tools Emc Craft made, back into EMC (128); one it didn't make gives back 0
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a Klein star holding 1,000 is burned only by hand, for the star plus what it holds (automatic: star-noburn, by hand: allowed, worth 11240 = 10240 + 1,000)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS no-transmute: granite keeps its value but can't be burned (notransmute)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS no-transmute list goes to clients
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS no-transmute: taken off again
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS magnet: an empty 'only these' filter pulls nothing
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS magnet: 'only these' pulls just the filtered item
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS magnet: 'all except these' skips the filtered item
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS magnet: Black Hole Band fits, a rock doesn't
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS tapestry: learned as its exact pattern (kind Material, key e:b:game:tapestry-north|BQR0eXBlC3NjaGVt)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS clutter: the plain block isn't priced by a trader's typed stack (default value (game:clutter*))
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS clutter: needs its type and keeps it (15 typed values from traders)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS fruit tree cutting: BlockFruitTreeBranch, not in the creative inventory, kind Material; needs its type
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS typed-only blocks: 86 need their data (cabinetdoor-1block-solid, cabinetdoor-1block-glassframed, shield-woodmetal, shield-woodmetalleather, shield-metal, clutter-elevator-elevatorrail, cabinet-bottom, cabinet-middle, cabinet-top, cabinet-topbottom, antlermount, bookshelf, …); all kept as material kinds
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS tapestry: an unsold pattern is priced like its siblings (355.6)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS everlasting glue: exists, a use costs 32 EMC
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   value loops: 1, settled loops: 0
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]     game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS every missing item has a reason
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc dump writes ModData/vintagee/emc-values.csv and says where: Wrote 16867 values to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv [Success]
+13.11.2026 11:48:17 [Server Error] Found closing tag char > but no tag was opened at 20. Use &gt;/&lt; if you want to display them as plain characters. See debug log for full text.
+13.11.2026 11:48:17 [Server Error] Found closing tag char > but no tag was opened at 97. Use &gt;/&lt; if you want to display them as plain characters. See debug log for full text.
+13.11.2026 11:48:17 [Server Error] Found closing tag char > but no tag was opened at 107. Use &gt;/&lt; if you want to display them as plain characters. See debug log for full text.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc answers are escaped for the chat's markup (unescaped breaks: True, escaped is plain text: True)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc loop writes emc-loops.txt: 1 value loop(s): in each, every item is only made from the next one, so none of them can get a value.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS data folder is ModData/vintagee: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc configure <setting> default resets it: TableUseRange is back to its default: 8. Saved and applied. [Success]
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS every setting has a default for the window
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Look is a drop-down of its three choices
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc configure Look refuses a word that isn't a choice: banana isn't one of the choices: use New, Middle, Original. [Error]
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc configure Look middle sets Middle: Middle
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the window's drop-down value Original is saved: Original
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS Look put back to Original
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS long descriptions are in the handbook
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS tooltips stay one paragraph with the numbers in (319 characters for Swiftwolf's)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS nova explosives are lit by torches and firestarters (ignitable)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS diviningrodlow: 88 uses for 8.82 EMC, 16 deep
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS diviningrodmedium: 195 uses for 19.49 EMC, 32 deep
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS diviningrodhigh: 3608 uses for 360.82 EMC, 128 deep
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS divining rods look 16, 32 and 128 blocks deep
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the box shows the manifold as a free ingredient from the value files
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS lore paper is blacklisted, and the box shows it
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalbagdark-red: 48 slots, upgraded from the smaller bag keeping its contents
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalbagred-red: 64 slots, upgraded from the smaller bag keeping its contents
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   recipe explanations checked: 300, not adding up: 0
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc dump's recipe numbers add up to the value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a worked-backwards value says so: game:crushed-olivine
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a shared-out value says so: game:honeyportion
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS base values name their value file or setting (60 of 60)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a half-worn game:armor-body-antique-blackguard-broken explains its durability (300/600) and comes to 1,168.4
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a Klein star's stored EMC is listed
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a filled bucket in item + contents mode lists its water
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS an item with no value lists its ways and what each lacks: game:metalbit-platinum
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the dump's 6 item references resolve, and the file text spells them out
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the loop window has a section per loop (1) and its packet holds every line (6)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Sulfuric acid (game:acid-full-sulfuric): 0.424 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:acid-full-sulfuric (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == What a new one is worth, step by step ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The plain item's value: 0.424 EMC (where it comes from is further down)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | A liquid: 100 portions make a litre, so a litre is worth 42.4 EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | = 0.424 EMC each: what burning one gives, and what creating one costs
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Made by cooking in a pot (the cheapest way the mapper found):
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   + Water (game:waterportion) x100 at 0.01 EMC = 1
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     from: a base value from vintagee:config/vintagee-emc.json
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   + Saltpeter (game:saltpeter) x1 at 16 EMC = 16
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     from: a base value from vintagee:config/vintagee-emc.json
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   + Powdered sulfur (game:powder-sulfur) x2 at 12.7 EMC = 25.4
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     from: quern grinding: 1 Sulfur chunk (game:ore-sulfur) -> 2 Powdered sulfur (game:powder-sulfur)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   = 42.4 for 100, so 0.424 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Crushed olivine (game:crushed-olivine): 3.17 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:crushed-olivine (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == What a new one is worth, step by step ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The plain item's value: 3.17 EMC (where it comes from is further down)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | = 3.17 EMC each: what burning one gives, and what creating one costs
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Worked backwards (InferValuesFromProcessing): nothing the mapper knows makes it, but smelting, firing or cooking uses it, so it's worth what that makes minus everything else that goes in:
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   Green glass (game:glass-green) x2 at 12.7 EMC = 25.4 (what it makes)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   = 25.4 for the 8 it takes, so 3.17 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Other ways to make it (1) ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The cheapest way sets the value, so nothing can be made for less than it burns for.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   pulverizer crushing: 1 Olivine (game:ore-olivine) -> 1 Crushed olivine (game:crushed-olivine): 3.17 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Honey (game:honeyportion): 0.8 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:honeyportion (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == What a new one is worth, step by step ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The plain item's value: 0.8 EMC (where it comes from is further down)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | A liquid: 100 portions make a litre, so a litre is worth 80 EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | = 0.8 EMC each: what burning one gives, and what creating one costs
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Shared out: fruit press makes several things at once; what isn't already valued gets a share of what goes in (evenly, unless the recipe weighs them):
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   Honeycomb (game:honeycomb) x1 at 32 EMC = 32
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   = 32 left, split evenly between the 2 things that had no value: 16 each; 20 of this make one share, so 0.8 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Other ways to make it (1) ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The cheapest way sets the value, so nothing can be made for less than it burns for.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   squeezing: 1 Honeycomb (game:honeycomb) -> 20 Honey (game:honeyportion) + 1 Beeswax (game:beeswax) (shared out with other things)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Aged firewood (game:agedfirewood): 8 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:agedfirewood (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == What a new one is worth, step by step ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The plain item's value: 8 EMC (where it comes from is further down)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Nothing about one in particular changes that: it has no durability, contents or stored EMC.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | = 8 EMC each: what burning one gives, and what creating one costs
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | A value file (vintagee:config/vintagee-emc.json): "game:agedfirewood" = 8.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   A base value: the mapper starts from it, and everything made from it builds on it.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Other ways to make it (1) ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Its value is set, so these don't change it.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   the crafting grid: 1 Aged oak log (game:log-placed-aged-ud) -> 4 Aged firewood (game:agedfirewood): 8 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Platinum bits (game:metalbit-platinum): no EMC value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:metalbit-platinum (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Stuck in a value loop: Platinum ingot (game:ingot-platinum) -> Platinum bits (game:metalbit-platinum) -> Platinum ingot (game:ingot-platinum). Each is only made from the next, and nothing outside the loop gives any of them a value.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | No value. 3 way(s) to make it, and what each is missing:
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   1. the crafting grid: 1 Platinum ingot (game:ingot-platinum) -> 20 Platinum bits (game:metalbit-platinum) (x9)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     Platinum ingot (game:ingot-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |       No value. 3 way(s) to make it, and what each is missing:
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |         1. smelting, firing or cooking: 20 Platinum bits (game:metalbit-platinum) -> 1 Platinum ingot (game:ingot-platinum)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |           Platinum bits (game:metalbit-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |             (part of the same loop)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |         2. smelting, firing or cooking: 1 Platinum plate (game:metalplate-platinum) -> 2 Platinum ingot (game:ingot-platinum)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |           Platinum plate (game:metalplate-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |             No value. 1 way(s) to make it, and what each is missing:
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |               1. smithing: 2 Platinum ingot (game:ingot-platinum) -> 1 Platinum plate (game:metalplate-platinum)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |                 Platinum ingot (game:ingot-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |         3. smelting, firing or cooking: 1 Work item (Platinum) (game:workitem-platinum) -> 1 Platinum ingot (game:ingot-platinum)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |           Work item (Platinum) (game:workitem-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |             blacklisted: never has a value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   2. the crafting grid: 1 Platinum plate (game:metalplate-platinum) -> 40 Platinum bits (game:metalbit-platinum) (x9)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     Platinum plate (game:metalplate-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   3. the crafting grid: 1 Work item (Platinum) (game:workitem-platinum) -> 20 Platinum bits (game:metalbit-platinum) (x9)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |     Work item (Platinum) (game:workitem-platinum) has no value
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | To give it a value: Ctrl+K over it (or Set value below), a recipe in /emc recipe, or a value for a missing ingredient.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Blackguard cuirass (Broken) (game:armor-body-antique-blackguard-broken): 1,168.4 EMC each
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Code: item:game:armor-body-antique-blackguard-broken (as the server config and value files write it)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == What this one is worth, step by step ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | The plain item's value: 2,336.8 EMC (where it comes from is further down)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Durability 300/600: worth 50% of new: 2,336.8 x 50% = 1,168.4 (DurabilityScalesEmc)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | = 1,168.4 EMC each: what burning one gives, and what creating one costs
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Where the plain item's value comes from ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | from: trader price: 46 x 50.8 EMC per gear
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   (Server setting: UseTraderPrices)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 1 value loop(s): in each, every item is only made from the next one, so none of them can get a value.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Give any one item in a loop a value (Ctrl+K over it, or click it and Set value) and the rest follow. Click an item to see why it has none.
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | 
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | == Loop 1: 2 items ==
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   | Platinum ingot (game:ingot-platinum) -> Platinum bits (game:metalbit-platinum) -> Platinum ingot (game:ingot-platinum)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   Platinum ingot (game:ingot-platinum) is made from Platinum bits (game:metalbit-platinum) (smelting, firing or cooking)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test]   |   Platinum bits (game:metalbit-platinum) is made from Platinum ingot (game:ingot-platinum) (the crafting grid)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc dump game:stick explains the stick and writes its file
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS /emc dump with an unknown code says so
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the ring's wind plays on ring flight (True), not on another mod's flight (False), with sounds off (False) or on the ground (False)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS game:armor-body-hide-bear-black at 25% condition is worth a quarter (59 of 236)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS the philosopher's stone stays in all 20 recipes that use it, the table's included
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS a bucket of water burns for 16.33 with containers protected, 26.33 (with the water) without
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS EMC numbers keep two decimals, cut off: 1,234.56, 99.99, 1.15, 20,480
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS thatch has a value: 0.5
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS dark matter can be burned and learned: yes
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS NaN and infinite settings go back to usable values (dark factor 0, fallback 0, table range 8, clothing 1/0/100)
+13.11.2026 11:48:17 [Server Notification] [Vintage-E self-test] PASS machines refuse EMC that isn't a number (relay took 0, condenser 0) and read a broken store back as 0
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS /emc configure sends changed cost, machine speed and watch settings to players with the table (changed: True)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS CraftingMethods takes only its three words and says it needs a restart (banana isn't one of the choices: use Both, Grid, Realistic. [Error] / CraftingMethods changed to Both. Saved; it takes effect the next time the server starts. | CraftingMethods = Both [Success])
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a save from before 1.21.1 keeps its EMC and knowledge when they move out of the synced attributes (50 EMC, 2 known)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS moving them a second time changes nothing
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS EMC and knowledge saved by an older version in between are added, not dropped (55 EMC, i:game:stick b:game:rock-granite i:game:flint)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a broken old balance (not a number) moves over as 0
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a player's game is sent their new balance and just the keys learned and forgotten
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a key learned and forgotten in the same moment sends the whole list instead (so the order can't drift)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a game applies what it is sent: balance only keeps the list, keys are added and taken out (i:game:stick i:game:flint), a whole list replaces it
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS no player: no EMC, no knowledge, nothing to send
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS the table sent to players is kept while nothing changes, made again as soon as something does, and is the same as one built from scratch
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS the magnet's and gem's filter by items gives the same answers as by keys, and follows a changed filter
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS hostile creatures are remembered by kind and asked again when the list changes (wolf True, chicken False)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS Emc Craft plans the same fill whether it remembers which learned items fit an ingredient or searches them all (61 recipes, 0 differ)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS a trinket's effects in the tick are the ones its list gives, and its kind is its type
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose  : 74 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the overview is a list of checks (21)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose mapping : 88 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose mods : 6 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose mod game: 54 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the base game's coverage is reported
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose mod nosuchmod: 6 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: an unknown mod id is reported
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose sporadic : 21 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose item game:ingot-copper: 13 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: copper ingot has a value of 128 (✓ It has a value: 128 EMC.)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose item game:creature-trader-female-artisan-cold: 13 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the trader is reported as blacklisted
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose item game:nosuchitem: 20 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: an unknown code is reported
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose log : 5 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose patches : 5 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: other mods' patches were scanned (✓ Other mods' patches: none of the 0 mods with patch files change recipes, processing or EMC values.)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose outliers : 12 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose clean : 6 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the clean mapping compared base-game values (Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose players : 5 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose player nobody: 7 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose bugreport : 61 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the bug report has the mod list and the changed settings, no advice, and stays short (70 lines)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose changes : 5 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose symptom : 18 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: ten symptoms are offered
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose symptom tooltipnoburn: 9 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose symptom aftermod: 10 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose symptom nothing: 8 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose symptom onlyme: 7 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose client : 5 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose watch : 15 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the watch lists the recorded refusals (2 refusals, 1 player(s):)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose watch 60: 15 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose draftcompat game: 3 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: no draft for the base game
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose draftcompat nosuchmod: 3 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose emccraft : 9 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the Emc Craft report checks the item and the saved-grid class (== Emc Craft (the Arcane Tablet) ==)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose arcane : 9 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the Emc Craft report checks the item and the saved-grid class (== Emc Craft (the Arcane Tablet) ==)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose machines : 14 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the machine report says the furnaces' hopper rules are in place (✓ Matter furnaces: from above into the input (things that smelt or cook), from the sides into the fuel, a chute underneath takes the output.)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose trace game:ingot-tinbronze: 14 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the trace of tin bronze reaches copper (== What it rests on (2 raw materials) ==)
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose trace game:ingot-copper: 10 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose trace hand: 20 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose trace game:hide-pelt-bear-brown-head: 16 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose trace game:hide-pelt-bear-brown-complete: 18 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose short : 9 lines, every lang key found
+13.11.2026 11:48:18 [Server Notification] [Vintage-E self-test] PASS diagnose: the short form
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose checks : 42 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose: the deeper checks all ran
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose profit : 6 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose skipped : 5 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] Loaded 140 EMC base value rules and 108 last-resort rules from 1 file(s): vintagee:config/vintagee-emc.json
+13.11.2026 11:48:19 [Server Notification] EMC: 6 compatibility file(s) not loaded: Butchering (butchering isn't loaded), Expanded Matter (em isn't loaded), From Golden Combs (fromgoldencombs isn't loaded), Primitive Survival (primitivesurvival isn't loaded), Wildcraft: Fruits and Nuts (wildcraftfruit isn't loaded), Wildcraft: Trees and Shrubs (wildcrafttree isn't loaded)
+13.11.2026 11:48:19 [Server Notification] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:19 [Server Notification] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose baseline : 6 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose: the baseline compared (Vintage-E mapped once more with default settings and only the base game's recipes (what a fresh install gives), then once more with your settings but still without other mods. Comparing the three separates your settings' changes from your mods'.)
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose novalue : 32 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose: the no-value walkthrough has its seven steps
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose troubleshoot : 32 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose: the no-value walkthrough has its seven steps
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose startup : 6 lines, every lang key found
+13.11.2026 11:48:19 [Server Notification] [Vintage-E self-test] PASS diagnose: the start-up of other mods was read from the log (== What other mods did at start-up ==)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS diagnose health : 33 lines, every lang key found
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS diagnose: the health checks all ran (✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS diagnose item game:arrow-erel: 22 lines, every lang key found
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS diagnose: game:arrow-erel is reported as having no value
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS diagnose: next steps point to the Mod DB page
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS matter knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow: right tool and class, valued, craftable, never wear out
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS red matter upgrades: the scythe sweeps wider, the prospecting pick and smithing hammer are still the game's (so the anvil and prospecting work)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS thrown matter spears have their entity
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS matter tools are hooked into the recipe ingredient checks
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS matter tools count as the game's tools in its recipes (by code: chisel→brickslabs-eight-black-down-free, hammer→cabinet-bottom, saw→cabinet-bottom; by tag: hammer→smokyquartz, chisel→polishedrockslab-whitemarble-down-free, saw→glassslab-green-down-free, knife→clothes-foot-arctichunter, shears→clothes-foot-arctichunter, axe→debarkedlog-aged-ud)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS the sledgehammer doesn't count as a smithing hammer in recipes
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS crafting methods: Grid / Realistic / Both are read from the setting (this server: Both)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS both crafting routes are there: 5 smelting, 2 quern, 1 smithing, 1 barrel, 9 grid
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS crafting methods: Realistic switches off the 9 grid routes, Grid the 2 smithing and barrel routes
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS alchemical fuels keep their 4:1 steps (coal 128, mobius 512, aeternalis 2048): no loop gains fuel
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS EMC follows the cheaper realistic routes (aeternalis 2048, dark matter 12288 ≤ 6×, red matter 36864 ≤ 3× dark, philosopher's stone 4096 vs temporal gear 4096)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a document is read (1 methods, 2 recipes, )
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a method's code gets its domain, its kind, machine and supersedes are read
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: an energy unit with a suggested price and a generator
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a named input with a quantity and allowed variants
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: litres and what's handed back
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a tool with wear and a percent break chance
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a main output, an average amount ({ avg, var }) and "25%"
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: every kind of cost and the note
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a oneOf table with weights
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: the document's text is kept for the cache's fingerprint
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: an unknown key is named with a "did you mean" (methodz: unknown key "methodz", ignored (did you mean "methods"?))
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a chance over 100% is refused (methods[0].recipes[0].outputs[0].chance: a chance can't be over 100% (1.5; for 25% write 0.25 or "25%"))
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: an output can't be a wildcard
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a {name} no input names is refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a named input needs exactly one *
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a recipe with no inputs and no costs is refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: two main outputs are refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: only the good recipe is kept, a misspelt key is a warning with a suggestion (1 kept)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a typed machine code gets its domain after "block:" (block:vintagee:mypress-*)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a name on an exact code is ignored, and "true" as a string counts (methods[0].recipes[2].inputs: two inputs are named "m"; the recipe is left out; methods[0].recipes[3].inputs: more than 8 named inputs; the recipe is left out)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: "enabled": "false" switches a recipe off, and is counted
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: two inputs with one name, and more than 8 names, are refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a recipe with only a worn tool is kept (its wear is the cost)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: names may have capitals and dashes, a table gives the number by variant (with a formula in it, and a default), codes take the document's domain (methods[0].recipes[4].costs: a cost's table has "by": "nope", which isn't the name of an input's *; methods[0].recipes[5].inputs[0].quantity: the formula "=2 *" doesn't work: it ends too soon; methods[0].recipes[6].inputs[0].anyOf[0]: an anyOf can't hold another anyOf; methods[0].recipes[7].like: "like": no recipe "later" comes before this one in the method; the recipe is left out)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a cost may be a table by variant, and seconds a formula (=4 * 5 is 20)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a tool's quantity, an output's share, waitForValue and onlyFromFuel are read
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: "like" copies an earlier recipe, with the keys given put in its place ("costs" key by key)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: an anyOf slot holds its alternatives, each with its own amount
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: steps add up: 3 × (1 ingot, 2 s, 1 EMC, 5 s of heat) + a hammer and 4 EMC is 3 ingots, 6 s, 7 EMC, 15 s of heat (3, 6, 7)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a table by a name no input has is refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a broken formula is refused, saying why (the formula "=2 *" doesn't work: it ends too soon)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: anyOf in anyOf, and "like" of a recipe that doesn't come before, are refused
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: requiresMod takes "a|b" for either mod
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a reader's formulas work out fields, the entry around them and a map's key, and leave out a formula whose field is missing ({"energy":6.0,"inputs":[{"code":"game:plank-oak","quantity":3.0},{"code":"game:stick","quantity":1.0}]})
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: "=$x-$y" is a subtraction, default() fills in a missing field, and a bad number is an error, not a crash ({"a":7.0,"b":9.0,"c":12.0,"d":"=!the formula \"=round($x, $s)\" doesn't work: \"NaN\" isn't a number"})
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a reader reads a slot's alternatives, and leaves out a slot none of whose alternatives has a code
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a newer format is left out, saying to update (format 2 is newer than this Vintage-E reads (1): update Vintage-E)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a document that isn't JSON is left out (not valid JSON: Invalid character after parsing property name. Expected ':' but got: j. Path '', line 1, position 6.)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: no format reads as format 1 with a warning
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: "methods" that isn't a list leaves the document out
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: wrong shapes deep inside leave that recipe out, not the server
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: DisabledMethods takes a mod, a method, one recipe or a wildcard
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a reader fills $Field from the source, ignoring case ({"inputs":[{"code":"game:ingot-*","quantity":2,"name":"wildcard"},{"code":"game:stick","quantity":1},{"code":"game:rope","quantity":2}],"tools":[{"code":"vintagee:die-plate"}],"outputs":[{"code":"game:metalplate-{wildcard}"}],"costs":{"seconds":4}})
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a reader leaves out a stack whose code is missing, and "each" makes one per element
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: ${Field} inside a longer string
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a dotted path walks into lists
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a reader whose blocks don't exist says so
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: an assets reader makes recipes from the game's own recipe files, in their domain (90 recipes made, 0 left out; first: game:brineportion)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: "each" over a map makes one per value
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a shared-out recipe with several ingredients: 10 + 20 + 6 - 12 = 24 (24)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: two unvalued outputs share the cost evenly (10, 20)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a shared-out recipe's one unknown ingredient is worked out backwards: (50 + 20 - 10) / 2 = 30 (30)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a tool's wear is never worked out backwards (with the flag: none; without: 990000)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: nor through a one-ingredient process
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: shared out by weight, 3 to 1 of 30 is 22.5 and 7.5 (22.5, 7.5)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a byproduct not waited for counts as nothing, one waited for holds the recipe back (10)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: working backwards still waits for a byproduct not waited for (none)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: crafting methods were collected at start-up (1 documents)
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC: crafting methods from vintagee: 2 methods, 17 recipes (code)
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: a document sent through the game's event bus is read (2 methods, 17 recipes; )
+13.11.2026 11:48:20 [Server Notification] [Vintage-E self-test] PASS methods: the cache's fingerprint changes with the methods
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC mapped (self-test: crafting methods) in 583 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27717 conversions from 24 sources.
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:48:20 [Server Notification] [vintagee] EMC check-up: 8 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: 3 items sit in self-cheapening recipe loops and keep their first value (0 of them only settled that way at the end); 0 had to be dropped.
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC mapping time: base values and lists 23 ms, reading recipes 127 ms, building the graph 27 ms, ratios and trader prices 37 ms, guesses (variants, defaults, fuel and food) 90 ms, guesses against recipes 6 ms, material-specific values 9 ms, coverage and missing items 30 ms, origins 20 ms, solving (8 solves, 72 rounds; relaxing 98 ms, inferring 24 ms) 188 ms, contents and materials table 25 ms, (after) value snapshot 18 ms, (after) coverage log and missing file 1 ms, (after) check-up 81 ms, (after) value files (DumpValuesOnStart) 405 ms, (after) sending the table 1 ms.
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: mapped with the test methods
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: copper ingot 128 + 100 test power at 2 EMC = 328 a dark matter, and dark matter is worth at most that (328, 328)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a 25% chance makes the output cost four runs: (128 + 22) / 0.25 = 600 (600, 600)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: {metal} fills in, and generator power is priced from what the engine burns: 128 + 10 × (32 / 16) = 148 (148)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the copper plate takes the method's cheaper price (148, was 256)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: allowed variants make one copy per metal, priced by the generator (2 copies, the test engine: 1 charcoal (32 EMC, base value) make 16 → 2 EMC each)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a tool's wear costs 1 / its durability of the tool (0.002 of a hammer with 500)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a code that matches nothing leaves the recipe out and names the code (nothing has the code game:ingot-coper)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a switched-off method makes nothing
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a supersede entry that matches nothing is noted
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the report keeps the methods it was mapped with
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: two outputs and no main are shared out (2 shared)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a main output and a byproduct: the byproduct is taken off its cost
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a oneOf table makes each by its weight: 3 to 1 is 0.75 and 0.25 (0.75, 0.25)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: heat costs 1000 °C × 10 s at the fuel rate (6.153846153846154 EMC at 0.0006153846153846154 per °C·s)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a cost table gives copper 60000, and the tin bronze copy with no number is left out, saying why (1 copies; a table by "metal" has no number for "tinbronze" and no "default", so that variant is left out)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: one copy per anyOf choice that can be made, with its own amount (1 copies, 1 left out: nothing has the code game:ingot-nosuchmetal)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a recipe made with "like" has the copied ingredients and its own cost
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: steps on a live server: 3 × (1 ingot, 2 s, 10000 EMC) + 500 EMC (3 ingots, 30500 EMC, 6 s)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: shared-out outputs keep their weights (3, 1)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a byproduct with "waitForValue": false is one the recipe doesn't wait for
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: a unit only made from fuel is marked so in the prices
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the free-power check counts the test power but not the fuel-only power
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: /emc dump explains the method, its power and price, and the recipe's note (+ 100 test power of power at 2 EMC each = 200 (price: vintagee's suggested price))
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose  : 109 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the check-up has the crafting-methods cards (✓ Crafting methods: 1 mod(s) send them (0 by file, 1 by code): 2 methods, 17 recipes)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the check-up warns about the stone at 20 EMC a second from power, and not about the fuel-only power (⚠ Free power: 1 recipe(s) in use make more than 1 EMC a second from power alone (up to 20))
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the check-up counts the recipe left out (⚠ Recipes: 17 read, 4 giving something its value, 1 left out, 1 switched off)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the check-up names the supersede entry that matches nothing
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the crafting-methods heading comes after the check-up's own cards
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose methods : 73 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: /emc methods lists the recipes and what became of them
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose methods vintagee:selftest-press: 61 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: one method's report has its costs and the code that matches nothing (typo: left out: nothing has the code game:ingot-coper - did you mean Copper ingot (game:ingot-copper)?)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the code that matches nothing gets a "did you mean" (typo: left out: nothing has the code game:ingot-coper - did you mean Copper ingot (game:ingot-copper)?)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the check-up's prices say which unit is only made from fuel
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the method's report says which anyOf choice and which table variant were left out
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose methodcheck vintagee: 48 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: methodcheck gives a worked example and writes the export
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the export file is written
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose item vintagee:matter-dark: 24 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the item report says which method makes it (Made by Self-test press (Vintage-E (vintagee)):)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose trace vintagee:matter-dark: 13 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the trace shows the power cost
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose mod vintagee: 21 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose draftmethods game: 7 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose changes : 62 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose symptom methodnovalue: 19 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose symptom powercost: 15 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose symptom powerfarm: 15 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose symptom chancevalue: 9 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose symptom chancevalue: 9 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the chance symptom explains the 1 / chance rule (An output that only comes some of the time counts as its average: at 10% it takes ten runs on average, so one is worth ten runs' ingredients. That is fair, but it can look high.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose item game:nugget-nativecopper: 27 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose item game:metalbit-copper: 30 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the item report lists a recipe that makes it as a byproduct (Made by Self-test press (Vintage-E (vintagee)):)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: diagnose trace game:nugget-nativecopper: 10 lines, every lang key found
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: /emc dump of something a method shares out has every lang key
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the safe-price fix sets the most that stays under 1 EMC a second (EnergyEmc: vintagee:testpower now costs 0.1 EMC a unit; working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the cost-kind fix switches heat costs off (Charging for heat is now off; working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: and on again (Charging for heat is now on; working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the price fix sets EnergyEmc (EnergyEmc: vintagee:testpower now costs 1 EMC a unit; working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the switch-off fix adds to DisabledMethods (Switched vintagee:selftest-press off (DisabledMethods); working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the switch-on fix takes it out again (Switched vintagee:selftest-press back on (taken out of DisabledMethods: vintagee:selftest-press); working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: switching a method on takes out a wildcard entry that switched it off (Switched vintagee:selftest-press back on (taken out of DisabledMethods: vintagee:selftest-p*); working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: crafting methods from vintagee: 2 methods, 17 recipes (code)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: the fix that asks the mods again collects the methods (Asked the mods again: 2 methods with 17 recipes from 1 mods; working the values out again.)
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: crafting methods from vintagee: 2 methods, 17 recipes (server, code); 0 problems, 5 warnings (/emc diagnose methods vintagee)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: /emc methods copy writes the mod's methods to ModConfig, and the copy replaces the mod's (methods[0]: the method vintagee:selftest-press is replaced by the server's ModConfig/vintagee-methods/vintagee-selftest-copy.json; methods[1]: the method vintagee:selftest-off is replaced by the server's ModConfig/vintagee-methods/vintagee-selftest-copy.json; energyUnits.testpower: the energy unit vintagee:testpower is replaced by the server's ModConfig/vintagee-methods/vintagee-selftest-copy.json; energyUnits.testgen: the energy unit vintagee:testgen is replaced by the server's ModConfig/vintagee-methods/vintagee-selftest-copy.json; energyUnits.testfuel: the energy unit vintagee:testfuel is replaced by the server's ModConfig/vintagee-methods/vintagee-selftest-copy.json)
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: crafting methods from vintagee: 2 methods, 17 recipes (server, code); 0 problems, 5 warnings (/emc diagnose methods vintagee)
+13.11.2026 11:48:21 [Server Notification] [Vintage-E self-test] PASS methods: an edit to the server's copy counts on the next collect, without a restart
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: crafting methods from vintagee: 2 methods, 17 recipes (code)
+13.11.2026 11:48:21 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC mapped (self-test: crafting methods, price 1) in 413 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27716 conversions from 24 sources.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC check-up: 8 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC mapping time: base values and lists 15 ms, reading recipes 99 ms, building the graph 14 ms, ratios and trader prices 40 ms, guesses (variants, defaults, fuel and food) 96 ms, guesses against recipes 5 ms, material-specific values 5 ms, coverage and missing items 3 ms, origins 14 ms, solving (8 solves, 56 rounds; relaxing 32 ms, inferring 26 ms) 98 ms, contents and materials table 24 ms, (after) value snapshot 15 ms, (after) coverage log and missing file 0 ms, (after) check-up 76 ms, (after) value files (DumpValuesOnStart) 477 ms, (after) sending the table 1 ms.
+13.11.2026 11:48:22 [Server Notification] [Vintage-E self-test] PASS methods: DisabledMethods switches off one variant with "?metal=tinbronze" (1 copies left, 1 off)
+13.11.2026 11:48:22 [Server Notification] [Vintage-E self-test] PASS methods: with the price at 1, dark matter costs 128 + 100 = 228 (228)
+13.11.2026 11:48:22 [Server Notification] [Vintage-E self-test] PASS methods: vintagee:methodschanged is heard
+13.11.2026 11:48:22 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC mapped (self-test: crafting methods removed) in 438 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27701 conversions from 23 sources.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC check-up: 4 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC mapping time: base values and lists 30 ms, reading recipes 127 ms, building the graph 6 ms, ratios and trader prices 22 ms, guesses (variants, defaults, fuel and food) 96 ms, guesses against recipes 8 ms, material-specific values 5 ms, coverage and missing items 18 ms, origins 10 ms, solving (8 solves, 56 rounds; relaxing 22 ms, inferring 22 ms) 84 ms, contents and materials table 32 ms, (after) value snapshot 7 ms, (after) coverage log and missing file 0 ms, (after) check-up 48 ms, (after) value files (DumpValuesOnStart) 512 ms, (after) sending the table 1 ms.
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS methods: without the test methods every value is back as it was (0 differ)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] methods: 0 mod(s) keep recipe data Vintage-E can't read: 
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] site 512000,133,512000
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] Bug-hunt fixes (1.24.1)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a TrinketCostMultiplier of 0, TableUseRange and CollectorFuels reach clients (0, 5, 1 fuel)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the table sent to clients carries the server's TableUseRange and CollectorFuels (8, 8 fuels)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a condenser's copy of warm clothing (game:clothes-nadiya-foot-winter2) comes out at full condition (1)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the game's fire block is this world's (game:fire, id 14082)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a blast is stopped by a land claim anywhere in its reach (no claim: True; claim 6 blocks off: radius 3 True, radius 11 False)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] ProjectE parity (1.24.0)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Evertide Amulet holds 10 L of water that never runs out (game:waterportion x1000, took 250)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Evertide Amulet fills a barrel with a bucket of water (1000 portions, 10 L)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Volcanite Amulet stays a plain trinket (no lava portion to hold)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Ring of Arcana's shots follow its switched-on effects (all: 0, no Zero: 1, only Harvest: -1)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Ring of Arcana's snowball has its entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS lighting a log like a firestarter puts the game's fire on it (True, game:fire)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS an Ignition Ring that is off puts the fire out (1)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Ring of Arcana's fire wall sets burnable blocks in it alight (1, game:fire)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS Philosopher's Stone shapes: a 5-wide cube is 125 blocks (125), a 9-wide panel 81 (81), a 7-long line runs where you face (7)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Philosopher's Stone transmutes a 3x3x3 cube of granite (27 changed into game:rock-andesite)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Hyperkinetic Lens explodes radius 4/8/12/16, as ProjectE's
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the better divining rods can look less deep (128 by default, 16 picked)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the Mercurial Eye starts in transmutation (as before) and its tool modes are its five modes, then its five sizes
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS Archangel's Smite switches on and off in its tool modes
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the charge key's items keep their charge in range (lens 3, stone 3/4, red pickaxe 2/2)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the extra-function key reaches the stone, the swords and the rings
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the matter pickaxe mines a whole ore vein and nothing apart from it (5 of 5)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the matter shovel digs a flat 3x3 (none at 1x1, as ProjectE's at charge 0): 0, 9
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the matter axe clears the logs around (none at 1x1): 0, 4 of 4
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS ores, gravel and leaves are recognised for the tool actions
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS ShearableCreatures names what shearing a creature gives (game:feather*2 -> game:feather x2)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test]   creatures a mod made shearable: none
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycollector-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycollector-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test]   collector fuels by value: charcoal=32, ore-lignite=32, ore-bituminouscoal=64, coke=64, ore-anthracite=96, alchemicalfuel-alchemicalcoal=128, alchemicalfuel-mobiusfuel=512, alchemicalfuel-aeternalisfuel=2,048
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the collector upgrades fuel to the best fuel (vintagee:alchemicalfuel-aeternalisfuel x4 for 8,064 EMC)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a locked collector stops at its lock (game:ore-lignite)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a collector without the EMC for it waits
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:antimatterrelay-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:antimatterrelay-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the relay burns what's in its burn slot into its store (5, 20 EMC)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:pedestal-empty exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:pedestal-empty has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS Swiftwolf on a pedestal calls lightning on the creatures around (2)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS Archangel's Smite on a pedestal fires 3 arrows at a hostile creature (3)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a pedestal takes the Archangel's Smite
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-red-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS red furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS found charcoal and raw red meat
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS red furnace accepts 500 EMC
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a furnace's mode is saved with it (heating True)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a furnace is in normal mode until switched
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycollector-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycollector-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:antimatterrelay-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:antimatterrelay-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:kleinstar-ein exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a Klein star in a relay comes out when the relay is blown up
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:transmutationtable exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:transmutationtable has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a straight up-down chute exists (game:chute-cross-ns)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS furnace-dark-cold exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS dark furnace has its block entity (BEMatterFurnace)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the game's chute pieces were found (flat game:chute-straight-we, drop game:chute-elbow-up-west, feeder game:chute-elbow-down-east, T game:chute-t-we)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS in the game, a straight chute lying flat and a hopper never pull from a container (which is why they took nothing)
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-cross-ns has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a chute under a condenser pulls for itself: Pulls
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a hopper under a condenser with a chest below is handed the copies: HandedTo
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a straight chute from a condenser's side into a chest is handed the copies: HandedTo
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS two straight chutes into a chest are handed the copies: HandedTo
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:alchemicalchest has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-elbow-up-west exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-elbow-up-west has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a straight chute into an elbow that drops into a chest is handed the copies: HandedTo
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-elbow-down-east exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-elbow-down-east has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a straight chute fed by an elbow brings things in, so it's handed nothing: BringsIn
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a straight chute with an open end leads nowhere, so it's handed nothing: NoEnd
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-straight-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS two condensers joined by a straight chute hand each other nothing: OtherCondenser, OtherCondenser
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-t-we exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:chute-t-we has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a T between two condensers may be feeding them both, so it's handed nothing: BringsIn, BringsIn
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS vintagee:energycondenser-mk1 has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS game:hopper has its block entity
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS a hopper under a condenser with nothing below it would spill, so it's handed nothing: OpenEnd
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS the doctor has words for everything a chute next to a condenser can be doing
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS entity type vintagee:projectile-lens exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS projectile-lens uses the projectile class
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS entity type vintagee:projectile-water exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS projectile-water uses the projectile class
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS entity type vintagee:projectile-fire exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS projectile-fire uses the projectile class
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS entity type vintagee:projectile-fire exists
+13.11.2026 11:48:23 [Server Notification] [Vintage-E self-test] PASS projectile-fire uses the projectile class
+13.11.2026 11:48:23 [Server Warning] Server overloaded. A tick took 7170ms to complete.
+13.11.2026 11:48:23 [Server Notification] [vintagee] EMC: vintagee said its crafting methods changed, but they are the same as in the last mapping; no remap.
+13.11.2026 11:48:27 [Server Warning] Server overloaded. A tick took 602ms to complete.
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test] PASS lens charge hit the ground and is gone
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test] PASS lens explosion broke blocks (58 -> 46 solid around the impact)
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test] PASS water shot landed
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test]   fluid where the water shot landed: game:water-d-7
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test] PASS fireball landed
+13.11.2026 11:48:27 [Server Notification] [Vintage-E self-test] PASS fireball set the planks alight (game:fire on top, precipitation 0)
+13.11.2026 11:48:53 [Server Notification] [Vintage-E self-test] PASS a furnace in heating mode with nothing to heat keeps itself hot on EMC (1200 °C, burning True)
+13.11.2026 11:48:53 [Server Notification] [Vintage-E self-test] PASS a furnace in normal mode with nothing to heat stays cold (20 °C, burning False)
+13.11.2026 11:48:53 [Server Notification] [Vintage-E self-test] PASS a cold furnace with fuel lights itself in heating mode (1220 °C, burning True, fuel left 3)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser took the collector's EMC: 659.86 stored, 3.87 a second coming in
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a hopper on the table fed it sticks to burn (6 waiting for its owner to come online, 0 left in the hopper)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a hopper on an alchemical chest fills it (4 sticks in the chest)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a chute under an alchemical chest takes from it (1 sticks in the chute, 3 left in the chest)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a hopper on a condenser fills its storage, not the target (0 sticks in the condenser, 16 EMC, target )
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a chute under a condenser takes copies of its target, never the target (1 sticks in the chute, 4 left in the condenser, target still game:stick)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a hopper on a matter furnace puts food in its input (input game:redmeat-raw x2, chute inventory True)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a chute under a matter furnace takes its output (1 sticks in the chute, output 2)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser, chute underneath, alchemical chest below: the copies it makes reach the chest (141 sticks in the chest, 657 left in the condenser)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser, hopper underneath, alchemical chest below: the copies reach the chest (6 sticks in the chest, 1 left in the condenser)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser, straight chute on its side, alchemical chest: the copies reach the chest (6 sticks in the chest, 1 left in the condenser)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser, two straight chutes, alchemical chest: the copies reach the chest (6 sticks in the chest, 1 left in the condenser)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS condenser, straight chute, elbow down, alchemical chest: the copies reach the chest (6 sticks in the chest, 1 left in the condenser)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a condenser gives no copies to a chute line that feeds it (31 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS and that line still feeds it (0 charcoal left in the hopper, 0 in the condenser, 0 EMC, 31 sticks (it had 7))
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a condenser spills nothing through a chute with an open end (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS two condensers joined by a straight chute keep their copies (first) (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS two condensers joined by a straight chute keep their copies (second) (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS two condensers joined by a T keep their copies (first) (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS two condensers joined by a T keep their copies (second) (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS a condenser spills nothing through a hopper with nothing below it (7 sticks in the condenser (it had 7), 0 in the chutes)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test]   dark furnace on charcoal: block vintagee:furnace-dark-lit, 1410 °C, max 1820, burning True, input  x, output game:redmeat-cooked x1
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS dark furnace on charcoal cooked the meat
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test]   red furnace on EMC: block vintagee:furnace-red-extinct, 679 °C, max 2600, burning False, input  x, output game:redmeat-cooked x1
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS red furnace on EMC cooked the meat
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test] PASS Evertide Amulet on a pedestal sets rain (1) and taking it off gives the weather back (null, was null)
+13.11.2026 11:49:03 [Server Notification] [Vintage-E self-test]   precipitation before the shots: 0
+13.11.2026 11:49:10 [Server Notification] [Vintage-E self-test] PASS a water shot turns lava it passes into obsidian (game:rock-obsidian)
+13.11.2026 11:49:10 [Server Notification] [Vintage-E self-test]   water shot reached the sky at y 254 (rain on: True) (world top 256)
+13.11.2026 11:49:10 [Server Notification] [Vintage-E self-test] PASS the water shot went into the sky
+13.11.2026 11:49:10 [Server Notification] [Vintage-E self-test] PASS a water shot into the sky brings rain (0.35 where it went up)
+13.11.2026 11:49:11 [Server Notification] [Vintage-E self-test] PASS a lava shot dries up water it passes (game:air)
+13.11.2026 11:49:17 [Server Notification] [Vintage-E self-test]   lava shot reached the sky at y 254 (rain off: True)
+13.11.2026 11:49:17 [Server Notification] [Vintage-E self-test] FAIL a lava shot into the sky stops the rain (0.36 where it went up)
+13.11.2026 11:49:17 [Server Notification] [Vintage-E self-test] PASS Swiftwolf's shot into the rain can bring a thunderstorm (thundering there now: True)
+13.11.2026 11:49:18 [Server Notification] [Vintage-E self-test] BENCH machine: 4 cores, calibration 102.8 ms (lower is a faster machine)
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC mapped (benchmark) in 398 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27701 conversions from 23 sources.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC check-up: 4 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:49:18 [Server Notification] [vintagee] EMC mapping time: base values and lists 16 ms, reading recipes 111 ms, building the graph 18 ms, ratios and trader prices 29 ms, guesses (variants, defaults, fuel and food) 83 ms, guesses against recipes 6 ms, material-specific values 5 ms, coverage and missing items 3 ms, origins 15 ms, solving (8 solves, 56 rounds; relaxing 33 ms, inferring 23 ms) 88 ms, contents and materials table 24 ms, (after) value snapshot 13 ms, (after) coverage log and missing file 0 ms, (after) check-up 38 ms, (after) value files (DumpValuesOnStart) 422 ms, (after) sending the table 0 ms.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC mapped (benchmark) in 371 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27701 conversions from 23 sources.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC check-up: 4 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+13.11.2026 11:49:19 [Server Notification] [vintagee] EMC mapping time: base values and lists 18 ms, reading recipes 94 ms, building the graph 16 ms, ratios and trader prices 31 ms, guesses (variants, defaults, fuel and food) 99 ms, guesses against recipes 5 ms, material-specific values 7 ms, coverage and missing items 3 ms, origins 17 ms, solving (8 solves, 56 rounds; relaxing 17 ms, inferring 19 ms) 56 ms, contents and materials table 25 ms, (after) value snapshot 9 ms, (after) coverage log and missing file 0 ms, (after) check-up 57 ms, (after) value files (DumpValuesOnStart) 404 ms, (after) sending the table 0 ms.
+13.11.2026 11:49:19 [Server Notification] [Vintage-E self-test] BENCH mapping (a whole remap): 398 ms mapping, 872 ms with what follows it; of that the game thread does 75 ms when a player starts it (base values and lists 16 ms, reading recipes 111 ms, building the graph 18 ms, ratios and trader prices 29 ms, guesses (variants, defaults, fuel and food) 83 ms, guesses against recipes 6 ms, material-specific values 5 ms, coverage and missing items 3 ms, origins 15 ms, solving (8 solves, 56 rounds; relaxing 33 ms, inferring 23 ms) 88 ms, contents and materials table 24 ms, (after) value snapshot 13 ms, (after) coverage log and missing file 0 ms, (after) check-up 38 ms, (after) value files (DumpValuesOnStart) 422 ms, (after) sending the table 0 ms) | 371 ms mapping, 841 ms with what follows it; of that the game thread does 91 ms when a player starts it (base values and lists 18 ms, reading recipes 94 ms, building the graph 16 ms, ratios and trader prices 31 ms, guesses (variants, defaults, fuel and food) 99 ms, guesses against recipes 5 ms, material-specific values 7 ms, coverage and missing items 3 ms, origins 17 ms, solving (8 solves, 56 rounds; relaxing 17 ms, inferring 19 ms) 56 ms, contents and materials table 25 ms, (after) value snapshot 9 ms, (after) coverage log and missing file 0 ms, (after) check-up 57 ms, (after) value files (DumpValuesOnStart) 404 ms, (after) sending the table 0 ms)
+13.11.2026 11:49:19 [Server Notification] [Vintage-E self-test] BENCH settings copy for a background remap: 12.22 us, 17682 B/call
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH cache fingerprint: 64.3 ms
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH an ingredient's optional member (asked for every ingredient of every recipe, in the mapping and the fingerprint): before 18 ns, 0 B/call -> after 15.9 ns, 0 B/call (1.1 times faster)
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH EMC table packet: before 345.2 us, 1496685 B/call -> after 7.8 ns, 0 B/call (44256 times faster), 256 KB on the wire
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH PlanBurn (a stack of sticks): 92.6 ns, 256 B/call
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH Emc Craft planning (25 recipes against 8270 learned items): before 158.06 ms, 2882392 B/call -> after 3.9 ms, 2266424 B/call (41 times faster); the first time a recipe's ingredients are met: 4.5 ms
+13.11.2026 11:49:20 [Server Notification] [Vintage-E self-test] BENCH handbook ingredient key (per ingredient on screen, per frame): before 116.3 ns, 1024 B/call -> after 10.2 ns, 0 B/call (11 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH magnet / gem filter, one item checked: before 160.5 ns, 224 B/call -> after 68.1 ns, 0 B/call (2.4 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH player EMC and knowledge on the wire: learning one item, knowing 300: before 8058 bytes to every player in view -> after 39 bytes to the learner alone; knowing 8270: before 286578 bytes -> after 39; a change of balance: before an attribute update to every player in view on every change -> after 11 bytes to the owner, at most once a tick
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH IsHostile: a wolf (True): before 67.4 ns, 144 B/call -> after 36.3 ns, 0 B/call (1.9 times faster); a chicken (False): before 124.6 ns, 240 B/call -> after 26.3 ns, 0 B/call (4.7 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH interdiction torch, one tick (two searches of the area before, one after): before 85.8 ns, 64 B/call -> after 41.9 ns, 32 B/call (2 times faster), with 1 creatures and items within 40 blocks
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH Harvest scan, radius 5 (a worn band: 605 blocks): before 34.45 us, 19361 B/call -> after 34.13 us, 33 B/call (no faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH Harvest scan, radius 16 (a red pedestal: 5,445 blocks): before 208.88 us, 174245 B/call -> after 203.25 us, 37 B/call (no faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH Freeze scan, radius 3 (a worn Zero Ring): before 5.37 us, 2888 B/call -> after 4.35 us, 32 B/call (1.2 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH Freeze scan, radius 12 (a red pedestal): before 55.74 us, 42442 B/call -> after 48.88 us, 34 B/call (1.1 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH Grow, 80 tries in radius 16 (a red pedestal): before 7.59 us, 2561 B/call -> after 6.59 us, 33 B/call (1.2 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH pedestal range and power (read several times on every pedestal tick): before 15.1 ns, 24 B/call -> after 2.1 ns, 0 B/call (7.4 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH an active trinket's effects (per trinket, per player, twice a second): before 68.4 ns, 72 B/call -> after 47.2 ns, 0 B/call (1.5 times faster)
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH a condenser's copy of its target and its price (per condenser, twice a second): 72 ns, 256 B/call before -> after: kept until the target or the table changes
+13.11.2026 11:49:21 [Server Notification] [Vintage-E self-test] BENCH matter furnace: finding the renderer's fields (per furnace on screen, four times a second): 22.3 ns, 0 B/call before -> after: found once
+13.11.2026 11:49:22 [Server Notification] [Vintage-E self-test] BENCH finding the mod system (126 mod systems loaded): before 614 ns, 120 B/call -> after 3 ns, 0 B/call (206 times faster)
+13.11.2026 11:49:22 [Server Notification] [Vintage-E self-test] BENCH a trinket's Kind: before 6.6 ns, 0 B/call -> after 3.1 ns, 0 B/call (2.1 times faster)
+13.11.2026 11:49:22 [Server Notification] [Vintage-E self-test] 1 FAILED
+13.11.2026 11:49:22 [Server Warning] Server overloaded. A tick took 4753ms to complete.
