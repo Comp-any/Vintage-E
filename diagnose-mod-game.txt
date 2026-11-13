@@ -1,0 +1,58 @@
+== Vintage Story (game) ==
+8128 of its 8145 blocks and items have a value (99.8%); 648 are blacklisted on purpose (creative, technical or story items).
+
+== Why the rest has no value ==
+⚠ 12 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    figurehead (4): figurehead-eidolon (game:figurehead-eidolon), figurehead-erel (game:figurehead-erel), figurehead-seamonster (game:figurehead-seamonster), ...
+    metalplate (2): Stainless steel plate (game:metalplate-stainlesssteel), Uranium plate (game:metalplate-uranium)
+    ingot (2): Stainless steel ingot (game:ingot-stainlesssteel), Uranium ingot (game:ingot-uranium)
+    crushed (1): Crushed peridotite (game:crushed-peridotite)
+    spear (1): Long erel feather stem (game:spear-generic-erel)
+    arrow (1): Short erel feather stem (game:arrow-erel)
+    bonyremains (1): Bony Cow Skull (game:bonyremains-cowskull-up)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 3 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Stainless steel ingot (game:ingot-stainlesssteel): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:ingot-stainlesssteel)
+    Stainless steel plate (game:metalplate-stainlesssteel): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:metalplate-stainlesssteel)
+    Work item (Stainless steel) (game:workitem-stainlesssteel): 1 item(s) wait on it. (blacklisted: allow it, or give it a value)  why? (/emc diagnose item game:workitem-stainlesssteel)
+    Uranium ingot (game:ingot-uranium): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:ingot-uranium)
+    Uranium plate (game:metalplate-uranium): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:metalplate-uranium)
+    Work item (Uranium) (game:workitem-uranium): 1 item(s) wait on it. (blacklisted: allow it, or give it a value)  why? (/emc diagnose item game:workitem-uranium)
+    Platinum ingot (game:ingot-platinum): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-platinum)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+⚠ 2 items sit in value loops (1 loops).
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+Pin all 17 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are base-game items Vintage-E doesn't value yet. That's for Vintage-E to add, so it's worth reporting:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.24.0: these base-game items have no value: game:crushed-peridotite, game:metalplate-stainlesssteel, game:metalplate-uranium, game:ingot-stainlesssteel, game:ingot-uranium, game:spear-generic-erel, game:arrow-erel, game:figurehead-eidolon, game:figurehead-erel, game:figurehead-seamonster, game:figurehead-thunderlord, game:bonyremains-cowskull-up"
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (17) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Short erel feather stem (game:arrow-erel)  why? (/emc diagnose item game:arrow-erel)
+  Bony Cow Skull (game:bonyremains-cowskull-up)  why? (/emc diagnose item game:bonyremains-cowskull-up)
+  Crushed peridotite (game:crushed-peridotite)  why? (/emc diagnose item game:crushed-peridotite)
+  figurehead-eidolon (game:figurehead-eidolon)  why? (/emc diagnose item game:figurehead-eidolon)
+  figurehead-erel (game:figurehead-erel)  why? (/emc diagnose item game:figurehead-erel)
+  figurehead-seamonster (game:figurehead-seamonster)  why? (/emc diagnose item game:figurehead-seamonster)
+  figurehead-thunderlord (game:figurehead-thunderlord)  why? (/emc diagnose item game:figurehead-thunderlord)
+  Platinum ingot (game:ingot-platinum)  why? (/emc diagnose item game:ingot-platinum)
+  Stainless steel ingot (game:ingot-stainlesssteel)  why? (/emc diagnose item game:ingot-stainlesssteel)
+  Uranium ingot (game:ingot-uranium)  why? (/emc diagnose item game:ingot-uranium)
+  Platinum bits (game:metalbit-platinum)  why? (/emc diagnose item game:metalbit-platinum)
+  Stainless steel bits (game:metalbit-stainlesssteel)  why? (/emc diagnose item game:metalbit-stainlesssteel)
+  Uranium bits (game:metalbit-uranium)  why? (/emc diagnose item game:metalbit-uranium)
+  Platinum plate (game:metalplate-platinum)  why? (/emc diagnose item game:metalplate-platinum)
+  Stainless steel plate (game:metalplate-stainlesssteel)  why? (/emc diagnose item game:metalplate-stainlesssteel)
+  Uranium plate (game:metalplate-uranium)  why? (/emc diagnose item game:metalplate-uranium)
+  Long erel feather stem (game:spear-generic-erel)  why? (/emc diagnose item game:spear-generic-erel)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,9 @@
+== Nothing has a value anywhere ==
+Either the mapping never ran or failed, or your game never got the table.
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+✓ Server log: no Vintage-E errors or warnings.
+Nothing has a value, or I want every mapping check (/emc diagnose mapping)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
