@@ -160,6 +160,10 @@ namespace VintageE
         public List<MethodStack> AnyOf;
         /// <summary>For an output shared out with others: its weight in the split (1 each by default).</summary>
         public double Share = 1;
+        /// <summary>Whether the document gave <see cref="Share"/> (else outputs split evenly, as in 1.23.0).</summary>
+        public bool ShareGiven;
+        /// <summary>How many times its step is done ("repeat"): a tool may be used up that many times per run.</summary>
+        public double Repeat = 1;
         /// <summary>For a byproduct: false = with no value yet it counts as nothing, instead of the recipe waiting for one.</summary>
         public bool WaitForValue = true;
         /// <summary>Numbers that depend on the variant, by field ("quantity", "chance", "wear", "breakChance", "weight", "share").</summary>
@@ -328,7 +332,12 @@ namespace VintageE
             // "a|b": either mod will do.
             for (int i = 0; i < doc.RequiresMods.Count; i++) doc.RequiresMods[i] = string.Join("|", doc.RequiresMods[i].Split('|').Select(a => a.Trim()).Where(a => a.Length > 0));
             doc.RequiresMods.RemoveAll(string.IsNullOrEmpty);
-            string firstRequired = doc.RequiresMods.Select(r => r.Split('|')[0]).FirstOrDefault();
+            // For "a|b", the one that's loaded (when known here) is the mod the document is for.
+            string firstRequired = doc.RequiresMods.Select(r =>
+            {
+                string[] alts = r.Split('|');
+                try { return alts.FirstOrDefault(a => sapi?.ModLoader.IsModEnabled(a) == true) ?? alts[0]; } catch { return alts[0]; }
+            }).FirstOrDefault();
             string domainKey = Str(top["domain"])?.Trim().ToLowerInvariant();
             if (domainKey != null && !NameRule.IsMatch(domainKey)) { doc.Problems.Add(new MethodProblem { Path = "domain", Message = "\"domain\" must be a mod id (letters, digits, _ and -)" }); domainKey = null; }
             // Vintage-E's own files, and the server's, are for the mod they name (the domain, or the first mod they require).
@@ -463,11 +472,12 @@ namespace VintageE
                 }
                 ro = merged;
             }
-            if (!m.Raw.ContainsKey(code)) m.Raw[code] = ro;
+            // Two recipes with one code: the later gets "#n" after it, and "like" names it so.
+            if (m.Raw.ContainsKey(code)) code += "#" + (m.Raw.Count + 1);
+            m.Raw[code] = ro;
             // A recipe switched off can still be copied with "like" (a template for the ones after it).
             if (ro["enabled"] != null && Bool(ro["enabled"]) == false) { m.SwitchedOffInDocument++; return; }
             var recipe = new MethodRecipe { Method = m, Path = path, ReadFrom = readFrom, Note = Str(ro["note"]), Code = code };
-            if (m.Recipes.Any(r => r.Code == recipe.Code)) recipe.Code += "#" + (m.Recipes.Count + 1);
             int before = doc.Problems.Count(p => p.Error);
             string dom = string.IsNullOrEmpty(domain) ? doc.Domain : domain;
 
@@ -519,7 +529,7 @@ namespace VintageE
         static void ReadSteps(MethodDoc doc, JToken token, string path, MethodRecipe recipe, string dom)
         {
             if (token == null) return;
-            if (!(token is JArray steps) || steps.Count == 0) { doc.Problems.Add(new MethodProblem { Path = path, Message = "\"steps\" must be a list of steps { \"inputs\", \"tools\", \"costs\", \"repeat\" }", Error = true }); return; }
+            if (!(token is JArray steps)) { doc.Problems.Add(new MethodProblem { Path = path, Message = "\"steps\" must be a list of steps { \"inputs\", \"tools\", \"costs\", \"repeat\" }", Error = true }); return; }
             bool secondsTable = recipe.Costs.SecondsTable != null, emcTable = recipe.Costs.EmcTable != null;
             for (int i = 0; i < steps.Count; i++)
             {
@@ -533,7 +543,7 @@ namespace VintageE
                 ReadStacks(doc, so["inputs"], sp + ".inputs", InputKeys, ins, "input", dom);
                 ReadStacks(doc, so["tools"], sp + ".tools", ToolKeys, tools, "tool", dom);
                 foreach (MethodStack st in ins.SelectMany(x => x.All())) ScaleStack(st, repeat, "quantity");
-                foreach (MethodStack st in tools.SelectMany(x => x.All())) { ScaleStack(st, repeat, "wear"); ScaleStack(st, repeat, "breakChance"); }
+                foreach (MethodStack st in tools.SelectMany(x => x.All())) { ScaleStack(st, repeat, "wear"); ScaleStack(st, repeat, "breakChance"); st.Repeat *= repeat; }
                 recipe.Inputs.AddRange(ins);
                 recipe.Tools.AddRange(tools);
                 var c = new MethodCosts();
@@ -701,7 +711,7 @@ namespace VintageE
             if (so["breakChance"] != null) { if (!ReadNum(doc, so["breakChance"], path + ".breakChance", NumRule.ChanceOrZero, null, out s.BreakChance, out t)) return null; Table(s, "breakChance", t); }
             if (so["wear"] != null) { if (!ReadNum(doc, so["wear"], path + ".wear", NumRule.NonNegative, "\"wear\" must be 0 or more (durability per run)", out s.Wear, out t)) return null; Table(s, "wear", t); }
             if (so["weight"] != null) { if (!ReadNum(doc, so["weight"], path + ".weight", NumRule.Positive, "\"weight\" must be more than 0", out s.Weight, out t)) return null; Table(s, "weight", t); }
-            if (so["share"] != null) { if (!ReadNum(doc, so["share"], path + ".share", NumRule.Positive, "\"share\" must be more than 0 (its weight when the cost is shared out)", out s.Share, out t)) return null; Table(s, "share", t); }
+            if (so["share"] != null) { if (!ReadNum(doc, so["share"], path + ".share", NumRule.Positive, "\"share\" must be more than 0 (its weight when the cost is shared out)", out s.Share, out t)) return null; Table(s, "share", t); s.ShareGiven = true; }
             if (so["main"] != null) s.Main = Bool(so["main"]) == true;
             if (so["waitForValue"] != null)
             {

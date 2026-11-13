@@ -510,18 +510,36 @@ namespace VintageE
         }
 
         /// <summary>The copy itself (also used by the self-test): null when done, else why not.</summary>
-        internal static string CopyMethodDocs(VintageEModSystem mod, string modId, string lang, out List<string> written)
+        internal static string CopyMethodDocs(VintageEModSystem mod, string modId, string lang, out List<string> written, string fileStem = null)
         {
             written = new List<string>();
             if (modId.Length == 0) return Lang.GetL(lang, "vintagee:cmd-methods-copy-usage");
             var docs = mod.Methods.Docs.Where(d => d.ModId == modId && !d.FromServer && d.Error == null && d.Original != null).ToList();
             if (docs.Count == 0) return Lang.GetL(lang, "vintagee:cmd-methods-copy-none", modId);
             Directory.CreateDirectory(MethodRegistry.ServerPath);
+            // Every file's name first: nothing is written when one is already there.
+            string stem = (fileStem ?? modId).Replace(':', '-');
+            var paths = docs.Select((d, i) => Path.Combine(MethodRegistry.ServerPath, stem + (docs.Count > 1 ? "-" + (i + 1) : "") + ".json")).ToList();
+            string there = paths.FirstOrDefault(File.Exists);
+            if (there != null) return Lang.GetL(lang, "vintagee:cmd-methods-copy-exists", there);
+            // A server document may supersede any recipe list, so entries the mod itself wasn't allowed stay out of the copy.
+            var refused = mod.LastReport?.SupersedeRefused ?? new Dictionary<string, string>();
             for (int i = 0; i < docs.Count; i++)
             {
                 JObject top;
                 try { top = JObject.Parse(docs[i].Original); }
                 catch (Exception e) { return docs[i].Source + ": " + e.Message; }
+                if (top["methods"] is JArray ms)
+                    foreach (JObject m in ms.OfType<JObject>())
+                    {
+                        JToken sup = m["supersedes"];
+                        var entries = sup is JArray sa ? sa.Select(x => (string)x).ToList() : sup?.Type == JTokenType.String ? new List<string> { (string)sup } : null;
+                        if (entries == null) continue;
+                        var dropped = entries.Where(e => e != null && refused.ContainsKey(e.Trim())).ToList();
+                        if (dropped.Count == 0) continue;
+                        m["supersedes"] = new JArray(entries.Except(dropped));
+                        m["//supersedes"] = "Left out of the copy (the mod may not replace these lists, and here they would be): " + string.Join(", ", dropped);
+                    }
                 var copy = new JObject
                 {
                     ["//copied"] = "A copy of " + docs[i].Source + " made by /emc methods copy on " + DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
@@ -529,11 +547,8 @@ namespace VintageE
                 };
                 foreach (JProperty p in top.Properties()) copy[p.Name] = p.Value;
                 if (copy["domain"] == null) copy["domain"] = docs[i].Domain;
-                string name = modId.Replace(':', '-') + (docs.Count > 1 ? "-" + (i + 1) : "") + ".json";
-                string path = Path.Combine(MethodRegistry.ServerPath, name);
-                if (File.Exists(path)) return Lang.GetL(lang, "vintagee:cmd-methods-copy-exists", path);
-                File.WriteAllText(path, copy.ToString(Newtonsoft.Json.Formatting.Indented));
-                written.Add(path);
+                File.WriteAllText(paths[i], copy.ToString(Newtonsoft.Json.Formatting.Indented));
+                written.Add(paths[i]);
             }
             mod.CollectMethods("/emc methods copy " + modId);
             return null;

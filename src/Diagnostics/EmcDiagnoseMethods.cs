@@ -245,6 +245,7 @@ namespace VintageE
             }
             if (result != null && result.MissingVariants > 0) x.Note(x.L("diag-meth-missingvariants", result.MissingVariants), indent + 1);
             if (result != null && result.DisabledVariants > 0) x.Note(x.L("diag-meth-disabledvariants", result.DisabledVariants), indent + 1);
+            if (result != null && result.TableMisses > 0) x.Note(x.L("diag-meth-tablemisses", result.TableMisses), indent + 1);
             if (result != null && result.FailedChoices > 0) x.Note(x.L("diag-meth-failedchoices", result.FailedChoices, result.ChoiceFailure ?? "?"), indent + 1);
             if (result != null && result.FailedVariants > 0) x.Note(x.L("diag-meth-failedvariants", result.FailedVariants, result.VariantFailure ?? "?"), indent + 1);
             if (result != null) foreach (string note in result.Notes) x.Note(note, indent + 1);
@@ -421,9 +422,11 @@ namespace VintageE
         }
 
         /// <summary>A conversion's energy costs that could come from free power: a unit only made by burning fuel can't be farmed.</summary>
-        static List<MethodCostLine> FreeEnergy(Ctx x, Conversion conv)
+        static List<MethodCostLine> FreeEnergy(Ctx x, Conversion conv) => FreeEnergy(x.Report?.MethodPrices, conv);
+
+        internal static List<MethodCostLine> FreeEnergy(MethodPrices prices, Conversion conv)
         {
-            var units = x.Report?.MethodPrices?.Units;
+            var units = prices?.Units;
             return conv?.Costs == null ? new List<MethodCostLine>()
                 : conv.Costs.Where(k => k.Kind == "energy" && k.Emc > 0 && !(units != null && k.Unit != null && units.TryGetValue(k.Unit, out MethodUnitPrice up) && up.OnlyFromFuel)).ToList();
         }
@@ -587,7 +590,7 @@ namespace VintageE
             // Only a copy read from one of the method's own mod's recipe lists (or a mod it names in requiresMod) can be
             // superseded; hand crafting, the game's lists and other mods' lists are other ways of making it, which may be cheaper.
             bool OwnList(Conversion copy, MethodDef def) => copy.Source != null && owners.TryGetValue(copy.Source, out string owner) && owner != null
-                && (owner == def.ModId || def.Doc.RequiresMods.Contains(owner));
+                && (def.Doc.FromServer || owner == def.ModId || def.Doc.Requires(owner));
             var withCost = x.Report.Conversions.Where(c => c.Method != null && c.Output != null && c.ExtraCost > 0).ToList();
             var others = x.Report.Conversions.Where(c => c.Method == null && c.Output != null && c.Source != null && owners.ContainsKey(c.Source)).GroupBy(c => c.Output).ToDictionary(g => g.Key, g => g.ToList());
             var copies = new List<(Conversion method, Conversion copy)>();
@@ -670,7 +673,7 @@ namespace VintageE
             Unseen Of(string d) => byDomain.TryGetValue(d, out Unseen u) ? u : byDomain[d] = new Unseen { Domain = d };
             var snap = Snap(x);
             // A mod is covered by its own documents, and by Vintage-E's files for it (they say so with requiresMod).
-            var covered = new HashSet<string>(snap.Docs.Select(d => d.ModId).Concat(snap.Docs.SelectMany(d => d.RequiresMods)), StringComparer.Ordinal);
+            var covered = new HashSet<string>(snap.Docs.Select(d => d.ModId).Concat(snap.Docs.SelectMany(d => d.RequiresMods).SelectMany(r => r.Split('|'))), StringComparer.Ordinal);
             try
             {
                 // Recipe lists Vintage-E found on mod systems when mapping (by a squashed name), so a folder that one of them
@@ -1144,7 +1147,7 @@ namespace VintageE
                         string pattern = sample.Properties().Select(pp => pp.Name).FirstOrDefault(n => n.IndexOf("pattern", StringComparison.OrdinalIgnoreCase) >= 0);
                         if (pattern != null)
                         {
-                            st["quantity"] = "=count($^" + pattern + ", $@key)" + (st["quantity"] != null ? " * " + (string)st["quantity"] : "");
+                            st["quantity"] = "=count($^" + pattern + ", $@key)" + (st["quantity"] != null ? " * default(" + (string)st["quantity"] + ", 1)" : "");
                             usedFields.Add(pattern);
                             notes.Add(p.Name + " is a map of keys to stacks: each counts as often as its key comes up in " + pattern);
                         }
@@ -1414,7 +1417,11 @@ namespace VintageE
                 }
                 foreach (var kv in blockers.OrderByDescending(b => b.Value).Take(6))
                     r.Add(x.L("diag-blocker", EmcReport.Ref(kv.Key), kv.Value) + "  " + Link(ActionItem, kv.Key.Code.ToString(), x.L("diag-why-link")), EmcLineStyle.Text, 2);
-                foreach (MethodUnitPrice p in UsedUnits(x).Where(p => p.ModId == domain)) x.Note(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?"), 1);
+                foreach (MethodUnitPrice p in UsedUnits(x).Where(p => p.ModId == domain))
+                {
+                    x.Note(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?"), 1);
+                    if (p.OnlyFromFuel) x.Note(x.L("diag-meth-unit-fuel"), 2);
+                }
             }
             r.Add(Link(ActionMethods, domain, x.L("diag-meth-look")) + " " + Link(ActionMethodCheck, domain, x.L("diag-meth-check")), EmcLineStyle.Text, 1);
         }

@@ -620,6 +620,7 @@ namespace VintageE
                 else return; // a second open slot, a slot nothing can fill, or a tool's wear with no value yet
             }
             double back = 0;
+            bool optionalMissing = false;
             if (j.Returned != null)
             {
                 for (int k = 0; k < j.Returned.Length; k++)
@@ -628,7 +629,9 @@ namespace VintageE
                     if (r == null || Excluded.Contains(r) || Free.Contains(r)) continue;
                     if (!Values.TryGetValue(r, out double rv))
                     {
-                        if (j.ReturnedOptional != null && j.ReturnedOptional[k]) continue; // counts as nothing until it has one
+                        // Costing forwards, it counts as nothing until it has a value; never when working an ingredient out
+                        // backwards (that value would stay too low once the byproduct got one, and turn into EMC from nothing).
+                        if (j.ReturnedOptional != null && j.ReturnedOptional[k]) { optionalMissing = true; continue; }
                         return; // wait until what's handed back has a value
                     }
                     back += rv * j.ReturnedQuantities[k];
@@ -666,7 +669,7 @@ namespace VintageE
                 }
                 return;
             }
-            if (!InferBackwards || !InferFromCrafting) return;
+            if (!InferBackwards || !InferFromCrafting || optionalMissing) return;
             double sum = 0;
             for (int k = 0; k < j.Outputs.Length; k++)
             {
@@ -760,8 +763,9 @@ namespace VintageE
                     {
                         T item = e.Returned[r];
                         if (Excluded.Contains(item) || Free.Contains(item)) continue;
+                        // Even one the recipe doesn't wait for: working backwards needs everything it yields.
                         if (Values.TryGetValue(item, out double rv)) back += rv * e.ReturnedQuantities[r];
-                        else if (e.ReturnedOptional == null || !e.ReturnedOptional[r]) backKnown = false;
+                        else backKnown = false;
                     }
                 }
                 if (!backKnown) continue;
@@ -799,13 +803,17 @@ namespace VintageE
                     }
                     if (!usable || unknownSlot < 0) continue;
                     double total = outValue * e.OutputQuantity - e.ExtraCost - known;
+                    bool waitOptional = false;
                     if (e.Returned != null)
                     {
                         for (int j = 0; j < e.Returned.Length; j++)
                         {
                             if (Values.TryGetValue(e.Returned[j], out double rv)) total += rv * e.ReturnedQuantities[j];
+                            // A byproduct the recipe doesn't wait for costing forwards is waited for here, as everything it yields.
+                            else if (e.ReturnedOptional != null && e.ReturnedOptional[j] && !Excluded.Contains(e.Returned[j]) && !Free.Contains(e.Returned[j])) waitOptional = true;
                         }
                     }
+                    if (waitOptional) continue;
                     double each = total / e.Quantities[unknownSlot];
                     if (each < MinValue || double.IsNaN(each) || double.IsInfinity(each)) continue;
                     foreach (T c in e.Choices[unknownSlot])

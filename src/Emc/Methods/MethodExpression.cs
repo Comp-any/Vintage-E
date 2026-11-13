@@ -34,10 +34,11 @@ namespace VintageE
                 error = null;
                 return true;
             }
-            catch (FormatException e)
+            catch (Exception e)
             {
+                // Never throws: anything that goes wrong is an error in words (a formula too deep, a number too odd).
                 missing = p.Missing;
-                error = missing ? null : "the formula \"=" + text + "\" doesn't work: " + e.Message;
+                error = missing ? null : "the formula \"=" + text + "\" doesn't work: " + (e is FormatException ? e.Message : e.GetType().Name + ": " + e.Message);
                 return false;
             }
         }
@@ -47,6 +48,7 @@ namespace VintageE
             public readonly string Text;
             public int Pos;
             public bool Missing;
+            int depth;
             readonly Func<string, object> resolve;
 
             public Parser(string text, Func<string, object> resolve) { Text = text; this.resolve = resolve; }
@@ -63,7 +65,7 @@ namespace VintageE
             public double ToNumber(object v)
             {
                 if (v is double d) return d;
-                if (v is string s && double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)) return parsed;
+                if (v is string s && double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed) && !double.IsNaN(parsed) && !double.IsInfinity(parsed)) return parsed;
                 if (v is bool b) return b ? 1 : 0;
                 if (Missing) return 0;
                 throw new FormatException("\"" + v + "\" isn't a number");
@@ -112,7 +114,9 @@ namespace VintageE
                 if (c == '(')
                 {
                     Pos++;
+                    if (++depth > 64) throw new FormatException("too many brackets inside each other");
                     object v = Expression();
+                    depth--;
                     if (!Eat(')')) throw new FormatException("a \")\" is missing");
                     return v;
                 }
@@ -126,8 +130,12 @@ namespace VintageE
                 }
                 if (c == '$')
                 {
+                    // $Field, $a.b.0, $^Field (the entry around; ^^ two up), $@key, $@index. A "-" after a field is a minus,
+                    // so "=$Seconds-1" is the field Seconds less 1.
                     int start = ++Pos;
-                    while (Pos < Text.Length && (char.IsLetterOrDigit(Text[Pos]) || Text[Pos] == '_' || Text[Pos] == '.' || Text[Pos] == '^' || Text[Pos] == '@' || Text[Pos] == '-')) Pos++;
+                    while (Pos < Text.Length && Text[Pos] == '^') Pos++;
+                    if (Pos < Text.Length && Text[Pos] == '@') Pos++;
+                    while (Pos < Text.Length && (char.IsLetterOrDigit(Text[Pos]) || Text[Pos] == '_' || Text[Pos] == '.')) Pos++;
                     string field = Text.Substring(start, Pos - start).TrimEnd('.');
                     Pos = start + field.Length;
                     if (resolve == null) throw new FormatException("$" + field + ": fields only work in a reader's template");
@@ -154,7 +162,20 @@ namespace VintageE
                     int start = Pos;
                     while (Pos < Text.Length && char.IsLetter(Text[Pos])) Pos++;
                     string name = Text.Substring(start, Pos - start).ToLowerInvariant();
-                    if (!Eat('(')) throw new FormatException("\"" + name + "\" isn't a function (min, max, round, floor, ceil, abs, count)");
+                    if (!Eat('(')) throw new FormatException("\"" + name + "\" isn't a function (min, max, round, floor, ceil, abs, count, default)");
+                    if (name == "default")
+                    {
+                        // default($field, 1): the field, or 1 when the data hasn't got it.
+                        bool before = Missing;
+                        Missing = false;
+                        object first = Expression();
+                        bool gone = Missing;
+                        Missing = before;
+                        if (!Eat(',')) throw new FormatException("default() takes 2 values: default($field, value)");
+                        object fallback = Expression();
+                        if (!Eat(')')) throw new FormatException("a \")\" is missing after default(...");
+                        return gone ? fallback : first;
+                    }
                     var args = new List<object>();
                     if (!Eat(')'))
                     {
@@ -181,7 +202,8 @@ namespace VintageE
                     case "ceil": Need(1, 1); return Math.Ceiling(ToNumber(args[0]));
                     case "round":
                         Need(1, 2);
-                        int digits = args.Count > 1 ? (int)Math.Max(0, Math.Min(15, ToNumber(args[1]))) : 0;
+                        double want = args.Count > 1 ? ToNumber(args[1]) : 0;
+                        int digits = double.IsNaN(want) ? 0 : (int)Math.Max(0, Math.Min(15, want));
                         return Math.Round(ToNumber(args[0]), digits, MidpointRounding.AwayFromZero);
                     case "count":
                         {
@@ -193,7 +215,7 @@ namespace VintageE
                             for (int i = text.IndexOf(part, StringComparison.Ordinal); i >= 0; i = text.IndexOf(part, i + part.Length, StringComparison.Ordinal)) n++;
                             return (double)n;
                         }
-                    default: throw new FormatException("\"" + name + "\" isn't a function (min, max, round, floor, ceil, abs, count)");
+                    default: throw new FormatException("\"" + name + "\" isn't a function (min, max, round, floor, ceil, abs, count, default)");
                 }
             }
 

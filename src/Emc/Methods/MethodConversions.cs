@@ -21,6 +21,8 @@ namespace VintageE
         public bool Disabled;
         /// <summary>Variants switched off by a DisabledMethods entry with "?name=value".</summary>
         public int DisabledVariants;
+        /// <summary>Variants left out because a table by variant has no number for them (and no default).</summary>
+        public int TableMisses;
         /// <summary>Choices of an anyOf slot that couldn't be made (a code no loaded mod has), with the first reason.</summary>
         public int FailedChoices;
         public string ChoiceFailure;
@@ -56,15 +58,20 @@ namespace VintageE
         /// least one conversion this mapping count: one whose recipes are all switched off or left out replaces nothing,
         /// so the list it describes stays.
         /// </summary>
-        Dictionary<string, MethodDef> SupersedeTargets()
+        Dictionary<string, List<MethodDef>> SupersedeTargets()
         {
-            var result = new Dictionary<string, MethodDef>(StringComparer.OrdinalIgnoreCase);
+            var result = new Dictionary<string, List<MethodDef>>(StringComparer.OrdinalIgnoreCase);
             if (Methods == null) return result;
             var made = new HashSet<MethodDef>(MethodResults.Where(r => r.Conversions > 0).Select(r => r.Recipe.Method));
-            foreach (MethodDef m in Methods.AllMethods)
+            // The server's own first: when a mod's method may not replace a list, the server's still can.
+            foreach (MethodDef m in Methods.AllMethods.OrderBy(m => m.Doc.FromServer ? 0 : 1))
             {
                 if (!made.Contains(m)) continue;
-                foreach (string s in m.Supersedes) if (!result.ContainsKey(s)) result[s] = m;
+                foreach (string s in m.Supersedes)
+                {
+                    if (!result.TryGetValue(s, out var list)) result[s] = list = new List<MethodDef>();
+                    list.Add(m);
+                }
             }
             return result;
         }
@@ -73,15 +80,17 @@ namespace VintageE
         /// The method that supersedes this list, or null. A method may only replace a list held by its own mod (or one
         /// its document requires): another mod's, or the game's, stays, so one document can't wipe out smithing.
         /// </summary>
-        string SupersededBy(DiscoveredRecipeList found, Dictionary<string, MethodDef> targets)
+        string SupersededBy(DiscoveredRecipeList found, Dictionary<string, List<MethodDef>> targets)
         {
             if (targets.Count == 0) return null;
             foreach (string key in new[] { found.Label ?? "", found.ElementType?.Name ?? "", found.ElementType?.FullName ?? "" })
             {
-                if (key.Length == 0 || !targets.TryGetValue(key, out MethodDef by)) continue;
+                if (key.Length == 0 || !targets.TryGetValue(key, out var methods)) continue;
                 string owner = found.Owner ?? "?";
                 // The server's own documents may replace any list: the server owner decides what counts there.
-                if (!by.Doc.FromServer && owner != by.ModId && !by.Doc.Requires(owner)) { SupersedeRefused[key] = owner; continue; }
+                MethodDef by = methods.FirstOrDefault(m => m.Doc.FromServer || owner == m.ModId || m.Doc.Requires(owner));
+                if (by == null) { SupersedeRefused[key] = owner; continue; }
+                SupersedeRefused.Remove(key);
                 SupersedeHits.Add(key);
                 return by.Code;
             }
@@ -113,8 +122,12 @@ namespace VintageE
                         result.Skipped = "could not be read: " + e.GetType().Name + ": " + e.Message;
                         logger.Warning("EMC: crafting method {0}, recipe {1}: {2}", m.Code, recipe.Code, e);
                     }
-                    if (result.Conversions == 0 && result.Skipped == null)
-                        result.Skipped = result.VariantFailure ?? (result.MissingVariants > 0 ? "none of its " + result.MissingVariants + " variants has every output and ingredient it names" : "nothing could be made from it");
+                    // Every variant switched off by "?name=value": switched off, not left out.
+                    if (result.Conversions == 0 && result.Skipped == null && result.DisabledVariants > 0 && result.MissingVariants == 0 && result.TableMisses == 0 && result.FailedVariants == 0 && result.FailedChoices == 0)
+                        result.Disabled = true;
+                    else if (result.Conversions == 0 && result.Skipped == null)
+                        result.Skipped = result.VariantFailure ?? (result.TableMisses > 0 && result.MissingVariants == 0 ? "no table by variant has a number for any of its variants"
+                            : result.MissingVariants > 0 ? "none of its " + result.MissingVariants + " variants has every output and ingredient it names" : "nothing could be made from it");
                     made += result.Conversions;
                 }
                 Count("method " + m.Code, made);
@@ -133,36 +146,42 @@ namespace VintageE
             // 0. A slot with alternatives ("anyOf": 1 fat or 10 lard) makes one copy of the recipe per choice; the cheapest
             // counts, as with any two recipes for one thing. A choice that can't be made (its mod isn't loaded) is left out.
             var slots = recipe.Inputs.Concat(recipe.Tools).Where(st => st.AnyOf != null).ToList();
-            long choices = 1;
+            if (slots.Count == 0) { CollectChoice(recipe, recipe.Inputs, recipe.Tools, result); return; }
+            // Every combination of choices; past the limit, each alternative once with the other slots at their first.
+            var combos = new List<Dictionary<MethodStack, MethodStack>> { new Dictionary<MethodStack, MethodStack>() };
             foreach (MethodStack slot in slots)
             {
-                choices *= slot.AnyOf.Count;
-                if (choices > MaxChoices) { result.Skipped = "its anyOf alternatives make more than " + MaxChoices + " combinations"; return; }
+                var next = new List<Dictionary<MethodStack, MethodStack>>();
+                foreach (var combo in combos)
+                    foreach (MethodStack alt in slot.AnyOf) next.Add(new Dictionary<MethodStack, MethodStack>(combo) { [slot] = alt });
+                combos = next;
+                if (combos.Count > MaxChoices) break;
             }
-            if (slots.Count == 0) { CollectChoice(recipe, recipe.Inputs, recipe.Tools, result); return; }
-            var picked = new Dictionary<MethodStack, MethodStack>();
-            string firstSkip = null, firstBad = null;
-            void Pick(int depth)
+            if (combos.Count > MaxChoices)
             {
-                if (depth == slots.Count)
-                {
-                    var ins = recipe.Inputs.Select(st => st.AnyOf != null ? picked[st] : st).ToList();
-                    var tools = recipe.Tools.Select(st => st.AnyOf != null ? picked[st] : st).ToList();
-                    CollectChoice(recipe, ins, tools, result);
-                    if (result.Skipped != null)
-                    {
-                        result.FailedChoices++;
-                        result.ChoiceFailure ??= result.Skipped;
-                        firstSkip ??= result.Skipped;
-                        firstBad ??= result.BadCode;
-                        result.Skipped = null;
-                        result.BadCode = null;
-                    }
-                    return;
-                }
-                foreach (MethodStack alt in slots[depth].AnyOf) { picked[slots[depth]] = alt; Pick(depth + 1); }
+                var firsts = slots.ToDictionary(sl => sl, sl => sl.AnyOf[0]);
+                combos = new List<Dictionary<MethodStack, MethodStack>> { firsts };
+                foreach (MethodStack slot in slots)
+                    foreach (MethodStack alt in slot.AnyOf.Skip(1)) combos.Add(new Dictionary<MethodStack, MethodStack>(firsts) { [slot] = alt });
+                if (combos.Count > MaxChoices) combos = combos.Take(MaxChoices).ToList();
+                result.Notes.Add("its anyOf alternatives make more than " + MaxChoices + " combinations: each alternative is tried once, with the other slots at their first choice");
             }
-            Pick(0);
+            string firstSkip = null, firstBad = null;
+            foreach (var picked in combos)
+            {
+                var ins = recipe.Inputs.Select(st => st.AnyOf != null ? picked[st] : st).ToList();
+                var tools = recipe.Tools.Select(st => st.AnyOf != null ? picked[st] : st).ToList();
+                CollectChoice(recipe, ins, tools, result);
+                if (result.Skipped != null)
+                {
+                    result.FailedChoices++;
+                    result.ChoiceFailure ??= result.Skipped;
+                    firstSkip ??= result.Skipped;
+                    firstBad ??= result.BadCode;
+                    result.Skipped = null;
+                    result.BadCode = null;
+                }
+            }
             if (result.Conversions == 0 && firstSkip != null) { result.Skipped = firstSkip; result.BadCode = firstBad; }
         }
 
@@ -218,7 +237,7 @@ namespace VintageE
         /// <summary>A variant with no number for it in a table (and no default): left out, like one with an output that doesn't exist.</summary>
         static void NoNumber(MethodRecipeResult result, MethodTable t, Dictionary<string, string> captures)
         {
-            result.MissingVariants++;
+            result.TableMisses++;
             string note = "a table by \"" + t.By + "\" has no number for " + (captures.TryGetValue(t.By ?? "", out string v) ? "\"" + v + "\"" : "it") + " and no \"default\", so that variant is left out";
             if (result.Notes.Count < 8 && !result.Notes.Contains(note)) result.Notes.Add(note);
         }
@@ -246,7 +265,9 @@ namespace VintageE
 
             var inputs = new List<ConversionInput>();
             var returned = new List<KeyValuePair<CollectibleObject, double>>();
+            // Handed back or also made without the recipe waiting for its value: only when every source of it says so.
             var optional = new HashSet<CollectibleObject>();
+            var waited = new HashSet<CollectibleObject>();
             foreach (MethodStack st in ins)
             {
                 CollectibleObject[] choices = picked.TryGetValue(st, out var p) ? p : Resolve(Fill(st.Code, captures), st.Type).Where(c => VariantAllowed(st, Capture(Fill(st.Code, captures), c))).ToArray();
@@ -264,7 +285,7 @@ namespace VintageE
                     // Handed back only when the ingredient is used up.
                     double rq = (st.Returns.IsLitres ? ra * PortionsPerLitre(back) : ra) * rc * chance;
                     returned.Add(new KeyValuePair<CollectibleObject, double>(back, rq));
-                    if (!st.Returns.WaitForValue) optional.Add(back);
+                    if (!st.Returns.WaitForValue) optional.Add(back); else waited.Add(back);
                 }
             }
 
@@ -279,7 +300,7 @@ namespace VintageE
                 if (!Get(t, "wear", t.Wear, out double wear) || !Get(t, "breakChance", t.BreakChance, out double breaks) || !Get(t, "quantity", t.Quantity, out double count)) return;
                 if (!Prices.ChargeWear || (wear <= 0 && breaks <= 0)) { catalysts.AddRange(choices); continue; }
                 var byQty = new List<(double qty, CollectibleObject[] choices, string note)>();
-                foreach (var g in choices.GroupBy(c => WearShare(c, wear, breaks) * count).OrderBy(g => g.Key))
+                foreach (var g in choices.GroupBy(c => WearShare(c, wear, breaks, t.Repeat) * count).OrderBy(g => g.Key))
                 {
                     if (g.Key <= 0)
                     {
@@ -296,14 +317,14 @@ namespace VintageE
             }
 
             // Outputs: everything counts as its average (chance × amount; a oneOf entry its share of the weights).
-            var outs = new List<(CollectibleObject c, double qty, bool main, string note, double share, bool wait)>();
+            var outs = new List<(CollectibleObject c, double qty, bool main, string note, double share, bool wait, bool shareGiven)>();
             foreach (MethodStack o in recipe.Outputs)
             {
                 CollectibleObject c = ResolveOne(Fill(o.Code, captures), o.Type);
                 if (c == null) { Missing(o.Code); return; }
                 if (!Get(o, "quantity", o.Quantity, out double amount) || !Get(o, "chance", o.Chance, out double chance) || !Get(o, "share", o.Share, out double share)) return;
                 double qty = (o.IsLitres ? amount * PortionsPerLitre(c) : amount) * chance;
-                outs.Add((c, qty, o.Main, chance < 1 ? Pct(chance) + " chance: counts as " + Num(qty) : null, share, o.WaitForValue));
+                outs.Add((c, qty, o.Main, chance < 1 ? Pct(chance) + " chance: counts as " + Num(qty) : null, share, o.WaitForValue, o.ShareGiven));
             }
             if (recipe.OneOf.Count > 0)
             {
@@ -318,12 +339,15 @@ namespace VintageE
                     if (!Get(o, "quantity", o.Quantity, out double amount) || !Get(o, "chance", o.Chance, out double chance) || !Get(o, "share", o.Share, out double share)) return;
                     double part = weights[i] / total;
                     double qty = (o.IsLitres ? amount * PortionsPerLitre(c) : amount) * chance * part;
-                    outs.Add((c, qty, false, "one of " + recipe.OneOf.Count + ", weight " + Num(weights[i]) + " of " + Num(total) + (chance < 1 ? ", " + Pct(chance) + " chance" : "") + ": counts as " + Num(qty), share, o.WaitForValue));
+                    outs.Add((c, qty, false, "one of " + recipe.OneOf.Count + ", weight " + Num(weights[i]) + " of " + Num(total) + (chance < 1 ? ", " + Pct(chance) + " chance" : "") + ": counts as " + Num(qty), share, o.WaitForValue, o.ShareGiven));
                 }
             }
             // The same thing twice counts once with both amounts; something that goes in and comes back out (a catalyst
             // written as an ingredient) is netted off.
-            var merged = outs.GroupBy(o => o.c).Select(g => (c: g.Key, qty: g.Sum(o => o.qty), main: g.Any(o => o.main), note: string.Join("; ", g.Select(o => o.note).Where(n => n != null)), share: g.Sum(o => o.share), wait: g.All(o => o.wait))).ToList();
+            // The same thing listed twice: its share is the one the document gave (the largest), not one per listing.
+            var merged = outs.GroupBy(o => o.c).Select(g => (c: g.Key, qty: g.Sum(o => o.qty), main: g.Any(o => o.main), note: string.Join("; ", g.Select(o => o.note).Where(n => n != null)),
+                share: g.Where(o => o.shareGiven).Select(o => o.share).DefaultIfEmpty(1).Max(), wait: g.All(o => o.wait))).ToList();
+            bool sharesGiven = outs.Any(o => o.shareGiven);
             for (int i = 0; i < merged.Count; i++)
             {
                 var o = merged[i];
@@ -365,7 +389,7 @@ namespace VintageE
                 }
             }
 
-            var mainOut = merged.Count == 1 && recipe.OneOf.Count == 0 ? merged[0] : merged.FirstOrDefault(o => o.main);
+            var mainOut = merged.Count == 1 ? merged[0] : merged.FirstOrDefault(o => o.main);
             bool joint = mainOut.c == null;
             var notes = merged.Where(o => !string.IsNullOrEmpty(o.note)).GroupBy(o => o.c).ToDictionary(g => g.Key, g => g.First().note);
             foreach (var combo in toolCombos)
@@ -382,11 +406,12 @@ namespace VintageE
                 foreach (var (qty, choices, note) in combo) conv.Inputs.Add(new ConversionInput { Choices = choices, Quantity = qty, NoInfer = true, Note = note });
                 var back = new List<KeyValuePair<CollectibleObject, double>>(returned);
                 var notWaited = new HashSet<CollectibleObject>(optional);
+                var waitedFor = new HashSet<CollectibleObject>(waited);
                 if (joint)
                 {
                     conv.JointOutputs = merged.Select(o => new KeyValuePair<CollectibleObject, double>(o.c, o.qty)).ToList();
                     // Shared out by weight when the document gives "share"s, evenly otherwise.
-                    if (merged.Any(o => Math.Abs(o.share - 1) > 1e-12)) conv.JointShares = merged.Select(o => o.share).ToList();
+                    if (sharesGiven) conv.JointShares = merged.Select(o => o.share).ToList();
                     conv.OutputQuantity = 1;
                 }
                 else
@@ -399,10 +424,11 @@ namespace VintageE
                         if (o.c == mainOut.c) continue;
                         back.Add(new KeyValuePair<CollectibleObject, double>(o.c, o.qty));
                         conv.Method.Byproducts.Add(o.c);
-                        if (!o.wait) notWaited.Add(o.c);
+                        if (!o.wait) notWaited.Add(o.c); else waitedFor.Add(o.c);
                     }
                 }
                 if (back.Count > 0) conv.Returned = back.GroupBy(b => b.Key).Select(g => new KeyValuePair<CollectibleObject, double>(g.Key, g.Sum(b => b.Value))).ToList();
+                notWaited.ExceptWith(waitedFor);
                 if (conv.Returned != null && notWaited.Count > 0) conv.OptionalReturned = new HashSet<CollectibleObject>(notWaited.Where(c => conv.Returned.Any(r => r.Key == c)));
                 string why = AddMethodConversion(conv);
                 if (why != null) { VariantFailed(result, why); continue; }
@@ -469,12 +495,12 @@ namespace VintageE
             return lines;
         }
 
-        /// <summary>The share of a tool one run uses up: durability lost ÷ its durability, plus the chance it breaks (more than 1 for a step repeated).</summary>
-        static double WearShare(CollectibleObject c, double wear, double breakChance)
+        /// <summary>The share of a tool one run uses up: durability lost ÷ its durability, plus the chance it breaks; at most one tool per time a step is done.</summary>
+        static double WearShare(CollectibleObject c, double wear, double breakChance, double repeat)
         {
             int dur = Durability(c);
             double share = (wear > 0 && dur > 0 ? wear / dur : 0) + breakChance;
-            return Math.Round(share, 9);
+            return Math.Round(Math.Min(Math.Max(1, repeat), share), 9);
         }
 
         static int Durability(CollectibleObject c)

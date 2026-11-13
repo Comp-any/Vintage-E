@@ -125,7 +125,7 @@ namespace VintageE
         void CollectFromModSystems()
         {
             // A crafting method that describes a recipe list (with its power cost) replaces the free copy read here.
-            Dictionary<string, MethodDef> supersede = SupersedeTargets();
+            var supersede = SupersedeTargets();
             foreach (DiscoveredRecipeList found in DiscoverRecipeLists(sapi, logger))
             {
                 RecipeListOwners[found.Label] = found.Owner;

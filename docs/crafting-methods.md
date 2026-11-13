@@ -65,7 +65,8 @@ They are read again on every collect, so `/emc methods reload` picks up an edit 
 domain are the game's there, unless the document says `"domain": "yourmodid"`.
 
 - A method or energy unit in a server document **replaces a mod's with the same code**: that's how a server changes a
-  mod's numbers. `/emc methods copy <modid>` writes a copy of the mod's documents there to edit (delete it to go back).
+  mod's numbers. `/emc methods copy <modid>` writes a copy of the mod's documents there to edit (delete it to go back);
+  `supersedes` entries the mod itself wasn't allowed are left out of the copy, so it changes nothing until edited.
 - A server document's `supersedes` may name any recipe list: the server decides what counts there.
 - For a mod author: put your draft there with `"domain": "yourmodid"`, edit, `/emc methods reload`, and check with
   `/emc diagnose methodcheck yourmodid`; then move it into your mod's assets.
@@ -118,7 +119,7 @@ and is ignored.
 |---|---|
 | `format` | `1`. Missing reads as 1 with a warning. |
 | `name`, `description` | Optional, for people reading the file. |
-| `requiresMod` | A mod id or a list: the document is only used when all of them are loaded. An entry `"a\|b"` is met by either mod (*1.23.1*). It also lets a method supersede those mods' recipe lists (below). |
+| `requiresMod` | A mod id or a list: the document is only used when all of them are loaded. An entry `"a\|b"` is met by either mod (*1.23.1*; in Vintage-E's own and the server's documents, the one that's loaded names the mod the document is for). It also lets a method supersede those mods' recipe lists (below). |
 | `domain` | The domain codes without one get (*1.23.1*; default: your mod's, or the game's in a server document). |
 | `$schema` | Ignored: for editors. |
 | `energyUnits` | Energy units your recipes use: code → unit (below). |
@@ -160,7 +161,7 @@ Inputs and outputs take the keys below. Tools take only `code`, `type`, `quantit
 `name`, `wear`, `breakChance`, `allowedVariants`, `skipVariants` and `anyOf` (another key is an unknown-key warning).
 
 **Any number** (*1.23.1*) may also be a formula, `"=2 * 30"` (+ - * / %, brackets, `min`, `max`, `round`, `floor`,
-`ceil`, `abs`; in a reader's template also `$fields`, below), or a **table by variant**:
+`ceil`, `abs`; in a reader's template also `$fields`, `count` and `default`, below), or a **table by variant**:
 `{ "by": "metal", "values": { "iron": 600, "copper": 400 }, "default": 400 }` is the number for what the input named
 `metal` matched; a variant with no number and no `default` is left out (the doctor says so). Tables work for amounts,
 chances, weights, shares, wear, break chances and every cost.
@@ -172,14 +173,14 @@ chances, weights, shares, wear, break chances and every cost.
 | `quantity` | How many (default 1), or the game's `{ "avg": 3, "var": 1 }` (its average counts). |
 | `litres` | For a liquid instead of `quantity`: converted with the liquid's own items per litre. |
 | `name` (inputs, tools) | Names what this input's single `*` matched, so other codes in the recipe can use `{name}` (letters, digits, `_` and `-`; capitals count). One copy of the recipe is made for each match; a copy whose output (or other code) doesn't exist is skipped, as the game would. A `name` on a code with no `*` is ignored; two or more `*` with a name, two inputs with the same name, or more than 8 named inputs in one recipe leave the recipe out (each name multiplies its copies; at most 4000 in all). |
-| `anyOf` (inputs, tools) | *1.23.1*: instead of a code, a list of alternatives, each with its own code, amount and keys ("1 rendered fat or 10 lard"): one copy of the recipe per choice, and the cheapest counts. An alternative whose code matches nothing (its mod isn't loaded) is left out. At most 32 combinations of choices per recipe; no `anyOf` inside another. |
+| `anyOf` (inputs, tools) | *1.23.1*: instead of a code, a list of alternatives, each with its own code, amount and keys ("1 rendered fat or 10 lard"): one copy of the recipe per choice, and the cheapest counts. An alternative whose code matches nothing (its mod isn't loaded) is left out. Past 32 combinations of choices in one recipe, each alternative is tried once with the other slots at their first; no `anyOf` inside another. |
 | `allowedVariants`, `skipVariants` | Which values of the `*` count (as in the game's recipes). |
 | `returns` (inputs) | What's handed back after the run (an empty bucket): its value is taken off. |
 | `chance` | `0.25` or `"25%"`. For an output: how often it comes. For an input: how often it is used up (below 10%, an input is never worked out backwards from the recipe, like a tool's wear). |
 | `main` (outputs) | Marks the output the recipe is for (see below). |
 | `weight` (oneOf) | The entry's weight in the table. |
 | `share` (outputs, oneOf) | *1.23.1*: its weight when the cost is shared out (default 1 each, so evenly). |
-| `waitForValue` (outputs, oneOf, returns) | *1.23.1*: `false` = as a byproduct with no value yet it counts as nothing, instead of the recipe waiting for one. |
+| `waitForValue` (outputs, oneOf, returns) | *1.23.1*: `false` = as a byproduct with no value yet it counts as nothing, instead of the recipe waiting for one (only when costing forwards: an ingredient is never worked out backwards from the recipe until it has a value). |
 | `wear` (tools) | Durability lost per run. |
 | `breakChance` (tools) | How often it breaks (`"5%"`). |
 
@@ -207,8 +208,8 @@ chances, weights, shares, wear, break chances and every cost.
   as its share of the weights, an input with a chance as that fraction of it, a tool as wear ÷ its durability plus its
   break chance. So if 1 ingot gives a gear 25% of the time, one gear is worth 4 ingots, and burning what comes out never
   earns more than went in.
-- **Main output and byproducts.** With exactly one output and no `oneOf`, or with one marked `"main": true`, the recipe
-  values that output; the other outputs' values (and the `oneOf` entries') are taken off, like a bucket handed back, and
+- **Main output and byproducts.** With a single output in all (`outputs` and `oneOf` together), or with one marked
+  `"main": true`, the recipe values that output; the other outputs' values (and the `oneOf` entries') are taken off, like a bucket handed back, and
   the recipe waits until they have values (unless one says `"waitForValue": false`). Otherwise (several outputs, or a
   `oneOf` table, and none marked main), the cost is shared out like squeezing honeycomb: outputs that already have a
   value keep it, the rest share what's left, evenly or by their `share`. When several recipes share out to the same
@@ -269,7 +270,9 @@ the method stays current when you add recipes:
   `each` goes through an object and `"$@index"` the place in a list.
 - *1.23.1*: a string starting with `=` is a formula worked out from the data: `"=$Load * $Seconds"`,
   `"=$Ticks / 20"`, `"=count($^pattern, $@key)"` (how often a grid key comes up in the pattern; a pattern written as a
-  list counts as its rows joined with commas). A formula whose field is missing is left out, like a missing `"$Field"`.
+  list counts as its rows joined with commas). A formula whose field is missing is left out, like a missing `"$Field"`,
+  unless it says what to use instead: `"=default($stackSize, 1) * 2"`. A field name in a formula is letters, digits,
+  `_` and dots, so `"=$Seconds-1"` is Seconds less 1.
 - *1.23.1*: an ingredient slot's alternatives: `{ "each": "$ingredients", "anyOf": [ { "each": "$inputs", "code": "$code",
   "quantity": "$quantity" } ] }`; a slot none of whose alternatives has a code is left out.
 - Codes without a domain in the recipes a reader makes get the domain of the data: the block's or item's, or the file's.

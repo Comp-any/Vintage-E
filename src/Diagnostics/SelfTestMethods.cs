@@ -241,6 +241,26 @@ namespace VintageE
             s6.Edges.Add(new EmcSolver<string>.Edge { Output = "out", OutputQuantity = 1, Choices = new[] { new[] { "hammer" } }, Quantities = new[] { 0.01 }, Reversible = true, NoInfer = new[] { true } });
             s6.Solve();
             Check(!s6.Values.ContainsKey("hammer"), "methods: nor through a one-ingredient process");
+            // Shared out by weight: 30 left, 3 to 1, is 22.5 and 7.5.
+            var s7 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["a"] = 30 } };
+            s7.JointEdges.Add(new EmcSolver<string>.JointEdge { Choices = new[] { new[] { "a" } }, Quantities = new[] { 1.0 }, Outputs = new[] { "p", "q" }, OutputQuantities = new[] { 1.0, 1.0 }, ShareWeights = new[] { 3.0, 1.0 } });
+            s7.Solve();
+            s7.Values.TryGetValue("p", out double wp);
+            s7.Values.TryGetValue("q", out double wq);
+            Check(Math.Abs(wp - 22.5) < 1e-9 && Math.Abs(wq - 7.5) < 1e-9, "methods: shared out by weight, 3 to 1 of 30 is 22.5 and 7.5 (" + wp + ", " + wq + ")");
+            // A byproduct not waited for counts as nothing costing forwards: the main output is valued at once.
+            var s8 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["a"] = 10 } };
+            s8.Edges.Add(new EmcSolver<string>.Edge { Output = "main", OutputQuantity = 1, Choices = new[] { new[] { "a" } }, Quantities = new[] { 1.0 }, Returned = new[] { "scrap" }, ReturnedQuantities = new[] { 1.0 }, ReturnedOptional = new[] { true } });
+            s8.Solve();
+            var s9 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["a"] = 10 } };
+            s9.Edges.Add(new EmcSolver<string>.Edge { Output = "main", OutputQuantity = 1, Choices = new[] { new[] { "a" } }, Quantities = new[] { 1.0 }, Returned = new[] { "scrap" }, ReturnedQuantities = new[] { 1.0 } });
+            s9.Solve();
+            Check(s8.Values.TryGetValue("main", out double mainV) && Math.Abs(mainV - 10) < 1e-9 && !s9.Values.ContainsKey("main"), "methods: a byproduct not waited for counts as nothing, one waited for holds the recipe back (" + mainV + ")");
+            // But never when working an ingredient out backwards: a one-ingredient process "in → out + scrap" waits for scrap.
+            var s10 = new EmcSolver<string> { Fixed = new Dictionary<string, double> { ["out"] = 10 } };
+            s10.Edges.Add(new EmcSolver<string>.Edge { Output = "out", OutputQuantity = 1, Choices = new[] { new[] { "in" } }, Quantities = new[] { 1.0 }, Reversible = true, Returned = new[] { "scrap" }, ReturnedQuantities = new[] { 1.0 }, ReturnedOptional = new[] { true } });
+            s10.Solve();
+            Check(!s10.Values.ContainsKey("in"), "methods: working backwards still waits for a byproduct not waited for (" + (s10.Values.TryGetValue("in", out double inV) ? inV.ToString() : "none") + ")");
         }
 
         const string TestDocument = @"{
@@ -357,7 +377,7 @@ namespace VintageE
                 // A table by variant, alternatives, "like", steps, weights, a byproduct not waited for, fuel-only power.
                 MethodRecipeResult Res(string code) => report.MethodResults.FirstOrDefault(rr => rr.Recipe.Method.Code == "vintagee:selftest-press" && rr.Recipe.Code == code);
                 var tabled = convs.Where(c => c.Method.Recipe.Code == "tabled").ToList();
-                Check(tabled.Count == 1 && tabled[0].Output?.Code.ToString() == "game:metalplate-copper" && Math.Abs(tabled[0].ExtraCost - 60000) < 1e-6 && Res("tabled")?.MissingVariants == 1 && Res("tabled").Notes.Any(n => n.Contains("tinbronze")),
+                Check(tabled.Count == 1 && tabled[0].Output?.Code.ToString() == "game:metalplate-copper" && Math.Abs(tabled[0].ExtraCost - 60000) < 1e-6 && Res("tabled")?.TableMisses == 1 && Res("tabled").Notes.Any(n => n.Contains("tinbronze")),
                     "methods: a cost table gives copper 60000, and the tin bronze copy with no number is left out, saying why (" + tabled.Count + " copies; " + string.Join("; ", Res("tabled")?.Notes ?? new List<string>()) + ")");
                 var alts = convs.Where(c => c.Method.Recipe.Code == "alts").ToList();
                 Check(alts.Count == 1 && Math.Abs(alts[0].Inputs[0].Quantity - 2) < 1e-9 && Res("alts")?.FailedChoices == 1, "methods: one copy per anyOf choice that can be made, with its own amount (" + alts.Count + " copies, " + Res("alts")?.FailedChoices + " left out: " + Res("alts")?.ChoiceFailure + ")");
@@ -371,6 +391,9 @@ namespace VintageE
                 Conversion nowait = convs.FirstOrDefault(c => c.Method.Recipe.Code == "nowait");
                 Check(nowait != null && nowait.IsOptionalReturn(Find("game:metalbit-copper")), "methods: a byproduct with \"waitForValue\": false is one the recipe doesn't wait for");
                 Check(report.MethodPrices.Units.TryGetValue("vintagee:testfuel", out MethodUnitPrice fuelPrice) && fuelPrice.OnlyFromFuel, "methods: a unit only made from fuel is marked so in the prices");
+                Conversion fuelled = convs.FirstOrDefault(c => c.Method.Recipe.Code == "fuelled"), darkConv = convs.FirstOrDefault(c => c.Method.Recipe.Code == "dark");
+                Check(fuelled != null && EmcDiagnose.FreeEnergy(report.MethodPrices, fuelled).Count == 0 && darkConv != null && EmcDiagnose.FreeEnergy(report.MethodPrices, darkConv).Count == 1,
+                    "methods: the free-power check counts the test power but not the fuel-only power");
 
                 // The explanation and the doctor.
                 Item dark = sapi.World.GetItem(new AssetLocation("vintagee:matter-dark"));
@@ -444,10 +467,11 @@ namespace VintageE
                 Check(outcome != null && !outcome.Contains("vintagee:diag") && mod.Methods.Docs.Any(dd => dd.Route == "code" && dd.ModId == "vintagee"), "methods: the fix that asks the mods again collects the methods (" + outcome + ")");
 
                 // The server's own documents: a copy of a mod's methods replaces them, and an edit to it counts on the next collect.
-                string copyPath = Path.Combine(MethodRegistry.ServerPath, "vintagee.json");
+                // Under a name of the test's own, so a server's real copy is never touched.
+                string copyPath = Path.Combine(MethodRegistry.ServerPath, "vintagee-selftest-copy.json");
                 if (File.Exists(copyPath)) File.Delete(copyPath);
-                string copyError = EmcCommands.CopyMethodDocs(mod, "vintagee", "en", out copiedFiles);
-                MethodDoc serverDoc = mod.Methods.Docs.FirstOrDefault(dd => dd.FromServer && dd.Source.EndsWith("vintagee.json", StringComparison.Ordinal));
+                string copyError = EmcCommands.CopyMethodDocs(mod, "vintagee", "en", out copiedFiles, "vintagee-selftest-copy");
+                MethodDoc serverDoc = mod.Methods.Docs.FirstOrDefault(dd => dd.FromServer && dd.Source.EndsWith("vintagee-selftest-copy.json", StringComparison.Ordinal));
                 MethodDoc codeDoc = mod.Methods.Docs.FirstOrDefault(dd => dd.Route == "code" && dd.ModId == "vintagee");
                 Check(copyError == null && serverDoc != null && serverDoc.Usable && serverDoc.Methods.Any(mt => mt.Code == "vintagee:selftest-press") && codeDoc != null && codeDoc.Methods.Count == 0
                     && codeDoc.Problems.Any(p => !p.Error && p.Message.Contains("replaced by the server's")),
