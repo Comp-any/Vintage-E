@@ -303,7 +303,7 @@ namespace VintageE
             {
                 try
                 {
-                    BlockPos wp = Pad(x, z, 24, 23, 7, 4);
+                    BlockPos wp = Pad(x, z, 14, 24, 7, 4); // nothing lifted above it: the shots go up into the sky
                     Block lava = sapi.World.GetBlock(new AssetLocation("game:lava-still-7"));
                     Block water = sapi.World.GetBlock(new AssetLocation("game:water-still-7"));
                     BlockPos lavaPos = wp.AddCopy(3, 0, 3), waterPos = wp.AddCopy(6, 0, 6);
