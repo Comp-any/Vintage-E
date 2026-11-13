@@ -365,7 +365,7 @@ The **Test on a real server** workflow (Actions tab → Run workflow) downloads 
 |---|---|
 | `src/Emc` | The automatic EMC mapper: `ConversionCollector` (finds recipes), `EmcSolver` (propagates values), `EmcMapper` (ties it together), `EmcRegistry` (runtime lookup + network sync) |
 | `src/Transmutation` | Table/tablet GUI and server logic, philosopher's stone world rules |
-| `src/Items`, `src/Blocks` | Philosopher's stone, tablet, matter-tool behaviour, collectors, condensers |
+| `src/Items`, `src/Blocks` | Philosopher's stone, tablet, matter-tool behaviour, collectors, condensers; `TrinketEffects` (rings, stones, amulets), `ParityHelpers` (fire, weather, area tool actions, the extra-function and charge interfaces), `GemArmor` (gem armour, server and client) |
 | `src/Commands` | `/emc` |
 | `src/Diagnostics` | The EMC doctor (`/emc diagnose`), the self-test and the benchmarks |
 | `src/Gui` | The windows: the doctor, settings, missing items, contents modes, recipes, the gem filter, the matter furnace |
