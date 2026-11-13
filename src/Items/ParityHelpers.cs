@@ -266,21 +266,45 @@ namespace VintageE
                 double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
                 var seen = new Dictionary<int, float>();
                 float P(int i) { if (!seen.TryGetValue(i, out float v)) seen[i] = v = Around(i * step); return v; }
+                // Rain cells have sharp edges that pass over in minutes, between the half-hour looks. So the time that
+                // is landed on is looked at every two minutes as well, from just before it to twenty minutes after, and
+                // has to stay clearly on the right side of the line (1.24.1: until then a shot could "stop the rain"
+                // straight into a shower, which is also why the self-test's lava shot check failed now and then).
+                double minute = step / 30;
+                bool Holds(double d)
+                {
+                    for (int m = -2; m <= 20; m += 2)
+                    {
+                        float v = Around(d + m * minute);
+                        if (rain ? v < RainLevel * 1.5f : v > RainLevel * 0.75f) return false;
+                    }
+                    return true;
+                }
                 // How well two hours from d fit: the weakest rain in them (for rain), or the least dry (for clearing).
-                double bestD = -1, bestFit = double.NegativeInfinity;
+                double bestD = -1, bestFit = double.NegativeInfinity, chosen = -1;
+                int looks = 0;
                 for (int i = 1; i * step < 30; i++)
                 {
                     double d = i * step;
                     float a = P(i), b = P(i + 1), c = P(i + 2), e = P(i + 3);
                     double fit = rain ? Math.Min(Math.Min(a, b), Math.Min(c, e)) : -Math.Max(Math.Max(a, b), Math.Max(c, e));
                     if (fit > bestFit) { bestFit = fit; bestD = d; }
-                    if (rain ? fit > want : -fit < want) break; // good enough: the first such time
+                    if (rain ? fit > want : -fit < want)
+                    {
+                        // Good enough by the half hours: the first such time that holds by the minute too (after 60
+                        // that don't, the half hours have to do).
+                        if (looks++ >= 60 || Holds(d + 1.5 * step)) { chosen = d; break; }
+                    }
                 }
-                // In a dry land rain may never reach 0.1: the wettest two hours do, if it rains there at all.
-                bool usable = rain ? bestFit > RainLevel : -bestFit < RainLevel;
-                if (bestD > 0 && usable)
+                if (chosen < 0)
                 {
-                    ws.RainCloudDaysOffset += bestD + 1.5 * step;
+                    // In a dry land rain may never reach 0.1: the wettest two hours do, if it rains there at all.
+                    bool usable = rain ? bestFit > RainLevel : -bestFit < RainLevel;
+                    if (bestD > 0 && usable) chosen = bestD;
+                }
+                if (chosen > 0)
+                {
+                    ws.RainCloudDaysOffset += chosen + 1.5 * step;
                     ws.broadCastConfigUpdate();
                     return true;
                 }
