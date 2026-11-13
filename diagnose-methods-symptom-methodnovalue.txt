@@ -1,0 +1,20 @@
+== Something another mod's machine makes has no EMC value ==
+Step by step: does the mod send crafting methods, was the recipe read, is it switched off, and what is it waiting for. Hold the item for its own answer.
+• Step 1: crafting methods here: 2 document(s), 2 method(s)
+• Step 2: were the recipes read?
+⚠ Recipes: 17 read, 3 giving something its value, 1 left out, 1 switched off
+  A recipe is left out when a code in it matches nothing, a chance or amount is impossible, or it would make something from nothing. The rest are used where they're the cheapest way to make something.
+  1 × nothing has the code game:ingot-coper
+    code (vintagee) methods[0].recipes[4] - did you mean Copper ingot (game:ingot-copper)?
+  → Fix the codes in the mod's document (the nearest real code is shown), or tell its author: /emc diagnose methodcheck <modid> makes a list to send.
+• Step 3: is anything switched off?
+• Switched off: 1 method(s) (1 DisabledMethods entries)
+  vintagee:selftest-off  Switch vintagee:selftest-off back on (in the window)
+• Step 4: what are they waiting for, or what beat them?
+✓ No recipe is waiting for a value.
+  One block or item has no value (hold it first) (/emc diagnose hand)
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

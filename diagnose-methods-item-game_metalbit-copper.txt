@@ -1,0 +1,32 @@
+== Copper bits ==
+Code game:metalbit-copper, from Vintage Story (game).
+✓ It has a value: 0 EMC.
+  From: ?
+The server knows this item's value. If your game shows none:
+The tooltip needs Vintage-E on your side too, in the same version as the server. A game that joined while a remap was running gets the new values when it finishes; rejoining always fetches them.
+
+== Other mods' crafting methods ==
+Made by Self-test press (Vintage-E (vintagee)):
+  split: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 5 Copper bits (game:metalbit-copper) + 1 Nugget (Native copper) (game:nugget-nativecopper) = 50,128 EMC a run
+    Not needed: Copper bits (game:metalbit-copper) 0 has a set value (?), which no recipe changes
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  byproduct: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Red Matter (vintagee:matter-red) + 2 Copper bits (game:metalbit-copper) = 50,127.99 EMC each
+    Not used: Red Matter (vintagee:matter-red) 600 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  weighted: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Copper bits (game:metalbit-copper) + 1 Nugget (Native copper) (game:nugget-nativecopper) = 50,128 EMC a run
+    Not needed: Copper bits (game:metalbit-copper) 0 has a set value (?), which no recipe changes
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  nowait: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Red Matter (vintagee:matter-red) + 1 Copper bits (game:metalbit-copper) = 50,127.99 EMC each
+    Not used: Red Matter (vintagee:matter-red) 600 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+    50,000 EMC that the recipe itself costs
+
+== Next ==
+The full story of its value: Copper bits (game:metalbit-copper)
+Trace its value down to the raw materials (/emc diagnose trace game:metalbit-copper)
+Everything from Vintage Story (game) (/emc diagnose mod game)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
