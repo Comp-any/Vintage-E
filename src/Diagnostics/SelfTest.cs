@@ -316,7 +316,7 @@ namespace VintageE
                     Keeps("a condenser spills nothing through a hopper with nothing below it", c12, 7, hop12);
                     // The doctor names what each chute touching a condenser does: every answer and side has its text.
                     string[] untold = Enum.GetValues(typeof(ChuteLink)).Cast<ChuteLink>().Where(l => l != ChuteLink.None).Select(l => "diag-mach-chute-" + l.ToString().ToLowerInvariant())
-                        .Concat(BlockFacing.ALLFACES.Select(f => "diag-mach-side-" + f.Code)).Where(k => Lang.GetMatchingIfExists("vintagee:" + k) == null).ToArray();
+                        .Concat(BlockFacing.ALLFACES.Select(f => "diag-mach-side-" + f.Code)).Where(k => !Lang.HasTranslation("vintagee:" + k, false, false)).ToArray(); // not Get: formatting without its values logs an error
                     Check(untold.Length == 0, "the doctor has words for everything a chute next to a condenser can be doing" + (untold.Length == 0 ? "" : ": missing " + string.Join(", ", untold)));
                 }
 
