@@ -348,13 +348,17 @@ namespace VintageE
                             Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##})");
                             ba.SetBlock(water.Id, waterPos, BlockLayersAccess.Fluid);
                             var lavaShot = EntityVintageEProjectile.ShootFrom(sapi.World, wp.ToVec3d().Add(4.5, 0.5, 6.5), up, "lava", 40);
+                            // Right after it passed (water around may flow back in later: that's the world, not the shot).
+                            sapi.Event.RegisterCallback(____ =>
+                            {
+                                Block fluid = ba.GetBlock(waterPos, BlockLayersAccess.Fluid);
+                                Check(fluid == null || fluid.Id == 0 || fluid.LiquidCode != "water", $"a lava shot dries up water it passes ({fluid?.Code})");
+                            }, 400);
                             sapi.Event.RegisterCallback(___ =>
                             {
                                 try
                                 {
                                     Line($"  {EntityVintageEProjectile.LastEnd ?? "the lava shot left no word"}");
-                                    Block fluid = ba.GetBlock(waterPos, BlockLayersAccess.Fluid);
-                                    Check(fluid == null || fluid.Id == 0 || fluid.LiquidCode != "water", $"a lava shot dries up water it passes ({fluid?.Code})");
                                     bool dry = !WeatherControl.IsRaining(sapi, wp.ToVec3d());
                                     Check(dry, $"a lava shot into the sky stops the rain ({WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##})");
                                     bool storm = WeatherControl.StartThunderstorm(sapi, wp.ToVec3d());
