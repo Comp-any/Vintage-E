@@ -511,7 +511,7 @@ namespace VintageE
 
         /// <summary>
         /// ProjectE's Swiftwolf pedestal: lightning on every creature in reach that isn't a player or a pet (at most 8 a
-        /// time). Without the game's weather system, 4 damage each (× the pedestal's power), as before 1.24.0.
+        /// time). Next to a player, or without the game's weather system, 4 damage each (× the pedestal's power) instead.
         /// </summary>
         public int StrikeAround(TrinketEffects fx, Vec3d center)
         {
@@ -520,7 +520,10 @@ namespace VintageE
             foreach (Entity e in Api.World.GetEntitiesAround(center, 10 * range, 6 * range, x => x is EntityAgent && !(x is EntityPlayer) && x.Alive && !TrinketEffects.IsPet(x)))
             {
                 if (n++ >= 8) break;
-                if (!WeatherControl.Strike((ICoreServerAPI)Api, e.Pos.XYZ))
+                // The game's lightning hurts everything within 8 blocks of where it lands: with a player that close, the
+                // creature is shocked directly instead, so standing by your own pedestal is safe.
+                bool playerNear = Api.World.GetPlayersAround(e.Pos.XYZ, 9, 9).Any(p => p?.Entity != null && p.Entity.Alive);
+                if (playerNear || !WeatherControl.Strike((ICoreServerAPI)Api, e.Pos.XYZ))
                 {
                     e.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Block, Type = EnumDamageType.Electricity }, 4f * power);
                 }

@@ -2255,7 +2255,7 @@
   "philo-shape-line": "Line",
   "philo-modeline": "Shape: {0}, {1} wide",
   "tool-needcharge": "Nothing to do at 1x1: pick a bigger area with the tool-mode key or the charge key.",
-  "shears-nolist": "Nothing here can be sheared: the server's ShearableCreatures list is empty (the base game has no woolly creatures).",
+  "shears-nolist": "Nothing around here can be sheared: no creature a mod made shearable (as ShearLib's woolly ones) is near, and the server's ShearableCreatures list names none.",
   "heldhelp-tool-veinore": "Mine the whole ore vein",
   "heldhelp-tool-veingravel": "Dig the whole patch of gravel or clay",
   "heldhelp-tool-dig": "Dig the area around the block",
@@ -2281,6 +2281,6 @@
   "tablet-notcarried": "You don't carry a Transmutation Tablet.",
   "charge-level": "Charge {0} of {1}",
   "chargekey-line": "Charge key: {0} (sneak to lower)",
-  "vintagee:item-handbooktext-vintagee:mattertool-dark-shears": "Cuts leaves at speed 12 and plants and cloth at 8. Tier 5; never wears out.\nRight-click leaves: clears every leaf block within 5 blocks across and 10 up and down for each step of the tool-mode key (nothing at 1x1).\nRight-click in the air: shears the creatures within 4 blocks (8, 16 with the tool-mode key) that the server's ShearableCreatures list names, twice what the list says, once a day each. The base game has no woolly creatures, so the list is empty until a mod adds some.",
-  "vintagee:item-handbooktext-vintagee:mattertool-red-shears": "Cuts leaves at speed 18 and plants and cloth at 12. Tier 6; never wears out.\nRight-click leaves: clears every leaf block within 5 blocks across and 10 up and down for each step of the tool-mode key (nothing at 1x1).\nRight-click in the air: shears the creatures within 4 blocks (8, 16 with the tool-mode key) that the server's ShearableCreatures list names, twice what the list says, once a day each. The base game has no woolly creatures, so the list is empty until a mod adds some."
+  "vintagee:item-handbooktext-vintagee:mattertool-dark-shears": "Cuts leaves at speed 12 and plants and cloth at 8. Tier 5; never wears out.\nRight-click leaves: clears every leaf block within 5 blocks across and 10 up and down for each step of the tool-mode key (nothing at 1x1).\nRight-click in the air: shears the creatures within 4 blocks (8, 16 with the tool-mode key). Creatures a mod made shearable (ShearLib's, as the Wool mod's sheep) are sheared that mod's way, as if you had clicked each one; the server's ShearableCreatures list can name others and what they give (twice that, as ProjectE doubles it, once a day each). The base game has no woolly creatures.",
+  "vintagee:item-handbooktext-vintagee:mattertool-red-shears": "Cuts leaves at speed 18 and plants and cloth at 12. Tier 6; never wears out.\nRight-click leaves: clears every leaf block within 5 blocks across and 10 up and down for each step of the tool-mode key (nothing at 1x1).\nRight-click in the air: shears the creatures within 4 blocks (8, 16 with the tool-mode key). Creatures a mod made shearable (ShearLib's, as the Wool mod's sheep) are sheared that mod's way, as if you had clicked each one; the server's ShearableCreatures list can name others and what they give (twice that, as ProjectE doubles it, once a day each). The base game has no woolly creatures."
 }

@@ -208,7 +208,7 @@ namespace VintageE
                 }
                 else Check(false, "dark shovel and soil exist");
                 Block log = sapi.World.GetBlock(new AssetLocation("game:log-placed-oak-ud"));
-                BlockPos lp = Pad(x, z, 24, 16, 5, 4);
+                BlockPos lp = Pad(x, z, 24, 16, 5, 4, lift: 40); // in the air: trees nearby would be cleared too
                 if (log != null)
                 {
                     var logs = new[] { lp.AddCopy(1, 0, 1), lp.AddCopy(1, 1, 1), lp.AddCopy(3, 0, 3), lp.AddCopy(4, 2, 0) };
@@ -233,6 +233,11 @@ namespace VintageE
                 mod.Config.ShearableCreatures = before;
                 Check(parsed?.StackSize == 2 && none == null, $"ShearableCreatures names what shearing a creature gives ({drop} -> {parsed?.Collectible?.Code} x{parsed?.StackSize})");
             }
+
+            // Creatures a mod made shearable (ShearLib): named, so a run with such mods shows what the shears will meet.
+            var shearable = sapi.World.EntityTypes.Where(t => t?.Server?.BehaviorsAsJsonObj != null && t.Server.BehaviorsAsJsonObj.Any(b => (b?["code"].AsString("") ?? "").IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0))
+                .Select(t => t.Code.ToString()).Take(8).ToList();
+            Line("  creatures a mod made shearable: " + (shearable.Count == 0 ? "none" : string.Join(", ", shearable)));
 
             // --- Collector fuel and relay burning.
             {
@@ -312,6 +317,7 @@ namespace VintageE
                         {
                             Block now = ba.GetBlock(lavaPos);
                             Check(now?.Code?.Path == "rock-obsidian", $"a water shot turns lava it passes into obsidian ({now?.Code})");
+                            Line($"  {EntityVintageEProjectile.LastEnd ?? "the water shot left no word"} (world top {ba.MapSizeY})");
                             bool rain = WeatherControl.IsRaining(sapi, wp.ToVec3d());
                             Check(shot == null || !shot.Alive, "the water shot went into the sky");
                             Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##})");
@@ -321,6 +327,7 @@ namespace VintageE
                             {
                                 try
                                 {
+                                    Line($"  {EntityVintageEProjectile.LastEnd ?? "the lava shot left no word"}");
                                     Block fluid = ba.GetBlock(waterPos, BlockLayersAccess.Fluid);
                                     Check(fluid == null || fluid.Id == 0 || fluid.LiquidCode != "water", $"a lava shot dries up water it passes ({fluid?.Code})");
                                     bool dry = !WeatherControl.IsRaining(sapi, wp.ToVec3d());

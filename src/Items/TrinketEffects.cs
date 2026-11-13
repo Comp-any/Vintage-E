@@ -1374,21 +1374,36 @@ namespace VintageE
         /// <summary>
         /// Matter shears right-clicked in the air: every creature in <see cref="VintageEConfig.ShearableCreatures"/>
         /// within 2^(2 + charge) blocks gives its listed drop, doubled as ProjectE doubles it, once per
-        /// <see cref="VintageEConfig.ShearRegrowHours"/> in-game hours each. Returns how many were sheared (-1: the list is empty).
+        /// <see cref="VintageEConfig.ShearRegrowHours"/> in-game hours each. Creatures a mod made shearable (a behaviour
+        /// with "shear" in its name, as ShearLib's) and that aren't listed are sheared the mod's own way: as if the player
+        /// had right-clicked each with the shears. Returns how many were sheared (-1: nothing around can be).
         /// </summary>
         public int Shear(IServerPlayer player, int charge)
         {
             var list = mod.Config.ShearableCreatures;
-            if (list == null || list.Count == 0) return -1;
             EntityPlayer e = player.Entity;
+            ItemSlot shears = player.InventoryManager?.ActiveHotbarSlot;
             float r = AreaTools.ShearRadius(charge);
             double hours = sapi.World.Calendar.TotalHours;
             int sheared = 0;
+            bool any = false;
             foreach (Entity target in sapi.World.GetEntitiesAround(e.Pos.XYZ, r, r / 2, x => x is EntityAgent && !(x is EntityPlayer) && x.Alive))
             {
                 string drop = ShearDropFor(target.Code);
-                if (string.IsNullOrWhiteSpace(drop)) continue;
+                bool modShearable = drop == null && HasShearBehavior(target);
+                if (string.IsNullOrWhiteSpace(drop) && !modShearable) continue;
+                any = true;
                 if (!sapi.World.Claims.TryAccess(player, target.Pos.AsBlockPos, EnumBlockAccessFlags.Use)) continue;
+                if (modShearable)
+                {
+                    try
+                    {
+                        target.OnInteract(e, shears, target.Pos.XYZ.Add(0, target.SelectionBox.Y2 / 2, 0), EnumInteractMode.Interact);
+                        sheared++;
+                    }
+                    catch (Exception ex) { sapi.Logger.Warning("Vintage-E: shearing {0}: {1}", target.Code, ex.Message); }
+                    continue;
+                }
                 double at = target.WatchedAttributes.GetDouble("vintageeShearedHours", double.NegativeInfinity);
                 if (hours - at < mod.Config.ShearRegrowHours) continue;
                 ItemStack stack = ParseDrop(drop);
@@ -1399,7 +1414,22 @@ namespace VintageE
                 sheared++;
             }
             if (sheared > 0) PESounds.Play(sapi.World, PESounds.Destruct, null, e, 16, 0.6f);
-            return sheared;
+            return any || (list != null && list.Count > 0) ? sheared : -1;
+        }
+
+        /// <summary>A creature some mod made shearable: one of its behaviours has "shear" in its name or code.</summary>
+        public static bool HasShearBehavior(Entity e)
+        {
+            var behaviors = e?.SidedProperties?.Behaviors;
+            if (behaviors == null) return false;
+            foreach (var b in behaviors)
+            {
+                string name = b.GetType().Name;
+                string code = null;
+                try { code = b.PropertyName(); } catch { }
+                if (name.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0 || code?.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            }
+            return false;
         }
 
         /// <summary>The drop listed for this creature in ShearableCreatures (first matching pattern), or null.</summary>

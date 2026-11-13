@@ -73,6 +73,9 @@ namespace VintageE
             return shot;
         }
 
+        /// <summary>What the last water or lava shot did at its end (for the self-test's report).</summary>
+        public static string LastEnd;
+
         string kind;
 
         /// <summary>lens, water, lava, fire or arrow: the end of the entity's code (read once, not several times a tick).</summary>
@@ -159,6 +162,7 @@ namespace VintageE
             Attributes.SetFloat(AgeKey, age);
             if (age > MaxLifeSeconds)
             {
+                if (Kind == "water" || Kind == "lava") LastEnd = $"{Kind} shot ran out of time at y {Pos.Y:0}";
                 Die(EnumDespawnReason.Expire);
                 return;
             }
@@ -180,7 +184,8 @@ namespace VintageE
                 if (to.Y >= World.BlockAccessor.MapSizeY - 1)
                 {
                     done = true;
-                    WeatherControl.SetRain((ICoreServerAPI)Api, from, Kind == "water");
+                    bool ok = WeatherControl.SetRain((ICoreServerAPI)Api, from, Kind == "water");
+                    LastEnd = $"{Kind} shot reached the sky at y {from.Y:0} (rain {(Kind == "water" ? "on" : "off")}: {ok})";
                     Die(EnumDespawnReason.Removed);
                     return;
                 }
@@ -208,6 +213,7 @@ namespace VintageE
             if (blockHit != null)
             {
                 done = true;
+                if (Kind == "water" || Kind == "lava") LastEnd = $"{Kind} shot hit {World.BlockAccessor.GetBlock(blockSel.Position)?.Code} at y {blockSel.Position.Y}";
                 OnHitBlock(blockSel, blockHit);
                 Die(EnumDespawnReason.Removed);
                 return;
