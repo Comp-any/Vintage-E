@@ -27,6 +27,8 @@ namespace VintageE
     public class EntityVintageEProjectile : Entity
     {
         public const float MaxLifeSeconds = 8;
+        /// <summary>The longest time one tick moves and ages a shot by, in seconds (see <see cref="OnGameTick"/>).</summary>
+        public const float MaxStepSeconds = 0.25f;
 
         /// <summary>
         /// Spawns a <c>vintagee:projectile-{kind}</c> from the player's eyes in the direction they look, moving
@@ -157,6 +159,12 @@ namespace VintageE
             base.OnGameTick(dt);
             if (!Alive || done || World.Side != EnumAppSide.Server) return;
 
+            // A tick that took seconds (the server hung on something) counts as a quarter of a second for a shot: it
+            // flies on from where it was. Until 1.24.1 the whole stall was added to its age, so after one of more
+            // than 8 seconds every shot in the air ran out of time at once and did nothing. That is also why the
+            // self-test's lens charge and fireball did nothing from 1.23.0 on: they are fired at the end of the
+            // self-test's own first tick, which had grown past 8 seconds on the test server.
+            if (dt > MaxStepSeconds) dt = MaxStepSeconds;
             age += dt;
             // A shot that was saved with its chunk (it flew into unloaded land) carries its age across the reload,
             // instead of flying its full time again from there. The age is kept in the entity's own attributes, which
