@@ -153,6 +153,7 @@ namespace VintageE
         {
             if (eyeGroups != null) return EyeMode(slot?.Itemstack);
             if (smiteGroups != null) return ItemEmcTrinket.IsActive(slot?.Itemstack) ? 1 : 0;
+            if (IsDiviningRod(this)) return Array.IndexOf(DiviningDepths(Kind), DiviningDepth(Kind, slot?.Itemstack));
             return Charge(slot);
         }
 

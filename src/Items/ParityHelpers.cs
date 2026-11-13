@@ -190,11 +190,21 @@ namespace VintageE
             catch { return null; }
         }
 
+        /// <summary>
+        /// The spot on the ground under <paramref name="at"/> (a shot above the world: the climate up there is not the
+        /// rain that falls, so the weather is always asked about where people stand).
+        /// </summary>
+        static Vec3d Ground(ICoreServerAPI sapi, Vec3d at)
+        {
+            int top = sapi.World.BlockAccessor.GetTerrainMapheightAt(new BlockPos((int)at.X, 0, (int)at.Z)) + 1;
+            return new Vec3d(at.X, Math.Min(at.Y, top), at.Z);
+        }
+
         public static float Precipitation(ICoreServerAPI sapi, Vec3d at)
         {
             WeatherSystemServer ws = Ws(sapi);
             if (ws == null || at == null) return 0;
-            try { return ws.GetPrecipitation(at); }
+            try { return ws.GetPrecipitation(Ground(sapi, at)); }
             catch { return 0; }
         }
 
@@ -208,6 +218,7 @@ namespace VintageE
             try
             {
                 if (IsRaining(sapi, at) == rain) return true;
+                at = Ground(sapi, at);
                 double now = sapi.World.Calendar.TotalDays;
                 double step = 1.0 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
                 float want = rain ? 0.1f : RainLevel;
