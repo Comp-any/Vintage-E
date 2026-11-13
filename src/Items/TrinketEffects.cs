@@ -1375,8 +1375,7 @@ namespace VintageE
         /// Matter shears right-clicked in the air: every creature in <see cref="VintageEConfig.ShearableCreatures"/>
         /// within 2^(2 + charge) blocks gives its listed drop, doubled as ProjectE doubles it, once per
         /// <see cref="VintageEConfig.ShearRegrowHours"/> in-game hours each. Creatures a mod made shearable (a behaviour
-        /// with "shear" in its name, as ShearLib's) and that aren't listed are sheared the mod's own way: as if the player
-        /// had right-clicked each with the shears. Returns how many were sheared (-1: nothing around can be).
+        /// with "shear" in its name, as ShearLib's) and that aren't listed are sheared through that mod (see ShearTheModsWay). Returns how many were sheared (-1: nothing around can be).
         /// </summary>
         public int Shear(IServerPlayer player, int charge)
         {
@@ -1396,12 +1395,8 @@ namespace VintageE
                 if (!sapi.World.Claims.TryAccess(player, target.Pos.AsBlockPos, EnumBlockAccessFlags.Use)) continue;
                 if (modShearable)
                 {
-                    try
-                    {
-                        target.OnInteract(e, shears, target.Pos.XYZ.Add(0, target.SelectionBox.Y2 / 2, 0), EnumInteractMode.Interact);
-                        sheared++;
-                    }
-                    catch (Exception ex) { sapi.Logger.Warning("Vintage-E: shearing {0}: {1}", target.Code, ex.Message); }
+                    try { if (ShearTheModsWay(target, e, shears)) sheared++; }
+                    catch (Exception ex) { sapi.Logger.Warning("Vintage-E: shearing {0}: {1}", target.Code, (ex.InnerException ?? ex).Message); }
                     continue;
                 }
                 double at = target.WatchedAttributes.GetDouble("vintageeShearedHours", double.NegativeInfinity);
@@ -1415,6 +1410,25 @@ namespace VintageE
             }
             if (sheared > 0) PESounds.Play(sapi.World, PESounds.Destruct, null, e, 16, 0.6f);
             return any || (list != null && list.Count > 0) ? sheared : -1;
+        }
+
+        /// <summary>
+        /// Shears a creature through the mod that made it shearable: ShearLib's behaviour has TryShear(shearer, shears slot),
+        /// which does what a player shearing it by hand gets; any other such behaviour gets the click a player would give.
+        /// Returns whether it was sheared (as far as the mod says).
+        /// </summary>
+        static bool ShearTheModsWay(Entity target, EntityAgent by, ItemSlot shears)
+        {
+            foreach (EntityBehavior b in target.SidedProperties.Behaviors)
+            {
+                if (!IsShearBehavior(b)) continue;
+                var tryShear = b.GetType().GetMethod("TryShear", new[] { typeof(EntityAgent), typeof(ItemSlot) });
+                if (tryShear == null) continue;
+                object result = tryShear.Invoke(b, new object[] { by, shears });
+                return !(result is bool ok) || ok;
+            }
+            target.OnInteract(by, shears, target.Pos.XYZ.Add(0, target.SelectionBox.Y2 / 2, 0), EnumInteractMode.Interact);
+            return true;
         }
 
         /// <summary>A creature some mod made shearable: one of its behaviours has "shear" in its name or code.</summary>
