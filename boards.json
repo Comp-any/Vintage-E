@@ -1,0 +1,4976 @@
+{
+ "recipes": [
+  {
+   "file": "survival/recipes/grid/antlermount.json",
+   "recipe": {
+    "ingredientPattern": "P_P,_L_,P_P",
+    "ingredients": {
+     "L": {
+      "type": "item",
+      "code": "leather-normal-*",
+      "name": "color",
+      "allowedVariants": [
+       "plain",
+       "orange",
+       "black",
+       "red",
+       "blue",
+       "purple",
+       "white",
+       "yellow",
+       "gray",
+       "green"
+      ],
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "antlermount",
+     "quantity": 1,
+     "attributes": {
+      "type": "square",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/antlermount.json",
+   "recipe": {
+    "ingredientPattern": "_P_,PLP,_P_",
+    "ingredients": {
+     "L": {
+      "type": "item",
+      "code": "leather-normal-*",
+      "name": "color",
+      "allowedVariants": [
+       "plain",
+       "orange",
+       "black",
+       "red",
+       "blue",
+       "purple",
+       "white",
+       "yellow",
+       "gray",
+       "green"
+      ],
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "antlermount",
+     "quantity": 1,
+     "attributes": {
+      "type": "diamond",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/antlermount.json",
+   "recipe": {
+    "ingredientPattern": "P_P,PLP",
+    "ingredients": {
+     "L": {
+      "type": "item",
+      "code": "leather-normal-*",
+      "name": "color",
+      "allowedVariants": [
+       "plain",
+       "orange",
+       "black",
+       "red",
+       "blue",
+       "purple",
+       "white",
+       "yellow",
+       "gray",
+       "green"
+      ],
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "antlermount",
+     "quantity": 1,
+     "attributes": {
+      "type": "shield",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/armorstand.json",
+   "recipe": {
+    "ingredientPattern": "_H_,BHB,BBB",
+    "ingredients": {
+     "H": {
+      "type": "block",
+      "code": "hay-normal-ud"
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "armorstand",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/barrel.json",
+   "recipe": {
+    "ingredientPattern": "SPS,_P_,SPS",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "stick"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "barrel"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bed.json",
+   "recipe": {
+    "ingredientPattern": "L__\tHHH\tWWW",
+    "ingredients": {
+     "L": {
+      "type": "block",
+      "code": "linen-*"
+     },
+     "H": {
+      "type": "block",
+      "code": "hay-normal-ud"
+     },
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "bed-wood-head-north"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bellows.json",
+   "recipe": {
+    "ingredientPattern": "NNN,LLL,P_P",
+    "ingredients": {
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 1
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-plain",
+      "quantity": 2
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 3,
+      "skipVariants": [
+       "agedebony",
+       "rottenebony"
+      ]
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "name": "small bellows",
+    "output": {
+     "type": "block",
+     "code": "bellows-small-north"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bellows.json",
+   "recipe": {
+    "ingredientPattern": "NNN,LLL,PPP",
+    "ingredients": {
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 4
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-plain",
+      "quantity": 8
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 8,
+      "skipVariants": [
+       "agedebony",
+       "rottenebony"
+      ]
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "name": "large bellows",
+    "output": {
+     "type": "block",
+     "code": "bellows-large-north"
+    },
+    "enabled": false
+   }
+  },
+  {
+   "file": "survival/recipes/grid/boat-seat.json",
+   "recipe": {
+    "ingredientPattern": "WWW\tW_W",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "aged",
+       "veryaged"
+      ]
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "item",
+     "code": "boatseat-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bookshelf.json",
+   "recipe": {
+    "ingredientPattern": "P_P,PPP,P_P",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "name": "foobar",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "bookshelf",
+     "attributes": {
+      "type": "2row1col",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bookshelf.json",
+   "recipe": {
+    "ingredientPattern": "PPP,P_P,PPP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "bookshelf",
+     "attributes": {
+      "type": "1row1col",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bookshelf.json",
+   "recipe": {
+    "ingredientPattern": "PPP,_P_,PPP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "bookshelf",
+     "attributes": {
+      "type": "1row2col",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/bookshelf.json",
+   "recipe": {
+    "ingredientPattern": "P_P,_P_,P_P",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "bookshelf",
+     "attributes": {
+      "type": "2row2col",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "PPP,PPP,HNS",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 4,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 2
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinet",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "cabinet-bottom",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "PPP,HNS,PPP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 4,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 2
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinet",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "cabinet-middle",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "HNS,PPP,PPP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 4,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 2
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinet",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "cabinet-top",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "PPH,PPN,PPS",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 4,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 2
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinet",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "cabinet-topbottom",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "HNS,P_P,P_P",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 1
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinetdoors",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "cabinetdoor-1block-solid",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/cabinet.json",
+   "recipe": {
+    "ingredientPattern": "HNS,PGP,PGP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "saw-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-saw"
+      ]
+     },
+     "H": {
+      "type": "item",
+      "code": "hammer-*",
+      "isTool": true,
+      "toolDurabilityCost": 1,
+      "tags": [
+       "tool-hammer"
+      ]
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     },
+     "G": {
+      "type": "block",
+      "code": "glassslab-plain-down-free",
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-{wood}",
+      "quantity": 1
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "skipVariants": {
+     "wood": [
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ]
+    },
+    "name": "cabinetdoors",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "cabinetdoor-1block-glassframed",
+     "attributes": {
+      "wood": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/chair.json",
+   "recipe": {
+    "ingredientPattern": "WLW\tW_W",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     },
+     "L": {
+      "type": "item",
+      "code": "cloth-*",
+      "quantity": 1,
+      "name": "color",
+      "allowedVariants": [
+       "plain",
+       "blue",
+       "brown",
+       "gray",
+       "black",
+       "green",
+       "orange",
+       "pink",
+       "purple",
+       "red",
+       "white",
+       "yellow"
+      ]
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "chair-{color}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/chest.json",
+   "recipe": {
+    "ingredientPattern": "WWW,WNW,WWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "chest-east",
+     "attributes": {
+      "type": "normal-generic"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/churn.json",
+   "recipe": {
+    "ingredientPattern": "HLS,PBP,PRP",
+    "enabled": false,
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 20
+     },
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 10
+     },
+     "B": {
+      "type": "block",
+      "code": "barrel"
+     },
+     "R": {
+      "type": "item",
+      "code": "resin"
+     },
+     "L": {
+      "type": "item",
+      "code": "leather"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "churn-south-opened",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/crank.json",
+   "recipe": {
+    "ingredientPattern": "_PS,PP_",
+    "enabled": false,
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "stick"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "crank-south",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/crate.json",
+   "recipe": {
+    "ingredientPattern": "WWW,WSW,WWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "allowedVariants": [
+       "birch",
+       "oak",
+       "maple",
+       "pine",
+       "acacia",
+       "kapok",
+       "baldcypress",
+       "larch",
+       "redwood",
+       "ebony",
+       "walnut",
+       "purpleheart"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "recipeGroup": 1,
+    "output": {
+     "type": "block",
+     "code": "crate",
+     "attributes": {
+      "lidState": "closed",
+      "type": "wood-{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/displaycase.json",
+   "recipe": {
+    "ingredientPattern": "G,P",
+    "ingredients": {
+     "G": {
+      "type": "block",
+      "code": "glassslab-plain-down-free"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 2
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "displaycase-generic"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/displaycase.json",
+   "recipe": {
+    "ingredientPattern": "G,P",
+    "ingredients": {
+     "G": {
+      "type": "block",
+      "code": "glass-plain"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 2
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "talldisplaycase-generic"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/doors.json",
+   "recipe": {
+    "name": "Solid door",
+    "ingredientPattern": "WW,WW,WW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "door-solid-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/doors.json",
+   "recipe": {
+    "name": "1x3 gate",
+    "ingredientPattern": "WW_,WW_,WWN",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 2
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "door-1x3gate-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/doors.json",
+   "recipe": {
+    "name": "2x2 gate",
+    "ingredientPattern": "N__,WWW,WWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 2
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 2
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "door-2x2gate-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/doors.json",
+   "recipe": {
+    "name": "2x3 gate",
+    "ingredientPattern": "WWW,WWW,NWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 3
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 6
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "door-2x3gate-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/doors.json",
+   "recipe": {
+    "name": "2x4 gate",
+    "ingredientPattern": "WWW,WWW,WWN",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 4
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 10
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "door-2x4gate-{wood}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/drystonefence.json",
+   "recipe": {
+    "ingredientPattern": "ABC\tDEF\tGHI",
+    "ingredients": {
+     "A": {
+      "type": "item",
+      "code": "stone-bauxite"
+     },
+     "B": {
+      "type": "item",
+      "code": "stone-granite"
+     },
+     "C": {
+      "type": "item",
+      "code": "stone-limestone"
+     },
+     "D": {
+      "type": "item",
+      "code": "stone-conglomerate"
+     },
+     "F": {
+      "type": "item",
+      "code": "stone-andesite"
+     },
+     "G": {
+      "type": "item",
+      "code": "stone-claystone"
+     },
+     "H": {
+      "type": "item",
+      "code": "stone-chalk"
+     },
+     "I": {
+      "type": "item",
+      "code": "stone-phyllite"
+     },
+     "E": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "drystonefence-mixed-ew-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/fruitpress.json",
+   "recipe": {
+    "ingredientPattern": "HIF,CPR,PPP",
+    "ingredients": {
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 2
+     },
+     "F": {
+      "type": "item",
+      "code": "fat-rendered"
+     },
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 30
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 40
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 3
+     },
+     "I": {
+      "type": "item",
+      "code": "rod-*",
+      "name": "metal",
+      "allowedVariants": [
+       "copper",
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel"
+      ]
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "fruitpress-ns",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/glasspane.json",
+   "recipe": {
+    "ingredientPattern": "WLW\t_G_\tW_W",
+    "ingredients": {
+     "G": {
+      "type": "block",
+      "code": "glass-plain"
+     },
+     "L": {
+      "type": "item",
+      "code": "ingot-lead"
+     },
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "allowedVariants": [
+       "birch",
+       "oak",
+       "maple",
+       "pine",
+       "acacia",
+       "kapok",
+       "aged",
+       "ebony",
+       "purpleheart",
+       "baldcypress",
+       "redwood",
+       "walnut",
+       "larch"
+      ],
+      "name": "wood"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "glasspane-leaded-{wood}-ew",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/grindstone.json",
+   "recipe": {
+    "ingredientPattern": "HGS,PAP,PNP",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 5
+     },
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 5
+     },
+     "A": {
+      "type": "block",
+      "code": "woodenaxle-ud"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 4
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "grindstone-{rock}"
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ],
+     "rock": [
+      "chert",
+      "claystone",
+      "sandstone"
+     ]
+    },
+    "name": "grindstone",
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "grindingwheel-wood-north"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/helvehammer.json",
+   "recipe": {
+    "ingredientPattern": "H,B,B",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "helvehammerhead-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel"
+      ]
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 4
+     }
+    },
+    "width": 1,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "helvehammer-{metal}"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/henbox.json",
+   "recipe": {
+    "ingredientPattern": "PHP\tPPP",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "henbox"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/ladder.json",
+   "recipe": {
+    "ingredientPattern": "P_P\tPSP\tP_P",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1,
+      "skipVariants": [
+       "agedebony",
+       "rottenebony"
+      ]
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "ladder-wood-{wood}-north",
+     "quantity": 3
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "H,B",
+    "ingredients": {
+     "H": {
+      "type": "block",
+      "code": "hay-normal-ud"
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-head",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "_H_,_H_,BBB",
+    "ingredients": {
+     "H": {
+      "type": "block",
+      "code": "hay-normal-ud"
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-legs",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "BHB,BHB,BBB",
+    "ingredients": {
+     "H": {
+      "type": "block",
+      "code": "hay-normal-ud"
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-torso",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "H,B",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "cattailtops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-head",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "_H_,_H_,BBB",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "cattailtops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-legs",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "BHB,BHB,BBB",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "cattailtops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-torso",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "H,B",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "papyrustops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-head",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "_H_,_H_,BBB",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "papyrustops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-legs",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mannequin.json",
+   "recipe": {
+    "ingredientPattern": "BHB,BHB,BBB",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "papyrustops",
+      "quantity": 4
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "mannequin-reed-torso",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks-pulverizer.json",
+   "recipe": {
+    "ingredientPattern": "PPP,PSP,PRP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 60
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 6
+     },
+     "R": {
+      "type": "block",
+      "code": "rock-*",
+      "name": "rock",
+      "allowedVariants": [
+       "andesite",
+       "granite",
+       "basalt",
+       "peridotite"
+      ]
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "pulverizerframe-north",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "_BS,BSL,SL_",
+    "ingredients": {
+     "B": {
+      "type": "block",
+      "code": "supportbeam-{wood}",
+      "quantity": 4
+     },
+     "S": {
+      "type": "item",
+      "code": "plank-{plank}",
+      "quantity": 4
+     },
+     "L": {
+      "type": "block",
+      "code": "linen-*",
+      "quantity": 4
+     }
+    },
+    "allowedVariants": {
+     "wood": [
+      "oak",
+      "maple",
+      "kapok",
+      "redwood",
+      "ebony",
+      "walnut",
+      "purpleheart"
+     ],
+     "plank": [
+      "birch",
+      "oak",
+      "maple",
+      "pine",
+      "acacia",
+      "kapok",
+      "baldcypress",
+      "larch",
+      "redwood",
+      "ebony",
+      "walnut",
+      "purpleheart"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "sail-large-oak",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "H_P,CP_,PR_",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 40
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 10
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     },
+     "R": {
+      "type": "item",
+      "code": "resin"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "helvehammerbase-north",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "HCR,PAP,_F_",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 50
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 20
+     },
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 4
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 4
+     },
+     "F": {
+      "type": "item",
+      "code": "fat-rendered"
+     },
+     "A": {
+      "type": "block",
+      "code": "woodenaxle-ud"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "woodentoggle-ns",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "SPS,PAP,SPS",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 6
+     },
+     "S": {
+      "type": "item",
+      "code": "largegearsection-wood"
+     },
+     "A": {
+      "type": "block",
+      "code": "woodenaxle-ud"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "largegear3",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "HCX,PRS,AAA",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 10
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 15
+     },
+     "X": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 40
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 2
+     },
+     "A": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "stick",
+      "quantity": 12
+     },
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "largegearsection-wood",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "HCX,PAS,RF_",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 30
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 15
+     },
+     "X": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 25
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 8
+     },
+     "A": {
+      "type": "block",
+      "code": "log-placed-*-ud"
+     },
+     "S": {
+      "type": "item",
+      "code": "stick",
+      "quantity": 8
+     },
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 2
+     },
+     "F": {
+      "type": "item",
+      "code": "fat-rendered",
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "clutch-north",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "HCX,PAS,RF_",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 30
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 15
+     },
+     "X": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 25
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 8
+     },
+     "A": {
+      "type": "block",
+      "code": "logsection-placed-*-ud"
+     },
+     "S": {
+      "type": "item",
+      "code": "stick",
+      "quantity": 8
+     },
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 2
+     },
+     "F": {
+      "type": "item",
+      "code": "fat-rendered",
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "clutch-north",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/mechpowerblocks.json",
+   "recipe": {
+    "ingredientPattern": "HCX,GPG,RF_",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "tags": [
+       "tool-hammer"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 30
+     },
+     "C": {
+      "type": "item",
+      "tags": [
+       "tool-chisel"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 15
+     },
+     "X": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true,
+      "toolDurabilityCost": 25
+     },
+     "G": {
+      "type": "block",
+      "code": "angledgears-s"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 8
+     },
+     "R": {
+      "type": "item",
+      "code": "resin",
+      "quantity": 2
+     },
+     "F": {
+      "type": "item",
+      "code": "fat-rendered"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "transmission-ns",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/moldrack.json",
+   "recipe": {
+    "ingredientPattern": "S_S\tS_S\tPPP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "code": "stick"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "moldrack-normal-east"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "log-placed-*-ud",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "recipeGroup": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 12
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "logsection-placed-*-ne-ud",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "recipeGroup": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 12
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "planks-*-ud",
+      "name": "wood",
+      "skipVariants": [
+       "agedacacia",
+       "agedebony",
+       "rottenebony"
+      ]
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "planks-*-ns",
+      "name": "wood",
+      "skipVariants": [
+       "agedacacia",
+       "agedebony",
+       "rottenebony"
+      ]
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "plankstairs-*-up-north-free",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 3
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "plankslab-*-down-free",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 2
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plank.json",
+   "recipe": {
+    "ingredientPattern": "SL",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "L": {
+      "type": "block",
+      "code": "ladder-wood-*-north",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": true,
+    "output": {
+     "type": "item",
+     "code": "plank-{wood}",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/planks.json",
+   "recipe": {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1,
+      "skipVariants": [
+       "agedacacia",
+       "agedebony",
+       "rottenebony"
+      ]
+     }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "planks-{wood}-ud",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H,HP,PS",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass",
+      "name": "type"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "block",
+      "code": "soil-medium-none"
+     }
+    },
+    "width": 2,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofing-sod-east-free",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H_,HPH,PSP",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass",
+      "name": "type"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "block",
+      "code": "soil-medium-none"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingridge-sod-ns-free",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H_,HHH,PSP",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass",
+      "name": "type"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "block",
+      "code": "soil-medium-none"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingtip-sod-free",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "PH_,PH_,PSH",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass",
+      "name": "type"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "block",
+      "code": "soil-medium-none"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingcornerinner-sod-east-free",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H,HH,PS",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "drygrass",
+      "name": "type"
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     },
+     "S": {
+      "type": "block",
+      "code": "soil-medium-none"
+     }
+    },
+    "width": 2,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingcornerouter-sod-east-free",
+     "quantity": 4
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "__H,_H_,H__",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofing-{wood}-east-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H_,H_H",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingridge-{wood}-ns-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H_,HHH",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingtip-{wood}-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H,H_,_H",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 2,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingcornerinner-{wood}-east-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/roofing.json",
+   "recipe": {
+    "ingredientPattern": "_H,HH",
+    "ingredients": {
+     "H": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "skipVariants": [
+       "veryaged"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "slantedroofingcornerouter-{wood}-east-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/scrollrack.json",
+   "recipe": {
+    "ingredientPattern": "W_W,NW_,W_W",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-{metal}"
+     }
+    },
+    "allowedVariants": {
+     "metal": [
+      "copper",
+      "blackbronze",
+      "tinbronze",
+      "bismuthbronze",
+      "iron",
+      "silver",
+      "gold",
+      "meteoriciron",
+      "steel",
+      "electrum"
+     ]
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "scrollrack",
+     "attributes": {
+      "type": "normal",
+      "material": "{wood}"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/shelf.json",
+   "recipe": {
+    "ingredientPattern": "PP,__,PP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 2,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "shelf-normal-east"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/sieve.json",
+   "recipe": {
+    "ingredientPattern": "FPF\tPFP\tFPF",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "F": {
+      "type": "item",
+      "code": "flaxtwine"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "sieve-linen",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/sign.json",
+   "recipe": {
+    "ingredientPattern": "P\tS",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 2
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "sign-ground-north"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/signpost.json",
+   "recipe": {
+    "ingredientPattern": "P,S,S",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 1,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "signpost"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/table.json",
+   "recipe": {
+    "ingredientPattern": "WWW\tW_W\tW_W",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "table-normal"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/trap-crate.json",
+   "recipe": {
+    "ingredientPattern": "NWN,WWW,NWN",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "quantity": 4
+     },
+     "N": {
+      "type": "item",
+      "code": "metalnailsandstrips-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel"
+      ]
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "trapcrate-wood",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/trapdoor.json",
+   "recipe": {
+    "ingredientPattern": "WWW\tSSS\tWWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "trapdoor-window-{wood}-1",
+     "quantity": 2
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/trapdoor.json",
+   "recipe": {
+    "ingredientPattern": "WWW\tWWW\tWWW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "trapdoor-solid-{wood}-1",
+     "quantity": 2
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/trough-large.json",
+   "recipe": {
+    "ingredientPattern": "P_P,PPP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "trough-genericwood-large-head-north"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/trough-small.json",
+   "recipe": {
+    "ingredientPattern": "P_P,_P_",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "trough-genericwood-small-ns"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/woodbucket.json",
+   "recipe": {
+    "ingredientPattern": " F \tW_W\tWWW",
+    "ingredients": {
+     "F": {
+      "type": "item",
+      "code": "rope"
+     },
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "woodbucket"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/woodbucket.json",
+   "recipe": {
+    "ingredientPattern": " F \tW_W\tWWW",
+    "ingredients": {
+     "F": {
+      "type": "item",
+      "code": "flaxtwine"
+     },
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "woodbucket"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/woodenfence.json",
+   "recipe": {
+    "ingredientPattern": "PSP\tPSP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "allowedVariants": [
+       "birch",
+       "oak",
+       "maple",
+       "pine",
+       "acacia",
+       "kapok",
+       "aged",
+       "baldcypress",
+       "larch",
+       "redwood",
+       "ebony",
+       "walnut",
+       "purpleheart"
+      ]
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "woodenfence-{wood}-ew-free",
+     "quantity": 8
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/woodenfencegate.json",
+   "recipe": {
+    "ingredientPattern": "SPS\tSPS",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "allowedVariants": [
+       "birch",
+       "oak",
+       "maple",
+       "pine",
+       "acacia",
+       "kapok",
+       "aged",
+       "baldcypress",
+       "larch",
+       "redwood",
+       "ebony",
+       "walnut",
+       "purpleheart"
+      ]
+     },
+     "S": {
+      "type": "item",
+      "code": "stick"
+     }
+    },
+    "width": 3,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "woodenfencegate-{wood}-n-closed-left-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/woodenpath.json",
+   "recipe": {
+    "ingredientPattern": "SP",
+    "ingredients": {
+     "S": {
+      "type": "item",
+      "tags": [
+       "tool-saw"
+      ],
+      "isTool": true
+     },
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "allowedVariants": [
+       "birch",
+       "oak",
+       "maple",
+       "pine",
+       "acacia",
+       "kapok",
+       "aged",
+       "baldcypress",
+       "larch",
+       "redwood",
+       "ebony",
+       "walnut",
+       "purpleheart"
+      ],
+      "quantity": 2
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "shapeless": false,
+    "output": {
+     "type": "block",
+     "code": "woodenpath-{wood}-ns",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/slabs/plankslabs.json",
+   "recipe": {
+    "ingredientPattern": "PP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 1,
+    "output": {
+     "type": "block",
+     "code": "plankslab-{wood}-down-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/stairs/plankstairs.json",
+   "recipe": {
+    "ingredientPattern": "P_,PP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood"
+     }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+     "type": "block",
+     "code": "plankstairs-{wood}-up-north-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/punchset.json",
+   "recipe": {
+    "enabled": false,
+    "ingredientPattern": "T\tS",
+    "ingredients": {
+     "T": {
+      "type": "item",
+      "code": "punchset-letters-loose-*",
+      "name": "metal"
+     },
+     "S": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+     "type": "item",
+     "code": "punchset-letters-cased-{metal}",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "_H_,BPB,_B_",
+    "ingredients": {
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetal",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "{wood}",
+      "deco": "none"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "LHL,BPB,LBL",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-*",
+      "name": "color",
+      "allowedVariants": [
+       "orange",
+       "black",
+       "red",
+       "blue",
+       "purple",
+       "white",
+       "yellow",
+       "gray",
+       "green"
+      ],
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "{color}",
+      "deco": "none"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "LHL,BPB,LBL",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-plain",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "brown",
+      "deco": "none"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "LHL,BPB,LBL",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-pink",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "pink",
+      "deco": "none"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-white",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-yellow",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-orange",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "white",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-black",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-yellow",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-red",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "black",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-blue",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-yellow",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-green",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "blue",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-plain",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-green",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "brown",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-white",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-purple",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "gray",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-green",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-yellow",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "green",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-orange",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-blue",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-green",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "orange",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-pink",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-white",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-green",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "pink",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-purple",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-pink",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "purple",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-red",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-white",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "red",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "SHW,BPB,OBG",
+    "requiresTrait": "clothier",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-yellow",
+      "quantity": 2
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-black",
+      "quantity": 1
+     },
+     "O": {
+      "type": "item",
+      "code": "leather-normal-white",
+      "quantity": 1
+     },
+     "S": {
+      "type": "item",
+      "code": "sewingkit",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "yellow",
+      "deco": "ornate"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/roundshield.json",
+   "recipe": {
+    "ingredientPattern": "GHW,BPB,WBG",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "boss-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "H": {
+      "type": "item",
+      "code": "hoop-*",
+      "name": "metal",
+      "allowedVariants": [
+       "tinbronze",
+       "bismuthbronze",
+       "blackbronze",
+       "iron",
+       "meteoriciron",
+       "steel",
+       "gold",
+       "silver"
+      ],
+      "quantity": 1
+     },
+     "B": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "W": {
+      "type": "item",
+      "code": "leather-normal-black",
+      "quantity": 1
+     },
+     "G": {
+      "type": "item",
+      "code": "leather-normal-orange",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-woodmetalleather",
+     "quantity": 1,
+     "attributes": {
+      "metal": "{metal}",
+      "wood": "generic",
+      "color": "redblack",
+      "deco": "none"
+     }
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/shield.json",
+   "recipe": {
+    "ingredientPattern": "CPC,VBV,LVL",
+    "requiresTrait": "merciless",
+    "ingredients": {
+     "B": {
+      "type": "item",
+      "code": "boss-iron",
+      "quantity": 1
+     },
+     "P": {
+      "type": "item",
+      "code": "metalplate-iron",
+      "quantity": 1
+     },
+     "V": {
+      "type": "item",
+      "code": "plank-*",
+      "name": "wood",
+      "quantity": 1
+     },
+     "C": {
+      "type": "item",
+      "code": "charcoal"
+     },
+     "L": {
+      "type": "item",
+      "code": "leather-normal-gray",
+      "quantity": 1
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "shield-blackguard",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/tool/shovel.json",
+   "recipe": {
+    "ingredientPattern": "_P_,_P_,PPP",
+    "ingredients": {
+     "P": {
+      "type": "item",
+      "code": "plank-*"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "item",
+     "code": "snowshovel-oak",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/slabmode/planks.json",
+   "recipe": {
+    "ingredientPattern": "L",
+    "ingredients": {
+     "L": {
+      "type": "block",
+      "code": "plankslab-*-down-free",
+      "name": "type"
+     }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+     "type": "block",
+     "code": "plankslab-{type}-down-free",
+     "quantity": 1
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plaster/diagonal.json",
+   "recipe": {
+    "ingredientPattern": "W__\t_P_\t__W",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     },
+     "P": {
+      "type": "block",
+      "code": "plaster-plain"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "plaster-diagonal-ud"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plaster/square.json",
+   "recipe": {
+    "ingredientPattern": "_W_\tWPW\t_W_",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     },
+     "P": {
+      "type": "block",
+      "code": "plaster-plain"
+     }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "plaster-square"
+    }
+   }
+  },
+  {
+   "file": "survival/recipes/grid/plaster/stripes.json",
+   "recipe": {
+    "ingredientPattern": "W\tP\tW",
+    "ingredients": {
+     "W": {
+      "type": "item",
+      "code": "plank-*"
+     },
+     "P": {
+      "type": "block",
+      "code": "plaster-plain"
+     }
+    },
+    "width": 1,
+    "height": 3,
+    "output": {
+     "type": "block",
+     "code": "plaster-stripes-ud"
+    }
+   }
+  }
+ ],
+ "items": [
+  {
+   "file": "survival/itemtypes/resource/plank.json",
+   "data": {
+    "code": "plank",
+    "class": "ItemPlank",
+    "behaviors": [
+     {
+      "name": "GroundStorable",
+      "properties": {
+       "layout": "Stacking",
+       "placeRemoveSound": "sounds/block/planks",
+       "stackingModel": "block/wood/plankpile",
+       "modelItemsToStackSizeRatio": 1,
+       "upSolid": true,
+       "stackingCapacity": 48,
+       "collisionBox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 0.0625,
+        "z2": 1
+       },
+       "cbScaleYByLayer": 0.3333333333333333,
+       "transferQuantity": 1,
+       "bulkTransferQuantity": 4,
+       "burnHoursPerItem": 0.166666667
+      }
+     }
+    ],
+    "variantgroups": [
+     {
+      "code": "wood",
+      "states": [
+       "aged",
+       "veryaged"
+      ],
+      "loadFromProperties": "block/wood"
+     }
+    ],
+    "maxstacksize": 64,
+    "shape": {
+     "base": "item/plank"
+    },
+    "textures": {
+     "wood": {
+      "baseByType": {
+       "*-aged": "block/wood/planks/aged/aged1",
+       "*-veryaged": "block/wood/planks/aged/veryaged1",
+       "*-agedebony": "block/wood/planks/aged/ebony1",
+       "*": "block/wood/planks/{wood}1"
+      }
+     }
+    },
+    "creativeinventory": {
+     "general": [
+      "*"
+     ],
+     "items": [
+      "*"
+     ]
+    },
+    "attributes": {
+     "handbook": {
+      "groupBy": [
+       "plank-*"
+      ]
+     }
+    },
+    "combustibleProps": {
+     "burnTemperature": 700,
+     "burnDuration": 6
+    },
+    "materialDensity": 700,
+    "guiTransform": {
+     "translation": {
+      "x": 0,
+      "y": 2,
+      "z": 0
+     },
+     "rotation": {
+      "x": -55,
+      "y": 94,
+      "z": 27
+     },
+     "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.45
+     },
+     "scale": 1.86
+    },
+    "groundTransform": {
+     "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+     },
+     "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+     },
+     "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+     },
+     "scale": 3.25
+    },
+    "tpHandTransform": {
+     "translation": {
+      "x": -0.6,
+      "y": -0.06,
+      "z": -0.44
+     },
+     "rotation": {
+      "x": 109,
+      "y": 51,
+      "z": 1
+     },
+     "origin": {
+      "x": 0.5,
+      "y": 0.1,
+      "z": 0.5
+     },
+     "scale": 0.86
+    }
+   }
+  }
+ ],
+ "blocks": [
+  {
+   "file": "survival/blocktypes/wood/agedwallpaperplanks.json",
+   "code": "agedwallpaperplanks",
+   "class": null,
+   "variantgroups": [
+    {
+     "code": "color",
+     "states": [
+      "blue",
+      "green",
+      "grey"
+     ]
+    },
+    {
+     "loadFromProperties": "abstract/horizontalorientation"
+    }
+   ],
+   "drops": null,
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "HorizontalOrientable",
+     "properties": {
+      "dropBlockFace": "east"
+     }
+    }
+   ]
+  },
+  {
+   "file": "survival/blocktypes/wood/plankpile.json",
+   "code": "plankpile",
+   "class": "BlockPlankPile",
+   "variantgroups": null,
+   "drops": null,
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "Lockable"
+    }
+   ]
+  },
+  {
+   "file": "survival/blocktypes/wood/planks-burned.json",
+   "code": "burnedplanks",
+   "class": null,
+   "variantgroups": [
+    {
+     "code": "wood",
+     "states": [
+      "narrow",
+      "normal"
+     ]
+    },
+    {
+     "code": "type",
+     "states": [
+      "blackened",
+      "charred",
+      "scorched"
+     ]
+    },
+    {
+     "code": "orientation",
+     "states": [
+      "ns",
+      "we",
+      "ud"
+     ]
+    }
+   ],
+   "drops": [
+    {
+     "type": "block",
+     "code": "burnedplanks-{wood}-{type}-ud"
+    }
+   ],
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "Pillar"
+    },
+    {
+     "name": "WrenchOrientable",
+     "properties": {
+      "baseCode": "planks-{wood}"
+     }
+    }
+   ]
+  },
+  {
+   "file": "survival/blocktypes/wood/woodtyped/planks.json",
+   "code": "planks",
+   "class": null,
+   "variantgroups": [
+    {
+     "code": "wood",
+     "states": [
+      "aged",
+      "veryaged",
+      "agedacacia",
+      "agedebony",
+      "rottenebony"
+     ],
+     "loadFromProperties": "block/wood"
+    },
+    {
+     "code": "orientation",
+     "states": [
+      "ns",
+      "we",
+      "ud"
+     ]
+    }
+   ],
+   "drops": [
+    {
+     "type": "block",
+     "code": "planks-{wood}-ud"
+    }
+   ],
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "Pillar",
+     "properties": {
+      "rotationVariantCode": "orientation"
+     }
+    },
+    {
+     "name": "WrenchOrientable",
+     "properties": {
+      "baseCode": "planks-{wood}"
+     }
+    }
+   ]
+  },
+  {
+   "file": "survival/blocktypes/wood/woodtyped/plankslab.json",
+   "code": "plankslab",
+   "class": "BlockSlabSnowRemove",
+   "variantgroups": [
+    {
+     "code": "wood",
+     "states": [
+      "aged",
+      "veryaged"
+     ],
+     "loadFromProperties": "block/wood"
+    },
+    {
+     "code": "rot",
+     "states": [
+      "north",
+      "east",
+      "south",
+      "west",
+      "up",
+      "down"
+     ]
+    },
+    {
+     "code": "cover",
+     "states": [
+      "free",
+      "snow"
+     ]
+    }
+   ],
+   "drops": [
+    {
+     "code": "plankslab-{wood}-down-free"
+    }
+   ],
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "OmniRotatable",
+     "properties": {
+      "rotateSides": true,
+      "facing": "block"
+     }
+    },
+    {
+     "name": "WrenchOrientable",
+     "properties": {
+      "baseCode": "plankslab-{wood}-*-{cover}"
+     }
+    }
+   ]
+  },
+  {
+   "file": "survival/blocktypes/wood/woodtyped/plankstairs.json",
+   "code": "plankstairs",
+   "class": "BlockStairs",
+   "variantgroups": [
+    {
+     "code": "wood",
+     "states": [
+      "aged",
+      "veryaged"
+     ],
+     "loadFromProperties": "block/wood"
+    },
+    {
+     "loadFromProperties": "abstract/verticalorientation"
+    },
+    {
+     "loadFromProperties": "abstract/horizontalorientation"
+    },
+    {
+     "code": "cover",
+     "states": [
+      "free",
+      "snow"
+     ]
+    }
+   ],
+   "drops": null,
+   "dropsByType": null,
+   "behaviors": [
+    {
+     "name": "WrenchOrientable",
+     "properties": {
+      "baseCode": "plankstairs-{wood}-*-{cover}"
+     }
+    }
+   ]
+  }
+ ]
+}

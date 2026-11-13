@@ -1,0 +1,18 @@
+== Refusals in the last 60 minutes ==
+Every time the transmutation table or tablet turns a player down, the reason is kept (the last 300). Here they are, grouped by reason, each with its fix. Nothing to switch on: it's always recording.
+2 refusals, 1 player(s):
+
+== 1 × "{0} has no EMC value." ==
+The item on the cursor has no EMC value, so it can't be burned. 'why?' says what it's waiting for; a pin fixes it on the spot.
+  Copper ingot (game:ingot-copper) ×1 (?, last 04:22:26)
+    why? (/emc diagnose item game:ingot-copper)  Give it a value... (/emc set, holding it)
+
+== 1 × "You haven't learned that item." ==
+The player hasn't learned that item, so the table won't create it for them. They burn one first, or an admin teaches it.
+  (nothing on the cursor) ×1 (?, last 04:22:26)
+
+== Next ==
+Look again (/emc diagnose watch 60)
+A longer stretch (/emc diagnose watch 360)
+Forget these refusals (in the window)
+Back to the check-up (/emc diagnose)
