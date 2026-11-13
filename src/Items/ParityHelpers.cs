@@ -224,12 +224,21 @@ namespace VintageE
                 // Half-hour steps; the weather wanted for two hours running, landing in the middle of it, so it holds a while.
                 double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
                 float want = rain ? 0.1f : RainLevel / 2;
-                bool Wet(double d) => ws.GetPrecipitation(at.X, at.Y, at.Z, now + d) > want;
-                bool Wanted(double d) => rain ? Wet(d) : !Wet(d);
+                float P(double d) => ws.GetPrecipitation(at.X, at.Y, at.Z, now + d);
+                // How well two hours from d fit: the weakest rain in them (for rain), or the least dry (for clearing).
+                double bestD = -1, bestFit = double.NegativeInfinity;
                 for (double d = step; d < 30; d += step)
                 {
-                    if (!Wanted(d) || !Wanted(d + step) || !Wanted(d + 2 * step) || !Wanted(d + 3 * step)) continue;
-                    ws.RainCloudDaysOffset += d + 1.5 * step;
+                    float a = P(d), b = P(d + step), c = P(d + 2 * step), e = P(d + 3 * step);
+                    double fit = rain ? Math.Min(Math.Min(a, b), Math.Min(c, e)) : -Math.Max(Math.Max(a, b), Math.Max(c, e));
+                    if (fit > bestFit) { bestFit = fit; bestD = d; }
+                    if (rain ? fit > want : -fit < want) break; // good enough: the first such time
+                }
+                // In a dry land rain may never reach 0.1: the wettest two hours do, if it rains there at all.
+                bool usable = rain ? bestFit > RainLevel : -bestFit < RainLevel;
+                if (bestD > 0 && usable)
+                {
+                    ws.RainCloudDaysOffset += bestD + 1.5 * step;
                     ws.broadCastConfigUpdate();
                     return true;
                 }

@@ -384,7 +384,7 @@ namespace VintageE
                         CheckPedestalWeather();
                     }
                     catch (Exception e) { Check(false, "furnace check threw " + e); }
-                    Finish();
+                    AfterFurnaces(Finish); // the weather shots last: rain puts the furnaces being tested out
                 }, 40000);
             }
             catch (Exception e)

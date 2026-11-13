@@ -319,9 +319,9 @@ namespace VintageE
                 wolf?.Die(EnumDespawnReason.Removed);
             }
 
-            // --- Weather from shots and a water shot quenching lava, a lava shot drying water (after the fireball check at 4 s:
-            // rain would put its fire out).
-            sapi.Event.RegisterCallback(_ =>
+            // --- Weather from shots, a water shot quenching lava and a lava shot drying water: run after the furnace checks
+            // (rain puts firepits out), and the report is written when they're done.
+            weatherShots = done =>
             {
                 try
                 {
@@ -329,12 +329,13 @@ namespace VintageE
                     Block lava = sapi.World.GetBlock(new AssetLocation("game:lava-still-7"));
                     Block water = sapi.World.GetBlock(new AssetLocation("game:water-still-7"));
                     BlockPos lavaPos = wp.AddCopy(3, 0, 3), waterPos = wp.AddCopy(6, 0, 6);
-                    if (lava == null || water == null) { Check(false, "lava and water blocks exist"); return; }
+                    if (lava == null || water == null) { Check(false, "lava and water blocks exist"); done(); return; }
                     ba.SetBlock(lava.Id, lavaPos, BlockLayersAccess.Fluid);
                     // Open sky above both shots (a mountain or tree overhead would catch them).
                     foreach (BlockPos col in new[] { wp.AddCopy(1, 0, 3), wp.AddCopy(4, 0, 6) })
                         for (int cy = col.Y; cy < ba.MapSizeY; cy++) { var cp = new BlockPos(col.X, cy, col.Z); ba.SetBlock(0, cp); ba.SetBlock(0, cp, BlockLayersAccess.Fluid); }
                     var up = new Vec3d(0, 1, 0);
+                    Line($"  precipitation before the shots: {WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##}");
                     var shot = EntityVintageEProjectile.ShootFrom(sapi.World, wp.ToVec3d().Add(1.5, 0.5, 3.5), up, "water", 40);
                     sapi.Event.RegisterCallback(__ =>
                     {
@@ -366,13 +367,24 @@ namespace VintageE
                                     WeatherControl.SetRain(sapi, wp.ToVec3d(), false);
                                 }
                                 catch (Exception e) { Check(false, "lava shot check threw " + e); }
+                                done();
                             }, 7000);
                         }
-                        catch (Exception e) { Check(false, "water shot check threw " + e); }
+                        catch (Exception e) { Check(false, "water shot check threw " + e); done(); }
                     }, 7000);
                 }
-                catch (Exception e) { Check(false, "weather shots threw " + e); }
-            }, 5000);
+                catch (Exception e) { Check(false, "weather shots threw " + e); done(); }
+            };
+        }
+
+        /// <summary>The weather shots (set up by <see cref="CheckParity"/>), then <paramref name="done"/>.</summary>
+        Action<Action> weatherShots;
+
+        void AfterFurnaces(Action done)
+        {
+            if (weatherShots == null) { done(); return; }
+            try { weatherShots(done); }
+            catch (Exception e) { Check(false, "weather shots threw " + e); done(); }
         }
 
         const int AntimatterBurn = BEAntimatterRelay.BurnPerSecond;
