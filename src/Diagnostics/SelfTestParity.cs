@@ -344,11 +344,12 @@ namespace VintageE
                             Block now = ba.GetBlock(lavaPos);
                             Check(now?.Code?.Path == "rock-obsidian", $"a water shot turns lava it passes into obsidian ({now?.Code})");
                             Line($"  {EntityVintageEProjectile.LastEnd ?? "the water shot left no word"} (world top {ba.MapSizeY})");
-                            bool rain = WeatherControl.IsRaining(sapi, wp.ToVec3d());
+                            Vec3d waterUp = wp.ToVec3d().Add(1.5, 0.5, 3.5), lavaUp = wp.ToVec3d().Add(4.5, 0.5, 6.5);
+                            bool rain = WeatherControl.IsRaining(sapi, waterUp);
                             Check(shot == null || !shot.Alive, "the water shot went into the sky");
-                            Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##})");
+                            Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, waterUp):0.##} where it went up)");
                             ba.SetBlock(water.Id, waterPos, BlockLayersAccess.Fluid);
-                            var lavaShot = EntityVintageEProjectile.ShootFrom(sapi.World, wp.ToVec3d().Add(4.5, 0.5, 6.5), up, "lava", 40);
+                            var lavaShot = EntityVintageEProjectile.ShootFrom(sapi.World, lavaUp, up, "lava", 40);
                             // Right after it passed (water around may flow back in later: that's the world, not the shot).
                             sapi.Event.RegisterCallback(____ =>
                             {
@@ -360,8 +361,8 @@ namespace VintageE
                                 try
                                 {
                                     Line($"  {EntityVintageEProjectile.LastEnd ?? "the lava shot left no word"}");
-                                    bool dry = !WeatherControl.IsRaining(sapi, wp.ToVec3d());
-                                    Check(dry, $"a lava shot into the sky stops the rain ({WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##})");
+                                    bool dry = !WeatherControl.IsRaining(sapi, lavaUp);
+                                    Check(dry, $"a lava shot into the sky stops the rain ({WeatherControl.Precipitation(sapi, lavaUp):0.##} where it went up)");
                                     bool storm = WeatherControl.StartThunderstorm(sapi, wp.ToVec3d());
                                     Check(storm, $"Swiftwolf's shot into the rain can bring a thunderstorm (thundering there now: {WeatherControl.IsThundering(sapi, wp.ToVec3d())})");
                                     WeatherControl.SetRain(sapi, wp.ToVec3d(), false);

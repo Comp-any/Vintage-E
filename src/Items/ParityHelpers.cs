@@ -218,18 +218,34 @@ namespace VintageE
             try
             {
                 at = Ground(sapi, at);
-                float nowLevel = ws.GetPrecipitation(at);
-                if (rain ? nowLevel > 0.1f : nowLevel < RainLevel / 2) return true; // clearly so already
+                // Rain cells drift fast, so the weather is judged over the land around too (8 blocks each way): the
+                // weakest rain of those spots when making it rain, the heaviest when clearing it.
+                var spots = new[] { at, at.AddCopy(8, 0, 0), at.AddCopy(-8, 0, 0), at.AddCopy(0, 0, 8), at.AddCopy(0, 0, -8) };
                 double now = sapi.World.Calendar.TotalDays;
+                float Around(double d)
+                {
+                    float lo = float.MaxValue, hi = 0;
+                    foreach (Vec3d p in spots)
+                    {
+                        float v = ws.GetPrecipitation(p.X, p.Y, p.Z, now + d);
+                        lo = Math.Min(lo, v);
+                        hi = Math.Max(hi, v);
+                    }
+                    return rain ? lo : hi;
+                }
+                float want = rain ? 0.1f : RainLevel / 2;
+                float nowLevel = Around(0);
+                if (rain ? nowLevel > want : nowLevel < want) return true; // clearly so already
                 // Half-hour steps; the weather wanted for two hours running, landing in the middle of it, so it holds a while.
                 double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
-                float want = rain ? 0.1f : RainLevel / 2;
-                float P(double d) => ws.GetPrecipitation(at.X, at.Y, at.Z, now + d);
+                var seen = new Dictionary<int, float>();
+                float P(int i) { if (!seen.TryGetValue(i, out float v)) seen[i] = v = Around(i * step); return v; }
                 // How well two hours from d fit: the weakest rain in them (for rain), or the least dry (for clearing).
                 double bestD = -1, bestFit = double.NegativeInfinity;
-                for (double d = step; d < 30; d += step)
+                for (int i = 1; i * step < 30; i++)
                 {
-                    float a = P(d), b = P(d + step), c = P(d + 2 * step), e = P(d + 3 * step);
+                    double d = i * step;
+                    float a = P(i), b = P(i + 1), c = P(i + 2), e = P(i + 3);
                     double fit = rain ? Math.Min(Math.Min(a, b), Math.Min(c, e)) : -Math.Max(Math.Max(a, b), Math.Max(c, e));
                     if (fit > bestFit) { bestFit = fit; bestD = d; }
                     if (rain ? fit > want : -fit < want) break; // good enough: the first such time
