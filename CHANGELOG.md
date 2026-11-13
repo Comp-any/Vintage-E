@@ -2,6 +2,32 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.0 — 2026-11-13
+
+### Added
+More of ProjectE, read from its source (1.21.1 branch). What is still different, and why, is listed in the README under [Differences from ProjectE](README.md#differences-from-projecte).
+- **Ignition Ring:** switched off, it puts out fire right around you; right-click a block lights it like a firestarter (firepits, torches, anything that burns). The Ring of Arcana does the same with Ignition on.
+- **Ring of Arcana:** the new **extra-function key** (G) lays a wall of fire across where you face (30 blocks to each side, 5 up and down, 3 deep) with Ignition on; the fire-projectile key takes turns between the shots of the effects that are on: a **snowball** (Zero: knocks back, puts out fire), a fireball (Ignition), lightning (Swiftwolf).
+- **Swiftwolf's Rending Gale:** on a pedestal it calls **lightning** on every creature within 10 blocks but players and pets, every 3.5 seconds (was 4 damage a second to hostile ones). Its lightning shot brings **3 more bolts in a thunderstorm**, and aimed at the sky while it rains it **starts a thunderstorm**.
+- **Archangel's Smite:** switched on in its tool modes, it **keeps firing** from anywhere in your inventory (five arrows a second, an arrow's EMC each, off again when you run out). On a pedestal it fires **3 homing arrows** every 2 seconds while a hostile creature is near.
+- **Evertide Amulet:** right-click a barrel, bucket, jug or other container to pour in 10 litres of water (Ctrl: 1); a barrel's liquid slot takes it too. It's an **endless water source** for anything that drains it.
+- **Water and lava shots:** a water shot turns lava it passes (3 blocks around) into obsidian (a source) or basalt cobblestone, a lava shot dries up water; shot into the sky, water **brings rain** and lava **stops it**. The rain is the game's own, moved along in time (as `/weather stoprain` does).
+- **Philosopher's Stone:** ProjectE's **cube, panel and line** shapes, **1 to 9 wide** (was a 1×1 to 5×5 panel). The tool-mode key picks the shape and size; a stone from before keeps working on a panel.
+- **Mercurial Eye:** ProjectE's **creation**, **extension**, **classic extension** and **pillar** modes besides transmutation (what it did before, and still the mode of an eye made before). Extension with no block chosen builds out of the clicked block.
+- **Hyperkinetic Lens:** radius **4/8/12/16** (was 4/6/8/10), as ProjectE.
+- **Divining rods:** the medium and high rods can **look less deep** (16 or 32 blocks), picked in their tool modes.
+- **Matter tools, right-click:** the **pickaxe** and **Morning Star** mine a whole **ore vein** (up to 250 blocks); the **shovel** and Morning Star a whole patch of **gravel or clay**; the shovel **digs a flat square** around the clicked block (3×3 and up, with the tool-mode key); the **axe** clears every **log** and the **shears** every **leaf block** within 5 blocks across and 10 up and down for each area step (nothing at 1×1, as ProjectE at charge 0); the **shears** right-clicked in the air **shear the creatures** around you. Vintage Story's own creatures have nothing to shear, so what each creature gives is the new `ShearableCreatures` setting (empty), with `ShearRegrowHours` (24). Matter shears now have area modes (3×3, and 5×5 for red), which their left-click uses too.
+- **Gem armour:** the **helmet** heals a tenth of your health a second and has **night vision** (Shift + X switches it); the **chestplate** feeds you a tenth of your saturation a second while you're hungry; the **leggings** (ProjectE's gem leggings and boots in one) give **twice the walking speed** and **twice as high jumps**, **slow falling** and no fall damage, **fast falling** while sneaking in the air, push creatures and their arrows away while sneaking, hurt the creatures you come down on, and have **step assist** (walk up a full block; X switches it). All free, as in ProjectE.
+- **Energy Collector fuel slot:** right-click a collector with coal or an alchemical fuel to put it in: the collector spends its EMC lifting it to better fuel (charcoal → coal → coke → alchemical coal → mobius → aeternalis, by EMC value), up to the fuel you sneak + right-click it with (its **lock**) or the best there is. An empty hand takes the finished fuel out. The fuels are the new `CollectorFuels` setting.
+- **Anti-Matter Relay burn slot:** right-click a relay with anything that has an EMC value: it burns it into its store, 20 a second while there's room. An empty hand takes back what's left.
+- **ProjectE's keys** (all in the game's controls settings): **Transmutation Tablet** (K: opens the tablet you carry), **extra function** (G; ProjectE uses C, which is the game's character window: the Ring of Arcana's fire wall, the Void Ring's teleport, the swords' and katar's strike, the Philosopher's Stone's crafting grid), **charge** (V, Shift + V lowers it: lenses, catalysts, Philosopher's Stone, Mercurial Eye and matter tools step their charge, which is their area mode), and the gem armour's **night vision** (Shift + X) and **step assist** (X).
+- The self-test checks all of it that can run without a player: the amulet filling a barrel, lighting and putting out fire, the fire wall, the stone's shapes, vein mining, digging, clearing logs, collector fuel, relay burning, the pedestals' lightning and arrows, and water and lava shots quenching, drying and changing the weather.
+
+### Changed
+- `HostileCreatures` is no longer what Swiftwolf's pedestal strikes: like ProjectE, it strikes every creature but players and pets.
+
+EMC values are the same as in 1.23.1.
+
 ## 1.23.1 — 2026-11-13
 
 ### Added

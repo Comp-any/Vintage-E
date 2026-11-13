@@ -15,7 +15,11 @@ namespace VintageE
     /// <item><c>water</c> (Evertide Amulet) / <c>lava</c> (Volcanite Amulet): places a source block where it lands.</item>
     /// <item><c>fire</c> (Ignition Ring, Ring of Arcana): sets the creature it hits on fire.</item>
     /// <item><c>arrow</c> (Archangel's Smite): homing arrow, <see cref="Damage"/> piercing damage.</item>
+    /// <item><c>snow</c> (Ring of Arcana, Zero): a snowball that knocks back and puts out fire.</item>
     /// </list>
+    /// On the way, a water shot turns lava within 3 blocks into obsidian (a source) or basalt cobblestone, and a lava
+    /// shot dries up water within 3 blocks. Shot into the sky (past the top of the world), water brings rain and lava
+    /// stops it, as in ProjectE.
     /// Shots that hit nothing vanish after <see cref="MaxLifeSeconds"/>; lens and fire shots fizzle in water.
     /// Movement and hit tests run on the server; clients interpolate the position.
     /// </summary>
@@ -44,6 +48,25 @@ namespace VintageE
             shot.Pos.Motion.Set(dir.X * perFrame, dir.Y * perFrame, dir.Z * perFrame);
             shot.FiredById = player.Entity.EntityId;
             shot.FiredByUid = player.PlayerUID;
+            setup?.Invoke(shot);
+            shot.FaceFlight();
+            world.SpawnEntity(shot);
+            return shot;
+        }
+
+        /// <summary>
+        /// A shot from a block (a pedestal's arrows): from <paramref name="from"/> towards <paramref name="dir"/>,
+        /// moving <paramref name="blocksPerSecond"/>. Nobody fired it, so it acts with no player's rights.
+        /// </summary>
+        public static EntityVintageEProjectile ShootFrom(IWorldAccessor world, Vec3d from, Vec3d dir, string kind, double blocksPerSecond, Action<EntityVintageEProjectile> setup = null)
+        {
+            EntityProperties type = world.GetEntityType(new AssetLocation("vintagee", "projectile-" + kind));
+            if (type == null || dir == null || dir.Length() < 1e-6) return null;
+            var shot = (EntityVintageEProjectile)world.ClassRegistry.CreateEntity(type);
+            Vec3d d = dir.Clone().Normalize();
+            double perFrame = blocksPerSecond / 60.0;
+            shot.Pos.SetPos(from);
+            shot.Pos.Motion.Set(d.X * perFrame, d.Y * perFrame, d.Z * perFrame);
             setup?.Invoke(shot);
             shot.FaceFlight();
             world.SpawnEntity(shot);
@@ -113,6 +136,7 @@ namespace VintageE
                 "lava" => new byte[] { 4, 7, 12 },
                 "fire" => new byte[] { 6, 7, 12 },
                 "arrow" => new byte[] { 10, 2, 8 },
+                "snow" => new byte[] { 36, 0, 6 },
                 _ => new byte[] { 8, 7, 14 },
             };
         }
@@ -147,6 +171,20 @@ namespace VintageE
 
             Vec3d from = Pos.XYZ;
             Vec3d to = from.AddCopy(Pos.Motion.X * dt * 60, Pos.Motion.Y * dt * 60, Pos.Motion.Z * dt * 60);
+
+            // ProjectE: water shots quench lava and lava shots boil water away on the way past (3 blocks around).
+            if (Kind == "water" || Kind == "lava")
+            {
+                if (Kind == "water") QuenchLava(from); else DryWater(from);
+                // Into the sky (above the world's top): water brings rain, lava clears it.
+                if (to.Y >= World.BlockAccessor.MapSizeY - 1)
+                {
+                    done = true;
+                    WeatherControl.SetRain((ICoreServerAPI)Api, from, Kind == "water");
+                    Die(EnumDespawnReason.Removed);
+                    return;
+                }
+            }
 
             BlockSelection blockSel = null;
             EntitySelection entitySel = null;
@@ -253,7 +291,72 @@ namespace VintageE
                     target.ReceiveDamage(new DamageSource { Source = shooter is EntityPlayer ? EnumDamageSource.Player : EnumDamageSource.Entity, SourceEntity = this, CauseEntity = shooter, Type = EnumDamageType.PiercingAttack }, Damage);
                     World.PlaySoundAt(new AssetLocation("game:sounds/arrow-impact"), target, null, true, 24, 0.8f);
                     break;
+                case "snow":
+                    // A snowball: no harm, a push, and the fire on it is out.
+                    if (target.IsOnFire) target.IsOnFire = false;
+                    double speed = Math.Max(1e-6, Pos.Motion.Length());
+                    target.Pos.Motion.Add(Pos.Motion.X / speed * 0.15, 0.08, Pos.Motion.Z / speed * 0.15);
+                    SnowPuff(at);
+                    break;
             }
+        }
+
+        void SnowPuff(Vec3d at)
+        {
+            World.SpawnParticles(10, ColorUtil.ToRgba(230, 240, 245, 255), at.AddCopy(-0.2, -0.2, -0.2), at.AddCopy(0.2, 0.2, 0.2),
+                new Vec3f(-0.6f, 0.2f, -0.6f), new Vec3f(0.6f, 0.8f, 0.6f), 0.8f, 0.6f, 0.6f);
+            World.PlaySoundAt(new AssetLocation("game:sounds/environment/smallsplash"), at.X, at.Y, at.Z, null, true, 16, 0.3f);
+        }
+
+        Block obsidian, basaltCobble;
+
+        /// <summary>ProjectE's water shot: lava within 3 blocks becomes obsidian (a source) or cobblestone (flowing lava).</summary>
+        void QuenchLava(Vec3d at)
+        {
+            IBlockAccessor ba = World.BlockAccessor;
+            BlockPos c = ToBlockPos(at);
+            BlockPos pos = c.Copy();
+            bool any = false;
+            for (int dx = -3; dx <= 3; dx++)
+                for (int dy = -3; dy <= 3; dy++)
+                    for (int dz = -3; dz <= 3; dz++)
+                    {
+                        pos.Set(c.X + dx, c.Y + dy, c.Z + dz);
+                        Block fluid = ba.GetBlock(pos, BlockLayersAccess.Fluid);
+                        if (fluid == null || fluid.Id == 0 || fluid.LiquidCode != "lava") continue;
+                        if (!MayEdit(pos)) continue;
+                        bool source = fluid.LiquidLevel >= 7 && fluid.Code?.Path?.Contains("still") == true;
+                        Block to = source ? (obsidian ??= World.GetBlock(new AssetLocation("game:rock-obsidian"))) : (basaltCobble ??= World.GetBlock(new AssetLocation("game:cobblestone-basalt")));
+                        BlockPos p = pos.Copy();
+                        ba.SetBlock(0, p, BlockLayersAccess.Fluid);
+                        if (to != null && to.Id != 0 && ba.GetBlock(p, BlockLayersAccess.Solid).Id == 0) ba.SetBlock(to.BlockId, p);
+                        ba.TriggerNeighbourBlockUpdate(p);
+                        any = true;
+                    }
+            if (any) World.PlaySoundAt(new AssetLocation("game:sounds/effect/extinguish"), at.X, at.Y, at.Z, null, true, 16, 0.6f);
+        }
+
+        /// <summary>ProjectE's lava shot: water within 3 blocks is gone.</summary>
+        void DryWater(Vec3d at)
+        {
+            IBlockAccessor ba = World.BlockAccessor;
+            BlockPos c = ToBlockPos(at);
+            BlockPos pos = c.Copy();
+            bool any = false;
+            for (int dx = -3; dx <= 3; dx++)
+                for (int dy = -3; dy <= 3; dy++)
+                    for (int dz = -3; dz <= 3; dz++)
+                    {
+                        pos.Set(c.X + dx, c.Y + dy, c.Z + dz);
+                        Block fluid = ba.GetBlock(pos, BlockLayersAccess.Fluid);
+                        if (fluid == null || fluid.Id == 0 || fluid.LiquidCode == null || !fluid.LiquidCode.Contains("water")) continue;
+                        if (!MayEdit(pos)) continue;
+                        BlockPos p = pos.Copy();
+                        ba.SetBlock(0, p, BlockLayersAccess.Fluid);
+                        ba.TriggerNeighbourBlockUpdate(p);
+                        any = true;
+                    }
+            if (any) World.PlaySoundAt(new AssetLocation("game:sounds/effect/extinguish"), at.X, at.Y, at.Z, null, true, 16, 0.5f);
         }
 
         void OnHitBlock(BlockSelection sel, Vec3d at)
@@ -272,6 +375,13 @@ namespace VintageE
                         new Vec3f(-0.3f, 0.3f, -0.3f), new Vec3f(0.3f, 0.9f, 0.3f), 0.6f, -0.05f, 0.5f);
                     LightFire(sel);
                     break;
+                case "snow":
+                    // Puts out a fire where it lands.
+                    BlockPos firePos = sel.Position.AddCopy(sel.Face);
+                    FireUtil.PutOut(World, firePos, firePos, MayEdit);
+                    FireUtil.PutOut(World, sel.Position, sel.Position, MayEdit);
+                    SnowPuff(at);
+                    break;
             }
         }
 
@@ -281,50 +391,7 @@ namespace VintageE
         /// </summary>
         void LightFire(BlockSelection sel)
         {
-            if (sel?.Position == null || sel.Face == null || !MayEdit(sel.Position)) return;
-            IBlockAccessor ba = World.BlockAccessor;
-            Block hit = ba.GetBlock(sel.Position);
-            if (hit == null || hit.Id == 0) return;
-
-            // Things with their own lighting: what a torch held to them does.
-            var lighter = World.GetEntityById(FiredById) as EntityAgent;
-            var ign = hit.GetInterface<Vintagestory.GameContent.IIgnitable>(World, sel.Position);
-            if (ign != null && lighter != null)
-            {
-                try
-                {
-                    var state = ign.OnTryIgniteBlock(lighter, sel.Position, 10f);
-                    if (state == Vintagestory.GameContent.EnumIgniteState.IgniteNow || state == Vintagestory.GameContent.EnumIgniteState.Ignitable)
-                    {
-                        EnumHandling handling = EnumHandling.PassThrough;
-                        ign.OnTryIgniteBlockOver(lighter, sel.Position, 10f, ref handling);
-                        return;
-                    }
-                    if (state == Vintagestory.GameContent.EnumIgniteState.NotIgnitablePreventDefault) return;
-                }
-                catch (Exception e) { Api.Logger.VerboseDebug("Vintage-E fireball lighting {0}: {1}", hit.Code, e.Message); }
-            }
-
-            // Anything that burns: the game's fire in the air next to the face that was hit.
-            if (!(hit.CombustibleProps?.BurnDuration > 0)) return;
-            BlockPos firePos = sel.Position.AddCopy(sel.Face);
-            Block there = ba.GetBlock(firePos);
-            if (there == null || (there.Id != 0 && there.Replaceable < 6000) || !MayEdit(firePos)) return;
-            Block fire = World.GetBlock(new AssetLocation("game:fire"));
-            if (fire == null || fire.Id == 0) return;
-            ba.SetBlock(fire.BlockId, firePos);
-            BlockEntity be = ba.GetBlockEntity(firePos);
-            object burning = null;
-            if (be?.Behaviors != null) foreach (var b in be.Behaviors) if (b.GetType().Name == "BEBehaviorBurning") { burning = b; break; }
-            var place = burning?.GetType().GetMethod("OnFirePlaced", new[] { typeof(BlockFacing), typeof(string) });
-            bool lit = false;
-            try
-            {
-                place?.Invoke(burning, new object[] { sel.Face, FiredByUid });
-                lit = burning?.GetType().GetField("IsBurning")?.GetValue(burning) is bool on && on;
-            }
-            catch (Exception e) { Api.Logger.VerboseDebug("Vintage-E fireball fire: {0}", e.Message); }
-            if (!lit) ba.SetBlock(0, firePos); // it didn't catch: no fire block left hanging there
+            FireUtil.TryLight(World, sel, World.GetEntityById(FiredById) as EntityAgent, FiredByUid, MayEdit);
         }
 
         void Explode(Vec3d at)

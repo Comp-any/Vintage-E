@@ -111,6 +111,9 @@ namespace VintageE
 
         /// <summary>Hotkey that fires the Hyperkinetic/Catalytic Lens charge (R by default, like ProjectE).</summary>
         public const string FireHotkey = "vintageefireprojectile";
+        /// <summary>ProjectE's other keys (1.24.0): extra function (G; ProjectE's C is the game's character window), charge (V, Shift + V lowers it), Transmutation Tablet (K), gem helmet night vision (Shift + X), gem leggings step assist (X).</summary>
+        public const string ExtraHotkey = "vintageeextrafunction", ChargeHotkey = "vintageecharge", UnchargeHotkey = "vintageeuncharge",
+            TabletHotkey = "vintageetablet", NightVisionHotkey = "vintageenightvision", StepAssistHotkey = "vintageestepassist";
 
         public override double ExecuteOrder() => 1.0; // after the survival mod has registered its recipe registries
 
@@ -166,6 +169,7 @@ namespace VintageE
             api.RegisterCollectibleBehaviorClass("VintageESlay", typeof(CollectibleBehaviorSlay));
             api.RegisterItemClass("ItemKleinStar", typeof(ItemKleinStar));
             api.RegisterItemClass("ItemEmcTrinket", typeof(ItemEmcTrinket));
+            api.RegisterItemClass("ItemEvertideAmulet", typeof(ItemEvertideAmulet));
             api.RegisterItemClass("ItemEmcGadget", typeof(ItemEmcGadget));
             api.RegisterBlockEntityClass("VintageEAlchemicalChest", typeof(BEAlchemicalChest));
             api.RegisterBlockEntityClass("VintageETransmutationTable", typeof(BETransmutationTable));
@@ -186,6 +190,7 @@ namespace VintageE
                 .RegisterMessageType<EmcSetValuePacket>()
                 .RegisterMessageType<WatchSpeedPacket>()
                 .RegisterMessageType<FireProjectilePacket>()
+                .RegisterMessageType<KeyActionPacket>()
                 .RegisterMessageType<EmcBlacklistPacket>()
                 .RegisterMessageType<EmcContentsPacket>()
                 .RegisterMessageType<EmcContentsSetPacket>()
@@ -663,6 +668,7 @@ namespace VintageE
                 serverChannel.SetMessageHandler<EmcSetValuePacket>(OnSetValueRequest);
                 serverChannel.SetMessageHandler<EmcBlacklistPacket>(OnBlacklistRequest);
                 serverChannel.SetMessageHandler<FireProjectilePacket>(OnFireProjectile);
+                serverChannel.SetMessageHandler<KeyActionPacket>(OnKeyAction);
                 serverChannel.SetMessageHandler<EmcContentsSetPacket>(OnContentsSetRequest);
                 serverChannel.SetMessageHandler<EmcConfigSetPacket>(OnConfigSetRequest);
                 serverChannel.SetMessageHandler<EmcRecipeEditPacket>(OnRecipeEditRequest);
@@ -767,6 +773,52 @@ namespace VintageE
             if (lastShot.TryGetValue(player.PlayerUID, out long last) && now - last < 250) return;
             lastShot[player.PlayerUID] = now;
             shooter.Shoot(player, slot);
+        }
+
+        readonly Dictionary<string, long> lastKey = new Dictionary<string, long>();
+
+        /// <summary>
+        /// ProjectE's other keys, on the server: the extra function and the charge of the held item, and the gem
+        /// helmet's night vision and the gem leggings' step assist (at most 5 presses a second).
+        /// </summary>
+        void OnKeyAction(IServerPlayer player, KeyActionPacket packet)
+        {
+            if (player?.Entity == null || packet?.Action == null) return;
+            long now = Sapi.World.ElapsedMilliseconds;
+            string k = player.PlayerUID + "/" + packet.Action;
+            if (lastKey.TryGetValue(k, out long last) && now - last < 200) return;
+            lastKey[k] = now;
+            string lang = player.LanguageCode;
+            ItemSlot slot = player.InventoryManager?.ActiveHotbarSlot;
+            string message = null;
+            switch (packet.Action)
+            {
+                case "extra":
+                    var extra = slot?.Itemstack?.Collectible == null ? null
+                        : slot.Itemstack.Collectible as IExtraFunctionItem ?? slot.Itemstack.Collectible.CollectibleBehaviors.OfType<IExtraFunctionItem>().FirstOrDefault();
+                    extra?.DoExtraFunction(player, slot);
+                    break;
+                case "charge":
+                case "uncharge":
+                    var charge = slot?.Itemstack?.Collectible == null ? null
+                        : slot.Itemstack.Collectible as IChargeableItem ?? slot.Itemstack.Collectible.CollectibleBehaviors.OfType<IChargeableItem>().FirstOrDefault();
+                    if (charge == null || charge.MaxCharge(slot) <= 0) break;
+                    int was = charge.GetCharge(slot), want = GameMath.Clamp(was + (packet.Action == "charge" ? 1 : -1), 0, charge.MaxCharge(slot));
+                    if (want != was)
+                    {
+                        charge.SetCharge(slot, want);
+                        PESounds.Play(Sapi.World, want > was ? PESounds.Charge : PESounds.Uncharge, want > was ? "game:sounds/effect/latch" : "game:sounds/effect/woodswitch", player.Entity, 8, 0.6f);
+                    }
+                    message = Lang.GetL(lang, "vintagee:charge-level", charge.GetCharge(slot), charge.MaxCharge(slot));
+                    break;
+                case "nightvision":
+                    message = GemArmor.Toggle(player, true);
+                    break;
+                case "stepassist":
+                    message = GemArmor.Toggle(player, false);
+                    break;
+            }
+            if (message != null) serverChannel?.SendPacket(new KeyActionPacket { Action = packet.Action, Message = message }, player);
         }
 
         VintageEConfig LoadConfig(ICoreServerAPI sapi)
@@ -2448,6 +2500,62 @@ namespace VintageE
                 return true;
             });
 
+            // ProjectE's other keys.
+            capi.Input.RegisterHotKey(ExtraHotkey, Lang.Get("vintagee:hotkey-extra"), GlKeys.G, HotkeyType.CharacterControls);
+            capi.Input.SetHotKeyHandler(ExtraHotkey, _ =>
+            {
+                ItemSlot slot = capi.World.Player?.InventoryManager?.ActiveHotbarSlot;
+                if (slot?.Itemstack == null) return false;
+                // The Philosopher's Stone's crafting grid opens here: it's a window on this computer.
+                if (slot.Itemstack.Collectible is ItemPhilosophersStone) { ItemPhilosophersStone.OpenCrafting(capi); return true; }
+                bool has = slot.Itemstack.Collectible is IExtraFunctionItem || slot.Itemstack.Collectible.CollectibleBehaviors.OfType<IExtraFunctionItem>().Any();
+                if (!has) return false;
+                clientChannel?.SendPacket(new KeyActionPacket { Action = "extra" });
+                return true;
+            });
+            bool SendCharge(string action)
+            {
+                ItemSlot slot = capi.World.Player?.InventoryManager?.ActiveHotbarSlot;
+                if (slot?.Itemstack == null) return false;
+                bool has = slot.Itemstack.Collectible is IChargeableItem || slot.Itemstack.Collectible.CollectibleBehaviors.OfType<IChargeableItem>().Any();
+                if (!has) return false;
+                clientChannel?.SendPacket(new KeyActionPacket { Action = action });
+                return true;
+            }
+            capi.Input.RegisterHotKey(ChargeHotkey, Lang.Get("vintagee:hotkey-charge"), GlKeys.V, HotkeyType.CharacterControls);
+            capi.Input.SetHotKeyHandler(ChargeHotkey, _ => SendCharge("charge"));
+            capi.Input.RegisterHotKey(UnchargeHotkey, Lang.Get("vintagee:hotkey-uncharge"), GlKeys.V, HotkeyType.CharacterControls, shiftPressed: true);
+            capi.Input.SetHotKeyHandler(UnchargeHotkey, _ => SendCharge("uncharge"));
+            capi.Input.RegisterHotKey(TabletHotkey, Lang.Get("vintagee:hotkey-tablet"), GlKeys.K, HotkeyType.CharacterControls);
+            capi.Input.SetHotKeyHandler(TabletHotkey, _ =>
+            {
+                IPlayer me = capi.World.Player;
+                bool carries = false;
+                foreach (string inv in new[] { GlobalConstants.hotBarInvClassName, GlobalConstants.backpackInvClassName, GlobalConstants.characterInvClassName })
+                {
+                    IInventory own = me?.InventoryManager?.GetOwnInventory(inv);
+                    if (own == null) continue;
+                    foreach (ItemSlot s in own) if (s?.Itemstack?.Collectible is ItemTransmutationTablet) { carries = true; break; }
+                    if (carries) break;
+                }
+                if (!carries)
+                {
+                    capi.TriggerIngameError(this, "vintagee-notablet", Lang.Get("vintagee:tablet-notcarried"));
+                    return true;
+                }
+                OpenTransmutationDialog(null);
+                return true;
+            });
+            capi.Input.RegisterHotKey(NightVisionHotkey, Lang.Get("vintagee:hotkey-nightvision"), GlKeys.X, HotkeyType.CharacterControls, shiftPressed: true);
+            capi.Input.SetHotKeyHandler(NightVisionHotkey, _ => { clientChannel?.SendPacket(new KeyActionPacket { Action = "nightvision" }); return true; });
+            capi.Input.RegisterHotKey(StepAssistHotkey, Lang.Get("vintagee:hotkey-stepassist"), GlKeys.X, HotkeyType.CharacterControls);
+            capi.Input.SetHotKeyHandler(StepAssistHotkey, _ => { clientChannel?.SendPacket(new KeyActionPacket { Action = "stepassist" }); return true; });
+            clientChannel.SetMessageHandler<KeyActionPacket>(p =>
+            {
+                if (!string.IsNullOrEmpty(p?.Message)) capi.TriggerIngameDiscovery(this, "vintagee-key", p.Message);
+            });
+            gemArmorClient = new GemArmorClient(capi);
+
             // Admins: set the EMC value of whatever is under the mouse (inventory, handbook, any window).
             capi.Input.RegisterHotKey(SetValueHotkey, Lang.Get("vintagee:hotkey-setvalue"), GlKeys.K, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
             capi.Input.SetHotKeyHandler(SetValueHotkey, _ => OpenSetValueBox());
@@ -2693,6 +2801,18 @@ namespace VintageE
         }
 
         /// <summary>Tooltip line naming the key the fire-projectile control is bound to now (it can be changed in the game's controls).</summary>
+        GemArmorClient gemArmorClient;
+
+        /// <summary>The charge key's line in a tooltip, naming the key this player set.</summary>
+        public static void AppendChargeKey(IWorldAccessor world, System.Text.StringBuilder dsc)
+        {
+            if (!(world?.Api is ICoreClientAPI capi)) return;
+            string key = null;
+            try { key = capi.Input.GetHotKeyByCode(ChargeHotkey)?.CurrentMapping?.ToString(); }
+            catch { /* controls not loaded yet */ }
+            if (!string.IsNullOrEmpty(key)) dsc.AppendLine(Lang.Get("vintagee:chargekey-line", key));
+        }
+
         public static void AppendFireKey(IWorldAccessor world, System.Text.StringBuilder dsc)
         {
             if (!(world?.Api is ICoreClientAPI capi)) return;

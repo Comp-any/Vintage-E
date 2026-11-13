@@ -298,7 +298,7 @@
       {
         "name": "VintageEMatterTool",
         "properties": {
-          "maxAreaRadius": 0
+          "maxAreaRadius": 1
         }
       }
     ],
@@ -542,7 +542,7 @@
       {
         "name": "VintageEMatterTool",
         "properties": {
-          "maxAreaRadius": 0
+          "maxAreaRadius": 2
         }
       }
     ]

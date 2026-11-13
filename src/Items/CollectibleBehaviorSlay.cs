@@ -12,7 +12,7 @@ namespace VintageE
     /// players and pets ("slay all"). Costs EMC per creature hit. Property <c>damage</c> sets the hit.
     /// <code>"behaviors": [ { "name": "VintageESlay", "properties": { "damage": 8 } } ]</code>
     /// </summary>
-    public class CollectibleBehaviorSlay : CollectibleBehavior
+    public class CollectibleBehaviorSlay : CollectibleBehavior, IExtraFunctionItem
     {
         float damage = 8;
         /// <summary>Last strike per player: once a swing, however fast they click.</summary>
@@ -39,6 +39,16 @@ namespace VintageE
             lastMs[player.PlayerUID] = now;
             TrinketEffects fx = VintageEModSystem.Of(byEntity.Api)?.Trinkets;
             fx?.Slay(player, damage, byEntity.Controls.Sneak);
+        }
+
+        /// <summary>ProjectE's extra-function key on a sword or the katar: the same area strike as right-click (sneak: every creature).</summary>
+        public bool DoExtraFunction(IServerPlayer player, ItemSlot slot)
+        {
+            long now = player.Entity.World.ElapsedMilliseconds;
+            if (lastMs.TryGetValue(player.PlayerUID, out long last) && now - last < 600) return false;
+            lastMs[player.PlayerUID] = now;
+            TrinketEffects fx = VintageEModSystem.Of(player.Entity.Api)?.Trinkets;
+            return (fx?.Slay(player, damage, player.Entity.Controls.Sneak) ?? 0) > 0;
         }
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot, ref EnumHandling handling)

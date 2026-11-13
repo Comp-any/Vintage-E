@@ -146,6 +146,30 @@ namespace VintageE
         [System.ComponentModel.Description("Allow sneak + right-click with an empty hand on a collector to move its stored EMC into your personal EMC.")]
         public bool CollectorsChargePlayers = true;
 
+        /// <summary>
+        /// The fuels an Energy Collector upgrades (ProjectE's collector fuel slot), in any order: it climbs them by EMC
+        /// value, paying the difference from its store, up to the fuel set as its lock (or the most valuable one).
+        /// Codes that aren't in the game, or have no EMC value, are skipped.
+        /// </summary>
+        [System.ComponentModel.Description("The fuels an Energy Collector upgrades (ProjectE's collector fuel slot), in any order: it climbs them by EMC value, paying the difference from its store, up to the fuel set as its lock (or the most valuable one). Codes that aren't in the game, or have no EMC value, are skipped.")]
+        public List<string> CollectorFuels = new List<string>
+        {
+            "game:charcoal", "game:ore-lignite", "game:ore-bituminouscoal", "game:ore-anthracite", "game:coke",
+            "vintagee:alchemicalfuel-alchemicalcoal", "vintagee:alchemicalfuel-mobiusfuel", "vintagee:alchemicalfuel-aeternalisfuel"
+        };
+
+        /// <summary>
+        /// What matter shears get from creatures when right-clicked in the air (ProjectE shears every shearable creature
+        /// around): creature code (wildcards allowed) = item code, optionally *count. Vintage Story's own creatures have
+        /// nothing to shear, so this is empty until a mod adds woolly ones. ProjectE doubles what shearing gives; so does this.
+        /// </summary>
+        [System.ComponentModel.Description("What matter shears get from creatures when right-clicked in the air (ProjectE shears every shearable creature around): creature code (wildcards allowed) = item code, optionally *count. Vintage Story's own creatures have nothing to shear, so this is empty until a mod adds woolly ones. ProjectE doubles what shearing gives; so does this.")]
+        public Dictionary<string, string> ShearableCreatures = new Dictionary<string, string>();
+
+        /// <summary>In-game hours before a sheared creature can be sheared again.</summary>
+        [System.ComponentModel.Description("In-game hours before a sheared creature can be sheared again.")]
+        public double ShearRegrowHours = 24;
+
         /// <summary>Refuse to burn bags, pots and other containers that still hold something.</summary>
         [System.ComponentModel.Description("Refuse to burn bags, pots and other containers that still hold something.")]
         public bool ProtectContainersWithContents = true;
@@ -280,6 +304,9 @@ namespace VintageE
             TransitionEmcPerDay ??= new Dictionary<string, double>();
             HostileCreatures ??= new List<string>();
             StackDataModes ??= new Dictionary<string, string>();
+            CollectorFuels ??= new List<string>();
+            ShearableCreatures ??= new Dictionary<string, string>();
+            if (double.IsNaN(ShearRegrowHours) || double.IsInfinity(ShearRegrowHours) || ShearRegrowHours < 0) ShearRegrowHours = 24;
             if (MaxExactKnowledge < 0) MaxExactKnowledge = 0;
             DisabledCompat ??= new List<string>();
             EnergyEmc ??= new Dictionary<string, double>();

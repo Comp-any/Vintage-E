@@ -82,6 +82,8 @@ namespace VintageE
                 int y = ba.GetTerrainMapheightAt(new BlockPos(x, 0, z)) + 1;
                 Line($"site {x},{y},{z}");
                 benchSite = new BlockPos(x - 20, y, z - 20);
+                try { CheckParity(x, y, z); }
+                catch (Exception e) { Check(false, "ProjectE parity checks threw " + e); }
 
                 BlockEntityFirepit fuelled = PlaceFurnace(new BlockPos(x + 2, y, z), "dark");
                 BlockEntityFirepit onEmc = PlaceFurnace(new BlockPos(x + 4, y, z), "red");

@@ -19,20 +19,33 @@ namespace VintageE
     /// <item>Destruction Catalyst: breaks a 3×3 tunnel into the block you click, 1/4/8/16 deep (charge 0–3), 8 EMC a block.
     ///   Everything it breaks drops where you clicked.</item>
     /// <item>Hyperkinetic Lens: right-click (or the fire-projectile key, R) shoots an explosive charge that flies
-    ///   straight and explodes where it hits: radius 4/6/8/10 for 384/768/1,536/2,304 EMC (charge 0–3).</item>
+    ///   straight and explodes where it hits: radius 4/8/12/16 for 384/768/1,536/2,304 EMC (charge 0–3), as ProjectE.</item>
     /// <item>Catalytic Lens: right-click a block for the catalyst's tunnel, 1 then 16–64 deep (charge 0–7);
     ///   the fire-projectile key shoots the lens charge (charge 3 and up = the biggest shot).</item>
-    /// <item>Mercurial Eye: sneak + right-click a block to remember it, then right-click blocks to turn them into it
-    ///   (1×1 or 3×3); you pay the difference in EMC (or get it back if the old block was worth more).</item>
-    /// <item>Archangel's Smite: right-click fires a homing arrow, left-click a volley of 10 (each costs what an arrow is worth).</item>
+    /// <item>Mercurial Eye: sneak + right-click a block to remember it; then, by its mode, right-click to place it
+    ///   (creation), to build a layer of it on the face of every like block joined to the clicked one (extension), to fill
+    ///   the gaps in the clicked layer (classic extension), to turn blocks like the clicked one into it (transmutation) or
+    ///   to build a 3×3 pillar of it out of the clicked face (pillar); 1×1 up to 9×9. You pay the difference in EMC (or get
+    ///   it back if the old block was worth more).</item>
+    /// <item>Archangel's Smite: right-click fires a homing arrow, left-click a volley of 10 (each costs what an arrow is
+    ///   worth); switched on in its tool modes, it keeps firing from your inventory, five a second.</item>
     /// <item>Tome of Knowledge: learn every item that has an EMC value.</item>
-    /// <item>Divining Rods: report the EMC of the ground below the block you click (3, 16 or 64 deep).</item>
+    /// <item>Divining Rods: report the EMC of the ground below the block you click (16, 32 or 128 deep; the better rods
+    ///   can look less deep too, picked in their tool modes).</item>
     /// </list>
     /// </summary>
-    public class ItemEmcGadget : Item, IVintageEShooter
+    public class ItemEmcGadget : Item, IVintageEShooter, IChargeableItem
     {
         public const string EyeTargetKey = "vintageeEyeTarget";
+        /// <summary>The Mercurial Eye's mode (index into <see cref="EyeModes"/>); its size is kept under the mode key.</summary>
+        public const string EyeModeKey = "vintageeEyeMode";
+        /// <summary>ProjectE's Mercurial Eye modes but classic transmutation. An eye made before 1.24.0 is in transmutation mode, its only one then.</summary>
+        public static readonly string[] EyeModes = { "creation", "extension", "extensionclassic", "transmutation", "pillar" };
+        public const int EyeTransmutation = 3;
+        /// <summary>Archangel's Smite switched on: one arrow this often (seconds) from anywhere in your inventory.</summary>
+        public const float SmiteAutoSeconds = 0.2f;
         SkillItem[] modes;
+        ModeGroups eyeGroups, smiteGroups;
 
         string kind;
 
@@ -50,8 +63,8 @@ namespace VintageE
 
         VintageEModSystem Mod(IWorldAccessor world) => VintageEModSystem.Of(world.Api);
 
-        /// <summary>Lens shot explosion radius and EMC cost by charge level (ProjectE: power 4/8/12/16, 384–2,304 EMC).</summary>
-        public static readonly float[] LensRadius = { 4, 6, 8, 10 };
+        /// <summary>Lens shot explosion radius and EMC cost by charge level (as ProjectE: power 4/8/12/16, 384–2,304 EMC).</summary>
+        public static readonly float[] LensRadius = { 4, 8, 12, 16 };
         public static readonly double[] LensCost = { 384, 768, 1536, 2304 };
         /// <summary>Destruction Catalyst tunnel depth by charge (ProjectE: 1, then 2^(1+charge)).</summary>
         public static readonly int[] CatalystDepth = { 1, 4, 8, 16 };
@@ -70,6 +83,8 @@ namespace VintageE
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
+            if (Kind == "mercurialeye") eyeGroups = new ModeGroups(EyeModes.Length, EyeMaxRadius + 1);
+            if (Kind == "archangelssmite") smiteGroups = new ModeGroups(2);
             if (!(api is ICoreClientAPI capi)) return;
             if (Kind == "destructioncatalyst")
             {
@@ -99,24 +114,96 @@ namespace VintageE
             }
             else if (Kind == "mercurialeye")
             {
-                modes = AreaToolModes.Create(capi, EyeMaxRadius); // 1x1, 3x3, 5x5, 7x7, 9x9
+                // Its mode, then its size (1x1 up to 9x9); the picked one of each is drawn bright.
+                eyeGroups.Load(capi, "eye", (g, i) => g == 0
+                    ? (Lang.Get("vintagee:eye-mode-" + EyeModes[i]), Lang.Get("vintagee:eye-mode-" + EyeModes[i]).Substring(0, 1))
+                    : (Lang.Get("vintagee:toolmode-area", 2 * i + 1, 2 * i + 1), (2 * i + 1).ToString()));
+            }
+            else if (Kind == "archangelssmite")
+            {
+                smiteGroups.Load(capi, "smite", (g, i) => (Lang.Get(i == 0 ? "vintagee:smite-mode-off" : "vintagee:smite-mode-on"), i == 0 ? "0" : "1"));
+            }
+            else if (IsDiviningRod(this) && DiviningDepths(Kind).Length > 1)
+            {
+                int[] depths = DiviningDepths(Kind);
+                modes = Enumerable.Range(0, depths.Length).Select(i => new SkillItem
+                {
+                    Code = new AssetLocation("vintagee", "depth" + depths[i]),
+                    Name = Lang.Get("vintagee:divining-depthmode", depths[i])
+                }.WithLetterIcon(capi, depths[i].ToString())).ToArray();
             }
         }
 
         public override void OnUnloaded(ICoreAPI api)
         {
             if (modes != null) foreach (SkillItem m in modes) m?.Dispose();
+            eyeGroups?.Dispose();
+            smiteGroups?.Dispose();
             base.OnUnloaded(api);
         }
 
-        public override SkillItem[] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel) => modes;
+        public override SkillItem[] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel)
+        {
+            if (eyeGroups != null) return eyeGroups.Show(EyeMode(slot?.Itemstack), GameMath.Clamp(Charge(slot), 0, EyeMaxRadius));
+            if (smiteGroups != null) return smiteGroups.Show(ItemEmcTrinket.IsActive(slot?.Itemstack) ? 1 : 0);
+            return modes;
+        }
 
-        public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection) => slot?.Itemstack?.Attributes?.GetInt(ItemEmcTrinket.ModeKey) ?? 0;
+        public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection)
+        {
+            if (eyeGroups != null) return EyeMode(slot?.Itemstack);
+            if (smiteGroups != null) return ItemEmcTrinket.IsActive(slot?.Itemstack) ? 1 : 0;
+            return Charge(slot);
+        }
+
+        static int Charge(ItemSlot slot) => slot?.Itemstack?.Attributes?.GetInt(ItemEmcTrinket.ModeKey) ?? 0;
+
+        /// <summary>The Mercurial Eye's mode: an eye that never had one set is in transmutation mode (all it did before 1.24.0).</summary>
+        public static int EyeMode(ItemStack stack) => GameMath.Clamp(stack?.Attributes?.GetInt(EyeModeKey, EyeTransmutation) ?? EyeTransmutation, 0, EyeModes.Length - 1);
 
         public override void SetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection, int toolMode)
         {
             if (slot?.Itemstack == null) return;
+            if (eyeGroups != null)
+            {
+                var (g, i) = eyeGroups.Split(toolMode);
+                if (g == 0) slot.Itemstack.Attributes.SetInt(EyeModeKey, i);
+                else if (g == 1) slot.Itemstack.Attributes.SetInt(ItemEmcTrinket.ModeKey, i);
+                slot.MarkDirty();
+                return;
+            }
+            if (smiteGroups != null)
+            {
+                bool on = toolMode == 1;
+                slot.Itemstack.Attributes.SetBool(ItemEmcTrinket.ActiveKey, on);
+                slot.MarkDirty();
+                if (api?.Side == EnumAppSide.Server && byPlayer?.Entity != null) PESounds.Play(api.World, on ? PESounds.Heal : PESounds.Uncharge, on ? "game:sounds/effect/latch" : "game:sounds/effect/woodswitch", byPlayer?.Entity, 8, 0.7f);
+                return;
+            }
             slot.Itemstack.Attributes.SetInt(ItemEmcTrinket.ModeKey, toolMode);
+            slot.MarkDirty();
+        }
+
+        // ------------------------------------------------------------------ charge key
+
+        public int MaxCharge(ItemSlot slot)
+        {
+            switch (Kind)
+            {
+                case "hyperkineticlens": return LensRadius.Length - 1;
+                case "catalyticlens": return CatalyticCharges - 1;
+                case "destructioncatalyst": return CatalystDepth.Length - 1;
+                case "mercurialeye": return EyeMaxRadius;
+                default: return 0;
+            }
+        }
+
+        public int GetCharge(ItemSlot slot) => GameMath.Clamp(Charge(slot), 0, MaxCharge(slot));
+
+        public void SetCharge(ItemSlot slot, int charge)
+        {
+            if (slot?.Itemstack == null || MaxCharge(slot) <= 0) return;
+            slot.Itemstack.Attributes.SetInt(ItemEmcTrinket.ModeKey, GameMath.Clamp(charge, 0, MaxCharge(slot)));
             slot.MarkDirty();
         }
 
@@ -142,7 +229,7 @@ namespace VintageE
                     if (blockSel != null) Destroy(player, blockSel, CatalyticDepth(mode), DestroyCostPerBlock * mult);
                     break;
                 case "mercurialeye":
-                    if (blockSel != null) Eye(mod, player, slot, blockSel, mode);
+                    Eye(mod, player, slot, blockSel, Charge(slot));
                     break;
                 case "archangelssmite":
                     FireArrows(mod, player, 1, 0);
@@ -181,7 +268,7 @@ namespace VintageE
                 case "diviningrodhigh":
                     if (blockSel != null)
                     {
-                        Divine(mod, player, blockSel, DiviningDepth(Kind));
+                        Divine(mod, player, blockSel, DiviningDepth(Kind, slot.Itemstack));
                         DamageItem(byEntity.World, byEntity, slot); // wears out: as many uses as 10x its EMC value (see SetDiviningDurability)
                     }
                     break;
@@ -304,38 +391,134 @@ namespace VintageE
             return true;
         }
 
-        void Eye(VintageEModSystem mod, IServerPlayer player, ItemSlot slot, BlockSelection sel, int mode)
+        /// <summary>The block the eye is set to, or null.</summary>
+        public static Block EyeTarget(IWorldAccessor world, ItemStack eye)
+        {
+            string code = eye?.Attributes?.GetString(EyeTargetKey);
+            Block target = code == null ? null : world.GetBlock(new AssetLocation(code));
+            return target == null || target.Id == 0 ? null : target;
+        }
+
+        /// <summary>
+        /// The Mercurial Eye, by its mode (ProjectE's, without the classic transmutation):
+        /// <list type="bullet">
+        /// <item>creation: the target block against the clicked face (or in the clicked block if it's grass, snow or
+        ///   another block you can build into; clicked in the air: 2 blocks ahead).</item>
+        /// <item>extension: a layer on the clicked face of the clicked block and of every block like it joined to it in
+        ///   that plane, up to the size's square in number. With no target set, the clicked block itself.</item>
+        /// <item>classic extension: fills the gaps in the clicked block's layer, the size's square around it.</item>
+        /// <item>transmutation: blocks like the clicked one in the size's square turn into the target.</item>
+        /// <item>pillar: a 3×3 pillar out of the clicked face, 2 + 3 × the size's radius long, into the gaps only.</item>
+        /// </list>
+        /// Each block costs the target's EMC less the old block's (paid back when the old one was worth more); a block
+        /// with no EMC value that is replaced drops as if broken. Blocks with a block entity are left alone.
+        /// </summary>
+        void Eye(VintageEModSystem mod, IServerPlayer player, ItemSlot slot, BlockSelection sel, int size)
         {
             IWorldAccessor world = player.Entity.World;
             IBlockAccessor ba = world.BlockAccessor;
-            Block clicked = ba.GetBlock(sel.Position);
-            if (player.Entity.Controls.Sneak)
+            string lang = player.LanguageCode;
+            Block clicked = sel == null ? null : ba.GetBlock(sel.Position);
+            if (sel != null && player.Entity.Controls.Sneak)
             {
                 if (clicked == null || clicked.Id == 0 || clicked.EntityClass != null || !mod.Emc.CanTransmute(clicked)) return;
                 slot.Itemstack.Attributes.SetString(EyeTargetKey, clicked.Code.ToString());
                 slot.MarkDirty();
-                Tell(player, Lang.GetL(player.LanguageCode, "vintagee:eye-target", clicked.GetPlacedBlockName(world, sel.Position)));
+                Tell(player, Lang.GetL(lang, "vintagee:eye-target", clicked.GetPlacedBlockName(world, sel.Position)));
                 return;
             }
-            string code = slot.Itemstack.Attributes.GetString(EyeTargetKey);
-            Block target = code == null ? null : world.GetBlock(new AssetLocation(code));
-            if (target == null || target.Id == 0) { Tell(player, Lang.GetL(player.LanguageCode, "vintagee:eye-notarget")); return; }
-            if (mod.Emc.IsNoTransmute(target)) { Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notransmute", target.GetHeldItemName(new ItemStack(target)))); return; }
+            int mode = EyeMode(slot.Itemstack);
+            if (sel == null && mode != 0) return; // only creation works in the air
+            Block target = EyeTarget(world, slot.Itemstack);
+            // ProjectE: with no target set, extension builds out of the clicked block itself.
+            if (target == null && (mode == 1 || mode == 2) && clicked != null && clicked.Id != 0 && clicked.EntityClass == null && mod.Emc.CanTransmute(clicked)) target = clicked;
+            if (target == null) { Tell(player, Lang.GetL(lang, "vintagee:eye-notarget")); return; }
+            if (mod.Emc.IsNoTransmute(target)) { Tell(player, Lang.GetL(lang, "vintagee:error-notransmute", target.GetHeldItemName(new ItemStack(target)))); return; }
             double targetValue = mod.Emc.GetValue(target);
+            double mult = Math.Max(0, mod.Config.TrinketCostMultiplier);
+            int radius = GameMath.Clamp(size, 0, EyeMaxRadius);
+            bool outOfEmc = false;
+            int placed = 0;
 
-            int radius = GameMath.Clamp(mode, 0, EyeMaxRadius);
-            foreach (BlockPos pos in AreaToolModes.Plane(sel.Position, sel.Face, radius))
+            static bool Empty(Block b) => b == null || b.Id == 0 || b.Replaceable >= 6000;
+
+            // One block: pays the difference and swaps it in. emptyOnly: only into air, grass, snow and the like.
+            bool Put(BlockPos pos, bool emptyOnly)
             {
+                if (outOfEmc) return false;
                 Block old = ba.GetBlock(pos);
-                if (old.Id == target.Id || old.EntityClass != null || mod.Emc.IsNoTransmute(old) || !Breakable(world, player, pos, old)) continue;
-                if (radius > 0 && old.Id != clicked.Id) continue; // the bigger squares only swap blocks like the one clicked
-                double diff = targetValue - mod.Emc.GetValue(old);
-                if (diff > 0 && !EmcWallet.TryPay(player, diff * Math.Max(0, mod.Config.TrinketCostMultiplier))) break;
+                if (old.Id == target.Id || old.EntityClass != null) return false;
+                bool empty = Empty(old);
+                if (emptyOnly && !empty) return false;
+                if (!empty && (mod.Emc.IsNoTransmute(old) || !Breakable(world, player, pos, old))) return false;
+                if (empty && !world.Claims.TryAccess(player, pos, EnumBlockAccessFlags.BuildOrBreak)) return false;
+                double oldValue = empty ? 0 : mod.Emc.GetValue(old);
+                double diff = targetValue - oldValue;
+                if (diff > 0 && !EmcWallet.TryPay(player, diff * mult))
+                {
+                    outOfEmc = true;
+                    Tell(player, Lang.GetL(lang, "vintagee:error-notenoughemc", EmcFormat.Format(diff * mult), EmcFormat.Format(EmcWallet.Balance(player))));
+                    return false;
+                }
                 if (diff < 0) PlayerEmc.AddEmc(player, -diff);
+                if (!empty && oldValue <= 0) ba.BreakBlock(pos, player); // ProjectE drops what has no EMC value
                 ba.SetBlock(target.BlockId, pos);
                 ba.TriggerNeighbourBlockUpdate(pos);
+                placed++;
+                return true;
             }
-            PESounds.Play(world, PESounds.Power, "game:sounds/effect/swoosh", sel.Position, 12, 0.5f);
+
+            switch (mode)
+            {
+                case 0: // creation
+                    if (sel == null)
+                    {
+                        EntityPlayer e = player.Entity;
+                        Vec3d eye = e.Pos.XYZ.Add(0, e.LocalEyePos.Y, 0);
+                        Put(eye.AheadCopy(2, e.Pos.Pitch, e.Pos.Yaw).AsBlockPos, true);
+                    }
+                    else if (Empty(clicked)) Put(sel.Position.Copy(), true);
+                    else Put(sel.Position.AddCopy(sel.Face), true);
+                    break;
+                case 1: // extension: a flood over the like blocks in the clicked plane
+                {
+                    if (Empty(clicked)) break;
+                    int side = 2 * radius + 1, max = side * side, tries = max * 4;
+                    var queue = new Queue<BlockPos>();
+                    var seen = new HashSet<BlockPos> { sel.Position.Copy() };
+                    queue.Enqueue(sel.Position.Copy());
+                    BlockFacing[] across = BlockFacing.ALLFACES.Where(f => f.Axis != sel.Face.Axis).ToArray();
+                    for (int t = 0; t < tries && queue.Count > 0 && placed < max && !outOfEmc; t++)
+                    {
+                        BlockPos pos = queue.Dequeue();
+                        if (ba.GetBlock(pos).Id != clicked.Id) continue;
+                        if (!Put(pos.AddCopy(sel.Face), true)) continue;
+                        foreach (BlockFacing f in across)
+                        {
+                            BlockPos next = pos.AddCopy(f);
+                            if (seen.Add(next)) queue.Enqueue(next);
+                        }
+                    }
+                    break;
+                }
+                case 2: // classic extension: the gaps in the clicked layer
+                    foreach (BlockPos pos in AreaToolModes.Plane(sel.Position, sel.Face, radius)) Put(pos, true);
+                    break;
+                case 4: // pillar: 3x3, out of the clicked face
+                    for (int d = 1; d <= 2 + 3 * radius && !outOfEmc; d++)
+                    {
+                        foreach (BlockPos pos in AreaToolModes.Plane(sel.Position.AddCopy(sel.Face, d), sel.Face, 1)) Put(pos, true);
+                    }
+                    break;
+                default: // transmutation
+                    foreach (BlockPos pos in AreaToolModes.Plane(sel.Position, sel.Face, radius))
+                    {
+                        if (radius > 0 && ba.GetBlock(pos).Id != clicked.Id) continue; // the bigger squares only swap blocks like the one clicked
+                        Put(pos, false);
+                    }
+                    break;
+            }
+            if (placed > 0) PESounds.Play(world, PESounds.Power, "game:sounds/effect/swoosh", sel?.Position ?? player.Entity.Pos.AsBlockPos, 12, 0.5f);
         }
 
         /// <summary>The Mercurial Eye's biggest square: radius 4, 9x9.</summary>
@@ -343,6 +526,17 @@ namespace VintageE
 
         /// <summary>How deep each divining rod looks (3x3 columns): 16, 32 and 128 blocks.</summary>
         public static int DiviningDepth(string kind) => kind == "diviningrodlow" ? 16 : kind == "diviningrodmedium" ? 32 : 128;
+
+        /// <summary>The depths a rod can pick from (ProjectE's better rods also do the lesser rods' depths).</summary>
+        public static int[] DiviningDepths(string kind) => kind == "diviningrodlow" ? new[] { 16 } : kind == "diviningrodmedium" ? new[] { 16, 32 } : new[] { 16, 32, 128 };
+
+        /// <summary>The depth this rod is set to look (its deepest unless another is picked in its tool modes).</summary>
+        public static int DiviningDepth(string kind, ItemStack stack)
+        {
+            int[] depths = DiviningDepths(kind);
+            int picked = stack?.Attributes?.HasAttribute(ItemEmcTrinket.ModeKey) == true ? stack.Attributes.GetInt(ItemEmcTrinket.ModeKey) : depths.Length - 1;
+            return depths[GameMath.Clamp(picked, 0, depths.Length - 1)];
+        }
 
         public static bool IsDiviningRod(CollectibleObject c) => c is ItemEmcGadget g && g.Kind.StartsWith("diviningrod");
 
@@ -372,8 +566,8 @@ namespace VintageE
             return v > 0 ? v : 14;
         }
 
-        /// <summary>Archangel's Smite: homing arrows that steer towards hostile creatures.</summary>
-        void FireArrows(VintageEModSystem mod, IServerPlayer player, int count, float spread)
+        /// <summary>Archangel's Smite: homing arrows that steer towards hostile creatures. Returns how many were fired.</summary>
+        public static int FireArrows(VintageEModSystem mod, IServerPlayer player, int count, float spread, bool quiet = false)
         {
             double cost = ArrowCost(mod, player.Entity.World) * mod.Config.TrinketCostMultiplier;
             int fired = 0;
@@ -381,13 +575,14 @@ namespace VintageE
             {
                 if (!EmcWallet.TryPay(player, cost))
                 {
-                    if (fired == 0) Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
+                    if (fired == 0 && !quiet) Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
                     break;
                 }
                 if (EntityVintageEProjectile.Shoot(player, "arrow", 50, shot => shot.Damage = ArrowDamage, spread) == null) break;
                 fired++;
             }
-            if (fired > 0) player.Entity.World.PlaySoundAt(new AssetLocation("game:sounds/bow-release"), player.Entity, null, true, 24, 1f);
+            if (fired > 0) player.Entity.World.PlaySoundAt(new AssetLocation("game:sounds/bow-release"), player.Entity, null, true, 24, quiet ? 0.5f : 1f);
+            return fired;
         }
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
@@ -455,7 +650,12 @@ namespace VintageE
                 string code = inSlot?.Itemstack?.Attributes?.GetString(EyeTargetKey);
                 Block target = code == null ? null : world.GetBlock(new AssetLocation(code));
                 dsc.AppendLine(target == null ? Lang.Get("vintagee:eye-notarget") : Lang.Get("vintagee:eye-current", target.GetHeldItemName(new ItemStack(target))));
+                int size = 2 * GameMath.Clamp(Charge(inSlot), 0, EyeMaxRadius) + 1;
+                dsc.AppendLine(Lang.Get("vintagee:eye-modeline", Lang.Get("vintagee:eye-mode-" + EyeModes[EyeMode(inSlot?.Itemstack)]), size));
             }
+            if (Kind == "archangelssmite") dsc.AppendLine(Lang.Get(ItemEmcTrinket.IsActive(inSlot?.Itemstack) ? "vintagee:smite-on" : "vintagee:smite-off"));
+            if (IsDiviningRod(this)) dsc.AppendLine(Lang.Get("vintagee:divining-depthline", DiviningDepth(Kind, inSlot?.Itemstack)));
+            if (MaxCharge(inSlot) > 0) VintageEModSystem.AppendChargeKey(world, dsc);
         }
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
@@ -467,7 +667,8 @@ namespace VintageE
             if (Kind == "mercurialeye") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-gadget-eyepick", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (Kind == "archangelssmite") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-gadget-volley", MouseButton = EnumMouseButton.Left });
             if (IsLens) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-gadget-fire", HotKeyCode = VintageEModSystem.FireHotkey, MouseButton = EnumMouseButton.None });
-            if (modes != null) list.Add(new WorldInteraction { ActionLangCode = IsLens || Kind == "destructioncatalyst" ? "vintagee:heldhelp-gadget-charge" : "vintagee:heldhelp-trinket-mode", HotKeyCodes = new[] { "toolmodeselect" }, MouseButton = EnumMouseButton.None });
+            if (modes != null || eyeGroups != null || smiteGroups != null) list.Add(new WorldInteraction { ActionLangCode = IsLens || Kind == "destructioncatalyst" ? "vintagee:heldhelp-gadget-charge" : "vintagee:heldhelp-trinket-mode", HotKeyCodes = new[] { "toolmodeselect" }, MouseButton = EnumMouseButton.None });
+            if (MaxCharge(inSlot) > 0) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-chargekey", HotKeyCode = VintageEModSystem.ChargeHotkey, MouseButton = EnumMouseButton.None });
             return list.ToArray();
         }
     }

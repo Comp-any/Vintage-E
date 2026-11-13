@@ -86,6 +86,7 @@ namespace VintageE
             repelMatch = e => e is IProjectile || IsHostile(e);
             sapi.Event.RegisterGameTickListener(OnTick, (int)(Interval * 1000));
             sapi.Event.RegisterGameTickListener(ShieldTick, ShieldTickMs);
+            sapi.Event.RegisterGameTickListener(FastTick, ShieldTickMs);
             sapi.Event.PlayerDisconnect += p =>
             {
                 timers.Remove(p.PlayerUID);
@@ -94,6 +95,9 @@ namespace VintageE
                 flightEndedMs.Remove(p.PlayerUID);
                 lastTeleportMs.Remove(p.PlayerUID);
                 lastLightningMs.Remove(p.PlayerUID);
+                lastFireWallMs.Remove(p.PlayerUID);
+                lastY.Remove(p.PlayerUID);
+                smiteAcc.Remove(p.PlayerUID);
             };
         }
 
@@ -412,10 +416,13 @@ namespace VintageE
             CollectTrinkets(player, carriedBuffer);
             bool carriesHarvestBand = false;
 
+            bool putOutFires = false;
             for (int carriedIndex = 0; carriedIndex < carriedBuffer.Count; carriedIndex++)
             {
                 var (slot, t) = carriedBuffer[carriedIndex];
                 if (t.Kind == "harvestgoddessband") carriesHarvestBand = true;
+                // ProjectE: an Ignition Ring that is switched off puts out fire right around you.
+                if (t.Kind == "ignitionring" && slot.Itemstack != null && !ItemEmcTrinket.IsActive(slot.Itemstack)) putOutFires = true;
                 // Only the ones that are working: switched on, or the always-on talisman.
                 if (slot.Itemstack == null || !(t.IsAlwaysOn || (t.IsToggleable && ItemEmcTrinket.IsActive(slot.Itemstack)))) continue;
                 bool free = t.Kind == "ringofarcana"; // ProjectE's Arcana costs nothing
@@ -499,6 +506,15 @@ namespace VintageE
                     }
                 }
             }
+
+            if (putOutFires)
+            {
+                Vec3d p = entity.Pos.XYZ;
+                FireUtil.PutOut(sapi.World, new BlockPos((int)Math.Floor(p.X - 1.3), (int)Math.Floor(p.Y - 1), (int)Math.Floor(p.Z - 1.3), entity.Pos.Dimension),
+                    new BlockPos((int)Math.Floor(p.X + 1.3), (int)Math.Floor(p.Y + 2.9), (int)Math.Floor(p.Z + 1.3), entity.Pos.Dimension), pos => MayChange(player, pos));
+            }
+
+            GemArmor.ServerTick(this, player, Every(uid, "gem-heal", 1), Every(uid, "gem-feed", 1));
 
             // Gem helmet: you never run out of air (ProjectE's gives water breathing).
             if (EntityBehaviorVintageE.ArmorPieces(player, "gem", out _) > 0 && WearsGemHead(player))
@@ -1165,7 +1181,9 @@ namespace VintageE
 
         /// <summary>
         /// Swiftwolf's Rending Gale fire-projectile key: a lightning strike where the player looks (up to 64 blocks),
-        /// through the game's weather system; without it, the creatures there are shocked directly.
+        /// through the game's weather system; without it, the creatures there are shocked directly. In a thunderstorm
+        /// three more bolts fall around it, and aimed at the sky while it rains it brings a thunderstorm (ProjectE's
+        /// shot does both).
         /// </summary>
         public bool Lightning(IServerPlayer player, bool free)
         {
@@ -1177,18 +1195,20 @@ namespace VintageE
             EntitySelection entitySel = null;
             sapi.World.RayTraceForSelection(eye, e.Pos.Pitch, e.Pos.Yaw, 64, ref blockSel, ref entitySel, null, x => x != e);
             Vec3d target = entitySel?.Entity?.Pos.XYZ ?? (blockSel != null ? blockSel.Position.ToVec3d().Add(0.5, 1, 0.5) : null);
-            if (target == null) return false;
+            if (target == null)
+            {
+                // Nothing in reach: aimed up into the rain, it calls a thunderstorm.
+                Vec3d look = eye.AheadCopy(1, e.Pos.Pitch, e.Pos.Yaw).Sub(eye);
+                if (look.Y < 0.5 || !WeatherControl.IsRaining(sapi, eye)) return false;
+                lastLightningMs[player.PlayerUID] = now;
+                if (!WeatherControl.StartThunderstorm(sapi, eye)) return false;
+                sapi.World.PlaySoundAt(new AssetLocation("game:sounds/weather/lightning-distant"), e, null, true, 64, 1f);
+                return true;
+            }
             if (!sapi.World.Claims.TryAccess(player, target.AsBlockPos, EnumBlockAccessFlags.Use)) return false;
             if (!free && !Pay(player, LightningCost)) return false;
             lastLightningMs[player.PlayerUID] = now;
-            bool flashed = false;
-            try
-            {
-                ModSystem weather = sapi.ModLoader.Systems.FirstOrDefault(s => s.GetType().Name == "WeatherSystemServer");
-                var m = weather?.GetType().GetMethod("SpawnLightningFlash", new[] { typeof(Vec3d) });
-                if (m != null) { m.Invoke(weather, new object[] { target }); flashed = true; }
-            }
-            catch (Exception ex) { sapi.Logger.Warning("Vintage-E: lightning: {0}", ex.Message); }
+            bool flashed = WeatherControl.Strike(sapi, target);
             if (!flashed)
             {
                 foreach (Entity hit in sapi.World.GetEntitiesAround(target, 3, 3, x => x != e && x is EntityAgent && x.Alive))
@@ -1198,7 +1218,218 @@ namespace VintageE
                 }
                 sapi.World.PlaySoundAt(new AssetLocation("game:sounds/weather/lightning-near"), target.X, target.Y, target.Z, null, true, 48, 1f);
             }
+            else if (WeatherControl.IsThundering(sapi, target))
+            {
+                // ProjectE: in a thunderstorm three more bolts fall close by.
+                for (int i = 0; i < 3; i++) WeatherControl.Strike(sapi, target.AddCopy(Gauss(), Gauss(), Gauss()));
+            }
             return true;
+        }
+
+        double Gauss()
+        {
+            double u1 = 1 - rand.NextDouble(), u2 = rand.NextDouble();
+            return Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+        }
+
+        // ------------------------------------------------------------------ Ring of Arcana fire wall
+
+        readonly Dictionary<string, long> lastFireWallMs = new Dictionary<string, long>();
+
+        /// <summary>
+        /// The Ring of Arcana's extra-function key with Ignition on (ProjectE's "giant fire row"): across where the player
+        /// faces, 30 blocks to each side, 5 up and down and 3 deep, every creature but players and pets is set alight
+        /// (3 fire damage) and burnable blocks open to the air catch fire (at most 300). At most once a second.
+        /// Returns what it set alight (at least 1 when it ran).
+        /// </summary>
+        public int FireWall(IServerPlayer player)
+        {
+            long now = sapi.World.ElapsedMilliseconds;
+            if (lastFireWallMs.TryGetValue(player.PlayerUID, out long last) && now - last < 1000) return 0;
+            lastFireWallMs[player.PlayerUID] = now;
+            EntityPlayer e = player.Entity;
+            Vec3d eye = e.Pos.XYZ.Add(0, e.LocalEyePos.Y, 0);
+            Vec3d look = eye.AheadCopy(1, e.Pos.Pitch, e.Pos.Yaw).Sub(eye);
+            bool alongZ = Math.Abs(look.Z) >= Math.Abs(look.X); // facing north or south: the wall runs east-west
+            return FireWallAt(e.Pos.XYZ, alongZ, e, player);
+        }
+
+        /// <summary>The fire wall itself, around <paramref name="center"/> (the self-test calls it without a player).</summary>
+        public int FireWallAt(Vec3d center, bool alongZ, Entity by, IServerPlayer player)
+        {
+            int hx = alongZ ? 30 : 3, hz = alongZ ? 3 : 30, hy = 5;
+            BlockPos c = center.AsBlockPos;
+            int lit = 0;
+            foreach (Entity target in sapi.World.GetEntitiesAround(center, Math.Max(hx, hz) + 1, hy + 2, x => x != by && x is EntityAgent && !(x is EntityPlayer) && x.Alive && !IsPet(x)))
+            {
+                if (Math.Abs(target.Pos.X - center.X) > hx + 0.5 || Math.Abs(target.Pos.Z - center.Z) > hz + 0.5) continue;
+                target.ReceiveDamage(new DamageSource { Source = by != null ? EnumDamageSource.Player : EnumDamageSource.Block, SourceEntity = by, CauseEntity = by, Type = EnumDamageType.Fire }, 3f);
+                target.Ignite();
+                lit++;
+            }
+
+            IBlockAccessor ba = sapi.World.BlockAccessor;
+            var pos = new BlockPos(c.dimension);
+            var above = new BlockPos(c.dimension);
+            int blocks = 0;
+            for (int x = c.X - hx; x <= c.X + hx && blocks < 300; x++)
+                for (int z = c.Z - hz; z <= c.Z + hz && blocks < 300; z++)
+                    for (int y = c.Y - hy; y <= c.Y + hy && blocks < 300; y++)
+                    {
+                        pos.Set(x, y, z);
+                        Block b = ba.GetBlock(pos);
+                        if (b == null || b.Id == 0 || !(b.CombustibleProps?.BurnDuration > 0)) continue;
+                        above.Set(x, y + 1, z);
+                        if (ba.GetBlock(above).Id != 0) continue; // only what is open to the air above
+                        var sel = new BlockSelection { Position = pos.Copy(), Face = BlockFacing.UP, HitPosition = new Vec3d(0.5, 1, 0.5) };
+                        if (FireUtil.TryLight(sapi.World, sel, by as EntityAgent, player?.PlayerUID, p => MayChange(player, p))) { blocks++; lit++; }
+                    }
+            PESounds.Play(sapi.World, PESounds.Power, "game:sounds/effect/swoosh", center.X, center.Y, center.Z, 24, 1f);
+            return Math.Max(lit, 1);
+        }
+
+        // ------------------------------------------------------------------ every 0.1 s: gem leggings, smite
+
+        readonly Dictionary<string, double> lastY = new Dictionary<string, double>();
+        readonly Dictionary<string, float> smiteAcc = new Dictionary<string, float>();
+
+        /// <summary>
+        /// Ten times a second for every player: the gem leggings' push and landing hits while sneaking, and an
+        /// Archangel's Smite that is switched on firing (ProjectE fires one every tick; here five a second).
+        /// </summary>
+        void FastTick(float dt)
+        {
+            foreach (IPlayer p in sapi.World.AllOnlinePlayers)
+            {
+                if (!(p is IServerPlayer player) || player.ConnectionState != EnumClientState.Playing || player.Entity == null || !player.Entity.Alive) continue;
+                try
+                {
+                    EntityPlayer e = player.Entity;
+                    double y = e.Pos.Y;
+                    double vy = lastY.TryGetValue(player.PlayerUID, out double ly) && dt > 0 ? (y - ly) / dt : 0; // blocks a second
+                    lastY[player.PlayerUID] = y;
+                    if (e.Controls.Sneak && GemArmor.Worn(player, "legs") != null) GemArmor.LegsTick(this, player, vy);
+                    SmiteTick(player, dt);
+                }
+                catch (Exception ex) { sapi.Logger.Warning("Vintage-E fast tick for {0}: {1}", player.PlayerName, ex.Message); }
+            }
+        }
+
+        void SmiteTick(IServerPlayer player, float dt)
+        {
+            ItemSlot smite = null;
+            foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
+            {
+                if (slot.Itemstack?.Collectible is ItemEmcGadget g && g.Kind == "archangelssmite" && ItemEmcTrinket.IsActive(slot.Itemstack)) { smite = slot; break; }
+            }
+            if (smite == null) { smiteAcc.Remove(player.PlayerUID); return; }
+            smiteAcc.TryGetValue(player.PlayerUID, out float acc);
+            acc += dt;
+            if (acc < ItemEmcGadget.SmiteAutoSeconds) { smiteAcc[player.PlayerUID] = acc; return; }
+            smiteAcc[player.PlayerUID] = 0;
+            if (ItemEmcGadget.FireArrows(mod, player, 1, 0.03f, quiet: true) == 0)
+            {
+                // Out of EMC: it switches itself off, as Swiftwolf's ring does.
+                smite.Itemstack.Attributes.SetBool(ItemEmcTrinket.ActiveKey, false);
+                smite.MarkDirty();
+                ItemEmcGadget.Tell(player, Lang.GetL(player.LanguageCode, "vintagee:smite-outofemc"));
+            }
+        }
+
+        /// <summary>
+        /// Pushes every creature (not players or pets) and projectiles others fired away from <paramref name="owner"/>
+        /// (ProjectE's gem leggings while sneaking: 3.5 blocks).
+        /// </summary>
+        public void RepelCreatures(Entity owner, float radius)
+        {
+            Vec3d center = owner.Pos.XYZ;
+            foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x != owner && x.Alive && ((x is EntityAgent && !(x is EntityPlayer) && !IsPet(x)) || x is IProjectile)))
+            {
+                if (e is IProjectile) Turn(e, center.AddCopy(0, 1, 0), owner);
+                else Push(e, center, radius);
+            }
+        }
+
+        /// <summary>
+        /// ProjectE's gem leggings: falling fast while sneaking, the creatures you come down on take 6 × the fall speed
+        /// (in blocks a tick) as damage. Returns how many were hit.
+        /// </summary>
+        public int Stomp(Entity by, double fallBlocksPerSecond)
+        {
+            float damage = (float)(Math.Abs(fallBlocksPerSecond) / 20 * 6);
+            if (damage <= 0 || by == null) return 0;
+            int hit = 0;
+            Vec3d below = by.Pos.XYZ.Add(0, fallBlocksPerSecond * 0.1, 0);
+            foreach (Entity target in sapi.World.GetEntitiesAround(below, 2.5f, 3f, x => x != by && x is EntityAgent && x.Alive && !(x is EntityPlayer)))
+            {
+                if (target.Pos.Y > by.Pos.Y + 0.5) continue;
+                target.ReceiveDamage(new DamageSource { Source = by is EntityPlayer ? EnumDamageSource.Player : EnumDamageSource.Entity, SourceEntity = by, CauseEntity = by, Type = EnumDamageType.BluntAttack }, damage);
+                hit++;
+            }
+            return hit;
+        }
+
+        // ------------------------------------------------------------------ shears
+
+        /// <summary>
+        /// Matter shears right-clicked in the air: every creature in <see cref="VintageEConfig.ShearableCreatures"/>
+        /// within 2^(2 + charge) blocks gives its listed drop, doubled as ProjectE doubles it, once per
+        /// <see cref="VintageEConfig.ShearRegrowHours"/> in-game hours each. Returns how many were sheared (-1: the list is empty).
+        /// </summary>
+        public int Shear(IServerPlayer player, int charge)
+        {
+            var list = mod.Config.ShearableCreatures;
+            if (list == null || list.Count == 0) return -1;
+            EntityPlayer e = player.Entity;
+            float r = AreaTools.ShearRadius(charge);
+            double hours = sapi.World.Calendar.TotalHours;
+            int sheared = 0;
+            foreach (Entity target in sapi.World.GetEntitiesAround(e.Pos.XYZ, r, r / 2, x => x is EntityAgent && !(x is EntityPlayer) && x.Alive))
+            {
+                string drop = ShearDropFor(target.Code);
+                if (string.IsNullOrWhiteSpace(drop)) continue;
+                if (!sapi.World.Claims.TryAccess(player, target.Pos.AsBlockPos, EnumBlockAccessFlags.Use)) continue;
+                double at = target.WatchedAttributes.GetDouble("vintageeShearedHours", double.NegativeInfinity);
+                if (hours - at < mod.Config.ShearRegrowHours) continue;
+                ItemStack stack = ParseDrop(drop);
+                if (stack == null) continue;
+                stack.StackSize *= 2;
+                target.WatchedAttributes.SetDouble("vintageeShearedHours", hours);
+                sapi.World.SpawnItemEntity(stack, target.Pos.XYZ.Add(0, 0.5, 0));
+                sheared++;
+            }
+            if (sheared > 0) PESounds.Play(sapi.World, PESounds.Destruct, null, e, 16, 0.6f);
+            return sheared;
+        }
+
+        /// <summary>The drop listed for this creature in ShearableCreatures (first matching pattern), or null.</summary>
+        public string ShearDropFor(AssetLocation creature)
+        {
+            var list = mod.Config.ShearableCreatures;
+            if (list == null || creature == null) return null;
+            foreach (var kv in list)
+            {
+                try { if (WildcardUtil.Match(new AssetLocation(kv.Key), creature)) return kv.Value; }
+                catch { }
+            }
+            return null;
+        }
+
+        /// <summary>"game:flaxfibers" or "game:flaxfibers*3".</summary>
+        public ItemStack ParseDrop(string text)
+        {
+            string code = text.Trim();
+            int count = 1;
+            int star = code.IndexOf('*');
+            if (star > 0)
+            {
+                if (!int.TryParse(code.Substring(star + 1).Trim(), out count)) count = 1;
+                code = code.Substring(0, star).Trim();
+            }
+            var loc = new AssetLocation(code);
+            CollectibleObject c = (CollectibleObject)sapi.World.GetItem(loc) ?? sapi.World.GetBlock(loc);
+            if (c == null || c.Id == 0) return null;
+            return new ItemStack(c, Math.Max(1, count));
         }
 
         /// <summary>
@@ -1220,7 +1451,7 @@ namespace VintageE
         }
 
         /// <summary>Tamed or owned by someone: the game's domestication, and the owner marks pet mods use.</summary>
-        static bool IsPet(Entity e)
+        public static bool IsPet(Entity e)
         {
             var attrs = e.WatchedAttributes;
             if (attrs == null) return false;

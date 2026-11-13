@@ -9,7 +9,8 @@
         "water",
         "lava",
         "fire",
-        "arrow"
+        "arrow",
+        "snow"
       ]
     }
   ],
@@ -51,6 +52,11 @@
       "*-arrow": {
         "arrow": {
           "base": "vintagee:entity/smitearrow"
+        }
+      },
+      "*-snow": {
+        "orb": {
+          "base": "vintagee:entity/projectile-snow"
         }
       }
     },

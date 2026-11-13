@@ -16,11 +16,19 @@ namespace VintageE
     /// Accepts EMC from collectors (or other relays), adds a small bonus while it holds EMC, and pushes it on to
     /// adjacent condensers, furnaces and emptier relays. Sneak + right-click with an empty hand to take the EMC
     /// yourself, or with a Klein star to charge it. Attributes: <c>capacity</c>, <c>bonusPerSecond</c>, <c>transferPerSecond</c>.
+    /// <para>
+    /// ProjectE's burn slots: right-click with anything that has an EMC value (not a Klein star) to put it in; the relay
+    /// burns it into its store, up to 20 items a second, while there's room. An empty hand takes back what's left.
+    /// </para>
     /// </summary>
     public class BEAntimatterRelay : BlockEntity, IEmcAcceptor, IEmcInteractable, IStarHolder
     {
         public double Stored;
         public StarHolder Star { get; } = new StarHolder();
+        /// <summary>What waits in the burn slot.</summary>
+        public ItemStack Burn;
+        public const int BurnPerSecond = 20;
+        const string BurnKey = "vintageeBurn";
         double capacity = 100000, bonusPerSecond = 1, transferPerSecond = 64;
         public double Capacity => capacity;
         public double TransferPerSecond => transferPerSecond;
@@ -50,6 +58,7 @@ namespace VintageE
             double before = Stored;
             double speed = VintageEModSystem.Of(Api)?.Config.MachineSpeedMultiplier ?? 1;
             if (Stored > 0) Stored = Math.Min(capacity, Stored + bonusPerSecond * speed * dt);
+            if (BurnSome(BurnPerSecond) > 0) before = -1;
             double charged = Star.Charge(Math.Min(Stored, transferPerSecond * speed * dt)); // a Klein star inside is charged first, at the relay's rate
             if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
 
@@ -67,8 +76,58 @@ namespace VintageE
             if (Math.Abs(Stored - before) > 1e-6) MarkDirty(false);
         }
 
+        /// <summary>Burns up to <paramref name="max"/> items from the burn slot into the store, while they fit. Returns how many.</summary>
+        public int BurnSome(int max)
+        {
+            if (Burn == null) return 0;
+            var mod = VintageEModSystem.Of(Api);
+            double each = mod?.Emc == null || mod.Emc.IsNoTransmute(Burn.Collectible) ? 0 : mod.Emc.GetValue(Burn);
+            if (!EmcTransfer.Usable(each)) return 0;
+            int n = 0;
+            while (Burn != null && n < max && Stored + each <= capacity)
+            {
+                Stored += each;
+                Burn.StackSize--;
+                if (Burn.StackSize <= 0) Burn = null;
+                n++;
+            }
+            return n;
+        }
+
+        /// <summary>The burn slot's right-click: an item with an EMC value goes in, an empty hand takes it back. True if handled.</summary>
+        bool BurnInteract(IPlayer byPlayer)
+        {
+            ItemSlot hand = byPlayer?.InventoryManager?.ActiveHotbarSlot;
+            if (hand == null || byPlayer.Entity.Controls.Sneak) return false;
+            ItemStack held = hand.Itemstack;
+            var mod = VintageEModSystem.Of(Api);
+            bool burnable = held != null && !(held.Collectible is IEmcStorageItem) && !(held.Collectible is ItemEmcTrinket) && mod?.Emc != null
+                && !mod.Emc.IsNoTransmute(held.Collectible) && mod.Emc.GetValue(held) > 0 && !StackContents.HasNestedStacks(held);
+            bool putIn = burnable && (Burn == null || Burn.Equals(Api.World, held, Vintagestory.API.Config.GlobalConstants.IgnoredStackAttributes) && Burn.StackSize < Burn.Collectible.MaxStackSize);
+            bool takeOut = hand.Empty && Burn != null;
+            if (!putIn && !takeOut) return false;
+            if (Api.Side == EnumAppSide.Client) return true;
+            if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use)) return true;
+            if (putIn)
+            {
+                int room = Burn == null ? held.StackSize : Burn.Collectible.MaxStackSize - Burn.StackSize;
+                ItemStack moved = hand.TakeOut(Math.Min(room, held.StackSize));
+                if (Burn == null) Burn = moved; else Burn.StackSize += moved.StackSize;
+                hand.MarkDirty();
+            }
+            else
+            {
+                if (!byPlayer.InventoryManager.TryGiveItemstack(Burn, true)) Api.World.SpawnItemEntity(Burn, Pos.ToVec3d().Add(0.5, 1, 0.5));
+                Burn = null;
+            }
+            Api.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5, null, true, 8, 0.6f);
+            MarkDirty(true);
+            return true;
+        }
+
         public bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
         {
+            if (BurnInteract(byPlayer)) return true; // the burn slot first: what's in it comes out before a Klein star
             if (!byPlayer.Entity.Controls.Sneak) return Star.Interact(this, byPlayer);
             if (Api.Side == EnumAppSide.Client) return true;
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use) || Stored < 1) return true;
@@ -80,7 +139,12 @@ namespace VintageE
         /// <summary>The Klein star inside comes out however the relay goes, an explosion included (see BEEnergyCollector.OnBlockBroken).</summary>
         public override void OnBlockBroken(IPlayer byPlayer = null)
         {
-            if (Api?.Side == EnumAppSide.Server) Star.Drop(Api.World, Pos);
+            if (Api?.Side == EnumAppSide.Server)
+            {
+                Star.Drop(Api.World, Pos);
+                if (Burn != null) Api.World.SpawnItemEntity(Burn, Pos.ToVec3d().Add(0.5, 0.5, 0.5));
+                Burn = null;
+            }
             base.OnBlockBroken(byPlayer);
         }
 
@@ -89,6 +153,7 @@ namespace VintageE
             base.ToTreeAttributes(tree);
             tree.SetDouble("emc", Stored);
             Star.ToTree(tree);
+            if (Burn != null) tree.SetItemstack(BurnKey, Burn); else tree.RemoveAttribute(BurnKey);
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
@@ -96,6 +161,8 @@ namespace VintageE
             base.FromTreeAttributes(tree, worldAccessForResolve);
             Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
             Star.FromTree(tree, worldAccessForResolve);
+            Burn = tree.GetItemstack(BurnKey);
+            if (Burn != null && !Burn.ResolveBlockOrItem(worldAccessForResolve)) Burn = null;
         }
 
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
@@ -104,6 +171,7 @@ namespace VintageE
             dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Format(Stored), EmcFormat.Format(capacity)));
             dsc.AppendLine(Lang.Get("vintagee:relay-bonus", EmcFormat.Format(bonusPerSecond), EmcFormat.Format(transferPerSecond)));
             Star.Info(dsc);
+            if (Burn != null) dsc.AppendLine(Lang.Get("vintagee:relay-burn", Burn.StackSize, Burn.GetName()));
         }
     }
 
@@ -260,13 +328,21 @@ namespace VintageE
     /// Band grows and harvests crops (8 blocks), the Watch grows crops and slows hostile creatures (12), the Ignition
     /// Ring burns hostile creatures (8), the Zero Ring freezes water and puts out burning creatures (6), the Black Hole
     /// Band and Void Ring pull in loose items (10) and put them into containers next to the pedestal, Swiftwolf's
-    /// Rending Gale strikes hostile creatures (10), the Soul/Body/Life Stones heal and feed players (6), the Repair
-    /// Talisman mends their gear (6), the Evertide Amulet brings rain and the Volcanite Amulet clear skies.
+    /// Rending Gale calls lightning down on every creature but players and pets (10, every 3.5 seconds, as ProjectE),
+    /// the Soul/Body/Life Stones heal and feed players (6), the Repair Talisman mends their gear (6), the Evertide
+    /// Amulet brings rain and the Volcanite Amulet clear skies. Archangel's Smite fires three homing arrows into the
+    /// air every 2 seconds while a hostile creature is near (10).
     /// </summary>
     public class BEPedestal : BlockEntity, IEmcInteractable
     {
         ItemStack held;
-        float acc;
+        float acc, swrgAcc, smiteAcc;
+
+        /// <summary>ProjectE's pedestal cooldowns: Swiftwolf's lightning every 3.5 seconds, the smite's arrows every 2.</summary>
+        public const float SwrgSeconds = 3.5f, SmiteSeconds = 2f;
+
+        /// <summary>What a pedestal takes: a ring, stone, amulet, talisman or watch, or an Archangel's Smite.</summary>
+        public static bool IsPedestalItem(ItemStack stack) => stack?.Collectible is ItemEmcTrinket || (stack?.Collectible as ItemEmcGadget)?.Kind == "archangelssmite";
 
         public ItemStack Held => held;
 
@@ -305,7 +381,7 @@ namespace VintageE
             ItemSlot hand = byPlayer.InventoryManager.ActiveHotbarSlot;
             if (Api.Side == EnumAppSide.Client) return true;
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use)) return true;
-            if (held == null && hand?.Itemstack?.Collectible is ItemEmcTrinket)
+            if (held == null && IsPedestalItem(hand?.Itemstack))
             {
                 held = hand.TakeOut(1);
                 hand.MarkDirty();
@@ -341,13 +417,24 @@ namespace VintageE
 
         void PedestalTick(float dt)
         {
-            if (!(held?.Collectible is ItemEmcTrinket t)) return;
             TrinketEffects fx = VintageEModSystem.Of(Api)?.Trinkets;
             if (fx == null) return;
+            Vec3d center = Pos.ToVec3d().Add(0.5, 0.5, 0.5);
+            if ((held?.Collectible as ItemEmcGadget)?.Kind == "archangelssmite")
+            {
+                smiteAcc += dt;
+                if (smiteAcc >= SmiteSeconds)
+                {
+                    smiteAcc = 0;
+                    SmiteVolley(fx, center);
+                }
+                return;
+            }
+            if (!(held?.Collectible is ItemEmcTrinket t)) return;
             acc += dt;
             bool everySecond = acc >= 1;
             if (everySecond) acc = 0;
-            Vec3d center = Pos.ToVec3d().Add(0.5, 0.5, 0.5);
+            swrgAcc += dt;
             foreach (string effect in TrinketEffects.EffectsOf(t, held))
             {
                 PedestalEffect(fx, effect, center, everySecond);
@@ -407,12 +494,10 @@ namespace VintageE
                     Collect(center);
                     break;
                 case "swiftwolfsrendinggale":
-                    if (everySecond)
+                    if (swrgAcc >= SwrgSeconds)
                     {
-                        foreach (Entity e in Api.World.GetEntitiesAround(center, 10 * range, 6 * range, fx.IsHostile))
-                        {
-                            e.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Block, Type = EnumDamageType.PiercingAttack }, 4f * power);
-                        }
+                        swrgAcc = 0;
+                        StrikeAround(fx, center);
                     }
                     break;
                 case "soulstone":
@@ -422,6 +507,40 @@ namespace VintageE
                     if (everySecond) HelpPlayers(effect, center);
                     break;
             }
+        }
+
+        /// <summary>
+        /// ProjectE's Swiftwolf pedestal: lightning on every creature in reach that isn't a player or a pet (at most 8 a
+        /// time). Without the game's weather system, 4 damage each (× the pedestal's power), as before 1.24.0.
+        /// </summary>
+        public int StrikeAround(TrinketEffects fx, Vec3d center)
+        {
+            float range = RangeMultiplier, power = PowerMultiplier;
+            int n = 0;
+            foreach (Entity e in Api.World.GetEntitiesAround(center, 10 * range, 6 * range, x => x is EntityAgent && !(x is EntityPlayer) && x.Alive && !TrinketEffects.IsPet(x)))
+            {
+                if (n++ >= 8) break;
+                if (!WeatherControl.Strike((ICoreServerAPI)Api, e.Pos.XYZ))
+                {
+                    e.ReceiveDamage(new DamageSource { Source = EnumDamageSource.Block, Type = EnumDamageType.Electricity }, 4f * power);
+                }
+            }
+            return n;
+        }
+
+        /// <summary>ProjectE's smite pedestal: with a hostile creature in reach, three homing arrows go up from 2 blocks above it.</summary>
+        public int SmiteVolley(TrinketEffects fx, Vec3d center)
+        {
+            float range = RangeMultiplier, power = PowerMultiplier;
+            if (Api.World.GetNearestEntity(center, 10 * range, 6 * range, fx.IsHostile) == null) return 0;
+            int fired = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                var dir = new Vec3d((Api.World.Rand.NextDouble() - 0.5) * 0.2, 1, (Api.World.Rand.NextDouble() - 0.5) * 0.2);
+                if (EntityVintageEProjectile.ShootFrom(Api.World, center.AddCopy(0, 2, 0), dir, "arrow", 50, shot => shot.Damage = ItemEmcGadget.ArrowDamage * power) != null) fired++;
+            }
+            if (fired > 0) Api.World.PlaySoundAt(new AssetLocation("game:sounds/bow-release"), center.X, center.Y + 2, center.Z, null, true, 24, 1f);
+            return fired;
         }
 
         /// <summary>Puts items that reached the pedestal into containers next to it (below first, then the sides and above).</summary>

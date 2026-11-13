@@ -34,7 +34,7 @@ namespace VintageE
     /// of the Ring of Arcana's four effects on or off. The fire-projectile key shoots water (Evertide), lava (Volcanite)
     /// or fire (Ignition Ring, Ring of Arcana). Effects run in <see cref="TrinketEffects"/>.
     /// </summary>
-    public class ItemEmcTrinket : Item, IVintageEShooter
+    public class ItemEmcTrinket : Item, IVintageEShooter, IExtraFunctionItem
     {
         public const string ActiveKey = "vintageeActive";
         public const string ModeKey = "vintageeMode";
@@ -46,6 +46,10 @@ namespace VintageE
         /// <summary>Swiftwolf's Rending Gale speed choices (× running and flying speed; the EMC cost of moving scales with it).</summary>
         public static readonly float[] GaleSpeeds = { 1, 1.5f, 2, 3 };
         public const string SpeedKey = "vintageeSpeed";
+        /// <summary>Ring of Arcana: which of its shots the fire-projectile key fires next (index into <see cref="ArcanaShots"/>).</summary>
+        public const string ArcanaShotKey = "vintageeArcanaShot";
+        /// <summary>The Ring of Arcana's shots, by the effect each needs switched on: Zero snowballs, Ignition fireballs, Swiftwolf lightning.</summary>
+        static readonly (int effect, string shot)[] ArcanaShots = { (0, "zeroring"), (1, "ignitionring"), (3, "swiftwolfsrendinggale") };
 
         /// <summary>Index into <see cref="GaleSpeeds"/> picked on this Swiftwolf's Rending Gale.</summary>
         public static int GetSpeedLevel(ItemStack stack) => GameMath.Clamp(stack?.Attributes?.GetInt(SpeedKey) ?? 0, 0, GaleSpeeds.Length - 1);
@@ -287,6 +291,13 @@ namespace VintageE
                 return;
             }
             if ((Kind == "blackholeband" || Kind == "voidring") && blockSel != null && effects.RemoveLiquidSource(player, blockSel.Position)) return;
+            // ProjectE: the Ignition Ring (and the Arcana with Ignition on) lights the clicked block like a firestarter.
+            if (blockSel != null && (Kind == "ignitionring" || (Kind == "ringofarcana" && ArcanaEnabled(slot.Itemstack, 1)))
+                && FireUtil.TryLight(world, blockSel, byEntity, player.PlayerUID, p => world.Claims.TryAccess(player, p, EnumBlockAccessFlags.BuildOrBreak)))
+            {
+                PESounds.Play(world, PESounds.Power, "game:sounds/effect/extinguish", blockSel.Position, 12, 0.5f);
+                return;
+            }
             if (Kind == "harvestgoddessband" && byEntity.Controls.Sneak) { effects.HarvestBurst(player, false); return; }
             if (Kind == "harvestgoddessband" && blockSel != null && effects.PlantSeeds(player, blockSel, PlantRadius) > 0) return;
 
@@ -322,16 +333,46 @@ namespace VintageE
         public bool CanShoot(ItemSlot slot)
         {
             if (IsAmulet || Kind == "ignitionring" || Kind == "swiftwolfsrendinggale") return true;
-            return Kind == "ringofarcana" && (ArcanaEnabled(slot?.Itemstack, 1) || ArcanaEnabled(slot?.Itemstack, 3));
+            return Kind == "ringofarcana" && NextArcanaShot(slot?.Itemstack) >= 0;
         }
 
-        /// <summary>What the fire-projectile key does: the Arcana shoots fire when its Ignition effect is on, else lightning.</summary>
-        string ShotKind(ItemSlot slot) => Kind == "ringofarcana" ? (ArcanaEnabled(slot?.Itemstack, 1) ? "ignitionring" : "swiftwolfsrendinggale") : Kind;
+        /// <summary>
+        /// The Ring of Arcana's next shot: ProjectE's ring shoots by its mode (Zero: snowballs, Ignition: fireballs,
+        /// Swiftwolf: lightning). This one has every effect on at once, so the key takes turns between the shots of the
+        /// effects that are switched on. -1: none is.
+        /// </summary>
+        public static int NextArcanaShot(ItemStack stack)
+        {
+            int start = GameMath.Clamp(stack?.Attributes?.GetInt(ArcanaShotKey) ?? 0, 0, ArcanaShots.Length - 1);
+            for (int k = 0; k < ArcanaShots.Length; k++)
+            {
+                int i = (start + k) % ArcanaShots.Length;
+                if (ArcanaEnabled(stack, ArcanaShots[i].effect)) return i;
+            }
+            return -1;
+        }
+
+        /// <summary>What the fire-projectile key fires: the ring's own shot, or the Arcana's next one.</summary>
+        string ShotKind(ItemSlot slot)
+        {
+            if (Kind != "ringofarcana") return Kind;
+            int i = NextArcanaShot(slot?.Itemstack);
+            return i < 0 ? "ignitionring" : ArcanaShots[i].shot;
+        }
 
         public bool Shoot(IServerPlayer player, ItemSlot slot)
         {
             if (!CanShoot(slot)) return false;
             IWorldAccessor world = player.Entity.World;
+            if (Kind == "ringofarcana")
+            {
+                int i = NextArcanaShot(slot.Itemstack);
+                bool fired = ShootArcana(player, ArcanaShots[i].shot);
+                // The next press fires the next switched-on effect's shot.
+                slot.Itemstack.Attributes.SetInt(ArcanaShotKey, (i + 1) % ArcanaShots.Length);
+                slot.MarkDirty();
+                return fired;
+            }
             switch (Kind)
             {
                 case "evertideamulet":
@@ -345,14 +386,45 @@ namespace VintageE
                     return true;
                 case "swiftwolfsrendinggale":
                     return Effects(world).Lightning(player, false);
-                case "ringofarcana" when ShotKind(slot) == "swiftwolfsrendinggale":
+                default: // ignition ring
+                    return ShootArcana(player, "ignitionring");
+            }
+        }
+
+        /// <summary>One of the Ring of Arcana's (free) shots, or the Ignition Ring's fireball.</summary>
+        bool ShootArcana(IServerPlayer player, string shot)
+        {
+            IWorldAccessor world = player.Entity.World;
+            switch (shot)
+            {
+                case "swiftwolfsrendinggale":
                     return Effects(world).Lightning(player, true);
-                default: // ignition ring, ring of arcana
-                    if (EntityVintageEProjectile.Shoot(player, "fire", 30, shot => shot.Damage = 3) == null) return false;
+                case "zeroring":
+                    if (EntityVintageEProjectile.Shoot(player, "snow", 30, null, 0.01f) == null) return false;
+                    world.PlaySoundAt(new AssetLocation("game:sounds/player/throw"), player.Entity, null, true, 16, 0.6f);
+                    return true;
+                default:
+                    if (EntityVintageEProjectile.Shoot(player, "fire", 30, s => s.Damage = 3) == null) return false;
                     PESounds.Play(world, PESounds.Power, "game:sounds/effect/swoosh", player.Entity, 16, 0.8f);
                     return true;
             }
         }
+
+        // ------------------------------------------------------------------ extra-function key
+
+        /// <summary>
+        /// ProjectE's extra-function key: the Ring of Arcana with Ignition on lays a wall of fire across where you face
+        /// (61 blocks wide, 11 high, 7 deep, centred on you); the Void Ring teleports you where you look.
+        /// </summary>
+        public bool DoExtraFunction(IServerPlayer player, ItemSlot slot)
+        {
+            TrinketEffects fx = Effects(player.Entity.World);
+            if (fx == null || slot?.Itemstack == null) return false;
+            if (Kind == "ringofarcana" && ArcanaEnabled(slot.Itemstack, 1)) return fx.FireWall(player) > 0;
+            if (Kind == "voidring") { fx.Teleport(player, TeleportRange); return true; }
+            return false;
+        }
+
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
@@ -367,6 +439,7 @@ namespace VintageE
                 var on = new List<string>();
                 for (int i = 0; i < ArcanaModes.Length; i++) if (ArcanaEnabled(stack, i)) on.Add(Lang.Get("vintagee:arcana-" + ArcanaModes[i]));
                 dsc.AppendLine(on.Count == 0 ? Lang.Get("vintagee:arcana-none") : Lang.Get("vintagee:arcana-effects", string.Join(", ", on)));
+                if (NextArcanaShot(stack) >= 0) dsc.AppendLine(Lang.Get("vintagee:arcana-nextshot", Lang.Get("vintagee:heldhelp-trinket-shoot-" + ShotKind(inSlot))));
             }
             else if (Kind == "swiftwolfsrendinggale")
             {
@@ -403,8 +476,51 @@ namespace VintageE
             if (Kind == "zeroring" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-freezeburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (Kind == "harvestgoddessband" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-harvestburst", HotKeyCode = "sneak", MouseButton = EnumMouseButton.Right });
             if (CanShoot(inSlot)) list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-shoot-" + ShotKind(inSlot), HotKeyCode = VintageEModSystem.FireHotkey, MouseButton = EnumMouseButton.None });
+            if (Kind == "ignitionring" || Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-light", MouseButton = EnumMouseButton.Right });
+            if (Kind == "ringofarcana") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-arcana-firewall", HotKeyCode = VintageEModSystem.ExtraHotkey, MouseButton = EnumMouseButton.None });
+            if (Kind == "voidring") list.Add(new WorldInteraction { ActionLangCode = "vintagee:heldhelp-trinket-teleport", HotKeyCode = VintageEModSystem.ExtraHotkey, MouseButton = EnumMouseButton.None });
             if (modes != null || arcanaOn != null || galeOn != null) list.Add(new WorldInteraction { ActionLangCode = arcanaOn != null ? "vintagee:heldhelp-arcana-toggle" : "vintagee:heldhelp-trinket-mode", HotKeyCodes = new[] { "toolmodeselect" }, MouseButton = EnumMouseButton.None });
             return list.ToArray();
         }
+    }
+
+    /// <summary>
+    /// The Evertide Amulet as an endless water container, like ProjectE's (whose amulet is an infinite water tank to
+    /// anything that drains it): right-clicking a barrel, bucket, jug or any other liquid container with it pours in up
+    /// to 10 litres of water (a bucket; Ctrl: 1 litre), and a barrel's liquid slot takes it the same way. It never
+    /// runs dry and never holds anything else. The Volcanite Amulet can't do the same with lava: Vintage Story has no
+    /// lava a container can hold.
+    /// </summary>
+    public class ItemEvertideAmulet : ItemEmcTrinket, Vintagestory.GameContent.ILiquidSource
+    {
+        public const float BucketLitres = 10;
+        Item water;
+
+        Item Water => water ??= api?.World.GetItem(new AssetLocation("game:waterportion"));
+
+        float ItemsPerLitre => Vintagestory.GameContent.BlockLiquidContainerBase.GetContainableProps(Water == null ? null : new ItemStack(Water))?.ItemsPerLitre ?? 100;
+
+        public bool AllowHeldLiquidTransfer => Water != null;
+        public float CapacityLitres => BucketLitres;
+        public float TransferSizeLitres => 1;
+        public float GetCurrentLitres(ItemStack containerStack) => Water == null ? 0 : BucketLitres;
+        public float GetCurrentLitres(BlockPos pos) => 0;
+        public bool IsFull(ItemStack containerStack) => true;
+        public bool IsFull(BlockPos pos) => false;
+
+        public Vintagestory.GameContent.WaterTightContainableProps GetContentProps(ItemStack containerStack)
+            => Water == null ? null : Vintagestory.GameContent.BlockLiquidContainerBase.GetContainableProps(new ItemStack(Water));
+
+        public Vintagestory.GameContent.WaterTightContainableProps GetContentProps(BlockPos pos) => null;
+
+        /// <summary>A bucket's worth of water, every time.</summary>
+        public ItemStack GetContent(ItemStack containerStack) => Water == null ? null : new ItemStack(Water, (int)Math.Round(BucketLitres * ItemsPerLitre));
+
+        public ItemStack GetContent(BlockPos pos) => null;
+
+        /// <summary>Whatever is asked for, without the amulet changing.</summary>
+        public ItemStack TryTakeContent(ItemStack containerStack, int quantity) => Water == null || quantity <= 0 ? null : new ItemStack(Water, quantity);
+
+        public ItemStack TryTakeContent(BlockPos pos, int quantity) => null;
     }
 }

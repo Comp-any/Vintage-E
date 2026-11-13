@@ -407,4 +407,15 @@ namespace VintageE
     {
         [ProtoMember(1)] public int Hand;
     }
+
+    /// <summary>
+    /// Client → server: one of ProjectE's keys (extra, charge, uncharge, nightvision, stepassist).
+    /// Server → client: what came of it, shown on screen (<see cref="Message"/>).
+    /// </summary>
+    [ProtoContract]
+    public class KeyActionPacket
+    {
+        [ProtoMember(1)] public string Action;
+        [ProtoMember(2)] public string Message;
+    }
 }
