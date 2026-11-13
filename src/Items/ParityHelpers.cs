@@ -220,14 +220,15 @@ namespace VintageE
                 if (IsRaining(sapi, at) == rain) return true;
                 at = Ground(sapi, at);
                 double now = sapi.World.Calendar.TotalDays;
-                double step = 1.0 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
-                float want = rain ? 0.1f : RainLevel;
+                // Half-hour steps; the weather wanted for two hours running, landing in the middle of it, so it holds a while.
+                double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
+                float want = rain ? 0.1f : RainLevel / 2;
                 bool Wet(double d) => ws.GetPrecipitation(at.X, at.Y, at.Z, now + d) > want;
+                bool Wanted(double d) => rain ? Wet(d) : !Wet(d);
                 for (double d = step; d < 30; d += step)
                 {
-                    bool ok = rain ? Wet(d) && Wet(d + step) : !Wet(d) && !Wet(d + step);
-                    if (!ok) continue;
-                    ws.RainCloudDaysOffset += d + step / 2;
+                    if (!Wanted(d) || !Wanted(d + step) || !Wanted(d + 2 * step) || !Wanted(d + 3 * step)) continue;
+                    ws.RainCloudDaysOffset += d + 1.5 * step;
                     ws.broadCastConfigUpdate();
                     return true;
                 }
