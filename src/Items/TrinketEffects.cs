@@ -1422,14 +1422,16 @@ namespace VintageE
         {
             var behaviors = e?.SidedProperties?.Behaviors;
             if (behaviors == null) return false;
-            foreach (var b in behaviors)
-            {
-                string name = b.GetType().Name;
-                string code = null;
-                try { code = b.PropertyName(); } catch { }
-                if (name.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0 || code?.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0) return true;
-            }
+            foreach (var b in behaviors) if (IsShearBehavior(b)) return true;
             return false;
+        }
+
+        public static bool IsShearBehavior(EntityBehavior b)
+        {
+            if (b == null) return false;
+            string code = null;
+            try { code = b.PropertyName(); } catch { }
+            return b.GetType().Name.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0 || code?.IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>The drop listed for this creature in ShearableCreatures (first matching pattern), or null.</summary>

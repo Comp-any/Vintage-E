@@ -238,6 +238,28 @@ namespace VintageE
             var shearable = sapi.World.EntityTypes.Where(t => t?.Server?.BehaviorsAsJsonObj != null && t.Server.BehaviorsAsJsonObj.Any(b => (b?["code"].AsString("") ?? "").IndexOf("shear", StringComparison.OrdinalIgnoreCase) >= 0))
                 .Select(t => t.Code.ToString()).Take(8).ToList();
             Line("  creatures a mod made shearable: " + (shearable.Count == 0 ? "none" : string.Join(", ", shearable)));
+            if (shearable.Count > 0)
+            {
+                // What that mod's shearing looks like from the code (its behaviour's own methods), for checking how the
+                // shears reach it: they call the creature's OnInteract as a player's click would.
+                try
+                {
+                    EntityProperties t = sapi.World.GetEntityType(new AssetLocation(shearable[0]));
+                    Entity sheep = sapi.World.ClassRegistry.CreateEntity(t);
+                    sheep.Code = t.Code;
+                    sheep.Pos.SetPos(new Vec3d(x + 0.5, y + 60, z + 0.5));
+                    sapi.World.SpawnEntity(sheep);
+                    foreach (var b in sheep.SidedProperties.Behaviors.Where(TrinketEffects.IsShearBehavior))
+                    {
+                        var methods = b.GetType().GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly)
+                            .Select(m => m.Name + "(" + string.Join(",", m.GetParameters().Select(pr => pr.ParameterType.Name)) + ")").Distinct();
+                        Line($"  {b.GetType().FullName} ({b.PropertyName()}): {string.Join(", ", methods)}");
+                    }
+                    Check(TrinketEffects.HasShearBehavior(sheep), $"the shears see {sheep.Code} as shearable");
+                    sheep.Die(EnumDespawnReason.Removed);
+                }
+                catch (Exception e) { Line("  could not look at a shearable creature: " + e.Message); }
+            }
 
             // --- Collector fuel and relay burning.
             {
@@ -309,6 +331,9 @@ namespace VintageE
                     BlockPos lavaPos = wp.AddCopy(3, 0, 3), waterPos = wp.AddCopy(6, 0, 6);
                     if (lava == null || water == null) { Check(false, "lava and water blocks exist"); return; }
                     ba.SetBlock(lava.Id, lavaPos, BlockLayersAccess.Fluid);
+                    // Open sky above both shots (a mountain or tree overhead would catch them).
+                    foreach (BlockPos col in new[] { wp.AddCopy(1, 0, 3), wp.AddCopy(4, 0, 6) })
+                        for (int cy = col.Y; cy < ba.MapSizeY; cy++) { var cp = new BlockPos(col.X, cy, col.Z); ba.SetBlock(0, cp); ba.SetBlock(0, cp, BlockLayersAccess.Fluid); }
                     var up = new Vec3d(0, 1, 0);
                     var shot = EntityVintageEProjectile.ShootFrom(sapi.World, wp.ToVec3d().Add(1.5, 0.5, 3.5), up, "water", 40);
                     sapi.Event.RegisterCallback(__ =>
