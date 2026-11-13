@@ -24,10 +24,18 @@ namespace VintageE
         /// <summary>Blocks/items on the server's NoTransmute list (valued, but can't be burned, learned or created).</summary>
         [ProtoMember(12)] public string[] NoTransmuteKeys;
         /// <summary>The server's multipliers, so tooltips can say when the numbers in them are scaled: trinket/gadget costs, machine speed, the watch's speed-up and slow-down.</summary>
-        [ProtoMember(13)] public double TrinketCostMultiplier = 1;
+        /// <remarks>
+        /// IsRequired: a 0 (trinkets cost nothing) is written too. Without it a zero is left out of the packet and the
+        /// 1 below stays, so until 1.24.1 players' tooltips never said that the costs were scaled to nothing.
+        /// </remarks>
+        [ProtoMember(13, IsRequired = true)] public double TrinketCostMultiplier = 1;
         [ProtoMember(14)] public double MachineSpeedMultiplier = 1;
         [ProtoMember(15)] public double WatchSpeedUp = 10;
         [ProtoMember(16)] public double WatchSlowDown = 3;
+        /// <summary>The server's TableUseRange (1.24.1): the table's window closes where the server stops answering it.</summary>
+        [ProtoMember(17)] public double TableUseRange = 8;
+        /// <summary>The server's CollectorFuels (1.24.1), so a click on a collector with a fuel the server added is sent on.</summary>
+        [ProtoMember(18)] public string[] CollectorFuels;
     }
 
     /// <summary>

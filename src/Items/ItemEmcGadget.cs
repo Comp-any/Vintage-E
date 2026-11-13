@@ -387,7 +387,7 @@ namespace VintageE
                 Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
                 return false;
             }
-            if (EntityVintageEProjectile.Shoot(player, "lens", 36, shot => shot.Radius = LensRadius[charge]) == null) return false;
+            if (EntityVintageEProjectile.Shoot(player, "lens", 36, shot => { shot.Radius = LensRadius[charge]; shot.Paid = cost; }) == null) return false;
             PESounds.Play(world, PESounds.Power, "game:sounds/effect/swoosh", player.Entity, 24, 1f);
             return true;
         }
@@ -436,7 +436,10 @@ namespace VintageE
             if (target == null) { Tell(player, Lang.GetL(lang, "vintagee:eye-notarget")); return; }
             if (mod.Emc.IsNoTransmute(target)) { Tell(player, Lang.GetL(lang, "vintagee:error-notransmute", target.GetHeldItemName(new ItemStack(target)))); return; }
             double targetValue = mod.Emc.GetValue(target);
-            double mult = Math.Max(0, mod.Config.TrinketCostMultiplier);
+            // What the eye pays is the block's own EMC, not a fee: TrinketCostMultiplier can raise it but never lower it
+            // (1.24.1). Below 1 a block was placed for less than it burns for, and swapping a dear block in and out again
+            // paid part of the difference and gave all of it back; at 0 that was any amount of EMC for nothing.
+            double mult = Math.Max(1, mod.Config.TrinketCostMultiplier);
             int radius = GameMath.Clamp(size, 0, EyeMaxRadius);
             bool outOfEmc = false;
             int placed = 0;

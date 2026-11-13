@@ -130,6 +130,9 @@ namespace VintageE
             if (BurnInteract(byPlayer)) return true; // the burn slot first: what's in it comes out before a Klein star
             if (!byPlayer.Entity.Controls.Sneak) return Star.Interact(this, byPlayer);
             if (Api.Side == EnumAppSide.Client) return true;
+            // CollectorsChargePlayers off: a relay hands nothing over either (1.24.1). It was only checked on the
+            // collector, so a relay beside one gave out the same EMC and the setting stopped nobody.
+            if (VintageEModSystem.Of(Api)?.Config?.CollectorsChargePlayers == false) return true;
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use) || Stored < 1) return true;
             Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, Math.Floor(Stored));
             MarkDirty(false);
@@ -294,6 +297,17 @@ namespace VintageE
             if (fuseLeft > 0) return;
             lit = false;
             float radius = Block?.Attributes?["radius"].AsFloat(6) ?? 6;
+            // The whole blast has to be allowed, as with the game's bombs: until 1.24.1 only the block itself was
+            // checked (when lit), so one set off beside someone's claim broke up to 11 blocks into it.
+            IPlayer lighter = string.IsNullOrEmpty(litBy) ? null : Api.World.PlayerByUid(litBy);
+            if (!ClaimUtil.BlastAllowed(Api, lighter, Pos, radius))
+            {
+                Api.World.PlaySoundAt(new AssetLocation("game:sounds/effect/extinguish"), Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5, null, false, 16, 1f);
+                if (lighter is IServerPlayer sp) sp.SendIngameError("vintagee-blastclaim", Lang.GetL(sp.LanguageCode, "vintagee:error-blastclaim"));
+                if (listener != 0) { UnregisterGameTickListener(listener); listener = 0; }
+                MarkDirty(false);
+                return;
+            }
             BlockPos at = Pos.Copy();
             Api.World.BlockAccessor.SetBlock(0, at);
             ((IServerWorldAccessor)Api.World).CreateExplosion(at, EnumBlastType.RockBlast, radius, radius + 2, 1f, litBy);

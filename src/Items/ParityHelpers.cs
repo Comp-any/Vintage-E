@@ -11,7 +11,7 @@ using Vintagestory.GameContent;
 
 namespace VintageE
 {
-    /// <summary>What the extra-function key (G by default; ProjectE's C) does with the held item. Server side.</summary>
+    /// <summary>What the extra-function key (B by default; ProjectE's C) does with the held item. Server side.</summary>
     public interface IExtraFunctionItem
     {
         /// <summary>Returns true if something happened.</summary>
@@ -91,16 +91,42 @@ namespace VintageE
         }
     }
 
+    /// <summary>Land-claim checks for things that change a whole area at once.</summary>
+    public static class ClaimUtil
+    {
+        /// <summary>
+        /// Whether an explosion of this radius at <paramref name="center"/> is allowed: every land claim it would reach
+        /// has to let the player build or break, the rule the game's own bombs follow (the game checks nothing per
+        /// block once an explosion starts). With no player to answer for it, any claim in reach stops it. Server side.
+        /// </summary>
+        public static bool BlastAllowed(ICoreAPI api, IPlayer player, BlockPos center, float radius)
+        {
+            if (!(api is ICoreServerAPI sapi)) return true;
+            List<LandClaim> claims = sapi.WorldManager.LandClaims;
+            if (claims == null || claims.Count == 0) return true;
+            int r = (int)Math.Ceiling(radius) + 1; // a block more: cuboids that only touch don't count as intersecting
+            var area = new Cuboidi(center.AddCopy(-r, -r, -r), center.AddCopy(r, r, r));
+            for (int i = 0; i < claims.Count; i++)
+            {
+                LandClaim claim = claims[i];
+                if (claim == null || !claim.Intersects(area)) continue;
+                if (player == null || claim.TestPlayerAccess(player, EnumBlockAccessFlags.BuildOrBreak) == EnumPlayerAccessResult.Denied) return false;
+            }
+            return true;
+        }
+    }
+
     /// <summary>Lighting and putting out fire the way the game's firestarter and fire do.</summary>
     public static class FireUtil
     {
-        static Block fireBlock;
+        static readonly AssetLocation FireCode = new AssetLocation("game:fire");
 
-        public static Block Fire(IWorldAccessor world)
-        {
-            if (fireBlock == null || fireBlock.Id == 0) fireBlock = world.GetBlock(new AssetLocation("game:fire"));
-            return fireBlock;
-        }
+        /// <summary>
+        /// The game's fire block in this world. Looked up each time: 1.24.0 kept the first world's block for as long as
+        /// the game ran, and block ids differ between worlds, so in the next world opened without restarting the game a
+        /// switched-off Ignition Ring could remove whatever block had the old number, and lighting could place it.
+        /// </summary>
+        public static Block Fire(IWorldAccessor world) => world?.GetBlock(FireCode);
 
         /// <summary>
         /// Lights the clicked block as a firestarter would: things with their own lighting (firepits, torches, bombs)

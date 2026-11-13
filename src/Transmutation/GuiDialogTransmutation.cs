@@ -222,7 +222,10 @@ namespace VintageE
         void OnTick(float dt)
         {
             IPlayer player = capi.World.Player;
-            if (tablePos != null && player?.Entity != null && player.Entity.Pos.SquareDistanceTo(tablePos.X + 0.5, tablePos.Y + 0.5, tablePos.Z + 0.5) > 10 * 10)
+            // The server's own reach (TableUseRange, sent with the table; a block more, as the two sides' positions differ a
+            // little). It was a fixed 10 blocks, so with the default of 8 the window stayed open where the server refused it.
+            double reach = (mod.Emc?.TableUseRange ?? 8) + 1;
+            if (tablePos != null && player?.Entity != null && player.Entity.Pos.SquareDistanceTo(tablePos.X + 0.5, tablePos.Y + 0.5, tablePos.Z + 0.5) > reach * reach)
             {
                 TryClose(); // walked away from the table
                 return;

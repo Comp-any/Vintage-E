@@ -24,7 +24,8 @@ namespace VintageE
         public void Touch() => System.Threading.Interlocked.Increment(ref revision);
 
         bool durabilityScales = true, projectESounds;
-        double trinketCostMultiplier = 1, machineSpeedMultiplier = 1, watchSpeedUp = 10, watchSlowDown = 3;
+        double trinketCostMultiplier = 1, machineSpeedMultiplier = 1, watchSpeedUp = 10, watchSlowDown = 3, tableUseRange = 8;
+        string[] collectorFuels;
         HashSet<CollectibleObject> noTransmute = new HashSet<CollectibleObject>();
         StackDataTable stackData = new StackDataTable();
 
@@ -38,6 +39,10 @@ namespace VintageE
         public double MachineSpeedMultiplier { get => machineSpeedMultiplier; set { machineSpeedMultiplier = value; Touch(); } }
         public double WatchSpeedUp { get => watchSpeedUp; set { watchSpeedUp = value; Touch(); } }
         public double WatchSlowDown { get => watchSlowDown; set { watchSlowDown = value; Touch(); } }
+        /// <summary>How far from a Transmutation Table its window works (mirrors the server config on clients).</summary>
+        public double TableUseRange { get => tableUseRange; set { tableUseRange = value; Touch(); } }
+        /// <summary>The fuels Energy Collectors upgrade (mirrors the server config on clients); null until the server's table arrives.</summary>
+        public string[] CollectorFuels { get => collectorFuels; set { collectorFuels = value; Touch(); } }
 
         /// <summary>
         /// Items that keep their EMC value (recipes still use it) but can't be burned for EMC, learned or created
@@ -298,6 +303,8 @@ namespace VintageE
                 MachineSpeedMultiplier = MachineSpeedMultiplier,
                 WatchSpeedUp = WatchSpeedUp,
                 WatchSlowDown = WatchSlowDown,
+                TableUseRange = TableUseRange,
+                CollectorFuels = CollectorFuels,
                 NoTransmuteKeys = NoTransmute.Select(PlayerEmc.KeyOf).Where(k => k != null).ToArray(),
                 DataKeys = dataKeys.ToArray(),
                 DataKindModes = dataKindModes.ToArray(),
@@ -332,10 +339,12 @@ namespace VintageE
             Touch();
             DurabilityScales = packet.DurabilityScales;
             ProjectESounds = packet.ProjectESounds;
-            TrinketCostMultiplier = packet.TrinketCostMultiplier > 0 ? packet.TrinketCostMultiplier : 1;
+            TrinketCostMultiplier = packet.TrinketCostMultiplier >= 0 ? packet.TrinketCostMultiplier : 1; // 0: trinkets are free on this server
             MachineSpeedMultiplier = packet.MachineSpeedMultiplier > 0 ? packet.MachineSpeedMultiplier : 1;
             WatchSpeedUp = packet.WatchSpeedUp > 0 ? packet.WatchSpeedUp : 10;
             WatchSlowDown = packet.WatchSlowDown > 0 ? packet.WatchSlowDown : 3;
+            TableUseRange = packet.TableUseRange > 0 ? packet.TableUseRange : 8;
+            CollectorFuels = packet.CollectorFuels;
             var noTransmute = new HashSet<CollectibleObject>();
             foreach (string key in packet.NoTransmuteKeys ?? Array.Empty<string>())
             {

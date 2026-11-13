@@ -105,14 +105,17 @@ namespace VintageE
 
         /// <summary>
         /// Whether an effect may change this block: the player's own claim rules, or, for a pedestal (no player),
-        /// nothing inside anyone's claim at all. A pedestal just outside a claim used to harvest the crops and freeze
-        /// the ponds inside it.
+        /// only unclaimed land and land claimed by the owner of the claim the pedestal itself stands in
+        /// (<paramref name="from"/>: where the pedestal is). A pedestal just outside a claim used to harvest the crops
+        /// and freeze the ponds inside it; from 1.21.1 to 1.24.0 a pedestal then touched no claim at all, its owner's
+        /// own farm included.
         /// </summary>
-        bool MayChange(IPlayer byPlayer, BlockPos pos)
+        bool MayChange(IPlayer byPlayer, BlockPos pos, BlockPos from = null)
         {
             try
             {
                 if (byPlayer != null) return sapi.World.Claims.TryAccess(byPlayer, pos, EnumBlockAccessFlags.BuildOrBreak);
+                if (from != null) return MayTakeFrom(from, pos);
                 LandClaim[] claims = sapi.World.Claims.Get(pos);
                 return claims == null || claims.Length == 0;
             }
@@ -790,7 +793,7 @@ namespace VintageE
                         scan.Set(center.X + dx, center.Y + dy, center.Z + dz);
                         if (!IsRipeCropCached(ba.GetBlock(scan))) continue;
                         BlockPos pos = scan.Copy();
-                        if (!MayChange(byPlayer, pos)) continue;
+                        if (!MayChange(byPlayer, pos, center)) continue;
                         ba.BreakBlock(pos, byPlayer);
                         harvested++;
                     }
@@ -877,7 +880,7 @@ namespace VintageE
                         if (!IsStillWaterCached(ba.GetBlock(scan, BlockLayersAccess.Fluid))) continue;
                         if (ba.GetBlock(scan, BlockLayersAccess.Solid)?.Id > 0) continue;
                         BlockPos pos = scan.Copy();
-                        if (!MayChange(byPlayer, pos)) continue;
+                        if (!MayChange(byPlayer, pos, center)) continue;
                         if (!ice.ForFluidsLayer) ba.SetBlock(0, pos, BlockLayersAccess.Fluid);
                         ba.SetBlock(ice.BlockId, pos);
                         frozen++;
@@ -1139,7 +1142,7 @@ namespace VintageE
                 Block below = ba.GetBlock(scan.Set(x, y - 1, z));
                 if (below == null || below.Id == 0 || !below.SideSolid[BlockFacing.UP.Index]) continue;
                 BlockPos pos = scan.Set(x, y, z).Copy();
-                if (!MayChange(byPlayer, pos)) continue;
+                if (!MayChange(byPlayer, pos, center)) continue;
                 ba.SetBlock(snow.BlockId, pos);
                 laid++;
             }

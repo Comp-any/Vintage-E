@@ -13,7 +13,7 @@ namespace VintageE
     /// ProjectE's gem armour effects. Vintage Story armour has three pieces, so the gem leggings carry what
     /// ProjectE splits between its leggings and boots.
     /// <list type="bullet">
-    /// <item>Helmet: heals a tenth of your health a second; its night vision is switched with its key (Shift + X).</item>
+    /// <item>Helmet: heals a tenth of your health a second; its night vision is switched with its key (Shift + N).</item>
     /// <item>Chestplate: feeds a tenth of your saturation a second while you're hungry.</item>
     /// <item>Leggings: twice the walking speed and twice as high jumps; you fall slowly, and with sneak fast instead;
     ///   sneaking pushes creatures and their projectiles away (3.5 blocks), and creatures you come down on take

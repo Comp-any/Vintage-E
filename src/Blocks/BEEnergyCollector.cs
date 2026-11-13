@@ -167,7 +167,10 @@ namespace VintageE
         {
             var list = new List<CollectibleObject>();
             if (mod?.Config?.CollectorFuels == null || mod.Emc == null) return list;
-            foreach (string code in mod.Config.CollectorFuels.Distinct())
+            // A player's game has only the default settings: it goes by the server's list, sent with the table (1.24.1).
+            // Until then a fuel a server added to CollectorFuels could not be put in: the click never left the client.
+            IEnumerable<string> fuels = world.Side == EnumAppSide.Client && mod.Emc.CollectorFuels != null ? (IEnumerable<string>)mod.Emc.CollectorFuels : mod.Config.CollectorFuels;
+            foreach (string code in fuels.Distinct())
             {
                 if (string.IsNullOrWhiteSpace(code)) continue;
                 var loc = new AssetLocation(code.Trim());

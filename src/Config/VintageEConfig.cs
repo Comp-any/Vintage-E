@@ -142,8 +142,8 @@ namespace VintageE
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;
 
-        /// <summary>Allow sneak + right-click with an empty hand on a collector to move its stored EMC into your personal EMC.</summary>
-        [System.ComponentModel.Description("Allow sneak + right-click with an empty hand on a collector to move its stored EMC into your personal EMC.")]
+        /// <summary>Allow sneak + right-click with an empty hand (or a Klein star) on a collector or relay to move its stored EMC into your personal EMC (or the star).</summary>
+        [System.ComponentModel.Description("Allow sneak + right-click with an empty hand (or a Klein star) on a collector or relay to move its stored EMC into your personal EMC (or the star).")]
         public bool CollectorsChargePlayers = true;
 
         /// <summary>

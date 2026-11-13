@@ -133,11 +133,23 @@ namespace VintageE
             Block clicked = ba.GetBlock(sel.Position);
             Block target = mod?.WorldTransmutation?.GetTarget(clicked, reverse);
             if (target == null) return -1;
+            // The stone never makes EMC (1.24.1): a block turned into one worth more costs the difference, as the
+            // Mercurial Eye's swaps do. Until then granite became halite (1 → 20 EMC a block) for nothing, a 9-wide
+            // cube at a time. Blocks of the same or a lower value change for free, as before.
+            double extra = mod.Emc == null ? 0 : mod.Emc.GetValue(target) - mod.Emc.GetValue(clicked);
             int changed = 0;
             foreach (BlockPos pos in Positions(sel.Position, sel.Face, shape, GameMathClamp(radius, 0, MaxRadius), facing))
             {
                 if (ba.GetBlock(pos).Id != clicked.Id) continue;
                 if (player != null && !world.Claims.TryAccess(player, pos, EnumBlockAccessFlags.BuildOrBreak)) continue;
+                if (extra > 1e-9 && player != null && !EmcWallet.TryPay(player, extra))
+                {
+                    if (player is IServerPlayer sp)
+                    {
+                        sp.SendIngameError("vintagee-notenoughemc", Lang.GetL(sp.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(extra), EmcFormat.Format(EmcWallet.Balance(player))));
+                    }
+                    break;
+                }
                 ba.SetBlock(target.Id, pos);
                 changed++;
             }
@@ -162,6 +174,7 @@ namespace VintageE
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             int size = 2 * GetCharge(inSlot) + 1;
             dsc.AppendLine(Lang.Get("vintagee:philo-modeline", Lang.Get("vintagee:philo-shape-" + Shapes[ShapeOf(inSlot?.Itemstack)]), size));
+            dsc.AppendLine(Lang.Get("vintagee:philo-costline"));
             VintageEModSystem.AppendChargeKey(world, dsc);
         }
 

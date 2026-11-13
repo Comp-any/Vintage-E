@@ -387,6 +387,8 @@ namespace VintageE
                 case "MachineSpeedMultiplier":
                 case "WatchSpeedUp":
                 case "WatchSlowDown":
+                case "TableUseRange":
+                case "CollectorFuels":
                     // Players' games keep a copy of these (values of worn tools, sounds, the numbers tooltips quote):
                     // it travels with the table, so send that again.
                     mod.RefreshMirroredSettings();

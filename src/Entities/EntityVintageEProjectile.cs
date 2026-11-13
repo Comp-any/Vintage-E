@@ -1,6 +1,7 @@
 using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 
@@ -99,6 +100,13 @@ namespace VintageE
         {
             get => WatchedAttributes.GetFloat("radius", 4);
             set => WatchedAttributes.SetFloat("radius", value);
+        }
+
+        /// <summary>EMC paid to fire it (lens): given back if a land claim stops the blast.</summary>
+        public double Paid
+        {
+            get => WatchedAttributes.GetDouble("paid", 0);
+            set => WatchedAttributes.SetDouble("paid", value);
         }
 
         /// <summary>Damage dealt to a creature that is hit (fire, arrow).</summary>
@@ -267,10 +275,20 @@ namespace VintageE
 
         IPlayer Shooter => string.IsNullOrEmpty(FiredByUid) ? null : World.PlayerByUid(FiredByUid);
 
+        /// <summary>
+        /// Whether this shot may change the block: its shooter's claim rules. A shot nobody answers for (fired by a
+        /// pedestal, or its shooter is gone) only changes unclaimed land; until 1.24.1 it could change anything.
+        /// </summary>
         bool MayEdit(BlockPos pos)
         {
             IPlayer player = Shooter;
-            return player == null || World.Claims.TryAccess(player, pos, EnumBlockAccessFlags.BuildOrBreak);
+            if (player != null) return World.Claims.TryAccess(player, pos, EnumBlockAccessFlags.BuildOrBreak);
+            try
+            {
+                LandClaim[] claims = World.Claims.Get(pos);
+                return claims == null || claims.Length == 0;
+            }
+            catch { return false; }
         }
 
         void OnHitEntity(Entity target, Vec3d at)
@@ -400,11 +418,24 @@ namespace VintageE
             FireUtil.TryLight(World, sel, World.GetEntityById(FiredById) as EntityAgent, FiredByUid, MayEdit);
         }
 
+        /// <summary>
+        /// The lens charge goes off, if its shooter may build in every land claim the blast would reach (the game's
+        /// bombs follow the same rule; until 1.24.1 only the block that was hit was checked, so a radius-16 blast next
+        /// to someone's claim broke into it). A charge that may not go off fizzles and its EMC goes back to the shooter.
+        /// </summary>
         void Explode(Vec3d at)
         {
             BlockPos pos = ToBlockPos(at);
-            if (!MayEdit(pos)) return;
             float radius = Radius;
+            IPlayer player = Shooter;
+            if (!MayEdit(pos) || !ClaimUtil.BlastAllowed(Api, player, pos, radius))
+            {
+                double paid = Paid;
+                Paid = 0;
+                if (player != null && paid > 0) PlayerEmc.AddEmc(player, paid);
+                if (player is IServerPlayer sp) sp.SendIngameError("vintagee-blastclaim", Lang.GetL(sp.LanguageCode, "vintagee:error-blastclaim"));
+                return;
+            }
             ((ICoreServerAPI)Api).World.CreateExplosion(pos, EnumBlastType.RockBlast, radius, radius + 2, 1f, FiredByUid);
         }
 

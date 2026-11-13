@@ -55,6 +55,8 @@ namespace VintageE
         void CheckParity(int x, int y, int z)
         {
             IBlockAccessor ba = sapi.World.BlockAccessor;
+            try { CheckFixes1241(x, y, z); }
+            catch (Exception e) { Check(false, "1.24.1 fix checks threw " + e); }
             Line("ProjectE parity (1.24.0)");
 
             // --- Evertide Amulet: an endless water container.
@@ -389,5 +391,55 @@ namespace VintageE
         }
 
         const int AntimatterBurn = BEAntimatterRelay.BurnPerSecond;
+
+        /// <summary>1.24.1: the bug-hunt fixes that can be checked without a player in the world.</summary>
+        void CheckFixes1241(int x, int y, int z)
+        {
+            Line("Bug-hunt fixes (1.24.1)");
+
+            // Settings players' games need: a multiplier of 0 (left out of the packet until now), the table's range
+            // and the collector fuels.
+            var sent = new EmcTablePacket { TrinketCostMultiplier = 0, TableUseRange = 5, CollectorFuels = new[] { "game:charcoal" } };
+            EmcTablePacket got;
+            using (var ms = new System.IO.MemoryStream())
+            {
+                ProtoBuf.Serializer.Serialize(ms, sent);
+                ms.Position = 0;
+                got = ProtoBuf.Serializer.Deserialize<EmcTablePacket>(ms);
+            }
+            Check(got != null && got.TrinketCostMultiplier == 0 && got.TableUseRange == 5 && got.CollectorFuels?.Length == 1,
+                $"a TrinketCostMultiplier of 0, TableUseRange and CollectorFuels reach clients ({got?.TrinketCostMultiplier}, {got?.TableUseRange}, {got?.CollectorFuels?.Length} fuel)");
+            EmcTablePacket live = mod.Emc.BuildPacket();
+            Check(live.TableUseRange == mod.Config.TableUseRange && live.CollectorFuels != null,
+                $"the table sent to clients carries the server's TableUseRange and CollectorFuels ({live.TableUseRange}, {live.CollectorFuels?.Length} fuels)");
+
+            // Clothes from a condenser come out new.
+            CollectibleObject warm = sapi.World.Collectibles.FirstOrDefault(c => c?.Code != null && c.Attributes != null && c.Attributes["warmth"].AsFloat(0) > 0);
+            if (warm != null)
+            {
+                ItemStack made = BEEnergyCondenser.CopyOf(mod, new ItemStack(warm));
+                float condition = made.Attributes.GetFloat("condition", -1);
+                Check(condition == 1, $"a condenser's copy of warm clothing ({warm.Code}) comes out at full condition ({condition})");
+            }
+            else Check(false, "found warm clothing for the condenser to copy");
+
+            // The fire block is looked up in this world.
+            Block fire = FireUtil.Fire(sapi.World);
+            Check(fire != null && fire.Id != 0 && fire.Code?.Path == "fire", $"the game's fire block is this world's ({fire?.Code}, id {fire?.Id})");
+
+            // A blast needs every claim in reach to allow it: a claim 6 blocks off stops a radius-11 blast nobody
+            // answers for, not a radius-3 one.
+            var here = new BlockPos(x + 22, y, z + 22);
+            var claim = new LandClaim { OwnedByPlayerUid = "vintagee-selftest", LastKnownOwnerName = "Vintage-E self-test", ProtectionLevel = 1 };
+            claim.Areas.Add(new Cuboidi(here.X + 6, here.Y - 2, here.Z - 2, here.X + 9, here.Y + 3, here.Z + 2));
+            bool clear = ClaimUtil.BlastAllowed(sapi, null, here, 11);
+            sapi.World.Claims.Add(claim);
+            try
+            {
+                bool small = ClaimUtil.BlastAllowed(sapi, null, here, 3), big = ClaimUtil.BlastAllowed(sapi, null, here, 11);
+                Check(!big && (small || !clear), $"a blast is stopped by a land claim anywhere in its reach (no claim: {clear}; claim 6 blocks off: radius 3 {small}, radius 11 {big})");
+            }
+            finally { sapi.World.Claims.Remove(claim); }
+        }
     }
 }

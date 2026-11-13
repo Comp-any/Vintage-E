@@ -2,6 +2,28 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.1 — 2026-11-13
+
+Fixes from a bug hunt through 1.23.1 and 1.24.0. EMC values are the same as in 1.24.0.
+
+### Changed
+- **Default keys.** The extra function is now **B** (was G, the game's "sit down"), gem leggings step assist **N** (was X, the game's "swap hands") and gem helmet night vision **Shift + N** (was Shift + X). Keys you set yourself in the controls settings are kept. The two gem armour keys now do nothing unless the piece is worn: before, they took the key from everyone and answered "you aren't wearing..." on every press.
+- **Philosopher's Stone:** turning a block into one worth more EMC costs the difference from your EMC (rock → halite is 19 EMC a block, sand → gravel 1). The other way round stays free, as does any change between blocks of the same value.
+
+### Fixed
+- **Free EMC from the Philosopher's Stone:** rock (1 EMC) could be turned into halite (20 EMC) and sand into gravel for nothing, up to a 9-wide cube a click, and then burned.
+- **Free EMC from the Mercurial Eye** on servers with `TrinketCostMultiplier` below 1: the eye charged the discounted price for the more valuable block but refunded the full difference when swapping back. The multiplier no longer discounts the block's own EMC (it never goes below 1 for the eye).
+- **Clothes from an Energy Condenser came out worn:** warm clothing copied by a condenser had no condition, so the game gave it a random one of 0 to 40% the first time it was put on, though it was paid for as new. They now come out at 100%, as from the table.
+- **Explosions reaching into land claims:** a Hyperkinetic or Catalytic Lens charge (radius up to 16) and the Nova Catalyst and Cataclysm (radius 6 and 11) only checked the claim of the block they went off at, so one next to someone's claim broke into it. Like the game's bombs, they now need building rights in every claim the blast would reach; otherwise the charge fizzles (its EMC comes back) and the Nova block goes out and stays where it is.
+- **Shots nobody fired** (a pedestal's arrows, or a shot whose shooter has logged off) could change blocks inside any land claim. They now only change unclaimed land.
+- **Pedestals did nothing inside any claim:** a Harvest Goddess Band or Zero Ring on a pedestal skipped every claimed block, its owner's too. A pedestal now works on unclaimed land and inside the claim it stands in (and others of the same owner), and still leaves other people's claims alone.
+- **Fire handling after switching worlds:** the game's fire block was remembered from the first world opened; in another world opened without restarting the game, a switched-off Ignition Ring could remove (and lighting could place) whatever block had that number there.
+- **Collector fuels a server added** (`CollectorFuels`) couldn't be put into a collector by hand: the client only knew the default list. The list is now sent to clients.
+- **Transmutation Table window:** it closed at 10 blocks whatever the server's `TableUseRange` was, and walking past the server's range dropped the session, leaving the window open with every click refused. The window now closes just past the server's range and the session is kept while the table stands.
+- **`TrinketCostMultiplier` 0** (free trinkets) showed as 1 on clients, so tooltips and the "not enough EMC" checks were wrong there.
+- **`CollectorsChargePlayers` off** only stopped collectors: an Anti-Matter Relay still handed its EMC to players. It now covers relays too.
+- **`build/package.sh` failed** on a clean checkout: `tools/validate_assets.py` took seven made-up codes in the self-test and two event names for missing lang keys.
+
 ## 1.24.0 — 2026-11-13
 
 ### Added

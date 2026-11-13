@@ -70,9 +70,15 @@ for kind in ("itemtypes", "blocktypes"):
                             errors.append(f"shape {p}: missing texture {v}")
 
 cs = ""
+# The source the lang-key check reads: not the conversion-method self-test, whose "vintagee:..." strings are the codes
+# of methods, units and tools it makes up for its test files (vintagee:press, vintagee:testpower...), not lang keys.
+cs_lang = ""
 for dp, _, fs in os.walk(SRC):
     for f in fs:
-        if f.endswith(".cs"): cs += open(os.path.join(dp, f), encoding="utf-8").read()
+        if not f.endswith(".cs"): continue
+        text = open(os.path.join(dp, f), encoding="utf-8").read()
+        cs += text
+        if f != "SelfTestMethods.cs": cs_lang += text
 registered = set(re.findall(r'Register(?:Item|Block|BlockEntity|CollectibleBehavior)Class\("(\w+)"', cs))
 vanilla_classes = {"ItemAxe", "ItemHoe", "ItemHammer", "ItemShears", "ItemKnife", "ItemChisel", "ItemScythe", "ItemProspectingPick", "ItemSpear", "ItemBow", "EntityDeconstructTool", "Item", "Block", "GroundStorable", "AnimationAuthoritative", "Wearable", "GenericTypedContainer", "Container", "HeldBag", "GroundStoredHeldBag", "Lockable", "BlockGeneric", "BlockContainer", "Unstable", "HorizontalOrientable", "OmniRotatable", "BlockFirepit", "Ignitable", "HeatSource", "FirepitAmbient", "TemperatureSensitive", "interpolateposition"}
 for kind in ("itemtypes", "blocktypes"):
@@ -109,7 +115,8 @@ lang = load(os.path.join(A, "lang", "en.json")) or {}
 # Not the self-test's text.Contains("vintagee:diag-...") checks: those look for a key that was left untranslated
 # in a report (the start of a family of keys), and aren't keys themselves. They made this script fail, and
 # build/package.sh with it.
-for key in set(re.findall(r'(?<!Contains\()"vintagee:([a-z0-9-]+)"', cs)):
+# Nor the names of events (const string ...Event = "vintagee:..."), which are codes too.
+for key in set(re.findall(r'(?<!Contains\()(?<!Event = )"vintagee:([a-z0-9-]+)"', cs_lang)):
     if key.endswith("-") or key in codes or key in entity_codes: continue  # item/block/entity codes, not lang keys
     if key not in lang: errors.append(f"lang: missing key {key}")
 for code in re.findall(r'Fail\(player, "(\w+)"', cs):

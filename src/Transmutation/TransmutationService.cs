@@ -71,11 +71,14 @@ namespace VintageE
             {
                 Block block = sapi.World.BlockAccessor.GetBlock(pos);
                 double range = mod.Config.TableUseRange;
-                if (block is BlockTransmutationTable && player.Entity.Pos.SquareDistanceTo(pos.X + 0.5, pos.Y + 0.5, pos.Z + 0.5) <= range * range)
+                if (block is BlockTransmutationTable)
                 {
-                    return true;
+                    if (player.Entity.Pos.SquareDistanceTo(pos.X + 0.5, pos.Y + 0.5, pos.Z + 0.5) <= range * range) return true;
+                    // Too far just now: the table stays open for when the player steps back. Until 1.24.1 one click
+                    // from out of reach closed it on this side only, and the window answered "no access" from then
+                    // on, however close the player came, until it was shut and the table clicked again.
                 }
-                tableSessions.Remove(player.PlayerUID);
+                else tableSessions.Remove(player.PlayerUID); // the table is gone
             }
             return CarriesTablet(player);
         }

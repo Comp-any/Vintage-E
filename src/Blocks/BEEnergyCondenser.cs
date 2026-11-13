@@ -135,6 +135,9 @@ namespace VintageE
                 var data = StackDataUtil.KeptData(target);
                 if (data != null) foreach (var kv in data) copy.Attributes[kv.Key] = kv.Value.Clone();
             }
+            // Clothes come out new, as they do from the table: without a condition the game gives a garment a random
+            // worn one (0 to 40%) the first time it is put on, and it was paid for as new (1.24.1).
+            if (EmcRegistry.ClothingCondition(copy) >= 0) copy.Attributes.SetFloat("condition", 1);
             return copy;
         }
 

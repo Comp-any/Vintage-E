@@ -111,7 +111,7 @@ namespace VintageE
 
         /// <summary>Hotkey that fires the Hyperkinetic/Catalytic Lens charge (R by default, like ProjectE).</summary>
         public const string FireHotkey = "vintageefireprojectile";
-        /// <summary>ProjectE's other keys (1.24.0): extra function (G; ProjectE's C is the game's character window), charge (V, Shift + V lowers it), Transmutation Tablet (K), gem helmet night vision (Shift + X), gem leggings step assist (X).</summary>
+        /// <summary>ProjectE's other keys (1.24.0; defaults changed in 1.24.1): extra function (B; ProjectE's C is the game's character window), charge (V, Shift + V lowers it), Transmutation Tablet (K), gem helmet night vision (Shift + N), gem leggings step assist (N).</summary>
         public const string ExtraHotkey = "vintageeextrafunction", ChargeHotkey = "vintageecharge", UnchargeHotkey = "vintageeuncharge",
             TabletHotkey = "vintageetablet", NightVisionHotkey = "vintageenightvision", StepAssistHotkey = "vintageestepassist";
 
@@ -1252,6 +1252,8 @@ namespace VintageE
             Emc.MachineSpeedMultiplier = Config.MachineSpeedMultiplier;
             Emc.WatchSpeedUp = Config.WatchSpeedUp;
             Emc.WatchSlowDown = Config.WatchSlowDown;
+            Emc.TableUseRange = Config.TableUseRange;
+            Emc.CollectorFuels = Config.CollectorFuels?.ToArray();
         }
 
         /// <summary>
@@ -2500,8 +2502,9 @@ namespace VintageE
                 return true;
             });
 
-            // ProjectE's other keys.
-            capi.Input.RegisterHotKey(ExtraHotkey, Lang.Get("vintagee:hotkey-extra"), GlKeys.G, HotkeyType.CharacterControls);
+            // ProjectE's other keys. Defaults the game itself doesn't use: until 1.24.1 the extra function was on G (the
+            // game's "sit down") and the gem armour's two on X and Shift + X (X is the game's "swap hands").
+            capi.Input.RegisterHotKey(ExtraHotkey, Lang.Get("vintagee:hotkey-extra"), GlKeys.B, HotkeyType.CharacterControls);
             capi.Input.SetHotKeyHandler(ExtraHotkey, _ =>
             {
                 ItemSlot slot = capi.World.Player?.InventoryManager?.ActiveHotbarSlot;
@@ -2546,10 +2549,18 @@ namespace VintageE
                 OpenTransmutationDialog(null);
                 return true;
             });
-            capi.Input.RegisterHotKey(NightVisionHotkey, Lang.Get("vintagee:hotkey-nightvision"), GlKeys.X, HotkeyType.CharacterControls, shiftPressed: true);
-            capi.Input.SetHotKeyHandler(NightVisionHotkey, _ => { clientChannel?.SendPacket(new KeyActionPacket { Action = "nightvision" }); return true; });
-            capi.Input.RegisterHotKey(StepAssistHotkey, Lang.Get("vintagee:hotkey-stepassist"), GlKeys.X, HotkeyType.CharacterControls);
-            capi.Input.SetHotKeyHandler(StepAssistHotkey, _ => { clientChannel?.SendPacket(new KeyActionPacket { Action = "stepassist" }); return true; });
+            // The gem armour's keys do nothing (and leave the key to whatever else is bound to it) unless the piece is
+            // worn: until 1.24.1 they took the key from everyone and answered "you aren't wearing..." each time.
+            bool SendGem(string action, string part)
+            {
+                if (GemArmor.Worn(capi.World.Player, part) == null) return false;
+                clientChannel?.SendPacket(new KeyActionPacket { Action = action });
+                return true;
+            }
+            capi.Input.RegisterHotKey(NightVisionHotkey, Lang.Get("vintagee:hotkey-nightvision"), GlKeys.N, HotkeyType.CharacterControls, shiftPressed: true);
+            capi.Input.SetHotKeyHandler(NightVisionHotkey, _ => SendGem("nightvision", "head"));
+            capi.Input.RegisterHotKey(StepAssistHotkey, Lang.Get("vintagee:hotkey-stepassist"), GlKeys.N, HotkeyType.CharacterControls);
+            capi.Input.SetHotKeyHandler(StepAssistHotkey, _ => SendGem("stepassist", "legs"));
             clientChannel.SetMessageHandler<KeyActionPacket>(p =>
             {
                 if (!string.IsNullOrEmpty(p?.Message)) capi.TriggerIngameDiscovery(this, "vintagee-key", p.Message);
