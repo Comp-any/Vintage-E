@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  Restored /home/runner/work/Vintage-E/Vintage-E/VintageE.csproj (in 63 ms).
+/home/runner/work/Vintage-E/Vintage-E/src/Blocks/BEMatterFurnace.cs(240,37): warning CS0618: 'IClientNetworkAPI.SendBlockEntityPacket(int, int, int, int, byte[])' is obsolete: 'Not dimension aware, use BlockPos overload instead, otherwise thie BlockEntity will probably not work correctly in other dimensions' [/home/runner/work/Vintage-E/Vintage-E/VintageE.csproj]
+/home/runner/work/Vintage-E/Vintage-E/src/Gui/GuiDialogEmcDoctor.cs(117,14): warning CS0414: The field 'GuiDialogEmcDoctor.composing' is assigned but its value is never used [/home/runner/work/Vintage-E/Vintage-E/VintageE.csproj]
+  VintageE -> /home/runner/work/Vintage-E/Vintage-E/bin/Release/Mods/vintagee/VintageE.dll
+
+Build succeeded.
+
+/home/runner/work/Vintage-E/Vintage-E/src/Blocks/BEMatterFurnace.cs(240,37): warning CS0618: 'IClientNetworkAPI.SendBlockEntityPacket(int, int, int, int, byte[])' is obsolete: 'Not dimension aware, use BlockPos overload instead, otherwise thie BlockEntity will probably not work correctly in other dimensions' [/home/runner/work/Vintage-E/Vintage-E/VintageE.csproj]
+/home/runner/work/Vintage-E/Vintage-E/src/Gui/GuiDialogEmcDoctor.cs(117,14): warning CS0414: The field 'GuiDialogEmcDoctor.composing' is assigned but its value is never used [/home/runner/work/Vintage-E/Vintage-E/VintageE.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:06.51

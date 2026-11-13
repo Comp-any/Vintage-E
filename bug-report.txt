@@ -1,0 +1,53 @@
+Vintage-E 1.24.1 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-13 11:55
+
+== Mods (1) ==
+vintagee 1.24.1
+
+== Diagnosis ==
+✓ EMC mapped: 16867 values, worked out in 1252 ms.
+  8270 of the 8287 blocks and items in the creative inventory have a value (99.8%).
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 1 loaded, giving 2091 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  Files waiting for a mod that isn't loaded: Butchering, Expanded Matter, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+✓ Mod coverage: every mod that adds items (2) has values for at least three quarters of them.
+⚠ Value loops: 1, holding 2 items.
+    Platinum ingot (game:ingot-platinum) → Platinum bits (game:metalbit-platinum)
+• Items without a value: 17 (12 that nothing makes, 3 waiting on an ingredient, 2 in loops).
+  game:figurehead 4 e.g. game:figurehead-eidolon; game:ingot 3 e.g. game:ingot-platinum; game:metalbit 3 e.g. game:metalbit-platinum; game:metalplate 3 e.g. game:metalplate-platinum; game:arrow 1 e.g. game:arrow-erel; game:bonyremains 1 e.g. game:bonyremains-cowskull-up; game:crushed 1 e.g. game:crushed-peridotite; game:spear 1 e.g. game:spear-generic-erel
+• Mapping statistics: 27701 recipes and processes from 23 sources.
+  10925 values from recipes and processing, 1129 priced from a recipe that uses them, 196 from fixed ratios, 320 from trader prices, 568 copied from a look-alike variant, 1638 fallback values, 0 estimated as fuel or food.
+⚠ Blacklist: 3 blacklisted items hold back 28 recipes.
+⚠ Metal tiers: 1 tool or armour families out of order.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 256 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 19 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1), model (1)).
+  color: 17 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 256 ← Smoky glass (game:glass-smoky); the family runs from Green glass (game:glass-green) 12.7 to Smoky glass (game:glass-smoky) 256
+    Orange-brown aged book (game:book-aged-orangebrown) 576.4 ← Orange book (game:book-normal-orange); the family runs from Brick red book (game:book-normal-brickred) 246.4 to Orange book (game:book-normal-orange) 576.4
+    Orange aged book (game:book-aged-orange) 576.4 ← Orange book (game:book-normal-orange); the family runs from Brick red book (game:book-normal-brickred) 246.4 to Orange book (game:book-normal-orange) 576.4
+    ... and 14 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  model: 1 copied value(s), e.g.
+    Small piece of driftwood (game:flotsam-driftwood-4) 24 ← Large piece of driftwood (game:flotsam-driftwood-3); the family runs from Driftwood (game:flotsam-driftwood-1) 8 to Large piece of driftwood (game:flotsam-driftwood-3) 24
+✓ Other mods: nothing went wrong at start-up.
+== Other mods changing recipes and items ==
+✓ Other mods' patches: none of the 0 mods with patch files change recipes, processing or EMC values.
+== Values out of line with their family ==
+⚠ Values out of line: 2 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  game:powder-borax 2.5 (family 32) ← BarrelRecipes: 500 game:waterportion + 2 game:powder-borax → 500 game:dilutedboraxportion
+  game:treeseed-redwood 460 (family 46) ← block drops: 0.002 game:treeseed-redwood + 0.02 game:stick → 1 game:leaves-grown-redwood
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, SelfTestOnStart=true, Look="Original", ProjectESounds=true
