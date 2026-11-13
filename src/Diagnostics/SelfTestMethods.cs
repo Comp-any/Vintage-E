@@ -458,8 +458,8 @@ namespace VintageE
                     edited["methods"][0]["recipes"][0]["costs"]["energy"]["amount"] = 50;
                     File.WriteAllText(copyPath, edited.ToString());
                     mod.CollectMethods("self-test: an edited server copy");
-                    MethodRecipe dark = mod.Methods.AllMethods.FirstOrDefault(mt => mt.Code == "vintagee:selftest-press")?.Recipes.FirstOrDefault(rc => rc.Code == "dark");
-                    Check(dark != null && dark.Method.Doc.FromServer && dark.Costs.Energy.Count == 1 && dark.Costs.Energy[0].Amount == 50, "methods: an edit to the server's copy counts on the next collect, without a restart");
+                    MethodRecipe darkCopy = mod.Methods.AllMethods.FirstOrDefault(mt => mt.Code == "vintagee:selftest-press")?.Recipes.FirstOrDefault(rc => rc.Code == "dark");
+                    Check(darkCopy != null && darkCopy.Method.Doc.FromServer && darkCopy.Costs.Energy.Count == 1 && darkCopy.Costs.Energy[0].Amount == 50, "methods: an edit to the server's copy counts on the next collect, without a restart");
                 }
                 foreach (string f in copiedFiles) if (File.Exists(f)) File.Delete(f);
                 copiedFiles.Clear();
