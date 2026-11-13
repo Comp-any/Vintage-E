@@ -1,0 +1,94 @@
+== chiseltools (chiseltools) ==
+97 of its 158 blocks and items have a value (61.4%); 0 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'chiseltools'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Why the rest has no value ==
+⚠ 61 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    halfcreativelight (29): Light 32 (chiseltools:halfcreativelight-32), Light 33 (chiseltools:halfcreativelight-33), Light 34 (chiseltools:halfcreativelight-34), ...
+    pastel (11): Pastel #ff0000 (chiseltools:pastel-ff0000), Pastel #ffff00 (chiseltools:pastel-ffff00), Pastel #00ff00 (chiseltools:pastel-00ff00), ...
+    specials (7): Art Mars (chiseltools:specials-mars), Art Burnt Sandstone (chiseltools:specials-burntsandstone), Art Blue Mortar (chiseltools:specials-bluemortar), ...
+    deeps (6): Deep #880000 (chiseltools:deeps-880000), Deep #008800 (chiseltools:deeps-008800), Deep #000088 (chiseltools:deeps-000088), ...
+    cttiles (4): chiseltools:block-cttiles-oct (chiseltools:cttiles-oct), chiseltools:block-cttiles-check (chiseltools:cttiles-check), chiseltools:block-cttiles-check4 (chiseltools:cttiles-check4), ...
+    blockswapper (3): Steel Block Swapper (chiseltools:blockswapper-steel), Meteoric Iron Block Swapper (chiseltools:blockswapper-meteoriciron), Iron Block Swapper (chiseltools:blockswapper-iron)
+    jonaspaintbrush (1): Jonas Paint Brush (chiseltools:jonaspaintbrush-steel)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/chiseltools.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+Draft a compatibility file for its 61 raw materials (/emc diagnose draftcompat chiseltools)
+
+== Next steps ==
+These are chiseltools (chiseltools) items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.23.1 with chiseltools (chiseltools) 1.17.9: these items have no value: chiseltools:jonaspaintbrush-steel, chiseltools:blockswapper-steel, chiseltools:blockswapper-meteoriciron, chiseltools:blockswapper-iron, chiseltools:pastel-ff0000, chiseltools:pastel-ffff00, chiseltools:pastel-00ff00, chiseltools:pastel-00ffff, chiseltools:pastel-0000ff, chiseltools:pastel-0088ff, chiseltools:pastel-00ff88, chiseltools:pastel-8800ff, ... (61). /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (61) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Iron Block Swapper (chiseltools:blockswapper-iron)  why? (/emc diagnose item chiseltools:blockswapper-iron)
+  Meteoric Iron Block Swapper (chiseltools:blockswapper-meteoriciron)  why? (/emc diagnose item chiseltools:blockswapper-meteoriciron)
+  Steel Block Swapper (chiseltools:blockswapper-steel)  why? (/emc diagnose item chiseltools:blockswapper-steel)
+  chiseltools:block-cttiles-check (chiseltools:cttiles-check)  why? (/emc diagnose item chiseltools:cttiles-check)
+  chiseltools:block-cttiles-check4 (chiseltools:cttiles-check4)  why? (/emc diagnose item chiseltools:cttiles-check4)
+  chiseltools:block-cttiles-checknest (chiseltools:cttiles-checknest)  why? (/emc diagnose item chiseltools:cttiles-checknest)
+  chiseltools:block-cttiles-oct (chiseltools:cttiles-oct)  why? (/emc diagnose item chiseltools:cttiles-oct)
+  Deep #000088 (chiseltools:deeps-000088)  why? (/emc diagnose item chiseltools:deeps-000088)
+  Deep #008800 (chiseltools:deeps-008800)  why? (/emc diagnose item chiseltools:deeps-008800)
+  Deep #008888 (chiseltools:deeps-008888)  why? (/emc diagnose item chiseltools:deeps-008888)
+  Deep #880000 (chiseltools:deeps-880000)  why? (/emc diagnose item chiseltools:deeps-880000)
+  Deep #880088 (chiseltools:deeps-880088)  why? (/emc diagnose item chiseltools:deeps-880088)
+  Deep #888800 (chiseltools:deeps-888800)  why? (/emc diagnose item chiseltools:deeps-888800)
+  Light 32 (chiseltools:halfcreativelight-32)  why? (/emc diagnose item chiseltools:halfcreativelight-32)
+  Light 33 (chiseltools:halfcreativelight-33)  why? (/emc diagnose item chiseltools:halfcreativelight-33)
+  Light 34 (chiseltools:halfcreativelight-34)  why? (/emc diagnose item chiseltools:halfcreativelight-34)
+  Light 35 (chiseltools:halfcreativelight-35)  why? (/emc diagnose item chiseltools:halfcreativelight-35)
+  Light 36 (chiseltools:halfcreativelight-36)  why? (/emc diagnose item chiseltools:halfcreativelight-36)
+  Light 37 (chiseltools:halfcreativelight-37)  why? (/emc diagnose item chiseltools:halfcreativelight-37)
+  Light 38 (chiseltools:halfcreativelight-38)  why? (/emc diagnose item chiseltools:halfcreativelight-38)
+  Light 39 (chiseltools:halfcreativelight-39)  why? (/emc diagnose item chiseltools:halfcreativelight-39)
+  Light 40 (chiseltools:halfcreativelight-40)  why? (/emc diagnose item chiseltools:halfcreativelight-40)
+  Light 41 (chiseltools:halfcreativelight-41)  why? (/emc diagnose item chiseltools:halfcreativelight-41)
+  Light 42 (chiseltools:halfcreativelight-42)  why? (/emc diagnose item chiseltools:halfcreativelight-42)
+  Light 43 (chiseltools:halfcreativelight-43)  why? (/emc diagnose item chiseltools:halfcreativelight-43)
+  Light 44 (chiseltools:halfcreativelight-44)  why? (/emc diagnose item chiseltools:halfcreativelight-44)
+  Light 45 (chiseltools:halfcreativelight-45)  why? (/emc diagnose item chiseltools:halfcreativelight-45)
+  Light 46 (chiseltools:halfcreativelight-46)  why? (/emc diagnose item chiseltools:halfcreativelight-46)
+  Light 47 (chiseltools:halfcreativelight-47)  why? (/emc diagnose item chiseltools:halfcreativelight-47)
+  Light 48 (chiseltools:halfcreativelight-48)  why? (/emc diagnose item chiseltools:halfcreativelight-48)
+  Light 49 (chiseltools:halfcreativelight-49)  why? (/emc diagnose item chiseltools:halfcreativelight-49)
+  Light 50 (chiseltools:halfcreativelight-50)  why? (/emc diagnose item chiseltools:halfcreativelight-50)
+  Light 51 (chiseltools:halfcreativelight-51)  why? (/emc diagnose item chiseltools:halfcreativelight-51)
+  Light 52 (chiseltools:halfcreativelight-52)  why? (/emc diagnose item chiseltools:halfcreativelight-52)
+  Light 53 (chiseltools:halfcreativelight-53)  why? (/emc diagnose item chiseltools:halfcreativelight-53)
+  Light 54 (chiseltools:halfcreativelight-54)  why? (/emc diagnose item chiseltools:halfcreativelight-54)
+  Light 55 (chiseltools:halfcreativelight-55)  why? (/emc diagnose item chiseltools:halfcreativelight-55)
+  Light 56 (chiseltools:halfcreativelight-56)  why? (/emc diagnose item chiseltools:halfcreativelight-56)
+  Light 57 (chiseltools:halfcreativelight-57)  why? (/emc diagnose item chiseltools:halfcreativelight-57)
+  Light 58 (chiseltools:halfcreativelight-58)  why? (/emc diagnose item chiseltools:halfcreativelight-58)
+  Light 59 (chiseltools:halfcreativelight-59)  why? (/emc diagnose item chiseltools:halfcreativelight-59)
+  Light 79 (chiseltools:halfcreativelight-79)  why? (/emc diagnose item chiseltools:halfcreativelight-79)
+  Jonas Paint Brush (chiseltools:jonaspaintbrush-steel)  why? (/emc diagnose item chiseltools:jonaspaintbrush-steel)
+  Pastel #0000ff (chiseltools:pastel-0000ff)  why? (/emc diagnose item chiseltools:pastel-0000ff)
+  Pastel #0088ff (chiseltools:pastel-0088ff)  why? (/emc diagnose item chiseltools:pastel-0088ff)
+  Pastel #00ff00 (chiseltools:pastel-00ff00)  why? (/emc diagnose item chiseltools:pastel-00ff00)
+  Pastel #00ff88 (chiseltools:pastel-00ff88)  why? (/emc diagnose item chiseltools:pastel-00ff88)
+  Pastel #00ffff (chiseltools:pastel-00ffff)  why? (/emc diagnose item chiseltools:pastel-00ffff)
+  Pastel #8800ff (chiseltools:pastel-8800ff)  why? (/emc diagnose item chiseltools:pastel-8800ff)
+  Pastel #88ff00 (chiseltools:pastel-88ff00)  why? (/emc diagnose item chiseltools:pastel-88ff00)
+  Pastel #ff0000 (chiseltools:pastel-ff0000)  why? (/emc diagnose item chiseltools:pastel-ff0000)
+  Pastel #ff0088 (chiseltools:pastel-ff0088)  why? (/emc diagnose item chiseltools:pastel-ff0088)
+  Pastel #ff8800 (chiseltools:pastel-ff8800)  why? (/emc diagnose item chiseltools:pastel-ff8800)
+  Pastel #ffff00 (chiseltools:pastel-ffff00)  why? (/emc diagnose item chiseltools:pastel-ffff00)
+  Art Blue Mortar (chiseltools:specials-bluemortar)  why? (/emc diagnose item chiseltools:specials-bluemortar)
+  Art Burnt Sandstone (chiseltools:specials-burntsandstone)  why? (/emc diagnose item chiseltools:specials-burntsandstone)
+  Art Faded Blue Mortar (chiseltools:specials-fadedbluemortar)  why? (/emc diagnose item chiseltools:specials-fadedbluemortar)
+  Art Faded Green Mortar (chiseltools:specials-fadedgreenmortar)  why? (/emc diagnose item chiseltools:specials-fadedgreenmortar)
+  Art Faded Mortar (chiseltools:specials-fadedmortar)  why? (/emc diagnose item chiseltools:specials-fadedmortar)
+  Art Mars (chiseltools:specials-mars)  why? (/emc diagnose item chiseltools:specials-mars)
+  ... and 1 more
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

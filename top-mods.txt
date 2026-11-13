@@ -1,0 +1,99 @@
+Top 50 content mods by downloads for game 1.22.7 (plus 12 libraries after them)
+
+take  betterruins                   1233569  BetterRuins
+take  carryon                       1123646  Carry On
+take  primitivesurvival             1015244  Primitive Survival
+skip  overhaullib                    889111  tagged library
+take  chiseltools                    869157  QP's Chisel Tools
+skip  aculinaryartillery             824811  tagged library
+skip  expandedfoods                  802582  no release for 1.22.7
+skip  vsimgui                        742168  a known library id
+skip  configlib                      720365  a known library id
+take  butchering                     684106  Butchering
+take  foodshelves                    671919  Food Shelves
+skip  commonlib                      634024  tagged library
+take  fromgoldencombs                595339  From Golden Combs
+skip  em                             590611  tagged library
+take  alchemy                        561587  Alchemy
+skip  petai                          546177  tagged library
+take  millwright                     545667  Millwright
+skip  playermodellib                 528853  a known library id
+skip  attributerenderinglibrary      509815  tagged library
+skip  animalcages                    499583  no release for 1.22.7
+skip  playercorpse                   475566  no release for 1.22.7
+skip  rivers                         471027  no release for 1.22.7
+take  stonebakeoven                  467385  Stone Bake Oven
+skip  stonequarry                    456294  no release for 1.22.7
+skip  xskills                        418339  no release for 1.22.7
+take  rpvoicechat                    418060  RP Voice Chat
+take  prospecttogether               415897  ProspectTogether
+skip  xlib                           397371  tagged library
+skip  wolftaming                     396352  no release for 1.22.7
+take  purposefulstorage              373471  Purposeful Storage
+take  tailorsdelight                 363540  Tailor's Delight
+skip  smithingplus                   358314  no release for 1.22.7
+take  bloodtrail                     352940  Blood Trail
+skip  bedspawnv2                     343027  no release for 1.22.7
+skip  betterfirepit                  339832  no release for 1.22.7
+skip  egocaribautomapmarkers         332963  no release for 1.22.7
+take  vsroofing                      332044  VS Roofing Mod
+take  hydrateordiedrate              324933  Hydrate or Diedrate
+take  bricklayers                    317487  Bricklayers
+take  knapster                       315779  Knapster
+skip  jsonpatcheslib                 310215  a known library id
+skip  jaunt                          308453  tagged library
+skip  wildfarmingrevival             293338  no release for 1.22.7
+skip  th3dungeon                     289756  no release for 1.22.7
+take  vinconomy                      289392  Vinconomy - A Vintage Story Economy Mod
+skip  cartwrightscaravan             274606  no release for 1.22.7
+skip  terraprety                     271811  no release for 1.22.7
+skip  cats                           268341  no release for 1.22.7
+take  tankardsandgoblets             267949  Tankards, Goblets and More!
+take  pantherinae                    266396  Fauna of the Stone Age: Pantherinae
+take  realsmoke                      264589  Real Smoke
+take  capreolinae                    264109  Fauna of the Stone Age: Capreolinae
+skip  genelib                        264022  tagged library
+skip  shelfobsessed                  259802  no release for 1.22.7
+skip  walkingstick                   257470  no release for 1.22.7
+take  rustboundmagic                 255789  Rustbound Magic
+take  tabletopgames                  253260  Tabletop Games
+skip  farseer                        249947  no release for 1.22.7
+take  sortablestorage                248552  Sortable Storage
+skip  herbarium                      248534  tagged library
+take  caninae                        241738  Fauna of the Stone Age: Caninae
+take  noticeboard                    241143  Notice Board
+take  wool                           235304  Wool 🙵 More
+take  coinage                        233527  Coinage
+skip  vsvillage                      231394  no release for 1.22.7
+skip  toolsmith                      230385  no release for 1.22.7
+take  bettertraders                  229397  BetterTraders
+take  xskillsfork                    228247  xSkills Fork
+skip  overhaulliblegacycompat        224355  sounds like a library: lib
+take  dressmakers                    223719  Dressmakers
+skip  instruments                    220181  no release for 1.22.7
+take  fagreenwich                    218001  Forgotten Armory: Greenwich style
+take  watersheds                     217982  Algernon's Watersheds
+skip  morepiles                      215281  no release for 1.22.7
+take  footprints                     215187  Footprints
+skip  cralutweaks                    210905  no release for 1.22.7
+take  bovinae                        207782  Fauna of the Stone Age: Bovinae
+take  machairodontinae               205801  Fauna of the Stone Age: Machairodontinae
+take  wildcraftfruit                 205158  Wildcraft: Fruits and Nuts
+take  elephantidae                   204768  Fauna of the Stone Age: Elephantidae
+skip  xlibfork                       202001  tagged library
+take  fatemplar                      198144  Forgotten Armory: Templar Style
+take  cbr                            198038  Chiseled Block Retention
+skip  shearlib                       196694  tagged library
+take  translocatorengineeringredux   195361  Translocator Engineering - Redux
+skip  extrainfo                      190672  no release for 1.22.7
+skip  vanity                         190225  no release for 1.22.7
+take  sirenia                        189801  Fauna of the Stone Age: Sirenia
+take  rhinocerotidae                 189707  Fauna of the Stone Age: Rhinocerotidae
+take  plainsandvalleys               188517  Plains and Valleys
+take  fagothic                       185792  Forgotten Armory: Gothic style
+skip  PipeLeaf                       184932  no release for 1.22.7
+take  aldiclasses                    184792  Aldi's Classes
+skip  kevinsfurniture                183822  no release for 1.22.7
+take  molds                          182960  Molds
+
+libraries added: configlib, em, petai, playermodellib, attributerenderinglibrary, jsonpatcheslib, jaunt, genelib, herbarium, overhaulliblegacycompat, xlibfork, shearlib

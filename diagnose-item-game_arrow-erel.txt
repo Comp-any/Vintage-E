@@ -1,0 +1,24 @@
+== Short erel feather stem ==
+Code game:arrow-erel, from Vintage Story (game).
+⚠ It has no value.
+  Nothing the mapper can read makes it: no recipe, no block drop, no process it knows.
+  For a base-game item that means it's found in the world, dropped by a creature, bought, or made in a way Vintage-E doesn't model. Its value has to be given.
+  → Hold it and run /emc set <value>. Think of what it's worth next to a known item: a stone is 1, a copper ingot 128.
+  → Or add "item:game:arrow-erel": <value> to BaseValues in ModConfig/vintagee.json and run /emc recalc. Everything made from it then gets a value by itself.
+  Pin it at 36 and remap (in the window) (the middle value of its 13 valued variants)
+  Give it a value... (/emc set, holding it)
+Other variants of it do have values (Crude arrow (game:arrow-crude) 4.66, Flint arrow (game:arrow-flint) 16.66, Copper arrow (game:arrow-copper) 30.22, Tin bronze arrow (game:arrow-tinbronze) 31.64), but the mapper doesn't copy a value across a variant group that changes what the thing is.
+  Variant groups never copied across for it: material.
+
+== Next steps ==
+These are base-game items Vintage-E doesn't value yet. That's for Vintage-E to add, so it's worth reporting:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.23.1: these base-game items have no value: game:arrow-erel"
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Next ==
+The full story of its value: Short erel feather stem (game:arrow-erel)
+Everything from Vintage Story (game) (/emc diagnose mod game)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
