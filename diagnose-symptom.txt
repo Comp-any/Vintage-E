@@ -1,0 +1,19 @@
+== What exactly is happening? ==
+Pick the sentence that fits best; each runs just the checks for that situation.
+The tooltip shows a value, but the table won't burn or create it (/emc diagnose symptom tooltipnoburn)
+The server has values (the log says so), but I see none in my game (/emc diagnose symptom noclientvalues)
+Values changed or vanished after I added or updated a mod (/emc diagnose symptom aftermod)
+It worked, then after a restart it didn't (/emc diagnose symptom afterrestart)
+It works for another player but not for me (or the other way round) (/emc diagnose symptom onlyme)
+Some variants of an item have a value and others don't (/emc diagnose symptom somevariants)
+An item has a value, but it's far too high or too low (/emc diagnose symptom wrongvalue)
+Containers, meals or filled things give odd values (/emc diagnose symptom containers)
+I can burn things but can't create the item I want (/emc diagnose symptom cantcreate)
+Nothing has a value anywhere (/emc diagnose symptom nothing)
+Something another mod's machine makes has no EMC value (/emc diagnose symptom methodnovalue)
+A machine's power cost isn't in the value, or looks wrong (/emc diagnose symptom powercost)
+Players make EMC out of free power (/emc diagnose symptom powerfarm)
+Something from a chance roll is worth a lot (/emc diagnose symptom chancevalue)
+
+== Next ==
+Back to the check-up (/emc diagnose)
