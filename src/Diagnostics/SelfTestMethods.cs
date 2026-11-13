@@ -400,7 +400,7 @@ namespace VintageE
                 string one = Diag("methods", "vintagee:selftest-press");
                 Check(one.Contains("test power") && one.Contains("game:ingot-coper"), "methods: one method's report has its costs and the code that matches nothing (" + Line1(one, "coper") + ")");
                 Check(Line1(one, "coper").Contains("game:ingot-copper"), "methods: the code that matches nothing gets a \"did you mean\" (" + Line1(one, "coper") + ")");
-                Check(one.Contains("only made by burning fuel"), "methods: the prices say which unit is only made from fuel");
+                Check(overview.Contains("only made by burning fuel"), "methods: the check-up's prices say which unit is only made from fuel");
                 Check(one.Contains("anyOf choices left out") && one.Contains("has no number for"), "methods: the method's report says which anyOf choice and which table variant were left out");
                 string check = Diag("methodcheck", "vintagee");
                 Check(check.Contains("A worked example") && check.Contains("saved to"), "methods: methodcheck gives a worked example and writes the export");
