@@ -51,7 +51,7 @@ namespace VintageE
         }
 
         /// <summary>Makes the icons (client side). <paramref name="describe"/> gives a name and a short label for group g, choice i.</summary>
-        public void Load(ICoreClientAPI capi, string codePrefix, Func<int, int, (string name, string letter)> describe)
+        public void Load(ICoreClientAPI capi, string codePrefix, System.Func<int, int, (string name, string letter)> describe)
         {
             on = new SkillItem[Count];
             off = new SkillItem[Count];
@@ -106,7 +106,7 @@ namespace VintageE
         /// Lights the clicked block as a firestarter would: things with their own lighting (firepits, torches, bombs)
         /// are lit, and anything that burns gets the game's fire on the clicked face. Returns true if it took.
         /// </summary>
-        public static bool TryLight(IWorldAccessor world, BlockSelection sel, EntityAgent lighter, string byUid, Func<BlockPos, bool> mayEdit)
+        public static bool TryLight(IWorldAccessor world, BlockSelection sel, EntityAgent lighter, string byUid, System.Func<BlockPos, bool> mayEdit)
         {
             if (sel?.Position == null || sel.Face == null || !mayEdit(sel.Position)) return false;
             IBlockAccessor ba = world.BlockAccessor;
@@ -153,7 +153,7 @@ namespace VintageE
         }
 
         /// <summary>Removes the game's fire blocks between <paramref name="min"/> and <paramref name="max"/> (inclusive). Returns how many.</summary>
-        public static int PutOut(IWorldAccessor world, BlockPos min, BlockPos max, Func<BlockPos, bool> mayEdit)
+        public static int PutOut(IWorldAccessor world, BlockPos min, BlockPos max, System.Func<BlockPos, bool> mayEdit)
         {
             Block fire = Fire(world);
             if (fire == null || fire.Id == 0) return 0;
@@ -397,7 +397,7 @@ namespace VintageE
         /// ProjectE's clearing (axe on logs, shears on leaves): every matching block within 5 × <paramref name="charge"/>
         /// blocks across and 10 × up and down of the player. Nothing at charge 0. What breaks drops at the player.
         /// </summary>
-        public static int ClearAround(IWorldAccessor world, IPlayer player, Entity at, Func<Block, bool> match, int charge)
+        public static int ClearAround(IWorldAccessor world, IPlayer player, Entity at, System.Func<Block, bool> match, int charge)
         {
             if (charge <= 0 || at == null) return 0;
             int h = 5 * charge, v = 10 * charge;

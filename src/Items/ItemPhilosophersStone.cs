@@ -41,10 +41,10 @@ namespace VintageE
             base.OnUnloaded(api);
         }
 
-        public static int Shape(ItemStack stack) => GameMathClamp(stack?.Attributes?.GetInt(ShapeKey, DefaultShape) ?? DefaultShape, 0, Shapes.Length - 1);
+        public static int ShapeOf(ItemStack stack) => GameMathClamp(stack?.Attributes?.GetInt(ShapeKey, DefaultShape) ?? DefaultShape, 0, Shapes.Length - 1);
 
-        public override SkillItem[] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel) => groups.Show(Shape(slot?.Itemstack), GetCharge(slot));
-        public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection) => Shape(slot?.Itemstack);
+        public override SkillItem[] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel) => groups.Show(ShapeOf(slot?.Itemstack), GetCharge(slot));
+        public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection) => ShapeOf(slot?.Itemstack);
 
         public override void SetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection, int toolMode)
         {
@@ -114,7 +114,7 @@ namespace VintageE
 
             IPlayer player = ep.Player;
             var mod = VintageEModSystem.Of(api);
-            int changed = Transmute(api.World, mod, player, blockSel, byEntity.Controls.Sneak, Shape(slot.Itemstack), GetCharge(slot), Facing(byEntity));
+            int changed = Transmute(api.World, mod, player, blockSel, byEntity.Controls.Sneak, ShapeOf(slot.Itemstack), GetCharge(slot), Facing(byEntity));
             if (changed < 0)
             {
                 (player as IServerPlayer)?.SendIngameError("vintagee-notransmutable", Lang.Get("vintagee:error-notransmutable"));
@@ -161,7 +161,7 @@ namespace VintageE
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             int size = 2 * GetCharge(inSlot) + 1;
-            dsc.AppendLine(Lang.Get("vintagee:philo-modeline", Lang.Get("vintagee:philo-shape-" + Shapes[Shape(inSlot?.Itemstack)]), size));
+            dsc.AppendLine(Lang.Get("vintagee:philo-modeline", Lang.Get("vintagee:philo-shape-" + Shapes[ShapeOf(inSlot?.Itemstack)]), size));
             VintageEModSystem.AppendChargeKey(world, dsc);
         }
 
