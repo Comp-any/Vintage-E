@@ -313,6 +313,36 @@ namespace VintageE
             return false;
         }
 
+        /// <summary>
+        /// The best rain <see cref="SetRain"/> could bring to <paramref name="at"/>: over the next 30 days, the two
+        /// hours with the most rain in them, judged as it judges them (the weakest of their four half-hour looks, at
+        /// the spot and 8 blocks to each side). At or under <see cref="RainLevel"/> the land is too dry for rain to be
+        /// brought at all. For the self-test, which runs in a new world each time, dry ones included.
+        /// </summary>
+        public static float RainAhead(ICoreServerAPI sapi, Vec3d at)
+        {
+            WeatherSystemServer ws = Ws(sapi);
+            if (ws == null || at == null) return 0;
+            try
+            {
+                at = Ground(sapi, at);
+                var spots = new[] { at, at.AddCopy(8, 0, 0), at.AddCopy(-8, 0, 0), at.AddCopy(0, 0, 8), at.AddCopy(0, 0, -8) };
+                double now = sapi.World.Calendar.TotalDays;
+                double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
+                int looks = (int)(30 / step) + 3;
+                float best = 0, a = 0, b = 0, c = 0; // the three looks before this one
+                for (int i = 1; i <= looks; i++)
+                {
+                    float lo = float.MaxValue;
+                    foreach (Vec3d p in spots) lo = Math.Min(lo, ws.GetPrecipitation(p.X, p.Y, p.Z, now + i * step));
+                    if (i >= 4) best = Math.Max(best, Math.Min(Math.Min(a, b), Math.Min(c, lo)));
+                    a = b; b = c; c = lo;
+                }
+                return best;
+            }
+            catch { return 0; }
+        }
+
         static WeatherSimulationRegion RegionAt(WeatherSystemServer ws, ICoreServerAPI sapi, Vec3d at)
         {
             int rs = sapi.World.BlockAccessor.RegionSize;

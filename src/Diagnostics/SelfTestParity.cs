@@ -337,7 +337,10 @@ namespace VintageE
                     foreach (BlockPos col in new[] { wp.AddCopy(1, 0, 3), wp.AddCopy(4, 0, 6) })
                         for (int cy = col.Y; cy < ba.MapSizeY; cy++) { var cp = new BlockPos(col.X, cy, col.Z); ba.SetBlock(0, cp); ba.SetBlock(0, cp, BlockLayersAccess.Fluid); }
                     var up = new Vec3d(0, 1, 0);
-                    Line($"  precipitation before the shots: {WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##}");
+                    // Each run is a new world, some of them dry: where no rain worth the name falls in the next 30
+                    // days there is none for a water shot to bring (it only moves the game's own weather along).
+                    float rainAhead = WeatherControl.RainAhead(sapi, wp.ToVec3d().Add(1.5, 0.5, 3.5));
+                    Line($"  precipitation before the shots: {WeatherControl.Precipitation(sapi, wp.ToVec3d()):0.##}; the best two hours of rain in the next 30 days: {rainAhead:0.##}");
                     var shot = EntityVintageEProjectile.ShootFrom(sapi.World, wp.ToVec3d().Add(1.5, 0.5, 3.5), up, "water", 40);
                     sapi.Event.RegisterCallback(__ =>
                     {
@@ -349,7 +352,8 @@ namespace VintageE
                             Vec3d waterUp = wp.ToVec3d().Add(1.5, 0.5, 3.5), lavaUp = wp.ToVec3d().Add(4.5, 0.5, 6.5);
                             bool rain = WeatherControl.IsRaining(sapi, waterUp);
                             Check(shot == null || !shot.Alive, "the water shot went into the sky");
-                            Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, waterUp):0.##} where it went up)");
+                            if (!rain && rainAhead <= 0.1f) Line($"  water shot into the sky: no rain, but this land is too dry for any to be brought (best two hours ahead: {rainAhead:0.##}): not judged");
+                            else Check(rain, $"a water shot into the sky brings rain ({WeatherControl.Precipitation(sapi, waterUp):0.##} where it went up)");
                             ba.SetBlock(water.Id, waterPos, BlockLayersAccess.Fluid);
                             var lavaShot = EntityVintageEProjectile.ShootFrom(sapi.World, lavaUp, up, "lava", 40);
                             // Right after it passed (water around may flow back in later: that's the world, not the shot).

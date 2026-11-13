@@ -23,6 +23,7 @@ Fixes from a bug hunt through 1.23.1 and 1.24.0. EMC values are the same as in 1
 - **`TrinketCostMultiplier` 0** (free trinkets) showed as 1 on clients, so tooltips and the "not enough EMC" checks were wrong there.
 - **`CollectorsChargePlayers` off** only stopped collectors: an Anti-Matter Relay still handed its EMC to players. It now covers relays too.
 - **Shots lost to a server hang:** a lens charge, amulet shot, fireball or arrow in the air when the server hung for more than 8 seconds ran out of time at once and did nothing. A long tick now counts as a quarter of a second for a shot. (This is also why the self-test's lens and fireball checks had failed on every test run since 1.23.0: its own first tick had grown past 8 seconds.)
+- **Self-test:** the water shot's rain check is not judged in a test world too dry for rain to be brought (each run is a new world).
 - **Rain that didn't stop (or start):** a lava or water shot into the sky picked its weather by half-hour looks, and could land between two of them in a passing shower (or a gap in the rain). The time it lands on is now checked every two minutes, to twenty minutes on.
 - **`build/package.sh` failed** on a clean checkout: `tools/validate_assets.py` took seven made-up codes in the self-test and two event names for missing lang keys.
 
