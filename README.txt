@@ -1,0 +1,1 @@
+game=1.22.7 commit=ee59ff92c0376f8fe29113bd2549834205d77b93 run=43365621524 extraMods=primitivesurvival,wildcrafttree,herbarium,wildcraftfruit,butchering,fromgoldencombs,em

@@ -1,0 +1,224 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 1666 base-game values differ with the 6 other mods loaded:
+
+== Through Expanded Matter (em): 790 values ==
+  Taxidermied arapaima (adult) (game:taxidermy-fish-freshwater-arapaima-arapaima-adult): none → 477.26
+    RecipeRegistrySystem.BarrelRecipes: 100 game:sulfate-full-zinc + 1 game:fishraw-freshwater-arapaima-arapaima-adult -> 1 game:taxidermy-fish-freshwater-arapaima-arapaima-adult
+  Taxidermied greater arapaima (adult) (game:taxidermy-fish-freshwater-arapaima-gigas-adult): none → 477.26
+    RecipeRegistrySystem.BarrelRecipes: 100 game:sulfate-full-zinc + 1 game:fishraw-freshwater-arapaima-gigas-adult -> 1 game:taxidermy-fish-freshwater-arapaima-gigas-adult
+  Corundum (game:ore-corundum): 64 → 1
+    worked backwards from pulverizer crushing: 1 game:ore-corundum -> 1 em:crushed-ore-corundum
+  Corundum (game:ore-corundum-peridotite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-peridotite
+  Corundum (game:ore-corundum-phyllite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-phyllite
+  Corundum (game:ore-corundum-slate): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-slate
+  Corundum in white marble (game:ore-corundum-whitemarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-whitemarble
+  Corundum in pink marble (game:ore-corundum-redmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-redmarble
+  Corundum in green marble (game:ore-corundum-greenmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-greenmarble
+  Corundum bits (game:looseores-corundum-peridotite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-peridotite-free
+  Corundum bits (game:looseores-corundum-phyllite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-phyllite-free
+  Corundum bits (game:looseores-corundum-slate-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-slate-free
+  Corundum bits (game:looseores-corundum-whitemarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-whitemarble-free
+  Corundum bits (game:looseores-corundum-redmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-redmarble-free
+  Corundum bits (game:looseores-corundum-greenmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-greenmarble-free
+  White dye (game:dye-white): 2.04 → 0.073
+    RecipeRegistrySystem.BarrelRecipes: 200 game:dilutedchromiteportion + 1 em:powdered-ore-magnesiumoxide -> 200 game:dye-white
+  Bountiful chunk of Hematite (game:ore-bountiful-hematite-granite): 12.8 → 102.4
+    worked backwards from pulverizer crushing: 1 game:ore-bountiful-hematite-granite -> 8 em:crushed-ore-hematite
+  Bountiful chunk of Hematite (game:ore-bountiful-hematite-peridotite): 12.8 → 102.4
+    worked backwards from pulverizer crushing: 1 game:ore-bountiful-hematite-peridotite -> 8 em:crushed-ore-hematite
+  Iron ore (game:ore-bountiful-hematite-granite): 16.12 → 128.12
+    block drops: 0.01 game:crystalizedore-bountiful-hematite-granite + 1.25 game:ore-bountiful-hematite-granite -> 1 game:ore-bountiful-hematite-granite
+  Iron ore (game:ore-bountiful-hematite-peridotite): 16.12 → 128.12
+    block drops: 0.01 game:crystalizedore-bountiful-hematite-peridotite + 1.25 game:ore-bountiful-hematite-peridotite -> 1 game:ore-bountiful-hematite-peridotite
+  ... and 770 more
+
+== Through no single mod (571 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Arapaima (game:creature-fish-freshwater-arapaima-arapaima-adult): none → 414.4
+    relativeValues rule: 1 x game:fishraw-freshwater-arapaima-arapaima-adult
+  Greater arapaima (game:creature-fish-freshwater-arapaima-gigas-adult): none → 414.4
+    relativeValues rule: 1 x game:fishraw-freshwater-arapaima-gigas-adult
+  Coelacanth (game:creature-fish-saltwater-coelacanth-common-adult): none → 270.4
+    relativeValues rule: 1 x game:fishraw-saltwater-coelacanth-common-adult
+  Mahi-mahi (game:creature-fish-saltwater-mahi-mahi-common-adult): none → 254.4
+    relativeValues rule: 1 x game:fishraw-saltwater-mahi-mahi-common-adult
+  Black grouper (game:creature-fish-saltwater-grouper-black-adult): none → 254.4
+    relativeValues rule: 1 x game:fishraw-saltwater-grouper-black-adult
+  Barracuda (game:creature-fish-saltwater-barracuda-great-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-saltwater-barracuda-great-adult
+  Yellowtail amberjack (game:creature-fish-saltwater-amberjack-yellowtail-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-saltwater-amberjack-yellowtail-adult
+  Northern pike (game:creature-fish-freshwater-pike-northern-adult): none → 198.4
+    relativeValues rule: 1 x game:fishraw-freshwater-pike-northern-adult
+  Haddock (game:creature-fish-saltwater-haddock-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-haddock-common-adult
+  Carp (game:creature-fish-freshwater-carp-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-carp-common-adult
+  Walleye (game:creature-fish-freshwater-walleye-common-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-walleye-common-adult
+  Pollock (game:creature-fish-saltwater-pollock-alaska-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-pollock-alaska-adult
+  Cape gurnard (game:creature-fish-saltwater-gurnard-cape-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-gurnard-cape-adult
+  Sea bream (game:creature-fish-saltwater-bream-sea-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-bream-sea-adult
+  Silver Hake (game:creature-fish-saltwater-hake-silver-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-hake-silver-adult
+  Wolf fish (game:creature-fish-saltwater-wolf-bering-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-wolf-bering-adult
+  Pink salmon (game:creature-fish-saltwater-salmon-pink-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-salmon-pink-adult
+  Red snapper (game:creature-fish-saltwater-snapper-red-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-snapper-red-adult
+  Skipjack tuna (game:creature-fish-saltwater-tuna-skipjack-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-saltwater-tuna-skipjack-adult
+  Blue catfish (game:creature-fish-freshwater-catfish-blue-adult): none → 118.4
+    relativeValues rule: 1 x game:fishraw-freshwater-catfish-blue-adult
+  ... and 551 more
+
+== Through Primitive Survival (primitivesurvival): 111 values ==
+  Dead arapaima (adult) (game:fishraw-freshwater-arapaima-arapaima-adult): none → 414.4
+    worked backwards from ground-storage processing: 1 game:fishraw-freshwater-arapaima-arapaima-adult -> 15 game:fish-raw + 0.2 primitivesurvival:fisheggs-raw-normal + 0.2 primitivesurvival:fisheggs-raw-ovulated + 6 game:bone-fish
+  Dead greater arapaima (adult) (game:fishraw-freshwater-arapaima-gigas-adult): none → 414.4
+    worked backwards from ground-storage processing: 1 game:fishraw-freshwater-arapaima-gigas-adult -> 15 game:fish-raw + 0.2 primitivesurvival:fisheggs-raw-normal + 0.2 primitivesurvival:fisheggs-raw-ovulated + 6 game:bone-fish
+  Blue glass (game:glass-blue): 15.24 → 128
+    worked backwards from grid: 1 game:glass-blue -> 2 game:glassslab-blue-down-free
+  Red glass (game:glass-red): 15.24 → 128
+    worked backwards from grid: 1 game:glass-red -> 2 game:glassslab-red-down-free
+  Yellow glass (game:glass-yellow): 15.24 → 128
+    worked backwards from grid: 1 game:glass-yellow -> 2 game:glassslab-yellow-down-free
+  Brown glass (game:glass-brown): 15.24 → 128
+    worked backwards from grid: 1 game:glass-brown -> 2 game:glassslab-brown-down-free
+  Blue glass slab (game:glassslab-blue-north-free): 7.62 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-north-free
+  Red glass slab (game:glassslab-red-north-free): 7.62 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-north-free
+  Yellow glass slab (game:glassslab-yellow-north-free): 7.62 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-north-free
+  Brown glass slab (game:glassslab-brown-north-free): 7.62 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-north-free
+  Blue glass slab (game:glassslab-blue-east-free): 7.62 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-east-free
+  Red glass slab (game:glassslab-red-east-free): 7.62 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-east-free
+  Yellow glass slab (game:glassslab-yellow-east-free): 7.62 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-east-free
+  Brown glass slab (game:glassslab-brown-east-free): 7.62 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-east-free
+  Blue glass slab (game:glassslab-blue-south-free): 7.62 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-south-free
+  Red glass slab (game:glassslab-red-south-free): 7.62 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-south-free
+  Yellow glass slab (game:glassslab-yellow-south-free): 7.62 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-south-free
+  Brown glass slab (game:glassslab-brown-south-free): 7.62 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-south-free
+  Blue glass slab (game:glassslab-blue-west-free): 7.62 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-west-free
+  Red glass slab (game:glassslab-red-west-free): 7.62 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-west-free
+  ... and 91 more
+
+== Through Butchering (butchering): 109 values ==
+  Ore blasting bomb (game:bomb-ore): 17.42 → 92.88
+    grid: 1 game:flaxtwine + 4 game:blastingpowder + 1 game:linen-diamond-north (or 29 more) -> 8 game:bomb-ore
+  Sewing kit (game:sewingkit): 516 → 122.4
+    grid: 1 game:leather-normal-plain + 1 game:leather-normal-plain + 1 butchering:needle-bone + 1 game:leather-normal-plain + 1 game:leather-normal-plain + 2 game:flaxfibers -> 2 game:sewingkit
+  Embroidered fur pants (game:clothes-lowerbody-embroideredfur): 1,500.8 → 704.09
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:hide-pelt-large (or 4 more) + 1 game:hide-pelt-large (or 4 more) + 1 game:cloth-white + 1 game:hide-pelt-large (or 4 more) + 1 game:sewingkit -> 1 game:clothes-lowerbody-embroideredfur (returns game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small)
+  Embroidered fur parka (game:clothes-upperbodyover-embroideredfur): 1,508.8 → 712.09
+    grid: 1 game:hide-pelt-huge (or 4 more) + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-upperbodyover-embroideredfur
+  Sleeveless chemise top (game:clothes-upperbody-chemisesleeveless): 2,389.6 → 1,189.8
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white -> 1 game:clothes-upperbody-chemisesleeveless
+  Embroidered fur shirt (game:clothes-upperbody-embroideredfur): 2,413.6 → 1,213.8
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:hide-pelt-large (or 4 more) + 1 game:sewingkit + 1 game:cloth-white + 1 game:cloth-white -> 1 game:clothes-upperbody-embroideredfur (returns game:hide-pelt-small, game:hide-pelt-small)
+  Simple bow (game:bow-simple): 396 → 204
+    grid: 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry + 1 game:stick + 4 butchering:sinew-dry -> 1 game:bow-simple
+  Tailored gamboised helmet (game:armor-head-tailored-white-linen): 2,645.6 → 1,445.8
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-white + 1 game:cloth-white -> 1 game:armor-head-tailored-white-linen
+  Short chemise top (game:clothes-upperbody-chemiseshort): 2,645.6 → 1,445.8
+    grid: 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiseshort
+  Off shoulder short chemise top (game:clothes-upperbody-chemiseshouldershort): 2,645.6 → 1,445.8
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine -> 1 game:clothes-upperbody-chemiseshouldershort
+  Off shoulder chemise top (game:clothes-upperbody-chemiseshoulderlong): 2,645.6 → 1,445.8
+    grid: 1 game:cloth-white + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiseshoulderlong
+  White apron (game:clothes-shoulder-apronwhite): 2,645.6 → 1,445.8
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:cloth-white + 1 game:cloth-white -> 1 game:clothes-shoulder-apronwhite
+  Tailored gambeson body armor (game:armor-body-tailored-white-linen): 9,884 → 5,459.4
+    grid: 1 game:cloth-white + 1 game:cloth-white + 2 game:cloth-white + 2 game:cloth-white + 2 game:cloth-white + 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white -> 1 game:armor-body-tailored-white-linen
+  Tailored gamboised leg armor (game:armor-legs-tailored-white-linen): 4,519.2 → 2,513.2
+    grid: 1 game:cloth-white + 1 game:sewingkit + 1 game:cloth-white + 1 game:cloth-white + 1 game:cloth-white + 1 game:flaxtwine + 1 game:flaxtwine -> 1 game:armor-legs-tailored-white-linen
+  Scoop chemise top (game:clothes-upperbody-chemisescoop): 2,901.6 → 1,701.8
+    grid: 1 game:flaxtwine + 1 game:sewingkit + 1 game:flaxtwine + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:cloth-white -> 1 game:clothes-upperbody-chemisescoop
+  Long chemise top (game:clothes-upperbody-chemiselong): 2,901.6 → 1,701.8
+    grid: 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:flaxtwine + 1 game:cloth-white + 1 game:flaxtwine + 1 game:sewingkit -> 1 game:clothes-upperbody-chemiselong
+  Embroidered fur mukluks (game:clothes-foot-embroideredfur): 1,078.8 → 685.2
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:cloth-brown + 1 game:sewingkit -> 1 game:clothes-foot-embroideredfur
+  Embroidered fur mittens (game:clothes-hand-embroideredfur): 1,078.8 → 685.2
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:cloth-brown + 1 game:sewingkit -> 1 game:clothes-hand-embroideredfur
+  Arctic fisher mittens (game:clothes-hand-arcticfisher): 1,082 → 688.4
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:cloth-blue + 1 game:sewingkit -> 1 game:clothes-hand-arcticfisher
+  Arctic fisher snowshoes (game:clothes-foot-arcticfisher): 1,090 → 696.4
+    grid: 1 game:hide-pelt-large (or 4 more) + 1 game:cloth-blue + 1 game:stick + 1 game:sewingkit + 1 game:stick -> 1 game:clothes-foot-arcticfisher
+  ... and 89 more
+
+== Through Wildcraft: Fruits and Nuts (wildcraftfruit): 85 values ==
+  Aqua Vitae (game:alcoholportion): 2.88 → 0.249
+    distillation: 1 wildcraftfruit:spiritportion-cashewapple -> 0.5 game:alcoholportion
+  Mature pumpkin (game:pumpkin-fruit-4): 13.06 → 64
+    worked backwards from grid: 1 game:pumpkin-fruit-4 -> 4 game:vegetable-pumpkin (returns wildcraftfruit:nut-pumpkinseed)
+  Honeyjack (game:spiritportion-mead): 9 → 2.44
+    distillation: 1 game:ciderportion-mead -> 0.05 game:spiritportion-mead
+  Mead (game:ciderportion-mead): 0.45 → 0.122
+    RecipeRegistrySystem.BarrelRecipes: 1 wildcraftfruit:molasses-honey + 200 wildcraftfruit:sweetwaterportion -> 200 game:ciderportion-mead
+  Alcohol-soaked bandage (game:bandage-alcoholed): 73.6 → 20.98
+    grid: 20 game:alcoholportion + 1 game:bandage-clean -> 1 game:bandage-alcoholed
+  Beautyberry liqueur (game:spiritportion-beautyberry): 5.28 → 2.72
+    worked backwards from distillation: 1 game:spiritportion-beautyberry -> 0.5 game:alcoholportion
+  Earthy brown ceramic oil lamp (game:oillamp-blue-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-blue-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-blue-up
+  Fireclay ceramic oil lamp (game:oillamp-fire-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-fire-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-fire-up
+  Black ceramic oil lamp (game:oillamp-black-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-black-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-black-up
+  Brown ceramic oil lamp (game:oillamp-brown-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-brown-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-brown-up
+  Cream ceramic oil lamp (game:oillamp-cream-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-cream-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-cream-up
+  Earthy orange ceramic oil lamp (game:oillamp-earthyorange-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-earthyorange-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-earthyorange-up
+  Gray ceramic oil lamp (game:oillamp-gray-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-gray-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-gray-up
+  Orange ceramic oil lamp (game:oillamp-orange-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-orange-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-orange-up
+  Red ceramic oil lamp (game:oillamp-red-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-red-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-red-up
+  Tan ceramic oil lamp (game:oillamp-tan-up): 24 → 13.12
+    grid: 1 game:oillamp-genie-tan-fired + 40 wildcraftfruit:oilportion-olive (or 7 more) -> 1 game:oillamp-tan-up
+  Earthy brown ceramic oil lamp (game:oillamp-blue-down): 24 → 13.12
+    placement state: 1 game:oillamp-blue-up -> 1 game:oillamp-blue-down
+  Fireclay ceramic oil lamp (game:oillamp-fire-down): 24 → 13.12
+    placement state: 1 game:oillamp-fire-up -> 1 game:oillamp-fire-down
+  Black ceramic oil lamp (game:oillamp-black-down): 24 → 13.12
+    placement state: 1 game:oillamp-black-up -> 1 game:oillamp-black-down
+  Brown ceramic oil lamp (game:oillamp-brown-down): 24 → 13.12
+    placement state: 1 game:oillamp-brown-up -> 1 game:oillamp-brown-down
+  ... and 65 more
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)
