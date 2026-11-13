@@ -162,6 +162,10 @@ namespace VintageE
             var made = filled?["inputs"] as JArray;
             Check(filled != null && (double)filled["energy"] == 6 && made?.Count == 2 && (double)made[0]["quantity"] == 3 && (double)made[1]["quantity"] == 1 && filled["gone"] == null,
                 "methods: a reader's formulas work out fields, the entry around them and a map's key, and leave out a formula whose field is missing (" + filled?.ToString(Newtonsoft.Json.Formatting.None) + ")");
+            // A minus after a field is a minus; default() fills in for a field the data hasn't got; formulas never throw.
+            var minus = MethodParser.Eval(JObject.Parse(@"{ ""a"": ""=$x-$y"", ""b"": ""=$x-1"", ""c"": ""=default($nope, 4) * $y"", ""d"": ""=round($x, $s)"" }"), JObject.Parse(@"{ ""x"": 10, ""y"": 3, ""s"": ""NaN"" }")) as JObject;
+            Check(minus != null && (double)minus["a"] == 7 && (double)minus["b"] == 9 && (double)minus["c"] == 12 && minus["d"]?.Type == JTokenType.String && ((string)minus["d"]).StartsWith("=!", StringComparison.Ordinal),
+                "methods: \"=$x-$y\" is a subtraction, default() fills in a missing field, and a bad number is an error, not a crash (" + minus?.ToString(Newtonsoft.Json.Formatting.None) + ")");
             // A slot's alternatives read from data, as Butchering's kneading recipes keep them.
             var slots = MethodParser.Eval(JObject.Parse(@"{ ""inputs"": [ { ""each"": ""$ingredients"", ""anyOf"": [ { ""each"": ""$inputs"", ""code"": ""$code"", ""quantity"": ""$quantity"" } ] } ] }"),
                 JObject.Parse(@"{ ""ingredients"": [ { ""inputs"": [ { ""code"": ""game:fat"", ""quantity"": 1 }, { ""code"": ""x:lard"", ""quantity"": 10 } ] }, { ""inputs"": [ { ""nocode"": 1 } ] } ] }")) as JObject;
