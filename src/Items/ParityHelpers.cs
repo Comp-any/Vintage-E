@@ -217,8 +217,9 @@ namespace VintageE
             if (ws == null || at == null || ws.OverridePrecipitation != null) return false;
             try
             {
-                if (IsRaining(sapi, at) == rain) return true;
                 at = Ground(sapi, at);
+                float nowLevel = ws.GetPrecipitation(at);
+                if (rain ? nowLevel > 0.1f : nowLevel < RainLevel / 2) return true; // clearly so already
                 double now = sapi.World.Calendar.TotalDays;
                 // Half-hour steps; the weather wanted for two hours running, landing in the middle of it, so it holds a while.
                 double step = 0.5 / Math.Max(1, sapi.World.Calendar.HoursPerDay);
