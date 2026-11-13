@@ -20,12 +20,21 @@ namespace VintageE
         /// <summary>Things handed back after crafting (e.g. an empty bucket); their value is subtracted.</summary>
         public List<KeyValuePair<CollectibleObject, double>> Returned;
         /// <summary>
+        /// Things in <see cref="Returned"/> the recipe doesn't wait for: with no value yet they count as nothing (a crafting
+        /// method's byproduct marked "waitForValue": false). Null: it waits for all of them.
+        /// </summary>
+        public HashSet<CollectibleObject> OptionalReturned;
+        /// <summary>Whether <paramref name="c"/> is handed back without the recipe waiting for its value.</summary>
+        public bool IsOptionalReturn(CollectibleObject c) => OptionalReturned != null && OptionalReturned.Contains(c);
+        /// <summary>
         /// Set for processes with several outputs (squeezing honeycomb → honey + beeswax, ground-storage processing, the
         /// fruit press, other mods' crafting methods with several results and none marked main). What goes in is shared
         /// out among these instead of Output. Most have one input; a crafting method's may have several (see
         /// <see cref="IsSimpleJoint"/>).
         /// </summary>
         public List<KeyValuePair<CollectibleObject, double>> JointOutputs;
+        /// <summary>By joint output: its weight when what's left is shared out (a crafting method's "share"); null = evenly.</summary>
+        public List<double> JointShares;
 
         /// <summary>Flat EMC added to every run on top of the inputs (e.g. the drying-time bonus, a machine's power).</summary>
         public double ExtraCost;
@@ -78,6 +87,8 @@ namespace VintageE
         public Dictionary<CollectibleObject, string> OutputNotes;
         /// <summary>Outputs other than the main one, which go into Returned (their value is taken off).</summary>
         public HashSet<CollectibleObject> Byproducts;
+        /// <summary>The recipe's machine time for this variant (its costs' "seconds"), for the free-power check.</summary>
+        public double Seconds;
         public string ModId => Method?.ModId;
     }
 

@@ -1,0 +1,701 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Comp-any/Vintage-E/blob/main/docs/crafting-methods.schema.json",
+  "title": "Vintage-E crafting method document (format 1)",
+  "description": "Tells Vintage-E about a mod's own crafting methods: what each recipe uses and makes, and what else it costs. See docs/crafting-methods.md.",
+  "type": "object",
+  "required": [
+    "methods"
+  ],
+  "patternProperties": {
+    "^//": {}
+  },
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "format": {
+      "const": 1,
+      "description": "The format this document is written in."
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "The domain codes without one get (default: the mod's; the game's in a server document)."
+    },
+    "requiresMod": {
+      "description": "Mods that must be loaded; an entry \"a|b\" is met by either.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "energyUnits": {
+      "type": "object",
+      "description": "Energy units the recipes use: code → unit.",
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/unit"
+      }
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/method"
+      }
+    }
+  },
+  "definitions": {
+    "number": {
+      "description": "A number, the game's { avg, var }, a formula \"=...\", or a table by variant.",
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "description": "A number, a percent for a chance (\"25%\"), or a formula starting with \"=\"."
+        },
+        {
+          "type": "object",
+          "required": [
+            "avg"
+          ],
+          "properties": {
+            "avg": {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            "var": {
+              "type": [
+                "number",
+                "string"
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/table"
+        }
+      ]
+    },
+    "table": {
+      "type": "object",
+      "description": "The number for what the input named \"by\" matched; a variant with no number and no default is left out.",
+      "required": [
+        "by",
+        "values"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "type": "string"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "string"
+            ]
+          }
+        },
+        "default": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      }
+    },
+    "bool": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "enum": [
+            "true",
+            "false"
+          ]
+        }
+      ]
+    },
+    "strings": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "unit": {
+      "type": "object",
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "emcPerUnit": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "onlyFromFuel": {
+          "$ref": "#/definitions/bool"
+        },
+        "generators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "burns",
+              "makes"
+            ],
+            "patternProperties": {
+              "^//": {}
+            },
+            "additionalProperties": false,
+            "properties": {
+              "burns": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "makes": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "machine": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "crafting",
+            "processing"
+          ]
+        },
+        "supersedes": {
+          "$ref": "#/definitions/strings"
+        },
+        "recipes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/recipe"
+          }
+        },
+        "readers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/reader"
+          }
+        }
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "like": {
+          "type": "string",
+          "description": "An earlier recipe of the method to copy; the keys here replace its (costs key by key)."
+        },
+        "enabled": {
+          "$ref": "#/definitions/bool"
+        },
+        "note": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/inputSlot"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/toolSlot"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/output"
+          }
+        },
+        "oneOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/oneOfEntry"
+          }
+        },
+        "costs": {
+          "$ref": "#/definitions/costs"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^//": {}
+            },
+            "additionalProperties": false,
+            "properties": {
+              "inputs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/inputSlot"
+                }
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/toolSlot"
+                }
+              },
+              "costs": {
+                "$ref": "#/definitions/costs"
+              },
+              "repeat": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "item",
+            "block"
+          ]
+        },
+        "quantity": {
+          "$ref": "#/definitions/number"
+        },
+        "litres": {
+          "$ref": "#/definitions/number"
+        },
+        "chance": {
+          "$ref": "#/definitions/number"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "allowedVariants": {
+          "$ref": "#/definitions/strings"
+        },
+        "skipVariants": {
+          "$ref": "#/definitions/strings"
+        },
+        "returns": {
+          "$ref": "#/definitions/returned"
+        }
+      }
+    },
+    "inputSlot": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/input"
+        },
+        {
+          "type": "object",
+          "required": [
+            "anyOf"
+          ],
+          "patternProperties": {
+            "^//": {}
+          },
+          "additionalProperties": false,
+          "properties": {
+            "anyOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/definitions/input"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "tool": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "item",
+            "block"
+          ]
+        },
+        "quantity": {
+          "$ref": "#/definitions/number"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "wear": {
+          "$ref": "#/definitions/number"
+        },
+        "breakChance": {
+          "$ref": "#/definitions/number"
+        },
+        "allowedVariants": {
+          "$ref": "#/definitions/strings"
+        },
+        "skipVariants": {
+          "$ref": "#/definitions/strings"
+        }
+      }
+    },
+    "toolSlot": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/tool"
+        },
+        {
+          "type": "object",
+          "required": [
+            "anyOf"
+          ],
+          "patternProperties": {
+            "^//": {}
+          },
+          "additionalProperties": false,
+          "properties": {
+            "anyOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/definitions/tool"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "item",
+            "block"
+          ]
+        },
+        "quantity": {
+          "$ref": "#/definitions/number"
+        },
+        "litres": {
+          "$ref": "#/definitions/number"
+        },
+        "chance": {
+          "$ref": "#/definitions/number"
+        },
+        "main": {
+          "$ref": "#/definitions/bool"
+        },
+        "share": {
+          "$ref": "#/definitions/number"
+        },
+        "waitForValue": {
+          "$ref": "#/definitions/bool"
+        }
+      }
+    },
+    "oneOfEntry": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "item",
+            "block"
+          ]
+        },
+        "quantity": {
+          "$ref": "#/definitions/number"
+        },
+        "litres": {
+          "$ref": "#/definitions/number"
+        },
+        "chance": {
+          "$ref": "#/definitions/number"
+        },
+        "weight": {
+          "$ref": "#/definitions/number"
+        },
+        "share": {
+          "$ref": "#/definitions/number"
+        },
+        "waitForValue": {
+          "$ref": "#/definitions/bool"
+        }
+      }
+    },
+    "returned": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "item",
+            "block"
+          ]
+        },
+        "quantity": {
+          "$ref": "#/definitions/number"
+        },
+        "litres": {
+          "$ref": "#/definitions/number"
+        },
+        "chance": {
+          "$ref": "#/definitions/number"
+        },
+        "waitForValue": {
+          "$ref": "#/definitions/bool"
+        }
+      }
+    },
+    "energy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "amount"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "#/definitions/number"
+        }
+      }
+    },
+    "heat": {
+      "type": "object",
+      "required": [
+        "temperature",
+        "seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "temperature": {
+          "$ref": "#/definitions/number"
+        },
+        "seconds": {
+          "$ref": "#/definitions/number"
+        }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "energy": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/energy"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/energy"
+              }
+            }
+          ]
+        },
+        "heat": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/heat"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/heat"
+              }
+            }
+          ]
+        },
+        "seconds": {
+          "$ref": "#/definitions/number"
+        },
+        "emc": {
+          "$ref": "#/definitions/number"
+        }
+      }
+    },
+    "reader": {
+      "type": "object",
+      "required": [
+        "from",
+        "recipe"
+      ],
+      "patternProperties": {
+        "^//": {}
+      },
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "enum": [
+            "attribute",
+            "assets"
+          ]
+        },
+        "collectible": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "string"
+        },
+        "folder": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "list": {
+          "type": "string"
+        },
+        "recipe": {
+          "type": "object",
+          "description": "A recipe template: \"$Field\", \"${Field}\", \"=formula\", { \"each\": \"$List\", ... } in lists."
+        }
+      }
+    }
+  }
+}

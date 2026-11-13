@@ -8,6 +8,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Newtonsoft.Json.Linq;
 
 namespace VintageE
 {
@@ -115,7 +116,7 @@ namespace VintageE
                 .EndSubCommand()
                 .BeginSubCommand("methods")
                     .WithAlias("method")
-                    .WithDescription("Other mods' crafting methods: every method and recipe, what each uses and makes, its extra costs (power, heat) and their prices, with switches; or one mod or method; 'export <modid>' writes what Vintage-E understood, 'reload' asks the mods again")
+                    .WithDescription("Other mods' crafting methods: every method and recipe, what each uses and makes, its extra costs (power, heat) and their prices, with switches; or one mod or method; 'export <modid>' writes what Vintage-E understood, 'copy <modid>' copies a mod's methods to ModConfig/vintagee-methods to change there, 'reload' asks the mods again and reads that folder")
                     .RequiresPrivilege(Privilege.controlserver)
                     .WithArgs(parsers.OptionalWord("what"), parsers.OptionalWord("which"))
                     .HandleWith(Safe(args => Methods(mod, sapi, args, args[0] as string, args[1] as string)))
@@ -212,7 +213,7 @@ namespace VintageE
             ("/emc graylist add|remove", "cmdhelp-graylistset", true),
             ("/emc recipe", "cmdhelp-recipe", true),
             ("/emc recipe add|remove <output = ingredients>", "cmdhelp-recipeset", true),
-            ("/emc methods [<mod id>|<method>|export <mod id>|reload]", "cmdhelp-methods", true),
+            ("/emc methods [<mod id>|<method>|export <mod id>|copy <mod id>|reload]", "cmdhelp-methods", true),
             ("/emc compat", "cmdhelp-compat", true),
             ("/emc compat disable|enable <name>", "cmdhelp-compatset", true),
             ("/emc add <amount> [player]", "cmdhelp-add", true),
@@ -493,7 +494,49 @@ namespace VintageE
                     ? TextCommandResult.Error("Mapping failed, see server log")
                     : TextCommandResult.Success(Lang.GetL(args.LanguageCode, "vintagee:cmd-methods-reloaded", mod.Methods.MethodCount, mod.Methods.RecipeCount, mod.Methods.Mods.Count())));
             }
+            if (string.Equals(what, "copy", StringComparison.OrdinalIgnoreCase)) return CopyMethods(mod, args, (which ?? "").Trim().ToLowerInvariant());
             return Diagnose(mod, sapi, args, EmcDiagnose.ActionMethods, arg);
+        }
+
+        /// <summary>
+        /// /emc methods copy &lt;modid&gt;: the mod's method documents, as sent, into ModConfig/vintagee-methods/ with
+        /// their domain written in. The server's own documents replace a mod's methods and energy units with the same
+        /// codes, so the copy takes over at once; change its numbers and "/emc methods reload".
+        /// </summary>
+        static TextCommandResult CopyMethods(VintageEModSystem mod, TextCommandCallingArgs args, string modId)
+        {
+            string error = CopyMethodDocs(mod, modId, args.LanguageCode, out List<string> written);
+            return error != null ? TextCommandResult.Error(error) : TextCommandResult.Success(Lang.GetL(args.LanguageCode, "vintagee:cmd-methods-copied", modId, string.Join(", ", written)));
+        }
+
+        /// <summary>The copy itself (also used by the self-test): null when done, else why not.</summary>
+        internal static string CopyMethodDocs(VintageEModSystem mod, string modId, string lang, out List<string> written)
+        {
+            written = new List<string>();
+            if (modId.Length == 0) return Lang.GetL(lang, "vintagee:cmd-methods-copy-usage");
+            var docs = mod.Methods.Docs.Where(d => d.ModId == modId && !d.FromServer && d.Error == null && d.Original != null).ToList();
+            if (docs.Count == 0) return Lang.GetL(lang, "vintagee:cmd-methods-copy-none", modId);
+            Directory.CreateDirectory(MethodRegistry.ServerPath);
+            for (int i = 0; i < docs.Count; i++)
+            {
+                JObject top;
+                try { top = JObject.Parse(docs[i].Original); }
+                catch (Exception e) { return docs[i].Source + ": " + e.Message; }
+                var copy = new JObject
+                {
+                    ["//copied"] = "A copy of " + docs[i].Source + " made by /emc methods copy on " + DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
+                        + ". Methods and energy units here replace the mod's with the same codes: change the numbers, then /emc methods reload. Delete this file to go back to the mod's."
+                };
+                foreach (JProperty p in top.Properties()) copy[p.Name] = p.Value;
+                if (copy["domain"] == null) copy["domain"] = docs[i].Domain;
+                string name = modId.Replace(':', '-') + (docs.Count > 1 ? "-" + (i + 1) : "") + ".json";
+                string path = Path.Combine(MethodRegistry.ServerPath, name);
+                if (File.Exists(path)) return Lang.GetL(lang, "vintagee:cmd-methods-copy-exists", path);
+                File.WriteAllText(path, copy.ToString(Newtonsoft.Json.Formatting.Indented));
+                written.Add(path);
+            }
+            mod.CollectMethods("/emc methods copy " + modId);
+            return null;
         }
 
         static TextCommandResult Diagnose(VintageEModSystem mod, ICoreServerAPI sapi, TextCommandCallingArgs args, string what, string which)

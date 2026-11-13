@@ -2,6 +2,24 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.23.1 — 2026-11-13
+
+### Added
+More that other mods' crafting methods can say (format 1 gains keys; documents written for 1.23.0 work as before; [docs/crafting-methods.md](docs/crafting-methods.md)):
+- **Numbers that depend on the variant:** any amount, chance, weight, wear or cost may be a table by what an input's `*` matched (`{ "by": "metal", "values": { "iron": 600, "copper": 400 }, "default": 400 }`), so an iron plate can take more power than a copper one in one recipe.
+- **Formulas:** any number may be `"=..."` (+ - * / %, brackets, min, max, round, floor, ceil, abs). In a reader's template a formula works from the data's own fields (`"=$Load * $Seconds"`, `"=$Ticks / 20"`), the entry around (`$^Field`), a map's key (`$@key`) and `count()` (how often a grid key comes up in its pattern).
+- **Alternatives with their own amounts:** an ingredient or tool slot may be `"anyOf"` a list ("1 rendered fat or 10 lard"); one copy per choice, the cheapest counts, and a choice whose mod isn't loaded is left out.
+- **`like`:** a recipe may copy an earlier one and change a few keys (an upgraded machine: the same recipe with the upgrade as a tool and a shorter time).
+- **`steps`:** a process done in turns (sequenced assembly) is written step by step, each with its ingredients, tools, costs and a `repeat`, and counts as one recipe.
+- **Shared-out outputs by weight** (`"share"`), and **byproducts the recipe doesn't wait for** (`"waitForValue": false`: with no value yet they count as nothing).
+- **Tools worn in twos** (`quantity` on a tool), names with capitals and dashes, heat in several parts, `requiresMod` entries met by either of two mods (`"a|b"`), a `"domain"` for codes without one.
+- **Energy only made from fuel** (`"onlyFromFuel": true`) is left out of the free-power check.
+- **The server's own documents** in `ModConfig/vintagee-methods/`, read again on every `/emc methods reload` (no restart): a method or energy unit there replaces a mod's with the same code, and may supersede any recipe list. **`/emc methods copy <modid>`** puts a copy of a mod's methods there to change its numbers. Mod authors can draft a document there the same way.
+- **One variant switched off:** `DisabledMethods` takes `method/recipe?metal=iron`.
+- **A JSON schema** for editors: [docs/crafting-methods.schema.json](docs/crafting-methods.schema.json).
+- The Butchering method file reads each kneading ingredient's alternatives, not just the first.
+- `/emc diagnose draftmethods` counts a grid map's ingredients from its pattern.
+
 ## 1.23.0 — 2026-11-13
 
 ### Added

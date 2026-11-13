@@ -251,10 +251,12 @@ namespace VintageE
                         joint.Quantities = conv.Inputs.Select(i => i.Quantity).ToArray();
                         joint.NoInfer = conv.Inputs.Any(i => i.NoInfer) ? conv.Inputs.Select(i => i.NoInfer).ToArray() : null;
                         joint.ExtraCost = conv.ExtraCost;
+                        joint.ShareWeights = conv.JointShares?.ToArray();
                         if (conv.Returned != null)
                         {
                             joint.Returned = conv.Returned.Select(r => r.Key).ToArray();
                             joint.ReturnedQuantities = conv.Returned.Select(r => r.Value).ToArray();
+                            if (conv.OptionalReturned != null) joint.ReturnedOptional = conv.Returned.Select(r => conv.IsOptionalReturn(r.Key)).ToArray();
                         }
                     }
                     joints.Add(joint);
@@ -276,6 +278,7 @@ namespace VintageE
                 {
                     edge.Returned = conv.Returned.Select(r => r.Key).ToArray();
                     edge.ReturnedQuantities = conv.Returned.Select(r => r.Value).ToArray();
+                    if (conv.OptionalReturned != null) edge.ReturnedOptional = conv.Returned.Select(r => conv.IsOptionalReturn(r.Key)).ToArray();
                 }
                 edges.Add(edge);
             }
@@ -732,7 +735,7 @@ namespace VintageE
             if (conv.Returned != null)
                 foreach (var r in conv.Returned)
                 {
-                    if (!values.TryGetValue(r.Key, out double rv)) return null;
+                    if (!values.TryGetValue(r.Key, out double rv)) { if (conv.IsOptionalReturn(r.Key)) continue; return null; }
                     cost -= rv * r.Value;
                 }
             return cost / conv.OutputQuantity;

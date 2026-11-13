@@ -56,7 +56,7 @@ namespace VintageE
                             foreach (CollectibleObject y in input.Choices.Where(Unvalued)) set.Add(y);
                         }
                         // What a recipe hands back must have a value too before its net cost is known.
-                        if (conv.Returned != null) foreach (var kv in conv.Returned) if (kv.Key != null && Unvalued(kv.Key) && kv.Key != c) set.Add(kv.Key);
+                        if (conv.Returned != null) foreach (var kv in conv.Returned) if (kv.Key != null && Unvalued(kv.Key) && kv.Key != c && !conv.IsOptionalReturn(kv.Key)) set.Add(kv.Key);
                     }
                 }
                 needs[c] = set;
@@ -127,7 +127,7 @@ namespace VintageE
             // The solver waits for what a recipe hands back (a bucket, a byproduct) as for an ingredient.
             if (conv.Returned != null)
                 foreach (var kv in conv.Returned)
-                    if (kv.Key != null && kv.Key != conv.Output && !valued(kv.Key)) yield return kv.Key;
+                    if (kv.Key != null && kv.Key != conv.Output && !valued(kv.Key) && !conv.IsOptionalReturn(kv.Key)) yield return kv.Key;
         }
 
         public static string LoopText(IList<CollectibleObject> loop)

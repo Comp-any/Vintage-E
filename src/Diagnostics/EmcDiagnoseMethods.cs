@@ -130,7 +130,7 @@ namespace VintageE
                 foreach (var r in conv.Returned)
                 {
                     double v = x.V(r.Key);
-                    if (v <= 0) { lacking?.Add(r.Key); continue; }
+                    if (v <= 0) { if (!conv.IsOptionalReturn(r.Key)) lacking?.Add(r.Key); continue; }
                     cost -= v * r.Value;
                 }
             if (lacking != null && lacking.Count > 0) return null;
@@ -244,6 +244,8 @@ namespace VintageE
                     break;
             }
             if (result != null && result.MissingVariants > 0) x.Note(x.L("diag-meth-missingvariants", result.MissingVariants), indent + 1);
+            if (result != null && result.DisabledVariants > 0) x.Note(x.L("diag-meth-disabledvariants", result.DisabledVariants), indent + 1);
+            if (result != null && result.FailedChoices > 0) x.Note(x.L("diag-meth-failedchoices", result.FailedChoices, result.ChoiceFailure ?? "?"), indent + 1);
             if (result != null && result.FailedVariants > 0) x.Note(x.L("diag-meth-failedvariants", result.FailedVariants, result.VariantFailure ?? "?"), indent + 1);
             if (result != null) foreach (string note in result.Notes) x.Note(note, indent + 1);
         }
@@ -389,6 +391,7 @@ namespace VintageE
                 bool missing = p.Price <= 0 && used.Contains(p.Code) && p.Source != "setting";
                 r.Add(x.L("diag-meth-priceline", p.Code, p.Name ?? p.Code, N(p.Price), p.SourceText ?? "?") + (used.Contains(p.Code) ? "" : " " + x.L("diag-meth-unit-unused")), missing ? EmcLineStyle.Warn : EmcLineStyle.Text, 1);
                 foreach (string g in p.Generators) if (g != p.SourceText) x.Note(g, 2);
+                if (p.OnlyFromFuel) x.Note(x.L("diag-meth-unit-fuel"), 2);
                 if (!p.Declared)
                 {
                     string near = Snap(x).Units.Keys.OrderBy(k => MethodParser.Distance(k, p.Code)).FirstOrDefault();
@@ -417,11 +420,19 @@ namespace VintageE
             public Dictionary<string, (double emc, double price)> ByUnit = new Dictionary<string, (double, double)>(StringComparer.Ordinal);
         }
 
-        static PowerFarm PowerUse(MethodRecipe recipe, Conversion conv)
+        /// <summary>A conversion's energy costs that could come from free power: a unit only made by burning fuel can't be farmed.</summary>
+        static List<MethodCostLine> FreeEnergy(Ctx x, Conversion conv)
+        {
+            var units = x.Report?.MethodPrices?.Units;
+            return conv?.Costs == null ? new List<MethodCostLine>()
+                : conv.Costs.Where(k => k.Kind == "energy" && k.Emc > 0 && !(units != null && k.Unit != null && units.TryGetValue(k.Unit, out MethodUnitPrice up) && up.OnlyFromFuel)).ToList();
+        }
+
+        static PowerFarm PowerUse(Ctx x, MethodRecipe recipe, Conversion conv)
         {
             if (conv?.Costs == null) return null;
-            var energy = conv.Costs.Where(k => k.Kind == "energy" && k.Emc > 0).ToList();
-            double secs = recipe.Costs.Seconds;
+            var energy = FreeEnergy(x, conv);
+            double secs = conv.Method?.Seconds ?? recipe.Costs.Seconds;
             if (energy.Count == 0 || secs <= 0) return null;
             var top = energy.OrderByDescending(k => k.Emc).First();
             var f = new PowerFarm { Recipe = recipe, EnergyEmc = energy.Sum(k => k.Emc), Seconds = secs, Unit = top.Unit, Price = top.Price };
@@ -438,8 +449,8 @@ namespace VintageE
             foreach (var kv in convs)
             {
                 if (OutcomeOf(x, kv.Value, out Conversion used, out _) != MethodOutcome.Used || used.Costs == null) continue;
-                if (!used.Costs.Any(k => k.Kind == "energy" && k.Emc > 0)) continue;
-                PowerFarm f = PowerUse(kv.Key, used);
+                if (FreeEnergy(x, used).Count == 0) continue;
+                PowerFarm f = PowerUse(x, kv.Key, used);
                 if (f == null) { unknown++; continue; }
                 result.Add(f);
             }
@@ -458,7 +469,7 @@ namespace VintageE
             {
                 foreach (Conversion conv in kv.Value)
                 {
-                    PowerFarm f = PowerUse(kv.Key, conv);
+                    PowerFarm f = PowerUse(x, kv.Key, conv);
                     if (f == null || !f.ByUnit.TryGetValue(unit, out var mine) || mine.emc <= 0 || mine.price <= 0) continue;
                     double others = f.EnergyEmc - mine.emc;
                     double room = FreePowerLimit * f.Seconds - others;
@@ -757,7 +768,8 @@ namespace VintageE
             foreach (string e in Copy(mod.Config.DisabledMethods))
             {
                 if (string.IsNullOrWhiteSpace(e)) continue;
-                var single = new[] { e };
+                // An entry for some variants ("...?metal=iron") is alive when what's before the "?" names something.
+                var single = new[] { MethodSnapshot.EntryTarget(e) };
                 bool any = methods.Any(m => MethodSnapshot.IsDisabled(m, null, single) || m.Recipes.Any(rc => MethodSnapshot.IsDisabled(m, rc, single)));
                 if (!any) result.Add(e);
             }
@@ -1128,7 +1140,15 @@ namespace VintageE
                     if (first != null)
                     {
                         st = new JObject(new JProperty("each", "$" + p.Name), st.Properties());
-                        notes.Add(p.Name + " is a map of keys to stacks, as grid recipes have: each is counted once, so check the quantities against the pattern");
+                        // A grid recipe's map: how many of each key its pattern takes, by count() on the pattern.
+                        string pattern = sample.Properties().Select(pp => pp.Name).FirstOrDefault(n => n.IndexOf("pattern", StringComparison.OrdinalIgnoreCase) >= 0);
+                        if (pattern != null)
+                        {
+                            st["quantity"] = "=count($^" + pattern + ", $@key)" + (st["quantity"] != null ? " * " + (string)st["quantity"] : "");
+                            usedFields.Add(pattern);
+                            notes.Add(p.Name + " is a map of keys to stacks: each counts as often as its key comes up in " + pattern);
+                        }
+                        else notes.Add(p.Name + " is a map of keys to stacks, as grid recipes have: each is counted once, so check the quantities against the pattern");
                     }
                     JObject src = first ?? one;
                     if (isOut && ((string)src[FieldLike(src, "code", "item", "block")] ?? "").Contains("{")) wildcardOut = true;

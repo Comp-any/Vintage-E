@@ -31,6 +31,8 @@ namespace VintageE
             public double[] Quantities;
             public T[] Returned;
             public double[] ReturnedQuantities;
+            /// <summary>By returned item (or null): true = with no value yet it counts as nothing, instead of the edge waiting.</summary>
+            public bool[] ReturnedOptional;
             /// <summary>Processing edges may be used backwards to infer an unvalued input from its output.</summary>
             public bool Reversible;
             /// <summary>Flat EMC added per run on top of the ingredients (time bonuses, a machine's power).</summary>
@@ -64,6 +66,9 @@ namespace VintageE
             public double ExtraCost;
             public T[] Returned;
             public double[] ReturnedQuantities;
+            public bool[] ReturnedOptional;
+            /// <summary>By output (or null for evenly): its weight when what's left is shared out.</summary>
+            public double[] ShareWeights;
             public object Tag;
         }
 
@@ -128,6 +133,7 @@ namespace VintageE
             internal double[][] Quantities;
             internal int[][] Returned;
             internal double[][] ReturnedQuantities;
+            internal bool[][] ReturnedOptional;
             /// <summary>Edges whose cost can never be worked out (a slot only excluded items could fill).</summary>
             internal bool[] Never;
             internal int[] ReversibleSingles;
@@ -243,7 +249,7 @@ namespace VintageE
             {
                 Edges = Edges.ToArray(), Excluded = Excluded, Free = Free, ExcludedCount = Excluded.Count, FreeCount = Free.Count,
                 Ids = new Dictionary<T, int>(), ByOutput = new Dictionary<T, List<int>>(), OutputIds = new int[n],
-                Slots = new int[n][][], Quantities = new double[n][], Returned = new int[n][], ReturnedQuantities = new double[n][], Never = new bool[n]
+                Slots = new int[n][][], Quantities = new double[n][], Returned = new int[n][], ReturnedQuantities = new double[n][], ReturnedOptional = new bool[n][], Never = new bool[n]
             };
             var items = new List<T>();
             int IdOf(T item)
@@ -309,14 +315,21 @@ namespace VintageE
                 {
                     back.Clear();
                     backQuantities.Clear();
+                    var backOptional = new List<bool>();
                     for (int j = 0; j < e.Returned.Length; j++)
                     {
                         T r = e.Returned[j];
                         if (Excluded.Contains(r) || Free.Contains(r)) continue;
                         back.Add(g.Ids[r]);
                         backQuantities.Add(e.ReturnedQuantities[j]);
+                        backOptional.Add(e.ReturnedOptional != null && e.ReturnedOptional[j]);
                     }
-                    if (back.Count > 0) { g.Returned[i] = back.ToArray(); g.ReturnedQuantities[i] = backQuantities.ToArray(); }
+                    if (back.Count > 0)
+                    {
+                        g.Returned[i] = back.ToArray();
+                        g.ReturnedQuantities[i] = backQuantities.ToArray();
+                        if (backOptional.Contains(true)) g.ReturnedOptional[i] = backOptional.ToArray();
+                    }
                 }
             }
             g.ReversibleSingles = reversible.ToArray();
@@ -552,11 +565,13 @@ namespace VintageE
             if (returned != null)
             {
                 double[] returnedQuantities = graph.ReturnedQuantities[index];
+                bool[] optional = graph.ReturnedOptional[index];
                 for (int j = 0; j < returned.Length; j++)
                 {
                     // Something handed back that has no value yet: the net cost isn't known, so wait (counting it as
-                    // nothing gave a bear's head pelt the whole pelt's value, with the body then worth as much again).
-                    if (!has[returned[j]]) return double.NaN;
+                    // nothing gave a bear's head pelt the whole pelt's value, with the body then worth as much again),
+                    // unless the recipe says not to wait for it (then it counts as nothing until it has one).
+                    if (!has[returned[j]]) { if (optional != null && optional[j]) continue; return double.NaN; }
                     sum -= val[returned[j]] * returnedQuantities[j];
                 }
             }
@@ -611,7 +626,11 @@ namespace VintageE
                 {
                     T r = j.Returned[k];
                     if (r == null || Excluded.Contains(r) || Free.Contains(r)) continue;
-                    if (!Values.TryGetValue(r, out double rv)) return; // wait until what's handed back has a value
+                    if (!Values.TryGetValue(r, out double rv))
+                    {
+                        if (j.ReturnedOptional != null && j.ReturnedOptional[k]) continue; // counts as nothing until it has one
+                        return; // wait until what's handed back has a value
+                    }
                     back += rv * j.ReturnedQuantities[k];
                 }
             }
@@ -631,10 +650,13 @@ namespace VintageE
                     else if (open(o)) sharers.Add(k);
                 }
                 if (sharers.Count == 0 || remaining <= MinValue) return;
-                double share = remaining / sharers.Count;
+                // By the document's weights ("share"), or evenly.
+                double weights = j.ShareWeights == null ? sharers.Count : sharers.Sum(k => j.ShareWeights[k]);
+                if (weights <= 0) return;
                 foreach (int k in sharers)
                 {
                     T o = j.Outputs[k];
+                    double share = remaining * (j.ShareWeights == null ? 1 : j.ShareWeights[k]) / weights;
                     double per = share / j.OutputQuantities[k];
                     if (Values.TryGetValue(o, out double current))
                     {
@@ -739,7 +761,7 @@ namespace VintageE
                         T item = e.Returned[r];
                         if (Excluded.Contains(item) || Free.Contains(item)) continue;
                         if (Values.TryGetValue(item, out double rv)) back += rv * e.ReturnedQuantities[r];
-                        else backKnown = false;
+                        else if (e.ReturnedOptional == null || !e.ReturnedOptional[r]) backKnown = false;
                     }
                 }
                 if (!backKnown) continue;

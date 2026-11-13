@@ -783,7 +783,12 @@ namespace VintageE
                         foreach (var ret in conv.Returned)
                         {
                             double v = x.V(ret.Key);
-                            if (v <= 0) continue;
+                            if (v <= 0)
+                            {
+                                // A byproduct the recipe doesn't wait for: nothing taken off until it has a value.
+                                if (conv.IsOptionalReturn(ret.Key)) r.Add(x.L("dumpgui-byproduct-novalue", EmcReport.Ref(ret.Key), N(ret.Value)), EmcLineStyle.Note, 1);
+                                continue;
+                            }
                             sum -= v * ret.Value;
                             bool byproduct = conv.Method?.Byproducts != null && conv.Method.Byproducts.Contains(ret.Key);
                             r.Add(Term(x, "- ", ret.Key, ret.Value, v) + " " + x.L(byproduct ? "dumpgui-byproduct" : "dumpgui-returned"), EmcLineStyle.Text, 1);
@@ -894,9 +899,22 @@ namespace VintageE
             }
             double myQ = conv.JointOutputs.FirstOrDefault(o => o.Key == c).Value;
             if (myQ <= 0) myQ = 1;
-            double share = rest / sharers.Count;
-            double computed = share / myQ;
-            r.Add(x.L("dumpgui-share", F(rest), sharers.Count, F(share), N(myQ), F(computed)), EmcLineStyle.Total, 1);
+            double share, computed;
+            if (conv.JointShares != null)
+            {
+                // Shared by the recipe's weights ("share"), not evenly.
+                double Weight(CollectibleObject o) { int i = conv.JointOutputs.FindIndex(p => p.Key == o); return i >= 0 && i < conv.JointShares.Count ? conv.JointShares[i] : 1; }
+                double mine = Weight(c), all = sharers.Sum(Weight);
+                share = all > 0 ? rest * mine / all : 0;
+                computed = share / myQ;
+                r.Add(x.L("dumpgui-share-weighted", F(rest), N(mine), N(all), F(share), N(myQ), F(computed)), EmcLineStyle.Total, 1);
+            }
+            else
+            {
+                share = rest / sharers.Count;
+                computed = share / myQ;
+                r.Add(x.L("dumpgui-share", F(rest), sharers.Count, F(share), N(myQ), F(computed)), EmcLineStyle.Total, 1);
+            }
             MethodFooter(x, conv, c);
             return computed;
         }

@@ -67,6 +67,41 @@ namespace VintageE
             return false;
         }
 
+        /// <summary>
+        /// Whether an entry switches off one variant: "vintagecreation:press/plate?metal=iron" (the recipe, method or mod,
+        /// then name=value pairs joined by &amp;; "*" works in both).
+        /// </summary>
+        public static bool IsVariantDisabled(MethodDef method, MethodRecipe recipe, Dictionary<string, string> captures, IEnumerable<string> disabled)
+        {
+            if (disabled == null || method == null || captures == null || captures.Count == 0) return false;
+            foreach (string raw in disabled)
+            {
+                string d = raw?.Trim();
+                int q = d?.IndexOf('?') ?? -1;
+                if (q <= 0) continue;
+                string target = d.Substring(0, q).ToLowerInvariant();
+                if (!(target == method.ModId || Matches(target, method.Code) || (recipe != null && Matches(target, recipe.FullCode.ToLowerInvariant())))) continue;
+                bool all = true;
+                foreach (string pair in d.Substring(q + 1).Split('&'))
+                {
+                    int eq = pair.IndexOf('=');
+                    if (eq <= 0) { all = false; break; }
+                    string name = pair.Substring(0, eq).Trim(), value = pair.Substring(eq + 1).Trim().ToLowerInvariant();
+                    if (!captures.TryGetValue(name, out string got) || !Matches(value, (got ?? "").ToLowerInvariant())) { all = false; break; }
+                }
+                if (all) return true;
+            }
+            return false;
+        }
+
+        /// <summary>The part of a DisabledMethods entry before a variant's "?name=value".</summary>
+        public static string EntryTarget(string entry)
+        {
+            entry = entry?.Trim() ?? "";
+            int q = entry.IndexOf('?');
+            return q > 0 ? entry.Substring(0, q) : entry;
+        }
+
         static bool Matches(string pattern, string code)
         {
             if (!pattern.Contains('*')) return pattern == code;
@@ -86,6 +121,11 @@ namespace VintageE
         /// <summary>Pushed by a mod whose recipes changed while the server runs: Vintage-E collects again and remaps. Its data may be a string attribute with the mod's id.</summary>
         public const string ChangedEvent = "vintagee:methodschanged";
         public const string AssetFolder = "config/vintagee-methods/";
+        /// <summary>The server's own documents: VintagestoryData/ModConfig/vintagee-methods/*.json, read again on every collect.</summary>
+        public const string ServerFolder = "vintagee-methods";
+
+        /// <summary>The folder of the server's own method documents.</summary>
+        public static string ServerPath => System.IO.Path.Combine(Vintagestory.API.Config.GamePaths.ModConfig, ServerFolder);
         /// <summary>Keys Vintage-E itself puts in the event's tree.</summary>
         public static readonly HashSet<string> ReservedKeys = new HashSet<string>(StringComparer.Ordinal) { "format", "vintageeVersion" };
 
@@ -108,6 +148,23 @@ namespace VintageE
                 catch (Exception e) { text = null; logger.Warning("EMC: crafting methods: could not read {0}: {1}", asset.Location, e.Message); }
                 snap.Docs.Add(MethodParser.Parse(text, asset.Location.Domain, "assets/" + asset.Location.Domain + "/" + asset.Location.Path, "file", sapi, index));
             }
+
+            // 1b. The server's own: a server owner's changes, a copy of a mod's methods to edit, a mod author's draft. Read
+            // from disk every time, so "/emc methods reload" picks up an edit without a restart.
+            try
+            {
+                if (System.IO.Directory.Exists(ServerPath))
+                {
+                    foreach (string file in System.IO.Directory.GetFiles(ServerPath, "*.json").OrderBy(f => f, StringComparer.Ordinal))
+                    {
+                        string text;
+                        try { text = System.IO.File.ReadAllText(file); }
+                        catch (Exception e) { text = null; logger.Warning("EMC: crafting methods: could not read {0}: {1}", file, e.Message); }
+                        snap.Docs.Add(MethodParser.Parse(text, "", "ModConfig/" + ServerFolder + "/" + System.IO.Path.GetFileName(file), "server", sapi, index));
+                    }
+                }
+            }
+            catch (Exception e) { logger.Warning("EMC: crafting methods: could not list {0}: {1}", ServerPath, e.Message); }
 
             // 2. Other mods' code, through the game's event bus (no reference to Vintage-E needed).
             var tree = new TreeAttribute();
@@ -140,19 +197,27 @@ namespace VintageE
                 snap.Docs.Add(doc);
             }
 
-            // 3. Required mods, and what clashes between documents.
+            // 3. Required mods, and what clashes between documents. The server's own come first: a method or energy unit of
+            // theirs replaces a mod's with the same code (that's how a server owner changes a mod's numbers).
             var seenMethods = new Dictionary<string, MethodDoc>(StringComparer.Ordinal);
-            foreach (MethodDoc doc in snap.Docs)
+            var unitFrom = new Dictionary<string, MethodDoc>(StringComparer.Ordinal);
+            foreach (MethodDoc doc in snap.Docs.OrderBy(d => d.FromServer ? 0 : 1).ToList())
             {
                 if (doc.Error != null) continue;
-                doc.MissingMod = doc.RequiresMods.FirstOrDefault(id => !sapi.ModLoader.IsModEnabled(id));
+                // An entry "a|b" is met when either mod is loaded.
+                doc.MissingMod = doc.RequiresMods.FirstOrDefault(id => !id.Split('|').Any(alt => sapi.ModLoader.IsModEnabled(alt.Trim())));
                 if (doc.MissingMod != null) continue;
                 foreach (MethodDef m in doc.Methods.ToList())
                 {
                     if (seenMethods.TryGetValue(m.Code, out MethodDoc first))
                     {
-                        snap.Problems.Add(new MethodProblem { Path = doc.Source + " " + m.Path, Message = "the method " + m.Code + " also comes from " + first.Source + "; this one is left out", Error = true });
-                        doc.Problems.Add(new MethodProblem { Path = m.Path, Message = "the method " + m.Code + " also comes from " + first.Source + "; this one is left out", Error = true });
+                        if (first.FromServer && !doc.FromServer)
+                            doc.Problems.Add(new MethodProblem { Path = m.Path, Message = "the method " + m.Code + " is replaced by the server's " + first.Source });
+                        else
+                        {
+                            snap.Problems.Add(new MethodProblem { Path = doc.Source + " " + m.Path, Message = "the method " + m.Code + " also comes from " + first.Source + "; this one is left out", Error = true });
+                            doc.Problems.Add(new MethodProblem { Path = m.Path, Message = "the method " + m.Code + " also comes from " + first.Source + "; this one is left out", Error = true });
+                        }
                         doc.Methods.Remove(m);
                         continue;
                     }
@@ -162,11 +227,14 @@ namespace VintageE
                 {
                     if (snap.Units.TryGetValue(kv.Key, out MethodEnergyUnit was))
                     {
-                        if (was.EmcPerUnit != kv.Value.EmcPerUnit || was.Generators.Count != kv.Value.Generators.Count)
+                        MethodDoc from = unitFrom[kv.Key];
+                        if (from.FromServer && !doc.FromServer) doc.Problems.Add(new MethodProblem { Path = kv.Value.Path, Message = "the energy unit " + kv.Key + " is replaced by the server's " + from.Source });
+                        else if (was.EmcPerUnit != kv.Value.EmcPerUnit || was.Generators.Count != kv.Value.Generators.Count || was.OnlyFromFuel != kv.Value.OnlyFromFuel)
                             snap.Problems.Add(new MethodProblem { Path = doc.Source + " " + kv.Value.Path, Message = "the energy unit " + kv.Key + " is declared by " + was.ModId + " too, differently; " + was.ModId + "'s counts" });
                         continue;
                     }
                     snap.Units[kv.Key] = kv.Value;
+                    unitFrom[kv.Key] = doc;
                 }
             }
 

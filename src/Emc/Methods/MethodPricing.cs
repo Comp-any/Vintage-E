@@ -23,6 +23,8 @@ namespace VintageE
         public double GeneratorPrice;
         public double? Suggested;
         public bool Declared;
+        /// <summary>Only made by burning fuel: the free-power check leaves it alone.</summary>
+        public bool OnlyFromFuel;
     }
 
     /// <summary>The prices a mapping charges for other mods' crafting methods' extra costs.</summary>
@@ -90,7 +92,7 @@ namespace VintageE
             foreach (var kv in methods?.Units ?? new Dictionary<string, MethodEnergyUnit>())
             {
                 MethodEnergyUnit unit = kv.Value;
-                var p = new MethodUnitPrice { Code = unit.Code, Name = unit.Name ?? unit.Code, ModId = unit.ModId, Declared = true, Suggested = unit.EmcPerUnit };
+                var p = new MethodUnitPrice { Code = unit.Code, Name = unit.Name ?? unit.Code, ModId = unit.ModId, Declared = true, Suggested = unit.EmcPerUnit, OnlyFromFuel = unit.OnlyFromFuel };
                 double best = double.PositiveInfinity;
                 string bestText = null;
                 foreach (MethodGenerator g in unit.Generators)
