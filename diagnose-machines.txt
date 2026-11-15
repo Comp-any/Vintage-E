@@ -1,0 +1,16 @@
+== Chutes and hoppers ==
+✓ Alchemical Chest: chutes and hoppers fill it from any side; a chute underneath empties it.
+  As with the game's chests. A hopper never takes from a block above it (it only catches items dropped on top): use a chute to take things out.
+✓ Energy Condenser: chutes and hoppers fill its storage (never the target slot). Only finished copies of the target come out: through a chute or hopper underneath, or a straight chute on its side that leads into a chest.
+  With no target set, what goes in is burned into the condenser's EMC. Look at a condenser and ask again to see what each chute touching it does.
+✓ Matter furnaces: from above into the input (things that smelt or cook), from the sides into the fuel, a chute underneath takes the output.
+  This needs a change to the game's furnace inside; it's in place on this server.
+• Transmutation Table: a chute or hopper into it puts in things to burn into its owner's EMC (16 a second, owner online only); nothing comes out.
+  Klein stars never go in by chute (a charged star would be burned); collectors and relays take a star only by hand.
+
+== The block you're looking at ==
+• You're not looking at a block. Look at a collector, relay, condenser, table, pedestal, chest or furnace and ask again.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
