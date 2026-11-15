@@ -161,6 +161,8 @@ namespace VintageE
                     Check(starRelay.Star.Star == null && ba.GetBlock(new BlockPos(x + 12, y, z)).Id == 0, "a Klein star in a relay comes out when the relay is blown up");
                 }
 
+                CheckTalismanInContainers(new BlockPos(x - 6, y + 3, z + 20));
+
                 // 1.11.0: a hopper on top of a transmutation table feeds it (the owner isn't online, so it waits in the table).
                 BETransmutationTable table = Place<BETransmutationTable>(new BlockPos(x + 9, y, z), "vintagee:transmutationtable");
                 Block hopperBlock = sapi.World.Blocks.FirstOrDefault(b => b?.Code != null && b.Code.Domain == "game" && b.Code.Path.StartsWith("hopper"));
@@ -1619,6 +1621,65 @@ namespace VintageE
                 if (a.Cells[i]?.Collectible != b.Cells[i]?.Collectible || (a.Cells[i]?.StackSize ?? 0) != (b.Cells[i]?.StackSize ?? 0)) return false;
             }
             return true;
+        }
+
+        /// <summary>1.24.2: the Repair Talisman in ordinary containers, only those the RepairTalismanContainers setting names.</summary>
+        void CheckTalismanInContainers(BlockPos at)
+        {
+            ContainerRepair repair = mod.ContainerRepair;
+            Item talismanItem = sapi.World.GetItem(new AssetLocation("vintagee:trinket-repairtalisman"));
+            CollectibleObject pick = sapi.World.GetItem(new AssetLocation("game:pickaxe-copper"));
+            var chest = Place<BlockEntity>(at, "game:chest-east") as IBlockEntityContainer;
+            Check(repair != null && talismanItem != null && pick != null && chest?.Inventory != null && chest.Inventory.Count >= 2,
+                "a game chest, a copper pickaxe and the Repair Talisman to test with");
+            if (repair == null || talismanItem == null || pick == null || chest?.Inventory == null || chest.Inventory.Count < 2) return;
+
+            var tool = new ItemStack(pick);
+            int max = pick.GetMaxDurability(tool);
+            pick.SetDurability(tool, max - 50);
+            chest.Inventory[0].Itemstack = new ItemStack(talismanItem);
+            chest.Inventory[1].Itemstack = tool;
+            int Left() => pick.GetRemainingDurability(chest.Inventory[1].Itemstack);
+            List<string> before = mod.Config.RepairTalismanContainers;
+            try
+            {
+                mod.Config.RepairTalismanContainers = new List<string>();
+                repair.Reset();
+                repair.TickOnce();
+                Check(Left() == max - 50 && repair.TrackedCount == 0, $"by default a Repair Talisman in a game chest repairs nothing ({Left()} of {max})");
+
+                mod.Config.RepairTalismanContainers = new List<string> { "game:storagevessel-*" };
+                repair.TickOnce();
+                Check(Left() == max - 50, "nor in a chest when only storage vessels are named");
+
+                mod.Config.RepairTalismanContainers = new List<string> { "game:chest-*" };
+                repair.TickOnce();
+                Check(Left() == max - 49 && repair.TrackedCount >= 1, $"named, a game chest with the talisman repairs the pickaxe in it by 1 a second ({Left()} of {max})");
+                repair.TickOnce();
+                Check(Left() == max - 48, "and again the next second, without searching the chunks again");
+
+                mod.Config.RepairTalismanContainers = new List<string> { "*" };
+                repair.TickOnce();
+                Check(Left() == max - 47, "\"*\" names every container");
+
+                chest.Inventory[0].Itemstack = null;
+                repair.TickOnce();
+                Check(Left() == max - 47 && repair.TrackedCount == 0, "with the talisman taken out the chest is repaired no more and forgotten");
+
+                Block alchemical = sapi.World.GetBlock(new AssetLocation("vintagee:alchemicalchest"));
+                Check(alchemical != null && !repair.Allows(alchemical), "the Alchemical Chest keeps its own rules (\"*\" doesn't add it twice)");
+
+                RunCommand("/emc configure RepairTalismanContainers add game:chest-*");
+                bool added = mod.Config.RepairTalismanContainers.Contains("game:chest-*");
+                RunCommand("/emc configure RepairTalismanContainers remove game:chest-*");
+                Check(added && !mod.Config.RepairTalismanContainers.Contains("game:chest-*"), "/emc configure adds and removes the containers the talisman works in");
+            }
+            finally
+            {
+                mod.Config.RepairTalismanContainers = before;
+                repair.Reset();
+                sapi.World.BlockAccessor.SetBlock(0, at);
+            }
         }
 
         void Check1211()

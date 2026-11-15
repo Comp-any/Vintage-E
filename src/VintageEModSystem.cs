@@ -48,6 +48,8 @@ namespace VintageE
 
         /// <summary>Runs ring/stone/amulet effects (server only).</summary>
         public TrinketEffects Trinkets { get; private set; }
+        /// <summary>The Repair Talisman in ordinary containers (server only; see <see cref="VintageEConfig.RepairTalismanContainers"/>).</summary>
+        public ContainerRepair ContainerRepair { get; private set; }
 
         /// <summary>Result of the most recent mapping run (server only).</summary>
         public EmcMappingReport LastReport { get; private set; }
@@ -659,6 +661,7 @@ namespace VintageE
                 Transmutation = new TransmutationService(this, sapi);
                 EmcCrafting = new EmcCraft(this, sapi);
                 Trinkets = new TrinketEffects(this, sapi);
+                ContainerRepair = new ContainerRepair(this, sapi);
             });
 
             Step("network", () =>
@@ -857,6 +860,7 @@ namespace VintageE
             cfg.Normalize();
             Config = cfg;
             Trinkets?.ResetHostile();
+            ContainerRepair?.Reset();
             // For a player the mapping runs in the background: what it doesn't decide takes effect now.
             if (forPlayer != null && Emc.Count > 0) RefreshMirroredSettings();
             RemapFor(forPlayer, "config reloaded");

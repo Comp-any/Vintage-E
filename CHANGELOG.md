@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.2 — 2026-11-15
+
+### Added
+- **The Repair Talisman can work in ordinary containers**: chests, storage vessels, crates and other mods' storage blocks. In a container the server allows, it repairs everything stored with it, the way it does in the Alchemical Chest (1 durability a second on tools, weapons and armour; clothing at the Repair Talisman's clothing settings). **Off by default:** until the server names containers, the talisman works as before (carried, in an Alchemical Chest, on a pedestal). The new setting `RepairTalismanContainers` takes block codes with wildcards, or `*` for every container, e.g. `/emc configure RepairTalismanContainers add game:chest-*` and `... add game:storagevessel-*` (also in the `/emc configure` window). It finds the containers holding a talisman by looking through the loaded chunks every 10 seconds, so a talisman just put in starts within 10 seconds; with the setting empty nothing is looked at. A container's contents are only repaired while its chunk is loaded.
+
 ## 1.24.1 — 2026-11-13
 
 Fixes from a bug hunt through 1.23.1 and 1.24.0. EMC values are the same as in 1.24.0.

@@ -396,6 +396,9 @@ namespace VintageE
                 case "HostileCreatures":
                     mod.Trinkets?.ResetHostile();
                     break;
+                case "RepairTalismanContainers":
+                    mod.ContainerRepair?.Reset();
+                    break;
                 case "NoTransmute":
                     mod.RefreshStackData(); // matches the list again and tells every client
                     break;

@@ -231,6 +231,14 @@ namespace VintageE
         [System.ComponentModel.Description("The Repair Talisman stops restoring clothing at this condition (percent). 100 = good as new.")]
         public double RepairTalismanClothingMaxCondition = 100;
 
+        /// <summary>
+        /// Containers in which a Repair Talisman also works (block codes, wildcards allowed; "*" = every container), e.g.
+        /// "game:chest-*", "game:storagevessel-*". In them it repairs everything stored beside it, as in the Alchemical
+        /// Chest. Empty (the default): it only works carried, in an Alchemical Chest and on a pedestal.
+        /// </summary>
+        [System.ComponentModel.Description("Containers in which a Repair Talisman also works: block codes, wildcards allowed, \"*\" for every container (e.g. game:chest-*, game:storagevessel-*). In them it repairs everything stored beside it, as in the Alchemical Chest. Empty (the default): it only works carried, in an Alchemical Chest and on a pedestal.")]
+        public List<string> RepairTalismanContainers = new List<string>();
+
         /// <summary>Divining rods also list the most valuable kinds of block they found, this many of them (ProjectE's rods list three). 0 = only the totals.</summary>
         [System.ComponentModel.Description("Divining rods also list the most valuable kinds of block they found, this many of them (ProjectE's rods list three). 0 = only the totals.")]
         public int DiviningRodListsTop = 3;
