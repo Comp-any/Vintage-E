@@ -97,6 +97,32 @@ namespace VintageE
     }
 
     /// <summary>
+    /// What the step assist does to the player's step height. It only ever changes it while it is switched on, and on
+    /// switching off only undoes its own change: other mods set the step height too (XSkills' Steeplechaser). Until
+    /// 1.24.3 it put back the height it saw first fifty times a second, gem leggings or not, which undid theirs.
+    /// </summary>
+    public struct StepAssist
+    {
+        public const float Height = 1.05f;
+        bool on;
+        float before;
+
+        /// <summary>The step height to set now, or null to leave it as it is.</summary>
+        public float? Next(bool wanted, float current)
+        {
+            if (wanted)
+            {
+                if (!on) { on = true; before = current; }
+                return current < Height ? Height : (float?)null;
+            }
+            if (!on) return null;
+            on = false;
+            // Still what the step assist made it: back to what it was. Changed by something else since: left alone.
+            return Math.Abs(current - Height) < 1e-3 && before < Height ? before : (float?)null;
+        }
+    }
+
+    /// <summary>
     /// The client half of the gem armour: night vision (the game's own night vision shader, as its night vision device
     /// uses), step assist, and falling slowly or (sneaking) fast. Your own movement is worked out on your computer
     /// in Vintage Story, so this has to run here.
@@ -104,7 +130,7 @@ namespace VintageE
     public class GemArmorClient : IRenderer
     {
         readonly ICoreClientAPI capi;
-        float? baseStep;
+        StepAssist stepAssist;
         long lastJumpMs;
 
         /// <summary>After the game's night vision device, which sets the strength to 0 every frame when none is worn.</summary>
@@ -143,10 +169,9 @@ namespace VintageE
             EntityBehaviorControlledPhysics phys = e.GetBehavior<EntityBehaviorControlledPhysics>();
             if (phys != null)
             {
-                baseStep ??= phys.StepHeight;
                 bool step = legs?.Itemstack?.Attributes?.GetBool(GemArmor.StepAssistKey) == true;
-                float want = step ? Math.Max(baseStep.Value, 1.05f) : baseStep.Value;
-                if (Math.Abs(phys.StepHeight - want) > 1e-3) phys.StepHeight = want;
+                float? set = stepAssist.Next(step, phys.StepHeight);
+                if (set.HasValue) phys.StepHeight = set.Value;
             }
             if (legs == null) return;
 

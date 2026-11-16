@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.3 — 2026-11-16
+
+### Fixed
+- **XSkills' Steeplechaser (and any other mod's step height) stopped working with 1.24.0.** The gem leggings' step assist set your step height fifty times a second, gem leggings worn or not, back to what it was when you joined. It now only raises the step height while the step assist is on, and when it goes off only puts back its own change.
+
 ## 1.24.2 — 2026-11-15
 
 ### Added

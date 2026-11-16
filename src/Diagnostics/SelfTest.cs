@@ -74,6 +74,7 @@ namespace VintageE
                 Check1110();
                 Check1211();
                 CheckSpeedups();
+                CheckStepAssist();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -1621,6 +1622,22 @@ namespace VintageE
                 if (a.Cells[i]?.Collectible != b.Cells[i]?.Collectible || (a.Cells[i]?.StackSize ?? 0) != (b.Cells[i]?.StackSize ?? 0)) return false;
             }
             return true;
+        }
+
+        /// <summary>1.24.3: the gem leggings' step assist leaves other mods' step height alone (XSkills' Steeplechaser).</summary>
+        void CheckStepAssist()
+        {
+            var sa = new StepAssist();
+            bool leftAlone = sa.Next(false, 1.2f) == null && sa.Next(false, 0.6f) == null;
+            float? on = sa.Next(true, 0.6f), still = sa.Next(true, StepAssist.Height), off = sa.Next(false, StepAssist.Height);
+            var sa2 = new StepAssist();
+            bool higherKept = sa2.Next(true, 1.5f) == null && sa2.Next(false, 1.5f) == null;
+            var sa3 = new StepAssist();
+            sa3.Next(true, 0.6f);
+            bool changedMeanwhile = sa3.Next(false, 1.4f) == null;
+            Check(leftAlone, "without the step assist the step height is never touched (a Steeplechaser's 1.2 stays)");
+            Check(on == StepAssist.Height && still == null && off == 0.6f, $"the step assist raises 0.6 to {StepAssist.Height} and puts 0.6 back when switched off");
+            Check(higherKept && changedMeanwhile, "a higher step height from another mod is kept, and one changed while it was on isn't undone");
         }
 
         /// <summary>1.24.2: the Repair Talisman in ordinary containers, only those the RepairTalismanContainers setting names.</summary>
