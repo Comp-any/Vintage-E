@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.6 — 2026-11-21
+
+### Added
+- **Quivers and Sheaths:** the dark and red matter spears now go in its javelin quivers too. Without Quivers and Sheaths this changes nothing.
+
 ## 1.24.5 — 2026-11-21
 
 ### Added

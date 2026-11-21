@@ -13,7 +13,8 @@
   "tags": [
     "weapon",
     "weapon-melee",
-    "weapon-spear"
+    "weapon-spear",
+    "javelin"
   ],
   "damagedby": [
     "attacking"

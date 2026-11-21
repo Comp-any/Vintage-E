@@ -1678,6 +1678,8 @@ namespace VintageE
                 ("vintagee:matterknife-red", new[] { "knife" }, "knife-metal", "copper"),
                 ("vintagee:matterbow-dark", new[] { "bow" }, "recurve", null),
                 ("vintagee:matterbow-red", new[] { "bow" }, "recurve", null),
+                ("vintagee:matterspear-dark", new[] { "javelin" }, null, null),
+                ("vintagee:matterspear-red", new[] { "javelin" }, null, null),
                 ("vintagee:mattertool-dark-axe", new[] { "tool-axe" }, null, "blackbronze"),
                 ("vintagee:mattertool-red-pickaxe", new[] { "tool-pickaxe" }, null, "copper"),
                 ("vintagee:redmattertool-katar", new[] { "tool-axe" }, null, "copper"),
@@ -1698,7 +1700,7 @@ namespace VintageE
                 if (metal != null && gotMetal != metal) problems.Add($"{code} MetalVariantCode {gotMetal ?? "none"}");
             }
             if (names == null) Line("  Quivers and Sheaths tags: the tag registry can't be read here, so only the looks were checked");
-            Check(problems.Count == 0, "matter swords, knives and bows carry the tags Quivers and Sheaths' sheaths and bow holders accept, and the hilt look and colour"
+            Check(problems.Count == 0, "matter swords, knives, bows and spears carry the tags Quivers and Sheaths' sheaths and bow holders accept, and the hilt look and colour"
                 + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
         }
 
