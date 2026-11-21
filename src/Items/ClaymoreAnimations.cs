@@ -23,7 +23,7 @@ namespace VintageE
             if (claymores.Length == 0) return 0;
             EntityProperties player = api.World.GetEntityType(new AssetLocation("game:player"));
             var codes = player?.Client?.Animations?.Where(a => a?.Code != null).Select(a => a.Code).ToHashSet(StringComparer.Ordinal);
-            Func<string, bool> has = code => codes != null && codes.Contains(code);
+            System.Func<string, bool> has = code => codes != null && codes.Contains(code);
             int changed = 0;
             foreach (CollectibleObject c in claymores) if (Fix(c, has)) changed++;
             if (changed > 0) log?.Warning("Vintage-E: Ancient Armory's claymore animations aren't on the player ({0} not found); the matter claymores use the game's sword swing instead, so they still hit.",
@@ -32,7 +32,7 @@ namespace VintageE
         }
 
         /// <summary>Swaps the animations <paramref name="has"/> says are missing. Returns true if anything changed.</summary>
-        public static bool Fix(CollectibleObject c, Func<string, bool> has)
+        public static bool Fix(CollectibleObject c, System.Func<string, bool> has)
         {
             bool changed = false;
             if (c.HeldTpHitAnimation == Swing && !has(Swing)) { c.HeldTpHitAnimation = SwingFallback; changed = true; }
