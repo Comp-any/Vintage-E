@@ -29,6 +29,14 @@ namespace VintageE
         /// </summary>
         public bool HotLooksReload = true;
 
+        public const string HelpAuto = "Auto", HelpOn = "On", HelpOff = "Off";
+        /// <summary>
+        /// The long explanations in the Transmutation Table and Tablet window (burning, learning and charging, the
+        /// clicks, the magnet): Auto (default: shown when the whole window fits on the screen with them), On or Off.
+        /// The window's Help button switches between On and Off.
+        /// </summary>
+        public string TabletHelp = HelpAuto;
+
         /// <summary>Which defaults this file was written with; lets a changed default reach files saved before it changed.</summary>
         public int ConfigVersion = 0;
 
@@ -85,6 +93,7 @@ namespace VintageE
             ConfigVersion = CurrentConfigVersion;
             int li = Array.FindIndex(Looks, l => l.Equals((Look ?? "").Trim(), StringComparison.OrdinalIgnoreCase));
             Look = li >= 0 ? Looks[li] : LookServer;
+            TabletHelp = HelpOn.Equals(TabletHelp?.Trim(), StringComparison.OrdinalIgnoreCase) ? HelpOn : HelpOff.Equals(TabletHelp?.Trim(), StringComparison.OrdinalIgnoreCase) ? HelpOff : HelpAuto;
             WatchIconSize = GameMath.Clamp(WatchIconSize, 16, 128);
             WatchIconOffsetX = GameMath.Clamp(WatchIconOffsetX, -2000, 2000);
             WatchIconOffsetY = GameMath.Clamp(WatchIconOffsetY, -2000, 2000);

@@ -77,6 +77,7 @@ namespace VintageE
                 CheckStepAssist();
                 CheckGoodNeighbour();
                 CheckLogAttribution();
+                CheckTabletLayout();
                 CheckQuiversAndSheaths();
                 CheckClaymore();
                 CheckAncientArmoryNotice();
@@ -1929,6 +1930,33 @@ namespace VintageE
             Check(leftAlone, "without the step assist the step height is never touched (a Steeplechaser's 1.2 stays)");
             Check(on == StepAssist.Height && still == null && off == 0.6f, $"the step assist raises 0.6 to {StepAssist.Height} and puts 0.6 back when switched off");
             Check(higherKept && changedMeanwhile, "a higher step height from another mod is kept, and one changed while it was on isn't undone");
+        }
+
+        /// <summary>
+        /// 1.26.3: the table and tablet window fits the screen: the long explanations fold away when it wouldn't fit
+        /// with them (or as the player's Help button says), and then the grid of known items gives up rows.
+        /// </summary>
+        void CheckTabletLayout()
+        {
+            // A window like the tablet's: 300 pixels of frame and controls, 51 a row, 260 of explanations.
+            System.Func<bool, int, double> height = (help, rows) => 300 + rows * 51 + (help ? 260 : 0);
+            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 1080, height, out bool bigHelp, out int bigRows);
+            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 800, height, out bool midHelp, out int midRows);
+            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 520, height, out bool smallHelp, out int smallRows);
+            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 300, height, out bool tinyHelp, out int tinyRows);
+            Check(bigHelp && bigRows == 6 && !midHelp && midRows == 6 && !smallHelp && smallRows == 4 && !tinyHelp && tinyRows == TabletLayout.MinRows,
+                $"the tablet window fits the screen by itself: everything on a tall screen, no explanations on a middling one, fewer rows on a small one ({bigRows}, {midRows}, {smallRows}, {tinyRows} rows)");
+            TabletLayout.Fit(VintageEClientConfig.HelpOn, 800, height, out bool onHelp, out int onRows);
+            TabletLayout.Fit(VintageEClientConfig.HelpOff, 1080, height, out bool offHelp, out int offRows);
+            Check(onHelp && onRows == 4 && !offHelp && offRows == 6, "the Help button's choice is kept: on shows the explanations and takes rows instead, off hides them even where they would fit");
+            var cfg = new VintageEClientConfig { TabletHelp = " on " };
+            cfg.Normalize();
+            var odd = new VintageEClientConfig { TabletHelp = "sometimes" };
+            odd.Normalize();
+            Check(cfg.TabletHelp == VintageEClientConfig.HelpOn && odd.TabletHelp == VintageEClientConfig.HelpAuto && new VintageEClientConfig().TabletHelp == VintageEClientConfig.HelpAuto,
+                "the TabletHelp setting is Auto unless it says On or Off");
+            string title = Lang.GetL("en", "vintagee:gui-arcanetablet-title");
+            Check(title == "Arcane Tablet" && Lang.GetL("en", "vintagee:gui-help-show") == "Help", "the Arcane Tablet's window has its own title, and the Help button its label");
         }
 
         /// <summary>

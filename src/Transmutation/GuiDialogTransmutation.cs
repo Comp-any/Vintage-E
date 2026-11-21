@@ -16,11 +16,35 @@ namespace VintageE
     /// <para>Known entries are resolved once and kept (names, stacks, values), so opening the window and typing in the
     /// search box only filter and sort; a value update from the server re-reads the values.</para>
     /// </summary>
+    /// <summary>
+    /// How much of the table and tablet window is shown, so that it fits on the screen (1.26.3). With everything in it
+    /// the tablet's window is about 1,030 GUI pixels tall: taller than a 1440-pixel screen at a GUI scale of 1.4, and
+    /// than any 1080-pixel one above 1.0. Two things give: the long explanations fold away behind the Help button, and
+    /// if that isn't enough the grid of known items loses rows (there are pages anyway).
+    /// </summary>
+    public static class TabletLayout
+    {
+        public const int MaxRows = 6, MinRows = 3;
+
+        /// <param name="setting">The player's TabletHelp setting: Auto, On or Off.</param>
+        /// <param name="screenHeight">The screen's height in GUI pixels.</param>
+        /// <param name="height">The window's height in GUI pixels with the explanations shown or not, and that many rows.</param>
+        public static void Fit(string setting, double screenHeight, System.Func<bool, int, double> height, out bool help, out int rows)
+        {
+            help = setting == VintageEClientConfig.HelpOn || (setting != VintageEClientConfig.HelpOff && height(true, MaxRows) <= screenHeight);
+            rows = MaxRows;
+            while (rows > MinRows && height(help, rows) > screenHeight) rows--;
+        }
+    }
+
     public class GuiDialogTransmutation : GuiDialog
     {
         const int Cols = 9;
-        const int Rows = 6;
-        const int PerPage = Cols * Rows;
+        const int MaxPerPage = Cols * TabletLayout.MaxRows;
+        /// <summary>The rows of known items in the window as it is drawn now, and whether its long explanations are shown.</summary>
+        int rows = TabletLayout.MaxRows;
+        bool helpShown = true;
+        int PerPage => Cols * rows;
 
         readonly VintageEModSystem mod;
         readonly BlockPos tablePos;
@@ -57,7 +81,7 @@ namespace VintageE
 
         List<Entry> entries = new List<Entry>();
         /// <summary>The knowledge key behind each grid slot on the current page.</summary>
-        readonly string[] slotKeys = new string[PerPage];
+        readonly string[] slotKeys = new string[MaxPerPage];
         string search = "";
         int page;
         double shownEmc = -1;
@@ -80,7 +104,7 @@ namespace VintageE
             burnInv = new DisplayInventory(capi, "burn-" + uid, 1);
             learnInv = new DisplayInventory(capi, "learn-" + uid, 1);
             chargeInv = new DisplayInventory(capi, "charge-" + uid, 1);
-            knownInv = new DisplayInventory(capi, "known-" + uid, PerPage);
+            knownInv = new DisplayInventory(capi, "known-" + uid, MaxPerPage);
             magnetInv = new DisplayInventory(capi, "magnet-" + uid, 1);
             filterInv = new DisplayInventory(capi, "magnetfilter-" + uid, TabletMagnet.FilterSlots);
             if (cacheWorld != capi.World) { cache.Clear(); cacheWorld = capi.World; }
@@ -94,68 +118,102 @@ namespace VintageE
             double width = Cols * slot;
             double top = GuiStyle.TitleBarHeight;
             CairoFont detail = CairoFont.WhiteDetailText();
-
-            // Header: EMC on the left, the learn and burn slots on the right; the hint wraps under the EMC.
-            double leftWidth = width - 3 * slot - 80;
-            string burnHint = Lang.Get("vintagee:gui-burn-hint");
-            double burnHintHeight = GuiLayout.TextHeight(capi, detail, burnHint, leftWidth);
-            // EMC on its own line, the known count under it: a big balance (billions) no longer runs into the slots.
-            ElementBounds emcBounds = ElementBounds.Fixed(0, top + 4, leftWidth, 28);
-            ElementBounds knownBounds = ElementBounds.Fixed(0, top + 30, leftWidth, 22);
-            ElementBounds burnHintBounds = ElementBounds.Fixed(0, top + 52, leftWidth, burnHintHeight);
-            ElementBounds burnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - slot, top + 8, 1, 1);
-            ElementBounds burnLabelBounds = ElementBounds.Fixed(width - slot - 14, top + 10 + slot, slot + 28, 20);
-            ElementBounds learnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - 2 * slot - 28, top + 8, 1, 1);
-            ElementBounds learnLabelBounds = ElementBounds.Fixed(width - 2 * slot - 42, top + 10 + slot, slot + 28, 20);
-            ElementBounds chargeSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - 3 * slot - 56, top + 8, 1, 1);
-            ElementBounds chargeLabelBounds = ElementBounds.Fixed(width - 3 * slot - 70, top + 10 + slot, slot + 28, 20);
-
-            double row = Math.Max(top + 52 + burnHintHeight, top + 32 + slot) + 8;
-            ElementBounds searchBounds = ElementBounds.Fixed(0, row, width - 180, 30);
-            ElementBounds sortBounds = ElementBounds.Fixed(width - 170, row, 170, 30);
-            ElementBounds gridBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, row + 40, Cols, Rows);
-
-            double pageRow = row + 40 + Rows * slot + 8;
-            ElementBounds prevBounds = ElementBounds.Fixed(width / 2 - 96, pageRow, 36, 30);
-            ElementBounds pageBounds = ElementBounds.Fixed(width / 2 - 56, pageRow + 5, 112, 24);
-            ElementBounds nextBounds = ElementBounds.Fixed(width / 2 + 60, pageRow, 36, 30);
-
-            string help = Lang.Get("vintagee:gui-create-hint");
-            double helpHeight = GuiLayout.TextHeight(capi, detail, help, width);
-            ElementBounds helpBounds = ElementBounds.Fixed(0, pageRow + 38, width, helpHeight);
-
-            var children = new List<ElementBounds> { emcBounds, knownBounds, burnHintBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, chargeSlotBounds, chargeLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds, helpBounds };
-
-            // An Arcane Tablet adds a button for its crafting window (1.19.0).
+            // An Arcane Tablet adds a button for its crafting window (1.19.0), and has its own name in the title (1.26.3).
             bool arcane = IsTablet && EmcCraft.CarriesArcaneTablet(capi.World.Player);
-            ElementBounds craftBounds = null;
-            double extra = 0;
-            if (arcane)
+
+            // The three long explanations. They fold away behind the Help button when the window wouldn't fit the screen with them.
+            double leftWidth = width - 3 * slot - 80;
+            double hintWidth = width - slot - 12;
+            string burnHint = Lang.Get("vintagee:gui-burn-hint");
+            string help = Lang.Get("vintagee:gui-create-hint");
+            string magnetHint = Lang.Get("vintagee:magnet-hint", TabletMagnet.Radius);
+            double burnHintHeight = GuiLayout.TextHeight(capi, detail, burnHint, leftWidth);
+            double helpHeight = GuiLayout.TextHeight(capi, detail, help, width);
+            double magnetHintHeight = GuiLayout.TextHeight(capi, detail, magnetHint, hintWidth);
+            // The line by the filter changes with the magnet and mode; leave room for the longest so it never runs into the slots.
+            string[] filterStates = { "vintagee:magnet-none", "vintagee:magnet-filter-only", "vintagee:magnet-filter-except", "vintagee:magnet-filter-empty" };
+            double labelHeightWide = filterStates.Max(k => GuiLayout.TextHeight(capi, detail, Lang.Get(k), width));
+            double labelHeightNarrow = filterStates.Max(k => GuiLayout.TextHeight(capi, detail, Lang.Get(k), hintWidth));
+
+            ElementBounds emcBounds = null, knownBounds = null, helpButtonBounds = null, burnHintBounds = null, burnSlotBounds = null, burnLabelBounds = null,
+                learnSlotBounds = null, learnLabelBounds = null, chargeSlotBounds = null, chargeLabelBounds = null, searchBounds = null, sortBounds = null, gridBounds = null,
+                prevBounds = null, pageBounds = null, nextBounds = null, helpBounds = null, craftBounds = null,
+                magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null;
+
+            // Lays the window out with the explanations shown or not and that many rows of known items; returns its height.
+            double Layout(bool showHelp, int gridRows)
             {
-                craftBounds = ElementBounds.Fixed(0, pageRow + 38 + helpHeight + 6, 200, 28);
-                children.Add(craftBounds);
-                extra = 36;
+                // Header: EMC on the left with the known count and the Help button under it, the three slots on the right;
+                // the hint wraps under the button. EMC has its own line, so a big balance (billions) doesn't run into the slots.
+                emcBounds = ElementBounds.Fixed(0, top + 4, leftWidth, 28);
+                knownBounds = ElementBounds.Fixed(0, top + 30, leftWidth, 22);
+                helpButtonBounds = ElementBounds.Fixed(0, top + 56, 110, 24);
+                burnHintBounds = ElementBounds.Fixed(0, top + 86, leftWidth, burnHintHeight);
+                burnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - slot, top + 8, 1, 1);
+                burnLabelBounds = ElementBounds.Fixed(width - slot - 14, top + 10 + slot, slot + 28, 20);
+                learnSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - 2 * slot - 28, top + 8, 1, 1);
+                learnLabelBounds = ElementBounds.Fixed(width - 2 * slot - 42, top + 10 + slot, slot + 28, 20);
+                chargeSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, width - 3 * slot - 56, top + 8, 1, 1);
+                chargeLabelBounds = ElementBounds.Fixed(width - 3 * slot - 70, top + 10 + slot, slot + 28, 20);
+
+                double row = Math.Max(showHelp ? top + 86 + burnHintHeight : top + 80, top + 32 + slot) + 8;
+                searchBounds = ElementBounds.Fixed(0, row, width - 180, 30);
+                sortBounds = ElementBounds.Fixed(width - 170, row, 170, 30);
+                gridBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, row + 40, Cols, gridRows);
+
+                double pageRow = row + 40 + gridRows * slot + 8;
+                prevBounds = ElementBounds.Fixed(width / 2 - 96, pageRow, 36, 30);
+                pageBounds = ElementBounds.Fixed(width / 2 - 56, pageRow + 5, 112, 24);
+                nextBounds = ElementBounds.Fixed(width / 2 + 60, pageRow, 36, 30);
+                helpBounds = ElementBounds.Fixed(0, pageRow + 38, width, helpHeight);
+                double bottom = pageRow + 38 + (showHelp ? helpHeight : 0);
+
+                if (arcane)
+                {
+                    craftBounds = ElementBounds.Fixed(0, bottom + 6, 200, 28);
+                    bottom += 36;
+                }
+
+                // The tablet's magnet: a title row with the filter mode, the magnet slot, then the filter slots. With the
+                // explanations shown, the magnet's is beside its slot and the filter's line under it; without, that line is beside the slot.
+                if (IsTablet)
+                {
+                    double y = bottom + 10;
+                    magnetTitleBounds = ElementBounds.Fixed(0, y + 4, width - 230, 24);
+                    modeBounds = ElementBounds.Fixed(width - 220, y, 220, 28);
+                    magnetSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, y + 34, 1, 1);
+                    magnetHintBounds = ElementBounds.Fixed(slot + 12, y + 34, hintWidth, magnetHintHeight);
+                    double fy;
+                    if (showHelp)
+                    {
+                        fy = y + 34 + Math.Max(slot, magnetHintHeight) + 8;
+                        filterLabelBounds = ElementBounds.Fixed(0, fy, width, labelHeightWide);
+                        fy += labelHeightWide + 4;
+                    }
+                    else
+                    {
+                        filterLabelBounds = ElementBounds.Fixed(slot + 12, y + 34 + Math.Max(0, (slot - labelHeightNarrow) / 2), hintWidth, labelHeightNarrow);
+                        fy = y + 34 + Math.Max(slot, labelHeightNarrow) + 6;
+                    }
+                    filterBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, fy, TabletMagnet.FilterSlots, 1);
+                    bottom = fy + slot;
+                }
+                // The frame around it, and a little air above and below so it clears the screen's edges.
+                return bottom + 2 * GuiStyle.ElementToDialogPadding + 24;
             }
 
-            // The tablet's magnet: a title row with the filter mode, the magnet slot with its hint, then the filter slots.
-            ElementBounds magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null;
-            string magnetHint = Lang.Get("vintagee:magnet-hint", TabletMagnet.Radius);
+            double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
+            double screen = capi.Render.FrameHeight / scale;
+            TabletLayout.Fit(mod.ClientConfig?.TabletHelp ?? VintageEClientConfig.HelpAuto, screen, Layout, out helpShown, out rows);
+            Layout(helpShown, rows);
+
+            var children = new List<ElementBounds> { emcBounds, knownBounds, helpButtonBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, chargeSlotBounds, chargeLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds };
+            if (helpShown) { children.Add(burnHintBounds); children.Add(helpBounds); }
+            if (arcane) children.Add(craftBounds);
             if (IsTablet)
             {
-                double y = pageRow + 38 + helpHeight + 10 + extra;
-                magnetTitleBounds = ElementBounds.Fixed(0, y + 4, width - 230, 24);
-                modeBounds = ElementBounds.Fixed(width - 220, y, 220, 28);
-                double hintWidth = width - slot - 12;
-                double magnetHintHeight = GuiLayout.TextHeight(capi, detail, magnetHint, hintWidth);
-                magnetSlotBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, y + 34, 1, 1);
-                magnetHintBounds = ElementBounds.Fixed(slot + 12, y + 34, hintWidth, magnetHintHeight);
-                double fy = y + 34 + Math.Max(slot, magnetHintHeight) + 8;
-                // The line above the filter changes with the magnet and mode; leave room for the longest so it never runs into the slots.
-                double labelHeight = new[] { "vintagee:magnet-none", "vintagee:magnet-filter-only", "vintagee:magnet-filter-except", "vintagee:magnet-filter-empty" }
-                    .Max(k => GuiLayout.TextHeight(capi, detail, Lang.Get(k), width));
-                filterLabelBounds = ElementBounds.Fixed(0, fy, width, labelHeight);
-                filterBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, fy + labelHeight + 4, TabletMagnet.FilterSlots, 1);
-                children.AddRange(new[] { magnetTitleBounds, modeBounds, magnetSlotBounds, magnetHintBounds, filterLabelBounds, filterBounds });
+                children.AddRange(new[] { magnetTitleBounds, modeBounds, magnetSlotBounds, filterLabelBounds, filterBounds });
+                if (helpShown) children.Add(magnetHintBounds);
             }
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
@@ -163,8 +221,9 @@ namespace VintageE
             bgBounds.WithChildren(children.ToArray());
 
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
-            string title = Lang.Get(IsTablet ? "vintagee:gui-tablet-title" : "vintagee:gui-table-title");
+            string title = Lang.Get(!IsTablet ? "vintagee:gui-table-title" : arcane ? "vintagee:gui-arcanetablet-title" : "vintagee:gui-tablet-title");
             string[] sortNames = { Lang.Get("vintagee:gui-sort-valuedesc"), Lang.Get("vintagee:gui-sort-valueasc"), Lang.Get("vintagee:gui-sort-nameasc"), Lang.Get("vintagee:gui-sort-namedesc") };
+            int[] shownSlots = Enumerable.Range(0, PerPage).ToArray();
 
             GuiComposer composer = capi.Gui
                 .CreateCompo("vintagee-transmutation", dialogBounds)
@@ -173,7 +232,7 @@ namespace VintageE
                 .BeginChildElements(bgBounds)
                     .AddDynamicText("", CairoFont.WhiteSmallishText(), emcBounds, "emc")
                     .AddDynamicText("", detail, knownBounds, "known")
-                    .AddStaticText(burnHint, detail, burnHintBounds)
+                    .AddSmallButton(Lang.Get(helpShown ? "vintagee:gui-help-hide" : "vintagee:gui-help-show"), OnHelpToggle, helpButtonBounds, EnumButtonStyle.Small, "helpbutton")
                     .AddItemSlotGrid(burnInv, OnSlotPacket, 1, burnSlotBounds, "burnslot")
                     .AddStaticText(Lang.Get("vintagee:gui-burn-label"), CairoFont.WhiteDetailText().WithOrientation(EnumTextOrientation.Center), burnLabelBounds)
                     .AddItemSlotGrid(learnInv, OnSlotPacket, 1, learnSlotBounds, "learnslot")
@@ -182,11 +241,21 @@ namespace VintageE
                     .AddStaticText(Lang.Get("vintagee:gui-charge-label"), CairoFont.WhiteDetailText().WithOrientation(EnumTextOrientation.Center), chargeLabelBounds)
                     .AddTextInput(searchBounds, OnSearchChanged, CairoFont.WhiteSmallText(), "search")
                     .AddDropDown(SortValues, sortNames, GameMath.Clamp(sortMode, 0, 3), OnSort, sortBounds, "sort")
-                    .AddItemSlotGrid(knownInv, OnSlotPacket, Cols, gridBounds, "knowngrid")
+                    .AddItemSlotGrid(knownInv, OnSlotPacket, Cols, shownSlots, gridBounds, "knowngrid")
                     .AddSmallButton("<", OnPrevPage, prevBounds)
                     .AddDynamicText("", CairoFont.WhiteSmallText().WithOrientation(EnumTextOrientation.Center), pageBounds, "page")
-                    .AddSmallButton(">", OnNextPage, nextBounds)
+                    .AddSmallButton(">", OnNextPage, nextBounds);
+            if (helpShown)
+            {
+                composer
+                    .AddStaticText(burnHint, detail, burnHintBounds)
                     .AddStaticText(help, detail, helpBounds);
+            }
+            else
+            {
+                // Folded away: the same words when the pointer is over the Help button.
+                composer.AddHoverText(burnHint + "\n\n" + help + (IsTablet ? "\n\n" + magnetHint : ""), CairoFont.WhiteSmallText(), 420, helpButtonBounds.FlatCopy(), "helptip");
+            }
             if (arcane) composer.AddSmallButton(Lang.Get("vintagee:emccraft-open"), () => { mod.OpenEmcCraftDialog(toggle: false); return true; }, craftBounds, EnumButtonStyle.Normal, "emccraft");
             if (IsTablet)
             {
@@ -194,8 +263,9 @@ namespace VintageE
                 composer
                     .AddStaticText(Lang.Get("vintagee:magnet-title"), CairoFont.WhiteSmallishText(), magnetTitleBounds)
                     .AddSmallButton(Lang.Get(composedExclude ? "vintagee:magnet-mode-except" : "vintagee:magnet-mode-only"), OnMagnetMode, modeBounds, EnumButtonStyle.Small, "magnetmode")
-                    .AddItemSlotGrid(magnetInv, OnSlotPacket, 1, magnetSlotBounds, "magnetslot")
-                    .AddStaticText(magnetHint, detail, magnetHintBounds)
+                    .AddItemSlotGrid(magnetInv, OnSlotPacket, 1, magnetSlotBounds, "magnetslot");
+                if (helpShown) composer.AddStaticText(magnetHint, detail, magnetHintBounds);
+                composer
                     .AddDynamicText("", detail, filterLabelBounds, "filterlabel")
                     .AddItemSlotGrid(filterInv, OnSlotPacket, TabletMagnet.FilterSlots, filterBounds, "filtergrid");
             }
@@ -203,6 +273,20 @@ namespace VintageE
 
             SingleComposer.GetTextInput("search").SetPlaceHolderText(Lang.Get("vintagee:gui-search"));
             if (search.Length > 0) SingleComposer.GetTextInput("search").SetValue(search, false);
+        }
+
+        /// <summary>The Help button: shows the long explanations or folds them away, and remembers which for this computer.</summary>
+        bool OnHelpToggle()
+        {
+            VintageEClientConfig cfg = mod.ClientConfig;
+            if (cfg != null)
+            {
+                cfg.TabletHelp = helpShown ? VintageEClientConfig.HelpOff : VintageEClientConfig.HelpOn;
+                cfg.Save(capi);
+            }
+            // Drawn again a frame later: this runs from the button's own click.
+            capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) { Compose(); Refresh(true); } }, "vintagee-table-recompose");
+            return true;
         }
 
         public override void OnGuiOpened()
@@ -330,9 +414,10 @@ namespace VintageE
 
             int pages = Math.Max(1, (entries.Count + PerPage - 1) / PerPage);
             page = GameMath.Clamp(page, 0, pages - 1);
-            for (int i = 0; i < PerPage; i++)
+            for (int i = 0; i < MaxPerPage; i++)
             {
-                int idx = page * PerPage + i;
+                // Slots past the rows on show stay empty (the grid has fewer rows on a small screen).
+                int idx = i < PerPage ? page * PerPage + i : int.MaxValue;
                 knownInv[i].Itemstack = idx < entries.Count ? entries[idx].Stack.Clone() : null;
                 slotKeys[i] = idx < entries.Count ? entries[idx].Key : null;
             }

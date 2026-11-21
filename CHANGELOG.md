@@ -2,6 +2,17 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.3 — 2026-11-22
+
+### Changed
+- **The Transmutation Table and Tablet window fits the screen.** With everything in it the tablet's window was taller than many screens (a 1440-pixel one at a GUI scale of 1.4, a 1080-pixel one at anything above 1.0), and its bottom rows ended up under the hotbar or off the screen. Now:
+  - The long explanations (burning, learning and charging; the clicks; the magnet) are only shown when the whole window fits with them. Otherwise they fold away behind a new **Help** button under the EMC: hover over it to read them, click it to put them back.
+  - The Help button's choice is remembered for your computer (`TabletHelp` in `ModConfig/vintagee-client.json`: Auto, On or Off).
+  - If the window still doesn't fit, the grid of known items shows fewer rows (down to three); the pages make up for it.
+
+### Fixed
+- **The Arcane Tablet's window was titled "Transmutation Tablet".** It says Arcane Tablet now.
+
 ## 1.26.2 — 2026-11-22
 
 ### Fixed
