@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.2 — 2026-11-22
+
+### Fixed
+- **Matter tools didn't work in many recipes** (a Dark Matter Smithing Hammer with an iron plate: no output, though the game's own hammer worked). After a recipe's tool is found to fit, the game asks a second question: has it as much durability left as the recipe takes from it? A matter tool has the game's default durability of 1, which it never loses, so every recipe that takes more than 1 from its tool refused it (the pulverizer's toggle takes 10 from the hammer, the Archimedes screw 20). A tool that never wears now always has enough. This goes for every matter tool, in the inventory's grid and in the Arcane Tablet's.
+- **Emc Craft in a paused handbook showed an empty grid.** In single player the handbook pauses the game while it is open (its Pause game button), and a paused game does nothing with the request: the grid stayed empty until the handbook was closed. A crafting window can't work in a paused game, so the Arcane Tablet's crafting window now keeps the game running while it is open, and the game is paused again when the window closes with the handbook still open. Only the handbook's pause is undone, never the Esc menu's.
+- **The arrow in the Arcane Tablet's crafting window was an empty box** on computers whose game font has no "→". It is drawn now.
+- **Emc Craft priced each use of a matter tool at the whole tool**, as if the craft broke it, when comparing the recipes for an item. A matter tool's use costs nothing.
+
 ## 1.26.1 — 2026-11-22
 
 ### Fixed

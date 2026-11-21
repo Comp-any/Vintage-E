@@ -17,6 +17,12 @@ namespace VintageE
     /// candidate recipes, so those recipes are tried at all (the full check above still decides).</item>
     /// </list>
     /// Matter tools never wear out (CollectibleBehaviorMatterTool), so the recipe's durability cost does nothing.
+    ///
+    /// A third postfix (1.26.2), on <c>CollectibleObject.MatchesForCrafting</c>: after an ingredient is satisfied the
+    /// game also asks whether a kept tool has as much durability left as the recipe takes off it. A matter tool has
+    /// the game's default durability of 1 (it never loses it), so every recipe that takes more than 1 from its tool
+    /// (the pulverizer's 10 from the hammer, the Archimedes screw's 20) refused it: the tool sat in the grid and no
+    /// output appeared, while the game's own hammer worked. A tool that never wears always has enough.
     /// </summary>
     public static class MatterToolRecipePatches
     {
@@ -24,6 +30,20 @@ namespace VintageE
         static bool patched;
         public static string Error { get; private set; }
         public static bool Patched => patched;
+        /// <summary>Whether the durability check is hooked too (the third postfix), and why not if it isn't.</summary>
+        public static bool DurabilityPatched { get; private set; }
+        public static string DurabilityError { get; private set; }
+        /// <summary>How many times a matter tool was let through the game's "enough durability left" check (for the tests).</summary>
+        public static int DurabilityAccepted;
+
+        /// <summary>A tool that never wears out: every matter tool carries the behaviour that takes all wear off it.</summary>
+        public static bool NeverWears(CollectibleObject c)
+        {
+            CollectibleBehavior[] behaviors = c?.CollectibleBehaviors;
+            if (behaviors == null) return false;
+            for (int i = 0; i < behaviors.Length; i++) if (behaviors[i] is CollectibleBehaviorMatterTool) return true;
+            return false;
+        }
         /// <summary>How many times a matter tool was accepted where the game's check refused it (for the doctor and tests).</summary>
         public static int Accepted;
 
@@ -101,6 +121,19 @@ namespace VintageE
                 patched = true;
                 Error = null;
                 logger.Notification("Vintage-E: matter tools: hooked the recipe ingredient checks, so they count as the game's tools in recipes.");
+                try
+                {
+                    var crafting = typeof(CollectibleObject).GetMethod(nameof(CollectibleObject.MatchesForCrafting), new[] { typeof(ItemStack), typeof(IRecipeBase), typeof(IRecipeIngredient) });
+                    if (crafting == null) DurabilityError = "the game's durability check for recipe tools (MatchesForCrafting) wasn't found";
+                    else
+                    {
+                        harmony.Patch(crafting, postfix: new HarmonyMethod(typeof(MatterToolRecipePatches), nameof(CraftingPostfix)));
+                        DurabilityPatched = true;
+                        DurabilityError = null;
+                    }
+                }
+                catch (Exception e) { DurabilityError = e.Message; }
+                if (!DurabilityPatched) logger.Warning("Vintage-E: matter tools: {0}; recipes that take more than 1 durability from their tool won't accept a matter tool.", DurabilityError);
             }
             catch (Exception e)
             {
@@ -117,6 +150,15 @@ namespace VintageE
             if (!Accepts(__instance.Code, inputStack)) return;
             __result = true;
             Accepted++;
+        }
+
+        /// <summary>The game's only reason to say no here is a kept tool with less durability left than the recipe takes; a tool that never wears has enough.</summary>
+        static void CraftingPostfix(ItemStack inputStack, IRecipeIngredient ingredient, ref bool __result)
+        {
+            if (__result || inputStack?.Collectible == null || ingredient == null) return;
+            if (!NeverWears(inputStack.Collectible)) return;
+            __result = true;
+            DurabilityAccepted++;
         }
 
         static void FastPostfix(FastSearchCraftingRecipeIngredient __instance, ItemStack inputStack, ref bool __result)

@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System;
+using System.Linq;
+using Cairo;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.Common;
+using Vintagestory.GameContent;
 
 namespace VintageE
 {
@@ -12,6 +15,29 @@ namespace VintageE
     /// its output, and the EMC balance. Opening and closing it opens and closes the grid on both sides; closing
     /// empties it (see <see cref="EmcCraft"/>).
     /// </summary>
+    /// <summary>
+    /// When the Emc Craft window keeps the game running, and when it pauses it again (1.26.2).
+    ///
+    /// In single player the handbook pauses the game while it is open (its "Pause game" button). A paused game's
+    /// built-in server does nothing: it doesn't handle the request to fill the grid, doesn't match the recipe or hand
+    /// over what is crafted, and sends no slot to the screen. So Emc Craft clicked in a paused handbook showed an
+    /// empty grid until the handbook was closed. A crafting window can't work in a paused game, so while this one is
+    /// open under a handbook the game runs, and when the window closes with the handbook still open it is paused again.
+    /// Only the handbook's pause is undone: the Esc menu's stays.
+    /// </summary>
+    public static class EmcCraftPause
+    {
+        /// <summary>Un-pause now: the game is paused and a handbook is what paused it.</summary>
+        public static bool ShouldRun(bool paused, bool handbookOpen) => paused && handbookOpen;
+
+        /// <summary>
+        /// Pause again after the window closed: no Emc Craft window is open now, the handbook still is, and the
+        /// handbook would have the game paused (single player, not opened to LAN, its Pause game on).
+        /// </summary>
+        public static bool ShouldPauseAgain(bool windowOpen, bool handbookOpen, bool singlePlayer, bool openedToLan, bool noHandbookPause, bool paused) =>
+            !windowOpen && handbookOpen && singlePlayer && !openedToLan && !noHandbookPause && !paused;
+    }
+
     public class GuiDialogEmcCraft : GuiDialog
     {
         readonly VintageEModSystem mod;
@@ -63,7 +89,7 @@ namespace VintageE
                 .BeginChildElements(bgBounds)
                     .AddDynamicText("", CairoFont.WhiteSmallishText(), emcBounds, "emc")
                     .AddItemSlotGrid(grid, SendInvPacket, EmcCraft.GridSize, cells, gridBounds, "grid")
-                    .AddStaticText("→", CairoFont.WhiteMediumText().WithOrientation(EnumTextOrientation.Center), arrowBounds)
+                    .AddStaticCustomDraw(arrowBounds, DrawArrow)
                     .AddItemSlotGrid(grid, SendInvPacket, 1, new[] { cells.Length }, outputBounds, "output")
                     .AddDynamicText(status ?? "", CairoFont.WhiteDetailText().WithColor(new double[] { 1, 0.45, 0.4, 1 }), statusBounds, "status")
                     .AddStaticText(hint, detail, hintBounds)
@@ -73,6 +99,71 @@ namespace VintageE
         }
 
         void SendInvPacket(object packet) => capi.Network.SendPacketClient(packet);
+
+        /// <summary>
+        /// The arrow between the grid and the output, drawn (1.26.2). It was the character "→", which the game's font
+        /// doesn't have on every computer: there it showed as an empty box.
+        /// </summary>
+        static void DrawArrow(Context ctx, ImageSurface surface, ElementBounds bounds)
+        {
+            double w = bounds.InnerWidth, h = bounds.InnerHeight;
+            double y = bounds.drawY + h / 2, length = w * 0.6, x0 = bounds.drawX + (w - length) / 2, x1 = x0 + length, head = h * 0.2;
+            double[] color = GuiStyle.DialogDefaultTextColor;
+            ctx.SetSourceRGBA(color[0], color[1], color[2], color[3]);
+            ctx.LineWidth = Math.Max(2, h * 0.07);
+            ctx.LineCap = LineCap.Round;
+            ctx.LineJoin = LineJoin.Round;
+            ctx.MoveTo(x0, y);
+            ctx.LineTo(x1, y);
+            ctx.Stroke();
+            ctx.MoveTo(x1 - head, y - head);
+            ctx.LineTo(x1, y);
+            ctx.LineTo(x1 - head, y + head);
+            ctx.Stroke();
+        }
+
+        // ---------------------------------------------------------------- a paused game (see EmcCraftPause)
+
+        bool unpauseLogged;
+
+        bool HandbookOpen()
+        {
+            try { return capi.OpenedGuis.Any(d => d is GuiDialogHandbook h && h.IsOpened()); }
+            catch { return false; }
+        }
+
+        /// <summary>Un-pauses the game if the handbook has it paused. Called when the window opens, before every fill, and each frame while it is open.</summary>
+        public void KeepRunning()
+        {
+            try
+            {
+                if (!capi.IsGamePaused || !EmcCraftPause.ShouldRun(true, HandbookOpen())) return;
+                capi.PauseGame(false);
+                if (unpauseLogged) return;
+                unpauseLogged = true;
+                capi.Logger.Notification("Vintage-E: Emc Craft: the handbook had the game paused; it runs while the Emc Craft window is open (a paused game can't fill the grid or craft) and is paused again when the window closes");
+            }
+            catch (Exception e) { Guard.Report(capi.Logger, "un-pausing the game for the Emc Craft window", e); }
+        }
+
+        public override void OnRenderGUI(float deltaTime)
+        {
+            // The handbook pauses again when it is opened (or its Pause game is switched on) with this window already open.
+            if (capi.IsGamePaused) KeepRunning();
+            base.OnRenderGUI(deltaTime);
+        }
+
+        /// <summary>After closing: back to the handbook's pause, a moment later so the server has taken the grid's contents back first.</summary>
+        void PauseAgainLater()
+        {
+            // Nothing to do unless a handbook is open: then the game runs only because of this window (or should be paused anyway).
+            if (!HandbookOpen() || capi.IsGamePaused) return;
+            capi.Event.RegisterCallback(Guard.Tick(capi.Logger, "pausing the game again after the Emc Craft window", () =>
+            {
+                if (EmcCraftPause.ShouldPauseAgain(mod.EmcCraftWindowOpen, HandbookOpen(), capi.IsSinglePlayer, capi.OpenedToLan, capi.Settings.Bool["noHandbookPause"], capi.IsGamePaused))
+                    capi.PauseGame(true);
+            }), 500);
+        }
 
         string status;
         int slotChangesLogged;
@@ -141,6 +232,7 @@ namespace VintageE
         public override void OnGuiOpened()
         {
             base.OnGuiOpened();
+            KeepRunning();
             IPlayer player = capi.World.Player;
             // The server's grid always starts empty (it gives back anything saved in it on joining); a copy the game sent
             // with the player data may still show those old stacks here, so clear this side to match.
@@ -166,6 +258,7 @@ namespace VintageE
             for (int i = 0; i < grid.Count; i++) if (grid[i] != null) grid[i].Itemstack = null;
             if (player.InventoryManager.HasInventory(grid)) player.InventoryManager.CloseInventory(grid);
             mod.SendEmcCraft(new EmcCraftPacket { Action = EmcCraftAction.Close });
+            PauseAgainLater();
         }
     }
 }

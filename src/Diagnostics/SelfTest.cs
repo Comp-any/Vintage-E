@@ -1196,6 +1196,58 @@ namespace VintageE
             Check(refused.Count == 0 && byCode.ContainsKey("saw") && byCode.ContainsKey("hammer"),
                 $"matter tools count as the game's tools in its recipes (by code: {string.Join(", ", byCode.Select(k => k.Key + "→" + k.Value))}; by tag: {string.Join(", ", byTag.Select(k => k.Key + "→" + k.Value))})"
                 + (refused.Count > 0 ? "; refused: " + string.Join(", ", refused.Distinct().Take(6)) : ""));
+            // 1.26.2: the game's second question about a recipe's tool, "has it as much durability left as the recipe
+            // takes?". A matter tool has the default durability of 1 and never loses it, so it must pass whatever the
+            // recipe takes (the pulverizer takes 10 from the hammer); a game tool that is nearly worn out still fails.
+            var worn = new List<string>();
+            int dearest = 0, toolRecipes = 0;
+            string dearestWhat = "";
+            CraftingRecipeIngredient dearIng = null;
+            GridRecipe dearRecipe = null;
+            foreach (GridRecipe r in sapi.World.GridRecipes)
+            {
+                if (r?.ResolvedIngredients == null || r.Output?.Code == null) continue;
+                foreach (CraftingRecipeIngredient ing in r.ResolvedIngredients)
+                {
+                    if (ing == null || !EmcCraft.Kept(ing)) continue;
+                    int cost = EmcCraft.DurabilityCost(ing);
+                    foreach (var kv in tools)
+                    {
+                        if (kv.Value == null || !ing.SatisfiesAsIngredient(kv.Value, false)) continue;
+                        toolRecipes++;
+                        if (!kv.Value.Collectible.MatchesForCrafting(kv.Value, r, ing)) worn.Add(kv.Value.Collectible.Code.Path + " for " + r.Output.Code.Path + " (takes " + cost + ")");
+                        else if (cost > dearest) { dearest = cost; dearestWhat = kv.Key + " for " + r.Output.Code.Path; dearIng = ing; dearRecipe = r; }
+                    }
+                }
+            }
+            Check(MatterToolRecipePatches.DurabilityPatched && worn.Count == 0 && dearest > 1,
+                $"matter tools pass the game's durability check for a recipe's tool whatever it takes ({toolRecipes} tool uses checked; the most taken: {dearest}, from the {dearestWhat})"
+                + (MatterToolRecipePatches.DurabilityError != null ? " (" + MatterToolRecipePatches.DurabilityError + ")" : "")
+                + (worn.Count > 0 ? "; refused: " + string.Join(", ", worn.Distinct().Take(6)) : ""));
+            if (dearIng != null)
+            {
+                string family = tools.FirstOrDefault(kv => kv.Value != null && dearIng.SatisfiesAsIngredient(kv.Value, false)).Key;
+                ItemStack nearlyWorn = family != null && vanilla.TryGetValue(family, out ItemStack own) ? own?.Clone() : null;
+                ItemStack matter = family != null ? tools[family] : null;
+                nearlyWorn?.Attributes.SetInt("durability", 1);
+                Check(nearlyWorn != null && dearIng.SatisfiesAsIngredient(nearlyWorn, false) && !nearlyWorn.Collectible.MatchesForCrafting(nearlyWorn, dearRecipe, dearIng),
+                    "a game tool with 1 durability left is still refused by a recipe that takes " + dearest + " (only tools that never wear are let through)");
+                Check(matter != null && mod.EmcCrafting != null && mod.EmcCrafting.WearCost(matter, dearIng) == 0,
+                    "Emc Craft counts no wear for a matter tool (it priced each use at the whole tool, as if the craft broke it)");
+            }
+            Check(MatterToolRecipePatches.NeverWears(S("vintagee:mattersmithinghammer-dark")?.Collectible) && MatterToolRecipePatches.NeverWears(S("vintagee:matterknife-dark")?.Collectible)
+                && MatterToolRecipePatches.NeverWears(sapi.World.GetItem(new AssetLocation("vintagee:mattertool-dark-hammer"))) && !MatterToolRecipePatches.NeverWears(S("game:hammer-steel")?.Collectible),
+                "matter tools are known as tools that never wear; the game's own aren't");
+
+            // 1.26.2: the Emc Craft window and a handbook that has paused the game.
+            Check(EmcCraftPause.ShouldRun(true, true) && !EmcCraftPause.ShouldRun(true, false) && !EmcCraftPause.ShouldRun(false, true),
+                "the Emc Craft window un-pauses a game the handbook paused, and leaves any other pause (the Esc menu) alone");
+            Check(EmcCraftPause.ShouldPauseAgain(false, true, true, false, false, false)
+                && !EmcCraftPause.ShouldPauseAgain(true, true, true, false, false, false) && !EmcCraftPause.ShouldPauseAgain(false, false, true, false, false, false)
+                && !EmcCraftPause.ShouldPauseAgain(false, true, false, false, false, false) && !EmcCraftPause.ShouldPauseAgain(false, true, true, true, false, false)
+                && !EmcCraftPause.ShouldPauseAgain(false, true, true, false, true, false) && !EmcCraftPause.ShouldPauseAgain(false, true, true, false, false, true),
+                "after the window closes the game is paused again only with the handbook still open and its Pause game on, in single player not opened to LAN");
+
             // The sledgehammer mines; it isn't the smith's hammer.
             ItemStack sledge = S("vintagee:mattertool-dark-hammer");
             var hammerIng = sapi.World.GridRecipes.Where(r => r?.ResolvedIngredients != null).SelectMany(r => r.ResolvedIngredients)

@@ -293,6 +293,9 @@ namespace VintageE
         public double WearCost(ItemStack tool, CraftingRecipeIngredient ing)
         {
             if (tool?.Collectible == null) return 0;
+            // A matter tool never wears. Its durability is the game's default of 1, which read as "this craft breaks it"
+            // and priced every use of one at the whole tool (1.26.2).
+            if (MatterToolRecipePatches.NeverWears(tool.Collectible)) return 0;
             double value = mod.Emc.GetValue(tool);
             int max = tool.Collectible.GetMaxDurability(tool);
             if (max <= 0) return 0; // no durability: the recipe doesn't use it up

@@ -2782,6 +2782,8 @@ namespace VintageE
         public EmcCraft ClientEmcCraft => Capi == null ? null : (EmcCrafting ??= new EmcCraft(this, Capi));
 
         GuiDialogEmcCraft emcCraftDialog;
+        /// <summary>Whether an Emc Craft window is open on this computer.</summary>
+        public bool EmcCraftWindowOpen => emcCraftDialog?.IsOpened() == true;
 
         /// <summary>Opens the Arcane Tablet's crafting window (toggles it when it's open already).</summary>
         public void OpenEmcCraftDialog(bool toggle = true)
@@ -2823,9 +2825,10 @@ namespace VintageE
         readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> diagnoseRequestAt = new System.Collections.Concurrent.ConcurrentDictionary<string, long>();
 
         /// <summary>
-        /// The server's grid after a fill, shown straight away. The game sends a grid's slots only on its game tick, and
-        /// in single player the open handbook pauses the game, so without this the grid stayed empty until the handbook
-        /// was closed (packets still arrive while paused; ticks and timed callbacks don't run).
+        /// The server's grid after a fill, shown straight away, ahead of the game's own slot updates (those come on its
+        /// next game tick). It was added for the handbook pausing single player, which it couldn't cure: a paused game's
+        /// server doesn't handle the fill at all. Since 1.26.2 the Emc Craft window un-pauses the game while it is open
+        /// (see EmcCraftPause); this stays as the quick first look at the filled grid.
         /// </summary>
         void OnEmcCraftContents(EmcCraftPacket packet)
         {
@@ -2840,6 +2843,8 @@ namespace VintageE
             if (Capi == null || recipe == null) return;
             OpenEmcCraftDialog(toggle: false);
             if (emcCraftDialog?.IsOpened() != true) return;
+            // The window may have been open already when the handbook paused the game: a paused game can't fill the grid.
+            emcCraftDialog.KeepRunning();
             emcCraftDialog.ShowStatus("");
             SendEmcCraft(EmcCraft.FillRequest(Capi.World, recipe));
         }
