@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.25.1 — 2026-11-21
+
+### Fixed
+- **Matter claymores without Ancient Armory's animations** swing like the game's falx instead of doing nothing. A claymore's swing deals its damage at a frame of its animation; if Ancient Armory's animations aren't there (its files didn't load, which happens with the Ancient Armory Fork's zip on Linux servers), the swing never reached that frame and left-click did no damage. Where Ancient Armory loads properly, nothing changes.
+
 ## 1.25.0 — 2026-11-21
 
 ### Added

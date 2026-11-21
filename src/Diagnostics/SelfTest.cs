@@ -1714,6 +1714,12 @@ namespace VintageE
             bool armory = sapi.ModLoader.IsModEnabled("ancientarmory") || sapi.ModLoader.IsModEnabled("ancientarmoryfix");
             Item dark = sapi.World.GetItem(new AssetLocation("vintagee:matterclaymore-dark")), red = sapi.World.GetItem(new AssetLocation("vintagee:matterclaymore-red"));
             List<GridRecipe> recipes = sapi.World.GridRecipes.Where(r => r?.Output?.ResolvedItemStack?.Collectible?.Code?.Path?.StartsWith("matterclaymore-", StringComparison.Ordinal) == true).ToList();
+            // 1.25.1: with an animation missing, the claymore falls back to the game's own (its swing must reach a damage frame to hit).
+            var probe = new Item { HeldTpHitAnimation = ClaymoreAnimations.Swing, HeldRightReadyAnimation = ClaymoreAnimations.Ready, HeldRightTpIdleAnimation = ClaymoreAnimations.Idle };
+            bool changedNone = !ClaymoreAnimations.Fix(probe, _ => true) && probe.HeldTpHitAnimation == ClaymoreAnimations.Swing;
+            bool changedAll = ClaymoreAnimations.Fix(probe, _ => false) && probe.HeldTpHitAnimation == "falx" && probe.HeldRightReadyAnimation == "helditemready" && probe.HeldRightTpIdleAnimation == null;
+            var falxThere = sapi.World.GetEntityType(new AssetLocation("game:player"))?.Client?.Animations?.Any(a => a?.Code == "falx") == true;
+            Check(changedNone && changedAll && falxThere, $"a claymore whose Ancient Armory animations are missing swings like the game's falx instead (and the player has falx: {falxThere})");
             if (!armory)
             {
                 Check(dark == null && red == null && recipes.Count == 0,
@@ -1730,6 +1736,7 @@ namespace VintageE
                 if (item.ToolTier != tier) problems.Add($"{item.Code} tier {item.ToolTier}");
                 if (item.Tool != EnumTool.Sword) problems.Add($"{item.Code} is a {item.Tool}");
                 if (item.GetMaxDurability(new ItemStack(item)) > 1 && !item.CollectibleBehaviors.Any(b => b.GetType().Name.Contains("MatterTool"))) problems.Add($"{item.Code} wears out");
+                // Ancient Armory loaded properly: its animations are there, so nothing was swapped.
                 if (item.HeldTpHitAnimation != "greatswing" || item.HeldRightReadyAnimation != "twohandready" || item.HeldRightTpIdleAnimation != "readyidle")
                     problems.Add($"{item.Code} animations {item.HeldTpHitAnimation}/{item.HeldRightReadyAnimation}/{item.HeldRightTpIdleAnimation}");
                 if (mod.Emc.GetValue(item) <= 0) problems.Add($"{item.Code} has no EMC value");

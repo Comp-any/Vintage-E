@@ -250,6 +250,9 @@ namespace VintageE
 
         public override void AssetsFinalize(ICoreAPI api)
         {
+            // Both sides: the swing is picked on the player's computer and its damage frame on the server.
+            try { ClaymoreAnimations.Apply(api, Mod.Logger); }
+            catch (Exception e) { Mod.Logger.Warning("Vintage-E: checking the claymores' animations: {0}", e.Message); }
             if (api.Side != EnumAppSide.Server) return;
             // Read rule files now, while patched asset data is guaranteed to be in memory.
             try { Rules = EmcRuleSet.Load(api, Mod.Logger, PeekConfig(api as ICoreServerAPI)?.DisabledCompat); }
