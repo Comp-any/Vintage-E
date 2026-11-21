@@ -18,6 +18,9 @@ on:
       extraMods:
         description: Other mods to run alongside, as Mod DB mod ids (comma-separated, e.g. smex,exlib,ppex)
         default: ""
+      extraModUrls:
+        description: Other mods to run alongside, as direct zip URLs (space-separated; for mods with no release for this game version). The zips are also copied to the results.
+        default: ""
       resultsBranch:
         description: Branch the results are pushed to
         default: ci-analysis
@@ -41,6 +44,7 @@ jobs:
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-analysis-{0}', github.run_number) }}
       LOOK: ${{ inputs.look || (github.event_name == 'push' && 'New' || 'Original') }}
       TOP_MODS: ${{ inputs.topMods || '' }}
+      EXTRA_MOD_URLS: ${{ inputs.extraModUrls || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -108,6 +112,12 @@ jobs:
           PY
             ls -la "$data/Mods"
           fi
+          # Mods given by URL (an older release than this game version), kept to copy into the results.
+          mkdir -p "$GITHUB_WORKSPACE/extra-zips"
+          for url in $EXTRA_MOD_URLS; do
+            name=$(basename "${url%%\?*}")
+            curl -fsSL "$url" -o "$GITHUB_WORKSPACE/extra-zips/$name" && cp "$GITHUB_WORKSPACE/extra-zips/$name" "$data/Mods/" && echo "added $name" || echo "could not download $url"
+          done
           # A look other than the default, so the self-test can check it: ProjectE's originals for runs started by hand
           # (with ProjectE's sounds), New for pushes to ci/** (or set it with the "look" input). Both looks are checked either way, on copies.
           echo "{ \"DumpValuesOnStart\": true, \"CacheEmcValues\": false, \"SelfTestOnStart\": true, \"Look\": \"${LOOK}\", \"ProjectESounds\": true }" > "$data/ModConfig/vintagee.json"
@@ -168,9 +178,10 @@ jobs:
           echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
-          [ -n "$EXTRA_MODS" ] && python3 tools/ci_mod_grep.py data/Mods "${VSDIR:+$VSDIR/assets}" tools/ci_mod_grep.txt analysis/mod-grep.txt || true
+          [ -n "$EXTRA_MODS$EXTRA_MOD_URLS" ] && python3 tools/ci_mod_grep.py data/Mods "${VSDIR:+$VSDIR/assets}" tools/ci_mod_grep.txt analysis/mod-grep.txt || true
           # Which other mods' code uses the game APIs Vintage-E builds on (e.g. the handbook page hook Emc Craft adds its link through).
           [ -n "$EXTRA_MODS" ] && python3 tools/ci_dll_grep.py data/Mods analysis/dll-grep.txt ICustomHandbookPageContent OnHandbookPageComposed OnHandbookRecipeRender || true
+          [ -n "$EXTRA_MOD_URLS" ] && cp -r "$GITHUB_WORKSPACE/extra-zips" analysis/ || true
           ls -la analysis
 
       - name: Push results to the ci-analysis branch
