@@ -1,0 +1,39 @@
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 10 items can be made for less than they're worth (8 of them by processing):
+  Crushed graphite (em:crushed-ore-graphite): worth 128, costs 64: 64 free each time (processing: smelting, grinding, drying...)
+    pulverizer crushing: 1 game:ore-graphite -> 2 em:crushed-ore-graphite
+    Trace its value down to the raw materials (/emc diagnose trace em:crushed-ore-graphite)
+  Pitted jackfruit (wildcraftfruit:fruit-pittedjackfruit): worth 88, costs 48: 40 free each time (processing: smelting, grinding, drying...)
+    ground-storage processing: 1 wildcraftfruit:fruit-jackfruit -> 2 wildcraftfruit:fruit-pittedjackfruit + 1 wildcraftfruit:jackfruitrags-raw + 1 wildcraftfruit:nut-breadnut (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedjackfruit)
+  Pitted cempedak (wildcraftfruit:fruit-pittedcempedak): worth 88, costs 48: 40 free each time (processing: smelting, grinding, drying...)
+    ground-storage processing: 1 wildcraftfruit:fruit-cempedak -> 2 wildcraftfruit:fruit-pittedcempedak + 1 wildcraftfruit:jackfruitrags-raw + 1 wildcraftfruit:nut-breadnut (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedcempedak)
+  Pitted apricot (wildcraftfruit:fruit-pittedapricot): worth 32, costs 14.22: 17.77 free each time
+    grid: 2 wildcraftfruit:fruit-apricot -> 2 wildcraftfruit:fruit-pittedapricot (returns wildcraftfruit:nut-apricotpit)
+    Ingredients whose value is a guess or a trader price: Apricot (wildcraftfruit:fruit-apricot) 16
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:fruit-pittedapricot)
+  Bone (game:bone): worth 24, costs 8: 16 free each time
+    grid: 1 butchering:strongbone -> 1 game:bone
+    Trace its value down to the raw materials (/emc diagnose trace game:bone)
+  Tomato juice (wildcraftfruit:juiceportion-tomato): worth 28.48, costs 18.99: 9.49 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:vegetable-oxheart -> 62.5 wildcraftfruit:juiceportion-tomato + 1 wildcraftfruit:pressedmash-tomato
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-tomato)
+  Breadfruit juice (game:juiceportion-breadfruit): worth 12, costs 4: 8 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-pittedbreadfruit -> 31.25 game:juiceportion-breadfruit + 1 game:pressedmash-breadfruit (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:juiceportion-breadfruit)
+  Mulberry juice (wildcraftfruit:juiceportion-blackmulberry): worth 9.76, costs 4.16: 5.6 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-blackmulberry -> 31.25 wildcraftfruit:juiceportion-blackmulberry + 1 wildcraftfruit:pressedmash-blackmulberry
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-blackmulberry)
+  Grapefruit juice (wildcraftfruit:juiceportion-grapefruit): worth 20.83, costs 16.33: 4.5 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-bloodorange -> 31.25 wildcraftfruit:juiceportion-grapefruit + 1 wildcraftfruit:pressedmash-grapefruit
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-grapefruit)
+  Pomelo juice (wildcraftfruit:juiceportion-pomelo): worth 20.83, costs 16.33: 4.5 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 wildcraftfruit:fruit-oroblanco -> 31.25 wildcraftfruit:juiceportion-pomelo + 1 wildcraftfruit:pressedmash-pomelo
+    Trace its value down to the raw materials (/emc diagnose trace wildcraftfruit:juiceportion-pomelo)
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

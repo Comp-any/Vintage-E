@@ -1,0 +1,14 @@
+type,code,why,name
+item,game:arrow-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Short erel feather stem
+block,game:bonyremains-cowskull-up,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Bony Cow Skull
+block,game:figurehead-eidolon,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Eidolon figurehead (Oak)
+block,game:figurehead-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Erel figurehead (Oak)
+block,game:figurehead-seamonster,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Seamonster figurehead (Oak)
+block,game:figurehead-thunderlord,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Thunderlord figurehead (Oak)
+item,game:ingot-platinum,"stuck in a value loop: game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum (each is only made from the next, and nothing outside the loop gives any of them a value)",Platinum ingot
+item,game:ingot-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel ingot
+item,game:metalbit-platinum,"stuck in a value loop: game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum (each is only made from the next, and nothing outside the loop gives any of them a value)",Platinum bits
+item,game:metalbit-stainlesssteel,"27 way(s) to make it, e.g. grid: 1 game:ingot-stainlesssteel -> 20 game:metalbit-stainlesssteel; no value for: game:ingot-stainlesssteel",Stainless steel bits
+item,game:metalplate-platinum,"1 way(s) to make it, e.g. RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-platinum -> 1 game:metalplate-platinum; no value for: game:ingot-platinum",Platinum plate
+item,game:metalplate-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel plate
+item,game:spear-generic-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Long erel feather stem
