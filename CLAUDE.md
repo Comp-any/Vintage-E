@@ -29,3 +29,7 @@ needs no `sleep`.
   `tools/vendor/vintagedoctor/` (its repository is private, so the test can't download it) and the self-test then
   uses its `/doctor` command from the console; without the input the same checks run against the bridge directly.
   When Vintage Doctor's event-bus protocol changes, put its new zip there.
+- The copy there is Vintage Doctor 1.3.0 (2026-11-22). Its check-up is laid out by mod, so Vintage-E's card and
+  the button for the EMC pages are under a "Vintage-E <version>" heading, and it runs every check each time (no
+  "deeper" round). It writes out symbols the game's font may lack in whatever a mod hands it, so a report's marks
+  and arrows can stay as they are. Nothing in the protocol changed: 1.2.0 still works with the bridge.

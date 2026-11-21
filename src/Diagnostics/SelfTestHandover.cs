@@ -223,7 +223,17 @@ namespace VintageE
                 steps.Add(("/doctor emc machines", t => Missing(t, machines), "Vintage Doctor's /doctor emc machines is Vintage-E's machines page"));
                 steps.Add(("/doctor emc", t => Missing(t, mapping, "(/doctor emc mods)", "(/doctor log vintagee)", "(/doctor startup)"), "Vintage Doctor's /doctor emc is the EMC check-up, delivered a moment later, with links into both mods' pages"));
                 steps.Add(("/doctor emc item game:ingot-copper", t => Missing(t, "128", "(/doctor emc"), "Vintage Doctor's /doctor emc item ... is Vintage-E's page for the item"));
-                steps.Add(("/doctor", t => Missing(t, "Vintage-E: ", "(/doctor emc)", question + " (/doctor emc)"), "Vintage Doctor's check-up has Vintage-E's card and its question"));
+                // Vintage Doctor's check-up is laid out by mod since its 1.3.0: Vintage-E's card and the button for its
+                // page are under Vintage-E's own heading (where the card no longer starts with the mod's name).
+                string OwnSection(string t)
+                {
+                    int at = t.IndexOf("== Vintage-E ", StringComparison.Ordinal);
+                    if (at < 0) return "";
+                    int end = t.IndexOf("\n== ", at + 3, StringComparison.Ordinal);
+                    return end < 0 ? t.Substring(at) : t.Substring(at, end - at);
+                }
+                steps.Add(("/doctor", t => Missing(t, "== Vintage-E ") ?? Missing(OwnSection(t), "EMC", "(/doctor emc)", question + " (/doctor emc)"),
+                    "Vintage Doctor's check-up has a section for Vintage-E, with its card and the button for its page"));
                 steps.Add(("/doctor item game:ingot-copper", t => Missing(t, "Vintage-E: Worth 128 EMC", "(/doctor emc item game:ingot-copper)"), "Vintage Doctor's page about an item has Vintage-E's card"));
               }
               else Line("  Vintage Doctor isn't installed on this server: its own /doctor command isn't tried");
