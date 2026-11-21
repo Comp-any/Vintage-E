@@ -1,0 +1,3 @@
+== A compatibility file for Vintage-E (vintagee) ==
+⚠ No other mod with the id 'vintagee' is loaded, so there's nothing to draft a file for.
+Everything from one mod has no value (/emc diagnose mods)

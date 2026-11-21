@@ -1,0 +1,31 @@
+== Vintage-E (vintagee) ==
+142 of its 144 blocks and items have a value (98.6%); 1 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'vintagee'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Why the rest has no value ==
+⚠ 1 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    matterclaymore (1): Dark Matter Claymore (vintagee:matterclaymore-dark)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/vintagee.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 1 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Dark Matter Claymore (vintagee:matterclaymore-dark): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item vintagee:matterclaymore-dark)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+Draft a compatibility file for its 1 raw materials (/emc diagnose draftcompat vintagee)
+
+== Next steps ==
+These are base-game items Vintage-E doesn't value yet. That's for Vintage-E to add, so it's worth reporting:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.25.4: these base-game items have no value: vintagee:matterclaymore-dark"
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (2) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Dark Matter Claymore (vintagee:matterclaymore-dark)  why? (/emc diagnose item vintagee:matterclaymore-dark)
+  Red Matter Claymore (vintagee:matterclaymore-red)  why? (/emc diagnose item vintagee:matterclaymore-red)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
