@@ -1,0 +1,24 @@
+== The server ==
+✓ No crash reports: the game hasn't crashed on this side.
+✓ All 2 mod(s) loaded and started without the game reporting a problem.
+✓ No errors in the log this session.
+✓ 2 mod file(s) in 2 folder(s), nothing wrong with them.
+✓ 4 config file(s) read without a problem.
+• The server has only just started; give it a minute before judging its speed.
+  Last minute: average 32.8 ms, 95% under 34 ms, worst 34 ms (18 ticks).
+  Measure where the time goes (20 seconds) (/doctor fix doctor:profile 20)
+✓ 1 creatures and things loaded (0 items on the ground), 392 chunks, 0 player(s).
+  Most of: game:bear 1
+  392 chunks loaded for 0 player(s).
+✓ Memory: the game holds 1.4 GB of the 15.3 GB it can use.
+  987.5 MB in the game's own objects; 10 full clean-ups so far; 4 processor threads.
+✓ 90.0 GB free where the world is saved.
+  The save file is 4 KB.
+• 1 mod(s) change the game's code in 2 place(s) (0 shared with another mod)
+  Vintage-E (2)
+  Mods patch the game's own code where it offers no other way in. It is normal, but it is also what breaks first when the game updates, and two mods patching the same place can get in each other's way.
+  All code patches (/doctor patches)
+
+== Checks from your mods ==
+⚠ Vintage-E: The EMC check-up found 4 thing(s) worth fixing
+  The EMC check-up (/doctor emc)

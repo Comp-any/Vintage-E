@@ -1,0 +1,48 @@
+/doctor
+
+== The server ==
+✓ No crash reports: the game hasn't crashed on this side.
+✓ All 2 mod(s) loaded and started without the game reporting a problem.
+✓ No errors in the log this session.
+✓ 2 mod file(s) in 2 folder(s), nothing wrong with them.
+✓ 4 config file(s) read without a problem.
+✓ The server keeps up: a tick every 39.1 ms (26 a second).
+  Last minute: average 39.1 ms, 95% under 34 ms, worst 8782 ms (1779 ticks).
+  The game itself logged 2 tick(s) over half a second this session (the worst 8772 ms; 2 in the last 10 minutes).
+  Measure where the time goes (20 seconds) (/doctor fix doctor:profile 20)
+✓ 21 creatures and things loaded (20 items on the ground), 72 chunks, 0 player(s).
+  Most of: game:trader 1
+  72 chunks loaded for 0 player(s).
+✓ Memory: the game holds 1.6 GB of the 15.3 GB it can use.
+  750.5 MB in the game's own objects; 14 full clean-ups so far; 4 processor threads.
+✓ 90.0 GB free where the world is saved.
+  The save file is 5.1 MB.
+• 1 mod(s) change the game's code in 2 place(s) (0 shared with another mod)
+  Vintage-E (2)
+  Mods patch the game's own code where it offers no other way in. It is normal, but it is also what breaks first when the game updates, and two mods patching the same place can get in each other's way.
+  All code patches (/doctor patches)
+
+== Checks from your mods ==
+⚠ Vintage-E: The EMC check-up found 4 thing(s) worth fixing
+  The EMC check-up (/doctor emc)
+
+== What are you seeing? ==
+Pick what matches; each opens a page that looks into just that.
+The game crashed (/doctor crash)
+The game is slow or stutters (/doctor perf)
+A mod isn't working (/doctor mods)
+Something broke after I added or updated mods (/doctor changes)
+An item looks or acts wrong (hold it first) (/doctor item hand)
+The block I'm looking at looks or acts wrong (/doctor block)
+I can't craft something (/doctor craft hand)
+Show me what happened while the game started (/doctor startup)
+Show me every error and warning (/doctor log)
+Check my Mods folder and config files (/doctor files)
+Are any mods getting in each other's way? (/doctor clashes)
+Which mods change the game's code? (/doctor patches)
+Is my world all right? (/doctor world)
+Something is wrong with EMC values (Vintage-E) (/doctor emc)
+Run the deeper checks (slower) (/doctor deep)
+Put together a report to post (/doctor bugreport)
+For mod authors: what mods told the doctor (/doctor api)
+Every page is a command: /doctor crash, perf, mods, mod <mod id>, log [mod id], startup, files, patches, changes, world, item <code>, craft <code>, deep, bugreport [mod id], api. A fix: /doctor fix <id> [argument].
