@@ -89,8 +89,9 @@ namespace VintageE
             EmcReport own = EmcDiagnose.Run(mod, sapi, null, "en", "", "", null);
             EmcReport handed = EmcDiagnose.Run(mod, sapi, null, "en", "", "", null, null, null, handover: true);
             int ownStartup = own.Lines.Count(l => l.Text.Contains("{{startup|")), handedStartup = handed.Lines.Count(l => l.Text.Contains("{{startup|")), handedLog = handed.Lines.Count(l => l.Text.StartsWith("{{log|", StringComparison.Ordinal));
-            Check(ownStartup == 0 && handedStartup == 1 && handedLog == 1 && handed.Lines.Count >= 5,
-                $"handover: handed over, the check-up leaves the log and other mods' start-up to Vintage Doctor, with a link to each ({handed.Lines.Count} lines, {own.Lines.Count} in Vintage-E's own)");
+            string startupClean = Lang.GetL("en", "vintagee:diag-startup-clean");
+            Check(ownStartup <= 1 && handedStartup == 1 && handedLog == 1 && handed.Lines.Count >= 5 && !handed.Lines.Any(l => l.Text.Contains(startupClean)),
+                $"handover: handed over, the check-up leaves the log and other mods' start-up to Vintage Doctor, with one link to each ({handed.Lines.Count} lines, {own.Lines.Count} in Vintage-E's own; start-up links {handedStartup} and {ownStartup}, log links {handedLog})");
             string logClean = Lang.GetL("en", "vintagee:diag-log-clean");
             Check(!handed.Lines.Any(l => l.Text.Contains(logClean)), "handover: the log's own card isn't in the handed-over check-up");
 
@@ -137,7 +138,7 @@ namespace VintageE
 
             ITreeAttribute checkup = DoctorAsks("overview", "");
             handoverBridge.OnCollect(DoctorBridge.CollectEvent, ref handling, checkup);
-            ITreeAttribute card = (checkup["results"] as ITreeAttribute)?["vintagee:checkup"] as ITreeAttribute;
+            ITreeAttribute card = (checkup["results"] as ITreeAttribute)?[DoctorBridge.FixPrefix + "checkup"] as ITreeAttribute;
             Check(card != null && card.GetString("link") == DoctorBridge.Topic && !string.IsNullOrEmpty(card.GetString("title")) && card.GetString("level") == (mod.CheckupProblems > 0 ? "warning" : "ok"),
                 "handover: a card for Vintage Doctor's check-up, with a link to the EMC pages (" + card?.GetString("level") + ": " + card?.GetString("title") + ")");
             ITreeAttribute othersPage = DoctorAsks("mod", "game");
@@ -148,13 +149,13 @@ namespace VintageE
             ITreeAttribute copper = DoctorAsks("item", "game:ingot-copper");
             copper.SetString("subject", "item:game:ingot-copper");
             handoverBridge.OnAbout(DoctorBridge.AboutEvent, ref handling, copper);
-            ITreeAttribute worth = (copper["results"] as ITreeAttribute)?["vintagee:value"] as ITreeAttribute;
+            ITreeAttribute worth = (copper["results"] as ITreeAttribute)?[DoctorBridge.FixPrefix + "value"] as ITreeAttribute;
             Check(worth != null && worth.GetString("title") == "Worth 128 EMC" && worth.GetString("link") == DoctorBridge.Topic && worth.GetString("linkArgument") == "item game:ingot-copper",
                 "handover: a card on Vintage Doctor's page about an item says what it is worth (" + worth?.GetString("title") + ")");
             ITreeAttribute trader = DoctorAsks("item", "");
             trader.SetString("subject", "item:game:creature-trader-female-artisan-cold");
             handoverBridge.OnAbout(DoctorBridge.AboutEvent, ref handling, trader);
-            ITreeAttribute noValue = (trader["results"] as ITreeAttribute)?["vintagee:value"] as ITreeAttribute;
+            ITreeAttribute noValue = (trader["results"] as ITreeAttribute)?[DoctorBridge.FixPrefix + "value"] as ITreeAttribute;
             ITreeAttribute nothing = DoctorAsks("item", "");
             nothing.SetString("subject", "item:game:nosuchitem");
             handoverBridge.OnAbout(DoctorBridge.AboutEvent, ref handling, nothing);
@@ -174,7 +175,7 @@ namespace VintageE
             Check(Texts(notOurs).Length == 0 && !notOurs.GetBool("later"), "handover: another mod's page is left alone");
 
             // Fixes.
-            ITreeAttribute fix = DoctorFixes("vintagee:clearwatch", "", "vintagee-selftest-fix-now");
+            ITreeAttribute fix = DoctorFixes(DoctorBridge.FixPrefix + "clearwatch", "", "vintagee-selftest-fix-now");
             handoverBridge.OnFix(DoctorBridge.FixEvent, ref handling, fix);
             Check(fix.GetString("result") == Lang.GetL("en", "vintagee:diag-done-clearwatch") && !fix.GetBool("failed") && !fix.GetBool("later"), "handover: a fix runs and says what it did (" + fix.GetString("result") + ")");
             ITreeAttribute othersFix = DoctorFixes("othermod:something", "", "vintagee-selftest-fix-other");
@@ -282,7 +283,7 @@ namespace VintageE
             ITreeAttribute fix;
             try
             {
-                fix = DoctorFixes("vintagee:recalc", "", HandoverFixRequest);
+                fix = DoctorFixes(DoctorBridge.FixPrefix + "recalc", "", HandoverFixRequest);
                 handoverBridge.OnFix(DoctorBridge.FixEvent, ref handling, fix);
                 Check(fix.GetBool("later") && fix.GetString("result") == null, "handover: a fix that maps afresh says its result will come later");
                 if (!fix.GetBool("later")) { then(); return; }

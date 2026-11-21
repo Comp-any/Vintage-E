@@ -136,6 +136,8 @@ namespace VintageE
                 x.Fix(x.L("diag-startup-command-fix"));
             }
             problems += MethodStartup(x);
+            // Inside Vintage Doctor, what other mods did at start-up is its own page: only Vintage-E's own start-up is said here.
+            if (x.Handover && !full) return problems;
 
             StartupLog log = ReadStartupLog(x);
             if (log.Error != null) { x.Note(log.Error, 0); return problems; }

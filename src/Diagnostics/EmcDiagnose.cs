@@ -121,12 +121,9 @@ namespace VintageE
             if (!MappingState(x, action == ActionMapping || action == ActionOverview || action == ""))
             {
                 // No values at all: what other mods did at start-up is the first place to look.
+                Startup(x, false);
                 if (x.Handover) DoctorPages(x);
-                else
-                {
-                    Startup(x, false);
-                    Log(x, false);
-                }
+                else Log(x, false);
                 Questions(x, held, client);
                 return r;
             }
@@ -947,8 +944,8 @@ namespace VintageE
         }
 
         /// <summary>
-        /// With no values at all, inside Vintage Doctor: where to look first is that mod's own pages (what other mods
-        /// did at start-up, and Vintage-E's errors in the log), so two links take the place of those two sections.
+        /// With no values at all, inside Vintage Doctor: after Vintage-E's own start-up, where to look first is that
+        /// mod's pages (what other mods did at start-up, and Vintage-E's errors in the log), so two links lead there.
         /// </summary>
         static void DoctorPages(Ctx x)
         {
