@@ -178,7 +178,8 @@ namespace VintageE
                     if (ing == null) continue;
                     int cell = row * GridSize + col;
 
-                    if (ing.IsTool)
+                    bool kept = Kept(ing);
+                    if (kept)
                     {
                         ItemSlot own = carriedList.FirstOrDefault(s => !usedSlots.Contains(s) && ing.SatisfiesAsIngredient(s.Itemstack, false));
                         if (own != null)
@@ -195,7 +196,7 @@ namespace VintageE
                     if (!cache.TryGetValue(ing, out ItemStack pick))
                     {
                         knownStacks ??= KnownStacks(known);
-                        pick = Cheapest(ing, knownStacks, out bool anyKnown, ing.IsTool && toolsByWear);
+                        pick = Cheapest(ing, knownStacks, out bool anyKnown, kept && toolsByWear);
                         cache[ing] = pick;
                         if (pick == null)
                         {
@@ -209,10 +210,10 @@ namespace VintageE
 
                     ItemStack stack = pick.Clone();
                     stack.StackSize = Math.Max(1, ing.Quantity);
-                    if (ing.IsTool) stack.Attributes.SetString(MadeFromEmc, Guid.NewGuid().ToString("N"));
+                    if (kept) stack.Attributes.SetString(MadeFromEmc, Guid.NewGuid().ToString("N"));
                     plan.Cells[cell] = stack;
                     plan.Cost += mod.Emc.GetValue(pick) * stack.StackSize;
-                    plan.NetCost += ing.IsTool ? WearCost(pick, ing) : mod.Emc.GetValue(pick) * stack.StackSize;
+                    plan.NetCost += kept ? WearCost(pick, ing) : mod.Emc.GetValue(pick) * stack.StackSize;
                 }
             }
             return plan;
@@ -271,6 +272,24 @@ namespace VintageE
         /// The EMC one craft wears off a tool: its value × the durability the recipe takes ÷ its full durability (all of
         /// it if that breaks it). Nothing when the server doesn't scale values by wear (a worn tool burns for its full value).
         /// </summary>
+        /// <summary>
+        /// Whether the recipe keeps this ingredient (a tool such as a chisel or hammer, or a catalyst) instead of using it
+        /// up. The game's 1.22 recipes say so with <c>Consume = false</c>; <c>IsTool</c> is the old way, is false in
+        /// recipes written the new way, and never reaches players' games (recipes are sent without it). Until 1.24.4
+        /// Emc Craft only looked at <c>IsTool</c>, so in the handbook and the window a chisel counted as an ingredient
+        /// to use up: it had to be learned, the one carried wasn't used, and the whole tool was priced.
+        /// </summary>
+        public static bool Kept(CraftingRecipeIngredient ing) => ing != null && (ing.IsTool || !ing.Consume);
+
+        /// <summary>The durability one craft takes off a kept ingredient.</summary>
+        public static int DurabilityCost(CraftingRecipeIngredient ing)
+        {
+            if (ing == null) return 0;
+            int cost = ing.ConsumeProperties.DurabilityCost;
+            if (cost <= 0 && ing.IsTool) cost = ing.ToolDurabilityCost;
+            return Math.Max(0, cost);
+        }
+
         public double WearCost(ItemStack tool, CraftingRecipeIngredient ing)
         {
             if (tool?.Collectible == null) return 0;
@@ -278,7 +297,8 @@ namespace VintageE
             int max = tool.Collectible.GetMaxDurability(tool);
             if (max <= 0) return 0; // no durability: the recipe doesn't use it up
             int remaining = tool.Collectible.GetRemainingDurability(tool);
-            int cost = Math.Max(1, ing.ToolDurabilityCost);
+            int cost = DurabilityCost(ing);
+            if (cost <= 0) return 0; // kept without wear (a catalyst)
             if (cost >= remaining) return value; // this craft breaks it
             if (!mod.Emc.DurabilityScales) return 0;
             return value * cost / remaining;

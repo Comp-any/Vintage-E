@@ -184,7 +184,7 @@ namespace VintageE
                 if (!(recipe is GridRecipe grid) || grid.ResolvedIngredients == null || slot?.BackgroundIcon == null) return;
                 if (!int.TryParse(slot.BackgroundIcon, out int index) || index < 0 || index >= grid.ResolvedIngredients.Length) return;
                 CraftingRecipeIngredient ing = grid.ResolvedIngredients[index];
-                if (ing == null || ing.IsTool) return;
+                if (ing == null || EmcCraft.Kept(ing)) return; // tools are carried or made, never learned
                 IPlayer player = capi.World.Player;
                 long now = capi.World.ElapsedMilliseconds;
                 if (now - tabletCheckedAt > 500) { tabletCarried = EmcCraft.CarriesArcaneTablet(player); tabletCheckedAt = now; }

@@ -994,7 +994,7 @@ namespace VintageE
 
                 // A recipe with a tool: the tool is made from EMC when none is carried, marked, and burned back on closing.
                 GridRecipe withTool = sapi.World.GridRecipes.FirstOrDefault(r => r.Enabled != false && r.ResolvedIngredients != null && r.Output?.Code?.Domain == "game"
-                    && r.ResolvedIngredients.Any(i => i != null && i.IsTool && i.ResolvedItemStack != null && mod.Emc.GetValue(i.ResolvedItemStack) > 0)
+                    && r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i) && i.ResolvedItemStack != null && i.ResolvedItemStack.Collectible.GetMaxDurability(i.ResolvedItemStack) > 1 && mod.Emc.GetValue(i.ResolvedItemStack) > 0)
                     && r.ResolvedIngredients.All(i => i == null || i.ResolvedItemStack != null && mod.Emc.GetValue(i.ResolvedItemStack) > 0));
                 if (withTool != null)
                 {
@@ -1006,13 +1006,43 @@ namespace VintageE
                     {
                         ItemStack tool = tp.Cells[toolCell];
                         int maxDur = tool.Collectible.GetMaxDurability(tool);
-                        double wear = craft.WearCost(tool, withTool.ResolvedIngredients.First(i => i != null && i.IsTool));
+                        double wear = craft.WearCost(tool, withTool.ResolvedIngredients.First(i => i != null && EmcCraft.Kept(i)));
                         Check(maxDur > 1 && Math.Abs(wear - mod.Emc.GetValue(tool) / maxDur) < 0.01 && tp.NetCost < tp.Cost,
                             $"Emc Craft counts only the tool's wear as the real cost ({wear:0.##} of {mod.Emc.GetValue(tool)}; {tp.NetCost:0.##} real vs {tp.Cost:0.##} up front)");
                         var (pick, pickPlan, _, _) = craft.Choose(null, withTool, toolKeys, new List<ItemSlot>(), double.MaxValue);
                         Check(pick != null && pickPlan != null && pickPlan.NetCost <= tp.NetCost + 1e-6,
                             $"Emc Craft picks the cheapest recipe for {withTool.Output.Code} ({pickPlan?.NetCost:0.##} EMC, {pick?.Name})");
                     }
+                    // 1.24.4: the recipe as a player's game has it. Recipes reach the game without IsTool (only Consume and
+                    // DurabilityChange are sent), and 1.22 recipes written the new way never set it: a kept tool must still
+                    // be the carried one, never need learning, and cost only its wear.
+                    CraftingRecipeIngredient toolIng = withTool.ResolvedIngredients.First(i => i != null && EmcCraft.Kept(i));
+                    bool wasTool = toolIng.IsTool;
+                    try
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            using (var w = new BinaryWriter(ms, Encoding.UTF8, true)) toolIng.ToBytes(w);
+                            ms.Position = 0;
+                            var sent = new CraftingRecipeIngredient();
+                            using (var r = new BinaryReader(ms)) sent.FromBytes(r, sapi.World);
+                            Check(!sent.IsTool && EmcCraft.Kept(sent) && EmcCraft.DurabilityCost(sent) == EmcCraft.DurabilityCost(toolIng) && EmcCraft.DurabilityCost(sent) > 0,
+                                $"a tool in a recipe as a player's game gets it (no IsTool) still counts as kept, with its wear ({EmcCraft.DurabilityCost(sent)} durability a craft)");
+                        }
+                        toolIng.IsTool = false;
+                        string toolKey = PlayerEmc.KeyOf(toolIng.ResolvedItemStack.Collectible);
+                        string[] withoutTool = withTool.ResolvedIngredients.Where(i => i != null && i != toolIng).Select(i => PlayerEmc.KeyOf(i.ResolvedItemStack.Collectible)).Where(k => k != toolKey).Distinct().ToArray();
+                        var carriedTool = new DummySlot(toolIng.ResolvedItemStack.Clone());
+                        EmcCraft.Plan clientPlan = craft.MakePlan(withTool, withoutTool, new[] { (ItemSlot)carriedTool });
+                        int fromInv = Array.FindIndex(clientPlan.FromInventory, f => f == carriedTool);
+                        Check(clientPlan.Missing.Count == 0 && clientPlan.NotMakeable.Count == 0 && fromInv >= 0,
+                            $"without IsTool, Emc Craft uses the carried {toolIng.ResolvedItemStack.Collectible.Code} and doesn't ask for it to be learned (missing: {string.Join(", ", clientPlan.Missing)})");
+                        EmcCraft.Plan madePlan = craft.MakePlan(withTool, toolKeys, null);
+                        int madeCell = Array.FindIndex(madePlan.Cells, c => c != null && c.Attributes.GetString(EmcCraft.MadeFromEmc) != null);
+                        Check(madeCell >= 0 && madePlan.NetCost < madePlan.Cost, $"without IsTool, a tool made from EMC is still marked to burn back and costs only its wear ({madePlan.NetCost:0.##} of {madePlan.Cost:0.##})");
+                    }
+                    finally { toolIng.IsTool = wasTool; }
+
                     // One item per grid: taking one out of a grid that still holds something makes the game match
                     // recipes for the grid's player, and the test server has none.
                     var g2 = new EmcCraftGrid(EmcCraft.InventoryClass, "selftest2", sapi);

@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.4 — 2026-11-21
+
+### Fixed
+- **Arcane Tablet: recipes that need a tool (chisel, hammer, saw, knife…) didn't work with Emc Craft.** The game marks a tool a recipe keeps in a way Emc Craft didn't read (1.22's "not consumed"; the old "is a tool" flag isn't even sent to your game). So the handbook's Emc Craft button and the window treated the tool as an ingredient to use up: it had to be learned, the one you carry wasn't used, and the whole tool was priced instead of its wear, with the tool shown in red as unlearned. Tools are now recognised however the recipe marks them: the one you carry is used, a missing one is made from EMC and burned back when you close the window, and only its wear counts. Catalysts a recipe keeps are handled the same way.
+
 ## 1.24.3 — 2026-11-16
 
 ### Fixed
