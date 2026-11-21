@@ -1,0 +1,15 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 2 base-game values differ with the 1 other mods loaded:
+
+== Through Ancient Armory (ancientarmory): 2 values ==
+  Red Matter Claymore (vintagee:matterclaymore-red): none → 98,820
+    grid: 1 vintagee:matter-red + 1 vintagee:matterclaymore-dark + 1 vintagee:matter-red -> 1 vintagee:matterclaymore-red
+  Dark Matter Claymore (vintagee:matterclaymore-dark): none → 25,092
+    grid: 1 vintagee:matter-dark + 1 ancientarmory:aa-blade-claymore-iron (or 2 more) + 1 vintagee:matter-dark -> 1 vintagee:matterclaymore-dark
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)

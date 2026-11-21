@@ -1,0 +1,1285 @@
+type,code,in_creative_inventory,name
+item,game:air,no,game:item-air
+block,game:basereturnteleporter,yes,Base return teleporter
+block,game:basereturnteleporter-fried,yes,Fried base return teleporter
+item,game:blade-longsword-admin,yes,Admin blade
+block,game:boilingwater-d-1,no,game:block-boilingwater-d-1
+block,game:boilingwater-d-2,no,game:block-boilingwater-d-2
+block,game:boilingwater-d-3,no,game:block-boilingwater-d-3
+block,game:boilingwater-d-4,no,game:block-boilingwater-d-4
+block,game:boilingwater-d-5,no,game:block-boilingwater-d-5
+block,game:boilingwater-d-6,no,game:block-boilingwater-d-6
+block,game:boilingwater-d-7,no,game:block-boilingwater-d-7
+block,game:boilingwater-e-1,no,game:block-boilingwater-e-1
+block,game:boilingwater-e-2,no,game:block-boilingwater-e-2
+block,game:boilingwater-e-3,no,game:block-boilingwater-e-3
+block,game:boilingwater-e-4,no,game:block-boilingwater-e-4
+block,game:boilingwater-e-5,no,game:block-boilingwater-e-5
+block,game:boilingwater-e-6,no,game:block-boilingwater-e-6
+block,game:boilingwater-e-7,no,game:block-boilingwater-e-7
+block,game:boilingwater-n-1,no,game:block-boilingwater-n-1
+block,game:boilingwater-n-2,no,game:block-boilingwater-n-2
+block,game:boilingwater-n-3,no,game:block-boilingwater-n-3
+block,game:boilingwater-n-4,no,game:block-boilingwater-n-4
+block,game:boilingwater-n-5,no,game:block-boilingwater-n-5
+block,game:boilingwater-n-6,no,game:block-boilingwater-n-6
+block,game:boilingwater-n-7,no,game:block-boilingwater-n-7
+block,game:boilingwater-ne-1,no,game:block-boilingwater-ne-1
+block,game:boilingwater-ne-2,no,game:block-boilingwater-ne-2
+block,game:boilingwater-ne-3,no,game:block-boilingwater-ne-3
+block,game:boilingwater-ne-4,no,game:block-boilingwater-ne-4
+block,game:boilingwater-ne-5,no,game:block-boilingwater-ne-5
+block,game:boilingwater-ne-6,no,game:block-boilingwater-ne-6
+block,game:boilingwater-ne-7,no,game:block-boilingwater-ne-7
+block,game:boilingwater-nw-1,no,game:block-boilingwater-nw-1
+block,game:boilingwater-nw-2,no,game:block-boilingwater-nw-2
+block,game:boilingwater-nw-3,no,game:block-boilingwater-nw-3
+block,game:boilingwater-nw-4,no,game:block-boilingwater-nw-4
+block,game:boilingwater-nw-5,no,game:block-boilingwater-nw-5
+block,game:boilingwater-nw-6,no,game:block-boilingwater-nw-6
+block,game:boilingwater-nw-7,no,game:block-boilingwater-nw-7
+block,game:boilingwater-s-1,no,game:block-boilingwater-s-1
+block,game:boilingwater-s-2,no,game:block-boilingwater-s-2
+block,game:boilingwater-s-3,no,game:block-boilingwater-s-3
+block,game:boilingwater-s-4,no,game:block-boilingwater-s-4
+block,game:boilingwater-s-5,no,game:block-boilingwater-s-5
+block,game:boilingwater-s-6,no,game:block-boilingwater-s-6
+block,game:boilingwater-s-7,no,game:block-boilingwater-s-7
+block,game:boilingwater-se-1,no,game:block-boilingwater-se-1
+block,game:boilingwater-se-2,no,game:block-boilingwater-se-2
+block,game:boilingwater-se-3,no,game:block-boilingwater-se-3
+block,game:boilingwater-se-4,no,game:block-boilingwater-se-4
+block,game:boilingwater-se-5,no,game:block-boilingwater-se-5
+block,game:boilingwater-se-6,no,game:block-boilingwater-se-6
+block,game:boilingwater-se-7,no,game:block-boilingwater-se-7
+block,game:boilingwater-still-1,no,game:block-boilingwater-still-1
+block,game:boilingwater-still-2,no,game:block-boilingwater-still-2
+block,game:boilingwater-still-3,no,game:block-boilingwater-still-3
+block,game:boilingwater-still-4,no,game:block-boilingwater-still-4
+block,game:boilingwater-still-5,no,game:block-boilingwater-still-5
+block,game:boilingwater-still-6,no,game:block-boilingwater-still-6
+block,game:boilingwater-still-7,yes,Boiling water
+block,game:boilingwater-sw-1,no,game:block-boilingwater-sw-1
+block,game:boilingwater-sw-2,no,game:block-boilingwater-sw-2
+block,game:boilingwater-sw-3,no,game:block-boilingwater-sw-3
+block,game:boilingwater-sw-4,no,game:block-boilingwater-sw-4
+block,game:boilingwater-sw-5,no,game:block-boilingwater-sw-5
+block,game:boilingwater-sw-6,no,game:block-boilingwater-sw-6
+block,game:boilingwater-sw-7,no,game:block-boilingwater-sw-7
+block,game:boilingwater-w-1,no,game:block-boilingwater-w-1
+block,game:boilingwater-w-2,no,game:block-boilingwater-w-2
+block,game:boilingwater-w-3,no,game:block-boilingwater-w-3
+block,game:boilingwater-w-4,no,game:block-boilingwater-w-4
+block,game:boilingwater-w-5,no,game:block-boilingwater-w-5
+block,game:boilingwater-w-6,no,game:block-boilingwater-w-6
+block,game:boilingwater-w-7,no,game:block-boilingwater-w-7
+block,game:chiseledblock,no,Granite rock
+item,game:clayworkitem-blue,no,game:item-clayworkitem-blue
+item,game:clayworkitem-fire,no,game:item-clayworkitem-fire
+item,game:clayworkitem-red,no,game:item-clayworkitem-red
+block,game:clutter-devastation,yes,game:clutter-
+block,game:clutter-elevator-elevatorrail,yes,game:clutter-
+block,game:clutteredbookshelfwithlore,yes,game:bookshelf-
+block,game:commandblock-normal,yes,Command block
+block,game:conditionalblock-east,yes,Conditional logic block
+block,game:conditionalblock-north,no,Conditional logic block
+block,game:conditionalblock-south,no,Conditional logic block
+block,game:conditionalblock-west,no,Conditional logic block
+block,game:corpsereturnteleporter-east,no,Terminus teleporter
+block,game:corpsereturnteleporter-north,yes,Terminus teleporter
+block,game:corpsereturnteleporter-south,no,Terminus teleporter
+block,game:corpsereturnteleporter-west,no,Terminus teleporter
+block,game:creativeblock-0,yes,Creativeblock (0)
+block,game:creativeblock-1,yes,Creativeblock (1)
+block,game:creativeblock-10,yes,Creativeblock (10)
+block,game:creativeblock-11,yes,Creativeblock (11)
+block,game:creativeblock-12,yes,Creativeblock (12)
+block,game:creativeblock-13,yes,Creativeblock (13)
+block,game:creativeblock-14,yes,Creativeblock (14)
+block,game:creativeblock-15,yes,Creativeblock (15)
+block,game:creativeblock-16,yes,Creativeblock (16)
+block,game:creativeblock-17,yes,Creativeblock (17)
+block,game:creativeblock-18,yes,Creativeblock (18)
+block,game:creativeblock-19,yes,Creativeblock (19)
+block,game:creativeblock-2,yes,Creativeblock (2)
+block,game:creativeblock-20,yes,Creativeblock (20)
+block,game:creativeblock-21,yes,Creativeblock (21)
+block,game:creativeblock-22,yes,Creativeblock (22)
+block,game:creativeblock-23,yes,Creativeblock (23)
+block,game:creativeblock-24,yes,Creativeblock (24)
+block,game:creativeblock-25,yes,Creativeblock (25)
+block,game:creativeblock-26,yes,Creativeblock (26)
+block,game:creativeblock-27,yes,Creativeblock (27)
+block,game:creativeblock-28,yes,Creativeblock (28)
+block,game:creativeblock-29,yes,Creativeblock (29)
+block,game:creativeblock-3,yes,Creativeblock (3)
+block,game:creativeblock-30,yes,Creativeblock (30)
+block,game:creativeblock-31,yes,Creativeblock (31)
+block,game:creativeblock-32,yes,Creativeblock (32)
+block,game:creativeblock-33,yes,Creativeblock (33)
+block,game:creativeblock-34,yes,Creativeblock (34)
+block,game:creativeblock-35,yes,Creativeblock (35)
+block,game:creativeblock-36,yes,Creativeblock (36)
+block,game:creativeblock-37,yes,Creativeblock (37)
+block,game:creativeblock-38,yes,Creativeblock (38)
+block,game:creativeblock-39,yes,Creativeblock (39)
+block,game:creativeblock-4,yes,Creativeblock (4)
+block,game:creativeblock-40,yes,Creativeblock (40)
+block,game:creativeblock-41,yes,Creativeblock (41)
+block,game:creativeblock-42,yes,Creativeblock (42)
+block,game:creativeblock-43,yes,Creativeblock (43)
+block,game:creativeblock-44,yes,Creativeblock (44)
+block,game:creativeblock-45,yes,Creativeblock (45)
+block,game:creativeblock-46,yes,Creativeblock (46)
+block,game:creativeblock-47,yes,Creativeblock (47)
+block,game:creativeblock-48,yes,Creativeblock (48)
+block,game:creativeblock-49,yes,Creativeblock (49)
+block,game:creativeblock-5,yes,Creativeblock (5)
+block,game:creativeblock-50,yes,Creativeblock (50)
+block,game:creativeblock-51,yes,Creativeblock (51)
+block,game:creativeblock-52,yes,Creativeblock (52)
+block,game:creativeblock-53,yes,Creativeblock (53)
+block,game:creativeblock-54,yes,Creativeblock (54)
+block,game:creativeblock-55,yes,Creativeblock (55)
+block,game:creativeblock-56,yes,Creativeblock (56)
+block,game:creativeblock-57,yes,Creativeblock (57)
+block,game:creativeblock-58,yes,Creativeblock (58)
+block,game:creativeblock-59,yes,Creativeblock (59)
+block,game:creativeblock-6,yes,Creativeblock (6)
+block,game:creativeblock-60,yes,Creativeblock (60)
+block,game:creativeblock-61,yes,Creativeblock (61)
+block,game:creativeblock-62,yes,Creativeblock (62)
+block,game:creativeblock-63,yes,Creativeblock (63)
+block,game:creativeblock-64,yes,Creativeblock (64)
+block,game:creativeblock-65,yes,Creativeblock (65)
+block,game:creativeblock-66,yes,Creativeblock (66)
+block,game:creativeblock-67,yes,Creativeblock (67)
+block,game:creativeblock-68,yes,Creativeblock (68)
+block,game:creativeblock-69,yes,Creativeblock (69)
+block,game:creativeblock-7,yes,Creativeblock (7)
+block,game:creativeblock-70,yes,Creativeblock (70)
+block,game:creativeblock-71,yes,Creativeblock (71)
+block,game:creativeblock-72,yes,Creativeblock (72)
+block,game:creativeblock-73,yes,Creativeblock (73)
+block,game:creativeblock-74,yes,Creativeblock (74)
+block,game:creativeblock-75,yes,Creativeblock (75)
+block,game:creativeblock-76,yes,Creativeblock (76)
+block,game:creativeblock-77,yes,Creativeblock (77)
+block,game:creativeblock-78,yes,Creativeblock (78)
+block,game:creativeblock-79,yes,Creativeblock (79)
+block,game:creativeblock-8,yes,Creativeblock (8)
+block,game:creativeblock-9,yes,Creativeblock (9)
+block,game:creativeglow-32,yes,Creativeglow (32)
+block,game:creativeglow-33,yes,Creativeglow (33)
+block,game:creativeglow-34,yes,Creativeglow (34)
+block,game:creativeglow-35,yes,Creativeglow (35)
+block,game:creativeglow-36,yes,Creativeglow (36)
+block,game:creativeglow-37,yes,Creativeglow (37)
+block,game:creativeglow-38,yes,Creativeglow (38)
+block,game:creativeglow-39,yes,Creativeglow (39)
+block,game:creativeglow-40,yes,Creativeglow (40)
+block,game:creativeglow-41,yes,Creativeglow (41)
+block,game:creativeglow-42,yes,Creativeglow (42)
+block,game:creativeglow-43,yes,Creativeglow (43)
+block,game:creativeglow-44,yes,Creativeglow (44)
+block,game:creativeglow-45,yes,Creativeglow (45)
+block,game:creativeglow-46,yes,Creativeglow (46)
+block,game:creativeglow-47,yes,Creativeglow (47)
+block,game:creativeglow-48,yes,Creativeglow (48)
+block,game:creativeglow-49,yes,Creativeglow (49)
+block,game:creativeglow-50,yes,Creativeglow (50)
+block,game:creativeglow-51,yes,Creativeglow (51)
+block,game:creativeglow-52,yes,Creativeglow (52)
+block,game:creativeglow-53,yes,Creativeglow (53)
+block,game:creativeglow-54,yes,Creativeglow (54)
+block,game:creativeglow-55,yes,Creativeglow (55)
+block,game:creativeglow-56,yes,Creativeglow (56)
+block,game:creativeglow-57,yes,Creativeglow (57)
+block,game:creativeglow-58,yes,Creativeglow (58)
+block,game:creativeglow-59,yes,Creativeglow (59)
+block,game:creativeglow-79,yes,Creativeglow (79)
+block,game:creativegrass-medium-normal,yes,Creative grass
+block,game:creativelight-32,yes,Creativelight (32)
+block,game:creativelight-33,yes,Creativelight (33)
+block,game:creativelight-34,yes,Creativelight (34)
+block,game:creativelight-35,yes,Creativelight (35)
+block,game:creativelight-36,yes,Creativelight (36)
+block,game:creativelight-37,yes,Creativelight (37)
+block,game:creativelight-38,yes,Creativelight (38)
+block,game:creativelight-39,yes,Creativelight (39)
+block,game:creativelight-40,yes,Creativelight (40)
+block,game:creativelight-41,yes,Creativelight (41)
+block,game:creativelight-42,yes,Creativelight (42)
+block,game:creativelight-43,yes,Creativelight (43)
+block,game:creativelight-44,yes,Creativelight (44)
+block,game:creativelight-45,yes,Creativelight (45)
+block,game:creativelight-46,yes,Creativelight (46)
+block,game:creativelight-47,yes,Creativelight (47)
+block,game:creativelight-48,yes,Creativelight (48)
+block,game:creativelight-49,yes,Creativelight (49)
+block,game:creativelight-50,yes,Creativelight (50)
+block,game:creativelight-51,yes,Creativelight (51)
+block,game:creativelight-52,yes,Creativelight (52)
+block,game:creativelight-53,yes,Creativelight (53)
+block,game:creativelight-54,yes,Creativelight (54)
+block,game:creativelight-55,yes,Creativelight (55)
+block,game:creativelight-56,yes,Creativelight (56)
+block,game:creativelight-57,yes,Creativelight (57)
+block,game:creativelight-58,yes,Creativelight (58)
+block,game:creativelight-59,yes,Creativelight (59)
+block,game:creativelight-79,yes,Creativelight (79)
+block,game:creativerotor-east,no,Auto rotor (Creative)
+block,game:creativerotor-north,yes,Auto rotor (Creative)
+block,game:creativerotor-south,no,Auto rotor (Creative)
+block,game:creativerotor-west,no,Auto rotor (Creative)
+item,game:creature-bear-black-adult-female,yes,Black bear (female)
+item,game:creature-bear-black-adult-male,yes,Black bear (male)
+item,game:creature-bear-brown-adult-female,yes,Brown bear (female)
+item,game:creature-bear-brown-adult-male,yes,Brown bear (male)
+item,game:creature-bear-panda-adult-female,yes,Panda bear (female)
+item,game:creature-bear-panda-adult-male,yes,Panda bear (male)
+item,game:creature-bear-polar-adult-female,yes,Polar bear (female)
+item,game:creature-bear-polar-adult-male,yes,Polar bear (male)
+item,game:creature-bear-sun-adult-female,yes,Sun bear (female)
+item,game:creature-bear-sun-adult-male,yes,Sun bear (male)
+item,game:creature-bell-normal,yes,Bell
+item,game:creature-bowtorn-corrupt,yes,Corrupt bowtorn
+item,game:creature-bowtorn-deep,yes,Deep bowtorn
+item,game:creature-bowtorn-gearfoot,yes,Gearfoot bowtorn
+item,game:creature-bowtorn-nightmare,yes,Nightmare bowtorn
+item,game:creature-bowtorn-surface,yes,Surface bowtorn
+item,game:creature-bowtorn-tainted,yes,Tainted bowtorn
+item,game:creature-chicken-baby,yes,Chick
+item,game:creature-chicken-hen,yes,Hen
+item,game:creature-chicken-rooster,yes,Rooster
+item,game:creature-deer-caribou-adult-female,yes,Caribou (female)
+item,game:creature-deer-caribou-adult-male,yes,Caribou (male)
+item,game:creature-deer-caribou-baby-female,yes,Caribou calf (female)
+item,game:creature-deer-caribou-baby-male,yes,Caribou calf (male)
+item,game:creature-deer-chital-adult-female,yes,Chital deer (female)
+item,game:creature-deer-chital-adult-male,yes,Chital deer (male)
+item,game:creature-deer-chital-baby-female,yes,Chital deer fawn (female)
+item,game:creature-deer-chital-baby-male,yes,Chital deer fawn (male)
+item,game:creature-deer-elk-adult-female,yes,Elk (female)
+item,game:creature-deer-elk-adult-male,yes,Elk (male)
+item,game:creature-deer-elk-baby-female,yes,Elk calf (female)
+item,game:creature-deer-elk-baby-male,yes,Elk calf (male)
+item,game:creature-deer-fallow-adult-female,yes,Fallow deer (female)
+item,game:creature-deer-fallow-adult-male,yes,Fallow deer (male)
+item,game:creature-deer-fallow-baby-female,yes,Fallow deer fawn (female)
+item,game:creature-deer-fallow-baby-male,yes,Fallow deer fawn (male)
+item,game:creature-deer-guemal-adult-female,yes,Guemal deer (female)
+item,game:creature-deer-guemal-adult-male,yes,Guemal deer (male)
+item,game:creature-deer-guemal-baby-female,yes,Guemal deer fawn (female)
+item,game:creature-deer-guemal-baby-male,yes,Guemal deer fawn (male)
+item,game:creature-deer-marsh-adult-female,yes,Marsh deer (female)
+item,game:creature-deer-marsh-adult-male,yes,Marsh deer (male)
+item,game:creature-deer-marsh-baby-female,yes,Marsh deer fawn (female)
+item,game:creature-deer-marsh-baby-male,yes,Marsh deer fawn (male)
+item,game:creature-deer-moose-adult-female,yes,Moose (female)
+item,game:creature-deer-moose-adult-male,yes,Moose (male)
+item,game:creature-deer-moose-baby-female,yes,Moose calf (female)
+item,game:creature-deer-moose-baby-male,yes,Moose calf (male)
+item,game:creature-deer-pampas-adult-female,yes,Pampas deer (female)
+item,game:creature-deer-pampas-adult-male,yes,Pampas deer (male)
+item,game:creature-deer-pampas-baby-female,yes,Pampas deer fawn (female)
+item,game:creature-deer-pampas-baby-male,yes,Pampas deer fawn (male)
+item,game:creature-deer-pudu-adult-female,yes,Pudu deer (female)
+item,game:creature-deer-pudu-adult-male,yes,Pudu deer (male)
+item,game:creature-deer-pudu-baby-female,yes,Pudu deer fawn (female)
+item,game:creature-deer-pudu-baby-male,yes,Pudu deer fawn (male)
+item,game:creature-deer-redbrocket-adult-female,yes,Red brocket deer (female)
+item,game:creature-deer-redbrocket-adult-male,yes,Red brocket deer (male)
+item,game:creature-deer-redbrocket-baby-female,yes,Red brocket deer fawn (female)
+item,game:creature-deer-redbrocket-baby-male,yes,Red brocket deer fawn (male)
+item,game:creature-deer-taruca-adult-female,yes,Taruca deer (female)
+item,game:creature-deer-taruca-adult-male,yes,Taruca deer (male)
+item,game:creature-deer-taruca-baby-female,yes,Taruca deer fawn (female)
+item,game:creature-deer-taruca-baby-male,yes,Taruca deer fawn (male)
+item,game:creature-deer-water-adult-female,yes,Water deer (female)
+item,game:creature-deer-water-adult-male,yes,Water deer (male)
+item,game:creature-deer-water-baby-female,yes,Water deer fawn (female)
+item,game:creature-deer-water-baby-male,yes,Water deer fawn (male)
+item,game:creature-deer-whitetail-adult-female,yes,Whitetail deer (female)
+item,game:creature-deer-whitetail-adult-male,yes,Whitetail deer (male)
+item,game:creature-deer-whitetail-baby-female,yes,Whitetail deer fawn (female)
+item,game:creature-deer-whitetail-baby-male,yes,Whitetail deer fawn (male)
+item,game:creature-drifter-corrupt,yes,Corrupt Drifter
+item,game:creature-drifter-deep,yes,Deep Drifter
+item,game:creature-drifter-double-headed,yes,Double-headed Drifter
+item,game:creature-drifter-nightmare,yes,Nightmare Drifter
+item,game:creature-drifter-normal,yes,Surface Drifter
+item,game:creature-drifter-tainted,yes,Tainted Drifter
+item,game:creature-earthworm,yes,Live worm
+item,game:creature-earthworm-dead,yes,Dead worm
+item,game:creature-fox-arctic-adult-female,yes,Arctic fox (female)
+item,game:creature-fox-arctic-adult-male,yes,Arctic fox (male)
+item,game:creature-fox-arctic-baby-female,yes,Arctic fox kit (female)
+item,game:creature-fox-arctic-baby-male,yes,Arctic fox kit (male)
+item,game:creature-fox-red-adult-female,yes,Fox (female)
+item,game:creature-fox-red-adult-male,yes,Fox (male)
+item,game:creature-fox-red-baby-female,yes,Fox kit (female)
+item,game:creature-fox-red-baby-male,yes,Fox kit (male)
+item,game:creature-gazelle-thomson-adult-female,yes,Gazelle (female)
+item,game:creature-gazelle-thomson-adult-male,yes,Gazelle (male)
+item,game:creature-gazelle-thomson-baby-female,yes,Gazelle calf (female)
+item,game:creature-gazelle-thomson-baby-male,yes,Gazelle calf (male)
+item,game:creature-goat-angora-adult-female,yes,Angora goat (female)
+item,game:creature-goat-angora-adult-male,yes,Angora goat (male)
+item,game:creature-goat-angora-baby-female,yes,Angora goat kid (female)
+item,game:creature-goat-angora-baby-male,yes,Angora goat kid (male)
+item,game:creature-goat-ibexalp-adult-female,yes,Alpine ibex (female)
+item,game:creature-goat-ibexalp-adult-male,yes,Alpine ibex (male)
+item,game:creature-goat-ibexalp-baby-female,yes,Alpine ibex kid (female)
+item,game:creature-goat-ibexalp-baby-male,yes,Alpine ibex kid (male)
+item,game:creature-goat-ibexnub-adult-female,yes,Nubian ibex (female)
+item,game:creature-goat-ibexnub-adult-male,yes,Nubian ibex (male)
+item,game:creature-goat-ibexnub-baby-female,yes,Nubian ibex kid (female)
+item,game:creature-goat-ibexnub-baby-male,yes,Nubian ibex kid (male)
+item,game:creature-goat-markhor-adult-female,yes,Markhor goat (female)
+item,game:creature-goat-markhor-adult-male,yes,Markhor goat (male)
+item,game:creature-goat-markhor-baby-female,yes,Markhor goat kid (female)
+item,game:creature-goat-markhor-baby-male,yes,Markhor goat kid (male)
+item,game:creature-goat-mountain-adult-female,yes,Mountain goat (female)
+item,game:creature-goat-mountain-adult-male,yes,Mountain goat (male)
+item,game:creature-goat-mountain-baby-female,yes,Mountain goat kid (female)
+item,game:creature-goat-mountain-baby-male,yes,Mountain goat kid (male)
+item,game:creature-goat-muskox-adult-female,yes,Musk ox (female)
+item,game:creature-goat-muskox-adult-male,yes,Musk ox (male)
+item,game:creature-goat-muskox-baby-female,yes,Musk ox calf (female)
+item,game:creature-goat-muskox-baby-male,yes,Musk ox calf (male)
+item,game:creature-goat-nubian-adult-female,yes,Nubian goat (female)
+item,game:creature-goat-nubian-adult-male,yes,Nubian goat (male)
+item,game:creature-goat-nubian-baby-female,yes,Nubian goat kid (female)
+item,game:creature-goat-nubian-baby-male,yes,Nubian goat kid (male)
+item,game:creature-goat-sirohi-adult-female,yes,Sirohi goat (female)
+item,game:creature-goat-sirohi-adult-male,yes,Sirohi goat (male)
+item,game:creature-goat-sirohi-baby-female,yes,Sirohi goat kid (female)
+item,game:creature-goat-sirohi-baby-male,yes,Sirohi goat kid (male)
+item,game:creature-goat-takingold-adult-female,yes,Golden takin (female)
+item,game:creature-goat-takingold-adult-male,yes,Golden takin (male)
+item,game:creature-goat-takingold-baby-female,yes,Golden takin kid (female)
+item,game:creature-goat-takingold-baby-male,yes,Golden takin kid (male)
+item,game:creature-goat-turdag-adult-female,yes,Tur goat (female)
+item,game:creature-goat-turdag-adult-male,yes,Tur goat (male)
+item,game:creature-goat-turdag-baby-female,yes,Tur goat kid (female)
+item,game:creature-goat-turdag-baby-male,yes,Tur goat kid (male)
+item,game:creature-goat-valais-adult-female,yes,Valais goat (female)
+item,game:creature-goat-valais-adult-male,yes,Valais goat (male)
+item,game:creature-goat-valais-baby-female,yes,Valais goat kid (female)
+item,game:creature-goat-valais-baby-male,yes,Valais goat kid (male)
+item,game:creature-grub,yes,Grub
+item,game:creature-hare-arctic-adult-female,yes,Arctic hare (female)
+item,game:creature-hare-arctic-adult-male,yes,Arctic hare (male)
+item,game:creature-hare-arctic-baby-female,yes,Arctic hare baby (female)
+item,game:creature-hare-arctic-baby-male,yes,Arctic hare baby (male)
+item,game:creature-hare-cape-adult-female,yes,Desert hare (female)
+item,game:creature-hare-cape-adult-male,yes,Desert hare (male)
+item,game:creature-hare-cape-baby-female,yes,Desert hare baby (female)
+item,game:creature-hare-cape-baby-male,yes,Desert hare baby (male)
+item,game:creature-hare-european-adult-female,yes,Brown hare (female)
+item,game:creature-hare-european-adult-male,yes,Brown hare (male)
+item,game:creature-hare-european-baby-female,yes,Brown hare baby (female)
+item,game:creature-hare-european-baby-male,yes,Brown hare baby (male)
+item,game:creature-hare-indian-adult-female,yes,River hare (female)
+item,game:creature-hare-indian-adult-male,yes,River hare (male)
+item,game:creature-hare-indian-baby-female,yes,River hare baby (female)
+item,game:creature-hare-indian-baby-male,yes,River hare baby (male)
+item,game:creature-hare-jackblack-adult-female,yes,Jackrabbit (female)
+item,game:creature-hare-jackblack-adult-male,yes,Jackrabbit (male)
+item,game:creature-hare-jackblack-baby-female,yes,Jackrabbit baby (female)
+item,game:creature-hare-jackblack-baby-male,yes,Jackrabbit baby (male)
+item,game:creature-hare-scrub-adult-female,yes,Scrub hare (female)
+item,game:creature-hare-scrub-adult-male,yes,Scrub hare (male)
+item,game:creature-hare-scrub-baby-female,yes,Scrub hare baby (female)
+item,game:creature-hare-scrub-baby-male,yes,Scrub hare baby (male)
+item,game:creature-hyena-spotted-adult-female,yes,Hyena (female)
+item,game:creature-hyena-spotted-adult-male,yes,Hyena (male)
+item,game:creature-hyena-spotted-baby-female,yes,Hyena pup (female)
+item,game:creature-hyena-spotted-baby-male,yes,Hyena pup (male)
+item,game:creature-locust-bronze,yes,Bronze Locust
+item,game:creature-locust-bronze-hacked,yes,Hacked bronze locust
+item,game:creature-locust-corrupt,yes,Corrupt Locust
+item,game:creature-locust-corrupt-hacked,yes,Hacked corrupt locust
+item,game:creature-locust-corrupt-sawblade,yes,Corrupt Sawblade Locust
+item,game:creature-pig-eurasian-adult-female,yes,Gray sow
+item,game:creature-pig-eurasian-adult-male,yes,Gray boar
+item,game:creature-pig-eurasian-baby-female,yes,Gray hog piglet (female)
+item,game:creature-pig-eurasian-baby-male,yes,Gray hog piglet (male)
+item,game:creature-pig-eurasian-elder-female,yes,Large gray sow
+item,game:creature-pig-eurasian-elder-male,yes,Large gray boar
+item,game:creature-pig-redriver-adult-female,yes,Redriver sow
+item,game:creature-pig-redriver-adult-male,yes,Redriver boar
+item,game:creature-pig-redriver-baby-female,yes,Redriver piglet (female)
+item,game:creature-pig-redriver-baby-male,yes,Redriver piglet (male)
+item,game:creature-pig-warthog-adult-female,yes,Warthog sow
+item,game:creature-pig-warthog-adult-male,yes,Warthog boar
+item,game:creature-pig-warthog-baby-female,yes,Warthog piglet (female)
+item,game:creature-pig-warthog-baby-male,yes,Warthog piglet (male)
+item,game:creature-raccoon-common-adult-female,yes,Raccoon (female)
+item,game:creature-raccoon-common-adult-male,yes,Raccoon (male)
+item,game:creature-raccoon-common-baby-female,yes,Raccoon pup (female)
+item,game:creature-raccoon-common-baby-male,yes,Raccoon pup (male)
+item,game:creature-sheep-bighorn-adult-female,yes,Bighorn ewe
+item,game:creature-sheep-bighorn-adult-male,yes,Bighorn ram
+item,game:creature-sheep-bighorn-baby-female,yes,Bighorn lamb (female)
+item,game:creature-sheep-bighorn-baby-male,yes,Bighorn lamb (male)
+item,game:creature-sheep-mouflon-adult-female,yes,Mouflon ewe
+item,game:creature-sheep-mouflon-adult-male,yes,Mouflon ram
+item,game:creature-sheep-mouflon-baby-female,yes,Mouflon lamb (female)
+item,game:creature-sheep-mouflon-baby-male,yes,Mouflon lamb (male)
+item,game:creature-shiver-bellhead,yes,Bellhead shiver
+item,game:creature-shiver-corrupt,yes,Corrupt shiver
+item,game:creature-shiver-deep,yes,Deep shiver
+item,game:creature-shiver-deepsplit,yes,Deepsplit shiver
+item,game:creature-shiver-nightmare,yes,Nightmare shiver
+item,game:creature-shiver-stilt,yes,Stilt shiver
+item,game:creature-shiver-surface,yes,Surface shiver
+item,game:creature-shiver-tainted,yes,Tainted shiver
+item,game:creature-tameddeer-albinoelk-female-adult,yes,Tamed albino elk (female)
+item,game:creature-tameddeer-albinoelk-male-adult,yes,Tamed albino elk (male)
+item,game:creature-tameddeer-elk-female-adult,yes,Tamed elk (female)
+item,game:creature-tameddeer-elk-male-adult,yes,Tamed elk (male)
+item,game:creature-trader-female-agriculture-cold,yes,Agriculture trader (cold)
+item,game:creature-trader-female-agriculture-desert,yes,Agriculture trader (desert)
+item,game:creature-trader-female-agriculture-temperate,yes,Agriculture trader (temperate)
+item,game:creature-trader-female-artisan-cold,yes,Artisan trader (cold)
+item,game:creature-trader-female-artisan-desert,yes,Artisan trader (desert)
+item,game:creature-trader-female-artisan-temperate,yes,Artisan trader (temperate)
+item,game:creature-trader-female-buildmaterials-cold,yes,Building materials trader (cold)
+item,game:creature-trader-female-buildmaterials-desert,yes,Building materials trader (desert)
+item,game:creature-trader-female-buildmaterials-temperate,yes,Building materials trader (temperate)
+item,game:creature-trader-female-clothing-cold,yes,Clothing trader (cold)
+item,game:creature-trader-female-clothing-desert,yes,Clothing trader (desert)
+item,game:creature-trader-female-clothing-temperate,yes,Clothing trader (temperate)
+item,game:creature-trader-female-commodities-cold,yes,Commodities trader (cold)
+item,game:creature-trader-female-commodities-desert,yes,Commodities trader (desert)
+item,game:creature-trader-female-commodities-temperate,yes,Commodities trader (temperate)
+item,game:creature-trader-female-furniture-cold,yes,Furniture trader (cold)
+item,game:creature-trader-female-furniture-desert,yes,Furniture trader (desert)
+item,game:creature-trader-female-furniture-temperate,yes,Furniture trader (temperate)
+item,game:creature-trader-female-luxuries-cold,yes,Luxuries trader (cold)
+item,game:creature-trader-female-luxuries-desert,yes,Luxuries trader (desert)
+item,game:creature-trader-female-luxuries-temperate,yes,Luxuries trader (temperate)
+item,game:creature-trader-female-survivalgoods-cold,yes,Survival goods trader (cold)
+item,game:creature-trader-female-survivalgoods-desert,yes,Survival goods trader (desert)
+item,game:creature-trader-female-survivalgoods-temperate,yes,Survival goods trader (temperate)
+item,game:creature-trader-female-treasurehunter-cold,yes,Treasure hunter trader (cold)
+item,game:creature-trader-female-treasurehunter-desert,yes,Treasure hunter trader (desert)
+item,game:creature-trader-female-treasurehunter-temperate,yes,Treasure hunter trader (temperate)
+item,game:creature-trader-male-agriculture-cold,yes,Agriculture trader (cold)
+item,game:creature-trader-male-agriculture-desert,yes,Agriculture trader (desert)
+item,game:creature-trader-male-agriculture-temperate,yes,Agriculture trader (temperate)
+item,game:creature-trader-male-artisan-cold,yes,Artisan trader (cold)
+item,game:creature-trader-male-artisan-desert,yes,Artisan trader (desert)
+item,game:creature-trader-male-artisan-temperate,yes,Artisan trader (temperate)
+item,game:creature-trader-male-buildmaterials-cold,yes,Building materials trader (cold)
+item,game:creature-trader-male-buildmaterials-desert,yes,Building materials trader (desert)
+item,game:creature-trader-male-buildmaterials-temperate,yes,Building materials trader (temperate)
+item,game:creature-trader-male-clothing-cold,yes,Clothing trader (cold)
+item,game:creature-trader-male-clothing-desert,yes,Clothing trader (desert)
+item,game:creature-trader-male-clothing-temperate,yes,Clothing trader (temperate)
+item,game:creature-trader-male-commodities-cold,yes,Commodities trader (cold)
+item,game:creature-trader-male-commodities-desert,yes,Commodities trader (desert)
+item,game:creature-trader-male-commodities-temperate,yes,Commodities trader (temperate)
+item,game:creature-trader-male-furniture-cold,yes,Furniture trader (cold)
+item,game:creature-trader-male-furniture-desert,yes,Furniture trader (desert)
+item,game:creature-trader-male-furniture-temperate,yes,Furniture trader (temperate)
+item,game:creature-trader-male-luxuries-cold,yes,Luxuries trader (cold)
+item,game:creature-trader-male-luxuries-desert,yes,Luxuries trader (desert)
+item,game:creature-trader-male-luxuries-temperate,yes,Luxuries trader (temperate)
+item,game:creature-trader-male-survivalgoods-cold,yes,Survival goods trader (cold)
+item,game:creature-trader-male-survivalgoods-desert,yes,Survival goods trader (desert)
+item,game:creature-trader-male-survivalgoods-temperate,yes,Survival goods trader (temperate)
+item,game:creature-trader-male-treasurehunter-cold,yes,Treasure hunter trader (cold)
+item,game:creature-trader-male-treasurehunter-desert,yes,Treasure hunter trader (desert)
+item,game:creature-trader-male-treasurehunter-temperate,yes,Treasure hunter trader (temperate)
+item,game:creature-villager-nadiya-female-generic-generic,yes,Female Nadiyan villager
+item,game:creature-villager-nadiya-male-generic-generic,yes,Male Nadiyan villager
+item,game:creature-wolf-eurasian-adult-female,yes,Wolf (female)
+item,game:creature-wolf-eurasian-adult-male,yes,Wolf (male)
+item,game:creature-wolf-eurasian-baby-female,yes,Wolf pup (female)
+item,game:creature-wolf-eurasian-baby-male,yes,Wolf pup (male)
+block,game:cropprop,yes,Crop prop
+item,game:decalcan-alchemy,yes,Decal can (Alchemy symbols)
+item,game:decalcan-geometry,yes,Decal can (Geometric symbols)
+item,game:decalcan-scribbles,yes,Decal can (Scribbles)
+block,game:decorlore-schematic1x1,yes,Strange schematic
+block,game:decorlore-tobias-board,yes,"Chaotic board covered in notes, scribbles, and string"
+block,game:devastatedsoil-0,yes,Devastated soil
+block,game:devastatedsoil-1,yes,Devastated soil
+block,game:devastatedsoil-10,yes,Devastated soil
+block,game:devastatedsoil-2,yes,Devastated soil
+block,game:devastatedsoil-3,yes,Devastated soil
+block,game:devastatedsoil-4,yes,Devastated soil
+block,game:devastatedsoil-5,yes,Devastated soil
+block,game:devastatedsoil-6,yes,Devastated soil
+block,game:devastatedsoil-7,yes,Devastated soil
+block,game:devastatedsoil-8,yes,Devastated soil
+block,game:devastatedsoil-9,yes,Devastated soil
+block,game:devastatedsoil-chiselable-0,yes,Devastated soil
+block,game:devastationgrowth-normal,yes,Devastation growth
+block,game:devgrowth-bush,yes,Devastation growth
+block,game:devgrowth-shard,yes,Devastated shards
+block,game:devgrowth-shrike,yes,Devastated briar
+block,game:devgrowth-thorns,yes,Devastated thorns
+block,game:devplate-flat,yes,Rusty metal plates
+block,game:door-devastation-towergate,yes,Large gate with heavy locking bolts
+block,game:dpanel-conduithorizontal1-aged,yes,Tower Conduit
+block,game:dpanel-conduithorizontal1-new,yes,Tower Conduit
+block,game:dpanel-conduitleftdown1-aged,yes,Tower Conduit
+block,game:dpanel-conduitleftdown1-new,yes,Tower Conduit
+block,game:dpanel-conduitleftup1-aged,yes,Tower Conduit
+block,game:dpanel-conduitleftup1-new,yes,Tower Conduit
+block,game:dpanel-conduitrightdown1-aged,yes,Tower Conduit
+block,game:dpanel-conduitrightdown1-new,yes,Tower Conduit
+block,game:dpanel-conduitrightup1-aged,yes,Tower Conduit
+block,game:dpanel-conduitrightup1-new,yes,Tower Conduit
+block,game:dpanel-conduitstraight1-aged,yes,Tower Conduit
+block,game:dpanel-conduitstraight1-new,yes,Tower Conduit
+block,game:dpanel-panel1-aged,yes,Tower Panel
+block,game:dpanel-panel1-new,yes,Tower Panel
+block,game:dpanel-panel2-aged,yes,Tower Panel
+block,game:dpanel-panel2-new,yes,Tower Panel
+block,game:dpanel-panel3-aged,yes,Tower Panel
+block,game:dpanel-panel3-new,yes,Tower Panel
+block,game:dpanel-panel4-aged,yes,Tower Panel
+block,game:dpanel-panel4-new,yes,Tower Panel
+block,game:dpanel-panel5-aged,yes,Tower Panel
+block,game:dpanel-panel5-new,yes,Tower Panel
+block,game:dpanel-panel6-aged,yes,Tower Panel
+block,game:dpanel-panel6-new,yes,Tower Panel
+block,game:dpanel-port1-aged,yes,Port
+block,game:dpanel-port1-new,yes,Port
+block,game:drock,yes,Devastation rock
+block,game:elevatorcontrol-lever1,yes,Elevator Control
+block,game:elevatorcontrol-lever2,yes,Elevator Activate Control
+block,game:ember,yes,Ember
+item,game:entitymover,yes,Entity mover tool
+block,game:genericwood,yes,Generic wood
+block,game:groundstorage,no,game:block-groundstorage
+block,game:ingotpile,no,Pile of metal ingots
+block,game:initcommandblock-normal,yes,Init Command block (run on init)
+block,game:jonas-boilerdoor-east,no,game:block-jonas-boilerdoor-east
+block,game:jonas-boilerdoor-north,yes,Boiler door
+block,game:jonas-boilerdoor-south,no,game:block-jonas-boilerdoor-south
+block,game:jonas-boilerdoor-west,no,game:block-jonas-boilerdoor-west
+block,game:jonas-gasifier-east,no,game:block-jonas-gasifier-east
+block,game:jonas-gasifier-north,no,game:block-jonas-gasifier-north
+block,game:jonas-gasifier-south,yes,Gasifier
+block,game:jonas-gasifier-west,no,game:block-jonas-gasifier-west
+block,game:jonas-gasifiertank-east,no,game:block-jonas-gasifiertank-east
+block,game:jonas-gasifiertank-north,no,game:block-jonas-gasifiertank-north
+block,game:jonas-gasifiertank-south,yes,Gasifier tank
+block,game:jonas-gasifiertank-west,no,game:block-jonas-gasifiertank-west
+block,game:jonas-hydraulicsystem-genmixer-east,no,game:block-jonas-hydraulicsystem-genmixer-east
+block,game:jonas-hydraulicsystem-genmixer-north,no,game:block-jonas-hydraulicsystem-genmixer-north
+block,game:jonas-hydraulicsystem-genmixer-south,yes,Mixer paddles
+block,game:jonas-hydraulicsystem-genmixer-west,no,game:block-jonas-hydraulicsystem-genmixer-west
+block,game:jonas-hydraulicsystem-genvalve2-east,no,game:block-jonas-hydraulicsystem-genvalve2-east
+block,game:jonas-hydraulicsystem-genvalve2-north,no,game:block-jonas-hydraulicsystem-genvalve2-north
+block,game:jonas-hydraulicsystem-genvalve2-south,yes,Pipe branch with valves
+block,game:jonas-hydraulicsystem-genvalve2-west,no,game:block-jonas-hydraulicsystem-genvalve2-west
+block,game:jonas-hydraulicsystem-pumpdoor1-east,no,game:block-jonas-hydraulicsystem-pumpdoor1-east
+block,game:jonas-hydraulicsystem-pumpdoor1-north,no,game:block-jonas-hydraulicsystem-pumpdoor1-north
+block,game:jonas-hydraulicsystem-pumpdoor1-south,yes,Incomplete hydraulic actuator
+block,game:jonas-hydraulicsystem-pumpdoor1-west,no,game:block-jonas-hydraulicsystem-pumpdoor1-west
+block,game:jonas-hydraulicsystem-pumpdoor2-east,no,game:block-jonas-hydraulicsystem-pumpdoor2-east
+block,game:jonas-hydraulicsystem-pumpdoor2-north,no,game:block-jonas-hydraulicsystem-pumpdoor2-north
+block,game:jonas-hydraulicsystem-pumpdoor2-south,yes,Hydraulic actuator
+block,game:jonas-hydraulicsystem-pumpdoor2-west,no,game:block-jonas-hydraulicsystem-pumpdoor2-west
+block,game:jonas-hydraulicsystem-pumphead1-east,no,game:block-jonas-hydraulicsystem-pumphead1-east
+block,game:jonas-hydraulicsystem-pumphead1-north,no,game:block-jonas-hydraulicsystem-pumphead1-north
+block,game:jonas-hydraulicsystem-pumphead1-south,yes,Liquid pump
+block,game:jonas-hydraulicsystem-pumphead1-west,no,game:block-jonas-hydraulicsystem-pumphead1-west
+block,game:jonas-lamp,yes,game:clutter-
+block,game:jonas-poweramplifier-bracket-east,no,game:block-jonas-poweramplifier-bracket-east
+block,game:jonas-poweramplifier-bracket-north,no,game:block-jonas-poweramplifier-bracket-north
+block,game:jonas-poweramplifier-bracket-south,yes,Massive iron bracing
+block,game:jonas-poweramplifier-bracket-west,no,game:block-jonas-poweramplifier-bracket-west
+block,game:jonas-poweramplifier-core-east,no,game:block-jonas-poweramplifier-core-east
+block,game:jonas-poweramplifier-core-north,no,game:block-jonas-poweramplifier-core-north
+block,game:jonas-poweramplifier-core-south,yes,Concentric amplifier core
+block,game:jonas-poweramplifier-core-west,no,game:block-jonas-poweramplifier-core-west
+block,game:jonas-poweramplifier-gearbox-east,no,game:block-jonas-poweramplifier-gearbox-east
+block,game:jonas-poweramplifier-gearbox-north,no,game:block-jonas-poweramplifier-gearbox-north
+block,game:jonas-poweramplifier-gearbox-south,yes,Massive bronze gearbox
+block,game:jonas-poweramplifier-gearbox-west,no,game:block-jonas-poweramplifier-gearbox-west
+block,game:jonas-poweramplifier-genpto-east,no,game:block-jonas-poweramplifier-genpto-east
+block,game:jonas-poweramplifier-genpto-north,no,game:block-jonas-poweramplifier-genpto-north
+block,game:jonas-poweramplifier-genpto-south,yes,Bronze gearbox
+block,game:jonas-poweramplifier-genpto-west,no,game:block-jonas-poweramplifier-genpto-west
+block,game:jonas-poweramplifier-lever4-east,no,game:block-jonas-poweramplifier-lever4-east
+block,game:jonas-poweramplifier-lever4-north,no,game:block-jonas-poweramplifier-lever4-north
+block,game:jonas-poweramplifier-lever4-south,yes,Group of four levers
+block,game:jonas-poweramplifier-lever4-west,no,game:block-jonas-poweramplifier-lever4-west
+block,game:jonas-poweramplifier-ptoflange-east,no,game:block-jonas-poweramplifier-ptoflange-east
+block,game:jonas-poweramplifier-ptoflange-north,no,game:block-jonas-poweramplifier-ptoflange-north
+block,game:jonas-poweramplifier-ptoflange-south,yes,Power shaft flange
+block,game:jonas-poweramplifier-ptoflange-west,no,game:block-jonas-poweramplifier-ptoflange-west
+block,game:jonas-poweramplifier-ptoshaft-east,no,game:block-jonas-poweramplifier-ptoshaft-east
+block,game:jonas-poweramplifier-ptoshaft-north,no,game:block-jonas-poweramplifier-ptoshaft-north
+block,game:jonas-poweramplifier-ptoshaft-south,yes,Power shaft
+block,game:jonas-poweramplifier-ptoshaft-west,no,game:block-jonas-poweramplifier-ptoshaft-west
+block,game:jonas-poweramplifier-sideend-east,no,game:block-jonas-poweramplifier-sideend-east
+block,game:jonas-poweramplifier-sideend-north,no,game:block-jonas-poweramplifier-sideend-north
+block,game:jonas-poweramplifier-sideend-south,yes,Concentric amplifier diffuser
+block,game:jonas-poweramplifier-sideend-west,no,game:block-jonas-poweramplifier-sideend-west
+block,game:jonas-steamengine-beam-east,no,game:block-jonas-steamengine-beam-east
+block,game:jonas-steamengine-beam-north,no,game:block-jonas-steamengine-beam-north
+block,game:jonas-steamengine-beam-south,yes,Atmospheric engine beam
+block,game:jonas-steamengine-beam-west,no,game:block-jonas-steamengine-beam-west
+block,game:jonas-steamengine-gear12-east,no,game:block-jonas-steamengine-gear12-east
+block,game:jonas-steamengine-gear12-north,no,game:block-jonas-steamengine-gear12-north
+block,game:jonas-steamengine-gear12-south,yes,12-tooth gear
+block,game:jonas-steamengine-gear12-west,no,game:block-jonas-steamengine-gear12-west
+block,game:jonas-steamengine-gear24-east,no,game:block-jonas-steamengine-gear24-east
+block,game:jonas-steamengine-gear24-north,no,game:block-jonas-steamengine-gear24-north
+block,game:jonas-steamengine-gear24-south,yes,24-tooth gear
+block,game:jonas-steamengine-gear24-west,no,game:block-jonas-steamengine-gear24-west
+block,game:jonas-steamengine-gear36-east,no,game:block-jonas-steamengine-gear36-east
+block,game:jonas-steamengine-gear36-north,no,game:block-jonas-steamengine-gear36-north
+block,game:jonas-steamengine-gear36-south,yes,36-tooth gear
+block,game:jonas-steamengine-gear36-west,no,game:block-jonas-steamengine-gear36-west
+block,game:jonas-steamengine-gearjunction-east,no,game:block-jonas-steamengine-gearjunction-east
+block,game:jonas-steamengine-gearjunction-north,no,game:block-jonas-steamengine-gearjunction-north
+block,game:jonas-steamengine-gearjunction-south,yes,Gear junction
+block,game:jonas-steamengine-gearjunction-west,no,game:block-jonas-steamengine-gearjunction-west
+block,game:jonas-steamengine-pistonbottom-east,no,game:block-jonas-steamengine-pistonbottom-east
+block,game:jonas-steamengine-pistonbottom-north,no,game:block-jonas-steamengine-pistonbottom-north
+block,game:jonas-steamengine-pistonbottom-south,yes,"Atmospheric engine piston, bottom portion"
+block,game:jonas-steamengine-pistonbottom-west,no,game:block-jonas-steamengine-pistonbottom-west
+block,game:jonas-steamengine-pistonmiddle-east,no,game:block-jonas-steamengine-pistonmiddle-east
+block,game:jonas-steamengine-pistonmiddle-north,no,game:block-jonas-steamengine-pistonmiddle-north
+block,game:jonas-steamengine-pistonmiddle-south,yes,"Atmospheric engine piston, middle portion"
+block,game:jonas-steamengine-pistonmiddle-west,no,game:block-jonas-steamengine-pistonmiddle-west
+block,game:jonas-steamengine-pistontop-east,no,game:block-jonas-steamengine-pistontop-east
+block,game:jonas-steamengine-pistontop-north,no,game:block-jonas-steamengine-pistontop-north
+block,game:jonas-steamengine-pistontop-south,yes,"Atmospheric engine piston, top portion"
+block,game:jonas-steamengine-pistontop-west,no,game:block-jonas-steamengine-pistontop-west
+block,game:jonas-steamengine-support-east,no,game:block-jonas-steamengine-support-east
+block,game:jonas-steamengine-support-north,no,game:block-jonas-steamengine-support-north
+block,game:jonas-steamengine-support-south,no,Wood timber framework
+block,game:jonas-steamengine-support-west,no,game:block-jonas-steamengine-support-west
+block,game:jonas-steamengine-valve1-east,no,game:block-jonas-steamengine-valve1-east
+block,game:jonas-steamengine-valve1-north,no,game:block-jonas-steamengine-valve1-north
+block,game:jonas-steamengine-valve1-south,yes,Iron pipe valve with trip lever
+block,game:jonas-steamengine-valve1-west,no,game:block-jonas-steamengine-valve1-west
+block,game:jonas-steamengine-valve2-east,no,game:block-jonas-steamengine-valve2-east
+block,game:jonas-steamengine-valve2-north,no,game:block-jonas-steamengine-valve2-north
+block,game:jonas-steamengine-valve2-south,yes,Iron pipe valve with trip lever
+block,game:jonas-steamengine-valve2-west,no,game:block-jonas-steamengine-valve2-west
+block,game:jonaslens-east,no,The Lens
+block,game:jonaslens-north,yes,The Lens
+block,game:jonaslens-south,no,The Lens
+block,game:jonaslens-west,no,The Lens
+item,game:largegear-temporal,yes,Large temporal gear
+block,game:lava-d-1,no,game:block-lava-d-1
+block,game:lava-d-2,no,game:block-lava-d-2
+block,game:lava-d-3,no,game:block-lava-d-3
+block,game:lava-d-4,no,game:block-lava-d-4
+block,game:lava-d-5,no,game:block-lava-d-5
+block,game:lava-d-6,no,game:block-lava-d-6
+block,game:lava-d-7,no,game:block-lava-d-7
+block,game:lava-e-1,no,game:block-lava-e-1
+block,game:lava-e-2,no,game:block-lava-e-2
+block,game:lava-e-3,no,game:block-lava-e-3
+block,game:lava-e-4,no,game:block-lava-e-4
+block,game:lava-e-5,no,game:block-lava-e-5
+block,game:lava-e-6,no,game:block-lava-e-6
+block,game:lava-e-7,no,game:block-lava-e-7
+block,game:lava-n-1,no,game:block-lava-n-1
+block,game:lava-n-2,no,game:block-lava-n-2
+block,game:lava-n-3,no,game:block-lava-n-3
+block,game:lava-n-4,no,game:block-lava-n-4
+block,game:lava-n-5,no,game:block-lava-n-5
+block,game:lava-n-6,no,game:block-lava-n-6
+block,game:lava-n-7,no,game:block-lava-n-7
+block,game:lava-ne-1,no,game:block-lava-ne-1
+block,game:lava-ne-2,no,game:block-lava-ne-2
+block,game:lava-ne-3,no,game:block-lava-ne-3
+block,game:lava-ne-4,no,game:block-lava-ne-4
+block,game:lava-ne-5,no,game:block-lava-ne-5
+block,game:lava-ne-6,no,game:block-lava-ne-6
+block,game:lava-ne-7,no,game:block-lava-ne-7
+block,game:lava-nw-1,no,game:block-lava-nw-1
+block,game:lava-nw-2,no,game:block-lava-nw-2
+block,game:lava-nw-3,no,game:block-lava-nw-3
+block,game:lava-nw-4,no,game:block-lava-nw-4
+block,game:lava-nw-5,no,game:block-lava-nw-5
+block,game:lava-nw-6,no,game:block-lava-nw-6
+block,game:lava-nw-7,no,game:block-lava-nw-7
+block,game:lava-s-1,no,game:block-lava-s-1
+block,game:lava-s-2,no,game:block-lava-s-2
+block,game:lava-s-3,no,game:block-lava-s-3
+block,game:lava-s-4,no,game:block-lava-s-4
+block,game:lava-s-5,no,game:block-lava-s-5
+block,game:lava-s-6,no,game:block-lava-s-6
+block,game:lava-s-7,no,game:block-lava-s-7
+block,game:lava-se-1,no,game:block-lava-se-1
+block,game:lava-se-2,no,game:block-lava-se-2
+block,game:lava-se-3,no,game:block-lava-se-3
+block,game:lava-se-4,no,game:block-lava-se-4
+block,game:lava-se-5,no,game:block-lava-se-5
+block,game:lava-se-6,no,game:block-lava-se-6
+block,game:lava-se-7,no,game:block-lava-se-7
+block,game:lava-still-1,no,game:block-lava-still-1
+block,game:lava-still-2,no,game:block-lava-still-2
+block,game:lava-still-3,no,game:block-lava-still-3
+block,game:lava-still-4,no,game:block-lava-still-4
+block,game:lava-still-5,no,game:block-lava-still-5
+block,game:lava-still-6,no,game:block-lava-still-6
+block,game:lava-still-7,yes,Still Lava
+block,game:lava-sw-1,no,game:block-lava-sw-1
+block,game:lava-sw-2,no,game:block-lava-sw-2
+block,game:lava-sw-3,no,game:block-lava-sw-3
+block,game:lava-sw-4,no,game:block-lava-sw-4
+block,game:lava-sw-5,no,game:block-lava-sw-5
+block,game:lava-sw-6,no,game:block-lava-sw-6
+block,game:lava-sw-7,no,game:block-lava-sw-7
+block,game:lava-w-1,no,game:block-lava-w-1
+block,game:lava-w-2,no,game:block-lava-w-2
+block,game:lava-w-3,no,game:block-lava-w-3
+block,game:lava-w-4,no,game:block-lava-w-4
+block,game:lava-w-5,no,game:block-lava-w-5
+block,game:lava-w-6,no,game:block-lava-w-6
+block,game:lava-w-7,no,game:block-lava-w-7
+item,game:letter-faded,yes,Faded and crumpled letter
+item,game:letter-lazaret,yes,Letter with directions to the lazaret
+item,game:locatormap-cavetobias,yes,Map to Tobias' cave
+item,game:locatormap-devastationarea,yes,Map to the devastation
+item,game:locatormap-dungeon,yes,Map to an abandoned dungeon
+item,game:locatormap-resonancearchive,yes,Map to the resonance archive
+item,game:locatormap-treasurehunter,yes,Map to the treasure hunter
+item,game:locatormap-treasures,yes,Treasure map
+block,game:locustnest-cage,yes,Locust nest (Cage)
+block,game:locustnest-metalspike-large,yes,Metal spikes
+block,game:locustnest-metalspike-medium,yes,Metal spikes
+block,game:locustnest-metalspike-none,yes,Metal spikes
+block,game:locustnest-metalspike-none-upsidedown,yes,Metal spikes
+block,game:locustnest-metalspike-small,yes,Metal spikes
+block,game:locustnest-metalspike-tiny,yes,Metal spikes
+block,game:locustnest-stalagmite-main1,yes,Locust nest
+block,game:locustnest-stalagmite-small1,yes,Locust nest
+block,game:locustnest-stalagmite-small2,yes,Locust nest
+item,game:lootrandomizer,yes,Loot randomizer
+block,game:lootvessel-arcticsupplies,yes,Cracked vessel (Arctic supplies)
+block,game:lootvessel-farming,yes,Cracked vessel (Farming)
+block,game:lootvessel-food,yes,Cracked vessel (Food)
+block,game:lootvessel-forage,yes,Cracked vessel (Forage)
+block,game:lootvessel-ore,yes,Cracked vessel (Ore)
+block,game:lootvessel-seed,yes,Cracked vessel (Seed)
+block,game:lootvessel-tool,yes,Cracked vessel (Tool)
+item,game:lore-book-aged-brickred,yes,Aged lore book (Brick red)
+item,game:lore-book-aged-cherryred,yes,Aged lore book (Cherry red)
+item,game:lore-book-aged-darkbeige,yes,Aged lore book (Dark beige)
+item,game:lore-book-aged-darkgray,yes,Aged lore book (Dark gray)
+item,game:lore-book-aged-darkgreen,yes,Aged lore book (Dark green)
+item,game:lore-book-aged-darkolive,yes,Aged lore book (Dark olive)
+item,game:lore-book-aged-gray,yes,Aged lore book (Gray)
+item,game:lore-book-aged-olive,yes,Aged lore book (Olive)
+item,game:lore-book-aged-orange,yes,Aged lore book (Orange)
+item,game:lore-book-aged-orangebrown,yes,Aged lore book (Orange brown)
+item,game:lore-book-aged-purpleorange,yes,Aged lore book (Purple orange)
+item,game:lore-book-rotten-brown,yes,Rotten lore book (Brown)
+item,game:lore-book-rotten-gray,yes,Rotten lore book (Gray)
+item,game:lore-book-rotten-green,yes,Rotten lore book (Green)
+item,game:lore-book-rotten-purple,yes,Rotten lore book (Purple)
+item,game:lore-book-rotten-rust,yes,Rotten lore book (Rust)
+item,game:lore-paper,yes,Paper
+item,game:lore-scroll,yes,Scroll
+item,game:magicwand,yes,Magic wand (Worldedit)
+block,game:mantle,yes,Mantle
+item,game:measuringrope,yes,Measuring rope
+block,game:meta-aboveground,yes,Meta (Above ground)
+block,game:meta-blocklayer,yes,Meta (block layer)
+block,game:meta-collider,yes,Meta (Collider)
+block,game:meta-connector,yes,Meta (connector)
+block,game:meta-filler,yes,Meta (Filler)
+block,game:meta-music,yes,Meta (music)
+block,game:meta-pathway,yes,Meta (Pathway)
+block,game:meta-selectablecollider,yes,Meta (Selectable Collider)
+block,game:meta-spawner,yes,Meta (Spawner)
+block,game:meta-underground,yes,Meta (Underground)
+block,game:microblock,no,Granite rock
+block,game:multiblock-monolithic-0-0-0,no,game:block-multiblock-monolithic-0-0-0
+block,game:multiblock-monolithic-0-0-n1,no,game:block-multiblock-monolithic-0-0-n1
+block,game:multiblock-monolithic-0-0-n2,no,game:block-multiblock-monolithic-0-0-n2
+block,game:multiblock-monolithic-0-0-p1,no,game:block-multiblock-monolithic-0-0-p1
+block,game:multiblock-monolithic-0-0-p2,no,game:block-multiblock-monolithic-0-0-p2
+block,game:multiblock-monolithic-0-n1-0,no,game:block-multiblock-monolithic-0-n1-0
+block,game:multiblock-monolithic-0-n1-n1,no,game:block-multiblock-monolithic-0-n1-n1
+block,game:multiblock-monolithic-0-n1-n2,no,game:block-multiblock-monolithic-0-n1-n2
+block,game:multiblock-monolithic-0-n1-p1,no,game:block-multiblock-monolithic-0-n1-p1
+block,game:multiblock-monolithic-0-n1-p2,no,game:block-multiblock-monolithic-0-n1-p2
+block,game:multiblock-monolithic-0-n2-0,no,game:block-multiblock-monolithic-0-n2-0
+block,game:multiblock-monolithic-0-n2-n1,no,game:block-multiblock-monolithic-0-n2-n1
+block,game:multiblock-monolithic-0-n2-n2,no,game:block-multiblock-monolithic-0-n2-n2
+block,game:multiblock-monolithic-0-n2-p1,no,game:block-multiblock-monolithic-0-n2-p1
+block,game:multiblock-monolithic-0-n2-p2,no,game:block-multiblock-monolithic-0-n2-p2
+block,game:multiblock-monolithic-0-p1-0,no,game:block-multiblock-monolithic-0-p1-0
+block,game:multiblock-monolithic-0-p1-n1,no,game:block-multiblock-monolithic-0-p1-n1
+block,game:multiblock-monolithic-0-p1-n2,no,game:block-multiblock-monolithic-0-p1-n2
+block,game:multiblock-monolithic-0-p1-p1,no,game:block-multiblock-monolithic-0-p1-p1
+block,game:multiblock-monolithic-0-p1-p2,no,game:block-multiblock-monolithic-0-p1-p2
+block,game:multiblock-monolithic-0-p2-0,no,game:block-multiblock-monolithic-0-p2-0
+block,game:multiblock-monolithic-0-p2-n1,no,game:block-multiblock-monolithic-0-p2-n1
+block,game:multiblock-monolithic-0-p2-n2,no,game:block-multiblock-monolithic-0-p2-n2
+block,game:multiblock-monolithic-0-p2-p1,no,game:block-multiblock-monolithic-0-p2-p1
+block,game:multiblock-monolithic-0-p2-p2,no,game:block-multiblock-monolithic-0-p2-p2
+block,game:multiblock-monolithic-0-p3-0,no,game:block-multiblock-monolithic-0-p3-0
+block,game:multiblock-monolithic-0-p3-n1,no,game:block-multiblock-monolithic-0-p3-n1
+block,game:multiblock-monolithic-0-p3-n2,no,game:block-multiblock-monolithic-0-p3-n2
+block,game:multiblock-monolithic-0-p3-p1,no,game:block-multiblock-monolithic-0-p3-p1
+block,game:multiblock-monolithic-0-p3-p2,no,game:block-multiblock-monolithic-0-p3-p2
+block,game:multiblock-monolithic-n1-0-0,no,game:block-multiblock-monolithic-n1-0-0
+block,game:multiblock-monolithic-n1-0-n1,no,game:block-multiblock-monolithic-n1-0-n1
+block,game:multiblock-monolithic-n1-0-n2,no,game:block-multiblock-monolithic-n1-0-n2
+block,game:multiblock-monolithic-n1-0-p1,no,game:block-multiblock-monolithic-n1-0-p1
+block,game:multiblock-monolithic-n1-0-p2,no,game:block-multiblock-monolithic-n1-0-p2
+block,game:multiblock-monolithic-n1-n1-0,no,game:block-multiblock-monolithic-n1-n1-0
+block,game:multiblock-monolithic-n1-n1-n1,no,game:block-multiblock-monolithic-n1-n1-n1
+block,game:multiblock-monolithic-n1-n1-n2,no,game:block-multiblock-monolithic-n1-n1-n2
+block,game:multiblock-monolithic-n1-n1-p1,no,game:block-multiblock-monolithic-n1-n1-p1
+block,game:multiblock-monolithic-n1-n1-p2,no,game:block-multiblock-monolithic-n1-n1-p2
+block,game:multiblock-monolithic-n1-n2-0,no,game:block-multiblock-monolithic-n1-n2-0
+block,game:multiblock-monolithic-n1-n2-n1,no,game:block-multiblock-monolithic-n1-n2-n1
+block,game:multiblock-monolithic-n1-n2-n2,no,game:block-multiblock-monolithic-n1-n2-n2
+block,game:multiblock-monolithic-n1-n2-p1,no,game:block-multiblock-monolithic-n1-n2-p1
+block,game:multiblock-monolithic-n1-n2-p2,no,game:block-multiblock-monolithic-n1-n2-p2
+block,game:multiblock-monolithic-n1-p1-0,no,game:block-multiblock-monolithic-n1-p1-0
+block,game:multiblock-monolithic-n1-p1-n1,no,game:block-multiblock-monolithic-n1-p1-n1
+block,game:multiblock-monolithic-n1-p1-n2,no,game:block-multiblock-monolithic-n1-p1-n2
+block,game:multiblock-monolithic-n1-p1-p1,no,game:block-multiblock-monolithic-n1-p1-p1
+block,game:multiblock-monolithic-n1-p1-p2,no,game:block-multiblock-monolithic-n1-p1-p2
+block,game:multiblock-monolithic-n1-p2-0,no,game:block-multiblock-monolithic-n1-p2-0
+block,game:multiblock-monolithic-n1-p2-n1,no,game:block-multiblock-monolithic-n1-p2-n1
+block,game:multiblock-monolithic-n1-p2-n2,no,game:block-multiblock-monolithic-n1-p2-n2
+block,game:multiblock-monolithic-n1-p2-p1,no,game:block-multiblock-monolithic-n1-p2-p1
+block,game:multiblock-monolithic-n1-p2-p2,no,game:block-multiblock-monolithic-n1-p2-p2
+block,game:multiblock-monolithic-n1-p3-0,no,game:block-multiblock-monolithic-n1-p3-0
+block,game:multiblock-monolithic-n1-p3-n1,no,game:block-multiblock-monolithic-n1-p3-n1
+block,game:multiblock-monolithic-n1-p3-n2,no,game:block-multiblock-monolithic-n1-p3-n2
+block,game:multiblock-monolithic-n1-p3-p1,no,game:block-multiblock-monolithic-n1-p3-p1
+block,game:multiblock-monolithic-n1-p3-p2,no,game:block-multiblock-monolithic-n1-p3-p2
+block,game:multiblock-monolithic-n2-0-0,no,game:block-multiblock-monolithic-n2-0-0
+block,game:multiblock-monolithic-n2-0-n1,no,game:block-multiblock-monolithic-n2-0-n1
+block,game:multiblock-monolithic-n2-0-n2,no,game:block-multiblock-monolithic-n2-0-n2
+block,game:multiblock-monolithic-n2-0-p1,no,game:block-multiblock-monolithic-n2-0-p1
+block,game:multiblock-monolithic-n2-0-p2,no,game:block-multiblock-monolithic-n2-0-p2
+block,game:multiblock-monolithic-n2-n1-0,no,game:block-multiblock-monolithic-n2-n1-0
+block,game:multiblock-monolithic-n2-n1-n1,no,game:block-multiblock-monolithic-n2-n1-n1
+block,game:multiblock-monolithic-n2-n1-n2,no,game:block-multiblock-monolithic-n2-n1-n2
+block,game:multiblock-monolithic-n2-n1-p1,no,game:block-multiblock-monolithic-n2-n1-p1
+block,game:multiblock-monolithic-n2-n1-p2,no,game:block-multiblock-monolithic-n2-n1-p2
+block,game:multiblock-monolithic-n2-n2-0,no,game:block-multiblock-monolithic-n2-n2-0
+block,game:multiblock-monolithic-n2-n2-n1,no,game:block-multiblock-monolithic-n2-n2-n1
+block,game:multiblock-monolithic-n2-n2-n2,no,game:block-multiblock-monolithic-n2-n2-n2
+block,game:multiblock-monolithic-n2-n2-p1,no,game:block-multiblock-monolithic-n2-n2-p1
+block,game:multiblock-monolithic-n2-n2-p2,no,game:block-multiblock-monolithic-n2-n2-p2
+block,game:multiblock-monolithic-n2-p1-0,no,game:block-multiblock-monolithic-n2-p1-0
+block,game:multiblock-monolithic-n2-p1-n1,no,game:block-multiblock-monolithic-n2-p1-n1
+block,game:multiblock-monolithic-n2-p1-n2,no,game:block-multiblock-monolithic-n2-p1-n2
+block,game:multiblock-monolithic-n2-p1-p1,no,game:block-multiblock-monolithic-n2-p1-p1
+block,game:multiblock-monolithic-n2-p1-p2,no,game:block-multiblock-monolithic-n2-p1-p2
+block,game:multiblock-monolithic-n2-p2-0,no,game:block-multiblock-monolithic-n2-p2-0
+block,game:multiblock-monolithic-n2-p2-n1,no,game:block-multiblock-monolithic-n2-p2-n1
+block,game:multiblock-monolithic-n2-p2-n2,no,game:block-multiblock-monolithic-n2-p2-n2
+block,game:multiblock-monolithic-n2-p2-p1,no,game:block-multiblock-monolithic-n2-p2-p1
+block,game:multiblock-monolithic-n2-p2-p2,no,game:block-multiblock-monolithic-n2-p2-p2
+block,game:multiblock-monolithic-n2-p3-0,no,game:block-multiblock-monolithic-n2-p3-0
+block,game:multiblock-monolithic-n2-p3-n1,no,game:block-multiblock-monolithic-n2-p3-n1
+block,game:multiblock-monolithic-n2-p3-n2,no,game:block-multiblock-monolithic-n2-p3-n2
+block,game:multiblock-monolithic-n2-p3-p1,no,game:block-multiblock-monolithic-n2-p3-p1
+block,game:multiblock-monolithic-n2-p3-p2,no,game:block-multiblock-monolithic-n2-p3-p2
+block,game:multiblock-monolithic-p1-0-0,no,game:block-multiblock-monolithic-p1-0-0
+block,game:multiblock-monolithic-p1-0-n1,no,game:block-multiblock-monolithic-p1-0-n1
+block,game:multiblock-monolithic-p1-0-n2,no,game:block-multiblock-monolithic-p1-0-n2
+block,game:multiblock-monolithic-p1-0-p1,no,game:block-multiblock-monolithic-p1-0-p1
+block,game:multiblock-monolithic-p1-0-p2,no,game:block-multiblock-monolithic-p1-0-p2
+block,game:multiblock-monolithic-p1-n1-0,no,game:block-multiblock-monolithic-p1-n1-0
+block,game:multiblock-monolithic-p1-n1-n1,no,game:block-multiblock-monolithic-p1-n1-n1
+block,game:multiblock-monolithic-p1-n1-n2,no,game:block-multiblock-monolithic-p1-n1-n2
+block,game:multiblock-monolithic-p1-n1-p1,no,game:block-multiblock-monolithic-p1-n1-p1
+block,game:multiblock-monolithic-p1-n1-p2,no,game:block-multiblock-monolithic-p1-n1-p2
+block,game:multiblock-monolithic-p1-n2-0,no,game:block-multiblock-monolithic-p1-n2-0
+block,game:multiblock-monolithic-p1-n2-n1,no,game:block-multiblock-monolithic-p1-n2-n1
+block,game:multiblock-monolithic-p1-n2-n2,no,game:block-multiblock-monolithic-p1-n2-n2
+block,game:multiblock-monolithic-p1-n2-p1,no,game:block-multiblock-monolithic-p1-n2-p1
+block,game:multiblock-monolithic-p1-n2-p2,no,game:block-multiblock-monolithic-p1-n2-p2
+block,game:multiblock-monolithic-p1-p1-0,no,game:block-multiblock-monolithic-p1-p1-0
+block,game:multiblock-monolithic-p1-p1-n1,no,game:block-multiblock-monolithic-p1-p1-n1
+block,game:multiblock-monolithic-p1-p1-n2,no,game:block-multiblock-monolithic-p1-p1-n2
+block,game:multiblock-monolithic-p1-p1-p1,no,game:block-multiblock-monolithic-p1-p1-p1
+block,game:multiblock-monolithic-p1-p1-p2,no,game:block-multiblock-monolithic-p1-p1-p2
+block,game:multiblock-monolithic-p1-p2-0,no,game:block-multiblock-monolithic-p1-p2-0
+block,game:multiblock-monolithic-p1-p2-n1,no,game:block-multiblock-monolithic-p1-p2-n1
+block,game:multiblock-monolithic-p1-p2-n2,no,game:block-multiblock-monolithic-p1-p2-n2
+block,game:multiblock-monolithic-p1-p2-p1,no,game:block-multiblock-monolithic-p1-p2-p1
+block,game:multiblock-monolithic-p1-p2-p2,no,game:block-multiblock-monolithic-p1-p2-p2
+block,game:multiblock-monolithic-p1-p3-0,no,game:block-multiblock-monolithic-p1-p3-0
+block,game:multiblock-monolithic-p1-p3-n1,no,game:block-multiblock-monolithic-p1-p3-n1
+block,game:multiblock-monolithic-p1-p3-n2,no,game:block-multiblock-monolithic-p1-p3-n2
+block,game:multiblock-monolithic-p1-p3-p1,no,game:block-multiblock-monolithic-p1-p3-p1
+block,game:multiblock-monolithic-p1-p3-p2,no,game:block-multiblock-monolithic-p1-p3-p2
+block,game:multiblock-monolithic-p2-0-0,no,game:block-multiblock-monolithic-p2-0-0
+block,game:multiblock-monolithic-p2-0-n1,no,game:block-multiblock-monolithic-p2-0-n1
+block,game:multiblock-monolithic-p2-0-n2,no,game:block-multiblock-monolithic-p2-0-n2
+block,game:multiblock-monolithic-p2-0-p1,no,game:block-multiblock-monolithic-p2-0-p1
+block,game:multiblock-monolithic-p2-0-p2,no,game:block-multiblock-monolithic-p2-0-p2
+block,game:multiblock-monolithic-p2-n1-0,no,game:block-multiblock-monolithic-p2-n1-0
+block,game:multiblock-monolithic-p2-n1-n1,no,game:block-multiblock-monolithic-p2-n1-n1
+block,game:multiblock-monolithic-p2-n1-n2,no,game:block-multiblock-monolithic-p2-n1-n2
+block,game:multiblock-monolithic-p2-n1-p1,no,game:block-multiblock-monolithic-p2-n1-p1
+block,game:multiblock-monolithic-p2-n1-p2,no,game:block-multiblock-monolithic-p2-n1-p2
+block,game:multiblock-monolithic-p2-n2-0,no,game:block-multiblock-monolithic-p2-n2-0
+block,game:multiblock-monolithic-p2-n2-n1,no,game:block-multiblock-monolithic-p2-n2-n1
+block,game:multiblock-monolithic-p2-n2-n2,no,game:block-multiblock-monolithic-p2-n2-n2
+block,game:multiblock-monolithic-p2-n2-p1,no,game:block-multiblock-monolithic-p2-n2-p1
+block,game:multiblock-monolithic-p2-n2-p2,no,game:block-multiblock-monolithic-p2-n2-p2
+block,game:multiblock-monolithic-p2-p1-0,no,game:block-multiblock-monolithic-p2-p1-0
+block,game:multiblock-monolithic-p2-p1-n1,no,game:block-multiblock-monolithic-p2-p1-n1
+block,game:multiblock-monolithic-p2-p1-n2,no,game:block-multiblock-monolithic-p2-p1-n2
+block,game:multiblock-monolithic-p2-p1-p1,no,game:block-multiblock-monolithic-p2-p1-p1
+block,game:multiblock-monolithic-p2-p1-p2,no,game:block-multiblock-monolithic-p2-p1-p2
+block,game:multiblock-monolithic-p2-p2-0,no,game:block-multiblock-monolithic-p2-p2-0
+block,game:multiblock-monolithic-p2-p2-n1,no,game:block-multiblock-monolithic-p2-p2-n1
+block,game:multiblock-monolithic-p2-p2-n2,no,game:block-multiblock-monolithic-p2-p2-n2
+block,game:multiblock-monolithic-p2-p2-p1,no,game:block-multiblock-monolithic-p2-p2-p1
+block,game:multiblock-monolithic-p2-p2-p2,no,game:block-multiblock-monolithic-p2-p2-p2
+block,game:multiblock-monolithic-p2-p3-0,no,game:block-multiblock-monolithic-p2-p3-0
+block,game:multiblock-monolithic-p2-p3-n1,no,game:block-multiblock-monolithic-p2-p3-n1
+block,game:multiblock-monolithic-p2-p3-n2,no,game:block-multiblock-monolithic-p2-p3-n2
+block,game:multiblock-monolithic-p2-p3-p1,no,game:block-multiblock-monolithic-p2-p3-p1
+block,game:multiblock-monolithic-p2-p3-p2,no,game:block-multiblock-monolithic-p2-p3-p2
+item,game:npcguidestick,yes,NPC guide stick
+block,game:oxidation-rust-3tall-bot,yes,Oxidation layer (bottom)
+block,game:oxidation-rust-3tall-mid,yes,Oxidation layer (mid)
+block,game:oxidation-rust-3tall-top,yes,Oxidation layer (top)
+block,game:oxidation-rust-dripping,yes,Dripping oxidation layer
+block,game:oxidation-rust-normal,yes,Oxidation layer
+block,game:paint-scratched-white,yes,Scratched white paint
+block,game:pie-raw,yes,Empty pie crust
+block,game:platepile,no,game:block-platepile
+block,game:precipitate-dust-heavy,yes,Dust (heavy)
+block,game:precipitate-dust-light,yes,Dust (light)
+block,game:precipitate-dust-sparse,yes,Dust (sparse)
+block,game:randomizer-normal,yes,Block Randomizer
+block,game:rapidwater-d-1,no,game:block-rapidwater-d-1
+block,game:rapidwater-d-2,no,game:block-rapidwater-d-2
+block,game:rapidwater-d-3,no,game:block-rapidwater-d-3
+block,game:rapidwater-d-4,no,game:block-rapidwater-d-4
+block,game:rapidwater-d-5,no,game:block-rapidwater-d-5
+block,game:rapidwater-d-6,no,game:block-rapidwater-d-6
+block,game:rapidwater-d-7,no,game:block-rapidwater-d-7
+block,game:rapidwater-e-1,no,game:block-rapidwater-e-1
+block,game:rapidwater-e-2,no,game:block-rapidwater-e-2
+block,game:rapidwater-e-3,no,game:block-rapidwater-e-3
+block,game:rapidwater-e-4,no,game:block-rapidwater-e-4
+block,game:rapidwater-e-5,no,game:block-rapidwater-e-5
+block,game:rapidwater-e-6,no,game:block-rapidwater-e-6
+block,game:rapidwater-e-7,no,game:block-rapidwater-e-7
+block,game:rapidwater-n-1,no,game:block-rapidwater-n-1
+block,game:rapidwater-n-2,no,game:block-rapidwater-n-2
+block,game:rapidwater-n-3,no,game:block-rapidwater-n-3
+block,game:rapidwater-n-4,no,game:block-rapidwater-n-4
+block,game:rapidwater-n-5,no,game:block-rapidwater-n-5
+block,game:rapidwater-n-6,no,game:block-rapidwater-n-6
+block,game:rapidwater-n-7,no,game:block-rapidwater-n-7
+block,game:rapidwater-ne-1,no,game:block-rapidwater-ne-1
+block,game:rapidwater-ne-2,no,game:block-rapidwater-ne-2
+block,game:rapidwater-ne-3,no,game:block-rapidwater-ne-3
+block,game:rapidwater-ne-4,no,game:block-rapidwater-ne-4
+block,game:rapidwater-ne-5,no,game:block-rapidwater-ne-5
+block,game:rapidwater-ne-6,no,game:block-rapidwater-ne-6
+block,game:rapidwater-ne-7,no,game:block-rapidwater-ne-7
+block,game:rapidwater-nw-1,no,game:block-rapidwater-nw-1
+block,game:rapidwater-nw-2,no,game:block-rapidwater-nw-2
+block,game:rapidwater-nw-3,no,game:block-rapidwater-nw-3
+block,game:rapidwater-nw-4,no,game:block-rapidwater-nw-4
+block,game:rapidwater-nw-5,no,game:block-rapidwater-nw-5
+block,game:rapidwater-nw-6,no,game:block-rapidwater-nw-6
+block,game:rapidwater-nw-7,no,game:block-rapidwater-nw-7
+block,game:rapidwater-s-1,no,game:block-rapidwater-s-1
+block,game:rapidwater-s-2,no,game:block-rapidwater-s-2
+block,game:rapidwater-s-3,no,game:block-rapidwater-s-3
+block,game:rapidwater-s-4,no,game:block-rapidwater-s-4
+block,game:rapidwater-s-5,no,game:block-rapidwater-s-5
+block,game:rapidwater-s-6,no,game:block-rapidwater-s-6
+block,game:rapidwater-s-7,no,game:block-rapidwater-s-7
+block,game:rapidwater-se-1,no,game:block-rapidwater-se-1
+block,game:rapidwater-se-2,no,game:block-rapidwater-se-2
+block,game:rapidwater-se-3,no,game:block-rapidwater-se-3
+block,game:rapidwater-se-4,no,game:block-rapidwater-se-4
+block,game:rapidwater-se-5,no,game:block-rapidwater-se-5
+block,game:rapidwater-se-6,no,game:block-rapidwater-se-6
+block,game:rapidwater-se-7,no,game:block-rapidwater-se-7
+block,game:rapidwater-still-1,no,Rapidly flowing water
+block,game:rapidwater-still-2,no,Rapidly flowing water
+block,game:rapidwater-still-3,no,Rapidly flowing water
+block,game:rapidwater-still-4,no,Rapidly flowing water
+block,game:rapidwater-still-5,no,Rapidly flowing water
+block,game:rapidwater-still-6,no,Rapidly flowing water
+block,game:rapidwater-still-7,yes,Rapidly flowing water
+block,game:rapidwater-sw-1,no,game:block-rapidwater-sw-1
+block,game:rapidwater-sw-2,no,game:block-rapidwater-sw-2
+block,game:rapidwater-sw-3,no,game:block-rapidwater-sw-3
+block,game:rapidwater-sw-4,no,game:block-rapidwater-sw-4
+block,game:rapidwater-sw-5,no,game:block-rapidwater-sw-5
+block,game:rapidwater-sw-6,no,game:block-rapidwater-sw-6
+block,game:rapidwater-sw-7,no,game:block-rapidwater-sw-7
+block,game:rapidwater-w-1,no,game:block-rapidwater-w-1
+block,game:rapidwater-w-2,no,game:block-rapidwater-w-2
+block,game:rapidwater-w-3,no,game:block-rapidwater-w-3
+block,game:rapidwater-w-4,no,game:block-rapidwater-w-4
+block,game:rapidwater-w-5,no,game:block-rapidwater-w-5
+block,game:rapidwater-w-6,no,game:block-rapidwater-w-6
+block,game:rapidwater-w-7,no,game:block-rapidwater-w-7
+item,game:returnbase-returnbasebottom,yes,Base return teleporter alignment pylon
+item,game:returnbase-returnbaseend,yes,Base return teleporter thermal diffusion port
+item,game:returnbase-returnbasetop,yes,Base return teleporter reductive interval pylon
+item,game:returndeath-returndeath1,yes,Terminus teleporter thanatos coupling
+item,game:returndeath-returndeath2,yes,Terminus teleporter transpressor
+item,game:returndeath-returndeath3,yes,Terminus teleporter transit anodes
+item,game:rustypart-eidolon2tr,yes,Eidolon elucidatory vessel
+block,game:saltwater-d-1,no,Saltwater
+block,game:saltwater-d-2,no,Saltwater
+block,game:saltwater-d-3,no,Saltwater
+block,game:saltwater-d-4,no,Saltwater
+block,game:saltwater-d-5,no,Saltwater
+block,game:saltwater-d-6,no,Saltwater
+block,game:saltwater-d-7,no,Saltwater
+block,game:saltwater-e-1,no,Saltwater
+block,game:saltwater-e-2,no,Saltwater
+block,game:saltwater-e-3,no,Saltwater
+block,game:saltwater-e-4,no,Saltwater
+block,game:saltwater-e-5,no,Saltwater
+block,game:saltwater-e-6,no,Saltwater
+block,game:saltwater-e-7,no,Saltwater
+block,game:saltwater-n-1,no,Saltwater
+block,game:saltwater-n-2,no,Saltwater
+block,game:saltwater-n-3,no,Saltwater
+block,game:saltwater-n-4,no,Saltwater
+block,game:saltwater-n-5,no,Saltwater
+block,game:saltwater-n-6,no,Saltwater
+block,game:saltwater-n-7,no,Saltwater
+block,game:saltwater-ne-1,no,Saltwater
+block,game:saltwater-ne-2,no,Saltwater
+block,game:saltwater-ne-3,no,Saltwater
+block,game:saltwater-ne-4,no,Saltwater
+block,game:saltwater-ne-5,no,Saltwater
+block,game:saltwater-ne-6,no,Saltwater
+block,game:saltwater-ne-7,no,Saltwater
+block,game:saltwater-nw-1,no,Saltwater
+block,game:saltwater-nw-2,no,Saltwater
+block,game:saltwater-nw-3,no,Saltwater
+block,game:saltwater-nw-4,no,Saltwater
+block,game:saltwater-nw-5,no,Saltwater
+block,game:saltwater-nw-6,no,Saltwater
+block,game:saltwater-nw-7,no,Saltwater
+block,game:saltwater-s-1,no,Saltwater
+block,game:saltwater-s-2,no,Saltwater
+block,game:saltwater-s-3,no,Saltwater
+block,game:saltwater-s-4,no,Saltwater
+block,game:saltwater-s-5,no,Saltwater
+block,game:saltwater-s-6,no,Saltwater
+block,game:saltwater-s-7,no,Saltwater
+block,game:saltwater-se-1,no,Saltwater
+block,game:saltwater-se-2,no,Saltwater
+block,game:saltwater-se-3,no,Saltwater
+block,game:saltwater-se-4,no,Saltwater
+block,game:saltwater-se-5,no,Saltwater
+block,game:saltwater-se-6,no,Saltwater
+block,game:saltwater-se-7,no,Saltwater
+block,game:saltwater-still-1,no,Saltwater
+block,game:saltwater-still-2,no,Saltwater
+block,game:saltwater-still-3,no,Saltwater
+block,game:saltwater-still-4,no,Saltwater
+block,game:saltwater-still-5,no,Saltwater
+block,game:saltwater-still-6,no,Saltwater
+block,game:saltwater-still-7,yes,Saltwater
+block,game:saltwater-sw-1,no,Saltwater
+block,game:saltwater-sw-2,no,Saltwater
+block,game:saltwater-sw-3,no,Saltwater
+block,game:saltwater-sw-4,no,Saltwater
+block,game:saltwater-sw-5,no,Saltwater
+block,game:saltwater-sw-6,no,Saltwater
+block,game:saltwater-sw-7,no,Saltwater
+block,game:saltwater-w-1,no,Saltwater
+block,game:saltwater-w-2,no,Saltwater
+block,game:saltwater-w-3,no,Saltwater
+block,game:saltwater-w-4,no,Saltwater
+block,game:saltwater-w-5,no,Saltwater
+block,game:saltwater-w-6,no,Saltwater
+block,game:saltwater-w-7,no,Saltwater
+item,game:schematic-customtranslocator,yes,Customized translocator schematic
+block,game:slopetestobj-east,no,Slope test block
+block,game:slopetestobj-north,yes,Slope test block
+block,game:slopetestobj-south,no,Slope test block
+block,game:slopetestobj-west,no,Slope test block
+item,game:stackrandomizer-accessory-highstatus,yes,Accessory randomizer (High status)
+item,game:stackrandomizer-accessory-lowstatus,yes,Accessory randomizer (Low status)
+item,game:stackrandomizer-accessory-mediumstatus,yes,Accessory randomizer (Medium status)
+item,game:stackrandomizer-alljonas,yes,Jonas Parts&Frames Stack randomizer
+item,game:stackrandomizer-armor,yes,Armor randomizer
+item,game:stackrandomizer-butterfly,yes,Butterfly pin randomizer
+item,game:stackrandomizer-cloth-highstatus,yes,Cloth randomizer (High status)
+item,game:stackrandomizer-cloth-lowstatus,yes,Cloth randomizer (Low status)
+item,game:stackrandomizer-cloth-mediumstatus,yes,Cloth randomizer (Medium status)
+item,game:stackrandomizer-clutter-chains-and-fences,yes,Chains and fences clutter randomizer
+item,game:stackrandomizer-clutter-displaycase,yes,Displaycase clutter randomizer
+item,game:stackrandomizer-clutter-furniture,yes,Furniture clutter randomizer
+item,game:stackrandomizer-clutter-intact,yes,Intact clutter randomizer
+item,game:stackrandomizer-clutter-lab,yes,Lab clutter randomizer
+item,game:stackrandomizer-clutter-ruined-toys-clothing,yes,Ruined toys and clothing clutter randomizer
+item,game:stackrandomizer-clutter-ruined-weapons,yes,Ruined weapons clutter randomizer
+item,game:stackrandomizer-clutter-science,yes,Science clutter randomizer
+item,game:stackrandomizer-clutter-scribe,yes,Scribe clutter randomizer
+item,game:stackrandomizer-clutter-tobias,yes,Tobias cave randomizer
+item,game:stackrandomizer-clutter-workshop-advanced,yes,Advanced workshop clutter randomizer
+item,game:stackrandomizer-clutter-workshop-basic,yes,Basic workshop clutter randomizer
+item,game:stackrandomizer-coppertool,yes,Tool randomizer (Copper)
+item,game:stackrandomizer-copperweapon,yes,Weapon randomizer (Copper)
+item,game:stackrandomizer-fuel,yes,Fuel randomizer
+item,game:stackrandomizer-gear,yes,Gear randomizer
+item,game:stackrandomizer-ingot,yes,Ingot randomizer
+item,game:stackrandomizer-jonasframes,yes,Jonasframes randomizer
+item,game:stackrandomizer-jonasparts,yes,Jonas parts randomizer
+item,game:stackrandomizer-kitchen,yes,Food and kitchen tools randomizer
+item,game:stackrandomizer-lantern,yes,Lantern randomizer
+item,game:stackrandomizer-lazaret,yes,Lazaret randomizer
+item,game:stackrandomizer-library,yes,Library randomizer
+item,game:stackrandomizer-lore-diaries,yes,Lore randomizer (D)
+item,game:stackrandomizer-lore-jonas,yes,Lore randomizer (J)
+item,game:stackrandomizer-lore-research,yes,Lore randomizer (R)
+item,game:stackrandomizer-lore-tobias,yes,Lore randomizer (T)
+item,game:stackrandomizer-lore-villager,yes,Lore randomizer (V)
+item,game:stackrandomizer-materials-building,yes,Building materials randomizer
+item,game:stackrandomizer-materials-mining,yes,Mining materials randomizer
+item,game:stackrandomizer-mines,yes,Mines randomizer
+item,game:stackrandomizer-ore,yes,Ore Randomizer
+item,game:stackrandomizer-painting,yes,Painting randomizer
+item,game:stackrandomizer-resource,yes,Resource randomizer
+item,game:stackrandomizer-ruinedweapon,yes,Stack randomizer (Ruined weapons)
+item,game:stackrandomizer-seed,yes,Seed randomizer
+item,game:stackrandomizer-theater,yes,Theater randomizer
+item,game:stackrandomizer-tuningcylinder,yes,Tuning cylinder randomizer
+block,game:statictranslocator-broken-east,no,Broken static translocator
+block,game:statictranslocator-broken-north,yes,Broken static translocator
+block,game:statictranslocator-broken-south,no,Broken static translocator
+block,game:statictranslocator-broken-west,no,Broken static translocator
+block,game:statictranslocator-normal-east,no,Repaired Static translocator
+block,game:statictranslocator-normal-north,no,Repaired Static translocator
+block,game:statictranslocator-normal-south,no,Repaired Static translocator
+block,game:statictranslocator-normal-west,no,Repaired Static translocator
+block,game:statictranslocator-unrepairable-east,no,game:block-statictranslocator-unrepairable-east
+block,game:statictranslocator-unrepairable-north,yes,Ruined static translocator
+block,game:statictranslocator-unrepairable-south,no,game:block-statictranslocator-unrepairable-south
+block,game:statictranslocator-unrepairable-west,no,game:block-statictranslocator-unrepairable-west
+block,game:teleporterbase,yes,Teleporter
+item,game:textureflipper,yes,Textureflipper
+block,game:tickerblock-normal,yes,Ticker block
+item,game:tobtlocatorpart,yes,Illuminal divergence manifold
+block,game:vertexeater,yes,Vertexeater
+block,game:wallscribbles-art,yes,Wall scribbles (art)
+block,game:wallscribbles-carving,yes,Wall scribbles (carving)
+block,game:wallscribbles-maze,yes,Wall scribbles (maze)
+block,game:wallscribbles-scribbles,yes,Wall scribbles (mixed)
+block,game:wallscribbles-tally,yes,Wall scribbles (tally)
+block,game:wallscribbles-text,yes,Wall scribbles (text)
+block,game:water-d-1,no,Flowing water
+block,game:water-d-2,no,Flowing water
+block,game:water-d-3,no,Flowing water
+block,game:water-d-4,no,Flowing water
+block,game:water-d-5,no,Flowing water
+block,game:water-d-6,no,Flowing water
+block,game:water-d-7,no,Flowing water
+block,game:water-e-1,no,Flowing water
+block,game:water-e-2,no,Flowing water
+block,game:water-e-3,no,Flowing water
+block,game:water-e-4,no,Flowing water
+block,game:water-e-5,no,Flowing water
+block,game:water-e-6,no,Flowing water
+block,game:water-e-7,no,Flowing water
+block,game:water-n-1,no,Flowing water
+block,game:water-n-2,no,Flowing water
+block,game:water-n-3,no,Flowing water
+block,game:water-n-4,no,Flowing water
+block,game:water-n-5,no,Flowing water
+block,game:water-n-6,no,Flowing water
+block,game:water-n-7,no,Flowing water
+block,game:water-ne-1,no,Flowing water
+block,game:water-ne-2,no,Flowing water
+block,game:water-ne-3,no,Flowing water
+block,game:water-ne-4,no,Flowing water
+block,game:water-ne-5,no,Flowing water
+block,game:water-ne-6,no,Flowing water
+block,game:water-ne-7,no,Flowing water
+block,game:water-nw-1,no,Flowing water
+block,game:water-nw-2,no,Flowing water
+block,game:water-nw-3,no,Flowing water
+block,game:water-nw-4,no,Flowing water
+block,game:water-nw-5,no,Flowing water
+block,game:water-nw-6,no,Flowing water
+block,game:water-nw-7,no,Flowing water
+block,game:water-s-1,no,Flowing water
+block,game:water-s-2,no,Flowing water
+block,game:water-s-3,no,Flowing water
+block,game:water-s-4,no,Flowing water
+block,game:water-s-5,no,Flowing water
+block,game:water-s-6,no,Flowing water
+block,game:water-s-7,no,Flowing water
+block,game:water-se-1,no,Flowing water
+block,game:water-se-2,no,Flowing water
+block,game:water-se-3,no,Flowing water
+block,game:water-se-4,no,Flowing water
+block,game:water-se-5,no,Flowing water
+block,game:water-se-6,no,Flowing water
+block,game:water-se-7,no,Flowing water
+block,game:water-still-1,no,Flowing water
+block,game:water-still-2,no,Flowing water
+block,game:water-still-3,no,Flowing water
+block,game:water-still-4,no,Flowing water
+block,game:water-still-5,no,Flowing water
+block,game:water-still-6,no,Flowing water
+block,game:water-still-7,yes,Still Water
+block,game:water-sw-1,no,Flowing water
+block,game:water-sw-2,no,Flowing water
+block,game:water-sw-3,no,Flowing water
+block,game:water-sw-4,no,Flowing water
+block,game:water-sw-5,no,Flowing water
+block,game:water-sw-6,no,Flowing water
+block,game:water-sw-7,no,Flowing water
+block,game:water-w-1,no,Flowing water
+block,game:water-w-2,no,Flowing water
+block,game:water-w-3,no,Flowing water
+block,game:water-w-4,no,Flowing water
+block,game:water-w-5,no,Flowing water
+block,game:water-w-6,no,Flowing water
+block,game:water-w-7,no,Flowing water
+item,game:workitem-bismuth,no,Work item (Bismuth)
+item,game:workitem-bismuthbronze,no,Work item (Bismuth bronze)
+item,game:workitem-blackbronze,no,Work item (Black bronze)
+item,game:workitem-blistersteel,no,Work item (Blister steel)
+item,game:workitem-brass,no,Work item (Brass)
+item,game:workitem-chromium,no,Work item (Chromium)
+item,game:workitem-copper,no,Work item (Copper)
+item,game:workitem-cupronickel,no,Work item (Cupronickel)
+item,game:workitem-electrum,no,Work item (Electrum)
+item,game:workitem-gold,no,Work item (Gold)
+item,game:workitem-iron,no,Work item (Iron)
+item,game:workitem-lead,no,Work item (Lead)
+item,game:workitem-meteoriciron,no,Work item (Meteoric iron)
+item,game:workitem-molybdochalkos,no,Work item (Molybdochalkos)
+item,game:workitem-nickel,no,Work item (Nickel)
+item,game:workitem-platinum,no,Work item (Platinum)
+item,game:workitem-silver,no,Work item (Silver)
+item,game:workitem-stainlesssteel,no,Work item (Stainless steel)
+item,game:workitem-steel,no,Work item (Steel)
+item,game:workitem-tin,no,Work item (Tin)
+item,game:workitem-tinbronze,no,Work item (Tin bronze)
+item,game:workitem-titanium,no,Work item (Titanium)
+item,game:workitem-uranium,no,Work item (Uranium)
+item,game:workitem-zinc,no,Work item (Zinc)
+block,game:worldgenhook-normal,yes,Worldgen meta block
+item,vintagee:gadget-tomeofknowledge,yes,Tome of Knowledge
