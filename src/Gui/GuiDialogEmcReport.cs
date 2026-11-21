@@ -111,7 +111,7 @@ namespace VintageE
             GuiComposer c = capi.Gui
                 .CreateCompo("vintagee-report", dialogBounds)
                 .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(IsDiagnose ? EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : current.Title) : (string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:loopgui-title") : current.Title), () => TryClose())
+                .AddDialogTitleBar(IsDiagnose ? EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : Shown(current.Title)) : (string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:loopgui-title") : Shown(current.Title)), () => TryClose())
                 .BeginChildElements(bgBounds)
                     .AddSmallButton(Lang.Get("vintagee:reportgui-back"), OnBack, backBounds, EnumButtonStyle.Normal, "back")
                     .AddTextInput(searchBounds, OnSearch, CairoFont.WhiteSmallText(), "search")
@@ -272,9 +272,9 @@ namespace VintageE
             switch (style)
             {
                 case EmcLineStyle.Check:
-                    if (text != null && text.StartsWith("\u2713", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
+                    if (text != null && text.StartsWith(EmcDiagnose.OkMark, StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
                     if (text != null && text.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.4, 0.35, 1 }).WithWeight(Cairo.FontWeight.Bold);
-                    if (text != null && text.StartsWith("\u26a0", StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.6, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
+                    if (text != null && text.StartsWith(EmcDiagnose.WarnMark, StringComparison.Ordinal)) return CairoFont.WhiteSmallText().WithColor(new double[] { 1, 0.6, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
                     return CairoFont.WhiteSmallText().WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Heading: return CairoFont.WhiteSmallishText().WithColor(new double[] { 1, 0.85, 0.45, 1 }).WithWeight(Cairo.FontWeight.Bold);
                 case EmcLineStyle.Total: return CairoFont.WhiteSmallText().WithColor(new double[] { 0.6, 1, 0.6, 1 }).WithWeight(Cairo.FontWeight.Bold);
@@ -296,23 +296,38 @@ namespace VintageE
             int pos = 0;
             if (line.Style == EmcLineStyle.Check && line.Details > 0)
             {
-                // The arrow opens and closes the details; the whole line is the link.
+                // The sign in front opens and closes the details; the whole line is the link. A plus and a dash, and
+                // the line's colour instead of its mark: the game's font can't be counted on for triangles and ticks.
                 bool open = expandAll || expanded.Contains(line.Index);
                 int index = line.Index;
-                comps.Add(Coloured(new LinkTextComponent(capi, (open ? "\u25be " : "\u25b8 ") + line.Plain, font, _ => Toggle(index)), font));
+                comps.Add(Coloured(new LinkTextComponent(capi, (open ? "\u2013 " : "+ ") + Shown(Unmarked(line.Plain)), font, _ => Toggle(index)), font));
                 comps.Add(new RichTextComponent(capi, "\n", font));
                 return;
             }
+            // A check with nothing to open: a bullet where the others have their sign, and its colour instead of its mark.
+            if (line.Style == EmcLineStyle.Check && line.Indent == 0) text = "\u2022 " + Unmarked(text);
             foreach (System.Text.RegularExpressions.Match m in EmcReport.AnyToken.Matches(text))
             {
-                if (m.Index > pos) comps.Add(new RichTextComponent(capi, text.Substring(pos, m.Index - pos), font) { VerticalAlign = EnumVerticalAlign.Middle });
+                if (m.Index > pos) comps.Add(new RichTextComponent(capi, Shown(text.Substring(pos, m.Index - pos)), font) { VerticalAlign = EnumVerticalAlign.Middle });
                 if (m.Groups[1].Success) AddRef(comps, m.Groups[1].Value, linkFont);
                 else AddAction(comps, m.Groups[2].Value, m.Groups[3].Value, m.Groups[4].Value, font);
                 pos = m.Index + m.Length;
             }
-            if (pos < text.Length) comps.Add(new RichTextComponent(capi, text.Substring(pos), font) { VerticalAlign = EnumVerticalAlign.Middle });
+            if (pos < text.Length) comps.Add(new RichTextComponent(capi, Shown(text.Substring(pos)), font) { VerticalAlign = EnumVerticalAlign.Middle });
             comps.Add(new RichTextComponent(capi, "\n", font));
             if (line.Indent > 0 && comps.Count > start) comps[start].PaddingLeft += line.Indent * 18;
+        }
+
+        /// <summary>A piece of a line as the game can draw it: symbols its font may lack are written in ordinary characters.</summary>
+        static string Shown(string text) => GameFont.Drawable(text);
+
+        /// <summary>A check's line without the mark it starts with (its colour says the same).</summary>
+        static string Unmarked(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            bool marked = text.StartsWith(EmcDiagnose.OkMark, StringComparison.Ordinal) || text.StartsWith(EmcDiagnose.WarnMark, StringComparison.Ordinal)
+                || text.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal) || text.StartsWith(EmcDiagnose.InfoMark, StringComparison.Ordinal);
+            return marked ? text.Substring(1).TrimStart('\uFE0F').TrimStart() : text;   // font-ok: the "as a picture" sign, taken off
         }
 
         /// <summary>
@@ -348,7 +363,8 @@ namespace VintageE
             CairoFont actionFont = font.Clone().WithColor(new double[] { 0.55, 0.8, 1, 1 }).WithWeight(Cairo.FontWeight.Bold);
             bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
             if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
-            comps.Add(Coloured(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)), actionFont));
+            // A link has "»" in front, in every font; whether it changes something shows in its colour.
+            comps.Add(Coloured(new LinkTextComponent(capi, "\u00BB " + Shown(label), actionFont, _ => Diagnose(action, arg)), actionFont));
         }
 
         void Toggle(int index)

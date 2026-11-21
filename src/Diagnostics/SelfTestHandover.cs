@@ -70,8 +70,8 @@ namespace VintageE
         void CheckDoctorHandover()
         {
             EnumHandling handling = EnumHandling.PassThrough;
-            Check(DoctorBridge.AtLeast("1.2.0", 1, 2) && DoctorBridge.AtLeast("v1.10.3-rc.1", 1, 2) && DoctorBridge.AtLeast("2.0", 1, 2) && !DoctorBridge.AtLeast("1.1.9", 1, 2)
-                && !DoctorBridge.AtLeast(null, 1, 2) && !DoctorBridge.AtLeast("soon", 1, 2), "handover: a Vintage Doctor new enough to take the doctor over (1.2.0) is told from an older one");
+            Check(DoctorBridge.AtLeast("1.3.0", 1, 3) && DoctorBridge.AtLeast("v1.10.3-rc.1", 1, 3) && DoctorBridge.AtLeast("2.0", 1, 3) && !DoctorBridge.AtLeast("1.2.9", 1, 3)
+                && !DoctorBridge.AtLeast(null, 1, 3) && !DoctorBridge.AtLeast("soon", 1, 3), "handover: a Vintage Doctor new enough to take the doctor over (1.3.0) is told from an older one");
 
             // The links of a report, turned into Vintage Doctor's.
             string converted = DoctorBridge.Convert("See [[i:game:ingot-copper]] and [[b:game:anvil-copper]] {{fix-pin|i:game:ingot-copper;item;game:ingot-copper|Pin it}} "
@@ -223,7 +223,16 @@ namespace VintageE
                 steps.Add(("/doctor emc machines", t => Missing(t, machines), "Vintage Doctor's /doctor emc machines is Vintage-E's machines page"));
                 steps.Add(("/doctor emc", t => Missing(t, mapping, "(/doctor emc mods)", "(/doctor log vintagee)", "(/doctor startup)"), "Vintage Doctor's /doctor emc is the EMC check-up, delivered a moment later, with links into both mods' pages"));
                 steps.Add(("/doctor emc item game:ingot-copper", t => Missing(t, "128", "(/doctor emc"), "Vintage Doctor's /doctor emc item ... is Vintage-E's page for the item"));
-                steps.Add(("/doctor", t => Missing(t, "Vintage-E: ", "(/doctor emc)", question + " (/doctor emc)"), "Vintage Doctor's check-up has Vintage-E's card and its question"));
+                // Vintage Doctor's check-up is laid out by mod: Vintage-E's card and the button for its page are under Vintage-E's own heading.
+                string OwnSection(string t)
+                {
+                    int at = t.IndexOf("== Vintage-E ", StringComparison.Ordinal);
+                    if (at < 0) return "";
+                    int end = t.IndexOf("\n== ", at + 3, StringComparison.Ordinal);
+                    return end < 0 ? t.Substring(at) : t.Substring(at, end - at);
+                }
+                steps.Add(("/doctor", t => Missing(t, "== Vintage-E ") ?? Missing(OwnSection(t), "EMC", "(/doctor emc)", question + " (/doctor emc)"),
+                    "Vintage Doctor's check-up has a section for Vintage-E, with its card and the button for its page"));
                 steps.Add(("/doctor item game:ingot-copper", t => Missing(t, "Vintage-E: Worth 128 EMC", "(/doctor emc item game:ingot-copper)"), "Vintage Doctor's page about an item has Vintage-E's card"));
               }
               else Line("  Vintage Doctor isn't installed on this server: its own /doctor command isn't tried");

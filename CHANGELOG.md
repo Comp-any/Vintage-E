@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.3 — 2026-11-22
+
+### Fixed
+- **Symbols that showed as empty boxes.** The game draws text with your computer's own default font, and on many computers that font has no arrows, ticks, warning signs or small triangles. The EMC doctor's window now draws its own triangle on a card that opens and its own arrow before a line that says what to do, a fix button has green words instead of a hammer, and arrows inside a report's lines are written `->`. The plain report window shows `+` and `–` where it had triangles, a bullet where it had a tick, and `»` before a link. The lists that let you pick items show `+` before a picked one, and the compatibility list a bullet, a dot or a cross. Three texts lost their arrows too (the Philosopher's Stone's description among them).
+
+### Changed
+- **Handing the EMC doctor over to Vintage Doctor now needs Vintage Doctor 1.3.0** (it was 1.2.0), which is the first that shows a mod's pages without those symbols and lays its check-up out by mod, with the EMC button under Vintage-E's own heading. With an older Vintage Doctor, Vintage-E keeps its own window.
+
 ## 1.26.2 — 2026-11-22
 
 ### Fixed

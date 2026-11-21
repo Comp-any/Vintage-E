@@ -385,7 +385,7 @@ namespace VintageE
                     if (stack != null) comps.Add(new ItemstackTextComponent(capi, stack, 32, 6, EnumFloat.Inline, OpenHandbook) { VerticalAlign = EnumVerticalAlign.Middle });
                     Entry entry = e;
                     bool picked = selected.Contains(e.Key);
-                    comps.Add(new LinkTextComponent(capi, (picked ? "✔ " : "") + e.Name + "  ", picked ? pickedFont : e.Other ? otherFont : nameFont, _ => Toggle(entry)) { VerticalAlign = EnumVerticalAlign.Middle });
+                    comps.Add(new LinkTextComponent(capi, (picked ? "+ " : "") + e.Name + "  ", picked ? pickedFont : e.Other ? otherFont : nameFont, _ => Toggle(entry)) { VerticalAlign = EnumVerticalAlign.Middle });
                     if (e.Other) comps.Add(new RichTextComponent(capi, otherTag, otherFont) { VerticalAlign = EnumVerticalAlign.Middle });
                     comps.Add(new RichTextComponent(capi, (e.IsBlock ? "block:" : "item:") + e.Code + "\n", codeFont) { VerticalAlign = EnumVerticalAlign.Middle });
                     if (!string.IsNullOrEmpty(e.Why)) comps.Add(new RichTextComponent(capi, "      " + e.Why + "\n", whyFont));

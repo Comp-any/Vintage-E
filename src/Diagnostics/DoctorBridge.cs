@@ -13,7 +13,7 @@ namespace VintageE
     /// <summary>
     /// Vintage-E's doctor, handed over to the mod Vintage Doctor when that is installed (1.26.0).
     ///
-    /// Vintage Doctor (github.com/Comp-any/Vintage-Doctor, 1.2.0 or newer) is a doctor for the whole game and every
+    /// Vintage Doctor (github.com/Comp-any/Vintage-Doctor, 1.3.0 or newer) is a doctor for the whole game and every
     /// mod: crashes, the log, mods that didn't start, lag, the Mods folder. With it installed on the server and on
     /// the player's own game, a second window that looks the same and checks half the same things is one too many,
     /// so Vintage-E shows its EMC pages inside Vintage Doctor instead: Ctrl+H and /emc diagnose open that window at
@@ -50,13 +50,17 @@ namespace VintageE
             this.capi = capi;
         }
 
-        /// <summary>Vintage Doctor is installed on this side, in a version that can take a mod's doctor over (1.2.0).</summary>
+        /// <summary>
+        /// Vintage Doctor is installed on this side, in a version that can take a mod's doctor over and shows it
+        /// without characters the game can't draw (1.3.0; 1.2.0 could take it over, but drew arrows and ticks as text,
+        /// which are empty boxes on many computers, so with that one Vintage-E keeps its own window).
+        /// </summary>
         public static bool Installed(ICoreAPI api)
         {
             try
             {
                 if (api?.ModLoader == null || !api.ModLoader.IsModEnabled(DoctorModId)) return false;
-                return AtLeast(api.ModLoader.GetMod(DoctorModId)?.Info?.Version, 1, 2);
+                return AtLeast(api.ModLoader.GetMod(DoctorModId)?.Info?.Version, 1, 3);
             }
             catch { return false; }
         }

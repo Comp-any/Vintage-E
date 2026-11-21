@@ -232,7 +232,7 @@ namespace VintageE
                     if (stack != null) comps.Add(new ItemstackTextComponent(capi, stack, 32, 6, EnumFloat.Inline) { VerticalAlign = EnumVerticalAlign.Middle });
                     Entry entry = e;
                     bool picked = selected.Contains(e.Key);
-                    comps.Add(new LinkTextComponent(capi, (picked ? "✔ " : "") + e.Name + "  ", picked ? pickedFont : nameFont, _ => Toggle(entry)) { VerticalAlign = EnumVerticalAlign.Middle });
+                    comps.Add(new LinkTextComponent(capi, (picked ? "+ " : "") + e.Name + "  ", picked ? pickedFont : nameFont, _ => Toggle(entry)) { VerticalAlign = EnumVerticalAlign.Middle });
                     string kind = Lang.Get("vintagee:contents-kind-" + (e.Kind == StackDataKind.Contents ? "contents" : e.Kind == StackDataKind.Material ? "material" : "chiseled"));
                     string detail = ModeLabel(e.Mode) + (e.FromConfig ? " " + Lang.Get("vintagee:contents-setbyyou", ModeLabel(e.DefaultMode)) : " " + Lang.Get("vintagee:contents-isdefault"));
                     comps.Add(new RichTextComponent(capi, detail, e.FromConfig ? changedFont : detailFont) { VerticalAlign = EnumVerticalAlign.Middle });

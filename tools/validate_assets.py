@@ -166,6 +166,53 @@ for o in newlook.get("overrides") or []:
 for s in ("charge", "uncharge", "heal", "destruct", "power", "transmute", "watermagic", "windmagic"):
     if not os.path.exists(os.path.join(A, "sounds", "projecte", s + ".ogg")): errors.append(f"projecte sound {s}.ogg is missing")
 
+# What the game can draw. It draws text with the computer's own default font and has no second font to fall back on,
+# so a character that font lacks is an empty box (tools/game-font-chars.txt has the list and why). Every text in the
+# lang file is held to it, and every piece of text the windows put together themselves. A doctor report's own marks
+# and arrows are not: the windows write those out (GameFont.Drawable) or draw them before the game sees them. A line
+# of code ending in a "font-ok: why" comment is let be.
+drawable = set("\n\t")
+for line in open(os.path.join(ROOT, "tools", "game-font-chars.txt"), encoding="utf-8"):
+    if line.startswith("#"): continue
+    for word in line.split():
+        first, _, last = word.partition("-")
+        drawable.update(chr(c) for c in range(int(first, 16), int(last or first, 16) + 1))
+
+def undrawable(text):
+    return sorted({"'%s' U+%04X" % (c, ord(c)) for c in text if c not in drawable})
+
+def literals(line):
+    """The string and char literals on a line of C#, with \\uXXXX written out, stopping at a // comment."""
+    found, i, n = [], 0, len(line)
+    while i < n:
+        ch = line[i]
+        if ch == '/' and line[i:i + 2] == '//': break
+        if ch in '"\'':
+            quote, j, out = ch, i + 1, []
+            while j < n and line[j] != quote:
+                if line[j] == '\\' and j + 1 < n:
+                    if line[j + 1] == 'u' and re.fullmatch(r'[0-9A-Fa-f]{4}', line[j + 2:j + 6] or ''):
+                        out.append(chr(int(line[j + 2:j + 6], 16))); j += 6; continue
+                    j += 2; continue
+                out.append(line[j]); j += 1
+            found.append(''.join(out)); i = j + 1; continue
+        i += 1
+    return found
+
+for key, text in sorted(lang.items()):
+    bad = undrawable(str(text))
+    if bad: errors.append(f"lang: {key} has {', '.join(bad)}, which the game's font may not have")
+# The code that draws: the windows, the HUD and the config descriptions the settings window shows. (GameFont.cs is the
+# table that turns the symbols into drawable text.)
+for folder in ("Gui", "Transmutation", "Config"):
+    for root, _, files in os.walk(os.path.join(ROOT, "src", folder)):
+        for f in sorted(files):
+            if not f.endswith(".cs") or f == "GameFont.cs": continue
+            for number, line in enumerate(open(os.path.join(root, f), encoding="utf-8"), 1):
+                if "font-ok:" in line: continue
+                bad = undrawable(''.join(literals(line.rstrip("\n"))))
+                if bad: errors.append(f"font: src/{folder}/{f}:{number} has {', '.join(bad)}, which the game's font may not have (write it another way, or use GameFont.Drawable)")
+
 print(f"{len(codes)} item/block codes, {nrecipes} recipes, {len(lang)} lang keys, {len(registered)} registered classes")
 if errors:
     print("\n".join("ERROR " + e for e in errors)); sys.exit(1)

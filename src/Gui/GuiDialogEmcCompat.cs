@@ -120,7 +120,7 @@ namespace VintageE
                     else if (missing.Length > 0) { state = Lang.Get("vintagee:compat-state-notloaded", missing); stateFont = idleFont; }
                     else { state = Lang.Get("vintagee:compat-state-active", used); stateFont = activeFont; }
 
-                    comps.Add(new RichTextComponent(capi, (disabled ? "○ " : missing.Length > 0 ? "· " : "● ") + name + "  ", disabled ? offFont : nameFont));
+                    comps.Add(new RichTextComponent(capi, (disabled ? "\u00D7 " : missing.Length > 0 ? "\u00B7 " : "\u2022 ") + name + "  ", disabled ? offFont : nameFont));
                     comps.Add(new RichTextComponent(capi, state + "  ", stateFont));
                     string action = Lang.Get(disabled ? "vintagee:compat-enable" : "vintagee:compat-disable");
                     bool nowDisabled = disabled;

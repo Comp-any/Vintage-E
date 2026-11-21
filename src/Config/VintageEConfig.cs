@@ -65,7 +65,7 @@ namespace VintageE
         /// version, but it costs and burns for the item only - its contents are free). Overrides the built-in choice.
         /// Easiest to change with /emc contents.
         /// </summary>
-        [System.ComponentModel.Description("Blocks/items that hold things or are made of something stored on them (buckets, pots, bags, round shields, lanterns, chiseled blocks...): code or wildcard → \"item\" (item only: burns and is created as the plain item), \"full\" (item + contents: worth both, and you learn and create exactly that version) or \"itemprice\" (exactly that version, but it costs and burns for the item only - its contents are free). Overrides the built-in choice. Easiest to change with /emc contents.")]
+        [System.ComponentModel.Description("Blocks/items that hold things or are made of something stored on them (buckets, pots, bags, round shields, lanterns, chiseled blocks...): code or wildcard -> \"item\" (item only: burns and is created as the plain item), \"full\" (item + contents: worth both, and you learn and create exactly that version) or \"itemprice\" (exactly that version, but it costs and burns for the item only - its contents are free). Overrides the built-in choice. Easiest to change with /emc contents.")]
         public Dictionary<string, string> StackDataModes = new Dictionary<string, string>();
 
         /// <summary>How many exact versions (a filled bucket, a gold shield, a chiseled block...) one player can know.</summary>
@@ -264,7 +264,7 @@ namespace VintageE
         public List<string> CustomRecipes = new List<string>();
 
         /// <summary>Other mods' crafting methods: EMC per unit of each energy unit (unit code → EMC), e.g. "vintagecreation:work": 0.002. Wins over a price worked out from the mod's engines or the mod's suggestion. /emc diagnose methods lists the units and their prices.</summary>
-        [System.ComponentModel.Description("Other mods' crafting methods: EMC per unit of each energy unit (unit code → EMC), e.g. \"vintagecreation:work\": 0.002. Wins over a price worked out from the mod's engines or the mod's suggestion. /emc diagnose methods lists the units and their prices.")]
+        [System.ComponentModel.Description("Other mods' crafting methods: EMC per unit of each energy unit (unit code -> EMC), e.g. \"vintagecreation:work\": 0.002. Wins over a price worked out from the mod's engines or the mod's suggestion. /emc diagnose methods lists the units and their prices.")]
         public Dictionary<string, double> EnergyEmc = new Dictionary<string, double>();
 
         /// <summary>Other mods' crafting methods: charge the energy (power) a machine's recipe uses as part of what it makes.</summary>

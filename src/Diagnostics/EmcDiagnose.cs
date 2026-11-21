@@ -410,8 +410,13 @@ namespace VintageE
         }
 
         /// <summary>The check-up's count of things worth fixing, for the start-up log and the join message (no report shown).</summary>
-        /// <summary>The start of a <see cref="Ctx.Problem"/> line.</summary>
-        public const string ProblemMark = "✖";
+        /// <summary>
+        /// The start of a <see cref="Ctx.Problem"/> line. The marks are how a line says what it is, to the windows and
+        /// to Vintage Doctor. They are never drawn as they are: the game's font can't be counted on for them (see GameFont).
+        /// </summary>
+        public const string ProblemMark = "✖";   // font-ok: never drawn as text
+        /// <summary>The start of a line for a check that passed, a warning, something to know, and what to do.</summary>
+        public const string OkMark = "✓", WarnMark = "⚠", InfoMark = "•", AdviceMark = "→";   // font-ok: never drawn as text
 
         public static int CountProblems(VintageEModSystem mod, ICoreServerAPI sapi)
         {

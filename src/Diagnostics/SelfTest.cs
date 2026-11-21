@@ -77,6 +77,7 @@ namespace VintageE
                 CheckStepAssist();
                 CheckGoodNeighbour();
                 CheckLogAttribution();
+                CheckDrawableText();
                 CheckQuiversAndSheaths();
                 CheckClaymore();
                 CheckAncientArmoryNotice();
@@ -1936,6 +1937,54 @@ namespace VintageE
         /// lines are the ones a player's game logged with Vintage WoW installed: its patch of the trinket class's
         /// OnBeforeRender, asked for through the Evertide Amulet's class, which Harmony refuses.
         /// </summary>
+        /// <summary>
+        /// The game draws text with the computer's own font and has nothing to fall back on, so an arrow, a tick or a
+        /// warning sign can be an empty box. What the windows hand it has those written in ordinary characters.
+        /// </summary>
+        void CheckDrawableText()
+        {
+            string marks = EmcDiagnose.OkMark + " fine\n" + EmcDiagnose.WarnMark + "\uFE0F careful\n" + EmcDiagnose.ProblemMark + " broken\n" + EmcDiagnose.InfoMark + " to know\n  " + EmcDiagnose.AdviceMark + " do this";
+            string drawn = GameFont.Drawable(marks);
+            Check(drawn == "[ok] fine\n[!] careful\n[x] broken\n\u2022 to know\n  -> do this", "font: a report's marks are written in ordinary characters where the game draws them as text (" + drawn.Replace("\n", " / ") + ")");
+            string symbols = GameFont.Drawable("a \u2192 b \u2190 c \u25B8 d \u25BE e \u2264 f, \u2692 Fix it, sand \u2194 gravel");
+            Check(symbols == "a -> b <- c > d v e <= f, Fix it, sand <-> gravel", "font: arrows, triangles and signs too (" + symbols + ")");
+            string words = "Pr\u00FCfung \u00D7 3 \u00B7 \u2026 \u2013 \u041F\u0440\u0438\u0432\u0435\u0442 \u65E5\u672C\u8A9E 50 \u00B0C";
+            Check(GameFont.Drawable(words) == words && GameFont.Drawable(null) == "" && GameFont.Drawable("") == "", "font: letters of any language and ordinary punctuation are left alone");
+
+            // Every page of the doctor, line by line as the windows show it.
+            string Symbols(string text)
+            {
+                var found = new System.Text.StringBuilder();
+                foreach (char c in text ?? "")
+                {
+                    bool symbol = (c >= '\u2190' && c <= '\u21FF') || (c >= '\u2300' && c <= '\u27BF') || (c >= '\u2B00' && c <= '\u2BFF') || (c >= '\uFE00' && c <= '\uFE0F') || char.IsSurrogate(c);
+                    if (symbol && found.ToString().IndexOf(c) < 0) found.Append(c);
+                }
+                return found.ToString();
+            }
+            int pages = 0, lines = 0, withSymbols = 0;
+            string firstBad = null;
+            foreach (var (a, b) in new[] { ("", ""), ("machines", ""), ("emccraft", ""), ("checks", ""), ("health", ""), ("item", "game:ingot-copper"), ("mods", ""), ("methods", ""), ("changes", ""), ("trace", "game:ingot-copper"), ("short", "") })
+            {
+                try
+                {
+                    EmcReport r = EmcDiagnose.Run(mod, sapi, null, "en", a, b, null);
+                    pages++;
+                    foreach (EmcReportLine l in r.Lines)
+                    {
+                        lines++;
+                        string plain = EmcReport.Plain(sapi.World, l.Text);
+                        if (Symbols(plain).Length > 0) withSymbols++;
+                        string left = Symbols(GameFont.Drawable(plain));
+                        if (left.Length > 0) firstBad ??= a + ": '" + left + "' in " + plain;
+                    }
+                }
+                catch (Exception e) { firstBad ??= a + " " + b + " threw " + e.Message; }
+            }
+            Check(firstBad == null && pages >= 10 && withSymbols > 0, $"font: no line of the doctor's pages, as the windows show it, has a symbol the game's font may lack ({pages} pages, {lines} lines, {withSymbols} of them with marks or arrows before)"
+                + (firstBad != null ? " (" + firstBad + ")" : ""));
+        }
+
         void CheckLogAttribution()
         {
             const string look = "22.11.2026 00:49:02 [Notification] [vintagee] Look: 2 of 2 shape-loader hooks in place.";

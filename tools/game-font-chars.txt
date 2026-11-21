@@ -1,0 +1,15 @@
+# The characters the mod's own texts may use: the ones every font the game comes with can draw.
+#
+# The game draws text with one font and has no second font to fall back on, so a character the font lacks is an
+# empty box. Ordinary text is drawn with the computer's own default sans-serif font (the client setting
+# defaultFontName is "sans-serif"), headings and buttons with Lora, which the game brings; on Linux the game adds
+# its fonts folder to the system's (fonts.conf, FONTCONFIG_FILE in run.sh). So what can be drawn differs from one
+# computer to the next. What every one of the game's own font files has (Montserrat, Lora and Almendra in
+# assets/game/fonts, 11 files, game 1.22.7) is ordinary Latin text and its punctuation, which any sans-serif font
+# has too. Arrows are in Montserrat and in Windows' Arial but not in Lora, nor in many a Linux default font; ticks,
+# warning signs, hammers and small triangles are in none of them.
+#
+# Made by tools/font_chars.py from the game's files: run the "Decompile game classes" workflow and copy the last
+# line of fonts/font-chars.txt from its results branch (in the Vintage-Doctor repository, which has that workflow).
+# tools/validate_assets.py holds the lang file and the windows' own texts to this list. Ranges of code points, in hexadecimal.
+0020-007E 00A0-00AC 00AE-00FF 0104-0107 0118-0119 0131 0137 0141-0144 0152-0154 0156-015B 0179-017C 02C6-02C7 02DA 02DC 2013-2014 2018-201A 201C-201E 2022 2026 2039-203A 20AC FB01-FB02

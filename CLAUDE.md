@@ -17,7 +17,7 @@ needs no `sleep`.
 
 ## The doctor and Vintage Doctor (1.26.0)
 
-- With the mod Vintage Doctor (github.com/Comp-any/Vintage-Doctor, 1.2.0+) on the server and on a player's game, the
+- With the mod Vintage Doctor (github.com/Comp-any/Vintage-Doctor, 1.3.0+ since Vintage-E 1.26.3) on the server and on a player's game, the
   EMC doctor is shown in its window: `src/Diagnostics/DoctorBridge.cs` answers its event-bus questions with the
   reports `EmcDiagnose.Run(..., handover: true)` builds. Vintage-E never references that mod's DLL. Without it (or
   with it on one side only) Vintage-E's own window is used, so both ways have to keep working.
@@ -29,3 +29,17 @@ needs no `sleep`.
   `tools/vendor/vintagedoctor/` (its repository is private, so the test can't download it) and the self-test then
   uses its `/doctor` command from the console; without the input the same checks run against the bridge directly.
   When Vintage Doctor's event-bus protocol changes, put its new zip there.
+
+## Characters the game can draw (1.26.3)
+
+- The game draws text with the computer's own default font (`defaultFontName` is "sans-serif") and has no second
+  font to fall back on: a character that font lacks is an empty box. Arrows, ticks, warning signs, hammers and small
+  triangles can't be counted on (the user's Linux has none of them). `tools/game-font-chars.txt` lists what is safe:
+  letters, digits, ordinary punctuation, `… • – — × · » ›`.
+- `tools/validate_assets.py` holds every text in the lang file and every string in `src/Gui`, `src/Transmutation`
+  and `src/Config` to that list. A line ending in `// font-ok: why` is let be.
+- A doctor report keeps its marks (`EmcDiagnose.OkMark`...) and the arrows in its lines: they are what the windows,
+  the report's file and Vintage Doctor read. Whatever a window hands the game goes through `GameFont.Drawable`
+  (`src/Gui/GameFont.cs`, the same class as in Vintage Doctor: keep the two alike), or is drawn as a shape
+  (`GuiDialogEmcDoctor.DrawCheckCard` draws the triangle and the advice arrows; the Emc Craft window its arrow).
+- Nothing of this has been seen in a game by a session: say so, and ask the user to look.

@@ -84,6 +84,8 @@ namespace VintageE
         const double Pad = 12;
         const double CardX = 0, CardW = Width - 24;
         const double TitleX = 58, BadgeW = 110;
+        /// <summary>The room an advice line leaves for its drawn arrow.</summary>
+        const double AdviceLead = 18;
 
         static readonly double[] Green = { 0.42, 0.75, 0.30, 1 };
         static readonly double[] Orange = { 0.92, 0.62, 0.18, 1 };
@@ -91,6 +93,8 @@ namespace VintageE
         static readonly double[] Grey = { 0.55, 0.52, 0.48, 1 };
         static readonly double[] Blue = { 0.55, 0.8, 1, 1 };
         static readonly double[] Gold = { 0.80, 0.62, 0.30, 1 };
+        static readonly double[] FixText = { 0.68, 0.92, 0.58, 1 };
+        static readonly double[] Advice = { 0.92, 0.88, 0.75, 1 };
         static readonly double[] CardBg = { 0, 0, 0, 0.28 };
         static readonly double[] DetailBg = { 0, 0, 0, 0.18 };
 
@@ -190,12 +194,8 @@ namespace VintageE
                 if (style == EmcLineStyle.Check && indent == 0)
                 {
                     var e = new Entry { Kind = Kind.Check, Index = i, Style = style, Indent = 0 };
-                    if (t.StartsWith("✓", StringComparison.Ordinal)) { e.State = State.Ok; e.Title = t.Substring(1).Trim(); }
-                    else if (t.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal)) { e.State = State.Fail; e.Title = t.Substring(EmcDiagnose.ProblemMark.Length).Trim(); }
-                    else if (t.StartsWith("⚠", StringComparison.Ordinal)) { e.State = State.Warn; e.Title = t.Substring(1).Trim(); }
-                    else if (t.StartsWith("•", StringComparison.Ordinal)) { e.State = State.Info; e.Title = t.Substring(1).Trim(); }
-                    else { e.State = State.Info; e.Title = t; }
-                    e.Title = TakeActions(e.Title, e.Actions);
+                    e.State = TakeMark(ref t) ?? State.Info;
+                    e.Title = TakeActions(t, e.Actions);
                     e.Plain = EmcReport.Plain(capi.World, e.Title);
                     entries.Add(e);
                     open = e;
@@ -203,6 +203,7 @@ namespace VintageE
                 }
                 if (style == EmcLineStyle.Heading)
                 {
+                    t = GameFont.Drawable(t);
                     entries.Add(new Entry { Kind = Kind.Heading, Index = i, Title = t, Plain = EmcReport.Plain(capi.World, t), Style = style });
                     open = null;
                     continue;
@@ -210,7 +211,7 @@ namespace VintageE
                 bool detail = open != null && (indent > 0 || style == EmcLineStyle.Note);
                 if (detail)
                 {
-                    var d = new Detail { Style = style, Indent = indent, Fix = t.StartsWith("→", StringComparison.Ordinal) };
+                    var d = new Detail { Style = style, Indent = indent, Fix = t.StartsWith(EmcDiagnose.AdviceMark, StringComparison.Ordinal) };
                     d.Text = TakeActions(d.Fix ? t.Substring(1).Trim() : t, d.Actions);
                     open.Details.Add(d);
                     continue;
@@ -218,6 +219,8 @@ namespace VintageE
                 open = null;
                 var plain = new Entry { Kind = i == 0 && (style == EmcLineStyle.Total || style == EmcLineStyle.Warn) ? Kind.Banner : Kind.Text, Index = i, Style = style, Indent = indent };
                 plain.State = style == EmcLineStyle.Warn ? State.Fail : style == EmcLineStyle.Total ? State.Ok : State.Info;
+                // A line in the colour of a failure or a result needs no mark to say which it is.
+                if (style == EmcLineStyle.Warn || style == EmcLineStyle.Total) TakeMark(ref t);
                 plain.Title = TakeActions(t, plain.Actions);
                 plain.Plain = EmcReport.Plain(capi.World, plain.Title);
                 entries.Add(plain);
@@ -228,12 +231,31 @@ namespace VintageE
             return entries;
         }
 
-        /// <summary>Pulls the {{action|arg|label}} tokens out of a line into buttons, leaving the text.</summary>
+        /// <summary>
+        /// Takes a leading ✓ ⚠ ✖ or • off a line and says which it was; null when the line has none. The window
+        /// never draws the marks as text (the game's font can't be counted on for them): a card's colour, dot and
+        /// badge say the same.
+        /// </summary>
+        static State? TakeMark(ref string t)
+        {
+            State? state = t.StartsWith(EmcDiagnose.OkMark, StringComparison.Ordinal) ? State.Ok
+                : t.StartsWith(EmcDiagnose.ProblemMark, StringComparison.Ordinal) ? State.Fail
+                : t.StartsWith(EmcDiagnose.WarnMark, StringComparison.Ordinal) ? State.Warn
+                : t.StartsWith(EmcDiagnose.InfoMark, StringComparison.Ordinal) ? State.Info : (State?)null;
+            if (state != null) t = t.Substring(1).TrimStart('\uFE0F').Trim();   // font-ok: the "as a picture" sign some keyboards add after a mark, taken off
+            return state;
+        }
+
+        /// <summary>
+        /// Pulls the {{action|arg|label}} tokens out of a line into buttons, leaving the text as the game can draw it
+        /// (<see cref="GameFont.Drawable"/>). What a button does is kept as it was sent.
+        /// </summary>
         static string TakeActions(string text, List<(string, string, string)> actions)
         {
-            if (string.IsNullOrEmpty(text) || text.IndexOf("{{", StringComparison.Ordinal) < 0) return text ?? "";
-            string rest = EmcReport.ActionToken.Replace(text, m => { actions.Add((m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value)); return ""; });
-            return rest.Trim();
+            if (string.IsNullOrEmpty(text)) return "";
+            if (text.IndexOf("{{", StringComparison.Ordinal) >= 0)
+                text = EmcReport.ActionToken.Replace(text, m => { actions.Add((m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value)); return ""; }).Trim();
+            return GameFont.Drawable(text);
         }
 
         // ------------------------------------------------------------------ composing
@@ -295,7 +317,7 @@ namespace VintageE
             composing = true;
             GuiComposer c = capi.Gui.CreateCompo("vintagee-doctor", dialogBounds)
                 .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : current.Title), () => TryClose())
+                .AddDialogTitleBar(EmcDiagnose.TitleWithVersion(capi, string.IsNullOrEmpty(current?.Title) ? Lang.Get("vintagee:diag-title") : GameFont.Drawable(current.Title)), () => TryClose())
                 .BeginChildElements(bgBounds);
 
             // Summary chips and the progress bar.
@@ -330,7 +352,7 @@ namespace VintageE
             {
                 if (group.Count > 1)
                 {
-                    double w = Math.Min(CardW - 8, group.Max(g => g.Actions.Max(a => TextWidth(buttonLabel, (a.action.StartsWith("fix-", StringComparison.Ordinal) || a.action == "setvalue" ? "⚒ " : "") + a.label) + 24)));
+                    double w = Math.Min(CardW - 8, group.Max(g => g.Actions.Max(a => TextWidth(buttonLabel, GameFont.Drawable(a.label)) + 24)));
                     foreach (Entry g in group) uniformWidth[g] = w;
                 }
                 group.Clear();
@@ -443,17 +465,20 @@ namespace VintageE
             // The details' height first, so the card can be drawn in one piece.
             double detailH = 0;
             var layout = new List<(Detail d, double y, double h, CairoFont f)>();
+            var arrows = new List<(double x, double y)>();   // where an advice line's arrow is drawn, from the card's corner
             if (open)
             {
                 double dy = 8;
                 foreach (Detail d in e.Details)
                 {
-                    CairoFont f = d.Fix ? CairoFont.WhiteSmallText().WithColor(new double[] { 0.92, 0.88, 0.75, 1 })
+                    CairoFont f = d.Fix ? CairoFont.WhiteSmallText().WithColor(Advice)
                         : d.Style == EmcLineStyle.Warn ? CairoFont.WhiteSmallText().WithColor(Red)
                         : d.Style == EmcLineStyle.Total ? CairoFont.WhiteSmallText().WithColor(Green)
                         : CairoFont.WhiteDetailText().WithColor(new double[] { 0.82, 0.80, 0.76, 1 });
-                    string text = d.Fix ? "→ " + EmcReport.Plain(capi.World, d.Text) : EmcReport.Plain(capi.World, d.Text);
-                    double h = text.Length > 0 ? GuiLayout.TextHeight(capi, f, text, CardW - TitleX - 20 - Math.Max(0, d.Indent - 1) * 14) : 0;
+                    string text = EmcReport.Plain(capi.World, d.Text);
+                    double inset = Math.Max(0, d.Indent - 1) * 14, lead = d.Fix ? AdviceLead : 0;
+                    double h = text.Length > 0 ? GuiLayout.TextHeight(capi, f, text, CardW - TitleX - 20 - inset - lead) : 0;
+                    if (d.Fix && text.Length > 0) arrows.Add((TitleX + inset, headH + dy + LineHeight(f, d.Text) / 2));
                     layout.Add((d, dy, h, f));
                     double aw = CardW - (TitleX + Math.Max(0, d.Indent - 1) * 14) - 20;
                     dy += h + (d.Actions.Count > 0 ? ActionsHeight(d.Actions, aw, null) + 4 : 0);
@@ -464,15 +489,10 @@ namespace VintageE
             double cardH = headH + detailH;
             ElementBounds box = In(parent, ElementBounds.Fixed(CardX, y, CardW, cardH));
             double hh = headH;
-            Canvas(c, box, (ctx, b) => DrawCheckCard(ctx, b, colour, hh, open));
-
-            // The arrow left of the dot, the title right of it; the whole header (but not the badge) opens and closes the card.
-            if (canOpen)
-            {
-                CairoFont arrowFont = titleFont.Clone().WithColor(new double[] { 0.85, 0.8, 0.7, 1 });
-                c.AddRichtext(new RichTextComponentBase[] { new RichTextComponent(capi, open ? "\u25be" : "\u25b8", arrowFont) { VerticalAlign = EnumVerticalAlign.Middle } },
-                    In(parent, ElementBounds.Fixed(CardX + 14, y + (headH - 20) / 2, 20, 22)));
-            }
+            // The card draws its own triangle left of the dot (it opens) and the arrow before each advice line: the
+            // game's font can't be counted on for those characters. The title is right of the dot; the whole header
+            // (but not the badge) opens and closes the card.
+            Canvas(c, box, (ctx, b) => DrawCheckCard(ctx, b, colour, hh, open, canOpen, arrows));
             var comps = new List<RichTextComponentBase>();
             AddRichParts(comps, e.Title, titleFont, -1);
             ElementBounds titleBounds = In(parent, ElementBounds.Fixed(CardX + TitleX, y + (headH - titleH) / 2 + 1, titleW, titleH + 4));
@@ -506,14 +526,21 @@ namespace VintageE
                 double baseY = y + headH;
                 foreach (var (d, dy, h, f) in layout)
                 {
-                    double x = TitleX + Math.Max(0, d.Indent - 1) * 14;
-                    string text = d.Fix ? "→ " + d.Text : d.Text;
-                    if (text.Length > 0) AddText(c, parent, text, f, x, baseY + dy, CardW - x - 20);
+                    double x = TitleX + Math.Max(0, d.Indent - 1) * 14, lead = d.Fix ? AdviceLead : 0;
+                    if (d.Text.Length > 0) AddText(c, parent, d.Text, f, x + lead, baseY + dy, CardW - x - 20 - lead);
                     if (d.Actions.Count > 0) AddActions(c, parent, d.Actions, x, baseY + dy + h + 2, CardW - x - 20, dense: true);
                 }
                 if (e.Actions.Count > 0) AddActions(c, parent, e.Actions, TitleX, baseY + detailH - ActionsHeight(e.Actions, CardW - TitleX - 20, null) - 8, CardW - TitleX - 20, dense: true);
             }
             return y + cardH + 8;
+        }
+
+        /// <summary>The height of one line of text in a font (unscaled GUI units); an item's icon makes its line 30 high.</summary>
+        double LineHeight(CairoFont font, string text)
+        {
+            double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
+            double lineH = font.GetFontExtents().Height / scale;
+            return EmcReport.RefToken.IsMatch(text ?? "") ? Math.Max(lineH, 30) : lineH;
         }
 
         /// <summary>Text with [[item]] refs as icon + link; returns the y below it.</summary>
@@ -591,11 +618,15 @@ namespace VintageE
             double rowY = y;
             foreach (var (action, arg, label) in actions)
             {
-                string text = ButtonLabel(f, action, label, width);
+                string text = ButtonLabel(f, label, width);
                 double w = Math.Min(width, uniform ?? (TextWidth(f, text) + 24));
                 if (bx > x && bx + w > x + width) { bx = x; rowY += 32; }
                 string a = action, g = arg;
-                c.AddSmallButton(text, () => { Act(a, g); return true; }, In(parent, ElementBounds.Fixed(bx, rowY, w, 28)), EnumButtonStyle.Small);
+                ElementBounds bounds = In(parent, ElementBounds.Fixed(bx, rowY, w, 28));
+                // A button that changes something has its words in green; the others open a page.
+                bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
+                if (fix) c.AddButton(text, () => { Act(a, g); return true; }, bounds, CairoFont.SmallButtonText(EnumButtonStyle.Small).WithColor(FixText), EnumButtonStyle.Small);
+                else c.AddSmallButton(text, () => { Act(a, g); return true; }, bounds, EnumButtonStyle.Small);
                 bx += w + 8;
             }
             return rowY + 30;
@@ -609,7 +640,7 @@ namespace VintageE
             double bx = 0, rows = 1;
             foreach (var (action, arg, label) in actions)
             {
-                double w = Math.Min(width, uniform ?? (TextWidth(f, ButtonLabel(f, action, label, width)) + 24));
+                double w = Math.Min(width, uniform ?? (TextWidth(f, ButtonLabel(f, label, width)) + 24));
                 if (bx > 0 && bx + w > width) { bx = 0; rows++; }
                 bx += w + 8;
             }
@@ -617,13 +648,12 @@ namespace VintageE
         }
 
         /// <summary>
-        /// A button's label: ⚒ before a fix, and cut with … when it wouldn't fit the row, because the game's button
-        /// grows to its label and would run out of the card (seen with the long "Health checks: …" line).
+        /// A button's label as the game can draw it, cut with … when it wouldn't fit the row, because the game's
+        /// button grows to its label and would run out of the card (seen with the long "Health checks: …" line).
         /// </summary>
-        string ButtonLabel(CairoFont f, string action, string label, double width)
+        string ButtonLabel(CairoFont f, string label, double width)
         {
-            bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
-            string text = (fix ? "⚒ " : "") + label;
+            string text = GameFont.Drawable(label);
             double max = width - 24;
             if (TextWidth(f, text) <= max) return text;
             int cut = text.Length;
@@ -670,7 +700,7 @@ namespace VintageE
             ctx.Fill();
         }
 
-        static void DrawCheckCard(Context ctx, ElementBounds b, double[] colour, double headH, bool open)
+        static void DrawCheckCard(Context ctx, ElementBounds b, double[] colour, double headH, bool open, bool canOpen, List<(double x, double y)> arrows)
         {
             DrawCard(ctx, b, colour, CardBg);
             if (open)
@@ -695,6 +725,33 @@ namespace VintageE
             ctx.SetSourceRGBA(0, 0, 0, 0.5);
             ctx.LineWidth = GuiElement.scaled(1);
             ctx.Stroke();
+            // Left of the dot, a small triangle on a card that opens: pointing right while closed, down while open.
+            if (canOpen)
+            {
+                double tx = GuiElement.scaled(19), s = GuiElement.scaled(5);
+                ctx.NewPath();
+                if (open) { ctx.MoveTo(tx - s, cy - s * 0.6); ctx.LineTo(tx + s, cy - s * 0.6); ctx.LineTo(tx, cy + s * 0.8); }
+                else { ctx.MoveTo(tx - s * 0.6, cy - s); ctx.LineTo(tx + s * 0.8, cy); ctx.LineTo(tx - s * 0.6, cy + s); }
+                ctx.ClosePath();
+                ctx.SetSourceRGBA(0.85, 0.8, 0.7, 1);
+                ctx.Fill();
+            }
+            // An arrow before each line that says what to do.
+            if (open && arrows != null)
+            {
+                foreach (var (ax, ay) in arrows)
+                {
+                    double x0 = GuiElement.scaled(ax + 1), x1 = GuiElement.scaled(ax + 12), my = GuiElement.scaled(ay), head = GuiElement.scaled(3.5);
+                    ctx.NewPath();
+                    ctx.MoveTo(x0, my); ctx.LineTo(x1, my);
+                    ctx.MoveTo(x1 - head, my - head); ctx.LineTo(x1, my); ctx.LineTo(x1 - head, my + head);
+                    ctx.SetSourceRGBA(Advice[0], Advice[1], Advice[2], 0.9);
+                    ctx.LineWidth = GuiElement.scaled(1.5);
+                    ctx.LineCap = LineCap.Round;
+                    ctx.LineJoin = LineJoin.Round;
+                    ctx.Stroke();
+                }
+            }
         }
 
         // ------------------------------------------------------------------ actions
