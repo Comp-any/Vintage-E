@@ -158,57 +158,62 @@ namespace VintageE
             foreach (IPlayer p in sapi.World.AllOnlinePlayers)
             {
                 if (!(p is IServerPlayer player) || player.Entity == null || !player.Entity.Alive || player.ConnectionState != EnumClientState.Playing) continue;
-                // The same tablet the window edits: the one in hand first, then the first carried one with a magnet in it.
-                ItemStack tablet = null, magnet = null;
-                ItemStack held = player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
-                if (held?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(held, sapi.World)) != null) tablet = held;
-                else
+                // One player's magnet failing (a broken item lying around) doesn't stop the others' (1.25.2).
+                try
                 {
-                    foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
+                    // The same tablet the window edits: the one in hand first, then the first carried one with a magnet in it.
+                    ItemStack tablet = null, magnet = null;
+                    ItemStack held = player.InventoryManager?.ActiveHotbarSlot?.Itemstack;
+                    if (held?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(held, sapi.World)) != null) tablet = held;
+                    else
                     {
-                        if (slot.Itemstack?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(slot.Itemstack, sapi.World)) != null) { tablet = slot.Itemstack; break; }
+                        foreach (ItemSlot slot in EmcWallet.CarriedSlots(player))
+                        {
+                            if (slot.Itemstack?.Collectible is ItemTransmutationTablet && (magnet = GetMagnet(slot.Itemstack, sapi.World)) != null) { tablet = slot.Itemstack; break; }
+                        }
                     }
-                }
-                if (tablet == null) continue;
-                // The filter's items, found once per filter (not a key built and the filter read out for every item lying around).
-                CollectibleObject[] filter = FilterItems(tablet, sapi.World);
-                bool excludes = Excludes(tablet);
-                if (!excludes && filter.Length == 0) continue; // "only these" with nothing chosen (or nothing that still exists)
+                    if (tablet == null) continue;
+                    // The filter's items, found once per filter (not a key built and the filter read out for every item lying around).
+                    CollectibleObject[] filter = FilterItems(tablet, sapi.World);
+                    bool excludes = Excludes(tablet);
+                    if (!excludes && filter.Length == 0) continue; // "only these" with nothing chosen (or nothing that still exists)
 
-                Vec3d center = player.Entity.Pos.XYZ.Add(0, 0.5, 0);
-                long now = sapi.World.ElapsedMilliseconds;
-                int taken = 0;
-                float radius = RadiusOf(magnet);
-                foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
-                {
-                    var ei = (EntityItem)e;
-                    ItemStack stack = ei.Itemstack;
-                    if (stack?.Collectible == null || (Array.IndexOf(filter, stack.Collectible) >= 0) == excludes) continue;
-                    // Worth nothing: leave it lying there. (PlanBurn would log the refusal and resend the EMC table
-                    // four times a second for as long as it lies within reach.)
-                    if (mod.BurnValue(stack) <= 0) continue;
-                    // Something a player just dropped stays put for a moment: your own, so you can pick it back up, and
-                    // anyone else's, so an item dropped to hand over isn't eaten before the other person reaches it.
-                    long age = now - ei.itemSpawnedMilliseconds;
-                    if (ei.ByPlayerUid == player.PlayerUID && age < 3000) continue;
-                    if (ei.ByPlayerUid != null && ei.ByPlayerUid != player.PlayerUID && age < 8000) continue;
-                    if (service.PlanBurn(player, stack, out TransmutationService.BurnPlan plan, out _) != null) continue;
-
-                    Vec3d dir = center.SubCopy(e.Pos.XYZ);
-                    double dist = dir.Length();
-                    if (dist <= TakeRange)
+                    Vec3d center = player.Entity.Pos.XYZ.Add(0, 0.5, 0);
+                    long now = sapi.World.ElapsedMilliseconds;
+                    int taken = 0;
+                    float radius = RadiusOf(magnet);
+                    foreach (Entity e in sapi.World.GetEntitiesAround(center, radius, radius, x => x is EntityItem && x.Alive))
                     {
-                        string learned = service.ApplyBurn(player, stack, plan);
-                        ei.Itemstack = null;
-                        ei.Die(EnumDespawnReason.PickedUp);
-                        taken++;
-                        if (learned != null) mod.SendResult(player, new TransmuteResultPacket { LearnedKey = learned });
-                        continue;
+                        var ei = (EntityItem)e;
+                        ItemStack stack = ei.Itemstack;
+                        if (stack?.Collectible == null || (Array.IndexOf(filter, stack.Collectible) >= 0) == excludes) continue;
+                        // Worth nothing: leave it lying there. (PlanBurn would log the refusal and resend the EMC table
+                        // four times a second for as long as it lies within reach.)
+                        if (mod.BurnValue(stack) <= 0) continue;
+                        // Something a player just dropped stays put for a moment: your own, so you can pick it back up, and
+                        // anyone else's, so an item dropped to hand over isn't eaten before the other person reaches it.
+                        long age = now - ei.itemSpawnedMilliseconds;
+                        if (ei.ByPlayerUid == player.PlayerUID && age < 3000) continue;
+                        if (ei.ByPlayerUid != null && ei.ByPlayerUid != player.PlayerUID && age < 8000) continue;
+                        if (service.PlanBurn(player, stack, out TransmutationService.BurnPlan plan, out _) != null) continue;
+
+                        Vec3d dir = center.SubCopy(e.Pos.XYZ);
+                        double dist = dir.Length();
+                        if (dist <= TakeRange)
+                        {
+                            string learned = service.ApplyBurn(player, stack, plan);
+                            ei.Itemstack = null;
+                            ei.Die(EnumDespawnReason.PickedUp);
+                            taken++;
+                            if (learned != null) mod.SendResult(player, new TransmuteResultPacket { LearnedKey = learned });
+                            continue;
+                        }
+                        dir.Mul(Math.Min(PullSpeed, 0.1 + dist * 0.05) / dist);
+                        e.Pos.Motion.Set(dir.X, dir.Y + 0.04, dir.Z);
                     }
-                    dir.Mul(Math.Min(PullSpeed, 0.1 + dist * 0.05) / dist);
-                    e.Pos.Motion.Set(dir.X, dir.Y + 0.04, dir.Z);
+                    if (taken > 0) sapi.World.PlaySoundAt(new AssetLocation("game:sounds/player/collect"), player.Entity, null, true, 8, 0.4f);
                 }
-                if (taken > 0) sapi.World.PlaySoundAt(new AssetLocation("game:sounds/player/collect"), player.Entity, null, true, 8, 0.4f);
+                catch (Exception ex) { Guard.Report(sapi.Logger, "the Arcane Tablet's magnet for " + player.PlayerName, ex); }
             }
         }
     }
