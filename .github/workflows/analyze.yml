@@ -21,6 +21,9 @@ on:
       extraModUrls:
         description: Other mods to run alongside, as direct zip URLs (space-separated; for mods with no release for this game version). The zips are also copied to the results.
         default: ""
+      keepZips:
+        description: Use the extraModUrls zips exactly as downloaded ("true"), without fixing backslash paths, to see what a Linux server makes of them
+        default: "false"
       resultsBranch:
         description: Branch the results are pushed to
         default: ci-analysis
@@ -45,6 +48,7 @@ jobs:
       LOOK: ${{ inputs.look || (github.event_name == 'push' && 'New' || 'Original') }}
       TOP_MODS: ${{ inputs.topMods || '' }}
       EXTRA_MOD_URLS: ${{ inputs.extraModUrls || '' }}
+      KEEP_ZIPS: ${{ inputs.keepZips || 'false' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -117,6 +121,7 @@ jobs:
           for url in $EXTRA_MOD_URLS; do
             name=$(basename "${url%%\?*}")
             curl -fsSL "$url" -o "$GITHUB_WORKSPACE/extra-zips/$name" || { echo "could not download $url"; continue; }
+            if [ "$KEEP_ZIPS" = "true" ]; then cp "$GITHUB_WORKSPACE/extra-zips/$name" "$data/Mods/$name"; echo "added $name exactly as downloaded"; continue; fi
             # Zips packed on Windows with backslash paths (assets\domain\...) load no assets on a Linux server; the
             # server copy gets forward slashes so the mod can be tested (the copy in the results is the original).
             python3 - "$GITHUB_WORKSPACE/extra-zips/$name" "$data/Mods/$name" <<'PY'

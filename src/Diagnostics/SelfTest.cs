@@ -78,6 +78,7 @@ namespace VintageE
                 CheckGoodNeighbour();
                 CheckQuiversAndSheaths();
                 CheckClaymore();
+                CheckAncientArmoryNotice();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -1729,6 +1730,13 @@ namespace VintageE
             }
             Check(dark != null && red != null, "with Ancient Armory the dark and red matter claymores exist");
             if (dark == null || red == null) return;
+            // 1.25.3: installed, but none of its items in the game (its zip didn't load on this kind of computer). The
+            // claymores can't be made or valued then; what is checked instead is that Vintage-E says so (CheckAncientArmoryNotice).
+            if (mod.ArmoryCheck?.Broken == true)
+            {
+                Line("  claymores: not judged, Ancient Armory is installed but none of its items loaded (" + mod.ArmoryCheck.Finding + ")");
+                return;
+            }
             var problems = new List<string>();
             foreach (var (item, power, tier) in new[] { (dark, 11.4f, 5), (red, 15.7f, 6) })
             {
@@ -1754,6 +1762,70 @@ namespace VintageE
             Line($"  claymores: dark {dark.AttackPower} attack, {mod.Emc.GetValue(dark)} EMC; red {red.AttackPower} attack, {mod.Emc.GetValue(red)} EMC; Ancient Armory's steel claymore {steel?.AttackPower} attack, {steelValue} EMC");
             Check(problems.Count == 0, "with Ancient Armory, the matter claymores hit 11.4 and 15.7, reach 2.9, use its claymore animations, never wear out, have values and are made from its claymore"
                 + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
+        }
+
+        /// <summary>
+        /// 1.25.3: Ancient Armory installed with none of its items loaded (the fork's zip on Linux and macOS) is noticed,
+        /// with the reason when its zip has backslash paths, and said in the log and to joining players.
+        /// </summary>
+        void CheckAncientArmoryNotice()
+        {
+            Check(AncientArmoryCheck.Judge(false, false, true) == AncientArmoryCheck.Finding.NotInstalled
+                && AncientArmoryCheck.Judge(true, true, true) == AncientArmoryCheck.Finding.Loaded
+                && AncientArmoryCheck.Judge(true, false, false) == AncientArmoryCheck.Finding.NothingLoaded
+                && AncientArmoryCheck.Judge(true, false, true) == AncientArmoryCheck.Finding.NothingLoadedBackslashZip,
+                "Ancient Armory: not installed, loaded, nothing loaded, and nothing loaded because of its zip are told apart");
+
+            string dir = Path.Combine(Path.GetTempPath(), "vintagee-selftest-" + Guid.NewGuid().ToString("N"));
+            bool windows = false, plain = true, missing = true;
+            try
+            {
+                Directory.CreateDirectory(dir);
+                string a = Path.Combine(dir, "windows.zip"), b = Path.Combine(dir, "plain.zip");
+                using (var zip = System.IO.Compression.ZipFile.Open(a, System.IO.Compression.ZipArchiveMode.Create))
+                {
+                    zip.CreateEntry("modinfo.json");
+                    zip.CreateEntry("assets\\somemod\\itemtypes\\thing.json");
+                }
+                using (var zip = System.IO.Compression.ZipFile.Open(b, System.IO.Compression.ZipArchiveMode.Create))
+                {
+                    zip.CreateEntry("modinfo.json");
+                    zip.CreateEntry("assets/somemod/itemtypes/thing.json");
+                }
+                windows = AncientArmoryCheck.ZipHasBackslashPaths(a);
+                plain = AncientArmoryCheck.ZipHasBackslashPaths(b);
+                missing = AncientArmoryCheck.ZipHasBackslashPaths(Path.Combine(dir, "nothing.zip"));
+            }
+            catch (Exception e) { Line("  zip check: " + e.Message); }
+            finally { try { Directory.Delete(dir, true); } catch { } }
+            Check(windows && !plain && !missing, "a zip whose paths are written with backslashes is told from an ordinary one");
+
+            var problems = new List<string>();
+            foreach (var finding in new[] { AncientArmoryCheck.Finding.NothingLoaded, AncientArmoryCheck.Finding.NothingLoadedBackslashZip })
+            {
+                var r = new AncientArmoryCheck.Result { Finding = finding, ModName = "Test Armory", FileName = "TestArmory_1.0.0.zip" };
+                foreach (bool admin in new[] { true, false })
+                {
+                    string text = AncientArmoryCheck.Message(r, "en", admin);
+                    string who = finding + (admin ? " (admin)" : " (player)");
+                    if (string.IsNullOrEmpty(text) || text.StartsWith("vintagee:", StringComparison.Ordinal)) { problems.Add(who + " has no text"); continue; }
+                    if (!text.Contains("Test Armory")) problems.Add(who + " doesn't name the mod");
+                    if (text.IndexOf('<') >= 0 || text.IndexOf('>') >= 0 || text.Contains("{")) problems.Add(who + " would break in chat");
+                    if (admin && !text.Contains("TestArmory_1.0.0.zip")) problems.Add(who + " doesn't name the file");
+                    if (admin && finding == AncientArmoryCheck.Finding.NothingLoadedBackslashZip && !text.Contains("\\")) problems.Add(who + " doesn't give the reason");
+                }
+            }
+            if (AncientArmoryCheck.Message(new AncientArmoryCheck.Result { Finding = AncientArmoryCheck.Finding.Loaded }, "en", true) != null
+                || AncientArmoryCheck.Message(new AncientArmoryCheck.Result(), "en", false) != null) problems.Add("something is said when nothing is wrong");
+            Check(problems.Count == 0, "Ancient Armory with nothing loaded: admins are told the mod, its file and the reason, players the mod; nothing is said otherwise"
+                + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
+
+            bool installed = AncientArmoryCheck.ModIds.Any(id => sapi.ModLoader.IsModEnabled(id));
+            bool anyItems = sapi.World.Collectibles.Any(c => c?.Code?.Domain == AncientArmoryCheck.Domain);
+            AncientArmoryCheck.Result live = mod.ArmoryCheck;
+            bool right = live != null && live.Finding == AncientArmoryCheck.Judge(installed, anyItems, live.Finding == AncientArmoryCheck.Finding.NothingLoadedBackslashZip);
+            Check(right, "this server: Ancient Armory is " + (live == null ? "not looked at" : live.Finding.ToString())
+                + (live?.Broken == true ? " (" + live.FileName + "): " + AncientArmoryCheck.Message(live, "en", true) : ""));
         }
 
         /// <summary>1.24.3: the gem leggings' step assist leaves other mods' step height alone (XSkills' Steeplechaser).</summary>

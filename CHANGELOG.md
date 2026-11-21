@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.25.3 — 2026-11-21
+
+### Added
+- **A chat line when Ancient Armory is installed but none of its items loaded.** The Ancient Armory Fork's download is a zip whose paths are written with backslashes, which only Windows reads as folders. On a Linux or macOS server the game still lists the mod as loaded and shows no error, but none of its items exist. The matter claymores are there all the same and can't be made, which looks like a Vintage-E fault. Vintage-E now checks for this when the server starts and says so: in the server log, and in chat to each player who joins. Admins are told the mod, its file, the reason and how to fix it (unzip it on Windows and zip it again with 7-Zip, or ask the mod's author for a corrected file); other players get a short line naming the mod, unless the server has switched Vintage-E's chat lines off. Where Ancient Armory loads properly, or isn't installed, nothing is said.
+
 ## 1.25.2 — 2026-11-21
 
 A check of the whole mod for bugs and for things that could clash with other mods or with the game. Nothing here changes an EMC value.

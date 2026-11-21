@@ -53,6 +53,8 @@ namespace VintageE
 
         /// <summary>Result of the most recent mapping run (server only).</summary>
         public EmcMappingReport LastReport { get; private set; }
+        /// <summary>Server: whether Ancient Armory is installed with none of its items loaded (see <see cref="AncientArmoryCheck"/>). Null until the game runs.</summary>
+        public AncientArmoryCheck.Result ArmoryCheck { get; private set; }
         /// <summary>Other mods' crafting methods as last collected (game thread; mappings read it from any thread).</summary>
         public MethodSnapshot Methods { get; private set; } = MethodSnapshot.Empty;
         /// <summary>Mods that said their crafting methods changed (the id they sent, or "?") → how many times; and whether one did before the first mapping.</summary>
@@ -697,6 +699,11 @@ namespace VintageE
                 sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, () =>
                 {
                     Trinkets?.ReconcileAfterStart();
+                    Guard.Run(Mod.Logger, "checking that Ancient Armory's items loaded", () =>
+                    {
+                        ArmoryCheck = AncientArmoryCheck.Look(sapi);
+                        if (ArmoryCheck.Broken) Mod.Logger.Warning("{0}", AncientArmoryCheck.Message(ArmoryCheck, "en", admin: true));
+                    });
                     EnsureMapped(null);
                     if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "starting the self-test", () => new SelfTest(this, sapi).Start()), 5000);
                 });
@@ -746,6 +753,7 @@ namespace VintageE
                         if (Trinkets != null && Trinkets.WatchTimeModifier != 0) serverChannel?.SendPacket(new WatchSpeedPacket { Modifier = Trinkets.WatchTimeModifier }, player);
                         Announce(player, LastReport, joining: true);
                     });
+                    Guard.Run(Mod.Logger, "telling a joining player that Ancient Armory's items didn't load", () => TellAboutAncientArmory(player));
                 };
             });
 
@@ -1318,6 +1326,20 @@ namespace VintageE
             string key = report.FromCache ? "vintagee:chat-announce-cached" : "vintagee:chat-announce";
             object[] args = { Version, report.Values.Count, report.Missing.Count, report.CreativeTotal, report.Loops?.Count ?? 0 };
             return string.IsNullOrEmpty(languageCode) ? Lang.Get(key, args) : Lang.GetL(languageCode, key, args);
+        }
+
+        /// <summary>
+        /// Ancient Armory installed but none of its items in the game: the matter claymores are there and can't be
+        /// made, so each joining player is told which mod it is. Admins always, with the cause and the fix; everyone
+        /// else a short line, unless the server has switched Vintage-E's chat lines off (AnnounceInChat).
+        /// </summary>
+        void TellAboutAncientArmory(IServerPlayer player)
+        {
+            if (player == null || ArmoryCheck == null || !ArmoryCheck.Broken) return;
+            bool admin = player.HasPrivilege(Privilege.controlserver);
+            if (!admin && !Config.AnnounceInChat) return;
+            string text = AncientArmoryCheck.Message(ArmoryCheck, player.LanguageCode, admin);
+            if (!string.IsNullOrEmpty(text)) player.SendMessage(GlobalConstants.GeneralChatGroup, text, EnumChatType.Notification);
         }
 
         void Announce(IServerPlayer player, EmcMappingReport report, bool joining = false)
