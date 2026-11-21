@@ -116,7 +116,21 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/extra-zips"
           for url in $EXTRA_MOD_URLS; do
             name=$(basename "${url%%\?*}")
-            curl -fsSL "$url" -o "$GITHUB_WORKSPACE/extra-zips/$name" && cp "$GITHUB_WORKSPACE/extra-zips/$name" "$data/Mods/" && echo "added $name" || echo "could not download $url"
+            curl -fsSL "$url" -o "$GITHUB_WORKSPACE/extra-zips/$name" || { echo "could not download $url"; continue; }
+            # Zips packed on Windows with backslash paths (assets\domain\...) load no assets on a Linux server; the
+            # server copy gets forward slashes so the mod can be tested (the copy in the results is the original).
+            python3 - "$GITHUB_WORKSPACE/extra-zips/$name" "$data/Mods/$name" <<'PY'
+          import sys, zipfile
+          src, dst = sys.argv[1], sys.argv[2]
+          fixed = 0
+          with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zout:
+              for info in zin.infolist():
+                  name = info.filename.replace("\\", "/")
+                  fixed += name != info.filename
+                  if not name.endswith("/"):
+                      zout.writestr(name, zin.read(info))
+          print("added", dst, "(" + str(fixed) + " backslash paths fixed)" if fixed else "")
+          PY
           done
           # A look other than the default, so the self-test can check it: ProjectE's originals for runs started by hand
           # (with ProjectE's sounds), New for pushes to ci/** (or set it with the "look" input). Both looks are checked either way, on copies.
