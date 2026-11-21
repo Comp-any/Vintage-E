@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.4 — 2026-11-22
+
+### Changed
+- **The table and tablet window always opens without the long explanations.** Click **Help** to read them; they stay until you close the window, and the next time it opens they are folded away again. 1.26.3 showed them by itself whenever the window fitted on the screen with them and remembered the button's choice, which is gone: the `TabletHelp` setting in `ModConfig/vintagee-client.json` is no longer used.
+
+### Fixed
+- **Putting a Black Hole Band or Void Ring in the tablet hid the explanations.** The magnet adds the filter's row, the window no longer fitted with the explanations, and 1.26.3 folded them away by itself. They now only change when you click Help.
+
 ## 1.26.3 — 2026-11-22
 
 ### Changed

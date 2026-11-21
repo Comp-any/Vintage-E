@@ -19,21 +19,27 @@ namespace VintageE
     /// <summary>
     /// How much of the table and tablet window is shown, so that it fits on the screen (1.26.3). With everything in it
     /// the tablet's window is about 1,030 GUI pixels tall: taller than a 1440-pixel screen at a GUI scale of 1.4, and
-    /// than any 1080-pixel one above 1.0. Two things give: the long explanations fold away behind the Help button, and
-    /// if that isn't enough the grid of known items loses rows (there are pages anyway).
+    /// than any 1080-pixel one above 1.0. Two things give: the long explanations are folded away behind the Help button
+    /// until the player asks for them, and where the window still doesn't fit the grid of known items loses rows
+    /// (there are pages anyway).
+    ///
+    /// The explanations are hidden whenever the window opens and shown only once Help is clicked, until it closes
+    /// (1.26.4). 1.26.3 showed them by itself whenever the window fitted with them, which made them come and go with
+    /// the window's height: putting a magnet in (which adds the filter's row) hid them.
     /// </summary>
     public static class TabletLayout
     {
         public const int MaxRows = 6, MinRows = 3;
 
-        /// <param name="setting">The player's TabletHelp setting: Auto, On or Off.</param>
+        /// <param name="help">Whether the long explanations are shown.</param>
         /// <param name="screenHeight">The screen's height in GUI pixels.</param>
         /// <param name="height">The window's height in GUI pixels with the explanations shown or not, and that many rows.</param>
-        public static void Fit(string setting, double screenHeight, System.Func<bool, int, double> height, out bool help, out int rows)
+        /// <returns>The rows of known items to show.</returns>
+        public static int Rows(bool help, double screenHeight, System.Func<bool, int, double> height)
         {
-            help = setting == VintageEClientConfig.HelpOn || (setting != VintageEClientConfig.HelpOff && height(true, MaxRows) <= screenHeight);
-            rows = MaxRows;
+            int rows = MaxRows;
             while (rows > MinRows && height(help, rows) > screenHeight) rows--;
+            return rows;
         }
     }
 
@@ -43,7 +49,8 @@ namespace VintageE
         const int MaxPerPage = Cols * TabletLayout.MaxRows;
         /// <summary>The rows of known items in the window as it is drawn now, and whether its long explanations are shown.</summary>
         int rows = TabletLayout.MaxRows;
-        bool helpShown = true;
+        /// <summary>Hidden each time the window opens (a new window is made each time); the Help button shows them until it closes.</summary>
+        bool helpShown;
         int PerPage => Cols * rows;
 
         readonly VintageEModSystem mod;
@@ -210,7 +217,7 @@ namespace VintageE
 
             double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
             double screen = capi.Render.FrameHeight / scale;
-            TabletLayout.Fit(mod.ClientConfig?.TabletHelp ?? VintageEClientConfig.HelpAuto, screen, Layout, out helpShown, out rows);
+            rows = TabletLayout.Rows(helpShown, screen, Layout);
             Layout(helpShown, rows);
 
             var children = new List<ElementBounds> { emcBounds, knownBounds, helpButtonBounds, burnSlotBounds, burnLabelBounds, learnSlotBounds, learnLabelBounds, chargeSlotBounds, chargeLabelBounds, searchBounds, sortBounds, gridBounds, prevBounds, pageBounds, nextBounds };
@@ -281,15 +288,10 @@ namespace VintageE
             if (search.Length > 0) SingleComposer.GetTextInput("search").SetValue(search, false);
         }
 
-        /// <summary>The Help button: shows the long explanations or folds them away, and remembers which for this computer.</summary>
+        /// <summary>The Help button: shows the long explanations or folds them away again, for as long as this window is open.</summary>
         bool OnHelpToggle()
         {
-            VintageEClientConfig cfg = mod.ClientConfig;
-            if (cfg != null)
-            {
-                cfg.TabletHelp = helpShown ? VintageEClientConfig.HelpOff : VintageEClientConfig.HelpOn;
-                cfg.Save(capi);
-            }
+            helpShown = !helpShown;
             // Drawn again a frame later: this runs from the button's own click.
             capi.Event.EnqueueMainThreadTask(() => { if (IsOpened()) { Compose(); Refresh(true); } }, "vintagee-table-recompose");
             return true;

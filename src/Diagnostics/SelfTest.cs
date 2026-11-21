@@ -1940,21 +1940,10 @@ namespace VintageE
         {
             // A window like the tablet's: 300 pixels of frame and controls, 51 a row, 260 of explanations.
             System.Func<bool, int, double> height = (help, rows) => 300 + rows * 51 + (help ? 260 : 0);
-            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 1080, height, out bool bigHelp, out int bigRows);
-            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 800, height, out bool midHelp, out int midRows);
-            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 520, height, out bool smallHelp, out int smallRows);
-            TabletLayout.Fit(VintageEClientConfig.HelpAuto, 300, height, out bool tinyHelp, out int tinyRows);
-            Check(bigHelp && bigRows == 6 && !midHelp && midRows == 6 && !smallHelp && smallRows == 4 && !tinyHelp && tinyRows == TabletLayout.MinRows,
-                $"the tablet window fits the screen by itself: everything on a tall screen, no explanations on a middling one, fewer rows on a small one ({bigRows}, {midRows}, {smallRows}, {tinyRows} rows)");
-            TabletLayout.Fit(VintageEClientConfig.HelpOn, 800, height, out bool onHelp, out int onRows);
-            TabletLayout.Fit(VintageEClientConfig.HelpOff, 1080, height, out bool offHelp, out int offRows);
-            Check(onHelp && onRows == 4 && !offHelp && offRows == 6, "the Help button's choice is kept: on shows the explanations and takes rows instead, off hides them even where they would fit");
-            var cfg = new VintageEClientConfig { TabletHelp = " on " };
-            cfg.Normalize();
-            var odd = new VintageEClientConfig { TabletHelp = "sometimes" };
-            odd.Normalize();
-            Check(cfg.TabletHelp == VintageEClientConfig.HelpOn && odd.TabletHelp == VintageEClientConfig.HelpAuto && new VintageEClientConfig().TabletHelp == VintageEClientConfig.HelpAuto,
-                "the TabletHelp setting is Auto unless it says On or Off");
+            int tall = TabletLayout.Rows(false, 1080, height), small = TabletLayout.Rows(false, 520, height), tiny = TabletLayout.Rows(false, 300, height);
+            int tallHelp = TabletLayout.Rows(true, 1080, height), midHelp = TabletLayout.Rows(true, 800, height);
+            Check(tall == 6 && small == 4 && tiny == TabletLayout.MinRows && tallHelp == 6 && midHelp == 4,
+                $"the tablet window fits the screen: all six rows where there is room, fewer on a small screen or with the explanations open ({tall}, {small}, {tiny}; with them {tallHelp}, {midHelp})");
             // Characters a game font may lack (the boxes left of the doctor's cards, the arrow in the crafting window).
             string symbols = "A \u2192 B \u2713 done \u26a0 \u25b8 open \u2264 3";
             Check(Glyphs.Safe(symbols, _ => false) == "A -> B OK done ! \u00bb open <= 3" && ReferenceEquals(Glyphs.Safe(symbols, _ => true), symbols)
