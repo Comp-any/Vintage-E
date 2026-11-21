@@ -89,9 +89,12 @@ namespace VintageE
             else if (client.ClientLog != null && client.ClientLog.Length > 0)
             {
                 // The look's own progress lines ride along for the trail; only real errors and warnings are a warning here.
-                int bad = client.ClientLog.Count(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]"));
-                if (bad > 0) x.Warn(x.L("diag-client-log", bad));
-                else x.Info(x.L("diag-client-log-info", client.ClientLog.Length));
+                // And only Vintage-E's own (1.26.1): a line another mod wrote that merely names Vintage-E (its patch of a
+                // Vintage-E class failing, say) is that mod's, and is said to be, instead of counting as a Vintage-E warning.
+                int own = OwnLogLines(client.ClientLog.Where(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]")), out List<string> others, out int otherLines);
+                if (own > 0) x.Warn(x.L("diag-client-log", own));
+                if (otherLines > 0) x.Info(x.L("diag-client-log-others", otherLines, string.Join(", ", others.Select(m => ModName(x, m)))));
+                if (own == 0 && otherLines == 0) x.Info(x.L("diag-client-log-info", client.ClientLog.Length));
                 foreach (string l in client.ClientLog) r.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
             }
             else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));
@@ -149,16 +152,25 @@ namespace VintageE
             List<string> lines = LogLines(x, heading ? 30 : 8, out string error);
             if (error != null) { x.Note(error, 0); return; }
             if (lines.Count == 0) { x.Ok(x.L("diag-log-clean")); return; }
-            x.Warn(x.L("diag-log-found", lines.Count));
+            // Other mods' lines that only name Vintage-E are told apart, as for the player's own log (1.26.1).
+            int own = OwnLogLines(lines.Where(l => LogLevel.IsMatch(l)), out List<string> others, out int otherLines);
+            // Lines that aren't dated (an exception's own text) belong to whatever is above them: Vintage-E's unless every dated line is another mod's.
+            bool ownAny = own > 0 || otherLines == 0;
+            if (ownAny) x.Warn(x.L("diag-log-found", own > 0 ? own : lines.Count));
+            if (otherLines > 0) x.Info(x.L("diag-log-others", otherLines, string.Join(", ", others.Select(m => ModName(x, m)))));
             foreach (string l in lines) r.Add(x.Compact ? l : Explain(x, l), EmcLineStyle.Text, 1);
             if (!heading) r.Add(Link(ActionLog, "", x.L("diag-q-log")));
-            x.Fix(x.L("diag-log-fix"));
+            if (ownAny) x.Fix(x.L("diag-log-fix"));
         }
 
         /// <summary>Adds a plain-words meaning after log lines the mod knows.</summary>
         static string Explain(Ctx x, string line)
         {
             string low = line.ToLowerInvariant();
+            // Another mod's line first: what it says about "patching" is about that mod's patch, not one of Vintage-E's.
+            string other = OtherModOf(line);
+            if (other != null)
+                return line + "\n      " + x.L(low.Contains("you can only patch implemented methods") ? "diag-log-meaning-otherpatch" : "diag-log-meaning-othermod", ModName(x, other));
             if (low.Contains("emc mapping failed")) return line + "\n      " + x.L("diag-log-meaning-mapfailed");
             if (low.Contains("could not read modconfig")) return line + "\n      " + x.L("diag-log-meaning-config");
             if (low.Contains("harmony") || low.Contains("could not patch")) return line + "\n      " + x.L("diag-log-meaning-patch");
@@ -166,6 +178,46 @@ namespace VintageE
             if (low.Contains("could not write")) return line + "\n      " + x.L("diag-log-meaning-write");
             if (low.Contains("custom recipe") || low.Contains("customrecipe")) return line + "\n      " + x.L("diag-log-meaning-recipe");
             return line;
+        }
+
+        /// <summary>
+        /// The tag a mod's own logger puts after the level: "… [Warning] [vintagewow] item icons: …" gives vintagewow.
+        /// A mod id is lower-case letters and digits, so the game's own bracketed words don't count.
+        /// </summary>
+        static readonly Regex LogTag = new Regex(@"^\s*\S+ \S+ \[[^\]]+\] \[([a-z][a-z0-9]*)\] ", RegexOptions.Compiled);
+
+        /// <summary>The mod whose logger wrote a log line, or null: the game's own lines, and those a mod writes through the game's logger, carry no tag.</summary>
+        public static string LogLineMod(string line)
+        {
+            Match m = LogTag.Match(line ?? "");
+            return m.Success ? m.Groups[1].Value : null;
+        }
+
+        /// <summary>
+        /// The other mod that wrote a line the doctor picked up because Vintage-E's name is in it, or null when the
+        /// line is Vintage-E's own or the game's. Such a line (another mod's patch of a Vintage-E class failing, say)
+        /// is that mod's to look at.
+        /// </summary>
+        public static string OtherModOf(string line)
+        {
+            string mod = LogLineMod(line);
+            return mod != null && !mod.Equals(VintageEModSystem.ModId, StringComparison.OrdinalIgnoreCase) ? mod : null;
+        }
+
+        /// <summary>How many of these error and warning lines are Vintage-E's own; the rest are other mods', named in <paramref name="others"/>.</summary>
+        public static int OwnLogLines(IEnumerable<string> lines, out List<string> others, out int otherLines)
+        {
+            others = new List<string>();
+            otherLines = 0;
+            int own = 0;
+            foreach (string line in lines)
+            {
+                string other = OtherModOf(line);
+                if (other == null) { own++; continue; }
+                otherLines++;
+                if (!others.Contains(other, StringComparer.OrdinalIgnoreCase)) others.Add(other);
+            }
+            return own;
         }
 
         /// <summary>A log line whose own level is Error, Warning or Fatal (not one that merely quotes "[Error]").</summary>

@@ -76,6 +76,7 @@ namespace VintageE
                 CheckSpeedups();
                 CheckStepAssist();
                 CheckGoodNeighbour();
+                CheckLogAttribution();
                 CheckQuiversAndSheaths();
                 CheckClaymore();
                 CheckAncientArmoryNotice();
@@ -1876,6 +1877,48 @@ namespace VintageE
             Check(leftAlone, "without the step assist the step height is never touched (a Steeplechaser's 1.2 stays)");
             Check(on == StepAssist.Height && still == null && off == 0.6f, $"the step assist raises 0.6 to {StepAssist.Height} and puts 0.6 back when switched off");
             Check(higherKept && changedMeanwhile, "a higher step height from another mod is kept, and one changed while it was on isn't undone");
+        }
+
+        /// <summary>
+        /// 1.26.1: the doctor tells a log line another mod wrote, which only names Vintage-E, from Vintage-E's own. The
+        /// lines are the ones a player's game logged with Vintage WoW installed: its patch of the trinket class's
+        /// OnBeforeRender, asked for through the Evertide Amulet's class, which Harmony refuses.
+        /// </summary>
+        void CheckLogAttribution()
+        {
+            const string look = "22.11.2026 00:49:02 [Notification] [vintagee] Look: 2 of 2 shape-loader hooks in place.";
+            const string wow = "22.11.2026 00:49:15 [Warning] [vintagewow] item icons: couldn't patch ItemEmcTrinket: You can only patch implemented methods/constructors. Patch the declared method virtual System.Void VintageE.ItemEmcTrinket::OnBeforeRender(Vintagestory.API.Client.ICoreClientAPI capi) instead.";
+            const string ours = "22.11.2026 00:49:16 [Warning] [vintagee] Could not write the look cache: disk full";
+            const string untagged = "22.11.2026 00:49:17 [Error] Vintage-E: the trinkets' tick failed, and was skipped this time: System.Exception";
+            const string games = "22.11.2026 00:49:18 [Warning] [Shader] something about vintagee";
+            Check(EmcDiagnose.LogLineMod(wow) == "vintagewow" && EmcDiagnose.OtherModOf(wow) == "vintagewow"
+                && EmcDiagnose.OtherModOf(look) == null && EmcDiagnose.OtherModOf(ours) == null && EmcDiagnose.OtherModOf(untagged) == null && EmcDiagnose.OtherModOf(games) == null
+                && EmcDiagnose.OtherModOf("  " + wow) == "vintagewow",
+                "a log line's mod tag says who wrote it: another mod's line is told from Vintage-E's own, the game's and untagged ones");
+            int own = EmcDiagnose.OwnLogLines(new[] { wow, wow, ours, untagged }, out List<string> others, out int otherLines);
+            Check(own == 2 && otherLines == 2 && others.Count == 1 && others[0] == "vintagewow", $"of four warning lines, two are Vintage-E's own and two are another mod's ({string.Join(", ", others)})");
+
+            try
+            {
+                var packet = new EmcDiagnoseRequestPacket
+                {
+                    Action = EmcDiagnose.ActionClient, Arg = "", HasClientInfo = true, ClientVersion = mod.Mod.Info.Version,
+                    ClientTableCount = mod.Emc.Count, ClientTableHash = mod.Emc.Fingerprint(), ClientPatched = ClientLookPatches.HookCount,
+                    ClientLog = new[] { look, wow, wow }
+                };
+                string text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                Check(text.Contains("2 warning or error line(s) written by another mod") && text.Contains("vintagewow") && !text.Contains("Vintage-E error or warning lines in client-main.log")
+                    && text.Contains("Nothing in Vintage-E is changed or broken") && !text.Contains("vintagee:diag-"),
+                    "the doctor: another mod's failed patch of a Vintage-E class is said to be that mod's, with what it means, and isn't counted as a Vintage-E warning");
+                packet.ClientLog = new[] { look, wow, ours };
+                text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                Check(text.Contains("1 Vintage-E error or warning lines in client-main.log") && text.Contains("1 warning or error line(s) written by another mod"),
+                    "the doctor: Vintage-E's own warning is still a warning, counted apart from the other mod's line");
+                packet.ClientLog = new[] { look };
+                text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                Check(text.Contains("no Vintage-E errors or warnings in client-main.log") && !text.Contains("written by another mod"), "the doctor: with only the look's progress lines, the log is clean");
+            }
+            catch (Exception e) { Check(false, "the doctor's log attribution ran: " + e.Message); }
         }
 
         /// <summary>

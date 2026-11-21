@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.1 — 2026-11-22
+
+### Fixed
+- **The doctor counted other mods' log lines as Vintage-E's.** Any warning or error that named Vintage-E was listed as a "Vintage-E error or warning line", whoever wrote it. With Vintage WoW installed, its two warnings about failing to patch Vintage-E's trinket class showed up that way, as a warning on Vintage-E's check-up. The doctor now reads who wrote each line: another mod's lines are listed apart, as that mod's own and not a warning, and only Vintage-E's own lines count. That particular line also gets its meaning: the other mod asked to patch a method through a class that only inherits it (the Evertide Amulet from the trinket class), which is refused; nothing in Vintage-E is changed or broken by it. The same goes for the server log.
+
 ## 1.26.0 — 2026-11-21
 
 ### Added
