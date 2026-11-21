@@ -1,0 +1,1 @@
+game=1.22.7 commit=8491c954ee029d6824732369dc6ad65af2137d94 run=44850629589 extraMods=ancientarmory
