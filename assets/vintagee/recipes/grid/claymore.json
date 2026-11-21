@@ -1,0 +1,44 @@
+[
+  {
+    "enabled": false,
+    "ingredientPattern": "MCM",
+    "ingredients": {
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-dark"
+      },
+      "C": {
+        "type": "item",
+        "code": "ancientarmory:aa-blade-claymore-*"
+      }
+    },
+    "width": 3,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matterclaymore-dark"
+    },
+    "name": "vintagee:darkmatter-claymore"
+  },
+  {
+    "enabled": false,
+    "ingredientPattern": "RCR",
+    "ingredients": {
+      "R": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "C": {
+        "type": "item",
+        "code": "vintagee:matterclaymore-dark"
+      }
+    },
+    "width": 3,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matterclaymore-red"
+    },
+    "name": "vintagee:redmatter-claymore"
+  }
+]

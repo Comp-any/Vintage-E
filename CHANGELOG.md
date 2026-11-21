@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.25.0 — 2026-11-21
+
+### Added
+- **Dark and Red Matter Claymores, with Ancient Armory.** Only when Ancient Armory or its fork (Ancient Armory Fork) is installed; without either they don't exist. They use the game's own claymore model in dark or red matter, and swing two-handed with Ancient Armory's claymore animations. They hit as much harder than Ancient Armory's steel claymore (7.5) as the matter swords hit harder than a steel sword: **11.4** (dark) and **15.7** (red), reach 2.9. They never wear out, and right-click strikes hostile creatures around you like the matter swords. Crafting: Ancient Armory's claymore with 2 dark matter makes the dark one; the dark one with 2 red matter makes the red one. With Quivers and Sheaths they go in its sword sheaths.
+
 ## 1.24.6 — 2026-11-21
 
 ### Added

@@ -1,0 +1,257 @@
+{
+  "code": "matterclaymore",
+  "enabled": false,
+  "variantgroups": [
+    {
+      "code": "material",
+      "states": [
+        "dark",
+        "red"
+      ]
+    }
+  ],
+  "tool": "sword",
+  "tags": [
+    "weapon",
+    "weapon-melee",
+    "sword",
+    "onehanded",
+    "twohanded"
+  ],
+  "behaviorsByType": {
+    "*-dark": [
+      {
+        "name": "GroundStorable",
+        "properties": {
+          "layout": "WallHalves",
+          "wallOffY": 2,
+          "ctrlKey": true,
+          "selectionBox": {
+            "x1": 0,
+            "y1": 0,
+            "z1": 0,
+            "x2": 1,
+            "y2": 0.1,
+            "z2": 1
+          },
+          "collisionBox": {
+            "x1": 0,
+            "y1": 0,
+            "z1": 0,
+            "x2": 0,
+            "y2": 0,
+            "z2": 0
+          }
+        }
+      },
+      {
+        "name": "VintageEMatterTool",
+        "properties": {
+          "maxAreaRadius": 0
+        }
+      },
+      {
+        "name": "AnimationAuthoritative"
+      },
+      {
+        "name": "VintageESlay",
+        "properties": {
+          "damage": 11.4
+        }
+      }
+    ],
+    "*-red": [
+      {
+        "name": "GroundStorable",
+        "properties": {
+          "layout": "WallHalves",
+          "wallOffY": 2,
+          "ctrlKey": true,
+          "selectionBox": {
+            "x1": 0,
+            "y1": 0,
+            "z1": 0,
+            "x2": 1,
+            "y2": 0.1,
+            "z2": 1
+          },
+          "collisionBox": {
+            "x1": 0,
+            "y1": 0,
+            "z1": 0,
+            "x2": 0,
+            "y2": 0,
+            "z2": 0
+          }
+        }
+      },
+      {
+        "name": "VintageEMatterTool",
+        "properties": {
+          "maxAreaRadius": 0
+        }
+      },
+      {
+        "name": "AnimationAuthoritative"
+      },
+      {
+        "name": "VintageESlay",
+        "properties": {
+          "damage": 15.7
+        }
+      }
+    ]
+  },
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "tools": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "shape": {
+    "base": "game:item/tool/blade/claymore"
+  },
+  "texturesByType": {
+    "*-dark": {
+      "blackbronze": {
+        "base": "vintagee:item/tool/material/darkmatter"
+      },
+      "handle": {
+        "base": "game:block/wood/debarked/ebony"
+      }
+    },
+    "*-red": {
+      "blackbronze": {
+        "base": "vintagee:item/tool/material/redmatter"
+      },
+      "handle": {
+        "base": "game:block/wood/debarked/ebony"
+      }
+    }
+  },
+  "heldTpHitAnimation": "greatswing",
+  "heldTpUseAnimation": "interactstatic",
+  "heldTpIdleAnimation": "readyidle",
+  "heldRightReadyAnimation": "twohandready",
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -87,
+      "y": 119,
+      "z": 30
+    },
+    "origin": {
+      "x": 1.15,
+      "y": -0.1,
+      "z": 0.57
+    },
+    "scale": 1.95
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.68,
+      "y": 0.055,
+      "z": -0.78
+    },
+    "rotation": {
+      "x": 85,
+      "y": 0,
+      "z": 2
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.67
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.05,
+      "z": 0
+    },
+    "rotation": {
+      "x": 14,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 3.4
+  },
+  "attributes": {
+    "handbook": {
+      "groupBy": [
+        "matterclaymore-*"
+      ]
+    },
+    "attachableToEntity": {
+      "categoryCode": "toolholding"
+    },
+    "toolrackTransform": {
+      "translation": {
+        "x": 0.56,
+        "y": 0.6,
+        "z": -0.2
+      },
+      "rotation": {
+        "x": -16,
+        "y": 180,
+        "z": 1
+      },
+      "scale": 1.25
+    },
+    "groundStorageTransform": {
+      "translation": {
+        "x": 0,
+        "y": 1.05,
+        "z": 0.065
+      },
+      "rotation": {
+        "x": 24,
+        "y": 90,
+        "z": -87
+      },
+      "scale": 0.63
+    },
+    "InSheathVariantCode": "default",
+    "MetalVariantCodeByType": {
+      "*-dark": "blackbronze",
+      "*": "copper"
+    }
+  },
+  "tooltierByType": {
+    "*-dark": 5,
+    "*-red": 6
+  },
+  "miningspeedByType": {
+    "*-dark": {
+      "plant": 4,
+      "leaves": 4
+    },
+    "*-red": {
+      "plant": 6,
+      "leaves": 6
+    }
+  },
+  "attackpowerByType": {
+    "*-dark": 11.4,
+    "*-red": 15.7
+  },
+  "attackRange": 2.9,
+  "materialDensity": 9000
+}

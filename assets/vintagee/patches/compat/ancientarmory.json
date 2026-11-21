@@ -1,0 +1,68 @@
+[
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmory"
+      }
+    ],
+    "file": "vintagee:itemtypes/matterclaymore",
+    "op": "replace",
+    "path": "/enabled",
+    "value": true
+  },
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmory"
+      }
+    ],
+    "file": "vintagee:recipes/grid/claymore",
+    "op": "replace",
+    "path": "/0/enabled",
+    "value": true
+  },
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmory"
+      }
+    ],
+    "file": "vintagee:recipes/grid/claymore",
+    "op": "replace",
+    "path": "/1/enabled",
+    "value": true
+  },
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmoryfix"
+      }
+    ],
+    "file": "vintagee:itemtypes/matterclaymore",
+    "op": "replace",
+    "path": "/enabled",
+    "value": true
+  },
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmoryfix"
+      }
+    ],
+    "file": "vintagee:recipes/grid/claymore",
+    "op": "replace",
+    "path": "/0/enabled",
+    "value": true
+  },
+  {
+    "dependsOn": [
+      {
+        "modid": "ancientarmoryfix"
+      }
+    ],
+    "file": "vintagee:recipes/grid/claymore",
+    "op": "replace",
+    "path": "/1/enabled",
+    "value": true
+  }
+]

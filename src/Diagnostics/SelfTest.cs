@@ -76,6 +76,7 @@ namespace VintageE
                 CheckSpeedups();
                 CheckStepAssist();
                 CheckQuiversAndSheaths();
+                CheckClaymore();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -1701,6 +1702,49 @@ namespace VintageE
             }
             if (names == null) Line("  Quivers and Sheaths tags: the tag registry can't be read here, so only the looks were checked");
             Check(problems.Count == 0, "matter swords, knives, bows and spears carry the tags Quivers and Sheaths' sheaths and bow holders accept, and the hilt look and colour"
+                + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
+        }
+
+        /// <summary>
+        /// 1.25.0: the dark and red matter claymores, only with Ancient Armory (ancientarmory) or its fork
+        /// (ancientarmoryfix): without either they don't exist; with one they are made from its claymore.
+        /// </summary>
+        void CheckClaymore()
+        {
+            bool armory = sapi.ModLoader.IsModEnabled("ancientarmory") || sapi.ModLoader.IsModEnabled("ancientarmoryfix");
+            Item dark = sapi.World.GetItem(new AssetLocation("vintagee:matterclaymore-dark")), red = sapi.World.GetItem(new AssetLocation("vintagee:matterclaymore-red"));
+            List<GridRecipe> recipes = sapi.World.GridRecipes.Where(r => r?.Output?.ResolvedItemStack?.Collectible?.Code?.Path?.StartsWith("matterclaymore-", StringComparison.Ordinal) == true).ToList();
+            if (!armory)
+            {
+                Check(dark == null && red == null && recipes.Count == 0,
+                    $"without Ancient Armory there are no matter claymores and no recipes for them ({(dark == null ? "none" : dark.Code.ToString())}, {recipes.Count} recipes)");
+                return;
+            }
+            Check(dark != null && red != null, "with Ancient Armory the dark and red matter claymores exist");
+            if (dark == null || red == null) return;
+            var problems = new List<string>();
+            foreach (var (item, power, tier) in new[] { (dark, 11.4f, 5), (red, 15.7f, 6) })
+            {
+                if (Math.Abs(item.AttackPower - power) > 0.01f) problems.Add($"{item.Code} attack {item.AttackPower}");
+                if (Math.Abs(item.AttackRange - 2.9f) > 0.01f) problems.Add($"{item.Code} reach {item.AttackRange}");
+                if (item.ToolTier != tier) problems.Add($"{item.Code} tier {item.ToolTier}");
+                if (item.Tool != EnumTool.Sword) problems.Add($"{item.Code} is a {item.Tool}");
+                if (item.GetMaxDurability(new ItemStack(item)) > 1 && !item.CollectibleBehaviors.Any(b => b.GetType().Name.Contains("MatterTool"))) problems.Add($"{item.Code} wears out");
+                if (item.HeldTpHitAnimation != "greatswing" || item.HeldRightReadyAnimation != "twohandready" || item.HeldRightTpIdleAnimation != "readyidle")
+                    problems.Add($"{item.Code} animations {item.HeldTpHitAnimation}/{item.HeldRightReadyAnimation}/{item.HeldRightTpIdleAnimation}");
+                if (mod.Emc.GetValue(item) <= 0) problems.Add($"{item.Code} has no EMC value");
+                if (item.Attributes?["InSheathVariantCode"].AsString() != "default") problems.Add($"{item.Code} has no sheath look");
+            }
+            GridRecipe darkRecipe = recipes.FirstOrDefault(r => r.Output.ResolvedItemStack.Collectible == dark), redRecipe = recipes.FirstOrDefault(r => r.Output.ResolvedItemStack.Collectible == red);
+            bool darkFromArmory = darkRecipe?.ResolvedIngredients?.Any(i => i?.Code?.Domain == "ancientarmory" && i.Code.Path.StartsWith("aa-blade-claymore-", StringComparison.Ordinal)) == true;
+            bool redFromDark = redRecipe?.ResolvedIngredients?.Any(i => i?.ResolvedItemStack?.Collectible == dark) == true;
+            if (!darkFromArmory) problems.Add("the dark claymore isn't made from Ancient Armory's claymore");
+            if (!redFromDark) problems.Add("the red claymore isn't made from the dark one");
+            Item steel = sapi.World.GetItem(new AssetLocation("ancientarmory:aa-blade-claymore-steel"));
+            double steelValue = steel == null ? 0 : mod.Emc.GetValue(steel);
+            if (steel != null && !(mod.Emc.GetValue(dark) > steelValue && mod.Emc.GetValue(red) > mod.Emc.GetValue(dark))) problems.Add($"values out of order: steel {steelValue}, dark {mod.Emc.GetValue(dark)}, red {mod.Emc.GetValue(red)}");
+            Line($"  claymores: dark {dark.AttackPower} attack, {mod.Emc.GetValue(dark)} EMC; red {red.AttackPower} attack, {mod.Emc.GetValue(red)} EMC; Ancient Armory's steel claymore {steel?.AttackPower} attack, {steelValue} EMC");
+            Check(problems.Count == 0, "with Ancient Armory, the matter claymores hit 11.4 and 15.7, reach 2.9, use its claymore animations, never wear out, have values and are made from its claymore"
                 + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
         }
 
