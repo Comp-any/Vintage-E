@@ -86,17 +86,7 @@ namespace VintageE
 
             // Inside Vintage Doctor the player's own log is its page (by mod, explained); here only when Vintage-E shows its own doctor.
             if (x.Handover) { }
-            else if (client.ClientLog != null && client.ClientLog.Length > 0)
-            {
-                // The look's own progress lines ride along for the trail; only real errors and warnings are a warning here.
-                // And only Vintage-E's own (1.26.1): a line another mod wrote that merely names Vintage-E (its patch of a
-                // Vintage-E class failing, say) is that mod's, and is said to be, instead of counting as a Vintage-E warning.
-                int own = OwnLogLines(client.ClientLog.Where(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]")), out List<string> others, out int otherLines);
-                if (own > 0) x.Warn(x.L("diag-client-log", own));
-                if (otherLines > 0) x.Info(x.L("diag-client-log-others", otherLines, string.Join(", ", others.Select(m => ModName(x, m)))));
-                if (own == 0 && otherLines == 0) x.Info(x.L("diag-client-log-info", client.ClientLog.Length));
-                foreach (string l in client.ClientLog) r.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
-            }
+            else if (client.ClientLog != null && client.ClientLog.Length > 0) ClientLog(x, client.ClientLog);
             else if (client.HasClientInfo) x.Ok(x.L("diag-client-log-clean"));
             ClientEnvironment(x, client);
             if (client.Stack != null && client.Stack.Length > 0)
@@ -108,6 +98,28 @@ namespace VintageE
                 }
                 else x.Ok(x.L("diag-client-tooltip"));
             }
+        }
+
+        /// <summary>The lines the player's game picked out of its client-main.log, in the report.</summary>
+        static void ClientLog(Ctx x, string[] log)
+        {
+            // The look's own progress lines ride along for the trail; only real errors and warnings are a warning here.
+            // And only Vintage-E's own (1.26.1): a line another mod wrote that merely names Vintage-E (its patch of a
+            // Vintage-E class failing, say) is that mod's, and is said to be, instead of counting as a Vintage-E warning.
+            int own = OwnLogLines(log.Where(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]")), out List<string> others, out int otherLines);
+            if (own > 0) x.Warn(x.L("diag-client-log", own));
+            if (otherLines > 0) x.Info(x.L("diag-client-log-others", otherLines, string.Join(", ", others.Select(m => ModName(x, m)))));
+            if (own == 0 && otherLines == 0) x.Info(x.L("diag-client-log-info", log.Length));
+            foreach (string l in log) x.R.Add(Explain(x, Anonymise(l)), EmcLineStyle.Text, 1);
+        }
+
+        /// <summary>Only that part of the report, for the self-test: the section around it needs a player, and the test server has none.</summary>
+        public static EmcReport ClientLogReport(VintageEModSystem mod, ICoreServerAPI sapi, string lang, string[] log)
+        {
+            var r = new EmcReport { Kind = EmcReport.DiagnoseKind, Key = ActionClient + "|" };
+            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Report = mod.LastReport, ThenAction = ActionClient, ThenArg = "" };
+            ClientLog(x, log ?? Array.Empty<string>());
+            return r;
         }
 
         // ---------------------------------------------------------------- 3: the server log

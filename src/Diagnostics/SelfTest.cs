@@ -1900,22 +1900,14 @@ namespace VintageE
 
             try
             {
-                var packet = new EmcDiagnoseRequestPacket
-                {
-                    Action = EmcDiagnose.ActionClient, Arg = "", HasClientInfo = true, ClientVersion = mod.Mod.Info.Version,
-                    ClientTableCount = mod.Emc.Count, ClientTableHash = mod.Emc.Fingerprint(), ClientPatched = ClientLookPatches.HookCount,
-                    ClientLog = new[] { look, wow, wow }
-                };
-                string text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                string text = EmcDiagnose.ClientLogReport(mod, sapi, "en", new[] { look, wow, wow }).PlainText(sapi.World);
                 Check(text.Contains("2 warning or error line(s) written by another mod") && text.Contains("vintagewow") && !text.Contains("Vintage-E error or warning lines in client-main.log")
                     && text.Contains("Nothing in Vintage-E is changed or broken") && !text.Contains("vintagee:diag-"),
                     "the doctor: another mod's failed patch of a Vintage-E class is said to be that mod's, with what it means, and isn't counted as a Vintage-E warning");
-                packet.ClientLog = new[] { look, wow, ours };
-                text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                text = EmcDiagnose.ClientLogReport(mod, sapi, "en", new[] { look, wow, ours }).PlainText(sapi.World);
                 Check(text.Contains("1 Vintage-E error or warning lines in client-main.log") && text.Contains("1 warning or error line(s) written by another mod"),
                     "the doctor: Vintage-E's own warning is still a warning, counted apart from the other mod's line");
-                packet.ClientLog = new[] { look };
-                text = EmcDiagnose.Run(mod, sapi, null, "en", EmcDiagnose.ActionClient, "", null, packet).PlainText(sapi.World);
+                text = EmcDiagnose.ClientLogReport(mod, sapi, "en", new[] { look }).PlainText(sapi.World);
                 Check(text.Contains("no Vintage-E errors or warnings in client-main.log") && !text.Contains("written by another mod"), "the doctor: with only the look's progress lines, the log is clean");
             }
             catch (Exception e) { Check(false, "the doctor's log attribution ran: " + e.Message); }
