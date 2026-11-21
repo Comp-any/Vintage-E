@@ -561,6 +561,8 @@ namespace VintageE
             {
                 if (args.Caller.Player is IServerPlayer player)
                 {
+                    // With Vintage Doctor on the server and on this player's game, its window shows the EMC pages (1.26.0).
+                    if (mod.Doctor != null && mod.Doctor.OpenFor(player, what, which)) return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-diagnose-opening"));
                     // The player's game sends the request back with its own side (the look, the handbook hook, the Emc Craft window).
                     mod.AskClientToDiagnose(player, what, which);
                     return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-diagnose-opening"));

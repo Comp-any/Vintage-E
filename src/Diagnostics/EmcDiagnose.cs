@@ -35,6 +35,12 @@ namespace VintageE
             public string ThenAction = ActionOverview, ThenArg = "";
             /// <summary>For the bug report: results and facts only, no advice (→ lines) and no explanations.</summary>
             public bool Compact;
+            /// <summary>
+            /// The report is shown inside Vintage Doctor (1.26.0): what that mod checks for every mod anyway (the log,
+            /// what other mods did at start-up, keys that clash, who patches the game's code) is left out here, with a
+            /// link to its page instead.
+            /// </summary>
+            public bool Handover;
             public string L(string key, params object[] args) => Lang.GetL(LangCode, "vintagee:" + key, args);
             public double V(CollectibleObject c) => c != null && Report?.Values != null && Report.Values.TryGetValue(c, out double v) ? v : 0;
             /// <summary>A test that passed: one line, which the window shows collapsed with its details behind it.</summary>
@@ -79,12 +85,12 @@ namespace VintageE
         }
 
         public static EmcReport Run(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held,
-            EmcDiagnoseRequestPacket client = null, string outcome = null)
+            EmcDiagnoseRequestPacket client = null, string outcome = null, bool handover = false)
         {
             action = (action ?? "").Trim().ToLowerInvariant();
             arg = (arg ?? "").Trim();
             var r = new EmcReport { Kind = EmcReport.DiagnoseKind, Key = action + "|" + arg };
-            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Player = player, Report = mod.LastReport, Held = held, ThenAction = action.Length == 0 ? ActionOverview : action, ThenArg = arg };
+            var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Player = player, Report = mod.LastReport, Held = held, ThenAction = action.Length == 0 ? ActionOverview : action, ThenArg = arg, Handover = handover };
             r.Title = x.L("diag-title");
             if (!string.IsNullOrEmpty(outcome)) r.Add(outcome, outcome.StartsWith("\u26a0") ? EmcLineStyle.Warn : EmcLineStyle.Total);
             try { x.Index = new CollectibleIndex(sapi.World.Collectibles); }
@@ -115,8 +121,12 @@ namespace VintageE
             if (!MappingState(x, action == ActionMapping || action == ActionOverview || action == ""))
             {
                 // No values at all: what other mods did at start-up is the first place to look.
-                Startup(x, false);
-                Log(x, false);
+                if (x.Handover) DoctorPages(x);
+                else
+                {
+                    Startup(x, false);
+                    Log(x, false);
+                }
                 Questions(x, held, client);
                 return r;
             }
@@ -192,7 +202,7 @@ namespace VintageE
                 case ActionMapping:
                     Mapping(x, full: true);
                     Client(x, client, true);
-                    Log(x, true);
+                    if (!x.Handover) Log(x, true);
                     Patches(x, true);
                     Outliers(x, true);
                     Questions(x, held, client);
@@ -200,7 +210,7 @@ namespace VintageE
                 default:
                     Mapping(x, full: false);
                     Client(x, client, true);
-                    Log(x, false);
+                    if (!x.Handover) Log(x, false);
                     Patches(x, false);
                     MachinesShort(x);
                     Questions(x, held, client);
@@ -936,6 +946,17 @@ namespace VintageE
             r.Add(Link(ActionBugReport, "", x.L("diag-q-bugreport")), EmcLineStyle.Text, 1);
         }
 
+        /// <summary>
+        /// With no values at all, inside Vintage Doctor: where to look first is that mod's own pages (what other mods
+        /// did at start-up, and Vintage-E's errors in the log), so two links take the place of those two sections.
+        /// </summary>
+        static void DoctorPages(Ctx x)
+        {
+            x.Info(x.L("diag-handover-startup"));
+            x.R.Add(Link(ActionStartup, "", x.L("diag-q-startup")), EmcLineStyle.Text, 1);
+            x.R.Add(Link(ActionLog, "", x.L("diag-q-log")), EmcLineStyle.Text, 1);
+        }
+
         static void Questions(Ctx x, ItemStack held, EmcDiagnoseRequestPacket client = null)
         {
             EmcReport r = x.R;
@@ -960,6 +981,8 @@ namespace VintageE
             r.Add(Link(ActionClean, "", x.L("diag-q-clean")));
             r.Add(Link(ActionPlayers, "", x.L("diag-q-players")));
             r.Add(Link(ActionBugReport, "", x.L("diag-q-bugreport")));
+            // Inside Vintage Doctor: the log and what other mods did at start-up are its pages (the links lead there).
+            if (x.Handover) { r.Add(Link(ActionLog, "", x.L("diag-q-log"))); r.Add(Link(ActionStartup, "", x.L("diag-q-startup"))); }
             if (x.Report != null && x.Report.Missing.Count > 0) r.Add(x.L("diag-q-missinglist"), EmcLineStyle.Note);
             r.Add(x.L("diag-q-console"), EmcLineStyle.Note);
         }

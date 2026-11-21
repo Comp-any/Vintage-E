@@ -33,6 +33,9 @@ on:
       topMods:
         description: Run with this many of the Mod DB's most-downloaded content mods (libraries and APIs left out, plus the libraries they may need) instead of extraMods
         default: ""
+      doctor:
+        description: Install Vintage Doctor too ("true"; the zip in tools/vendor/vintagedoctor), to test the EMC doctor being handed over to it
+        default: "false"
 
 permissions:
   contents: write
@@ -49,6 +52,7 @@ jobs:
       TOP_MODS: ${{ inputs.topMods || '' }}
       EXTRA_MOD_URLS: ${{ inputs.extraModUrls || '' }}
       KEEP_ZIPS: ${{ inputs.keepZips || 'false' }}
+      DOCTOR: ${{ inputs.doctor || 'false' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -90,6 +94,9 @@ jobs:
           data="$PWD/data"
           mkdir -p "$data/Mods" "$data/ModConfig"
           cp -r bin/Release/Mods/vintagee "$data/Mods/"
+          # Vintage Doctor, when asked for: with it installed Vintage-E hands its doctor over, and the self-test uses /doctor.
+          # (Its repository is private, so a copy of its release zip is kept in tools/vendor/vintagedoctor for this test only.)
+          if [ "$DOCTOR" = "true" ]; then cp tools/vendor/vintagedoctor/*.zip "$data/Mods/" && echo "added Vintage Doctor: $(ls tools/vendor/vintagedoctor)"; fi
           # The Mod DB's most-downloaded content mods, when asked for.
           if [ -n "$TOP_MODS" ]; then
             python3 tools/ci_top_mods.py "$TOP_MODS" "$VS_VERSION" topmods.txt
@@ -148,7 +155,7 @@ jobs:
           for i in $(seq 1 $waits); do
             if [ -n "$(find "$data" -name emc-values.csv 2>/dev/null | head -1)" ]; then
               echo "values written after $((i*5))s"
-              for j in $(seq 1 30); do
+              for j in $(seq 1 70); do
                 if [ -n "$(find "$data" -name selftest.txt 2>/dev/null | head -1)" ]; then echo "self-test finished"; break; fi
                 sleep 5
               done
@@ -170,6 +177,8 @@ jobs:
           find data -name 'selftest.txt' -exec cp {} analysis/ \;
           find data -name 'diagnose-*.txt' -exec cp {} analysis/ \;
           find data -name 'bug-report.txt' -exec cp {} analysis/ \;
+          # What Vintage Doctor wrote (its last page, its check-up after start-up), when it ran alongside.
+          if [ -d data/ModData/vintagedoctor ]; then mkdir -p analysis/vintagedoctor && cp data/ModData/vintagedoctor/*.txt analysis/vintagedoctor/ 2>/dev/null || true; fi
           cp data/Logs/server-main.log analysis/server-main-full.log 2>/dev/null || true
           # The mod built against the real game DLLs, zipped for release.
           version=$(python3 -c "import json;print(json.load(open('modinfo.json'))['version'])")
@@ -194,7 +203,7 @@ jobs:
           else
             echo "no client assets" > analysis/look-new-missing.txt
           fi
-          echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS}" > analysis/README.txt
+          echo "game=${VS_VERSION} commit=${GITHUB_SHA} run=${GITHUB_RUN_ID} extraMods=${EXTRA_MODS} doctor=${DOCTOR}" > analysis/README.txt
           ls data/Mods > analysis/mods.txt 2>/dev/null || true
           # What the other mods (and the game) say about the patterns in tools/ci_mod_grep.txt.
           [ -n "$EXTRA_MODS$EXTRA_MOD_URLS" ] && python3 tools/ci_mod_grep.py data/Mods "${VSDIR:+$VSDIR/assets}" tools/ci_mod_grep.txt analysis/mod-grep.txt || true

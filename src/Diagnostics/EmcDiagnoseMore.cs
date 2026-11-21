@@ -84,7 +84,9 @@ namespace VintageE
             }
             else x.Ok(x.L("diag-client-patches-ok"));
 
-            if (client.ClientLog != null && client.ClientLog.Length > 0)
+            // Inside Vintage Doctor the player's own log is its page (by mod, explained); here only when Vintage-E shows its own doctor.
+            if (x.Handover) { }
+            else if (client.ClientLog != null && client.ClientLog.Length > 0)
             {
                 // The look's own progress lines ride along for the trail; only real errors and warnings are a warning here.
                 int bad = client.ClientLog.Count(l => l.Contains("[Error]") || l.Contains("[Warning]") || l.Contains("[Fatal]"));

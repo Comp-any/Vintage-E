@@ -14,3 +14,18 @@ needs no `sleep`.
 
 - Take the run id from the URL `gh workflow run` prints; don't poll `actions/runs` for it.
 - Never spin an `until` loop on `gh api` (or `git ls-remote`): it asks as fast as it can. Wait on the run instead.
+
+## The doctor and Vintage Doctor (1.26.0)
+
+- With the mod Vintage Doctor (github.com/Comp-any/Vintage-Doctor, 1.2.0+) on the server and on a player's game, the
+  EMC doctor is shown in its window: `src/Diagnostics/DoctorBridge.cs` answers its event-bus questions with the
+  reports `EmcDiagnose.Run(..., handover: true)` builds. Vintage-E never references that mod's DLL. Without it (or
+  with it on one side only) Vintage-E's own window is used, so both ways have to keep working.
+- A new page or fix of the doctor needs nothing extra: the bridge turns any report's links into Vintage Doctor's.
+  A new kind of link (anything but `{{action|arg|label}}`, `{{fix-what|...}}`, `{{setvalue|...}}`, `[[i:code]]`,
+  `[[b:code]]`) needs a case in `DoctorBridge.Convert`; the self-test (`SelfTestHandover.cs`) fails on a link
+  Vintage Doctor wouldn't know.
+- Test both ways: `gh workflow run analyze.yml ... -f doctor=true` installs the copy of Vintage Doctor's zip in
+  `tools/vendor/vintagedoctor/` (its repository is private, so the test can't download it) and the self-test then
+  uses its `/doctor` command from the console; without the input the same checks run against the bridge directly.
+  When Vintage Doctor's event-bus protocol changes, put its new zip there.

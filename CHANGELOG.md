@@ -2,6 +2,17 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.0 — 2026-11-21
+
+### Added
+- **With the mod Vintage Doctor installed, the EMC doctor lives in its window.** [Vintage Doctor](https://github.com/Comp-any/Vintage-Doctor) (1.2.0 or newer) is a doctor for the whole game and every mod: crashes, the log, mods that didn't start, lag, the Mods folder. Two windows that look alike and check half the same things are one too many, so when the server and your own game both have it, **Ctrl+H** and `/emc diagnose` open Vintage Doctor at its page for EMC ("Something is wrong with EMC values (Vintage-E)", or `/doctor emc`). Every page of the EMC doctor is there, with the same fix buttons: why an item has no value, the trace, the checks, machines, Emc Craft, crafting methods, what changed. From a server console, `/doctor emc mods`, `/doctor emc item game:ingot-copper` and so on work like their `/emc diagnose` forms.
+- **What Vintage Doctor already checks for every mod is left to it** in that case: Vintage-E's lines in the logs, what other mods did at start-up, keys that clash, and who else patches the game's code. The EMC pages link to its pages for those.
+- **A card on Vintage Doctor's check-up** says how the EMC values are doing (how many were worked out, how many things are worth fixing) and leads to the EMC pages, and **its page about any item or block** says what the thing is worth in EMC, with a link to where the value comes from or why it has none.
+
+### Unchanged
+- **Without Vintage Doctor nothing changes.** The EMC doctor's own window, its key and `/emc diagnose` work as before. The same goes when only one side has Vintage Doctor: a player without it on a server with it still gets Vintage-E's own window.
+- No EMC value changes.
+
 ## 1.25.4 — 2026-11-21
 
 ### Added

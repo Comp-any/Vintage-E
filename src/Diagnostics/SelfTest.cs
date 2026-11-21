@@ -80,6 +80,7 @@ namespace VintageE
                 CheckClaymore();
                 CheckAncientArmoryNotice();
                 CheckDiagnose();
+                CheckDoctorHandover();
                 CheckMatterTools();
                 CheckCraftingRoutes();
                 CheckMethods();
@@ -391,7 +392,8 @@ namespace VintageE
                         CheckPedestalWeather();
                     }
                     catch (Exception e) { Check(false, "furnace check threw " + e); }
-                    AfterFurnaces(Finish); // the weather shots last: rain puts the furnaces being tested out
+                    // The weather shots last (rain puts the furnaces being tested out); then what the doctor's handover delivered meanwhile.
+                    AfterFurnaces(() => CheckDoctorHandoverLater(Finish));
                 }, 40000);
             }
             catch (Exception e)

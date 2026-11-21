@@ -96,6 +96,8 @@ namespace VintageE
             ClientLook(x, client);
             ClientLookSettings(x, client);
             ClientEmcCraft(x, client);
+            // Keys that clash and who else patches the game's code are Vintage Doctor's own pages, for every mod.
+            if (x.Handover) return;
             var keys = client.ClientHotkeyConflicts ?? Array.Empty<string>();
             if (keys.Length == 0) x.Ok(x.L("diag-hotkeys-ok"));
             else

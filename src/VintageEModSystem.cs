@@ -760,6 +760,8 @@ namespace VintageE
             });
 
             Step("commands", () => EmcCommands.Register(this, sapi));
+            // With Vintage Doctor installed the EMC doctor's pages are shown in its window (see DoctorBridge).
+            Step("the doctor's handover", () => Doctor = DoctorBridge.ForServer(this, sapi));
             OnEmcTableUpdated += () => ItemEmcGadget.SetDiviningDurability(sapi.World, Emc);
         }
 
@@ -1871,17 +1873,7 @@ namespace VintageE
                 string[] parts = arg.Split(';');
                 string target = parts.Length > 0 ? parts[0] : "";
                 string then = parts.Length > 1 ? parts[1] : "", thenArg = parts.Length > 2 ? parts[2] : "";
-                PendingRemap = null;
-                string outcome = EmcDiagnose.ApplyFix(this, player, action.Substring(4), target, player.LanguageCode);
-                string remap = PendingRemap;
-                PendingRemap = null;
-                if (remap != null)
-                {
-                    // The fix changed the settings; map in the background and show the report once the new values are in.
-                    RecalculateEmcAsync(remap, applied => SendDiagnosis(player, then, thenArg, held, packet, applied == null ? outcome + "\n⚠ " + (LastMappingError ?? "") : outcome));
-                    return;
-                }
-                SendDiagnosis(player, then, thenArg, held, packet, outcome);
+                ApplyDoctorFix(player, player.LanguageCode, action.Substring(4), target, outcome => SendDiagnosis(player, then, thenArg, held, packet, outcome));
                 return;
             }
             SendDiagnosis(player, action, arg, held, packet);
@@ -1994,6 +1986,62 @@ namespace VintageE
 
         /// <summary>Builds an /emc diagnose report for a player and opens it in their window (saved to ModData too).</summary>
         readonly object diagnoseGate = new object();
+
+        /// <summary>
+        /// The bridge to the mod Vintage Doctor on this side, when that mod is installed (null otherwise): the EMC
+        /// doctor's pages are then shown in its window. See <see cref="DoctorBridge"/>.
+        /// </summary>
+        public DoctorBridge Doctor { get; private set; }
+
+        /// <summary>
+        /// Does one of the doctor's fixes and hands what happened to <paramref name="then"/> on the game thread: at
+        /// once, or, when the fix changed the settings, after the mapping in the background that brings the new values
+        /// (<paramref name="remapping"/> is called first, so a caller that has to answer now can say "later").
+        /// </summary>
+        public void ApplyDoctorFix(IServerPlayer player, string lang, string what, string target, Action<string> then, Action remapping = null)
+        {
+            PendingRemap = null;
+            string outcome = EmcDiagnose.ApplyFix(this, player, what, target, lang ?? "en");
+            string remap = PendingRemap;
+            PendingRemap = null;
+            if (remap != null)
+            {
+                remapping?.Invoke();
+                // The fix changed the settings; map in the background and go on once the new values are in.
+                RecalculateEmcAsync(remap, applied => then(applied == null ? outcome + "\n⚠ " + (LastMappingError ?? "") : outcome));
+                return;
+            }
+            then(outcome);
+        }
+
+        /// <summary>
+        /// Builds a doctor's report for Vintage Doctor's window and hands it (or what went wrong) to
+        /// <paramref name="then"/> on the game thread: here and now for the reports that read blocks and inventories
+        /// (<see cref="EmcDiagnose.ReadsLiveState"/>), from a worker thread for the rest, like <see cref="SendDiagnosis"/>.
+        /// </summary>
+        public void BuildDiagnosis(IServerPlayer player, string lang, string action, string arg, ItemStack held, EmcDiagnoseRequestPacket client, Action<EmcReport, Exception> then)
+        {
+            if (EmcDiagnose.ReadsLiveState(action))
+            {
+                EmcReport live = null;
+                Exception failed = null;
+                try { live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true); }
+                catch (Exception e) { failed = e; }
+                then(live, failed);
+                return;
+            }
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                EmcReport report = null;
+                Exception failure = null;
+                lock (diagnoseGate)
+                {
+                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true); }
+                    catch (Exception e) { failure = e; }
+                }
+                Sapi.Event.EnqueueMainThreadTask(() => then(report, failure), "vintagee-diagnose");
+            });
+        }
 
         /// <summary>
         /// Builds the doctor's report on a worker thread (the reports only read; the deeper ones map afresh, which can
@@ -2623,6 +2671,8 @@ namespace VintageE
             // reports the press as handled.
             capi.Input.RegisterHotKey(DiagnoseHotkey, Lang.Get("vintagee:hotkey-diagnose"), GlKeys.H, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
             capi.Input.SetHotKeyHandler(DiagnoseHotkey, _ => ToggleDiagnose());
+            // With Vintage Doctor installed, that key and /emc diagnose open its window at the EMC pages (see DoctorBridge).
+            Guard.Run(Mod.Logger, "setting up the doctor's handover to Vintage Doctor", () => Doctor = DoctorBridge.ForClient(this, capi));
             clientChannel.SetMessageHandler<EmcRecipeListPacket>(Guard.FromServer<EmcRecipeListPacket>(Mod.Logger, OnRecipeList));
             clientChannel.SetMessageHandler<EmcCompatListPacket>(Guard.FromServer<EmcCompatListPacket>(Mod.Logger, OnCompatList));
             clientChannel.SetMessageHandler<EmcItemStatePacket>(Guard.FromServer<EmcItemStatePacket>(Mod.Logger, OnItemState));
@@ -2904,6 +2954,12 @@ namespace VintageE
         /// <summary>Asks the server for a doctor report; if no answer comes in 12 s, says so (the usual reason: Vintage-E isn't running on the server).</summary>
         void SendDiagnose(string action, string arg)
         {
+            // With Vintage Doctor on both sides, its window shows the EMC pages (1.26.0); if it doesn't open, the EMC doctor's own does.
+            if (Doctor != null && Doctor.Active && Doctor.Open(action, arg))
+            {
+                if (doctorDialog != null && doctorDialog.IsOpened()) doctorDialog.TryClose();
+                return;
+            }
             int seq = ++diagnoseSent;
             clientChannel?.SendPacket(DiagnoseRequest(action, arg));
             Capi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "the doctor's no-answer message", () =>
@@ -2963,7 +3019,7 @@ namespace VintageE
         }
 
         /// <summary>The report window's Set value button: the hovered-item value box, for the item it explains.</summary>
-        void OpenSetValueFor(string key)
+        internal void OpenSetValueFor(string key)
         {
             CollectibleObject c = PlayerEmc.Resolve(Capi.World, key);
             if (c?.Code == null) return;
@@ -2981,7 +3037,7 @@ namespace VintageE
         }
 
         /// <summary>A diagnose request with everything the server can't see on its own: this game's Vintage-E, its table and patches.</summary>
-        EmcDiagnoseRequestPacket DiagnoseRequest(string action, string arg)
+        internal EmcDiagnoseRequestPacket DiagnoseRequest(string action, string arg)
         {
             var p = new EmcDiagnoseRequestPacket { Action = action, Arg = arg, Stack = HeldStackBytes(), HasClientInfo = true };
             BlockPos lookedAt = Capi?.World?.Player?.CurrentBlockSelection?.Position;
