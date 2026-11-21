@@ -206,7 +206,7 @@ namespace VintageE
             }
             catch (Exception e) { Check(false, "handover: looking at the delivered page threw " + e); }
 
-            var steps = new List<(string command, Func<string, string> missing, string what)>();
+            var steps = new List<(string command, System.Func<string, string> missing, string what)>();
             try
             {
               if (DoctorBridge.Installed(sapi))
@@ -238,7 +238,7 @@ namespace VintageE
         static string DoctorsLastPage => Path.Combine(GamePaths.DataPath, "ModData", DoctorBridge.DoctorModId, "last-report-server.txt");
 
         /// <summary>One /doctor command after the other from the console; each is given up to 40 s for Vintage Doctor to write the page out.</summary>
-        void DoctorSteps(List<(string command, Func<string, string> missing, string what)> steps, int index, Action then)
+        void DoctorSteps(List<(string command, System.Func<string, string> missing, string what)> steps, int index, Action then)
         {
             if (index >= steps.Count) { then(); return; }
             var (command, missing, what) = steps[index];
