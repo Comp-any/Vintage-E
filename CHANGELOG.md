@@ -9,6 +9,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
   - The long explanations (burning, learning and charging; the clicks; the magnet) are only shown when the whole window fits with them. Otherwise they fold away behind a new **Help** button under the EMC: hover over it to read them, click it to put them back.
   - The Help button's choice is remembered for your computer (`TabletHelp` in `ModConfig/vintagee-client.json`: Auto, On or Off).
   - If the window still doesn't fit, the grid of known items shows fewer rows (down to three); the pages make up for it.
+- **The tablet's magnet filter is only shown with a magnet in the tablet.** Without one, the "Pull: only these" button and the row of filter slots had nothing to act on; now there is just the magnet's slot. Put a Black Hole Band or Void Ring in and the filter appears, as you left it.
 
 ### Fixed
 - **The Arcane Tablet's window was titled "Transmutation Tablet".** It says Arcane Tablet now.

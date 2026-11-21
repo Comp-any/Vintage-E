@@ -90,6 +90,8 @@ namespace VintageE
         string shownMagnet;
         /// <summary>The filter mode the "only these / all except these" button was drawn with.</summary>
         bool composedExclude;
+        /// <summary>Whether the window was drawn with a magnet in the tablet: the filter is only shown with one (1.26.3).</summary>
+        bool composedMagnet;
         long tickListener;
 
         bool IsTablet => tablePos == null;
@@ -120,6 +122,9 @@ namespace VintageE
             CairoFont detail = CairoFont.WhiteDetailText();
             // An Arcane Tablet adds a button for its crafting window (1.19.0), and has its own name in the title (1.26.3).
             bool arcane = IsTablet && EmcCraft.CarriesArcaneTablet(capi.World.Player);
+            // The filter (its mode button and its slots) is for a magnet: without one in the tablet it isn't shown.
+            ItemStack tabletNow = IsTablet ? TabletMagnet.FindTablet(capi.World.Player)?.Itemstack : null;
+            bool hasMagnet = IsTablet && TabletMagnet.GetMagnet(tabletNow, capi.World) != null;
 
             // The three long explanations. They fold away behind the Help button when the window wouldn't fit the screen with them.
             double leftWidth = width - 3 * slot - 80;
@@ -176,6 +181,7 @@ namespace VintageE
 
                 // The tablet's magnet: a title row with the filter mode, the magnet slot, then the filter slots. With the
                 // explanations shown, the magnet's is beside its slot and the filter's line under it; without, that line is beside the slot.
+                // Without a magnet there is no mode button and no row of filter slots, only the slot and its line.
                 if (IsTablet)
                 {
                     double y = bottom + 10;
@@ -196,7 +202,7 @@ namespace VintageE
                         fy = y + 34 + Math.Max(slot, labelHeightNarrow) + 6;
                     }
                     filterBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, fy, TabletMagnet.FilterSlots, 1);
-                    bottom = fy + slot;
+                    bottom = hasMagnet ? fy + slot : fy - 4;
                 }
                 // The frame around it, and a little air above and below so it clears the screen's edges.
                 return bottom + 2 * GuiStyle.ElementToDialogPadding + 24;
@@ -212,7 +218,8 @@ namespace VintageE
             if (arcane) children.Add(craftBounds);
             if (IsTablet)
             {
-                children.AddRange(new[] { magnetTitleBounds, modeBounds, magnetSlotBounds, filterLabelBounds, filterBounds });
+                children.AddRange(new[] { magnetTitleBounds, magnetSlotBounds, filterLabelBounds });
+                if (hasMagnet) { children.Add(modeBounds); children.Add(filterBounds); }
                 if (helpShown) children.Add(magnetHintBounds);
             }
 
@@ -259,15 +266,14 @@ namespace VintageE
             if (arcane) composer.AddSmallButton(Lang.Get("vintagee:emccraft-open"), () => { mod.OpenEmcCraftDialog(toggle: false); return true; }, craftBounds, EnumButtonStyle.Normal, "emccraft");
             if (IsTablet)
             {
-                composedExclude = TabletMagnet.Excludes(TabletMagnet.FindTablet(capi.World.Player)?.Itemstack);
-                composer
-                    .AddStaticText(Lang.Get("vintagee:magnet-title"), CairoFont.WhiteSmallishText(), magnetTitleBounds)
-                    .AddSmallButton(Lang.Get(composedExclude ? "vintagee:magnet-mode-except" : "vintagee:magnet-mode-only"), OnMagnetMode, modeBounds, EnumButtonStyle.Small, "magnetmode")
-                    .AddItemSlotGrid(magnetInv, OnSlotPacket, 1, magnetSlotBounds, "magnetslot");
+                composedExclude = TabletMagnet.Excludes(tabletNow);
+                composedMagnet = hasMagnet;
+                composer.AddStaticText(Lang.Get("vintagee:magnet-title"), CairoFont.WhiteSmallishText(), magnetTitleBounds);
+                if (hasMagnet) composer.AddSmallButton(Lang.Get(composedExclude ? "vintagee:magnet-mode-except" : "vintagee:magnet-mode-only"), OnMagnetMode, modeBounds, EnumButtonStyle.Small, "magnetmode");
+                composer.AddItemSlotGrid(magnetInv, OnSlotPacket, 1, magnetSlotBounds, "magnetslot");
                 if (helpShown) composer.AddStaticText(magnetHint, detail, magnetHintBounds);
-                composer
-                    .AddDynamicText("", detail, filterLabelBounds, "filterlabel")
-                    .AddItemSlotGrid(filterInv, OnSlotPacket, TabletMagnet.FilterSlots, filterBounds, "filtergrid");
+                composer.AddDynamicText("", detail, filterLabelBounds, "filterlabel");
+                if (hasMagnet) composer.AddItemSlotGrid(filterInv, OnSlotPacket, TabletMagnet.FilterSlots, filterBounds, "filtergrid");
             }
             SingleComposer = composer.EndChildElements().Compose();
 
@@ -469,7 +475,7 @@ namespace VintageE
                 if (c != null) { try { shown = new ItemStack(c); } catch { /* no icon */ } }
                 filterInv[i].Itemstack = shown;
             }
-            if (exclude != composedExclude)
+            if (exclude != composedExclude || (magnet != null) != composedMagnet)
             {
                 // The button's label is drawn when composing, so draw the window again with the other label, a frame
                 // later: this can run from the search box's own text-changed callback.
