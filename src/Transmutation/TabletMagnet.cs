@@ -102,11 +102,13 @@ namespace VintageE
         }
 
         /// <summary>The tablet the player is using: the one in their hand if it's a tablet, otherwise the first one they carry.</summary>
-        public static ItemSlot FindTablet(IPlayer player)
+        public static ItemSlot FindTablet(IPlayer player) => PickTablet(player?.InventoryManager?.ActiveHotbarSlot, EmcWallet.CarriedSlots(player));
+
+        /// <summary>The slot in the hand if it holds a tablet (plain or Arcane), otherwise the first carried slot that does.</summary>
+        public static ItemSlot PickTablet(ItemSlot hand, IEnumerable<ItemSlot> carried)
         {
-            ItemSlot hand = player?.InventoryManager?.ActiveHotbarSlot;
             if (hand?.Itemstack?.Collectible is ItemTransmutationTablet) return hand;
-            return EmcWallet.CarriedSlots(player).FirstOrDefault(s => s.Itemstack?.Collectible is ItemTransmutationTablet);
+            return carried?.FirstOrDefault(s => s?.Itemstack?.Collectible is ItemTransmutationTablet);
         }
 
         /// <summary>Handles the magnet-slot and filter clicks from the tablet window (server side).</summary>

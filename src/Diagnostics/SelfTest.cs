@@ -1944,6 +1944,18 @@ namespace VintageE
             int tallHelp = TabletLayout.Rows(true, 1080, height), midHelp = TabletLayout.Rows(true, 800, height);
             Check(tall == 6 && small == 4 && tiny == TabletLayout.MinRows && tallHelp == 6 && midHelp == 4,
                 $"the tablet window fits the screen: all six rows where there is room, fewer on a small screen or with the explanations open ({tall}, {small}, {tiny}; with them {tallHelp}, {midHelp})");
+            // The window goes by the tablet that was opened, not by an Arcane Tablet somewhere else in the inventory.
+            Item plainTablet = sapi.World.GetItem(new AssetLocation("vintagee:transmutationtablet")), arcaneTablet = sapi.World.GetItem(new AssetLocation("vintagee:arcanetablet"));
+            if (plainTablet != null && arcaneTablet != null)
+            {
+                System.Func<Item, ItemSlot> slotOf = item => new DummySlot(item == null ? null : new ItemStack(item));
+                System.Func<Item, Item[], bool> arcaneWindow = (hand, carried) => TabletLayout.Arcane(TabletMagnet.PickTablet(slotOf(hand), carried.Select(slotOf))?.Itemstack);
+                Check(!arcaneWindow(plainTablet, new[] { arcaneTablet }) && arcaneWindow(arcaneTablet, new[] { plainTablet })
+                    && !arcaneWindow(null, new[] { plainTablet, arcaneTablet }) && arcaneWindow(null, new[] { arcaneTablet }) && !arcaneWindow(null, new Item[0]) && !TabletLayout.Arcane(null),
+                    "a Transmutation Tablet in the hand opens its own window even with an Arcane Tablet in the inventory; the Emc Craft button and the Arcane title are for the Arcane Tablet");
+            }
+            else Check(false, "the two tablets exist (vintagee:transmutationtablet, vintagee:arcanetablet)");
+
             // Characters a game font may lack (the boxes left of the doctor's cards, the arrow in the crafting window).
             string symbols = "A \u2192 B \u2713 done \u26a0 \u25b8 open \u2264 3";
             Check(Glyphs.Safe(symbols, _ => false) == "A -> B OK done ! \u00bb open <= 3" && ReferenceEquals(Glyphs.Safe(symbols, _ => true), symbols)

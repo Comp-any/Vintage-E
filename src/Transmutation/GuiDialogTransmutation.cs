@@ -35,6 +35,9 @@ namespace VintageE
         /// <param name="screenHeight">The screen's height in GUI pixels.</param>
         /// <param name="height">The window's height in GUI pixels with the explanations shown or not, and that many rows.</param>
         /// <returns>The rows of known items to show.</returns>
+        /// <summary>Whether a tablet's window is the Arcane Tablet's: its own title and the Emc Craft button.</summary>
+        public static bool Arcane(ItemStack tablet) => tablet?.Collectible is ItemArcaneTablet;
+
         public static int Rows(bool help, double screenHeight, System.Func<bool, int, double> height)
         {
             int rows = MaxRows;
@@ -127,13 +130,16 @@ namespace VintageE
             double width = Cols * slot;
             double top = GuiStyle.TitleBarHeight;
             CairoFont detail = CairoFont.WhiteDetailText();
-            // An Arcane Tablet adds a button for its crafting window (1.19.0), and has its own name in the title (1.26.3).
-            bool arcane = IsTablet && EmcCraft.CarriesArcaneTablet(capi.World.Player);
-            // The filter (its mode button and its slots) is for a magnet: without one in the tablet it isn't shown.
+            // The tablet this window is for: the one in the hand, otherwise the first one carried.
             ItemStack tabletNow = IsTablet ? TabletMagnet.FindTablet(capi.World.Player)?.Itemstack : null;
+            // An Arcane Tablet adds a button for its crafting window (1.19.0), and has its own name in the title (1.26.3).
+            // It goes by the tablet that was opened (1.26.5): until then an Arcane Tablet anywhere in the inventory
+            // turned a plain Transmutation Tablet's window into the Arcane one.
+            bool arcane = TabletLayout.Arcane(tabletNow);
+            // The filter (its mode button and its slots) is for a magnet: without one in the tablet it isn't shown.
             bool hasMagnet = IsTablet && TabletMagnet.GetMagnet(tabletNow, capi.World) != null;
 
-            // The three long explanations. They fold away behind the Help button when the window wouldn't fit the screen with them.
+            // The three long explanations. They are folded away behind the Help button until the player clicks it.
             double leftWidth = width - 3 * slot - 80;
             double hintWidth = width - slot - 12;
             string burnHint = Lang.Get("vintagee:gui-burn-hint");

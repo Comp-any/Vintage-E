@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.5 — 2026-11-22
+
+### Fixed
+- **A Transmutation Tablet opened the Arcane Tablet's window when an Arcane Tablet was anywhere in the inventory.** The window looked at everything you carry, so a plain tablet got the "Arcane Tablet" title and the Emc Craft button. It now goes by the tablet you opened: the one in your hand, or the first one you carry if there is none in your hand. The Emc Craft key and sneak + right-click with the Arcane Tablet work as before.
+
 ## 1.26.4 — 2026-11-22
 
 ### Changed
