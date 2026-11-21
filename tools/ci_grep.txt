@@ -40,3 +40,7 @@ path:recipes/barrel/leather.json
 path:recipes/smithing/hoop.json
 grindingProps
 smeltedRatio
+path:claymore
+path:itemtypes/tool/blade
+path:shapes/item/tool/blade
+claymore

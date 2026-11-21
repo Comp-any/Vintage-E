@@ -31,3 +31,5 @@ file:recipes/butchering/
 kneading
 file:tailors_delight[^/]*/.*butcher
 file:butchering_[^/]*/.*tailor
+# Ancient Armory's claymore (2026-11-21)
+claymore
