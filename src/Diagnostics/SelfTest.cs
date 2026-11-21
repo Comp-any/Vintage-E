@@ -1824,6 +1824,12 @@ namespace VintageE
             string patches = sapi.Assets.TryGet(new AssetLocation("vintagee", "patches/realistic-crafting.json"))?.ToText() ?? "";
             Check(patches.Contains("\"addmerge\"") && !patches.Contains("\"op\": \"add\""), "the realistic routes are merged into the game's gear, ingot and rough gem tables (addmerge), not written over them");
 
+            // EXPERIMENT (not for release): an addmerge patch on the game's ingot table, which already has entries.
+            {
+                Item copper = sapi.World.GetItem(new AssetLocation("game:ingot-copper"));
+                Check(copper?.CombustibleProps?.MeltingPoint > 1000, "EXPERIMENT addmerge keeps the table's own entries: copper ingots still melt at " + (copper?.CombustibleProps?.MeltingPoint ?? -1));
+            }
+
             // Errors in ticks and packet handlers.
             string what = "the self-test's deliberate error " + sapi.World.ElapsedMilliseconds;
             bool escaped = false;
