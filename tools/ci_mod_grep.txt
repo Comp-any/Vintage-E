@@ -31,3 +31,8 @@ file:recipes/butchering/
 kneading
 file:tailors_delight[^/]*/.*butcher
 file:butchering_[^/]*/.*tailor
+# Quivers and Sheaths (2026-11-21): what makes an item fit a sheath or quiver
+sheath
+quiver
+holster
+toolbag
