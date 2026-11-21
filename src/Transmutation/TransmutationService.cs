@@ -23,7 +23,7 @@ namespace VintageE
             this.mod = mod;
             this.sapi = sapi;
             sapi.Event.PlayerLeave += p => tableSessions.Remove(p.PlayerUID);
-            sapi.Event.RegisterGameTickListener(_ => TabletMagnet.Tick(mod, sapi, this), 250);
+            sapi.Event.RegisterGameTickListener(Guard.Tick(sapi.Logger, "the Arcane Tablet's magnet", () => TabletMagnet.Tick(mod, sapi, this)), 250);
         }
 
         public void OpenTableSession(IServerPlayer player, BlockPos pos)

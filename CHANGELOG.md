@@ -2,6 +2,20 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.25.2 — 2026-11-21
+
+A check of the whole mod for bugs and for things that could clash with other mods or with the game. Nothing here changes an EMC value.
+
+### Fixed
+- **The Mind Stone charged EMC to cool you down.** In the game a body warmer than normal does no harm: it is what keeps the cold off for a while after a fire or the sun. The stone pulled that warmth back to 37 °C and charged 1 EMC a second for it, for as long as you stayed warm. It now only warms you when you are colder than normal, and reads "normal" from the game instead of assuming 37 °C.
+- **Swiftwolf's speed undid other changes to your move speed.** The ring wrote its own number back every half second and put the old one back when switched off, so a speed set by an admin, by the game when your game mode changes, or by another mod was undone. It now notices a number that isn't its own: a speed set anew becomes the one it multiplies, a speed another mod adds on top is left alone, and at switch-off it only undoes its own change.
+- **The tablet key (K) was taken from every other mod.** Without a tablet it still used up the key press and answered "You don't carry a Transmutation Tablet." It now does nothing without a tablet, so another mod's K works. The admin keys (Ctrl + K, Ctrl + H) do the same for players who aren't admins.
+- **The gem helmet's night vision turned a stronger one down.** It set the strength to 0.8 every frame; it now only raises it.
+- **Nine of Vintage-E's item and block classes had plain names** ("ItemKleinStar", "ItemPhilosophersStone", "BlockEmcMachine"...). The game keeps one list of class names for all mods, and a second mod using the same name takes it over without a warning, which would have broken either mod's items. They all carry Vintage-E's name now. Worlds and items are unaffected.
+- **The realistic routes were written over the game's tables.** The patches that let the temporal gear smelt and iron ingots and rough diamonds grind replaced the whole smelting or grinding table of those files, so another mod's entries in the same table were lost (or Vintage-E's, depending on the order). They are merged in now.
+- **Flight, speed and the gem leggings' stats stayed on a player who left.** They are saved with the player, so on a server that later ran without Vintage-E the player kept flying, fast and jumping high. They are taken off when a player leaves and put back half a second after they join.
+- **An error in Vintage-E could stop the server or a player's game.** The game runs a mod's own ticks, delayed calls and packet handlers with nothing around them. The tablet's magnet, the watch's time speed, the windows' updates and every packet handler are now wrapped: an error is written to the log (the first three in full, then one in 200) and the game carries on.
+
 ## 1.25.1 — 2026-11-21
 
 ### Fixed

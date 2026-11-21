@@ -1,6 +1,6 @@
 {
   "code": "antimatterrelay",
-  "class": "BlockEmcMachine",
+  "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageEAntimatterRelay",
   "variantgroups": [
     {

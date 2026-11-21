@@ -364,14 +364,14 @@ namespace VintageE
             BlockPos far = sel.Position.AddCopy(into, depth - 1);
             Vec3d mid = new Vec3d((sel.Position.X + far.X) / 2.0 + 0.5, (sel.Position.Y + far.Y) / 2.0 + 0.5, (sel.Position.Z + far.Z) / 2.0 + 0.5);
             float reach = depth / 2f + 2;
-            world.Api.Event.RegisterCallback(_ =>
+            world.Api.Event.RegisterCallback(Guard.Tick(world.Logger, "gathering a tool's drops", () =>
             {
                 foreach (Entity e in world.GetEntitiesAround(mid, reach, reach, x => x is EntityItem && x.Alive))
                 {
                     e.Pos.SetPos(target);
                     e.Pos.Motion.Set(0, 0, 0);
                 }
-            }, 100);
+            }), 100);
         }
 
         /// <summary>Hyperkinetic/Catalytic Lens: pays for and fires an explosive lens charge where the player looks.</summary>

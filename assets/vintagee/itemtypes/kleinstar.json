@@ -1,6 +1,6 @@
 {
   "code": "kleinstar",
-  "class": "ItemKleinStar",
+  "class": "VintageEItemKleinStar",
   "variantgroups": [
     {
       "code": "tier",

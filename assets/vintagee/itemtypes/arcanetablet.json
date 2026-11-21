@@ -1,6 +1,6 @@
 {
   "code": "arcanetablet",
-  "class": "ItemArcaneTablet",
+  "class": "VintageEItemArcaneTablet",
   "maxstacksize": 1,
   "creativeinventory": { "general": [ "*" ], "vintagee": [ "*" ] },
   "texture": { "base": "item/arcanetablet" },

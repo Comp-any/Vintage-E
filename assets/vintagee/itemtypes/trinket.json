@@ -1,8 +1,8 @@
 {
   "code": "trinket",
   "classByType": {
-    "*-evertideamulet": "ItemEvertideAmulet",
-    "*": "ItemEmcTrinket"
+    "*-evertideamulet": "VintageEItemEvertideAmulet",
+    "*": "VintageEItemEmcTrinket"
   },
   "variantgroups": [
     {

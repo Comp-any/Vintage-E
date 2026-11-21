@@ -573,14 +573,14 @@ namespace VintageE
             int minX = broken.Min(p => p.X), maxX = broken.Max(p => p.X), minY = broken.Min(p => p.Y), maxY = broken.Max(p => p.Y), minZ = broken.Min(p => p.Z), maxZ = broken.Max(p => p.Z);
             var mid = new Vec3d((minX + maxX) / 2.0 + 0.5, (minY + maxY) / 2.0 + 0.5, (minZ + maxZ) / 2.0 + 0.5);
             float hr = Math.Max(maxX - minX, maxZ - minZ) / 2f + 2, vr = (maxY - minY) / 2f + 2;
-            world.Api.Event.RegisterCallback(_ =>
+            world.Api.Event.RegisterCallback(Guard.Tick(world.Logger, "gathering a vein's drops", () =>
             {
                 foreach (Entity e in world.GetEntitiesAround(mid, hr, vr, x => x is EntityItem && x.Alive))
                 {
                     e.Pos.SetPos(to);
                     e.Pos.Motion.Set(0, 0, 0);
                 }
-            }, 100);
+            }), 100);
         }
 
         /// <summary>Shears' charge for shearing creatures: ProjectE reaches 2^(2 + charge) blocks.</summary>

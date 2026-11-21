@@ -65,6 +65,14 @@ namespace VintageE
             SetStat(e, "jumpHeightMul", legs);
         }
 
+        /// <summary>Takes the leggings' walk speed and jump stats off (a player who is leaving: see TrinketEffects.Release).</summary>
+        public static void ClearStats(EntityPlayer e)
+        {
+            if (e?.Stats == null) return;
+            SetStat(e, "walkspeed", false);
+            SetStat(e, "jumpHeightMul", false);
+        }
+
         /// <summary>+1 on a player stat while worn (twice the base), only touching it when it changes (each change is sent to everyone).</summary>
         static void SetStat(EntityPlayer e, string stat, bool on)
         {
@@ -146,11 +154,26 @@ namespace VintageE
 
         public void OnRenderFrame(float deltaTime, EnumRenderStage stage)
         {
-            IPlayer player = capi.World?.Player;
-            if (player == null) return;
-            ItemSlot helmet = GemArmor.Worn(player, "head");
-            if (helmet?.Itemstack?.Attributes?.GetBool(GemArmor.NightVisionKey) == true) capi.Render.ShaderUniforms.NightVisionStrength = 0.8f;
+            // A renderer that throws stops the game's frame: nothing here is worth that.
+            try
+            {
+                IPlayer player = capi.World?.Player;
+                if (player == null) return;
+                ItemSlot helmet = GemArmor.Worn(player, "head");
+                if (helmet?.Itemstack?.Attributes?.GetBool(GemArmor.NightVisionKey) != true) return;
+                var uniforms = capi.Render.ShaderUniforms;
+                uniforms.NightVisionStrength = NightVision(uniforms.NightVisionStrength);
+            }
+            catch (Exception e) { Guard.Report(capi.Logger, "the gem helmet's night vision", e); }
         }
+
+        /// <summary>
+        /// The night vision strength with the helmet on: at least the helmet's 0.8, and never less than what something
+        /// else (another mod's goggles or potion) has already set this frame. Until 1.25.2 it was set to 0.8 flat, which
+        /// turned a stronger one down.
+        /// </summary>
+        public static float NightVision(float current) => Math.Max(current, Strength);
+        public const float Strength = 0.8f;
 
         void Tick(float dt)
         {

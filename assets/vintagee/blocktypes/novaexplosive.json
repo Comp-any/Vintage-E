@@ -1,6 +1,6 @@
 {
   "code": "novaexplosive",
-  "class": "BlockEmcMachine",
+  "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageENovaExplosive",
   "variantgroups": [
     {

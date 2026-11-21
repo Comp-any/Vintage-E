@@ -82,7 +82,7 @@ namespace VintageE
             if (!mappingAttempted) { MethodChangeBeforeStart = true; return; } // the start-up mapping collects them anyway
             if (methodsChangePending) return;
             methodsChangePending = true;
-            Sapi.Event.RegisterCallback(_ =>
+            Sapi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "collecting crafting methods after a change", () =>
             {
                 try { CollectMethods("crafting methods changed (" + who + ")"); }
                 finally { methodsChangePending = false; }
@@ -93,7 +93,7 @@ namespace VintageE
                     return;
                 }
                 RecalculateEmcAsync("crafting methods changed (" + who + ")");
-            }, 1000);
+            }), 1000);
         }
         /// <summary>The last mapping that threw (its message) and when, for /emc diagnose; null if none has.</summary>
         public string LastMappingError { get; private set; }
@@ -157,22 +157,24 @@ namespace VintageE
                 ClientCheck.Log(this, "Start");
             }
 
-            api.RegisterItemClass("ItemPhilosophersStone", typeof(ItemPhilosophersStone));
-            api.RegisterItemClass("ItemTransmutationTablet", typeof(ItemTransmutationTablet));
-            api.RegisterItemClass("ItemArcaneTablet", typeof(ItemArcaneTablet));
+            // Class names are one list for every mod, and a second mod registering a name takes it over without a word:
+            // all of Vintage-E's carry its name (1.25.2; nine were plain "ItemKleinStar", "BlockEmcMachine" and the like).
+            api.RegisterItemClass("VintageEItemPhilosophersStone", typeof(ItemPhilosophersStone));
+            api.RegisterItemClass("VintageEItemTransmutationTablet", typeof(ItemTransmutationTablet));
+            api.RegisterItemClass("VintageEItemArcaneTablet", typeof(ItemArcaneTablet));
             api.RegisterItemClass("VintageEMatterScythe", typeof(ItemMatterScythe));
             api.RegisterItemClass("VintageEMatterPropick", typeof(ItemMatterPropick));
             api.RegisterItemClass("VintageEMatterHammer", typeof(ItemMatterHammer));
-            api.RegisterBlockClass("BlockTransmutationTable", typeof(BlockTransmutationTable));
-            api.RegisterBlockClass("BlockEmcMachine", typeof(BlockEmcMachine));
+            api.RegisterBlockClass("VintageEBlockTransmutationTable", typeof(BlockTransmutationTable));
+            api.RegisterBlockClass("VintageEBlockEmcMachine", typeof(BlockEmcMachine));
             api.RegisterBlockEntityClass("VintageEEnergyCollector", typeof(BEEnergyCollector));
             api.RegisterBlockEntityClass("VintageEEnergyCondenser", typeof(BEEnergyCondenser));
             api.RegisterCollectibleBehaviorClass("VintageEMatterTool", typeof(CollectibleBehaviorMatterTool));
             api.RegisterCollectibleBehaviorClass("VintageESlay", typeof(CollectibleBehaviorSlay));
-            api.RegisterItemClass("ItemKleinStar", typeof(ItemKleinStar));
-            api.RegisterItemClass("ItemEmcTrinket", typeof(ItemEmcTrinket));
-            api.RegisterItemClass("ItemEvertideAmulet", typeof(ItemEvertideAmulet));
-            api.RegisterItemClass("ItemEmcGadget", typeof(ItemEmcGadget));
+            api.RegisterItemClass("VintageEItemKleinStar", typeof(ItemKleinStar));
+            api.RegisterItemClass("VintageEItemEmcTrinket", typeof(ItemEmcTrinket));
+            api.RegisterItemClass("VintageEItemEvertideAmulet", typeof(ItemEvertideAmulet));
+            api.RegisterItemClass("VintageEItemEmcGadget", typeof(ItemEmcGadget));
             api.RegisterBlockEntityClass("VintageEAlchemicalChest", typeof(BEAlchemicalChest));
             api.RegisterBlockEntityClass("VintageETransmutationTable", typeof(BETransmutationTable));
             api.RegisterBlockEntityClass("VintageEMatterFurnace", typeof(BEMatterFurnaceLegacy)); // 1.4.0 furnaces convert themselves
@@ -536,7 +538,7 @@ namespace VintageE
             catch { }
             if (field == null) { LookEvent("tesselation counter not readable; going ahead at once"); action(); return; }
             long id = 0; int waited = 0;
-            id = Capi.Event.RegisterGameTickListener(dt =>
+            id = Capi.Event.RegisterGameTickListener(Guard.Tick(Mod.Logger, "applying the look after start-up tesselation", () =>
             {
                 bool done = false;
                 try { done = (int)field.GetValue(manager) >= 2; } catch { done = true; }
@@ -545,7 +547,7 @@ namespace VintageE
                 Capi.Event.UnregisterGameTickListener(id);
                 LookEvent("start-up tesselation {0} after {1} ms", done ? "finished" : "not reported finished, going ahead anyway", waited);
                 action();
-            }, 200);
+            }), 200);
         }
 
         static void PreBakeLookTextures(ICoreClientAPI capi, IEnumerable<CollectibleObject> collectibles)
@@ -670,20 +672,20 @@ namespace VintageE
             Step("network", () =>
             {
                 serverChannel = sapi.Network.GetChannel(ChannelName);
-                serverChannel.SetMessageHandler<TransmuteRequestPacket>((p, k) => Transmutation?.OnRequest(p, k));
-                serverChannel.SetMessageHandler<EmcSetValuePacket>(OnSetValueRequest);
-                serverChannel.SetMessageHandler<EmcBlacklistPacket>(OnBlacklistRequest);
-                serverChannel.SetMessageHandler<FireProjectilePacket>(OnFireProjectile);
-                serverChannel.SetMessageHandler<KeyActionPacket>(OnKeyAction);
-                serverChannel.SetMessageHandler<EmcContentsSetPacket>(OnContentsSetRequest);
-                serverChannel.SetMessageHandler<EmcConfigSetPacket>(OnConfigSetRequest);
-                serverChannel.SetMessageHandler<EmcRecipeEditPacket>(OnRecipeEditRequest);
-                serverChannel.SetMessageHandler<EmcItemStateRequestPacket>(OnItemStateRequest);
-                serverChannel.SetMessageHandler<EmcItemEditPacket>(OnItemEditRequest);
-                serverChannel.SetMessageHandler<EmcDumpRequestPacket>(OnDumpRequest);
-                serverChannel.SetMessageHandler<EmcCompatSetPacket>(OnCompatSetRequest);
-                serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(OnDiagnoseRequest);
-                serverChannel.SetMessageHandler<EmcCraftPacket>((p, k) => EmcCrafting?.OnPacket(p, k));
+                serverChannel.SetMessageHandler<TransmuteRequestPacket>(Guard.FromPlayer<TransmuteRequestPacket>(Mod.Logger, (p, k) => Transmutation?.OnRequest(p, k)));
+                serverChannel.SetMessageHandler<EmcSetValuePacket>(Guard.FromPlayer<EmcSetValuePacket>(Mod.Logger, OnSetValueRequest));
+                serverChannel.SetMessageHandler<EmcBlacklistPacket>(Guard.FromPlayer<EmcBlacklistPacket>(Mod.Logger, OnBlacklistRequest));
+                serverChannel.SetMessageHandler<FireProjectilePacket>(Guard.FromPlayer<FireProjectilePacket>(Mod.Logger, OnFireProjectile));
+                serverChannel.SetMessageHandler<KeyActionPacket>(Guard.FromPlayer<KeyActionPacket>(Mod.Logger, OnKeyAction));
+                serverChannel.SetMessageHandler<EmcContentsSetPacket>(Guard.FromPlayer<EmcContentsSetPacket>(Mod.Logger, OnContentsSetRequest));
+                serverChannel.SetMessageHandler<EmcConfigSetPacket>(Guard.FromPlayer<EmcConfigSetPacket>(Mod.Logger, OnConfigSetRequest));
+                serverChannel.SetMessageHandler<EmcRecipeEditPacket>(Guard.FromPlayer<EmcRecipeEditPacket>(Mod.Logger, OnRecipeEditRequest));
+                serverChannel.SetMessageHandler<EmcItemStateRequestPacket>(Guard.FromPlayer<EmcItemStateRequestPacket>(Mod.Logger, OnItemStateRequest));
+                serverChannel.SetMessageHandler<EmcItemEditPacket>(Guard.FromPlayer<EmcItemEditPacket>(Mod.Logger, OnItemEditRequest));
+                serverChannel.SetMessageHandler<EmcDumpRequestPacket>(Guard.FromPlayer<EmcDumpRequestPacket>(Mod.Logger, OnDumpRequest));
+                serverChannel.SetMessageHandler<EmcCompatSetPacket>(Guard.FromPlayer<EmcCompatSetPacket>(Mod.Logger, OnCompatSetRequest));
+                serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(Guard.FromPlayer<EmcDiagnoseRequestPacket>(Mod.Logger, OnDiagnoseRequest));
+                serverChannel.SetMessageHandler<EmcCraftPacket>(Guard.FromPlayer<EmcCraftPacket>(Mod.Logger, (p, k) => EmcCrafting?.OnPacket(p, k)));
             });
 
             // Every mod has registered its recipes by the time the game starts running, so map then. If another mod
@@ -696,28 +698,29 @@ namespace VintageE
                 {
                     Trinkets?.ReconcileAfterStart();
                     EnsureMapped(null);
-                    if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(_ => new SelfTest(this, sapi).Start(), 5000);
+                    if (Config.SelfTestOnStart) sapi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "starting the self-test", () => new SelfTest(this, sapi).Start()), 5000);
                 });
                 long tick = 0;
-                tick = sapi.Event.RegisterGameTickListener(_ =>
+                tick = sapi.Event.RegisterGameTickListener(Guard.Tick(Mod.Logger, "the EMC mapping on the first game tick", () =>
                 {
                     sapi.Event.UnregisterGameTickListener(tick);
                     EnsureMapped("the first game tick");
-                }, 1000);
+                }), 1000);
             });
             Step("player hooks", () =>
             {
+                // Each part of joining and leaving on its own (1.25.2): one that fails is logged and the rest still run.
                 sapi.Event.PlayerDisconnect += player =>
                 {
-                    EmcCrafting?.OnPlayerLeft(player);
+                    Guard.Run(Mod.Logger, "closing a leaving player's Emc Craft grid", () => EmcCrafting?.OnPlayerLeft(player));
                     PlayerEmc.ForgetPending(player?.PlayerUID);
                 };
                 // Each player's own EMC and knowledge go to their game alone, as they change (see PlayerEmc).
-                sapi.Event.RegisterGameTickListener(_ => FlushPlayerEmc(), 50);
+                sapi.Event.RegisterGameTickListener(Guard.Tick(Mod.Logger, "sending players their EMC", FlushPlayerEmc), 50);
                 sapi.Event.PlayerNowPlaying += player =>
                 {
-                    EnsureMapped("the first player joining");
-                    EmcCrafting?.OnPlayerJoined(player);
+                    Guard.Run(Mod.Logger, "the EMC mapping for the first player joining", () => EnsureMapped("the first player joining"));
+                    Guard.Run(Mod.Logger, "setting up a joining player's Emc Craft grid", () => EmcCrafting?.OnPlayerJoined(player));
                     try
                     {
                         int gone = PlayerEmc.Tidy(player, sapi.World);
@@ -726,17 +729,23 @@ namespace VintageE
                     catch (Exception e) { sapi.Logger.Warning("Vintage-E: tidying {0}'s knowledge: {1}", player.PlayerName, e.Message); }
                     try { SendPlayerEmc(player, everything: true); }
                     catch (Exception e) { sapi.Logger.Warning("Vintage-E: sending {0} their EMC and knowledge: {1}", player.PlayerName, e.Message); }
-                    if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
+                    Guard.Run(Mod.Logger, "giving a joining player Vintage-E's fall and fire protection", () =>
                     {
-                        // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire
-                        // protection has to zero the damage before it gets there.
-                        var bh = new EntityBehaviorVintageE(player.Entity);
-                        player.Entity.SidedProperties.Behaviors.Insert(0, bh);
-                        player.Entity.CacheServerBehaviors();
-                    }
-                    SendEmcTable(player);
-                    if (Trinkets != null && Trinkets.WatchTimeModifier != 0) serverChannel?.SendPacket(new WatchSpeedPacket { Modifier = Trinkets.WatchTimeModifier }, player);
-                    Announce(player, LastReport, joining: true);
+                        if (player.Entity != null && player.Entity.GetBehavior<EntityBehaviorVintageE>() == null)
+                        {
+                            // First in line: the game's health behaviour takes the damage off in its own turn, so fall and fire
+                            // protection has to zero the damage before it gets there.
+                            var bh = new EntityBehaviorVintageE(player.Entity);
+                            player.Entity.SidedProperties.Behaviors.Insert(0, bh);
+                            player.Entity.CacheServerBehaviors();
+                        }
+                    });
+                    Guard.Run(Mod.Logger, "sending a joining player the EMC values", () =>
+                    {
+                        SendEmcTable(player);
+                        if (Trinkets != null && Trinkets.WatchTimeModifier != 0) serverChannel?.SendPacket(new WatchSpeedPacket { Modifier = Trinkets.WatchTimeModifier }, player);
+                        Announce(player, LastReport, joining: true);
+                    });
                 };
             });
 
@@ -2470,18 +2479,18 @@ namespace VintageE
                 catch (Exception e) { Mod.Logger.Warning("Look: the after-load check failed: {0}", e.Message); }
             };
             clientChannel = capi.Network.GetChannel(ChannelName);
-            clientChannel.SetMessageHandler<EmcTablePacket>(OnEmcTableReceived);
-            clientChannel.SetMessageHandler<TransmuteResultPacket>(OnTransmuteResult);
-            clientChannel.SetMessageHandler<PlayerEmcPacket>(p => PlayerEmc.ApplyOnClient(p, capi.World.Player?.PlayerUID));
-            clientChannel.SetMessageHandler<EmcMissingPacket>(OnMissingList);
-            clientChannel.SetMessageHandler<EmcContentsPacket>(OnContentsList);
-            clientChannel.SetMessageHandler<EmcConfigPacket>(OnConfigList);
-            clientChannel.SetMessageHandler<WatchSpeedPacket>(p =>
+            clientChannel.SetMessageHandler<EmcTablePacket>(Guard.FromServer<EmcTablePacket>(Mod.Logger, OnEmcTableReceived));
+            clientChannel.SetMessageHandler<TransmuteResultPacket>(Guard.FromServer<TransmuteResultPacket>(Mod.Logger, OnTransmuteResult));
+            clientChannel.SetMessageHandler<PlayerEmcPacket>(Guard.FromServer<PlayerEmcPacket>(Mod.Logger, p => PlayerEmc.ApplyOnClient(p, capi.World.Player?.PlayerUID)));
+            clientChannel.SetMessageHandler<EmcMissingPacket>(Guard.FromServer<EmcMissingPacket>(Mod.Logger, OnMissingList));
+            clientChannel.SetMessageHandler<EmcContentsPacket>(Guard.FromServer<EmcContentsPacket>(Mod.Logger, OnContentsList));
+            clientChannel.SetMessageHandler<EmcConfigPacket>(Guard.FromServer<EmcConfigPacket>(Mod.Logger, OnConfigList));
+            clientChannel.SetMessageHandler<WatchSpeedPacket>(Guard.FromServer<WatchSpeedPacket>(Mod.Logger, p =>
             {
                 ClientWatchModifier = p.Modifier;
                 TrinketEffects.ApplyTimeModifier(capi.World.Calendar, p.Modifier);
                 watchHud?.Update();
-            });
+            }));
 
             // This computer's settings (the look, the watch's icon and glow), and the .vintagee command that opens them.
             ClientConfig ??= VintageEClientConfig.Load(capi);
@@ -2497,7 +2506,7 @@ namespace VintageE
                 });
             capi.Event.LevelFinalize += () => watchHud = new HudWatchIndicator(capi, this);
 
-            capi.Event.RegisterGameTickListener(WindTick, 250);
+            capi.Event.RegisterGameTickListener(Guard.Tick(Mod.Logger, "the Swiftwolf wind sound", WindTick), 250);
             OnEmcTableUpdated += () => ItemEmcGadget.SetDiviningDurability(capi.World, Emc);
 
             capi.Input.RegisterHotKey(FireHotkey, Lang.Get("vintagee:hotkey-fire"), GlKeys.R, HotkeyType.CharacterControls);
@@ -2548,11 +2557,9 @@ namespace VintageE
                     foreach (ItemSlot s in own) if (s?.Itemstack?.Collectible is ItemTransmutationTablet) { carries = true; break; }
                     if (carries) break;
                 }
-                if (!carries)
-                {
-                    capi.TriggerIngameError(this, "vintagee-notablet", Lang.Get("vintagee:tablet-notcarried"));
-                    return true;
-                }
+                // Without a tablet the key is left to whatever else is bound to it (1.25.2), as the gem armour's keys are:
+                // until then it took K from every other mod and answered "you aren't carrying a tablet" each time.
+                if (!carries) return false;
                 OpenTransmutationDialog(null);
                 return true;
             });
@@ -2568,10 +2575,10 @@ namespace VintageE
             capi.Input.SetHotKeyHandler(NightVisionHotkey, _ => SendGem("nightvision", "head"));
             capi.Input.RegisterHotKey(StepAssistHotkey, Lang.Get("vintagee:hotkey-stepassist"), GlKeys.N, HotkeyType.CharacterControls);
             capi.Input.SetHotKeyHandler(StepAssistHotkey, _ => SendGem("stepassist", "legs"));
-            clientChannel.SetMessageHandler<KeyActionPacket>(p =>
+            clientChannel.SetMessageHandler<KeyActionPacket>(Guard.FromServer<KeyActionPacket>(Mod.Logger, p =>
             {
                 if (!string.IsNullOrEmpty(p?.Message)) capi.TriggerIngameDiscovery(this, "vintagee-key", p.Message);
-            });
+            }));
             gemArmorClient = new GemArmorClient(capi);
 
             // Admins: set the EMC value of whatever is under the mouse (inventory, handbook, any window).
@@ -2582,13 +2589,13 @@ namespace VintageE
             // reports the press as handled.
             capi.Input.RegisterHotKey(DiagnoseHotkey, Lang.Get("vintagee:hotkey-diagnose"), GlKeys.H, HotkeyType.GUIOrOtherControls, ctrlPressed: true);
             capi.Input.SetHotKeyHandler(DiagnoseHotkey, _ => ToggleDiagnose());
-            clientChannel.SetMessageHandler<EmcRecipeListPacket>(OnRecipeList);
-            clientChannel.SetMessageHandler<EmcCompatListPacket>(OnCompatList);
-            clientChannel.SetMessageHandler<EmcItemStatePacket>(OnItemState);
-            clientChannel.SetMessageHandler<EmcReportPacket>(OnReport);
-            clientChannel.SetMessageHandler<EmcCraftPacket>(OnEmcCraftContents);
+            clientChannel.SetMessageHandler<EmcRecipeListPacket>(Guard.FromServer<EmcRecipeListPacket>(Mod.Logger, OnRecipeList));
+            clientChannel.SetMessageHandler<EmcCompatListPacket>(Guard.FromServer<EmcCompatListPacket>(Mod.Logger, OnCompatList));
+            clientChannel.SetMessageHandler<EmcItemStatePacket>(Guard.FromServer<EmcItemStatePacket>(Mod.Logger, OnItemState));
+            clientChannel.SetMessageHandler<EmcReportPacket>(Guard.FromServer<EmcReportPacket>(Mod.Logger, OnReport));
+            clientChannel.SetMessageHandler<EmcCraftPacket>(Guard.FromServer<EmcCraftPacket>(Mod.Logger, OnEmcCraftContents));
             // /emc diagnose typed in chat: the server asks this computer to send the request, so it carries this side's information.
-            clientChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(p => SendDiagnose(p?.Action ?? "", p?.Arg ?? ""));
+            clientChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(Guard.FromServer<EmcDiagnoseRequestPacket>(Mod.Logger, p => SendDiagnose(p?.Action ?? "", p?.Arg ?? "")));
 
             // Tooltips: give every collectible a tiny client-only behaviour that prints its EMC.
             capi.Event.BlockTexturesLoaded += () =>
@@ -2720,13 +2727,13 @@ namespace VintageE
             long asked = Sapi.World.ElapsedMilliseconds;
             serverChannel?.SendPacket(new EmcDiagnoseRequestPacket { Action = action ?? "", Arg = arg ?? "" }, player);
             // A game that doesn't answer (another Vintage-E version, say): run it here, without that side's information.
-            Sapi.Event.RegisterCallback(_ =>
+            Sapi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "the /emc diagnose fallback", () =>
             {
                 if (player.ConnectionState != EnumClientState.Playing) return;
                 if (diagnoseRequestAt.TryGetValue(player.PlayerUID, out long at) && at >= asked) return;
                 Mod.Logger.Notification("Vintage-E: {0}'s game didn't send the /emc diagnose request; running it without its side", player.PlayerName);
                 SendDiagnosis(player, action, arg, player.InventoryManager?.ActiveHotbarSlot?.Itemstack);
-            }, 4000);
+            }), 4000);
         }
 
         readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> diagnoseRequestAt = new System.Collections.Concurrent.ConcurrentDictionary<string, long>();
@@ -2852,11 +2859,8 @@ namespace VintageE
                 doctorDialog.TryClose();
                 return true;
             }
-            if (!player.HasPrivilege(Privilege.controlserver))
-            {
-                Capi.TriggerIngameError(this, "noprivilege", Lang.Get("vintagee:error-noprivilege"));
-                return true;
-            }
+            // Not an admin: the key isn't theirs to use, so it is left to whatever else is bound to it (1.25.2).
+            if (!player.HasPrivilege(Privilege.controlserver)) return false;
             SendDiagnose("", "");
             return true;
         }
@@ -2868,7 +2872,7 @@ namespace VintageE
         {
             int seq = ++diagnoseSent;
             clientChannel?.SendPacket(DiagnoseRequest(action, arg));
-            Capi.Event.RegisterCallback(_ =>
+            Capi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "the doctor's no-answer message", () =>
             {
                 if (diagnoseAnswered >= seq || seq != diagnoseSent) return;
                 string text = Lang.Get("vintagee:doctor-noanswer");
@@ -2878,18 +2882,15 @@ namespace VintageE
                     Capi.TriggerIngameError(this, "noanswer", Lang.Get("vintagee:doctor-noanswer-short"));
                     Capi.ShowChatMessage(text);
                 }
-            }, 12000);
+            }), 12000);
         }
 
         bool OpenSetValueBox()
         {
             IClientPlayer player = Capi?.World?.Player;
             if (player == null) return false;
-            if (!player.HasPrivilege(Privilege.controlserver))
-            {
-                Capi.TriggerIngameError(this, "noprivilege", Lang.Get("vintagee:error-noprivilege"));
-                return true;
-            }
+            // Not an admin: the key is left to whatever else is bound to it (1.25.2).
+            if (!player.HasPrivilege(Privilege.controlserver)) return false;
             ItemStack stack = HoveredStack.Find(Capi);
             if (stack?.Collectible?.Code == null)
             {

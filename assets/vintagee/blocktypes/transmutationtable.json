@@ -1,6 +1,6 @@
 {
   "code": "transmutationtable",
-  "class": "BlockTransmutationTable",
+  "class": "VintageEBlockTransmutationTable",
   "creativeinventory": {
     "general": [
       "*"

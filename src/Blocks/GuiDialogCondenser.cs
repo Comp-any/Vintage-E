@@ -60,7 +60,7 @@ namespace VintageE
         public override void OnGuiOpened()
         {
             base.OnGuiOpened();
-            tickListener = capi.Event.RegisterGameTickListener(_ => UpdateInfo(), 250);
+            tickListener = capi.Event.RegisterGameTickListener(Guard.Tick(capi.Logger, "the condenser window", UpdateInfo), 250);
         }
 
         public override void OnGuiClosed()

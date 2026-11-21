@@ -37,7 +37,7 @@ namespace VintageE
         {
             this.mod = mod;
             this.sapi = sapi;
-            sapi.Event.RegisterGameTickListener(_ => Tick(), 1000);
+            sapi.Event.RegisterGameTickListener(Guard.Tick(sapi.Logger, "the Repair Talisman in containers", Tick), 1000);
         }
 
         /// <summary>How many containers are being repaired in now.</summary>

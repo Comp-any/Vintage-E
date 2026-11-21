@@ -1,6 +1,6 @@
 {
   "code": "gadget",
-  "class": "ItemEmcGadget",
+  "class": "VintageEItemEmcGadget",
   "variantgroups": [
     {
       "code": "type",

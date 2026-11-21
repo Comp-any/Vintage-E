@@ -71,7 +71,7 @@ namespace VintageE
         public override void OnGuiOpened()
         {
             base.OnGuiOpened();
-            tickListener = capi.Event.RegisterGameTickListener(_ => Refresh(), 250);
+            tickListener = capi.Event.RegisterGameTickListener(Guard.Tick(capi.Logger, "the gem filter window", Refresh), 250);
             Refresh();
         }
 

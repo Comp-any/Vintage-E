@@ -1,6 +1,6 @@
 {
   "code": "energycondenser",
-  "class": "BlockEmcMachine",
+  "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageEEnergyCondenser",
   "variantgroups": [
     { "code": "tier", "states": [ "mk1", "mk2" ] }

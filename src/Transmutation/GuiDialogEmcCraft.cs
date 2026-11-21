@@ -153,7 +153,7 @@ namespace VintageE
             grid.SlotModified -= OnSlotModified;
             grid.SlotModified += OnSlotModified;
             mod.SendEmcCraft(new EmcCraftPacket { Action = EmcCraftAction.Open });
-            tickListener = capi.Event.RegisterGameTickListener(_ => UpdateEmc(), 250);
+            tickListener = capi.Event.RegisterGameTickListener(Guard.Tick(capi.Logger, "the Emc Craft window", UpdateEmc), 250);
         }
 
         public override void OnGuiClosed()

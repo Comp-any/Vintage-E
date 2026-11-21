@@ -1,6 +1,6 @@
 {
   "code": "redmatterpedestal",
-  "class": "BlockEmcMachine",
+  "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageEPedestal",
   "variantgroups": [
     {

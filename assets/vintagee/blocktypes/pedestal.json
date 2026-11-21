@@ -1,6 +1,6 @@
 {
   "code": "pedestal",
-  "class": "BlockEmcMachine",
+  "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageEPedestal",
   "variantgroups": [
     {

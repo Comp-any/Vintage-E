@@ -208,7 +208,7 @@ namespace VintageE
         public override void OnGuiOpened()
         {
             base.OnGuiOpened();
-            tickListener = capi.Event.RegisterGameTickListener(OnTick, 250);
+            tickListener = capi.Event.RegisterGameTickListener(Guard.Tick(capi.Logger, "the tablet window", OnTick), 250);
             Refresh(true);
         }
 

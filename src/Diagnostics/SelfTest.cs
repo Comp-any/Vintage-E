@@ -75,6 +75,7 @@ namespace VintageE
                 Check1211();
                 CheckSpeedups();
                 CheckStepAssist();
+                CheckGoodNeighbour();
                 CheckQuiversAndSheaths();
                 CheckClaymore();
                 CheckDiagnose();
@@ -1769,6 +1770,76 @@ namespace VintageE
             Check(leftAlone, "without the step assist the step height is never touched (a Steeplechaser's 1.2 stays)");
             Check(on == StepAssist.Height && still == null && off == 0.6f, $"the step assist raises 0.6 to {StepAssist.Height} and puts 0.6 back when switched off");
             Check(higherKept && changedMeanwhile, "a higher step height from another mod is kept, and one changed while it was on isn't undone");
+        }
+
+        /// <summary>
+        /// 1.25.2: things other mods and the game set too are left to them (move speed, night vision, body
+        /// temperature, the smelting and grinding tables of the game's items), and an error in a tick or a packet
+        /// handler is logged instead of being passed to the game.
+        /// </summary>
+        void CheckGoodNeighbour()
+        {
+            // Swiftwolf's speed.
+            Check(new SpeedBoost().Next(1, 1.7f) == null, "without Swiftwolf's speed the move speed is never touched (another mod's 1.7 stays)");
+            var b = new SpeedBoost();
+            float? on = b.Next(2, 1), still = b.Next(2, 2), faster = b.Next(3, 2), back = b.Next(1, 3);
+            Check(on == 2 && still == null && faster == 3 && back == 1, "Swiftwolf's speed doubles the move speed, follows the ring's speed setting and puts 1 back when switched off");
+            var reset = new SpeedBoost();
+            reset.Next(2, 1.5f);
+            float? again = reset.Next(2, 1), after = reset.Next(1, 2);
+            Check(again == 2 && after == 1, "a move speed set anew while the ring is on (the game's reset on a game mode change, an admin) is the one the ring doubles and leaves behind");
+            var top = new SpeedBoost();
+            top.Next(2, 1);
+            bool left = top.Next(2, 3) == null && top.Next(2, 3) == null;
+            bool resumed = top.Next(2, 2) == null && !top.Yielded;
+            float? topOff = top.Next(1, 2);
+            var top2 = new SpeedBoost();
+            top2.Next(2, 1);
+            top2.Next(2, 3);
+            bool notUndone = top2.Next(1, 3) == null;
+            var low = new SpeedBoost();
+            low.Next(2, 1);
+            bool lowKept = low.Next(1, 1.5f) == null;
+            Check(left && resumed && topOff == 1 && notUndone && lowKept, "a speed another mod adds on top of the ring's is left alone, and one changed while the ring was on isn't undone at switch-off");
+            var w = new SpeedBoost();
+            w.Next(2, 1);
+            float? w1 = w.Next(2, 1), w2 = w.Next(2, 1), w3 = w.Next(2, 1), w4 = w.Next(2, 1), wOff = w.Next(1, 1);
+            Check(w1 == 2 && w2 == 2 && w3 == null && w4 == null && wOff == null, $"something that keeps writing its own move speed is left to it after {SpeedBoost.MaxStreak} ticks (no flipping back and forth)");
+            var r = new SpeedBoost();
+            r.Next(1.3f, 1);
+            float? rounded = r.Next(1.3f, 1.296875f);
+            Check(rounded == 1.3f && r.Streak == 0 && r.Next(1, 1.296875f) == 1, "the game's rounded copy of the ring's speed (in 64ths) counts as the ring's own");
+            var a1 = new SpeedBoost();
+            var a2 = new SpeedBoost();
+            float v = 1;
+            for (int i = 0; i < 20; i++) { v = a1.Next(1.5f, v) ?? v; v = a2.Next(2, v) ?? v; }
+            Check(Math.Abs(v - 3) < 0.001f, "two speed effects working this way don't multiply each other up (1.5x and 2x end at " + v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "x)");
+
+            // The Mind Stone and the gem helmet.
+            Check(TrinketEffects.TemperTo(33, 37) == 37 && TrinketEffects.TemperTo(36.5f, 38) == 38 && TrinketEffects.TemperTo(37, 37) == null && TrinketEffects.TemperTo(41, 37) == null,
+                "the Mind Stone warms a cold body to the game's normal temperature and leaves warmth above it alone (it used to cool 41 °C to 37 and charge for it)");
+            Check(GemArmorClient.NightVision(0) == GemArmorClient.Strength && GemArmorClient.NightVision(1f) == 1f, "the gem helmet's night vision never turns a stronger one down");
+
+            // Patches on the game's own items merge into a table another mod may have added to.
+            string patches = sapi.Assets.TryGet(new AssetLocation("vintagee", "patches/realistic-crafting.json"))?.ToText() ?? "";
+            Check(patches.Contains("\"addmerge\"") && !patches.Contains("\"op\": \"add\""), "the realistic routes are merged into the game's gear, ingot and rough gem tables (addmerge), not written over them");
+
+            // Errors in ticks and packet handlers.
+            string what = "the self-test's deliberate error " + sapi.World.ElapsedMilliseconds;
+            bool escaped = false;
+            try
+            {
+                Action<float> tick = Guard.Tick(null, what, () => throw new InvalidOperationException("deliberate"));
+                for (int i = 0; i < 4; i++) tick(0.1f);
+                Guard.FromPlayer<KeyActionPacket>(null, (p, k) => throw new InvalidOperationException("deliberate"))(null, null);
+                Guard.FromServer<KeyActionPacket>(null, k => throw new InvalidOperationException("deliberate"))(null);
+            }
+            catch { escaped = true; }
+            Check(!escaped && Guard.Count(what) == 4, "an error in a tick listener or a packet handler is caught and counted (it used to go to the game)");
+            string quiet = what + " (log)";
+            var said = new List<int>();
+            for (int i = 1; i <= Guard.Every; i++) if (Guard.ShouldReport(quiet, out _)) said.Add(i);
+            Check(said.SequenceEqual(new[] { 1, 2, 3, Guard.Every }), "a repeating error is logged the first three times and then once in " + Guard.Every);
         }
 
         /// <summary>1.24.2: the Repair Talisman in ordinary containers, only those the RepairTalismanContainers setting names.</summary>

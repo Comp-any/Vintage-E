@@ -77,7 +77,7 @@ def items():
     ]))
     write("itemtypes/kleinstar.json", O([
         ("code", "kleinstar"),
-        ("class", "ItemKleinStar"),
+        ("class", "VintageEItemKleinStar"),
         ("variantgroups", [O([("code", "tier"), ("states", STARS)])]),
         ("maxstacksize", 1),
         ("creativeinventory", CREATIVE),
@@ -96,7 +96,7 @@ def items():
     ]))
     write("itemtypes/trinket.json", O([
         ("code", "trinket"),
-        ("class", "ItemEmcTrinket"),
+        ("class", "VintageEItemEmcTrinket"),
         ("variantgroups", [O([("code", "type"), ("states", TRINKETS)])]),
         ("maxstacksize", 1),
         ("creativeinventory", CREATIVE),
@@ -112,7 +112,7 @@ def items():
     ]))
     write("itemtypes/gadget.json", O([
         ("code", "gadget"),
-        ("class", "ItemEmcGadget"),
+        ("class", "VintageEItemEmcGadget"),
         ("variantgroups", [O([("code", "type"), ("states", GADGETS)])]),
         ("maxstacksize", 1),
         ("creativeinventory", CREATIVE),
@@ -261,7 +261,7 @@ def blocks():
     ]))
     write("blocktypes/alchemicalchest.json", O([
         ("code", "alchemicalchest"),
-        ("class", "BlockEmcMachine"),
+        ("class", "VintageEBlockEmcMachine"),
         ("entityClass", "VintageEAlchemicalChest"),
         ("creativeinventory", CREATIVE),
         ("blockmaterial", "Wood"),
@@ -321,7 +321,7 @@ def blocks():
     ]))
     write("blocktypes/antimatterrelay.json", O([
         ("code", "antimatterrelay"),
-        ("class", "BlockEmcMachine"),
+        ("class", "VintageEBlockEmcMachine"),
         ("entityClass", "VintageEAntimatterRelay"),
         ("variantgroups", [O([("code", "tier"), ("states", ["mk1", "mk2", "mk3"])])]),
         ("creativeinventory", O([("general", ["*"]), ("mechanics", ["*"]), ("vintagee", ["*"])])),
@@ -340,7 +340,7 @@ def blocks():
     ]))
     write("blocktypes/novaexplosive.json", O([
         ("code", "novaexplosive"),
-        ("class", "BlockEmcMachine"),
+        ("class", "VintageEBlockEmcMachine"),
         ("entityClass", "VintageENovaExplosive"),
         ("variantgroups", [O([("code", "type"), ("states", ["catalyst", "cataclysm"])])]),
         ("creativeinventory", CREATIVE),
@@ -375,7 +375,7 @@ def blocks():
     ]))
     write("blocktypes/pedestal.json", O([
         ("code", "pedestal"),
-        ("class", "BlockEmcMachine"),
+        ("class", "VintageEBlockEmcMachine"),
         ("entityClass", "VintageEPedestal"),
         ("variantgroups", [O([("code", "state"), ("states", ["empty", "active"])])]),
         ("creativeinventoryByType", O([("*-empty", CREATIVE)])),
@@ -397,7 +397,7 @@ def blocks():
     # 1.8.0: the red matter pedestal reaches twice as far and its effects are twice as strong (BEPedestal reads these attributes).
     write("blocktypes/redmatterpedestal.json", O([
         ("code", "redmatterpedestal"),
-        ("class", "BlockEmcMachine"),
+        ("class", "VintageEBlockEmcMachine"),
         ("entityClass", "VintageEPedestal"),
         ("variantgroups", [O([("code", "state"), ("states", ["empty", "active"])])]),
         ("creativeinventoryByType", O([("*-empty", CREATIVE)])),

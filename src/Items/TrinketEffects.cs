@@ -25,6 +25,8 @@ namespace VintageE
         public const string FlightKey = "vintageeFlight";
         /// <summary>On the player entity: their move speed before Swiftwolf's Rending Gale sped them up (restored afterwards).</summary>
         public const string SpeedBaseKey = "vintageeSpeedBase";
+        /// <summary>What Swiftwolf's speed last made the move speed multiplier (see <see cref="SpeedBoost"/>).</summary>
+        public const string SpeedSetKey = "vintageeSpeedSet";
         const float Interval = 0.5f;
 
         // ProjectE: 0.32 EMC a tick each for flying and for the shield.
@@ -55,6 +57,7 @@ namespace VintageE
         readonly Dictionary<string, long> lastTeleportMs = new Dictionary<string, long>();
         readonly Dictionary<string, long> lastLightningMs = new Dictionary<string, long>();
         readonly HashSet<string> statsCleaned = new HashSet<string>();
+        readonly Dictionary<string, SpeedBoost> speedBoosts = new Dictionary<string, SpeedBoost>();
         readonly Random rand = new Random();
         AssetLocation[] hostile;
         /// <summary>
@@ -84,11 +87,13 @@ namespace VintageE
             this.sapi = sapi;
             hostileMatch = IsHostile;
             repelMatch = e => e is IProjectile || IsHostile(e);
-            sapi.Event.RegisterGameTickListener(OnTick, (int)(Interval * 1000));
-            sapi.Event.RegisterGameTickListener(ShieldTick, ShieldTickMs);
-            sapi.Event.RegisterGameTickListener(FastTick, ShieldTickMs);
+            sapi.Event.RegisterGameTickListener(Guard.Tick(sapi.Logger, "the trinkets' tick", OnTick), (int)(Interval * 1000));
+            sapi.Event.RegisterGameTickListener(Guard.Tick(sapi.Logger, "the Swiftwolf shield", ShieldTick), ShieldTickMs);
+            sapi.Event.RegisterGameTickListener(Guard.Tick(sapi.Logger, "the trinkets' fast tick", FastTick), ShieldTickMs);
             sapi.Event.PlayerDisconnect += p =>
             {
+                Guard.Run(sapi.Logger, "taking the trinkets' flight and speed off a leaving player", () => Release(p));
+                speedBoosts.Remove(p.PlayerUID);
                 timers.Remove(p.PlayerUID);
                 shielded.Remove(p.PlayerUID);
                 statsCleaned.Remove(p.PlayerUID);
@@ -589,34 +594,55 @@ namespace VintageE
         /// Swiftwolf's speed: multiplies the player's move speed (running and flying) by <paramref name="factor"/>,
         /// remembering what it was so it can be put back. Creative and spectator players are left alone.
         /// </summary>
-        void SetSpeed(IServerPlayer player, float factor)
+        void SetSpeed(IServerPlayer player, float factor, bool tellClients = true)
         {
             IWorldPlayerData wd = player.WorldData;
             if (wd == null || player.Entity == null) return;
             if (wd.CurrentGameMode == EnumGameMode.Creative || wd.CurrentGameMode == EnumGameMode.Spectator) return;
             SyncedTreeAttribute attrs = player.Entity.WatchedAttributes;
+            // The base and the last number written are kept with the player (the multiplier itself is saved too, so a
+            // restart with the ring on carries on); the rest only matters while the server runs.
             bool ours = attrs.HasAttribute(SpeedBaseKey);
-            if (factor > 1.001f)
+            speedBoosts.TryGetValue(player.PlayerUID, out SpeedBoost boost);
+            if (!ours) boost = default;
+            boost.Base = ours ? attrs.GetFloat(SpeedBaseKey, 1) : (float?)null;
+            // No record of the last number (the ring was on when 1.25.2 went in): what's there now counts as the ring's.
+            boost.Set = ours ? attrs.GetFloat(SpeedSetKey, wd.MoveSpeedMultiplier) : 0;
+            float? next = boost.Next(factor, wd.MoveSpeedMultiplier);
+            if (boost.Base == null)
             {
-                float baseMul = ours ? attrs.GetFloat(SpeedBaseKey, 1) : wd.MoveSpeedMultiplier;
-                if (!ours) attrs.SetFloat(SpeedBaseKey, baseMul);
-                float want = baseMul * factor;
-                if (Math.Abs(wd.MoveSpeedMultiplier - want) > 0.001f)
-                {
-                    wd.MoveSpeedMultiplier = want;
-                    player.BroadcastPlayerData();
-                }
+                speedBoosts.Remove(player.PlayerUID);
+                if (ours) { attrs.RemoveAttribute(SpeedBaseKey); attrs.RemoveAttribute(SpeedSetKey); }
             }
-            else if (ours)
+            else
             {
-                wd.MoveSpeedMultiplier = attrs.GetFloat(SpeedBaseKey, 1);
-                attrs.RemoveAttribute(SpeedBaseKey);
-                player.BroadcastPlayerData();
+                speedBoosts[player.PlayerUID] = boost;
+                if (!ours || Math.Abs(attrs.GetFloat(SpeedBaseKey, 1) - boost.Base.Value) > 1e-6f) attrs.SetFloat(SpeedBaseKey, boost.Base.Value);
+                if (!attrs.HasAttribute(SpeedSetKey) || Math.Abs(attrs.GetFloat(SpeedSetKey) - boost.Set) > 1e-6f) attrs.SetFloat(SpeedSetKey, boost.Set);
+            }
+            if (next != null)
+            {
+                wd.MoveSpeedMultiplier = next.Value;
+                if (tellClients) player.BroadcastPlayerData();
             }
         }
 
+        /// <summary>
+        /// A player is leaving: what the trinkets and the gem leggings changed on them is taken off again before the
+        /// game saves them (1.25.2), and put back half a second after they next join. Flight, move speed and the walk
+        /// and jump stats are saved with the player, so a server that later ran without Vintage-E, or without the ring,
+        /// left them flying, fast and jumping high for good.
+        /// </summary>
+        void Release(IServerPlayer player)
+        {
+            if (player?.Entity == null || player.WorldData == null) return;
+            SetSpeed(player, 1, tellClients: false);
+            SetFlight(player, false, tellClients: false);
+            GemArmor.ClearStats(player.Entity);
+        }
+
         /// <summary>Switches flying (the game's free move) on or off for a survival player. Only undoes flight it switched on.</summary>
-        void SetFlight(IServerPlayer player, bool on)
+        void SetFlight(IServerPlayer player, bool on, bool tellClients = true)
         {
             IWorldPlayerData wd = player.WorldData;
             if (wd == null || player.Entity == null) return;
@@ -638,7 +664,7 @@ namespace VintageE
                 if (wd.FreeMove)
                 {
                     wd.FreeMove = false;
-                    player.BroadcastPlayerData();
+                    if (tellClients) player.BroadcastPlayerData();
                 }
                 flightEndedMs[player.PlayerUID] = sapi.World.ElapsedMilliseconds;
             }
@@ -1169,18 +1195,29 @@ namespace VintageE
             if (harvested + grown > 0) sapi.World.PlaySoundAt(new AssetLocation("game:sounds/block/plant"), player.Entity, null, true, 16, 0.8f);
         }
 
-        /// <summary>Mind Stone: keeps the player's body temperature at normal (37 °C), for <see cref="TemperCostPerSecond"/> while it has to.</summary>
+        /// <summary>
+        /// Mind Stone: keeps the player's body temperature from dropping below normal, for <see cref="TemperCostPerSecond"/>
+        /// while it has to. Normal is the game's own figure for the player (37 °C unless a mod changes it).
+        /// </summary>
         void Temper(IServerPlayer player)
         {
             ITreeAttribute temp = player.Entity.WatchedAttributes.GetTreeAttribute("bodyTemp");
             if (temp == null) return;
-            const float normal = 37f;
-            float cur = temp.GetFloat("bodytemp", normal);
-            if (Math.Abs(cur - normal) < 0.05f) return;
+            float normal = player.Entity.GetBehavior<EntityBehaviorBodyTemperature>()?.NormalBodyTemperature ?? 37f;
+            float? to = TemperTo(temp.GetFloat("bodytemp", normal), normal);
+            if (to == null) return;
             if (!EmcWallet.TryPay(player, Cost(TemperCostPerSecond * Interval))) return;
-            temp.SetFloat("bodytemp", normal);
+            temp.SetFloat("bodytemp", to.Value);
             player.Entity.WatchedAttributes.MarkPathDirty("bodyTemp");
         }
+
+        /// <summary>
+        /// What the Mind Stone makes of a body temperature, or null to leave it alone. It only ever warms: in the game a
+        /// body warmer than normal (by a fire, in the sun, just after waking: up to 45 °C) does no harm, it is what
+        /// keeps the cold off for a while afterwards. Until 1.25.2 the stone pulled that back down to 37 °C and charged
+        /// EMC for it, every second for as long as the player stayed warm.
+        /// </summary>
+        public static float? TemperTo(float current, float normal) => current < normal - 0.05f ? normal : (float?)null;
 
         /// <summary>
         /// Swiftwolf's Rending Gale fire-projectile key: a lightning strike where the player looks (up to 64 blocks),

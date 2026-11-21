@@ -35,7 +35,7 @@ namespace VintageE
                 icon.Itemstack = new ItemStack(watch);
                 icon.Itemstack.Attributes.SetBool(ItemEmcTrinket.ActiveKey, true); // drawn glowing, like a watch that's on
             }
-            listener = capi.Event.RegisterGameTickListener(_ => Update(), 500);
+            listener = capi.Event.RegisterGameTickListener(Guard.Tick(capi.Logger, "the watch indicator", () => Update()), 500);
         }
 
         /// <summary>Opens, closes or redraws it to match the watch and the settings.</summary>

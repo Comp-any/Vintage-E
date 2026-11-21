@@ -1,6 +1,6 @@
 {
   "code": "transmutationtablet",
-  "class": "ItemTransmutationTablet",
+  "class": "VintageEItemTransmutationTablet",
   "maxstacksize": 1,
   "creativeinventory": { "general": [ "*" ], "vintagee": [ "*" ] },
   "texture": { "base": "item/transmutationtablet" },
