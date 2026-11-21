@@ -1955,6 +1955,11 @@ namespace VintageE
             odd.Normalize();
             Check(cfg.TabletHelp == VintageEClientConfig.HelpOn && odd.TabletHelp == VintageEClientConfig.HelpAuto && new VintageEClientConfig().TabletHelp == VintageEClientConfig.HelpAuto,
                 "the TabletHelp setting is Auto unless it says On or Off");
+            // Characters a game font may lack (the boxes left of the doctor's cards, the arrow in the crafting window).
+            string symbols = "A \u2192 B \u2713 done \u26a0 \u25b8 open \u2264 3";
+            Check(Glyphs.Safe(symbols, _ => false) == "A -> B OK done ! \u00bb open <= 3" && ReferenceEquals(Glyphs.Safe(symbols, _ => true), symbols)
+                && Glyphs.Safe("caf\u00e9 \u00b7 na\u00efve \u00d7 2", _ => false) == "caf\u00e9 \u00b7 na\u00efve \u00d7 2" && Glyphs.Safe(null, _ => false) == null,
+                "symbols the font can't draw are swapped for plain ones (-> OK ! <=), and text it can draw is left exactly as it is");
             string title = Lang.GetL("en", "vintagee:gui-arcanetablet-title");
             Check(title == "Arcane Tablet" && Lang.GetL("en", "vintagee:gui-help-show") == "Help", "the Arcane Tablet's window has its own title, and the Help button its label");
         }

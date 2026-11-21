@@ -195,7 +195,8 @@ namespace VintageE
                     else if (t.StartsWith("⚠", StringComparison.Ordinal)) { e.State = State.Warn; e.Title = t.Substring(1).Trim(); }
                     else if (t.StartsWith("•", StringComparison.Ordinal)) { e.State = State.Info; e.Title = t.Substring(1).Trim(); }
                     else { e.State = State.Info; e.Title = t; }
-                    e.Title = TakeActions(e.Title, e.Actions);
+                    // Characters this computer's font can't draw (arrows, marks) become plain ones: see Glyphs.
+                    e.Title = TakeActions(Glyphs.Safe(e.Title), e.Actions);
                     e.Plain = EmcReport.Plain(capi.World, e.Title);
                     entries.Add(e);
                     open = e;
@@ -203,7 +204,8 @@ namespace VintageE
                 }
                 if (style == EmcLineStyle.Heading)
                 {
-                    entries.Add(new Entry { Kind = Kind.Heading, Index = i, Title = t, Plain = EmcReport.Plain(capi.World, t), Style = style });
+                    string heading = Glyphs.Safe(t);
+                    entries.Add(new Entry { Kind = Kind.Heading, Index = i, Title = heading, Plain = EmcReport.Plain(capi.World, heading), Style = style });
                     open = null;
                     continue;
                 }
@@ -211,14 +213,14 @@ namespace VintageE
                 if (detail)
                 {
                     var d = new Detail { Style = style, Indent = indent, Fix = t.StartsWith("→", StringComparison.Ordinal) };
-                    d.Text = TakeActions(d.Fix ? t.Substring(1).Trim() : t, d.Actions);
+                    d.Text = TakeActions(Glyphs.Safe(d.Fix ? t.Substring(1).Trim() : t), d.Actions);
                     open.Details.Add(d);
                     continue;
                 }
                 open = null;
                 var plain = new Entry { Kind = i == 0 && (style == EmcLineStyle.Total || style == EmcLineStyle.Warn) ? Kind.Banner : Kind.Text, Index = i, Style = style, Indent = indent };
                 plain.State = style == EmcLineStyle.Warn ? State.Fail : style == EmcLineStyle.Total ? State.Ok : State.Info;
-                plain.Title = TakeActions(t, plain.Actions);
+                plain.Title = TakeActions(Glyphs.Safe(t), plain.Actions);
                 plain.Plain = EmcReport.Plain(capi.World, plain.Title);
                 entries.Add(plain);
             }
@@ -452,7 +454,7 @@ namespace VintageE
                         : d.Style == EmcLineStyle.Warn ? CairoFont.WhiteSmallText().WithColor(Red)
                         : d.Style == EmcLineStyle.Total ? CairoFont.WhiteSmallText().WithColor(Green)
                         : CairoFont.WhiteDetailText().WithColor(new double[] { 0.82, 0.80, 0.76, 1 });
-                    string text = d.Fix ? "→ " + EmcReport.Plain(capi.World, d.Text) : EmcReport.Plain(capi.World, d.Text);
+                    string text = d.Fix ? Glyphs.FixArrow + EmcReport.Plain(capi.World, d.Text) : EmcReport.Plain(capi.World, d.Text);
                     double h = text.Length > 0 ? GuiLayout.TextHeight(capi, f, text, CardW - TitleX - 20 - Math.Max(0, d.Indent - 1) * 14) : 0;
                     layout.Add((d, dy, h, f));
                     double aw = CardW - (TitleX + Math.Max(0, d.Indent - 1) * 14) - 20;
@@ -469,9 +471,11 @@ namespace VintageE
             // The arrow left of the dot, the title right of it; the whole header (but not the badge) opens and closes the card.
             if (canOpen)
             {
-                CairoFont arrowFont = titleFont.Clone().WithColor(new double[] { 0.85, 0.8, 0.7, 1 });
-                c.AddRichtext(new RichTextComponentBase[] { new RichTextComponent(capi, open ? "\u25be" : "\u25b8", arrowFont) { VerticalAlign = EnumVerticalAlign.Middle } },
-                    In(parent, ElementBounds.Fixed(CardX + 14, y + (headH - 20) / 2, 20, 22)));
+                // Drawn, not a character (1.26.3): the triangles ▸ ▾ aren't in the game's font on every computer, and
+                // showed there as a white box left of each card that opens.
+                bool isOpen = open;
+                Canvas(c, In(parent, ElementBounds.Fixed(CardX + 12, y + (headH - 20) / 2, 20, 20)),
+                    (ctx, b) => Glyphs.DrawExpander(ctx, b.OuterWidth, b.OuterHeight, isOpen, new double[] { 0.85, 0.8, 0.7, 1 }));
             }
             var comps = new List<RichTextComponentBase>();
             AddRichParts(comps, e.Title, titleFont, -1);
@@ -507,7 +511,7 @@ namespace VintageE
                 foreach (var (d, dy, h, f) in layout)
                 {
                     double x = TitleX + Math.Max(0, d.Indent - 1) * 14;
-                    string text = d.Fix ? "→ " + d.Text : d.Text;
+                    string text = d.Fix ? Glyphs.FixArrow + d.Text : d.Text;
                     if (text.Length > 0) AddText(c, parent, text, f, x, baseY + dy, CardW - x - 20);
                     if (d.Actions.Count > 0) AddActions(c, parent, d.Actions, x, baseY + dy + h + 2, CardW - x - 20, dense: true);
                 }

@@ -292,14 +292,15 @@ namespace VintageE
             int first = comps.Count;
             if (line.Style == EmcLineStyle.Heading && first > 0) comps.Add(new RichTextComponent(capi, "\n", CairoFont.WhiteDetailText()));
             int start = comps.Count;
-            string text = line.Text;
+            // The font is picked from the line's own marks above; what is drawn has the characters this computer's font lacks swapped (see Glyphs).
+            string text = Glyphs.Safe(line.Text);
             int pos = 0;
             if (line.Style == EmcLineStyle.Check && line.Details > 0)
             {
                 // The arrow opens and closes the details; the whole line is the link.
                 bool open = expandAll || expanded.Contains(line.Index);
                 int index = line.Index;
-                comps.Add(Coloured(new LinkTextComponent(capi, (open ? "\u25be " : "\u25b8 ") + line.Plain, font, _ => Toggle(index)), font));
+                comps.Add(Coloured(new LinkTextComponent(capi, (open ? Glyphs.Open : Glyphs.Closed) + Glyphs.Safe(line.Plain), font, _ => Toggle(index)), font));
                 comps.Add(new RichTextComponent(capi, "\n", font));
                 return;
             }
@@ -348,7 +349,7 @@ namespace VintageE
             CairoFont actionFont = font.Clone().WithColor(new double[] { 0.55, 0.8, 1, 1 }).WithWeight(Cairo.FontWeight.Bold);
             bool fix = action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue";
             if (fix) actionFont = actionFont.WithColor(new double[] { 0.6, 1, 0.6, 1 });
-            comps.Add(Coloured(new LinkTextComponent(capi, (fix ? "\u2692 " : "\u25b8 ") + label, actionFont, _ => Diagnose(action, arg)), actionFont));
+            comps.Add(Coloured(new LinkTextComponent(capi, (fix ? Glyphs.Fix : Glyphs.Ask) + Glyphs.Safe(label), actionFont, _ => Diagnose(action, arg)), actionFont));
         }
 
         void Toggle(int index)

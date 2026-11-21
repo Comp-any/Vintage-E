@@ -13,6 +13,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
 
 ### Fixed
 - **The Arcane Tablet's window was titled "Transmutation Tablet".** It says Arcane Tablet now.
+- **White boxes left of the doctor's cards**, and in other places where a window used a symbol (arrows, ✓ ⚠, the small triangles on things that open). On Linux and macOS the game draws a character its font doesn't have as an empty box; Windows fills it in from another font, which is why it went unnoticed. The triangle on a doctor card is drawn now, and in the doctor and report windows every symbol the font on your computer can't draw is swapped for a plain one that says the same ("->", "OK", "!"). Where the font has them, nothing changes.
 
 ## 1.26.2 — 2026-11-22
 
