@@ -1820,8 +1820,40 @@ namespace VintageE
             Check(problems.Count == 0, "Ancient Armory with nothing loaded: admins are told the mod, its file and the reason, players the mod; nothing is said otherwise"
                 + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
 
+            // 1.25.4: a player's own copy of the mod (the server's is fine, theirs gave their game no files).
+            var F = new System.Func<bool, bool, bool?, bool, bool, AncientArmoryCheck.Finding>(AncientArmoryCheck.JudgeHere);
+            Check(F(false, true, false, true, false) == AncientArmoryCheck.Finding.NotInstalled
+                && F(true, false, false, true, false) == AncientArmoryCheck.Finding.NotInstalled
+                && F(true, true, true, true, false) == AncientArmoryCheck.Finding.Loaded
+                && F(true, true, false, true, false) == AncientArmoryCheck.Finding.NothingLoadedBackslashZip
+                && F(true, true, false, false, false) == AncientArmoryCheck.Finding.NothingLoaded
+                && F(true, true, null, true, false) == AncientArmoryCheck.Finding.NothingLoadedBackslashZip
+                && F(true, true, null, true, true) == AncientArmoryCheck.Finding.Loaded
+                && F(true, true, null, false, false) == AncientArmoryCheck.Finding.Loaded,
+                "a player's own copy of Ancient Armory: nothing is said unless the server has its items and this computer's copy has no assets folder (or, where that can't be told, a backslash zip off Windows)");
+            var hereProblems = new List<string>();
+            foreach (var finding in new[] { AncientArmoryCheck.Finding.NothingLoaded, AncientArmoryCheck.Finding.NothingLoadedBackslashZip })
+            {
+                string text = AncientArmoryCheck.Message(new AncientArmoryCheck.Result { Here = true, Finding = finding, ModName = "Test Armory", FileName = "TestArmory_1.0.0.zip" }, "en", false);
+                if (string.IsNullOrEmpty(text) || text.StartsWith("vintagee:", StringComparison.Ordinal)) { hereProblems.Add(finding + " has no text"); continue; }
+                if (!text.Contains("Test Armory") || !text.Contains("TestArmory_1.0.0.zip") || !text.Contains("this computer")) hereProblems.Add(finding + " doesn't name the mod, its file and this computer");
+                if (text.IndexOf('<') >= 0 || text.IndexOf('>') >= 0 || text.Contains("{")) hereProblems.Add(finding + " would break in chat");
+            }
+            if (AncientArmoryCheck.Message(new AncientArmoryCheck.Result { Here = true, Finding = AncientArmoryCheck.Finding.Loaded }, "en", false) != null) hereProblems.Add("something is said when nothing is wrong");
+            Check(hereProblems.Count == 0, "a player whose own copy didn't load is told the mod, its file and that it is their computer" + (hereProblems.Count > 0 ? ": " + string.Join("; ", hereProblems) : ""));
+
             bool installed = AncientArmoryCheck.ModIds.Any(id => sapi.ModLoader.IsModEnabled(id));
             bool anyItems = sapi.World.Collectibles.Any(c => c?.Code?.Domain == AncientArmoryCheck.Domain);
+            // The game's own rule (an assets folder where it unpacked the mod), read for real: Vintage-E has one, and
+            // Ancient Armory has one exactly when its items loaded.
+            bool? ownAssets = AncientArmoryCheck.HasAssetsFolder(sapi.ModLoader.GetMod(VintageEModSystem.ModId));
+            Vintagestory.API.Common.Mod armoryMod = AncientArmoryCheck.ModIds.Where(id => sapi.ModLoader.IsModEnabled(id)).Select(id => sapi.ModLoader.GetMod(id)).FirstOrDefault();
+            bool? armoryAssets = armoryMod == null ? (bool?)null : AncientArmoryCheck.HasAssetsFolder(armoryMod);
+            Check(ownAssets == true && (armoryMod == null || armoryAssets == anyItems),
+                $"the assets folder the game looks for is found (Vintage-E: {ownAssets}; Ancient Armory: {(armoryMod == null ? "not installed" : armoryAssets + ", its items loaded: " + anyItems)})");
+            AncientArmoryCheck.Result here = AncientArmoryCheck.LookHere(sapi);
+            Check(here.Here && here.Finding == (installed && anyItems ? AncientArmoryCheck.Finding.Loaded : AncientArmoryCheck.Finding.NotInstalled),
+                "run on this server, the player's check finds nothing to say: " + here.Finding);
             AncientArmoryCheck.Result live = mod.ArmoryCheck;
             bool right = live != null && live.Finding == AncientArmoryCheck.Judge(installed, anyItems, live.Finding == AncientArmoryCheck.Finding.NothingLoadedBackslashZip);
             Check(right, "this server: Ancient Armory is " + (live == null ? "not looked at" : live.Finding.ToString())

@@ -55,6 +55,8 @@ namespace VintageE
         public EmcMappingReport LastReport { get; private set; }
         /// <summary>Server: whether Ancient Armory is installed with none of its items loaded (see <see cref="AncientArmoryCheck"/>). Null until the game runs.</summary>
         public AncientArmoryCheck.Result ArmoryCheck { get; private set; }
+        /// <summary>A player's game: the same for this computer's own copy of Ancient Armory. Null until a few seconds after joining.</summary>
+        public AncientArmoryCheck.Result ArmoryCheckHere { get; private set; }
         /// <summary>Other mods' crafting methods as last collected (game thread; mappings read it from any thread).</summary>
         public MethodSnapshot Methods { get; private set; } = MethodSnapshot.Empty;
         /// <summary>Mods that said their crafting methods changed (the id they sent, or "?") → how many times; and whether one did before the first mapping.</summary>
@@ -2527,6 +2529,16 @@ namespace VintageE
                     return TextCommandResult.Success();
                 });
             capi.Event.LevelFinalize += () => watchHud = new HudWatchIndicator(capi, this);
+            // Ancient Armory on the server, but this computer's own copy of it gave the game no files (1.25.4): said in
+            // this player's chat a few seconds after joining, below the server's own lines. See AncientArmoryCheck.
+            capi.Event.LevelFinalize += () => capi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "checking Ancient Armory's files on this computer", () =>
+            {
+                ArmoryCheckHere = AncientArmoryCheck.LookHere(capi);
+                string text = AncientArmoryCheck.Message(ArmoryCheckHere, null, admin: true);
+                if (string.IsNullOrEmpty(text)) return;
+                Mod.Logger.Warning("{0}", text);
+                capi.ShowChatMessage(text);
+            }), 5000);
 
             capi.Event.RegisterGameTickListener(Guard.Tick(Mod.Logger, "the Swiftwolf wind sound", WindTick), 250);
             OnEmcTableUpdated += () => ItemEmcGadget.SetDiviningDurability(capi.World, Emc);

@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.25.4 — 2026-11-21
+
+### Added
+- **The Ancient Armory notice, for a player's own computer.** 1.25.3 covers a server where Ancient Armory's items didn't load. The same broken zip on a Linux or macOS player's computer, on a server where Ancient Armory did load, leaves that player's game without the mod's looks, names and claymore swing. The game makes a swing's hit on the player's own computer at a frame of that animation, so there a claymore may not hit: Ancient Armory's and the matter claymores alike. The player's game now checks its own copy a few seconds after joining and says so in that player's chat, with the mod, its file, the reason and the fix. Nothing is said where the copy loaded, and nothing twice: if the server has none of the mod's items either, only the server's line is shown.
+
 ## 1.25.3 — 2026-11-21
 
 ### Added
