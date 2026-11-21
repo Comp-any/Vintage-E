@@ -322,7 +322,8 @@
           "z": -87
         },
         "scale": 0.88
-      }
+      },
+      "MetalVariantCode": "copper"
     },
     "*-morningstar": {
       "attachableToEntity": {
@@ -351,7 +352,8 @@
           "z": -87
         },
         "scale": 0.6
-      }
+      },
+      "MetalVariantCode": "copper"
     }
   },
   "tooltier": 6,

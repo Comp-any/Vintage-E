@@ -75,6 +75,7 @@ namespace VintageE
                 Check1211();
                 CheckSpeedups();
                 CheckStepAssist();
+                CheckQuiversAndSheaths();
                 CheckDiagnose();
                 CheckMatterTools();
                 CheckCraftingRoutes();
@@ -1652,6 +1653,53 @@ namespace VintageE
                 if (a.Cells[i]?.Collectible != b.Cells[i]?.Collectible || (a.Cells[i]?.StackSize ?? 0) != (b.Cells[i]?.StackSize ?? 0)) return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// 1.24.5: the matter weapons fit Quivers and Sheaths' sheaths and bow holders. That mod lets an item in by its
+        /// tags and draws the sheath's own hilt model, picked by InSheathVariantCode and coloured by MetalVariantCode.
+        /// </summary>
+        void CheckQuiversAndSheaths()
+        {
+            object registry = sapi.GetType().GetProperty("CollectibleTagRegistry")?.GetValue(sapi);
+            var names = registry?.GetType().GetMethod("SlowEnumerateTagNames");
+            HashSet<string> TagsOf(CollectibleObject c)
+            {
+                var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (c == null || names == null) return set;
+                if (names.Invoke(registry, new object[] { c.Tags }) is System.Collections.IEnumerable e) foreach (object n in e) set.Add(n?.ToString());
+                return set;
+            }
+            var expect = new (string code, string[] tags, string look, string metal)[]
+            {
+                ("vintagee:mattertool-dark-sword", new[] { "sword", "onehanded" }, "default", "blackbronze"),
+                ("vintagee:mattertool-red-sword", new[] { "sword", "onehanded" }, "default", "copper"),
+                ("vintagee:matterknife-dark", new[] { "knife" }, "knife-metal", "blackbronze"),
+                ("vintagee:matterknife-red", new[] { "knife" }, "knife-metal", "copper"),
+                ("vintagee:matterbow-dark", new[] { "bow" }, "recurve", null),
+                ("vintagee:matterbow-red", new[] { "bow" }, "recurve", null),
+                ("vintagee:mattertool-dark-axe", new[] { "tool-axe" }, null, "blackbronze"),
+                ("vintagee:mattertool-red-pickaxe", new[] { "tool-pickaxe" }, null, "copper"),
+                ("vintagee:redmattertool-katar", new[] { "tool-axe" }, null, "copper"),
+                ("vintagee:redmattertool-morningstar", new[] { "tool-pickaxe" }, null, "copper"),
+            };
+            var problems = new List<string>();
+            foreach (var (code, tags, look, metal) in expect)
+            {
+                CollectibleObject c = sapi.World.GetItem(new AssetLocation(code));
+                if (c == null) { problems.Add(code + " missing"); continue; }
+                if (names != null)
+                {
+                    HashSet<string> has = TagsOf(c);
+                    foreach (string t in tags) if (!has.Contains(t)) problems.Add($"{code} lacks tag {t} (has {string.Join(" ", has)})");
+                }
+                string gotLook = c.Attributes?["InSheathVariantCode"].AsString(), gotMetal = c.Attributes?["MetalVariantCode"].AsString();
+                if (look != null && gotLook != look) problems.Add($"{code} InSheathVariantCode {gotLook ?? "none"}");
+                if (metal != null && gotMetal != metal) problems.Add($"{code} MetalVariantCode {gotMetal ?? "none"}");
+            }
+            if (names == null) Line("  Quivers and Sheaths tags: the tag registry can't be read here, so only the looks were checked");
+            Check(problems.Count == 0, "matter swords, knives and bows carry the tags Quivers and Sheaths' sheaths and bow holders accept, and the hilt look and colour"
+                + (problems.Count > 0 ? ": " + string.Join("; ", problems) : ""));
         }
 
         /// <summary>1.24.3: the gem leggings' step assist leaves other mods' step height alone (XSkills' Steeplechaser).</summary>

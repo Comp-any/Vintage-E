@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.24.5 — 2026-11-21
+
+### Added
+- **Quivers and Sheaths support.** With that mod installed, the dark and red matter swords go in its sword sheaths, the matter knives in its knife sheaths and the matter bows in its bow holders; the matter axes and pickaxes, the Katar and the Morning Star already fitted its tool sheath. A sheathed weapon shows Quivers and Sheaths' own hilt, in black bronze for dark matter and copper for red matter, and the bows use its recurve bow look. Without Quivers and Sheaths this changes nothing. (The matter spears don't go in its javelin quivers, as the game's own spears don't.)
+
 ## 1.24.4 — 2026-11-21
 
 ### Fixed

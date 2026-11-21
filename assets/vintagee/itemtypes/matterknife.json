@@ -15,7 +15,8 @@
     "weapon-melee",
     "tool-knife",
     "tool-trimming",
-    "tool"
+    "tool",
+    "knife"
   ],
   "damagedby": [
     "blockbreaking",
@@ -183,7 +184,12 @@
       },
       "scale": 1
     },
-    "heldItemPitchFollow": 1
+    "heldItemPitchFollow": 1,
+    "InSheathVariantCode": "knife-metal",
+    "MetalVariantCodeByType": {
+      "*-dark*": "blackbronze",
+      "*": "copper"
+    }
   },
   "tooltierByType": {
     "*-dark": 5,

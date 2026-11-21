@@ -57,6 +57,13 @@
       "tool-trimming",
       "tool"
     ],
+    "*-sword": [
+      "tool",
+      "weapon",
+      "weapon-melee",
+      "sword",
+      "onehanded"
+    ],
     "*": [
       "tool"
     ]
@@ -1170,6 +1177,10 @@
           "z": -87
         },
         "scale": 0.88
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-shovel": {
@@ -1204,6 +1215,10 @@
           "z": -87
         },
         "scale": 0.88
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-axe": {
@@ -1238,6 +1253,10 @@
           "z": -87
         },
         "scale": 0.88
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-sword": {
@@ -1272,6 +1291,11 @@
           "z": -87
         },
         "scale": 0.88
+      },
+      "InSheathVariantCode": "default",
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-hoe": {
@@ -1306,6 +1330,10 @@
           "z": -90
         },
         "scale": 0.88
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-hammer": {
@@ -1340,6 +1368,10 @@
           "z": -87
         },
         "scale": 0.6
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     },
     "*-shears": {
@@ -1372,6 +1404,10 @@
           "z": -87
         },
         "scale": 0.88
+      },
+      "MetalVariantCodeByType": {
+        "*-dark*": "blackbronze",
+        "*": "copper"
       }
     }
   },

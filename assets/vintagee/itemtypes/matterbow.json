@@ -13,7 +13,8 @@
   "tags": [
     "weapon",
     "weapon-ranged",
-    "weapon-bow"
+    "weapon-bow",
+    "bow"
   ],
   "tool": "bow",
   "behaviors": [
@@ -202,7 +203,8 @@
       "damageTier": 1,
       "statModifier": {
         "rangedWeaponsAcc": 0.35
-      }
+      },
+      "InSheathVariantCode": "recurve"
     },
     "*-red": {
       "toolrackTransform": {
@@ -241,7 +243,8 @@
       "damageTier": 2,
       "statModifier": {
         "rangedWeaponsAcc": 0.45
-      }
+      },
+      "InSheathVariantCode": "recurve"
     }
   },
   "tooltierByType": {
