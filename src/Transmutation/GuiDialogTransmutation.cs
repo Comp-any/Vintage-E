@@ -108,10 +108,27 @@ namespace VintageE
 
         public override string ToggleKeyCombinationCode => null;
 
-        public GuiDialogTransmutation(ICoreClientAPI capi, VintageEModSystem mod, BlockPos tablePos) : base(capi)
+        /// <summary>
+        /// The tablet this window was opened from (1.26.5): its inventory's ID and its slot's number. The window stays
+        /// with it until it closes, wherever the hotbar's selection goes meanwhile.
+        /// </summary>
+        string openedInv;
+        int openedSlot = -1;
+        bool composedArcane;
+
+        /// <summary>The tablet the window is for: the one it was opened from while that slot holds a tablet, otherwise the one in the hand or the first carried.</summary>
+        ItemStack TabletNow() => IsTablet ? TabletMagnet.FindTablet(capi.World.Player, openedInv, openedSlot)?.Itemstack : null;
+
+        /// <param name="tabletSlot">The tablet that was right-clicked; without it (the key), the one in the hand or the first carried.</param>
+        public GuiDialogTransmutation(ICoreClientAPI capi, VintageEModSystem mod, BlockPos tablePos, ItemSlot tabletSlot = null) : base(capi)
         {
             this.mod = mod;
             this.tablePos = tablePos?.Copy();
+            if (tablePos == null)
+            {
+                ItemSlot opened = tabletSlot?.Itemstack?.Collectible is ItemTransmutationTablet ? tabletSlot : TabletMagnet.FindTablet(capi.World.Player);
+                TabletMagnet.Locate(opened, out openedInv, out openedSlot);
+            }
             string uid = capi.World.Player.PlayerUID;
             burnInv = new DisplayInventory(capi, "burn-" + uid, 1);
             learnInv = new DisplayInventory(capi, "learn-" + uid, 1);
@@ -130,12 +147,12 @@ namespace VintageE
             double width = Cols * slot;
             double top = GuiStyle.TitleBarHeight;
             CairoFont detail = CairoFont.WhiteDetailText();
-            // The tablet this window is for: the one in the hand, otherwise the first one carried.
-            ItemStack tabletNow = IsTablet ? TabletMagnet.FindTablet(capi.World.Player)?.Itemstack : null;
+            ItemStack tabletNow = TabletNow();
             // An Arcane Tablet adds a button for its crafting window (1.19.0), and has its own name in the title (1.26.3).
             // It goes by the tablet that was opened (1.26.5): until then an Arcane Tablet anywhere in the inventory
             // turned a plain Transmutation Tablet's window into the Arcane one.
             bool arcane = TabletLayout.Arcane(tabletNow);
+            composedArcane = arcane;
             // The filter (its mode button and its slots) is for a magnet: without one in the tablet it isn't shown.
             bool hasMagnet = IsTablet && TabletMagnet.GetMagnet(tabletNow, capi.World) != null;
 
@@ -467,7 +484,7 @@ namespace VintageE
         /// <summary>Shows the tablet's magnet and filter (the tablet's stored data is synced with the inventory).</summary>
         void RefreshMagnet(bool force = false)
         {
-            ItemStack tablet = TabletMagnet.FindTablet(capi.World.Player)?.Itemstack;
+            ItemStack tablet = TabletNow();
             ItemStack magnet = TabletMagnet.GetMagnet(tablet, capi.World);
             string[] filter = TabletMagnet.GetFilter(tablet);
             bool exclude = TabletMagnet.Excludes(tablet);
@@ -483,7 +500,7 @@ namespace VintageE
                 if (c != null) { try { shown = new ItemStack(c); } catch { /* no icon */ } }
                 filterInv[i].Itemstack = shown;
             }
-            if (exclude != composedExclude || (magnet != null) != composedMagnet)
+            if (exclude != composedExclude || (magnet != null) != composedMagnet || TabletLayout.Arcane(tablet) != composedArcane)
             {
                 // The button's label is drawn when composing, so draw the window again with the other label, a frame
                 // later: this can run from the search box's own text-changed callback.
@@ -527,7 +544,7 @@ namespace VintageE
 
         bool OnMagnetMode()
         {
-            mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetMode });
+            mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetMode, TabletInv = openedInv, TabletSlot = openedSlot + 1 });
             return true;
         }
 
@@ -559,14 +576,14 @@ namespace VintageE
 
             if (click.Inventory == magnetInv)
             {
-                mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetSwap });
+                mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetSwap, TabletInv = openedInv, TabletSlot = openedSlot + 1 });
                 return;
             }
 
             if (click.Inventory == filterInv)
             {
                 // An item on the cursor goes in the filter (it stays on the cursor); an empty cursor clears the slot.
-                mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetFilter, Mode = click.SlotId });
+                mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MagnetFilter, Mode = click.SlotId, TabletInv = openedInv, TabletSlot = openedSlot + 1 });
                 return;
             }
 

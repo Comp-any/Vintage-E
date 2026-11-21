@@ -3188,7 +3188,8 @@ namespace VintageE
             dialog.TryOpen();
         }
 
-        public void OpenTransmutationDialog(Vintagestory.API.MathTools.BlockPos tablePos)
+        /// <param name="tabletSlot">For a tablet: the one that was right-clicked, which the window stays with (1.26.5).</param>
+        public void OpenTransmutationDialog(Vintagestory.API.MathTools.BlockPos tablePos, ItemSlot tabletSlot = null)
         {
             if (Capi == null) return;
             if (transmutationDialog != null && transmutationDialog.IsOpened())
@@ -3197,7 +3198,7 @@ namespace VintageE
                 return;
             }
             transmutationDialog?.Dispose();
-            transmutationDialog = new GuiDialogTransmutation(Capi, this, tablePos);
+            transmutationDialog = new GuiDialogTransmutation(Capi, this, tablePos, tabletSlot);
             transmutationDialog.OnClosed += () =>
             {
                 SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.Close });

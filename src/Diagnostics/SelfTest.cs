@@ -1944,15 +1944,30 @@ namespace VintageE
             int tallHelp = TabletLayout.Rows(true, 1080, height), midHelp = TabletLayout.Rows(true, 800, height);
             Check(tall == 6 && small == 4 && tiny == TabletLayout.MinRows && tallHelp == 6 && midHelp == 4,
                 $"the tablet window fits the screen: all six rows where there is room, fewer on a small screen or with the explanations open ({tall}, {small}, {tiny}; with them {tallHelp}, {midHelp})");
-            // The window goes by the tablet that was opened, not by an Arcane Tablet somewhere else in the inventory.
+            // The window goes by the tablet that was opened: not by an Arcane Tablet somewhere else in the inventory, and
+            // not by where the hotbar's selection has gone since.
             Item plainTablet = sapi.World.GetItem(new AssetLocation("vintagee:transmutationtablet")), arcaneTablet = sapi.World.GetItem(new AssetLocation("vintagee:arcanetablet"));
             if (plainTablet != null && arcaneTablet != null)
             {
-                System.Func<Item, ItemSlot> slotOf = item => new DummySlot(item == null ? null : new ItemStack(item));
-                System.Func<Item, Item[], bool> arcaneWindow = (hand, carried) => TabletLayout.Arcane(TabletMagnet.PickTablet(slotOf(hand), carried.Select(slotOf))?.Itemstack);
-                Check(!arcaneWindow(plainTablet, new[] { arcaneTablet }) && arcaneWindow(arcaneTablet, new[] { plainTablet })
-                    && !arcaneWindow(null, new[] { plainTablet, arcaneTablet }) && arcaneWindow(null, new[] { arcaneTablet }) && !arcaneWindow(null, new Item[0]) && !TabletLayout.Arcane(null),
+                var bag = new DummyInventory(sapi, 4);
+                bag[0].Itemstack = new ItemStack(arcaneTablet);
+                bag[2].Itemstack = new ItemStack(plainTablet);
+                string bagId = bag.InventoryID;
+                System.Func<ItemSlot, string, int, bool> arcaneWindow = (hand, inv, id) => TabletLayout.Arcane(TabletMagnet.PickTablet(bag.Where(sl => sl.Itemstack != null), hand, inv, id)?.Itemstack);
+                bool located = TabletMagnet.Locate(bag[2], out string plainInv, out int plainId) && plainInv == bagId && plainId == 2;
+                bool loose = TabletMagnet.Locate(new DummySlot(new ItemStack(plainTablet)), out string noInv, out int noId) || noInv != null || noId != -1;
+                Check(located && !loose, $"the tablet a window was opened from is named by its inventory and slot ({plainInv}, {plainId})");
+                Check(!arcaneWindow(bag[2], null, -1) && arcaneWindow(bag[0], null, -1) && arcaneWindow(bag[1], null, -1) && !TabletLayout.Arcane(null),
                     "a Transmutation Tablet in the hand opens its own window even with an Arcane Tablet in the inventory; the Emc Craft button and the Arcane title are for the Arcane Tablet");
+                // Opened from slot 2 (the plain one), then the selection moves to the Arcane Tablet, or off the tablets.
+                bool stays = !arcaneWindow(bag[0], bagId, 2) && !arcaneWindow(bag[1], bagId, 2) && arcaneWindow(bag[2], bagId, 0);
+                // A place that holds no tablet (an empty slot, another inventory, the tablet taken out): back to the hand, then the first carried.
+                bool fallsBack = arcaneWindow(bag[0], bagId, 1) && !arcaneWindow(bag[2], bagId + "x", 0) && arcaneWindow(bag[0], bagId, 9);
+                bag[2].Itemstack = null;
+                fallsBack &= arcaneWindow(bag[1], bagId, 2);
+                bag[0].Itemstack = null;
+                fallsBack &= TabletMagnet.PickTablet(bag.Where(sl => sl.Itemstack != null), bag[1], bagId, 2) == null;
+                Check(stays && fallsBack, "the tablet window stays with the tablet it was opened from when the hotbar's selection moves, and goes by the hand again once that slot holds no tablet");
             }
             else Check(false, "the two tablets exist (vintagee:transmutationtablet, vintagee:arcanetablet)");
 

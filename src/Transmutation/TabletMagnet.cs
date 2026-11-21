@@ -102,19 +102,43 @@ namespace VintageE
         }
 
         /// <summary>The tablet the player is using: the one in their hand if it's a tablet, otherwise the first one they carry.</summary>
-        public static ItemSlot FindTablet(IPlayer player) => PickTablet(player?.InventoryManager?.ActiveHotbarSlot, EmcWallet.CarriedSlots(player));
+        public static ItemSlot FindTablet(IPlayer player) => FindTablet(player, null, -1);
 
-        /// <summary>The slot in the hand if it holds a tablet (plain or Arcane), otherwise the first carried slot that does.</summary>
-        public static ItemSlot PickTablet(ItemSlot hand, IEnumerable<ItemSlot> carried)
+        /// <summary>
+        /// The tablet a window is for (1.26.5): the one it was opened from, for as long as that slot holds a tablet,
+        /// otherwise as above. The hand alone isn't enough: the selected slot can change while the window is open,
+        /// and the window (its title, its Emc Craft button, its magnet) and the server would move to another tablet.
+        /// </summary>
+        public static ItemSlot FindTablet(IPlayer player, string invId, int slotId) =>
+            PickTablet(EmcWallet.CarriedSlots(player), player?.InventoryManager?.ActiveHotbarSlot, invId, slotId);
+
+        /// <summary>The carried slot with that place if it holds a tablet (plain or Arcane), otherwise the hand's if it does, otherwise the first carried one.</summary>
+        public static ItemSlot PickTablet(IEnumerable<ItemSlot> carried, ItemSlot hand, string invId = null, int slotId = -1)
         {
+            if (!string.IsNullOrEmpty(invId) && slotId >= 0 && carried != null)
+            {
+                foreach (ItemSlot s in carried)
+                {
+                    if (s?.Itemstack?.Collectible is ItemTransmutationTablet && s.Inventory?.InventoryID == invId && s.Inventory.GetSlotId(s) == slotId) return s;
+                }
+            }
             if (hand?.Itemstack?.Collectible is ItemTransmutationTablet) return hand;
             return carried?.FirstOrDefault(s => s?.Itemstack?.Collectible is ItemTransmutationTablet);
+        }
+
+        /// <summary>Where a slot is, to name it to the other side: its inventory's ID and its number in it. False for a slot in no inventory.</summary>
+        public static bool Locate(ItemSlot slot, out string invId, out int slotId)
+        {
+            invId = slot?.Inventory?.InventoryID;
+            slotId = invId == null ? -1 : slot.Inventory.GetSlotId(slot);
+            if (slotId < 0) invId = null;
+            return invId != null;
         }
 
         /// <summary>Handles the magnet-slot and filter clicks from the tablet window (server side).</summary>
         public static void OnRequest(VintageEModSystem mod, IServerPlayer player, TransmuteRequestPacket req, Action<string, string[]> fail)
         {
-            ItemSlot tabletSlot = FindTablet(player);
+            ItemSlot tabletSlot = FindTablet(player, req.TabletInv, req.TabletSlot - 1);
             if (tabletSlot == null) { fail("notablet", Array.Empty<string>()); return; }
             ItemStack tablet = tabletSlot.Itemstack;
             ItemSlot mouse = player.InventoryManager.MouseItemSlot;

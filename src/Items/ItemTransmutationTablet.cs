@@ -16,7 +16,7 @@ namespace VintageE
             handling = EnumHandHandling.PreventDefault;
             if (api is ICoreClientAPI)
             {
-                VintageEModSystem.Of(api).OpenTransmutationDialog(null);
+                VintageEModSystem.Of(api).OpenTransmutationDialog(null, slot);
             }
         }
 

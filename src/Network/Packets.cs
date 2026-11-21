@@ -115,6 +115,13 @@ namespace VintageE
         [ProtoMember(1)] public TransmuteAction Action;
         [ProtoMember(2)] public string Key;
         [ProtoMember(3)] public int Mode;
+        /// <summary>
+        /// The magnet requests (1.26.5): the tablet the window was opened from, as its inventory's ID and its slot's
+        /// number in it plus one (0 = not said, as from an older game: the server then takes the tablet in the hand).
+        /// Plus one because a 0 isn't sent at all.
+        /// </summary>
+        [ProtoMember(4)] public string TabletInv;
+        [ProtoMember(5)] public int TabletSlot;
     }
 
     /// <summary>Server → client outcome; ErrorCode maps to the lang key "vintagee:error-{code}".</summary>
