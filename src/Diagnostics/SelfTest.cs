@@ -1179,18 +1179,17 @@ namespace VintageE
             Check(onlyPine == null && pineClicked != null && pineClicked.Missing.Count > 0,
                 $"knowing only pine logs, Emc Craft doesn't fill the grid for the bow stave and names what is missing ({(pineClicked == null ? "?" : string.Join(", ", pineClicked.Missing))})");
 
-            // The same question for the game's other recipes that keep a tool (a sample spread over the list): what
-            // Emc Craft puts in the grid must make what was asked for, not another recipe's output.
+            // The same question for the game's other recipes (a sample spread over the whole list, recipes with a tool
+            // and without): what Emc Craft puts in the grid must make what was asked for, not another recipe's output.
             string[] toolbox = new[] { "game:saw-copper", "game:hammer-copper", "game:knife-generic-copper", "game:chisel-copper", "game:axe-felling-copper", "game:shears-copper",
                 "game:pickaxe-copper", "game:shovel-copper", "game:scythe-copper", "game:hoe-copper" }.Select(S).Where(st => st != null).Select(st => PlayerEmc.KeyOf(st.Collectible)).ToArray();
-            List<GridRecipe> withTool = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null
-                && r.Output.Code?.Domain == "game" && r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i))).ToList();
-            int step = Math.Max(1, withTool.Count / 300), tried = 0, skipped = 0;
+            List<GridRecipe> all = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null).ToList();
+            int step = Math.Max(1, all.Count / 2500), tried = 0, withTool = 0, skipped = 0;
             var wrong = new List<string>();
             var clock = System.Diagnostics.Stopwatch.StartNew();
-            for (int n = 0; n < withTool.Count && clock.ElapsedMilliseconds < 20000; n += step)
+            for (int n = 0; n < all.Count && clock.ElapsedMilliseconds < 15000; n += step)
             {
-                GridRecipe r = withTool[n];
+                GridRecipe r = all[n];
                 var keys = new List<string>(toolbox);
                 foreach (CraftingRecipeIngredient ing in r.ResolvedIngredients)
                 {
@@ -1199,12 +1198,13 @@ namespace VintageE
                 EmcCraft.Plan p = craft.MakePlan(r, keys.Distinct().ToArray(), null);
                 if (p.Missing.Count > 0 || p.NotMakeable.Count > 0) { skipped++; continue; }
                 tried++;
+                if (r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i))) withTool++;
                 GridRecipe found = GridProbe.Find(sapi.World, p.Cells);
-                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible) wrong.Add(r.Output.Code.Path + " made " + Made(found));
+                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible) wrong.Add(r.Output.Code + " made " + Made(found));
             }
-            Check(wrong.Count == 0 && tried > 20,
-                $"what Emc Craft puts in the grid makes what was asked for ({tried} of the game's {withTool.Count} recipes with a tool tried in {clock.ElapsedMilliseconds} ms; {skipped} skipped, an ingredient without a value or not one exact thing)"
-                + (wrong.Count > 0 ? "; made something else: " + string.Join(", ", wrong.Distinct().Take(14)) : ""));
+            Check(wrong.Count == 0 && tried > 100 && withTool > 20,
+                $"what Emc Craft puts in the grid makes what was asked for ({tried} of the {all.Count} grid recipes tried, {withTool} of them with a tool, in {clock.ElapsedMilliseconds} ms; {skipped} skipped, an ingredient without a value or not one exact thing)"
+                + (wrong.Count > 0 ? "; " + wrong.Count + " made something else: " + string.Join(", ", wrong.Distinct().Take(20)) : ""));
         }
 
         void CheckMatterTools()
