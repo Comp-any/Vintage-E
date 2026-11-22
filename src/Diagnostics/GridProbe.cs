@@ -5,9 +5,10 @@ using Vintagestory.API.Common;
 namespace VintageE
 {
     /// <summary>
-    /// What the game's crafting grid makes of what is in it, asked without a player. The game's own search
-    /// (InventoryCraftingGrid.FindMatchingRecipe, read from 1.22.7) asks which player owns the grid while it matches,
-    /// and the test server has none. The steps are the game's:
+    /// What the game's crafting grid makes of what is in it, asked without a grid or a player: Emc Craft asks before
+    /// it fills its grid (EmcCraft.LayOut, 1.26.6), and so do the tests, whose server has no player (the game's own
+    /// search, InventoryCraftingGrid.FindMatchingRecipe, read from 1.22.7, asks which player owns the grid while it
+    /// matches). The steps are the game's:
     /// <list type="number">
     /// <item>the candidates: every recipe with an ingredient that one of the stacks in the grid satisfies (the quick search);</item>
     /// <item>the shaped recipes among them, in order: the first that matches wins;</item>
@@ -29,6 +30,14 @@ namespace VintageE
 
         /// <summary>Whether the game's two matching methods were found (they aren't public).</summary>
         public static bool Ready => AtPosition != null && ShapeLess != null;
+
+        /// <summary>Whether the grid can be asked on this side: the methods were found and the game's recipe index has something in it.</summary>
+        public static bool Usable(IWorldAccessor world)
+        {
+            if (!Ready || world == null) return false;
+            try { return world.FastSearchRecipesByIngredient?.Count > 0; }
+            catch { return false; }
+        }
 
         /// <summary>The recipe the game's grid would pick for these cells (row by row, <paramref name="gridWidth"/> to a row), or null.</summary>
         public static GridRecipe Find(IWorldAccessor world, ItemStack[] cells, int gridWidth = 3)

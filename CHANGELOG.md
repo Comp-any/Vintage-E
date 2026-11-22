@@ -2,6 +2,18 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.6 — 2026-11-23
+
+### Fixed
+- **Emc Craft filled the grid for some recipes and nothing came out, or something else did.** It now asks the game's own recipe matching, before filling and before taking any EMC, whether the grid would make what you clicked:
+  - **The same things can be another recipe depending on where they lie.** A knife above a bear pelt is the game's fur boots; dividing the pelt (for its head) may lie any way round, so Emc Craft now lays it out another way that the game reads as the pelt recipe.
+  - **Recipes that need a filled bucket or bowl** (dough, an oil lamp from olive oil): Emc Craft can't fill containers and put an empty one in. It now says so and fills nothing. For the oil lamp it used to pick the oil recipe over the rendered fat one because an empty bucket is cheaper; it now takes the recipe it can actually fill.
+  - **Tools too weak for the recipe.** Breaking an anvil into ingots takes 1,000 durability or more off the chisel, and the game refuses a chisel that hasn't got it. Emc Craft now only makes a tool tough enough, passes over a carried tool too worn for the recipe (and makes one from EMC instead), and says so when nothing you've learned will do.
+  - Anything else the game wouldn't make from the fill is refused with a message naming what the grid would make instead. The handbook's Emc Craft button says "(by hand only)" for these.
+
+### Looked into: "making the long bow stave (saw + 2 logs) makes boards instead"
+- This is the game, with or without Vintage-E (checked on 1.22.7). The raw long bow stave needs the saw on top and two logs under it **in one column**, and only **oak, maple or walnut** logs. The game's "saw + log = boards" recipe adds up equal stacks, so it also takes a saw with two logs: laid out any other way, or with any other wood, the three make 12 boards. A matter saw behaves exactly like the game's saw here, and Emc Craft's fill for the bow stave makes the bow stave.
+
 ## 1.26.5 — 2026-11-22
 
 ### Fixed

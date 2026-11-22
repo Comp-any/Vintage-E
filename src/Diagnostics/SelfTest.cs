@@ -1179,13 +1179,74 @@ namespace VintageE
             Check(onlyPine == null && pineClicked != null && pineClicked.Missing.Count > 0,
                 $"knowing only pine logs, Emc Craft doesn't fill the grid for the bow stave and names what is missing ({(pineClicked == null ? "?" : string.Join(", ", pineClicked.Missing))})");
 
-            // The same question for the game's other recipes (a sample spread over the whole list, recipes with a tool
-            // and without): what Emc Craft puts in the grid must make what was asked for, not another recipe's output.
-            string[] toolbox = new[] { "game:saw-copper", "game:hammer-copper", "game:knife-generic-copper", "game:chisel-copper", "game:axe-felling-copper", "game:shears-copper",
-                "game:pickaxe-copper", "game:shovel-copper", "game:scythe-copper", "game:hoe-copper" }.Select(S).Where(st => st != null).Select(st => PlayerEmc.KeyOf(st.Collectible)).ToArray();
+            // 1.26.6: Emc Craft asks the game's matching before it fills the grid. Four recipes whose fill made nothing or
+            // something else until then (found by the sample below):
             List<GridRecipe> all = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null).ToList();
-            int step = Math.Max(1, all.Count / 2500), tried = 0, withTool = 0, skipped = 0;
+            string K(string code) { ItemStack st = S(code); return st == null ? "?" : PlayerEmc.KeyOf(st.Collectible); }
+            bool Uses(GridRecipe r, string path) => r.ResolvedIngredients.Any(i => i?.ResolvedItemStack?.Collectible?.Code?.Path == path);
+            string CellsOf(EmcCraft.Plan p) => p == null ? "no plan" : string.Join(",", Enumerable.Range(0, p.Cells.Length).Where(i => p.Cells[i] != null));
+            string Why(EmcCraft.Plan p) => p == null ? "no plan" : p.Missing.Count > 0 ? "not learned: " + string.Join(", ", p.Missing) : p.Unfit.Count > 0 ? "won't do as it is: " + string.Join(", ", p.Unfit)
+                : p.NotMakeable.Count > 0 ? "can't be made: " + string.Join(", ", p.NotMakeable) : p.WontCraft ? "the grid would make " + (p.GridMade?.Collectible?.Code?.Path ?? "nothing") : "fine";
+
+            // A knife above a bear pelt is the game's fur boots (a shaped recipe, tried first); dividing the pelt is shapeless, so it is laid out another way.
+            GridRecipe peltHead = all.FirstOrDefault(r => r.Output.Code.Path == "hide-pelt-bear-panda-head");
+            if (peltHead != null)
+            {
+                string[] peltKeys = { K("game:knife-generic-copper"), K("game:hide-pelt-bear-panda-complete") };
+                craft.CheckGrid = false;
+                var (_, asBefore, _, _) = craft.Choose(null, peltHead, peltKeys, nothingCarried, 1e9);
+                craft.CheckGrid = true;
+                var (_, peltPlan, peltClicked, _) = craft.Choose(null, peltHead, peltKeys, nothingCarried, 1e9);
+                Check(PlanMakes(asBefore) != "hide-pelt-bear-panda-head" && PlanMakes(peltPlan) == "hide-pelt-bear-panda-head" && CellsOf(peltPlan) != CellsOf(asBefore),
+                    $"Emc Craft lays a shapeless recipe out another way when the game would read the first as another recipe (dividing a bear pelt: cells {CellsOf(asBefore)} made {PlanMakes(asBefore)}, cells {CellsOf(peltPlan)} make {PlanMakes(peltPlan)}; {Why(peltPlan ?? peltClicked)})");
+            }
+            else Check(false, "the game has a recipe that divides a panda bear's pelt");
+
+            // Dough needs a bucket with water in it: Emc Craft can't fill containers, so it says so and fills nothing.
+            GridRecipe dough = all.FirstOrDefault(r => r.Output.Code.Path == "dough-rice" && Uses(r, "woodbucket"));
+            if (dough != null)
+            {
+                var (_, doughPlan, doughClicked, _) = craft.Choose(null, dough, new[] { K("game:woodbucket"), K("game:flour-rice") }, nothingCarried, 1e9);
+                Check(doughPlan == null && doughClicked != null && doughClicked.Missing.Count == 0 && (doughClicked.Unfit.Count > 0 || doughClicked.WontCraft),
+                    $"Emc Craft doesn't fill the grid for a recipe that needs a filled bucket (rice dough: {Why(doughClicked)})");
+            }
+            else Check(false, "the game has a recipe for rice dough with a bucket");
+
+            // An oil lamp: from rendered fat, or from olive oil in a bucket or bowl. The empty bucket was the cheaper plan and was picked; now the fat recipe is.
+            GridRecipe lampByOil = all.FirstOrDefault(r => r.Output.Code.Path == "oillamp-blue-up" && Uses(r, "woodbucket"));
+            if (lampByOil != null)
+            {
+                var (lampRecipe, lampPlan, lampClicked, _) = craft.Choose(null, lampByOil, new[] { K("game:oillamp-genie-blue-fired"), K("game:woodbucket"), K("game:fat-rendered") }, nothingCarried, 1e9);
+                Check(lampPlan != null && lampRecipe != lampByOil && Uses(lampRecipe, "fat-rendered") && PlanMakes(lampPlan) == "oillamp-blue-up",
+                    $"asked for an oil lamp through the olive oil recipe, Emc Craft takes the recipe it can fill (rendered fat) and makes {PlanMakes(lampPlan)} (the oil recipe: {Why(lampClicked)})");
+            }
+            else Check(false, "the game has a recipe for an oil lamp from oil in a bucket");
+
+            // Breaking a tin bronze anvil into ingots takes 1,000 durability off the chisel: a copper chisel hasn't got it.
+            GridRecipe ingots = all.FirstOrDefault(r => r.Output.Code.Path == "ingot-tinbronze" && Uses(r, "anvil-tinbronze"));
+            if (ingots != null)
+            {
+                var (_, weakPlan, weakClicked, _) = craft.Choose(null, ingots, new[] { K("game:chisel-copper"), K("game:anvil-tinbronze") }, nothingCarried, 1e9);
+                var (_, toughPlan, toughClicked, _) = craft.Choose(null, ingots, new[] { K("game:chisel-copper"), K("game:chisel-steel"), K("game:anvil-tinbronze") }, nothingCarried, 1e9);
+                string toughTool = toughPlan?.Cells.FirstOrDefault(c => c != null && c.Attributes.GetString(EmcCraft.MadeFromEmc) != null)?.Collectible.Code.Path;
+                var wornChisel = S("game:chisel-steel");
+                wornChisel?.Attributes.SetInt("durability", 5);
+                var (_, wornPlan, _, _) = craft.Choose(null, ingots, new[] { K("game:chisel-steel"), K("game:anvil-tinbronze") }, new List<ItemSlot> { new DummySlot(wornChisel) }, 1e9);
+                Check(weakPlan == null && weakClicked != null && (weakClicked.Unfit.Count > 0 || weakClicked.WontCraft) && PlanMakes(toughPlan) == "ingot-tinbronze" && toughTool == "chisel-steel"
+                      && PlanMakes(wornPlan) == "ingot-tinbronze" && wornPlan.FromInventory.All(sl => sl == null),
+                    $"Emc Craft only takes a tool tough enough for the recipe (ingots from a tin bronze anvil: with a copper chisel, {Why(weakClicked)}; with a steel one learned too it makes {PlanMakes(toughPlan)} with the {toughTool}; "
+                    + $"a carried chisel with 5 durability left is passed over for one made from EMC: {PlanMakes(wornPlan)}; {Why(toughPlan ?? toughClicked)})");
+            }
+            else Check(false, "the game has a recipe that breaks a tin bronze anvil into ingots");
+
+            // The same question for a sample spread over all of the game's grid recipes, with a tool and without: what
+            // Emc Craft would put in the grid makes what was asked for, or it refuses.
+            string[] toolbox = new[] { "game:saw-copper", "game:hammer-copper", "game:knife-generic-copper", "game:chisel-copper", "game:axe-felling-copper", "game:shears-copper",
+                "game:pickaxe-copper", "game:shovel-copper", "game:scythe-copper", "game:hoe-copper" }.Select(K).Where(k => k != "?").ToArray();
+            int step = Math.Max(1, all.Count / 2500), tried = 0, withTool = 0, skipped = 0, made = 0, moved = 0, unfit = 0, wont = 0;
             var wrong = new List<string>();
+            var unfitSeen = new List<string>();
+            var wontSeen = new List<string>();
             var clock = System.Diagnostics.Stopwatch.StartNew();
             for (int n = 0; n < all.Count && clock.ElapsedMilliseconds < 15000; n += step)
             {
@@ -1195,26 +1256,23 @@ namespace VintageE
                 {
                     if (ing?.ResolvedItemStack?.Collectible != null) keys.Add(PlayerEmc.KeyOf(ing.ResolvedItemStack.Collectible));
                 }
+                // This recipe's own plan (Choose would take a cheaper recipe that makes the same thing).
                 EmcCraft.Plan p = craft.MakePlan(r, keys.Distinct().ToArray(), null);
                 if (p.Missing.Count > 0 || p.NotMakeable.Count > 0) { skipped++; continue; }
                 tried++;
                 if (r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i))) withTool++;
+                if (p.Unfit.Count > 0) { unfit++; if (unfitSeen.Count < 4) unfitSeen.Add(r.Output.Code.Path + ": " + string.Join(", ", p.Unfit)); continue; }
+                ItemStack[] first = p.Cells;
+                if (!craft.LayOut(r, p)) { wont++; if (wontSeen.Count < 4) wontSeen.Add(r.Output.Code.Path + " would be " + (p.GridMade?.Collectible?.Code?.Path ?? "nothing")); continue; }
+                if (!ReferenceEquals(first, p.Cells)) moved++;
                 GridRecipe found = GridProbe.Find(sapi.World, p.Cells);
-                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible)
-                {
-                    wrong.Add(r.Output.Code + " made " + Made(found));
-                    if (wrong.Count <= 12)
-                    {
-                        string Describe(GridRecipe g) => g == null ? "nothing" : $"{g.Output?.Code} ({g.Name}, {(g.Shapeless ? "shapeless" : "shaped")} {g.Width}x{g.Height} \"{g.IngredientPattern}\")";
-                        string cellsText = string.Join(" | ", p.Cells.Select((c, at) => c == null ? null : at + ":" + c.StackSize + "x" + c.Collectible.Code + (c.Attributes.Count > 0 ? c.Attributes.ToJsonToken() : "")).Where(t => t != null));
-                        string ingredients = string.Join(" | ", r.ResolvedIngredients.Select(i => i == null ? "_" : i.Quantity + "x" + i.Code + (EmcCraft.Kept(i) ? " kept" : "")
-                            + (i.RecipeAttributes != null ? " recipeAttributes " + i.RecipeAttributes : "") + (i.Attributes != null ? " attributes " + i.Attributes : "")));
-                        Line($"  grid check: asked {Describe(r)}; ingredients {ingredients}; cells {cellsText}; the game found {Describe(found)}");
-                    }
-                }
+                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible) wrong.Add(r.Output.Code + " made " + Made(found));
+                else made++;
             }
-            Check(wrong.Count == 0 && tried > 100 && withTool > 20,
-                $"what Emc Craft puts in the grid makes what was asked for ({tried} of the {all.Count} grid recipes tried, {withTool} of them with a tool, in {clock.ElapsedMilliseconds} ms; {skipped} skipped, an ingredient without a value or not one exact thing)"
+            Check(wrong.Count == 0 && made > 100 && withTool > 20,
+                $"what Emc Craft puts in the grid makes what was asked for ({tried} of the {all.Count} grid recipes tried, {withTool} of them with a tool, in {clock.ElapsedMilliseconds} ms: {made} make it, {moved} of those after another layout; "
+                + $"{unfit} refused for an ingredient that won't do as it is ({string.Join("; ", unfitSeen)}); {wont} refused because the grid would make something else ({string.Join("; ", wontSeen)}); "
+                + $"{skipped} skipped, an ingredient without a value or not one exact thing)"
                 + (wrong.Count > 0 ? "; " + wrong.Count + " made something else: " + string.Join(", ", wrong.Distinct().Take(20)) : ""));
         }
 

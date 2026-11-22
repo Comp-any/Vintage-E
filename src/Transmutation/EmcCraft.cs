@@ -153,6 +153,21 @@ namespace VintageE
             public List<string> Missing = new List<string>();
             /// <summary>Ingredients that are known but can't be made from EMC (no value, no-transmute).</summary>
             public List<string> NotMakeable = new List<string>();
+            /// <summary>
+            /// Ingredients that are known and could be made, but not the way this recipe needs them (1.26.6): the game
+            /// asks each stack whether it will do (CollectibleObject.MatchesForCrafting), and says no to a bucket or bowl
+            /// that should hold something (dough, an oil lamp from olive oil) and to a tool with less durability than the
+            /// recipe takes off it (breaking an anvil into ingots takes 1,000 and more from the chisel).
+            /// </summary>
+            public List<string> Unfit = new List<string>();
+            /// <summary>
+            /// Set by <see cref="Choose"/>: everything could be supplied, but the game's grid wouldn't make the recipe's
+            /// output from it, however it was laid out. <see cref="GridMade"/> is what it would make instead (null: nothing).
+            /// </summary>
+            public bool WontCraft;
+            public ItemStack GridMade;
+            /// <summary>Whether every ingredient could be supplied.</summary>
+            public bool Complete => Missing.Count == 0 && NotMakeable.Count == 0 && Unfit.Count == 0;
         }
 
         /// <summary>
@@ -181,7 +196,8 @@ namespace VintageE
                     bool kept = Kept(ing);
                     if (kept)
                     {
-                        ItemSlot own = carriedList.FirstOrDefault(s => !usedSlots.Contains(s) && ing.SatisfiesAsIngredient(s.Itemstack, false));
+                        // A carried tool too worn for this recipe is passed over (the game would refuse it); one is made from EMC instead.
+                        ItemSlot own = carriedList.FirstOrDefault(s => !usedSlots.Contains(s) && ing.SatisfiesAsIngredient(s.Itemstack, false) && Fits(s.Itemstack, recipe, ing));
                         if (own != null)
                         {
                             usedSlots.Add(own);
@@ -196,12 +212,13 @@ namespace VintageE
                     if (!cache.TryGetValue(ing, out ItemStack pick))
                     {
                         knownStacks ??= KnownStacks(known);
-                        pick = Cheapest(ing, knownStacks, out bool anyKnown, kept && toolsByWear);
+                        pick = Cheapest(ing, knownStacks, out bool anyKnown, kept && toolsByWear, recipe, out bool anyUnfit);
                         cache[ing] = pick;
                         if (pick == null)
                         {
                             string name = IngredientName(ing);
-                            if (anyKnown) { if (!plan.NotMakeable.Contains(name)) plan.NotMakeable.Add(name); }
+                            if (anyUnfit) { if (!plan.Unfit.Contains(name)) plan.Unfit.Add(name); }
+                            else if (anyKnown) { if (!plan.NotMakeable.Contains(name)) plan.NotMakeable.Add(name); }
                             else if (!plan.Missing.Contains(name)) plan.Missing.Add(name);
                             continue;
                         }
@@ -307,9 +324,21 @@ namespace VintageE
             return value * cost / remaining;
         }
 
-        ItemStack Cheapest(CraftingRecipeIngredient ing, KnownSet knownStacks, out bool anyKnown, bool byWear = false)
+        /// <summary>
+        /// The game's own second question about a stack for an ingredient, after "is it the right thing": will it do
+        /// for this recipe as it is? (Enough durability left for a kept tool; the right contents for a container.)
+        /// </summary>
+        public static bool Fits(ItemStack stack, GridRecipe recipe, CraftingRecipeIngredient ing)
+        {
+            if (stack?.Collectible == null || recipe == null || ing == null) return true;
+            try { return stack.Collectible.MatchesForCrafting(stack, recipe, ing); }
+            catch { return true; } // an item that can't answer: the grid check in Choose decides
+        }
+
+        ItemStack Cheapest(CraftingRecipeIngredient ing, KnownSet knownStacks, out bool anyKnown, bool byWear, GridRecipe recipe, out bool anyUnfit)
         {
             anyKnown = false;
+            anyUnfit = false;
             ItemStack best = null;
             double bestValue = double.MaxValue, bestPrice = double.MaxValue;
             IList<ItemStack> candidates = RememberMatches ? (IList<ItemStack>)MatchesFor(ing, knownStacks) : knownStacks.Stacks;
@@ -321,6 +350,7 @@ namespace VintageE
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
                 double price = mod.Emc.GetValue(s);
                 if (price <= 0) continue;
+                if (!Fits(s, recipe, ing)) { anyUnfit = true; continue; }
                 double v = byWear ? WearCost(s, ing) : price;
                 // Equal wear: the cheaper one to make, so less EMC is tied up while the window is open.
                 if (v > bestValue || (v == bestValue && price >= bestPrice)) continue;
@@ -470,8 +500,15 @@ namespace VintageE
             if (plan == null)
             {
                 if (cheapestUnaffordable != null) { Refuse(player, packet, clicked, "notenoughemc", EmcFormat.Format(cheapestUnaffordable.Cost), EmcFormat.Format(emc)); return; }
+                // The clicked recipe itself may not have been planned (one this player can't use, with others that make the same).
+                clickedPlan ??= MakePlan(clicked, known, carried);
                 if (clickedPlan.Missing.Count > 0) { Refuse(player, packet, clicked, "emccraft-missing", string.Join(", ", clickedPlan.Missing)); return; }
-                Refuse(player, packet, clicked, "emccraft-notmakeable", string.Join(", ", clickedPlan.NotMakeable));
+                if (clickedPlan.Unfit.Count > 0) { Refuse(player, packet, clicked, "emccraft-unfit", string.Join(", ", clickedPlan.Unfit)); return; }
+                if (clickedPlan.NotMakeable.Count > 0) { Refuse(player, packet, clicked, "emccraft-notmakeable", string.Join(", ", clickedPlan.NotMakeable)); return; }
+                // Everything could be supplied, but the game's grid wouldn't make it from that: nothing is filled or paid for.
+                string wanted = clicked.Output?.ResolvedItemStack?.GetName() ?? clicked.Output?.Code?.ToString() ?? "?";
+                if (clickedPlan.GridMade != null) Refuse(player, packet, clicked, "emccraft-wontcraft-other", wanted, clickedPlan.GridMade.GetName());
+                else Refuse(player, packet, clicked, "emccraft-wontcraft", wanted);
                 return;
             }
 
@@ -538,11 +575,17 @@ namespace VintageE
             {
                 Plan p = MakePlan(r, known, carried, toolsByWear: true);
                 if (r == clicked) clickedPlan = p;
-                if (p.Missing.Count > 0 || p.NotMakeable.Count > 0) continue;
+                if (!p.Complete) continue;
                 if (p.Cost > emc + 1e-9)
                 {
                     Plan p2 = MakePlan(r, known, carried, toolsByWear: false);
-                    if (p2.Cost <= emc + 1e-9) p = p2;
+                    if (p2.Complete && p2.Cost <= emc + 1e-9) p = p2;
+                }
+                // Would the game's grid make this from it? If not, this recipe is out (another that makes the same may do).
+                if (!LayOut(r, p))
+                {
+                    if (r == clicked) clickedPlan = p;
+                    continue;
                 }
                 double per = p.NetCost / Math.Max(1, r.Output?.Quantity ?? 1);
                 if (p.Cost > emc + 1e-9)
@@ -556,6 +599,70 @@ namespace VintageE
                 }
             }
             return (bestRecipe, best, clickedPlan, best == null ? out_ : null);
+        }
+
+        /// <summary>When false, a plan isn't checked against the game's grid (as before 1.26.6; for the tests' comparison).</summary>
+        public bool CheckGrid = true;
+
+        /// <summary>Other places for a shapeless recipe's stacks (the first, second... stack goes to the first, second... cell listed).</summary>
+        static readonly int[][] OtherLayouts =
+        {
+            new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, // along the rows
+            new[] { 0, 3, 6, 1, 4, 7, 2, 5, 8 }, // down the columns
+            new[] { 8, 7, 6, 5, 4, 3, 2, 1, 0 }, // along the rows, last first
+            new[] { 8, 5, 2, 7, 4, 1, 6, 3, 0 }, // down the columns, last first
+            new[] { 0, 4, 8, 2, 6, 1, 3, 5, 7 }, // spread out: the corners and the middle first
+            new[] { 2, 4, 6, 0, 8, 1, 3, 5, 7 },
+        };
+
+        bool MakesIt(GridRecipe recipe, ItemStack[] cells, out GridRecipe found)
+        {
+            found = GridProbe.Find(api.World, cells);
+            ItemStack made = found?.Output?.ResolvedItemStack, wanted = recipe.Output?.ResolvedItemStack;
+            return made != null && wanted != null && made.Collectible == wanted.Collectible && made.Equals(api.World, wanted, GlobalConstants.IgnoredStackAttributes);
+        }
+
+        /// <summary>
+        /// Checks a complete plan against the game's own recipe search (1.26.6): put in the grid like this, would it make
+        /// the recipe's output? The game tries shaped recipes before shapeless ones, and a shapeless recipe adds up equal
+        /// stacks, so the same things can make something else depending on where they lie (a knife above a bear pelt
+        /// is fur boots, a knife beside it divides the pelt). A shapeless recipe may lie anywhere, so other layouts
+        /// are tried for it. When nothing works the plan is marked <see cref="Plan.WontCraft"/>.
+        /// True too when the game can't be asked (its matching wasn't found, or this side has no recipe index).
+        /// </summary>
+        public bool LayOut(GridRecipe recipe, Plan plan)
+        {
+            if (!CheckGrid || recipe?.Output?.ResolvedItemStack == null || !GridProbe.Usable(api.World)) return true;
+            try
+            {
+                if (MakesIt(recipe, plan.Cells, out GridRecipe first)) return true;
+                if (recipe.Shapeless)
+                {
+                    int[] filled = Enumerable.Range(0, plan.Cells.Length).Where(i => plan.Cells[i] != null).ToArray();
+                    foreach (int[] layout in OtherLayouts)
+                    {
+                        var cells = new ItemStack[plan.Cells.Length];
+                        var from = new ItemSlot[plan.FromInventory.Length];
+                        for (int k = 0; k < filled.Length; k++)
+                        {
+                            cells[layout[k]] = plan.Cells[filled[k]];
+                            from[layout[k]] = plan.FromInventory[filled[k]];
+                        }
+                        if (!MakesIt(recipe, cells, out _)) continue;
+                        plan.Cells = cells;
+                        plan.FromInventory = from;
+                        return true;
+                    }
+                }
+                plan.WontCraft = true;
+                plan.GridMade = first?.Output?.ResolvedItemStack;
+                return false;
+            }
+            catch (Exception e)
+            {
+                api.Logger.Warning("Vintage-E: Emc Craft: asking the game's grid about {0}: {1}", recipe.Output?.Code, e.Message);
+                return true; // as before 1.26.6
+            }
         }
 
         /// <summary>The recipe the client asked for: by its place in the list when that still matches, else by name and output.</summary>
@@ -593,6 +700,7 @@ namespace VintageE
                 if (plan != null) return Lang.Get("vintagee:emccraft-button-cost", name, EmcFormat.Format(plan.NetCost));
                 if (tooDear != null) return Lang.Get("vintagee:emccraft-button-dear", name, EmcFormat.Format(tooDear.NetCost), EmcFormat.Format(tooDear.Cost));
                 if (clickedPlan?.Missing.Count > 0) return Lang.Get("vintagee:emccraft-button-missing", name, clickedPlan.Missing.Count);
+                if (clickedPlan != null && (clickedPlan.Unfit.Count > 0 || clickedPlan.WontCraft)) return Lang.Get("vintagee:emccraft-button-byhand", name);
                 return Lang.Get("vintagee:emccraft-button-cant", name);
             }
             catch { return name; }
