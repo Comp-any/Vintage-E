@@ -84,6 +84,7 @@ namespace VintageE
                 CheckDiagnose();
                 CheckDoctorHandover();
                 CheckMatterTools();
+                CheckGridOutcome();
                 CheckCraftingRoutes();
                 CheckMethods();
                 IBlockAccessor ba = sapi.World.BlockAccessor;
@@ -1129,6 +1130,83 @@ namespace VintageE
         }
 
         /// <summary>1.20.0: matter versions of the game's knife, saw, chisel, scythe, prospecting pick, smithing hammer, spear and bow.</summary>
+        /// <summary>
+        /// A player's report (2026-11-22): "making the long bow stave (saw + 2 logs) makes planks instead". What the
+        /// game's grid makes of a saw and two logs, with the game's saw and a matter saw, laid out by hand and by Emc Craft.
+        /// </summary>
+        void CheckGridOutcome()
+        {
+            Check(GridProbe.Ready, "the game's recipe matching can be asked what a grid makes (MatchesAtPosition, MatchesShapeLess)");
+            if (!GridProbe.Ready) return;
+            ItemStack S(string code)
+            {
+                var loc = new AssetLocation(code);
+                CollectibleObject c = (CollectibleObject)sapi.World.GetItem(loc) ?? sapi.World.GetBlock(loc);
+                return c?.Code == null ? null : new ItemStack(c);
+            }
+            string Made(GridRecipe r) => r?.Output?.ResolvedItemStack?.Collectible?.Code?.Path ?? "nothing";
+            string Makes(params (int cell, ItemStack stack)[] put)
+            {
+                var cells = new ItemStack[9];
+                foreach (var (cell, stack) in put) cells[cell] = stack?.Clone();
+                return Made(GridProbe.Find(sapi.World, cells));
+            }
+            string PlanMakes(EmcCraft.Plan p) => p == null ? "no plan" : Made(GridProbe.Find(sapi.World, p.Cells));
+
+            ItemStack saw = S("game:saw-copper"), matterSaw = S("vintagee:mattersaw-dark"), oak = S("game:log-placed-oak-ud"), pine = S("game:log-placed-pine-ud");
+            Check(saw != null && matterSaw != null && oak != null && pine != null, "found a copper saw, the dark matter saw, an oak log and a pine log");
+            if (saw == null || matterSaw == null || oak == null || pine == null) return;
+
+            const string Stave = "bowstave-long-raw";
+            string column = Makes((0, saw), (3, oak), (6, oak)), inRow = Makes((0, saw), (1, oak), (2, oak)), pineColumn = Makes((0, saw), (3, pine), (6, pine)),
+                oneLog = Makes((0, saw), (3, oak)), matterColumn = Makes((0, matterSaw), (3, oak), (6, oak)), matterRow = Makes((0, matterSaw), (1, oak), (2, oak));
+            Check(column == Stave && oneLog == "plank-oak",
+                $"the game's grid, asked directly: a saw above two oak logs makes {column}, a saw and one log {oneLog} (the same three in a row: {inRow}; a saw above two pine logs: {pineColumn})");
+            Check(matterColumn == column && matterRow == inRow, $"a matter saw makes what the game's saw makes of two logs (in a column: {matterColumn}, in a row: {matterRow})");
+
+            GridRecipe stave = sapi.World.GridRecipes.FirstOrDefault(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.Code?.ToString() == "game:" + Stave);
+            EmcCraft craft = mod.EmcCrafting;
+            Check(stave != null && craft != null, "the game has a recipe for the raw long bow stave");
+            if (stave == null || craft == null) return;
+            string sawKey = PlayerEmc.KeyOf(saw.Collectible), oakKey = PlayerEmc.KeyOf(oak.Collectible), pineKey = PlayerEmc.KeyOf(pine.Collectible);
+            var nothingCarried = new List<ItemSlot>();
+            var ownSaw = new List<ItemSlot> { new DummySlot(matterSaw.Clone()) };
+            var (_, madeTool, _, _) = craft.Choose(null, stave, new[] { sawKey, oakKey, pineKey }, nothingCarried, 1e9);
+            var (_, ownTool, _, _) = craft.Choose(null, stave, new[] { oakKey, pineKey }, ownSaw, 1e9);
+            var (_, onlyPine, pineClicked, _) = craft.Choose(null, stave, new[] { sawKey, pineKey }, nothingCarried, 1e9);
+            Check(PlanMakes(madeTool) == Stave && PlanMakes(ownTool) == Stave && ownTool.FromInventory.Any(sl => sl != null),
+                $"what Emc Craft puts in the grid for the raw long bow stave makes it (with a saw made from EMC: {PlanMakes(madeTool)}; with the player's own matter saw: {PlanMakes(ownTool)})");
+            Check(onlyPine == null && pineClicked != null && pineClicked.Missing.Count > 0,
+                $"knowing only pine logs, Emc Craft doesn't fill the grid for the bow stave and names what is missing ({(pineClicked == null ? "?" : string.Join(", ", pineClicked.Missing))})");
+
+            // The same question for the game's other recipes that keep a tool (a sample spread over the list): what
+            // Emc Craft puts in the grid must make what was asked for, not another recipe's output.
+            string[] toolbox = new[] { "game:saw-copper", "game:hammer-copper", "game:knife-generic-copper", "game:chisel-copper", "game:axe-felling-copper", "game:shears-copper",
+                "game:pickaxe-copper", "game:shovel-copper", "game:scythe-copper", "game:hoe-copper" }.Select(S).Where(st => st != null).Select(st => PlayerEmc.KeyOf(st.Collectible)).ToArray();
+            List<GridRecipe> withTool = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null
+                && r.Output.Code?.Domain == "game" && r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i))).ToList();
+            int step = Math.Max(1, withTool.Count / 300), tried = 0, skipped = 0;
+            var wrong = new List<string>();
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            for (int n = 0; n < withTool.Count && clock.ElapsedMilliseconds < 20000; n += step)
+            {
+                GridRecipe r = withTool[n];
+                var keys = new List<string>(toolbox);
+                foreach (CraftingRecipeIngredient ing in r.ResolvedIngredients)
+                {
+                    if (ing?.ResolvedItemStack?.Collectible != null) keys.Add(PlayerEmc.KeyOf(ing.ResolvedItemStack.Collectible));
+                }
+                EmcCraft.Plan p = craft.MakePlan(r, keys.Distinct().ToArray(), null);
+                if (p.Missing.Count > 0 || p.NotMakeable.Count > 0) { skipped++; continue; }
+                tried++;
+                GridRecipe found = GridProbe.Find(sapi.World, p.Cells);
+                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible) wrong.Add(r.Output.Code.Path + " made " + Made(found));
+            }
+            Check(wrong.Count == 0 && tried > 20,
+                $"what Emc Craft puts in the grid makes what was asked for ({tried} of the game's {withTool.Count} recipes with a tool tried in {clock.ElapsedMilliseconds} ms; {skipped} skipped, an ingredient without a value or not one exact thing)"
+                + (wrong.Count > 0 ? "; made something else: " + string.Join(", ", wrong.Distinct().Take(14)) : ""));
+        }
+
         void CheckMatterTools()
         {
             var expected = new (string code, EnumTool tool, string cls)[]
