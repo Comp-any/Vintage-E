@@ -53,6 +53,7 @@ jobs:
       EXTRA_MOD_URLS: ${{ inputs.extraModUrls || '' }}
       KEEP_ZIPS: ${{ inputs.keepZips || 'false' }}
       DOCTOR: ${{ inputs.doctor || 'false' }}
+      DOCTOR_TOKEN: ${{ secrets.DOCTOR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -95,8 +96,9 @@ jobs:
           mkdir -p "$data/Mods" "$data/ModConfig"
           cp -r bin/Release/Mods/vintagee "$data/Mods/"
           # Vintage Doctor, when asked for: with it installed Vintage-E hands its doctor over, and the self-test uses /doctor.
-          # (Its repository is private, so a copy of its release zip is kept in tools/vendor/vintagedoctor for this test only.)
-          if [ "$DOCTOR" = "true" ]; then cp tools/vendor/vintagedoctor/*.zip "$data/Mods/" && echo "added Vintage Doctor: $(ls tools/vendor/vintagedoctor)"; fi
+          # The newest release when the DOCTOR_TOKEN secret can read its private repository, else the copy kept in
+          # tools/vendor/vintagedoctor (.github/scripts/get-doctor.sh; analysis/doctor-version.txt says which).
+          if [ "$DOCTOR" = "true" ]; then vd=$(DOCTOR_NOTE=analysis/doctor-version.txt bash .github/scripts/get-doctor.sh); [ -n "$vd" ] && cp "$vd" "$data/Mods/" && echo "added Vintage Doctor: $(basename "$vd")"; fi
           # The Mod DB's most-downloaded content mods, when asked for.
           if [ -n "$TOP_MODS" ]; then
             python3 tools/ci_top_mods.py "$TOP_MODS" "$VS_VERSION" topmods.txt
