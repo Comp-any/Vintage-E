@@ -1238,9 +1238,27 @@ namespace VintageE
                     + $"a carried chisel with 5 durability left is passed over for one made from EMC: {PlanMakes(wornPlan)}; {Why(toughPlan ?? toughClicked)})");
             }
             else Check(false, "the game has a recipe that breaks a tin bronze anvil into ingots");
+        }
 
-            // The same question for a sample spread over all of the game's grid recipes, with a tool and without: what
-            // Emc Craft would put in the grid makes what was asked for, or it refuses.
+        /// <summary>
+        /// The same question as <see cref="CheckGridOutcome"/> for a sample spread over all of the game's grid recipes,
+        /// with a tool and without: what Emc Craft would put in the grid makes what was asked for, or it refuses.
+        /// Run at the very end (it holds the game thread for a couple of seconds, and the self-test's first tick is
+        /// long enough: the lens charge fired at its end did nothing in the two runs where this sample made that tick
+        /// 12.6 seconds long, and blew its hole in every run where the tick stayed under 10.6).
+        /// </summary>
+        void CheckGridSample()
+        {
+            EmcCraft craft = mod.EmcCrafting;
+            if (!GridProbe.Ready || craft == null) return; // said by CheckGridOutcome
+            string Made(GridRecipe r) => r?.Output?.ResolvedItemStack?.Collectible?.Code?.Path ?? "nothing";
+            string K(string code)
+            {
+                var loc = new AssetLocation(code);
+                CollectibleObject c = (CollectibleObject)sapi.World.GetItem(loc) ?? sapi.World.GetBlock(loc);
+                return c?.Code == null ? "?" : PlayerEmc.KeyOf(c);
+            }
+            List<GridRecipe> all = sapi.World.GridRecipes.Where(r => r != null && r.Enabled && r.ResolvedIngredients != null && r.Output?.ResolvedItemStack != null).ToList();
             string[] toolbox = new[] { "game:saw-copper", "game:hammer-copper", "game:knife-generic-copper", "game:chisel-copper", "game:axe-felling-copper", "game:shears-copper",
                 "game:pickaxe-copper", "game:shovel-copper", "game:scythe-copper", "game:hoe-copper" }.Select(K).Where(k => k != "?").ToArray();
             int step = Math.Max(1, all.Count / 2500), tried = 0, withTool = 0, skipped = 0, made = 0, moved = 0, unfit = 0, wont = 0;
@@ -2632,6 +2650,8 @@ namespace VintageE
         {
             // Timings of the mod's hot paths (lines starting BENCH). Last of all: they hold the game thread for
             // seconds, and shots still in the air when that happened timed out instead of landing.
+            try { CheckGridSample(); }
+            catch (Exception e) { Check(false, "the sample of grid recipes through Emc Craft threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }
