@@ -1200,7 +1200,18 @@ namespace VintageE
                 tried++;
                 if (r.ResolvedIngredients.Any(i => i != null && EmcCraft.Kept(i))) withTool++;
                 GridRecipe found = GridProbe.Find(sapi.World, p.Cells);
-                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible) wrong.Add(r.Output.Code + " made " + Made(found));
+                if (found?.Output?.ResolvedItemStack?.Collectible != r.Output.ResolvedItemStack.Collectible)
+                {
+                    wrong.Add(r.Output.Code + " made " + Made(found));
+                    if (wrong.Count <= 12)
+                    {
+                        string Describe(GridRecipe g) => g == null ? "nothing" : $"{g.Output?.Code} ({g.Name}, {(g.Shapeless ? "shapeless" : "shaped")} {g.Width}x{g.Height} \"{g.IngredientPattern}\")";
+                        string cellsText = string.Join(" | ", p.Cells.Select((c, at) => c == null ? null : at + ":" + c.StackSize + "x" + c.Collectible.Code + (c.Attributes.Count > 0 ? c.Attributes.ToJsonToken() : "")).Where(t => t != null));
+                        string ingredients = string.Join(" | ", r.ResolvedIngredients.Select(i => i == null ? "_" : i.Quantity + "x" + i.Code + (EmcCraft.Kept(i) ? " kept" : "")
+                            + (i.RecipeAttributes != null ? " recipeAttributes " + i.RecipeAttributes : "") + (i.Attributes != null ? " attributes " + i.Attributes : "")));
+                        Line($"  grid check: asked {Describe(r)}; ingredients {ingredients}; cells {cellsText}; the game found {Describe(found)}");
+                    }
+                }
             }
             Check(wrong.Count == 0 && tried > 100 && withTool > 20,
                 $"what Emc Craft puts in the grid makes what was asked for ({tried} of the {all.Count} grid recipes tried, {withTool} of them with a tool, in {clock.ElapsedMilliseconds} ms; {skipped} skipped, an ingredient without a value or not one exact thing)"
