@@ -1212,13 +1212,20 @@ namespace VintageE
             }
             else Check(false, "the game has a recipe for rice dough with a bucket");
 
-            // An oil lamp: from rendered fat, or from olive oil in a bucket or bowl. The empty bucket was the cheaper plan and was picked; now the fat recipe is.
+            // An oil lamp: from rendered fat (16 EMC), or from olive oil in a bowl (7) or bucket. The empty bowl made the
+            // cheapest plan, so it was the one filled, and nothing came out; now the fat recipe is taken.
             GridRecipe lampByOil = all.FirstOrDefault(r => r.Output.Code.Path == "oillamp-blue-up" && Uses(r, "woodbucket"));
             if (lampByOil != null)
             {
-                var (lampRecipe, lampPlan, lampClicked, _) = craft.Choose(null, lampByOil, new[] { K("game:oillamp-genie-blue-fired"), K("game:woodbucket"), K("game:fat-rendered") }, nothingCarried, 1e9);
-                Check(lampPlan != null && lampRecipe != lampByOil && Uses(lampRecipe, "fat-rendered") && PlanMakes(lampPlan) == "oillamp-blue-up",
-                    $"asked for an oil lamp through the olive oil recipe, Emc Craft takes the recipe it can fill (rendered fat) and makes {PlanMakes(lampPlan)} (the oil recipe: {Why(lampClicked)})");
+                string[] lampKeys = { K("game:oillamp-genie-blue-fired"), K("game:woodbucket"), K("game:bowl-blue-fired"), K("game:fat-rendered") };
+                craft.CheckGrid = false;
+                var (oldRecipe, oldPlan, _, _) = craft.Choose(null, lampByOil, lampKeys, nothingCarried, 1e9);
+                craft.CheckGrid = true;
+                var (lampRecipe, lampPlan, lampClicked, _) = craft.Choose(null, lampByOil, lampKeys, nothingCarried, 1e9);
+                string OldWith() => oldPlan == null ? "no plan" : string.Join(" + ", oldPlan.Cells.Where(c => c != null).Select(c => c.Collectible.Code.Path));
+                Check(oldPlan != null && oldRecipe != null && !Uses(oldRecipe, "fat-rendered") && PlanMakes(oldPlan) == "nothing"
+                      && lampPlan != null && Uses(lampRecipe, "fat-rendered") && PlanMakes(lampPlan) == "oillamp-blue-up",
+                    $"asked for an oil lamp, Emc Craft takes the recipe it can fill: rendered fat, which makes {PlanMakes(lampPlan)} (until 1.26.6 the cheapest plan was filled, {OldWith()}, which made {PlanMakes(oldPlan)}; the oil recipe that was clicked: {Why(lampClicked)})");
             }
             else Check(false, "the game has a recipe for an oil lamp from oil in a bucket");
 

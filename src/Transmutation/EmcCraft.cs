@@ -197,7 +197,7 @@ namespace VintageE
                     if (kept)
                     {
                         // A carried tool too worn for this recipe is passed over (the game would refuse it); one is made from EMC instead.
-                        ItemSlot own = carriedList.FirstOrDefault(s => !usedSlots.Contains(s) && ing.SatisfiesAsIngredient(s.Itemstack, false) && Fits(s.Itemstack, recipe, ing));
+                        ItemSlot own = carriedList.FirstOrDefault(s => !usedSlots.Contains(s) && ing.SatisfiesAsIngredient(s.Itemstack, false) && (!CheckGrid || Fits(s.Itemstack, recipe, ing)));
                         if (own != null)
                         {
                             usedSlots.Add(own);
@@ -351,7 +351,7 @@ namespace VintageE
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
                 double price = mod.Emc.GetValue(s);
                 if (price <= 0) continue;
-                if (!Fits(s, recipe, ing)) { unfit ??= s; continue; }
+                if (CheckGrid && !Fits(s, recipe, ing)) { unfit ??= s; continue; }
                 double v = byWear ? WearCost(s, ing) : price;
                 // Equal wear: the cheaper one to make, so less EMC is tied up while the window is open.
                 if (v > bestValue || (v == bestValue && price >= bestPrice)) continue;
@@ -606,7 +606,10 @@ namespace VintageE
             return (bestRecipe, best, clickedPlan, out_);
         }
 
-        /// <summary>When false, a plan isn't checked against the game's grid (as before 1.26.6; for the tests' comparison).</summary>
+        /// <summary>
+        /// When false, nothing is asked of the game: not whether a stack will do for the recipe as it is, not whether
+        /// the grid would make the recipe from the plan (as before 1.26.6; for the tests' comparison).
+        /// </summary>
         public bool CheckGrid = true;
         bool gridErrorLogged;
 
