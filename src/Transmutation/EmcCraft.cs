@@ -212,12 +212,13 @@ namespace VintageE
                     if (!cache.TryGetValue(ing, out ItemStack pick))
                     {
                         knownStacks ??= KnownStacks(known);
-                        pick = Cheapest(ing, knownStacks, out bool anyKnown, kept && toolsByWear, recipe, out bool anyUnfit);
+                        pick = Cheapest(ing, knownStacks, out bool anyKnown, kept && toolsByWear, recipe, out ItemStack unfit);
                         cache[ing] = pick;
                         if (pick == null)
                         {
                             string name = IngredientName(ing);
-                            if (anyUnfit) { if (!plan.Unfit.Contains(name)) plan.Unfit.Add(name); }
+                            // Named by the learned thing that won't do ("Chisel (Copper)"): a tool asked for by tag has no name of its own.
+                            if (unfit != null) { name = unfit.GetName(); if (!plan.Unfit.Contains(name)) plan.Unfit.Add(name); }
                             else if (anyKnown) { if (!plan.NotMakeable.Contains(name)) plan.NotMakeable.Add(name); }
                             else if (!plan.Missing.Contains(name)) plan.Missing.Add(name);
                             continue;
@@ -335,10 +336,10 @@ namespace VintageE
             catch { return true; } // an item that can't answer: the grid check in Choose decides
         }
 
-        ItemStack Cheapest(CraftingRecipeIngredient ing, KnownSet knownStacks, out bool anyKnown, bool byWear, GridRecipe recipe, out bool anyUnfit)
+        ItemStack Cheapest(CraftingRecipeIngredient ing, KnownSet knownStacks, out bool anyKnown, bool byWear, GridRecipe recipe, out ItemStack unfit)
         {
             anyKnown = false;
-            anyUnfit = false;
+            unfit = null;
             ItemStack best = null;
             double bestValue = double.MaxValue, bestPrice = double.MaxValue;
             IList<ItemStack> candidates = RememberMatches ? (IList<ItemStack>)MatchesFor(ing, knownStacks) : knownStacks.Stacks;
@@ -350,7 +351,7 @@ namespace VintageE
                 if (mod.Emc.IsNoTransmute(s.Collectible)) continue;
                 double price = mod.Emc.GetValue(s);
                 if (price <= 0) continue;
-                if (!Fits(s, recipe, ing)) { anyUnfit = true; continue; }
+                if (!Fits(s, recipe, ing)) { unfit ??= s; continue; }
                 double v = byWear ? WearCost(s, ing) : price;
                 // Equal wear: the cheaper one to make, so less EMC is tied up while the window is open.
                 if (v > bestValue || (v == bestValue && price >= bestPrice)) continue;
@@ -570,7 +571,7 @@ namespace VintageE
 
             GridRecipe bestRecipe = null;
             Plan best = null, clickedPlan = null, out_ = null;
-            double bestPer = double.MaxValue, outPer = double.MaxValue;
+            var complete = new List<(GridRecipe recipe, Plan plan, double per, bool affordable)>();
             foreach (GridRecipe r in candidates)
             {
                 Plan p = MakePlan(r, known, carried, toolsByWear: true);
@@ -581,28 +582,33 @@ namespace VintageE
                     Plan p2 = MakePlan(r, known, carried, toolsByWear: false);
                     if (p2.Complete && p2.Cost <= emc + 1e-9) p = p2;
                 }
-                // Would the game's grid make this from it? If not, this recipe is out (another that makes the same may do).
-                if (!LayOut(r, p))
+                complete.Add((r, p, p.NetCost / Math.Max(1, r.Output?.Quantity ?? 1), p.Cost <= emc + 1e-9));
+            }
+            // The cheapest per item first; at the same cost the clicked recipe (it is the first candidate, and the
+            // sort keeps their order). Each is checked against the game's grid only when its turn comes (1.26.6):
+            // would the grid make this from it? If not, that recipe is out and the next cheapest is tried.
+            var cheapestFirst = complete.OrderBy(c => Math.Round(c.per, 6)).ToList();
+            foreach (var c in cheapestFirst)
+            {
+                if (!c.affordable) continue;
+                if (LayOut(c.recipe, c.plan)) { bestRecipe = c.recipe; best = c.plan; break; }
+                if (c.recipe == clicked) clickedPlan = c.plan;
+            }
+            if (best == null)
+            {
+                foreach (var c in cheapestFirst)
                 {
-                    if (r == clicked) clickedPlan = p;
-                    continue;
-                }
-                double per = p.NetCost / Math.Max(1, r.Output?.Quantity ?? 1);
-                if (p.Cost > emc + 1e-9)
-                {
-                    if (per < outPer) { outPer = per; out_ = p; }
-                    continue;
-                }
-                if (per < bestPer - 1e-9 || (Math.Abs(per - bestPer) <= 1e-9 && r == clicked))
-                {
-                    bestPer = per; best = p; bestRecipe = r;
+                    if (c.affordable) continue;
+                    if (LayOut(c.recipe, c.plan)) { out_ = c.plan; break; }
+                    if (c.recipe == clicked) clickedPlan = c.plan;
                 }
             }
-            return (bestRecipe, best, clickedPlan, best == null ? out_ : null);
+            return (bestRecipe, best, clickedPlan, out_);
         }
 
         /// <summary>When false, a plan isn't checked against the game's grid (as before 1.26.6; for the tests' comparison).</summary>
         public bool CheckGrid = true;
+        bool gridErrorLogged;
 
         /// <summary>Other places for a shapeless recipe's stacks (the first, second... stack goes to the first, second... cell listed).</summary>
         static readonly int[][] OtherLayouts =
@@ -660,7 +666,11 @@ namespace VintageE
             }
             catch (Exception e)
             {
-                api.Logger.Warning("Vintage-E: Emc Craft: asking the game's grid about {0}: {1}", recipe.Output?.Code, e.Message);
+                if (!gridErrorLogged)
+                {
+                    gridErrorLogged = true;
+                    api.Logger.Warning("Vintage-E: Emc Craft: asking the game's grid about {0}: {1} (said once; fills go ahead unchecked when this happens)", recipe.Output?.Code, e.Message);
+                }
                 return true; // as before 1.26.6
             }
         }

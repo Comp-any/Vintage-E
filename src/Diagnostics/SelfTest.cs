@@ -1232,7 +1232,7 @@ namespace VintageE
                 var wornChisel = S("game:chisel-steel");
                 wornChisel?.Attributes.SetInt("durability", 5);
                 var (_, wornPlan, _, _) = craft.Choose(null, ingots, new[] { K("game:chisel-steel"), K("game:anvil-tinbronze") }, new List<ItemSlot> { new DummySlot(wornChisel) }, 1e9);
-                Check(weakPlan == null && weakClicked != null && (weakClicked.Unfit.Count > 0 || weakClicked.WontCraft) && PlanMakes(toughPlan) == "ingot-tinbronze" && toughTool == "chisel-steel"
+                Check(weakPlan == null && weakClicked != null && (weakClicked.Unfit.Count > 0 && weakClicked.Unfit[0] != "metal" || weakClicked.WontCraft) && PlanMakes(toughPlan) == "ingot-tinbronze" && toughTool == "chisel-steel"
                       && PlanMakes(wornPlan) == "ingot-tinbronze" && wornPlan.FromInventory.All(sl => sl == null),
                     $"Emc Craft only takes a tool tough enough for the recipe (ingots from a tin bronze anvil: with a copper chisel, {Why(weakClicked)}; with a steel one learned too it makes {PlanMakes(toughPlan)} with the {toughTool}; "
                     + $"a carried chisel with 5 durability left is passed over for one made from EMC: {PlanMakes(wornPlan)}; {Why(toughPlan ?? toughClicked)})");
