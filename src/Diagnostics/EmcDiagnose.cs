@@ -84,11 +84,30 @@ namespace VintageE
                 || action == ActionMachines || action == "machine" || action == "block" || action == "magnet" || action == "stars" || action == "trinkets" || action == "chutes";
         }
 
+        /// <param name="copyButtons">
+        /// Whether each finding gets its copy button (<see cref="AddCopyButtons"/>). Left out: when a player asked, since
+        /// only a window can copy; the console and the files get the report without them.
+        /// </param>
         public static EmcReport Run(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held,
-            EmcDiagnoseRequestPacket client = null, string outcome = null, bool handover = false)
+            EmcDiagnoseRequestPacket client = null, string outcome = null, bool handover = false, bool? copyButtons = null)
+        {
+            EmcReport r = Build(mod, sapi, player, lang, action, arg, held, client, outcome, handover);
+            if (copyButtons ?? player != null)
+            {
+                try { AddCopyButtons(mod, sapi, lang, r); }
+                catch (Exception e) { sapi.Logger.Warning("Vintage-E: the doctor's copy buttons could not be added ({0}); the report is shown without them.", e.Message); }
+            }
+            return r;
+        }
+
+        static EmcReport Build(VintageEModSystem mod, ICoreServerAPI sapi, IServerPlayer player, string lang, string action, string arg, ItemStack held,
+            EmcDiagnoseRequestPacket client, string outcome, bool handover)
         {
             action = (action ?? "").Trim().ToLowerInvariant();
             arg = (arg ?? "").Trim();
+            // A copy button is done by the window itself. One pressed in a game whose Vintage-E is older than 1.26.7
+            // arrives here as a page to open: show the check-up rather than "no such page".
+            if (action == EmcReport.CopyAction) { action = ""; arg = ""; }
             var r = new EmcReport { Kind = EmcReport.DiagnoseKind, Key = action + "|" + arg };
             var x = new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r, Player = player, Report = mod.LastReport, Held = held, ThenAction = action.Length == 0 ? ActionOverview : action, ThenArg = arg, Handover = handover };
             r.Title = x.L("diag-title");

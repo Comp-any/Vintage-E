@@ -39,6 +39,12 @@ namespace VintageE
         public const string TopicsEvent = "vintagedoctor:topics", PageEvent = "vintagedoctor:page", DeliverEvent = "vintagedoctor:deliver", FixEvent = "vintagedoctor:fix",
             CollectEvent = "vintagedoctor:collect", AboutEvent = "vintagedoctor:about", ClientFactsEvent = "vintagedoctor:clientfacts", OpenEvent = "vintagedoctor:open";
 
+        /// <summary>
+        /// For the self-test: pages asked for from the console get the copy buttons too (they are for a window, so a
+        /// console's page has none), so that Vintage Doctor itself can be seen to take them.
+        /// </summary>
+        public static bool TestCopyButtons;
+
         readonly VintageEModSystem mod;
         readonly ICoreServerAPI sapi;
         readonly ICoreClientAPI capi;
@@ -476,6 +482,7 @@ namespace VintageE
         /// [[i:code]] and [[b:code]] → [[item:code]] and [[block:code]];
         /// {{fix-what|target;then;thenArg|label}} → a fix button for the fix vintagee:&lt;what&gt; (Vintage Doctor shows the page again itself);
         /// {{setvalue|key|label}} → a fix that runs on the player's side (it opens a window there);
+        /// {{copy|text|label}} → its copy button, {{copy|text||label}} (the text is the button's target there);
         /// {{log||label}} and {{startup||label}} → Vintage Doctor's own pages for those;
         /// any other {{action|arg|label}} → its page "emc" with "action arg".
         /// </summary>
@@ -493,6 +500,7 @@ namespace VintageE
                 string action = m.Groups[2].Value, arg = Clean(m.Groups[3].Value), label = Clean(m.Groups[4].Value);
                 if (action.StartsWith("fix-", StringComparison.Ordinal)) return "{{fix|" + FixPrefix + action.Substring(4) + "|" + arg.Split(';')[0] + "|" + label + "}}";
                 if (action == "setvalue") return "{{fix|c:bus:" + FixPrefix + "setvalue|" + arg + "|" + label + "}}";
+                if (action == EmcReport.CopyAction) return "{{copy|" + arg + "||" + label + "}}";
                 if (action == EmcDiagnose.ActionLog) return "{{open|log|" + VintageEModSystem.ModId + "|" + label + "}}";
                 if (action == EmcDiagnose.ActionStartup) return "{{open|startup||" + label + "}}";
                 return "{{open|" + Topic + "|" + Join(action, arg) + "|" + label + "}}";

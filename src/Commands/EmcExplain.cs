@@ -67,9 +67,27 @@ namespace VintageE
         /// <summary>Both kinds of token, so a line can be cut into text, item refs and answer links in order.</summary>
         public static readonly Regex AnyToken = new Regex(@"\[\[([^\[\]]+)\]\]|\{\{([a-z-]*)\|([^|{}]*)\|([^{}]*)\}\}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// A button that copies its argument to the clipboard (1.26.7): {{copy|the text|label}}. The doctor puts one
+        /// under each finding that isn't a pass, holding that finding in plain words with the versions, to paste in a
+        /// bug report or send to a mod's author. It only means something in a window, so as text it is left out.
+        /// </summary>
+        public const string CopyAction = "copy";
+
+        /// <summary>Text made safe to sit inside a token: the separators taken out (as Vintage Doctor does for its own).</summary>
+        public static string TokenSafe(string s) => (s ?? "").Replace('{', '(').Replace('}', ')').Replace('|', '/').Replace("[[", "[").Replace("]]", "]");
+
+        /// <summary>Whether a line is nothing but copy buttons, so it has no place in a text file or on the console.</summary>
+        public static bool OnlyCopy(string line)
+        {
+            if (string.IsNullOrEmpty(line) || line.IndexOf("{{" + CopyAction + "|", StringComparison.Ordinal) < 0) return false;
+            return ActionToken.Replace(line, m => m.Groups[1].Value == CopyAction ? "" : m.Value).Trim().Length == 0;
+        }
+
         /// <summary>An answer link as text: its label and the command that does the same.</summary>
         public static string PlainAction(string action, string arg, string label)
         {
+            if (action == CopyAction) return "";
             if (action.StartsWith("fix-", StringComparison.Ordinal) || action == "setvalue") return label + " (" + (action == "setvalue" ? "/emc set, holding it" : "in the window") + ")";
             return label + " (/emc diagnose" + (action.Length > 0 && action != EmcDiagnose.ActionOverview ? " " + action : "") + (arg.Length > 0 ? " " + arg : "") + ")";
         }
@@ -78,7 +96,7 @@ namespace VintageE
         public static string Plain(IWorldAccessor world, string text, bool labelsOnly = false)
         {
             if (string.IsNullOrEmpty(text) || (text.IndexOf("[[", StringComparison.Ordinal) < 0 && text.IndexOf("{{", StringComparison.Ordinal) < 0)) return text ?? "";
-            text = ActionToken.Replace(text, m => labelsOnly ? m.Groups[3].Value : PlainAction(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value));
+            text = ActionToken.Replace(text, m => m.Groups[1].Value == CopyAction ? "" : labelsOnly ? m.Groups[3].Value : PlainAction(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value));
             return RefToken.Replace(text, m =>
             {
                 CollectibleObject c = world == null ? null : PlayerEmc.Resolve(world, m.Groups[1].Value);
@@ -92,6 +110,7 @@ namespace VintageE
             var sb = new StringBuilder();
             foreach (EmcReportLine line in Lines)
             {
+                if (OnlyCopy(line.Text)) continue;
                 if (line.Style == EmcLineStyle.Heading && sb.Length > 0) sb.Append('\n');
                 sb.Append(' ', line.Indent * 2);
                 string text = Plain(world, line.Text, labelsOnly);

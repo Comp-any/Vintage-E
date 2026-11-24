@@ -22,9 +22,15 @@ needs no `sleep`.
   reports `EmcDiagnose.Run(..., handover: true)` builds. Vintage-E never references that mod's DLL. Without it (or
   with it on one side only) Vintage-E's own window is used, so both ways have to keep working.
 - A new page or fix of the doctor needs nothing extra: the bridge turns any report's links into Vintage Doctor's.
-  A new kind of link (anything but `{{action|arg|label}}`, `{{fix-what|...}}`, `{{setvalue|...}}`, `[[i:code]]`,
-  `[[b:code]]`) needs a case in `DoctorBridge.Convert`; the self-test (`SelfTestHandover.cs`) fails on a link
-  Vintage Doctor wouldn't know.
+  A new kind of link (anything but `{{action|arg|label}}`, `{{fix-what|...}}`, `{{setvalue|...}}`,
+  `{{copy|text|label}}`, `[[i:code]]`, `[[b:code]]`) needs a case in `DoctorBridge.Convert`; the self-test
+  (`SelfTestHandover.cs`) fails on a link Vintage Doctor wouldn't know.
+- Copy buttons (1.26.7): a new finding needs nothing either. `EmcDiagnose.Run` ends with `AddCopyButtons`
+  (`EmcDiagnoseCopy.cs`) whenever a player asked (a window will show the page): a `{{copy|text|label}}` line after
+  each warning and problem, and each note with text behind it, holding that finding in plain words with the
+  versions. The console and the saved files get the page without them. Vintage Doctor takes it as
+  `{{copy|text||label}}` (the text is the target) and cuts any handed-over line at 4,000 characters, hence
+  `CopyTextMax`.
 - Test both ways: `gh workflow run analyze.yml ... -f doctor=true` installs the copy of Vintage Doctor's zip in
   `tools/vendor/vintagedoctor/` (its repository is private, so the test can't download it) and the self-test then
   uses its `/doctor` command from the console; without the input the same checks run against the bridge directly.

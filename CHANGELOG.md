@@ -2,6 +2,14 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.7 — 2026-11-25
+
+### Added
+- **A copy button under each of the doctor's findings.** Open a warning or a problem in the EMC doctor (or a note with something behind it) and there is now **Copy this warning**, **Copy this problem** or **Copy this**. It puts that one finding on the clipboard, ready to paste into a bug report or a message to a mod's author: the Vintage-E and game versions, the page it is from, and the finding with its details and advice, items by name and code. It works in Vintage-E's own doctor window and, handed over through Vintage Doctor's API, in Vintage Doctor's. *Copy this report* still copies the whole page.
+
+### Fixed
+- **Vintage Doctor listed one of Vintage-E's texts as having a formatting tag out of place** (`loop-header`: "A -> B", where the game reads the `>` as the end of a tag). Nothing showed that text any more, so it is gone, and the mod's own asset check now refuses a text with a `>` or `<` that isn't part of a tag.
+
 ## 1.26.6 — 2026-11-23
 
 ### Fixed

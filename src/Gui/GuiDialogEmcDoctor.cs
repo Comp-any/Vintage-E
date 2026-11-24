@@ -736,6 +736,14 @@ namespace VintageE
         void Act(string action, string arg)
         {
             if (action == "setvalue") { onSetValue?.Invoke(arg); return; }
+            if (action == EmcReport.CopyAction)
+            {
+                // A finding's own copy button (1.26.7): the text is the button's argument, put together by the server.
+                try { capi.Forms.SetClipboardText(arg ?? ""); }
+                catch (Exception ex) { capi.Logger.Warning("Vintage-E: clipboard not available: {0}", ex.Message); return; }
+                SingleComposer?.GetDynamicText("last")?.SetNewText(Lang.Get("vintagee:reportgui-copied"));
+                return;
+            }
             SetBusy(Lang.Get("vintagee:reportgui-asking"));
             onDiagnose?.Invoke(action ?? "", arg ?? "");
         }
@@ -801,6 +809,8 @@ namespace VintageE
             string[] texts = current?.Texts ?? Array.Empty<string>();
             for (int i = 0; i < texts.Length; i++)
             {
+                // A finding's copy button holds that finding once more: not in the copy of the whole page.
+                if (EmcReport.OnlyCopy(texts[i])) continue;
                 int indent = current.Indents != null && i < current.Indents.Length ? current.Indents[i] : 0;
                 sb.Append(' ', indent * 2).Append(EmcReport.Plain(capi.World, texts[i])).Append('\n');
             }

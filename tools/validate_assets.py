@@ -112,6 +112,21 @@ for f in os.listdir(os.path.join(A, "entities")):
     if obj: entity_codes.update(code for code, _ in expand(obj))
 
 lang = load(os.path.join(A, "lang", "en.json")) or {}
+# The game reads every text it shows in chat, a tooltip or the handbook as formatting tags, and writes an error to
+# the log for a ">" that closes nothing or a "</x>" that was never opened (it then shows the text wrongly or not at
+# all). Vintage Doctor lists such texts under the mod. "A -> B" was one (loop-header, until 1.26.7): write "A to B",
+# or &gt; / &lt; where the character itself has to show.
+for key, text in lang.items():
+    if not isinstance(text, str) or ("<" not in text and ">" not in text): continue
+    opened = []
+    rest = text
+    for m in re.finditer(r"<(/?)([a-zA-Z][a-zA-Z0-9]*)[^<>]*>", text):
+        if m.group(1):
+            if m.group(2).lower() not in opened: errors.append(f"lang: {key} closes <{m.group(2)}> that was never opened")
+        else: opened.append(m.group(2).lower())
+    rest = re.sub(r"</?[a-zA-Z][^<>]*>", "", text)
+    if ">" in rest: errors.append(f"lang: {key} has a '>' that isn't part of a tag (the game reads it as one): write &gt; or use words")
+    if "<" in rest: errors.append(f"lang: {key} has a '<' that isn't part of a tag (the game reads it as one): write &lt; or use words")
 # Not the self-test's text.Contains("vintagee:diag-...") checks: those look for a key that was left untranslated
 # in a report (the start of a family of keys), and aren't keys themselves. They made this script fail, and
 # build/package.sh with it.

@@ -918,7 +918,9 @@ namespace VintageE
             string dumpAnswer = RunCommand("/emc dump");
             Check(File.Exists(Path.Combine(dir, "emc-values.csv")) && dumpAnswer.Contains(dir), "/emc dump writes ModData/vintagee/emc-values.csv and says where: " + dumpAnswer);
             // 1.9.3: chat reads command answers as VTML; "A -> B" and "<value>" broke it, so the answer showed nothing.
-            string raw = Lang.Get("vintagee:loop-header", 1) + "\n1. game:a -> game:b -> game:a  /emc set <value>";
+            // (The first line was the text "loop-header" until 1.26.7. Nothing showed it any more, and Vintage Doctor
+            // rightly listed it as a text with a formatting tag out of place.)
+            string raw = "1 value loop(s). A -> B means A is only made from B, so none of them can get a value:\n1. game:a -> game:b -> game:a  /emc set <value>";
             bool rawBroken = VtmlParser.Tokenize(sapi.Logger, raw).Any(t => !(t is VtmlTextToken));
             bool safeClean = VtmlParser.Tokenize(sapi.Logger, EmcCommands.ChatSafe(raw)).All(t => t is VtmlTextToken);
             Check(rawBroken && safeClean, $"/emc answers are escaped for the chat's markup (unescaped breaks: {rawBroken}, escaped is plain text: {safeClean})");
@@ -2659,6 +2661,8 @@ namespace VintageE
             // seconds, and shots still in the air when that happened timed out instead of landing.
             try { CheckGridSample(); }
             catch (Exception e) { Check(false, "the sample of grid recipes through Emc Craft threw " + e); }
+            try { CheckCopyButtons(); }
+            catch (Exception e) { Check(false, "the doctor's copy buttons threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

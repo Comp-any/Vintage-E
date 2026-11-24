@@ -2025,7 +2025,7 @@ namespace VintageE
             {
                 EmcReport live = null;
                 Exception failed = null;
-                try { live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true); }
+                try { live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: DoctorBridge.TestCopyButtons ? true : (bool?)null); }
                 catch (Exception e) { failed = e; }
                 then(live, failed);
                 return;
@@ -2036,7 +2036,7 @@ namespace VintageE
                 Exception failure = null;
                 lock (diagnoseGate)
                 {
-                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true); }
+                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: DoctorBridge.TestCopyButtons ? true : (bool?)null); }
                     catch (Exception e) { failure = e; }
                 }
                 Sapi.Event.EnqueueMainThreadTask(() => then(report, failure), "vintagee-diagnose");
