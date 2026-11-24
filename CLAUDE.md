@@ -25,6 +25,8 @@ needs no `sleep`.
   A new kind of link (anything but `{{action|arg|label}}`, `{{fix-what|...}}`, `{{setvalue|...}}`,
   `{{copy|text|label}}`, `[[i:code]]`, `[[b:code]]`) needs a case in `DoctorBridge.Convert`; the self-test
   (`SelfTestHandover.cs`) fails on a link Vintage Doctor wouldn't know.
+- This repository is public and Vintage Doctor's is private: don't put its code on a branch here (a results
+  branch included). How it reads what a mod hands it is in its docs/api.md and the VintageDoctor.xml in its zip.
 - Copy buttons (1.26.7): a new finding needs nothing either. `EmcDiagnose.Run` ends with `AddCopyButtons`
   (`EmcDiagnoseCopy.cs`) whenever a player asked (a window will show the page): a `{{copy|text|label}}` line after
   each warning and problem, and each note with text behind it, holding that finding in plain words with the

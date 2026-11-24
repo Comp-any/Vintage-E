@@ -2,6 +2,10 @@ name: Decompile game classes
 
 # Decompiles the named types from the game's assemblies (for reading how a mechanic works) and pushes the C# to a
 # branch. The game's code is the game's; the branch is for reading, and gets deleted afterwards.
+#
+# This repository is public, and so is every branch pushed here. Only the game's own assemblies are read: never
+# point this at another mod's DLL (Vintage Doctor's source is private; what it takes from other mods is in its
+# docs/api.md and in the VintageDoctor.xml inside its zip).
 
 on:
   workflow_dispatch:
@@ -11,9 +15,6 @@ on:
         required: true
       assets:
         description: Regex of the game's asset file paths to copy as well (e.g. "blocktypes/.*/chute\.json|hopper\.json"); empty = none
-        default: ""
-      modZip:
-        description: A mod zip in this repository whose DLLs are decompiled as well (e.g. "tools/vendor/vintagedoctor/vintagedoctor_1.3.0.zip", to read how a mod we hand things to takes them); empty = none
         default: ""
       gameVersion:
         description: Game version
@@ -33,14 +34,8 @@ jobs:
       VS_VERSION: ${{ inputs.gameVersion || '1.22.7' }}
       TYPES: ${{ inputs.types }}
       ASSETS: ${{ inputs.assets }}
-      MOD_ZIP: ${{ inputs.modZip }}
       RESULTS_BRANCH: ${{ inputs.resultsBranch || format('ci-decompile-{0}', github.run_number) }}
     steps:
-      - uses: actions/checkout@v4
-        if: ${{ inputs.modZip != '' }}
-        with:
-          path: repo
-
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
@@ -70,18 +65,6 @@ jobs:
             find proj -name "*.cs" | sed "s|^proj/||" > "out/all-types-$dll.txt"
             tail -5 "ilspy-$dll.log" || true
           done
-          # A mod's DLLs out of a zip kept in this repository, the same way.
-          if [ -n "$MOD_ZIP" ]; then
-            rm -rf modzip && mkdir modzip && unzip -q "repo/$MOD_ZIP" -d modzip
-            find modzip -maxdepth 1 -name "*.dll" | while read -r f; do
-              dll=$(basename "$f" .dll)
-              rm -rf proj && mkdir proj
-              ilspycmd -p -o proj -r "$VSDIR" -r "$VSDIR/Lib" -r "$VSDIR/Mods" "$f" > "ilspy-$dll.log" 2>&1 || echo "ilspy exit $? for $dll"
-              find proj -name "*.cs" | grep -E "$TYPES" | while read -r cs; do cp "$cs" "out/$dll.$(basename "$cs")"; done
-              find proj -name "*.cs" | sed "s|^proj/||" > "out/all-types-$dll.txt"
-              tail -5 "ilspy-$dll.log" || true
-            done
-          fi
           # The game's own json (block and item definitions), for reading how a block is set up.
           if [ -n "$ASSETS" ]; then
             find "$VSDIR/assets" -type f | grep -E "$ASSETS" | while read -r f; do
