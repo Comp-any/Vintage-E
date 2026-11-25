@@ -33,12 +33,11 @@ needs no `sleep`.
   versions. The console and the saved files get the page without them. Vintage Doctor takes it as
   `{{copy|text||label}}` (the text is the target) and cuts any handed-over line at 4,000 characters, hence
   `CopyTextMax`.
-- Test both ways: `gh workflow run analyze.yml ... -f doctor=true` installs the copy of Vintage Doctor's zip in
-  `tools/vendor/vintagedoctor/` (its repository is private, so the test can't download it) and the self-test then
-  uses its `/doctor` command from the console; without the input the same checks run against the bridge directly.
-  With the organisation secret `DOCTOR_TOKEN` (read-only on the private Comp-any/Vintage-Doctor) the test downloads
-  the newest release instead (`.github/scripts/get-doctor.sh`; `doctor-version.txt` in the results says which ran),
-  so the copy is only the fallback. When Vintage Doctor's event-bus protocol changes, still put its new zip there.
+- Test both ways: `gh workflow run analyze.yml ... -f doctor=true` installs the newest Vintage Doctor release
+  (`.github/scripts/get-doctor.sh`: its repository is public since 2026-11-25, so no token is needed; the copy in
+  `tools/vendor/vintagedoctor/` is only the fallback when the download fails, and `doctor-version.txt` in the results
+  says which ran) and the self-test then uses its `/doctor` command from the console; without the input the same
+  checks run against the bridge directly. When Vintage Doctor's event-bus protocol changes, still put its new zip there.
 - The copy there is Vintage Doctor 1.3.0 (2026-11-22). Its check-up is laid out by mod, so Vintage-E's card and
   the button for the EMC pages are under a "Vintage-E <version>" heading, and it runs every check each time (no
   "deeper" round). It writes out symbols the game's font may lack in whatever a mod hands it, so a report's marks
