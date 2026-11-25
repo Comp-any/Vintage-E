@@ -2,6 +2,13 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.9 — 2026-11-26
+
+### Changed
+- **One copy button per finding inside Vintage Doctor, not two.** Vintage Doctor 1.7.0 and newer puts its own **Copy this for a report** on every finding, so the EMC doctor's pages shown in its window no longer carry Vintage-E's **Copy this warning** / **Copy this problem** / **Copy this** as well. Nothing changes in Vintage-E's own doctor window (without Vintage Doctor, or with it on one side only), or with a Vintage Doctor older than 1.7.0: those still get Vintage-E's buttons.
+  - It goes by the Vintage Doctor on the player's own game, since that is the window the page is shown in.
+  - A player without Vintage Doctor who types `/doctor emc` on a server that has 1.7.0 or newer gets the page in chat, and it no longer says each finding twice.
+
 ## 1.26.8 — 2026-11-26
 
 ### Added

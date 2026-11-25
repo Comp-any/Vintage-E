@@ -41,7 +41,8 @@ namespace VintageE
 
         /// <summary>
         /// For the self-test: pages asked for from the console get the copy buttons too (they are for a window, so a
-        /// console's page has none), so that Vintage Doctor itself can be seen to take them.
+        /// console's page has none), so that Vintage Doctor itself can be seen to take them. Also for a Vintage Doctor
+        /// that adds its own (1.7.0 and newer): the ones before it still need Vintage-E's to arrive whole.
         /// </summary>
         public static bool TestCopyButtons;
 
@@ -74,6 +75,32 @@ namespace VintageE
             string[] parts = version.Trim().TrimStart('v', 'V').Split('-')[0].Split('.');
             if (parts.Length < 2 || !int.TryParse(parts[0], out int a) || !int.TryParse(parts[1], out int b)) return false;
             return a > major || (a == major && b >= minor);
+        }
+
+        /// <summary>This side's Vintage Doctor, as its version text ("" when it isn't installed or is switched off).</summary>
+        public static string VersionOn(ICoreAPI api)
+        {
+            try { return api?.ModLoader != null && api.ModLoader.IsModEnabled(DoctorModId) ? api.ModLoader.GetMod(DoctorModId)?.Info?.Version ?? "" : ""; }
+            catch { return ""; }
+        }
+
+        /// <summary>
+        /// From 1.7.0 Vintage Doctor's window puts its own "Copy this for a report" on every card that isn't a pass,
+        /// whichever mod the card comes from. Vintage-E's own button under each finding would be a second one there.
+        /// </summary>
+        public static bool AddsItsOwnCopy(string doctorVersion) => AtLeast(doctorVersion, 1, 7);
+
+        /// <summary>
+        /// Whether a page built for Vintage Doctor gets Vintage-E's copy buttons (1.26.9), as <see cref="EmcDiagnose.Run"/>
+        /// takes it: false when the window that will show the page adds its own, null otherwise (with them whenever a
+        /// player asked, as for Vintage-E's own window). The window is the player's, so their game's Vintage Doctor
+        /// decides; when their game didn't say (nothing sent along: no Vintage Doctor there, and the page goes to
+        /// their chat as text), the server's does.
+        /// </summary>
+        public static bool? CopyButtonsFor(string playersDoctor, string serversDoctor)
+        {
+            if (TestCopyButtons) return true;
+            return AddsItsOwnCopy(string.IsNullOrWhiteSpace(playersDoctor) ? serversDoctor : playersDoctor) ? false : (bool?)null;
         }
 
         // ---------------------------------------------------------------- the server's side

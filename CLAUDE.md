@@ -33,6 +33,11 @@ needs no `sleep`.
   versions. The console and the saved files get the page without them. Vintage Doctor takes it as
   `{{copy|text||label}}` (the text is the target) and cuts any handed-over line at 4,000 characters, hence
   `CopyTextMax`.
+- Vintage Doctor 1.7.0 and newer puts its own *Copy this for a report* on every card that isn't a pass, so a page
+  for its window is built without Vintage-E's (1.26.9, `DoctorBridge.CopyButtonsFor`). The window is the player's:
+  their game sends its Vintage Doctor version along (`EmcDiagnoseRequestPacket.ClientDoctorVersion`), and the
+  server's own decides when theirs didn't say. Vintage-E's own window and a Vintage Doctor before 1.7.0 still get
+  them. `DoctorBridge.TestCopyButtons` forces them on for the test's last console step, whatever the version.
 - Test both ways: `gh workflow run analyze.yml ... -f doctor=true` installs the newest Vintage Doctor release
   (`.github/scripts/get-doctor.sh`: its repository is public since 2026-11-25, so no token is needed; the copy in
   `tools/vendor/vintagedoctor/` is only the fallback when the download fails, and `doctor-version.txt` in the results

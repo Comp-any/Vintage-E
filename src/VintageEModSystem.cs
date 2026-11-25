@@ -2021,11 +2021,13 @@ namespace VintageE
         /// </summary>
         public void BuildDiagnosis(IServerPlayer player, string lang, string action, string arg, ItemStack held, EmcDiagnoseRequestPacket client, Action<EmcReport, Exception> then)
         {
+            // A Vintage Doctor that puts its own copy button on every finding (1.7.0 and newer) gets the page without Vintage-E's.
+            bool? copyButtons = DoctorBridge.CopyButtonsFor(client?.ClientDoctorVersion, DoctorBridge.VersionOn(Sapi));
             if (EmcDiagnose.ReadsLiveState(action))
             {
                 EmcReport live = null;
                 Exception failed = null;
-                try { live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: DoctorBridge.TestCopyButtons ? true : (bool?)null); }
+                try { live = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: copyButtons); }
                 catch (Exception e) { failed = e; }
                 then(live, failed);
                 return;
@@ -2036,7 +2038,7 @@ namespace VintageE
                 Exception failure = null;
                 lock (diagnoseGate)
                 {
-                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: DoctorBridge.TestCopyButtons ? true : (bool?)null); }
+                    try { report = EmcDiagnose.Run(this, Sapi, player, lang, action, arg, held, client, null, handover: true, copyButtons: copyButtons); }
                     catch (Exception e) { failure = e; }
                 }
                 Sapi.Event.EnqueueMainThreadTask(() => then(report, failure), "vintagee-diagnose");
@@ -3052,6 +3054,7 @@ namespace VintageE
             try
             {
                 p.ClientVersion = Version;
+                p.ClientDoctorVersion = DoctorBridge.VersionOn(Capi);
                 p.ClientTableCount = Emc.Count;
                 p.ClientTableHash = Emc.Fingerprint();
                 p.ClientTableVersion = TableVersion;

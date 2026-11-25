@@ -289,6 +289,11 @@ namespace VintageE
         [ProtoMember(19)] public int LookedAtY;
         [ProtoMember(20)] public int LookedAtZ;
         [ProtoMember(21)] public int LookedAtDim;
+        /// <summary>
+        /// The player's own Vintage Doctor (1.26.9), "" without one. Its window is where a handed-over page is shown, and
+        /// from 1.7.0 it has a copy button of its own on every finding (<see cref="DoctorBridge.CopyButtonsFor"/>).
+        /// </summary>
+        [ProtoMember(22)] public string ClientDoctorVersion;
     }
 
     /// <summary>Client → server: the hovered-item box's changes: a value (or unpin), and the blacklist, gray list and free ingredient boxes.</summary>

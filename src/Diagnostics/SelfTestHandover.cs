@@ -193,6 +193,8 @@ namespace VintageE
                 "handover: on when Vintage Doctor is installed and off when it isn't, and players' games are told through the world's settings (installed here: " + installed + ")");
         }
 
+        static string Said(bool? copyButtons) => copyButtons == null ? "as usual" : copyButtons.Value ? "with" : "without";
+
         /// <summary>
         /// The copy button under each finding (1.26.7): which findings get one, what it holds, that it stays out of
         /// text for files and the console, and that the bridge writes it the way Vintage Doctor reads a copy button.
@@ -295,6 +297,32 @@ namespace VintageE
             int forConsole = EmcDiagnose.Run(mod, sapi, null, "en", "mapping", "", null, null, null, handover: true).Lines.Count(IsCopy);
             Check(firstBad == null && total > 0 && forPlayer == onMapping && forConsole == 0, "every page of the doctor with its copy buttons can be handed to Vintage Doctor: each warning and problem has one, every line is under its 4,000 characters; a page for the console has none ("
                 + pages + " pages, " + total + " buttons, the longest " + longest + " characters" + (firstBad != null ? "; not " + firstBad : "") + ")");
+
+            // 1.26.9: Vintage Doctor 1.7.0 and newer has its own copy button on every finding, so a page for its window
+            // comes without Vintage-E's. The window is the player's: their game's Vintage Doctor decides.
+            bool forced = DoctorBridge.TestCopyButtons;
+            DoctorBridge.TestCopyButtons = false;
+            try
+            {
+                Check(DoctorBridge.AddsItsOwnCopy("1.7.0") && DoctorBridge.AddsItsOwnCopy("1.10.2") && DoctorBridge.AddsItsOwnCopy("v2.0.0-rc.1")
+                      && !DoctorBridge.AddsItsOwnCopy("1.6.2") && !DoctorBridge.AddsItsOwnCopy("") && !DoctorBridge.AddsItsOwnCopy(null) && !DoctorBridge.AddsItsOwnCopy("soon"),
+                    "handover: Vintage Doctor from 1.7.0 on is known to add its own copy button to a finding, the ones before it and no doctor at all are not");
+                bool? newWindow = DoctorBridge.CopyButtonsFor("1.7.0", "1.6.2"), oldWindow = DoctorBridge.CopyButtonsFor("1.6.2", "1.7.0"),
+                    notSaid = DoctorBridge.CopyButtonsFor("", "1.7.0"), notSaidOld = DoctorBridge.CopyButtonsFor(null, "1.6.2"), neither = DoctorBridge.CopyButtonsFor(null, "");
+                Check(newWindow == false && oldWindow == null && notSaid == false && notSaidOld == null && neither == null,
+                    $"handover: the player's Vintage Doctor decides whether a page gets Vintage-E's copy buttons, and the server's when theirs didn't say (1.7.0 there: {Said(newWindow)}; 1.6.2 there: {Said(oldWindow)}; not said, server 1.7.0: {Said(notSaid)}; not said, server 1.6.2: {Said(notSaidOld)})");
+                // As BuildDiagnosis asks for the page, for a player (the test has none: "?? true" is "a player asked").
+                int in17 = EmcDiagnose.Run(mod, sapi, null, "en", "mapping", "", null, null, null, handover: true, copyButtons: newWindow ?? true).Lines.Count(IsCopy);
+                int in16 = EmcDiagnose.Run(mod, sapi, null, "en", "mapping", "", null, null, null, handover: true, copyButtons: oldWindow ?? true).Lines.Count(IsCopy);
+                Check(in17 == 0 && in16 == onMapping && onMapping > 0,
+                    $"handover: the mapping page for Vintage Doctor 1.7.0's window has no copy buttons of Vintage-E's, for 1.6.2's it has all of them ({in17} and {in16} of {onMapping})");
+                var facts = new EmcDiagnoseRequestPacket { ClientVersion = mod.Version, ClientDoctorVersion = "1.7.0" };
+                EmcDiagnoseRequestPacket arrived = Vintagestory.API.Util.SerializerUtil.Deserialize<EmcDiagnoseRequestPacket>(Vintagestory.API.Util.SerializerUtil.Serialize(facts));
+                DoctorBridge.TestCopyButtons = true;
+                Check(arrived?.ClientDoctorVersion == "1.7.0" && DoctorBridge.CopyButtonsFor("1.7.0", "1.7.0") == true && DoctorBridge.VersionOn(null) == "",
+                    "handover: a player's game says which Vintage Doctor it has, and the test can still ask for the buttons to see Vintage Doctor take them");
+            }
+            finally { DoctorBridge.TestCopyButtons = forced; }
         }
 
         /// <summary>
