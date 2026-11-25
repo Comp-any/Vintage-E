@@ -80,6 +80,14 @@ namespace VintageE
             }
         }
 
+        /// <summary>The player left that world: its game isn't held on to. The hook stays and waits for the next one.</summary>
+        public static void Forget(VintageEModSystem system)
+        {
+            if (mod != system) return;
+            mod = null;
+            capi = null;
+        }
+
         /// <summary>False: the click was turned into a burn request, and the game does nothing with it.</summary>
         static bool Prefix(int slotId, EnumMouseButton mouseButton, bool shiftPressed, bool ctrlPressed, bool altPressed, IInventory ___inventory)
         {

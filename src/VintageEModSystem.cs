@@ -3227,6 +3227,7 @@ namespace VintageE
 
         public override void Dispose()
         {
+            ShiftClickBurn.Forget(this);
             transmutationDialog?.Dispose();
             try { if (gemFilterDialog?.IsOpened() == true) gemFilterDialog.TryClose(); } catch { }
             gemFilterDialog?.Dispose();
