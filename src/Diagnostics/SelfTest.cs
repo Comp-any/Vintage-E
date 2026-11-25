@@ -851,6 +851,7 @@ namespace VintageE
             else Check(false, "vintagee:kleinstar-ein exists");
             string refused = mod.Transmutation.PlanBurn(null, new ItemStack(granite), out _, out _);
             Check(mod.Emc.IsNoTransmute(granite) && mod.Emc.GetValue(granite) > 0 && refused == "notransmute", $"no-transmute: granite keeps its value but can't be burned ({refused})");
+            Check(!ShiftClickBurn.CanBurn(mod, new ItemStack(granite)), "no-transmute: a shift-click doesn't take it for burning either (it moves as usual)");
             Check(mod.Emc.ToPacket().NoTransmuteKeys?.Contains(PlayerEmc.KeyOf(granite)) == true, "no-transmute list goes to clients");
             mod.SetNoTransmute(new[] { key }, false);
             Check(!mod.Emc.IsNoTransmute(granite) && mod.Transmutation.PlanBurn(null, new ItemStack(granite), out _, out _) == null, "no-transmute: taken off again");
@@ -2663,6 +2664,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the sample of grid recipes through Emc Craft threw " + e); }
             try { CheckCopyButtons(); }
             catch (Exception e) { Check(false, "the doctor's copy buttons threw " + e); }
+            try { CheckShiftClickBurn(); }
+            catch (Exception e) { Check(false, "the shift-click to burn checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

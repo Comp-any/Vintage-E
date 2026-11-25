@@ -2500,6 +2500,8 @@ namespace VintageE
         {
             HandbookPatches.Patch(this, Mod.Logger);
             Capi = capi;
+            // Shift-click to burn (1.26.8). Switched off in the player's settings: the game's slot click isn't touched at all.
+            if (ClientConfig?.ShiftClickBurns != false) ShiftClickBurn.Patch(this, capi);
             LookEvent("client side started (the game's last mod phase): the game holds {0} blocks and {1} items", capi.World?.Blocks?.Count ?? 0, capi.World?.Items?.Count ?? 0);
             // The look hook was put in place in Start (see there); this only makes sure it is still there.
             ClientLookPatches.Mod = this;
@@ -3187,6 +3189,9 @@ namespace VintageE
             contentsDialog = dialog;
             dialog.TryOpen();
         }
+
+        /// <summary>The Transmutation Table's or a tablet's window is open on this player's game.</summary>
+        public bool TableWindowOpen => transmutationDialog?.IsOpened() == true;
 
         /// <param name="tabletSlot">For a tablet: the one that was right-clicked, which the window stays with (1.26.5).</param>
         public void OpenTransmutationDialog(Vintagestory.API.MathTools.BlockPos tablePos, ItemSlot tabletSlot = null)

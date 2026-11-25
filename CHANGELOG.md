@@ -2,6 +2,20 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.8 — 2026-11-26
+
+### Added
+- **Shift-click an item to burn it.** While the Transmutation Table's or a tablet's window is open, a shift-click on an item in your hotbar or backpack burns the whole stack, the same as dropping it on Burn: you get its EMC and learn it.
+  - Only what can burn. Anything without a value, anything the server doesn't allow to be transmuted, and anything in the list below moves the way a shift-click always moves it.
+  - Not burned by a shift-click, because one is too easily made: a **Klein star** (drop it on Burn to burn it with what it holds), a **Transmutation or Arcane Tablet**, a **bag in one of the four bag slots**, and a **bag or crate with things in it**. A bowl of honey or a bucket of water does burn, since those are valued together with what is in them.
+  - With **Ctrl or Alt** held as well, a shift-click is the game's own, so a stack can still be moved without closing the window.
+  - Needs 1.26.8 on the server too. On a server with an older Vintage-E a shift-click stays the game's.
+  - To switch it off, set `"ShiftClickBurns": false` in `vintagee-client.json` in the game's ModConfig folder (the game then isn't touched for it at all).
+- The Help text of the table says so, and the doctor's "Your game" check now also lists another mod hooked into the game's slot click, since that mod and Vintage-E then decide together what a shift-click does.
+
+### For modders
+- How it works: the Burn slot isn't a real slot, so the game's shift-click (which looks for a slot to put the stack in) never came its way. The player's game catches the click before the game acts on it (a Harmony prefix on `GuiElementItemSlotGridBase.SlotClick`) and asks the server to burn what is in that slot. Nothing moves on the player's side, and the server checks the slot and the stack by its own rules, so a refusal changes nothing anywhere.
+
 ## 1.26.7 — 2026-11-25
 
 ### Added

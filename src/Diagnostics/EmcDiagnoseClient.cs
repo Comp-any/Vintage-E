@@ -63,7 +63,9 @@ namespace VintageE
         {
             "ShapeTesselatorManager.LoadBlockShapes", "ShapeTesselatorManager.LoadItemShapes",
             "CollectibleObject.GetHeldItemInfo", "CollectibleObject.GetHeldItemName", "Block.GetPlacedBlockInfo", "Block.GetPlacedBlockName",
-            "GuiElementItemstackInfo", "ItemSlot.", "InventoryBase.", "GuiDialog.TryOpen", "GuiComposer.", "Entity.ReceiveDamage", "EntityPlayer."
+            "GuiElementItemstackInfo", "ItemSlot.", "InventoryBase.", "GuiDialog.TryOpen", "GuiComposer.", "Entity.ReceiveDamage", "EntityPlayer.",
+            // 1.26.8: shift-click to burn hooks this one; another mod's hook on it decides with ours what a shift-click does.
+            "GuiElementItemSlotGridBase.SlotClick"
         };
 
         /// <summary>"Type.Method ← owner, owner" for every watched method another mod has patched with Harmony.</summary>
@@ -79,7 +81,8 @@ namespace VintageE
                     if (!WatchedMethods.Any(w => w.EndsWith(".", StringComparison.Ordinal) ? name.StartsWith(w, StringComparison.Ordinal) : name == w || name.StartsWith(w + ".", StringComparison.Ordinal) || (w.IndexOf('.') < 0 && m.DeclaringType.Name == w))) continue;
                     Patches info = Harmony.GetPatchInfo(m);
                     if (info == null) continue;
-                    var owners = info.Owners.Where(o => o != ourId).Distinct().OrderBy(o => o, StringComparer.Ordinal).ToList();
+                    // Not Vintage-E's own hooks (all named "vintagee.something"): the list is of other mods.
+                    var owners = info.Owners.Where(o => o != ourId && !o.StartsWith("vintagee.", StringComparison.Ordinal)).Distinct().OrderBy(o => o, StringComparer.Ordinal).ToList();
                     if (owners.Count == 0) continue;
                     result.Add(name + " ← " + string.Join(", ", owners));
                     if (result.Count >= 30) break;

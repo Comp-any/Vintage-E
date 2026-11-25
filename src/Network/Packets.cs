@@ -36,6 +36,11 @@ namespace VintageE
         [ProtoMember(17)] public double TableUseRange = 8;
         /// <summary>The server's CollectorFuels (1.24.1), so a click on a collector with a fuel the server added is sent on.</summary>
         [ProtoMember(18)] public string[] CollectorFuels;
+        /// <summary>
+        /// The server knows <see cref="TransmuteAction.BurnSlot"/> (1.26.8). A server before that says nothing here and
+        /// would ignore the request, so a player's game on such a server leaves a shift-click to the game.
+        /// </summary>
+        [ProtoMember(19)] public bool BurnBySlot;
     }
 
     /// <summary>
@@ -79,7 +84,13 @@ namespace VintageE
         /// <summary>Gem of Eternal Density: switch between "all cheap things except these" and "only these".</summary>
         GemMode = 10,
         /// <summary>Charge slot (1.18.11): a Klein star on the cursor is filled from the player's EMC (Mode 0) or emptied into it (Mode 1); it stays on the cursor.</summary>
-        Charge = 11
+        Charge = 11,
+        /// <summary>
+        /// Burn the whole stack in one of the player's own hotbar or backpack slots (1.26.8, a shift-click on it while
+        /// the window is open): <see cref="TransmuteRequestPacket.SlotInv"/> and <see cref="TransmuteRequestPacket.Slot"/>
+        /// name the slot, Key is the code of what the player saw in it (something else there by now is left alone).
+        /// </summary>
+        BurnSlot = 12
     }
 
     public enum EmcCraftAction
@@ -122,6 +133,12 @@ namespace VintageE
         /// </summary>
         [ProtoMember(4)] public string TabletInv;
         [ProtoMember(5)] public int TabletSlot;
+        /// <summary>
+        /// <see cref="TransmuteAction.BurnSlot"/> (1.26.8): the slot to burn, as its inventory's ID and its number in it
+        /// plus one (a 0 isn't sent at all).
+        /// </summary>
+        [ProtoMember(6)] public string SlotInv;
+        [ProtoMember(7)] public int Slot;
     }
 
     /// <summary>Server → client outcome; ErrorCode maps to the lang key "vintagee:error-{code}".</summary>

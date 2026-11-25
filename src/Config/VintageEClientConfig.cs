@@ -42,6 +42,12 @@ namespace VintageE
         /// </summary>
         public bool LookHooks = true;
 
+        /// <summary>
+        /// While the Transmutation Table's or Tablet's window is open, a shift-click on an item in your hotbar or
+        /// backpack burns the whole stack, if it can burn (1.26.8). Off: a shift-click is always the game's own.
+        /// </summary>
+        public bool ShiftClickBurns = true;
+
         /// <summary>Show an icon on screen while the watch is on (or time runs faster or slower because of one).</summary>
         public bool WatchIcon = true;
         /// <summary>The icon's size in GUI pixels (16-128).</summary>

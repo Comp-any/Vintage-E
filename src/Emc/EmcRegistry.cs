@@ -41,6 +41,8 @@ namespace VintageE
         public double WatchSlowDown { get => watchSlowDown; set { watchSlowDown = value; Touch(); } }
         /// <summary>How far from a Transmutation Table its window works (mirrors the server config on clients).</summary>
         public double TableUseRange { get => tableUseRange; set { tableUseRange = value; Touch(); } }
+        /// <summary>On a player's game: the server said it burns a slot's stack on request (1.26.8). False until its table arrives, and with an older server.</summary>
+        public bool BurnBySlot { get; private set; }
         /// <summary>The fuels Energy Collectors upgrade (mirrors the server config on clients); null until the server's table arrives.</summary>
         public string[] CollectorFuels { get => collectorFuels; set { collectorFuels = value; Touch(); } }
 
@@ -305,6 +307,7 @@ namespace VintageE
                 WatchSlowDown = WatchSlowDown,
                 TableUseRange = TableUseRange,
                 CollectorFuels = CollectorFuels,
+                BurnBySlot = true,
                 NoTransmuteKeys = NoTransmute.Select(PlayerEmc.KeyOf).Where(k => k != null).ToArray(),
                 DataKeys = dataKeys.ToArray(),
                 DataKindModes = dataKindModes.ToArray(),
@@ -345,6 +348,7 @@ namespace VintageE
             WatchSlowDown = packet.WatchSlowDown > 0 ? packet.WatchSlowDown : 3;
             TableUseRange = packet.TableUseRange > 0 ? packet.TableUseRange : 8;
             CollectorFuels = packet.CollectorFuels;
+            BurnBySlot = packet.BurnBySlot;
             var noTransmute = new HashSet<CollectibleObject>();
             foreach (string key in packet.NoTransmuteKeys ?? Array.Empty<string>())
             {

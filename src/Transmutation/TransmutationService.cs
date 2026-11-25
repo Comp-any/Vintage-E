@@ -53,6 +53,7 @@ namespace VintageE
             switch (req.Action)
             {
                 case TransmuteAction.Burn: Burn(player, req.Mode == 1); break;
+                case TransmuteAction.BurnSlot: BurnSlot(player, req); break;
                 case TransmuteAction.Learn: LearnHeld(player); break;
                 case TransmuteAction.Charge: Charge(player, req.Mode == 1); break;
                 case TransmuteAction.Create: Create(player, req.Key, req.Mode); break;
@@ -251,10 +252,54 @@ namespace VintageE
             ItemStack taken = mouse.TakeOut(count);
             if (taken == null || taken.StackSize <= 0) return;
             mouse.MarkDirty();
+            Burned(player, taken, plan);
+        }
 
+        /// <summary>A stack was taken from the player to burn: the EMC, the knowledge, the sound and the answer to the window.</summary>
+        void Burned(IServerPlayer player, ItemStack taken, BurnPlan plan)
+        {
             string learned = ApplyBurn(player, taken, plan);
             sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), player.Entity, null, true, 8, 0.5f);
             mod.SendResult(player, Result(player, learned, learned == null ? Array.Empty<string>() : plan.AlsoPlain ? new[] { learned, PlayerEmc.KeyOf(taken.Collectible) } : new[] { learned }));
+        }
+
+        /// <summary>
+        /// Whether a shift-click may burn what is in this slot (null), and if not why: an error code, or "" when the
+        /// slot doesn't hold what the player clicked any more (nothing is done and nothing said then). The slot has
+        /// to be one a shift-click burns from (<see cref="ShiftClickBurn.Eligible"/>) and the stack one it burns
+        /// (<see cref="ShiftClickBurn.CanBurn"/>); after that the rules are the Burn slot's, except that a Klein
+        /// star isn't burned this way.
+        /// </summary>
+        public string PlanBurnSlot(IServerPlayer player, string playerUid, ItemSlot slot, string code, out BurnPlan plan, out string[] args)
+        {
+            plan = null;
+            args = Array.Empty<string>();
+            ItemStack stack = slot?.Itemstack;
+            if (stack?.Collectible?.Code == null || stack.StackSize <= 0 || stack.Collectible.Code.ToString() != code) return "";
+            if (!ShiftClickBurn.Eligible(playerUid, slot.Inventory, slot) || !ShiftClickBurn.CanBurn(mod, stack))
+            {
+                args = new[] { stack.GetName() };
+                return "shiftburn";
+            }
+            return PlanBurn(player, stack, out plan, out args);
+        }
+
+        /// <summary>A shift-click on a slot of the player's own inventory while the window is open (1.26.8): its whole stack is burned.</summary>
+        void BurnSlot(IServerPlayer player, TransmuteRequestPacket req)
+        {
+            ItemSlot slot = ShiftClickBurn.SlotOf(player, req.SlotInv, req.Slot - 1);
+            string error = PlanBurnSlot(player, player.PlayerUID, slot, req.Key, out BurnPlan plan, out string[] args);
+            if (error != null)
+            {
+                // Not what the player saw there: their game gets the slot as it is here. Otherwise the reason.
+                if (error.Length == 0) slot?.MarkDirty();
+                else FailFor(player, slot.Itemstack, error, args);
+                return;
+            }
+            ItemStack taken = slot.TakeOutWhole();
+            if (taken == null || taken.StackSize <= 0) return;
+            slot.MarkDirty();
+            Burned(player, taken, plan);
         }
 
         /// <summary>
@@ -368,9 +413,12 @@ namespace VintageE
             mod.SendResult(player, Result(player, null));
         }
 
-        internal void Fail(IServerPlayer player, string code, params string[] args)
+        internal void Fail(IServerPlayer player, string code, params string[] args) => FailFor(player, player?.InventoryManager?.MouseItemSlot?.Itemstack, code, args);
+
+        /// <summary>A refusal about this stack (the doctor's watch names it), which needn't be the one on the cursor.</summary>
+        void FailFor(IServerPlayer player, ItemStack stack, string code, string[] args)
         {
-            try { EmcDiagnose.RecordRefusal(player, code, args, player?.InventoryManager?.MouseItemSlot?.Itemstack); }
+            try { EmcDiagnose.RecordRefusal(player, code, args, stack); }
             catch { /* diagnostics never get in the way */ }
             mod.SendResult(player, new TransmuteResultPacket { ErrorCode = code, Args = args });
         }
