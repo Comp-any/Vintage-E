@@ -1,0 +1,8 @@
+== It works for another player but not for me (or the other way round) ==
+Values are the same for everyone. What differs is knowledge, EMC, privileges, game mode, and each game's copy of the table.
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+A player's state (knowledge, EMC, mode) (/emc diagnose players)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
