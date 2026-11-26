@@ -177,10 +177,11 @@ namespace VintageE
         /// <summary>
         /// Blocks whose "type" on the stack picks one entry out of a table the block itself holds (a clutter block's
         /// shape and name, a tapestry's pattern, a chest's kind, a fruit tree's variety). A type that table doesn't
-        /// have leaves a block with no name and no shape.
+        /// have leaves a block with no name and no shape. (Not everything "FromAttributes": the game's round shield is
+        /// ItemShieldFromAttributes, which is made of its materials and has no such table.)
         /// </summary>
         public static bool TypeDefined(CollectibleObject c) =>
-            c != null && (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTree"));
+            c != null && (HasClass(c, "ShapeFromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTree"));
 
         /// <summary>
         /// Whether the game still has this version of a block whose type defines it (<see cref="TypeDefined"/>): the
@@ -191,8 +192,8 @@ namespace VintageE
         /// Until 1.26.9 the whole version had to fit inside a listed one, for every block that needs its data. The
         /// creative inventory shows a selection, not everything that exists: clutter that was picked up carries a
         /// mark no listed clutter has, and a shield of aged wood or a lantern with a silver lining is craftable and
-        /// simply not shown there (195 grid recipe outputs in the base game). All of those burned, were learned, and
-        /// were never offered. So the check is only made where a missing type really leaves a broken block, and only
+        /// simply not shown there (195 grid recipe outputs in the base game: 182 lanterns, 8 shields, 5 figureheads).
+        /// All of those burned, were learned, and were never offered. So the check is only made where a missing type really leaves a broken block, and only
         /// about the type. No list (some blocks on a dedicated server): yes.
         /// </summary>
         public static bool VersionExists(IWorldAccessor world, ItemStack stack)
