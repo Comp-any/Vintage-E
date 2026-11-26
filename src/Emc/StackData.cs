@@ -175,47 +175,47 @@ namespace VintageE
         }
 
         /// <summary>
-        /// Whether the game still has this version of a block that is nothing without its data: a clutter block's
-        /// type, a tapestry's pattern. Its mod may be gone, or have renamed the type, and what is left would be a
-        /// block with no name and no shape. Told from the game's own list of versions (the creative inventory's):
-        /// a version that fits inside a listed one is there; otherwise what every listed version says (a clutter
-        /// block's "type") has to be said, and each thing said that the list knows of has to be something the list
-        /// has. What the list never mentions isn't held against a version (a texture chosen for it, say): until
-        /// 1.26.9 a version had to fit inside a listed one, so any data the game adds outside the creative
-        /// inventory hid it. No list (some blocks on a dedicated server): yes.
+        /// Blocks whose "type" on the stack picks one entry out of a table the block itself holds (a clutter block's
+        /// shape and name, a tapestry's pattern, a chest's kind, a fruit tree's variety). A type that table doesn't
+        /// have leaves a block with no name and no shape.
+        /// </summary>
+        public static bool TypeDefined(CollectibleObject c) =>
+            c != null && (HasClass(c, "FromAttributes") || HasClass(c, "BlockTapestry") || HasClass(c, "BlockGenericTypedContainer") || HasClass(c, "BlockFruitTree"));
+
+        /// <summary>
+        /// Whether the game still has this version of a block whose type defines it (<see cref="TypeDefined"/>): the
+        /// type's mod may be gone, or have renamed it. Told from the game's own list of versions (the creative
+        /// inventory's): the version's "type" has to be one the list has, and there has to be one where every listed
+        /// version has one. Nothing else on the stack is held against it.
+        ///
+        /// Until 1.26.9 the whole version had to fit inside a listed one, for every block that needs its data. The
+        /// creative inventory shows a selection, not everything that exists: clutter that was picked up carries a
+        /// mark no listed clutter has, and a shield of aged wood or a lantern with a silver lining is craftable and
+        /// simply not shown there (195 grid recipe outputs in the base game). All of those burned, were learned, and
+        /// were never offered. So the check is only made where a missing type really leaves a broken block, and only
+        /// about the type. No list (some blocks on a dedicated server): yes.
         /// </summary>
         public static bool VersionExists(IWorldAccessor world, ItemStack stack)
         {
+            if (stack?.Collectible == null || !TypeDefined(stack.Collectible)) return true;
             TreeAttribute kept = KeptData(stack);
             if (kept == null) return true;
-            var versions = new List<ITreeAttribute>();
+            IAttribute type = kept["type"];
+            bool any = false, anyTyped = false, allTyped = true;
             foreach (ItemStack version in CreativeVersions(stack.Collectible, world))
             {
-                if (version?.Attributes != null) versions.Add(version.Attributes);
+                if (version?.Attributes == null) continue;
+                any = true;
+                // A version that says nothing a listed one doesn't say is there, whatever it is made of.
+                if (IsSubset(world, kept, version.Attributes)) return true;
+                IAttribute theirs = version.Attributes["type"];
+                if (theirs == null) { allTyped = false; continue; }
+                anyTyped = true;
+                if (type != null && SameData(world, type, theirs)) return true;
             }
-            if (versions.Count == 0) return true;
-            // A version that says nothing a listed one doesn't say (the rule until 1.26.9; still enough by itself).
-            foreach (ITreeAttribute v in versions) { if (IsSubset(world, kept, v)) return true; }
-            foreach (var kv in versions[0])
-            {
-                if (VolatileKeys.Contains(kv.Key) || kept[kv.Key] != null) continue;
-                bool everyVersion = true;
-                foreach (ITreeAttribute v in versions) { if (v[kv.Key] == null) { everyVersion = false; break; } }
-                if (everyVersion) return false;
-            }
-            foreach (var kv in kept)
-            {
-                bool listed = false, found = false;
-                foreach (ITreeAttribute v in versions)
-                {
-                    IAttribute theirs = v[kv.Key];
-                    if (theirs == null) continue;
-                    listed = true;
-                    if (SameData(world, kv.Value, theirs)) { found = true; break; }
-                }
-                if (listed && !found) return false;
-            }
-            return true;
+            if (!any) return true;
+            // No type on it: broken where every listed version has one. A type on it: wrong where the list has types at all.
+            return type == null ? !allTyped : !anyTyped;
         }
 
         static bool SameData(IWorldAccessor world, IAttribute a, IAttribute b)

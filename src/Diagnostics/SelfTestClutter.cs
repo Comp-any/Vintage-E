@@ -94,10 +94,12 @@ namespace VintageE
                 $"the doctor's page about a player warns of learned things the table doesn't offer, each kind with its examples, under one copy button ({finding.Lines.Count} lines{(badLink != null ? ", not for Vintage Doctor: " + badLink : "")}) [{said.Replace("\n", " / ")}]");
             Check(EmcDiagnose.NotOfferedFor(mod, sapi, "en", new[] { PlayerEmc.KeyOf(granite), pickedKey, oldKey }).Lines.Count == 0, "a player whose learned things are all offered gets no such finding");
 
-            // The same fault anywhere else: a typed block a recipe makes outright has to be a version the table offers.
+            // The same fault anywhere else. Until 1.26.9 every block that needs its data had to fit inside a version the
+            // creative inventory lists, which shows a selection: whatever a recipe makes outright has to be offered.
             // (A recipe that copies its data from an ingredient makes whatever went in; its own output says too little.)
             int outputs = 0, hiddenBefore = 0;
             var hidden = new List<string>();
+            var hiddenBeforeBy = new Dictionary<string, int>(StringComparer.Ordinal);
             var needs = new Dictionary<CollectibleObject, bool>();
             foreach (GridRecipe recipe in sapi.World.GridRecipes)
             {
@@ -107,13 +109,29 @@ namespace VintageE
                 TreeAttribute kept = typed ? StackDataUtil.KeptData(output) : null;
                 if (kept == null) continue;
                 outputs++;
-                bool fitted = StackDataUtil.CreativeVersions(output.Collectible, sapi.World).Any(v => StackDataUtil.IsSubset(sapi.World, kept, v.Attributes));
-                bool any = StackDataUtil.CreativeVersions(output.Collectible, sapi.World).Any();
-                if (any && !fitted) hiddenBefore++;
-                if (!StackDataUtil.VersionExists(sapi.World, output) && hidden.Count < 12) hidden.Add(output.Collectible.Code + " " + kept.ToJsonToken());
+                bool any = false, fitted = false;
+                foreach (ItemStack version in StackDataUtil.CreativeVersions(output.Collectible, sapi.World))
+                {
+                    any = true;
+                    if (StackDataUtil.IsSubset(sapi.World, kept, version.Attributes)) { fitted = true; break; }
+                }
+                if (any && !fitted)
+                {
+                    hiddenBefore++;
+                    string code = output.Collectible.Code.ToString();
+                    hiddenBeforeBy[code] = hiddenBeforeBy.TryGetValue(code, out int n) ? n + 1 : 1;
+                }
+                if (TransmutationService.WhyNotOffered(mod, sapi.World, PlayerEmc.ExactKey(output.Collectible, kept)) == "version" && hidden.Count < 12) hidden.Add(output.Collectible.Code + " " + kept.ToJsonToken());
             }
-            Check(hidden.Count == 0, $"every typed block a grid recipe makes outright is a version the table offers ({outputs} such outputs; {hiddenBefore} of them were hidden until 1.26.9)"
+            Line($"  typed blocks made outright by grid recipes: {outputs}; not offered until 1.26.9: {hiddenBefore} ("
+                + string.Join(", ", hiddenBeforeBy.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key, StringComparer.Ordinal).Take(12).Select(kv => kv.Key + " x" + kv.Value)) + ")");
+            Check(hidden.Count == 0 && outputs > 0, $"every typed block a grid recipe makes outright is a version the table offers ({outputs} such outputs; {hiddenBefore} of them were hidden until 1.26.9)"
                 + (hidden.Count > 0 ? ": not " + string.Join("; ", hidden) : ""));
+
+            // And the versions are still told apart where it matters: a shield or a lantern is offered whatever it is made of.
+            CollectibleObject shield = sapi.World.GetItem(new AssetLocation("game:shield-woodmetal"));
+            Check(shield != null && !StackDataUtil.TypeDefined(shield) && StackDataUtil.TypeDefined(clutter) && StackDataUtil.NeedsData(shield, sapi.World),
+                "only a block whose type defines it (clutter, a tapestry, a typed chest) is held to the game's list of types; a shield needs its materials and is never held to it");
         }
     }
 }
