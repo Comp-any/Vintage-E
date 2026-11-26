@@ -81,6 +81,19 @@ namespace VintageE
                   && TransmutationService.WhyNotOffered(mod, sapi.World, PlayerEmc.KeyOf(granite)) == null,
                 "the doctor can say why a learned thing isn't offered: no type, gone with its mod, or nothing wrong");
 
+            // The doctor's page about a player (which needs its player online, so the finding is asked for by itself).
+            EmcReport finding = EmcDiagnose.NotOfferedFor(mod, sapi, "en", new[] { PlayerEmc.KeyOf(granite), pickedKey, oldKey, goneKey, PlayerEmc.KeyOf(clutter), "i:game:nosuchitem-from-a-removed-mod" });
+            string said = string.Join("\n", finding.Lines.Select(l => l.Text));
+            bool warns = finding.Lines.Count > 0 && finding.Lines[0].Style == EmcLineStyle.Check && finding.Lines[0].Text.StartsWith("⚠", StringComparison.Ordinal);
+            int copyButtons = EmcDiagnose.AddCopyButtons(mod, sapi, "en", finding);
+            var handed = new TreeAttribute();
+            DoctorBridge.Write(finding, handed);
+            bool doctors = LinksAreTheDoctors(Texts(handed), out string badLink);
+            Check(warns && said.Contains("3 of the 6") && said.Contains("nosuchclutter-from-a-removed-mod") && said.Contains("b:game:clutter") && said.Contains("i:game:nosuchitem-from-a-removed-mod")
+                  && said.IndexOfAny(new[] { '{', '}', '|' }) < 0 && copyButtons == 1 && doctors,
+                $"the doctor's page about a player warns of learned things the table doesn't offer, each kind with its examples, under one copy button ({finding.Lines.Count} lines{(badLink != null ? ", not for Vintage Doctor: " + badLink : "")}) [{said.Replace("\n", " / ")}]");
+            Check(EmcDiagnose.NotOfferedFor(mod, sapi, "en", new[] { PlayerEmc.KeyOf(granite), pickedKey, oldKey }).Lines.Count == 0, "a player whose learned things are all offered gets no such finding");
+
             // The same fault anywhere else: a typed block a recipe makes outright has to be a version the table offers.
             // (A recipe that copies its data from an ingredient makes whatever went in; its own output says too little.)
             int outputs = 0, hiddenBefore = 0;

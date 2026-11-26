@@ -1011,6 +1011,14 @@ namespace VintageE
             if (broken) x.Fix(x.L("diag-player-hidden-fix"));
         }
 
+        /// <summary>For the self-test (the page itself needs its player online): that finding alone, for a list of knowledge.</summary>
+        internal static EmcReport NotOfferedFor(VintageEModSystem mod, ICoreServerAPI sapi, string lang, string[] known)
+        {
+            var r = new EmcReport { Kind = EmcReport.DiagnoseKind, Key = ActionPlayer + "|" };
+            NotOffered(new Ctx { Mod = mod, Sapi = sapi, LangCode = lang, R = r }, known);
+            return r;
+        }
+
         /// <summary>A learned thing in words for a report: its plain key and, for an exact version, the data that makes it one.</summary>
         static string HiddenName(Ctx x, string key)
         {
@@ -1038,7 +1046,12 @@ namespace VintageE
             {
                 bool knows = KnowsHeld(x, p);
                 x.R.Add(knows ? x.L("diag-held-known") : x.L("diag-held-unknown"), knows ? EmcLineStyle.Total : EmcLineStyle.Warn);
-                if (!knows && x.Mod.Emc.GetValue(x.Held.Collectible) > 0) x.R.Add(FixLink(x, "learn", key, x.L("diag-fix-learn", EmcExplain.NameOf(x.Held.Collectible))));
+                // The button teaches the plain block or item. A block that is nothing without its type (clutter, a
+                // tapestry) has no plain one to learn: that would be an entry the table can never offer.
+                if (!knows && x.Mod.Emc.GetValue(x.Held.Collectible) > 0 && !StackDataUtil.NeedsData(x.Held.Collectible, x.Sapi.World))
+                {
+                    x.R.Add(FixLink(x, "learn", PlayerEmc.KeyOf(x.Held.Collectible), x.L("diag-fix-learn", EmcExplain.NameOf(x.Held.Collectible))));
+                }
             }
         }
 
