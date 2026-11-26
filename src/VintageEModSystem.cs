@@ -733,7 +733,7 @@ namespace VintageE
                     try
                     {
                         int gone = PlayerEmc.Tidy(player, sapi.World);
-                        if (gone > 0) sapi.Logger.Notification("Vintage-E: tidied {0}'s knowledge: {1} duplicate entries (freshness or fill level) merged", player.PlayerName, gone);
+                        if (gone > 0) sapi.Logger.Notification("Vintage-E: tidied {0}'s knowledge: {1} duplicate entries (freshness, fill level, or the same clutter picked up and from the creative inventory) merged", player.PlayerName, gone);
                     }
                     catch (Exception e) { sapi.Logger.Warning("Vintage-E: tidying {0}'s knowledge: {1}", player.PlayerName, e.Message); }
                     try { SendPlayerEmc(player, everything: true); }

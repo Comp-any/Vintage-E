@@ -376,9 +376,22 @@ namespace VintageE
         {
             string[] known = GetKnown(player);
             if (known.Length == 0) return 0;
+            string[] tidy = Tidied(known, world, out bool changed);
+            if (!changed) return 0;
+            SetKnown(player, tidy);
+            return known.Length - tidy.Length;
+        }
+
+        /// <summary>
+        /// A list of knowledge with each exact entry keyed the way it would be learned today, duplicates dropped, in
+        /// the same order. Since 1.26.10 that also takes the game's "collected" mark out of clutter learned before
+        /// (see <see cref="StackDataUtil.VolatileKeys"/>), which is what makes that clutter show up again.
+        /// </summary>
+        public static string[] Tidied(string[] known, IWorldAccessor world, out bool changed)
+        {
             var kept = new List<string>(known.Length);
             var seen = new HashSet<string>(StringComparer.Ordinal);
-            bool changed = false;
+            changed = false;
             foreach (string key in known)
             {
                 string now = key;
@@ -398,9 +411,7 @@ namespace VintageE
                 if (now != key) changed = true;
                 if (seen.Add(now)) kept.Add(now); else changed = true;
             }
-            if (!changed) return 0;
-            SetKnown(player, kept.ToArray());
-            return known.Length - kept.Count;
+            return kept.ToArray();
         }
 
         /// <summary>

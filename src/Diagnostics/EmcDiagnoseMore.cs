@@ -498,14 +498,14 @@ namespace VintageE
             r.Add(x.L("diag-player-emc", F(PlayerEmc.GetEmc(p))), EmcLineStyle.Text);
             r.Add(x.L("diag-player-known", known.Length, exact, cfg.MaxExactKnowledge), exact >= cfg.MaxExactKnowledge ? EmcLineStyle.Warn : EmcLineStyle.Text);
             if (exact >= cfg.MaxExactKnowledge) x.Fix(x.L("diag-player-known-fix"));
+            NotOffered(x, known);
             r.Add(x.L("diag-player-mode", p.WorldData?.CurrentGameMode.ToString() ?? "?"), EmcLineStyle.Text);
             if (p.WorldData?.CurrentGameMode == EnumGameMode.Creative) x.Note(x.L("diag-player-creative"), 1);
             bool admin = (p as IServerPlayer)?.HasPrivilege(Privilege.controlserver) ?? false;
             r.Add(admin ? x.L("diag-player-admin") : x.L("diag-player-notadmin"), EmcLineStyle.Note);
             if (x.Held?.Collectible?.Code != null)
             {
-                string key = PlayerEmc.KeyOf(x.Held.Collectible);
-                bool knows = PlayerEmc.Knows(p, key);
+                bool knows = KnowsHeld(x, p);
                 r.Add(knows ? x.L("diag-player-knowsheld", EmcExplain.NameOf(x.Held.Collectible)) : x.L("diag-player-notknowsheld", EmcExplain.NameOf(x.Held.Collectible)), knows ? EmcLineStyle.Total : EmcLineStyle.Warn);
                 if (!knows) x.Fix(x.L("diag-player-notknowsheld-fix", p.PlayerName));
             }
@@ -969,6 +969,65 @@ namespace VintageE
             r.Add(Link(ActionOverview, "", x.L("diag-q-back")));
         }
 
+        /// <summary>
+        /// Whether a player has learned what is held, as the table would learn it: a clutter block, a filled bucket
+        /// or a gold shield is known as that exact version, never as the plain block (asked by the plain key alone
+        /// until 1.26.9, which said "hasn't learned" of every clutter block).
+        /// </summary>
+        static bool KnowsHeld(Ctx x, IPlayer p)
+        {
+            if (PlayerEmc.Knows(p, PlayerEmc.KeyOf(x.Held.Collectible))) return true;
+            try { return PlayerEmc.Knows(p, EmcCommands.KnowledgeKey(x.Mod, x.Held)); }
+            catch { return false; }
+        }
+
+        /// <summary>
+        /// What a player has learned that the table doesn't offer them, and why (1.26.10). Learned things that never
+        /// show up are otherwise invisible: the burn worked, the count went up, and the list says nothing.
+        /// </summary>
+        static void NotOffered(Ctx x, string[] known)
+        {
+            var why = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            foreach (string key in known)
+            {
+                string reason = TransmutationService.WhyNotOffered(x.Mod, x.Sapi.World, key);
+                if (reason == null) continue;
+                if (!why.TryGetValue(reason, out List<string> keys)) why[reason] = keys = new List<string>();
+                keys.Add(key);
+            }
+            if (why.Count == 0) return;
+            int total = why.Values.Sum(l => l.Count);
+            // Nothing to make it from is a matter of the values, which other pages are about; the rest is knowledge the player can't use.
+            bool broken = why.Keys.Any(k => k != "novalue");
+            if (broken) x.Warn(x.L("diag-player-hidden", total, known.Length));
+            else x.Info(x.L("diag-player-hidden", total, known.Length));
+            foreach (string reason in new[] { "version", "typeless", "gone", "novalue" })
+            {
+                if (!why.TryGetValue(reason, out List<string> keys)) continue;
+                x.Note(x.L("diag-player-hidden-" + reason, keys.Count), 1);
+                foreach (string key in keys.Take(8)) x.Note(HiddenName(x, key), 2);
+                if (keys.Count > 8) x.Note(x.L("diag-more", keys.Count - 8), 2);
+            }
+            if (broken) x.Fix(x.L("diag-player-hidden-fix"));
+        }
+
+        /// <summary>A learned thing in words for a report: its plain key and, for an exact version, the data that makes it one.</summary>
+        static string HiddenName(Ctx x, string key)
+        {
+            string plain = PlayerEmc.PlainKeyOf(key) ?? key;
+            if (!PlayerEmc.IsExact(key)) return plain;
+            string data = "?";
+            try
+            {
+                Vintagestory.API.Datastructures.TreeAttribute tree = StackDataUtil.Decode(key.Substring(key.IndexOf('|') + 1));
+                // In a report's own words: braces and bars are what its buttons are written with.
+                if (tree != null) data = tree.ToJsonToken().Replace("{", "(").Replace("}", ")").Replace("|", "/").Replace("\"", "").Replace("[[", "[").Replace("]]", "]");
+            }
+            catch { data = "?"; }
+            if (data.Length > 160) data = data.Substring(0, 160) + "...";
+            return plain + " " + data;
+        }
+
         static void PlayerReportInline(Ctx x)
         {
             IPlayer p = x.Player;
@@ -977,8 +1036,7 @@ namespace VintageE
             x.R.Add(x.L("diag-player-known", PlayerEmc.GetKnown(p).Length, exact, cfg.MaxExactKnowledge), exact >= cfg.MaxExactKnowledge ? EmcLineStyle.Warn : EmcLineStyle.Text);
             if (x.Held?.Collectible?.Code != null)
             {
-                string key = PlayerEmc.KeyOf(x.Held.Collectible);
-                bool knows = PlayerEmc.Knows(p, key);
+                bool knows = KnowsHeld(x, p);
                 x.R.Add(knows ? x.L("diag-held-known") : x.L("diag-held-unknown"), knows ? EmcLineStyle.Total : EmcLineStyle.Warn);
                 if (!knows && x.Mod.Emc.GetValue(x.Held.Collectible) > 0) x.R.Add(FixLink(x, "learn", key, x.L("diag-fix-learn", EmcExplain.NameOf(x.Held.Collectible))));
             }

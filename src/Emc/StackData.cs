@@ -148,8 +148,85 @@ namespace VintageE
             "vintageeArcanaOff", "vintageeStoredEmc", "vintageeSpeedBase",
             // States that change on their own or with use, found by the self-test's scan (1.18.4): a crate's lid open or
             // shut, a populated skep ready to harvest, a locust nest's import flag.
-            "lidState", "harvestable", "spawnOnlyAfterImport"
+            "lidState", "harvestable", "spawnOnlyAfterImport",
+            // The game's mark on a clutter block that was picked up (BlockBehaviorReparable.GetDrops, read from
+            // 1.22.7): it says where the block came from, not what it is. Every clutter block got in survival has it
+            // and none in the creative inventory does. Kept as part of the version until 1.26.9, it made each
+            // picked-up clutter a version "the game no longer lists": burned, learned, and never shown again.
+            CollectedKey
         };
+
+        /// <summary>See <see cref="VolatileKeys"/> and <see cref="MarkCollected"/>.</summary>
+        public const string CollectedKey = "collected";
+
+        /// <summary>
+        /// A clutter block made from EMC is marked the way the game marks one that was picked up: without the mark a
+        /// placed one is "found" clutter again, which breaks to nothing unless it is glued first, and its stack
+        /// doesn't go together with the player's other clutter of that kind. Only for blocks the game repairs.
+        /// </summary>
+        public static void MarkCollected(ItemStack stack)
+        {
+            try
+            {
+                if (!(stack?.Collectible is Block block) || stack.Attributes == null || stack.Attributes.GetBool(CollectedKey)) return;
+                if (block.HasBehavior<Vintagestory.GameContent.BlockBehaviorReparable>()) stack.Attributes.SetBool(CollectedKey, true);
+            }
+            catch { /* a block that can't say: left as it is */ }
+        }
+
+        /// <summary>
+        /// Whether the game still has this version of a block that is nothing without its data: a clutter block's
+        /// type, a tapestry's pattern. Its mod may be gone, or have renamed the type, and what is left would be a
+        /// block with no name and no shape. Told from the game's own list of versions (the creative inventory's):
+        /// a version that fits inside a listed one is there; otherwise what every listed version says (a clutter
+        /// block's "type") has to be said, and each thing said that the list knows of has to be something the list
+        /// has. What the list never mentions isn't held against a version (a texture chosen for it, say): until
+        /// 1.26.9 a version had to fit inside a listed one, so any data the game adds outside the creative
+        /// inventory hid it. No list (some blocks on a dedicated server): yes.
+        /// </summary>
+        public static bool VersionExists(IWorldAccessor world, ItemStack stack)
+        {
+            TreeAttribute kept = KeptData(stack);
+            if (kept == null) return true;
+            var versions = new List<ITreeAttribute>();
+            foreach (ItemStack version in CreativeVersions(stack.Collectible, world))
+            {
+                if (version?.Attributes != null) versions.Add(version.Attributes);
+            }
+            if (versions.Count == 0) return true;
+            // A version that says nothing a listed one doesn't say (the rule until 1.26.9; still enough by itself).
+            foreach (ITreeAttribute v in versions) { if (IsSubset(world, kept, v)) return true; }
+            foreach (var kv in versions[0])
+            {
+                if (VolatileKeys.Contains(kv.Key) || kept[kv.Key] != null) continue;
+                bool everyVersion = true;
+                foreach (ITreeAttribute v in versions) { if (v[kv.Key] == null) { everyVersion = false; break; } }
+                if (everyVersion) return false;
+            }
+            foreach (var kv in kept)
+            {
+                bool listed = false, found = false;
+                foreach (ITreeAttribute v in versions)
+                {
+                    IAttribute theirs = v[kv.Key];
+                    if (theirs == null) continue;
+                    listed = true;
+                    if (SameData(world, kv.Value, theirs)) { found = true; break; }
+                }
+                if (listed && !found) return false;
+            }
+            return true;
+        }
+
+        static bool SameData(IWorldAccessor world, IAttribute a, IAttribute b)
+        {
+            try
+            {
+                if (a is ITreeAttribute ta && b is ITreeAttribute tb) return IsSubset(world, ta, tb) && IsSubset(world, tb, ta);
+                return a.Equals(world, b);
+            }
+            catch { return false; }
+        }
 
         /// <summary>A sorted copy of the stack's data without the volatile parts; null when nothing is left.</summary>
         public static TreeAttribute KeptData(ItemStack stack)

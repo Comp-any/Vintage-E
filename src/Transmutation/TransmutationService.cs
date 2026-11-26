@@ -313,23 +313,30 @@ namespace VintageE
             if (PlayerEmc.IsExact(key) && mod.Emc.StackData.ModeOf(stack.Collectible) == StackDataMode.Item) return new ItemStack(stack.Collectible, 1);
             // A clutter, tapestry or typed-container version whose type the game no longer lists (its mod was removed
             // or renamed it) would be a nameless block with no shape: not offered, not created.
-            if (PlayerEmc.IsExact(key) && StackDataUtil.NeedsData(stack.Collectible, world) && !KnownVersion(world, stack)) return null;
+            if (PlayerEmc.IsExact(key) && StackDataUtil.NeedsData(stack.Collectible, world) && !StackDataUtil.VersionExists(world, stack)) return null;
+            // Clutter comes out as the game hands it to a player who picked it up (1.26.10).
+            StackDataUtil.MarkCollected(stack);
             return stack;
         }
 
-        /// <summary>True when the game's creative inventory lists this version of a typed block (or lists none at all, like cuttings).</summary>
-        static bool KnownVersion(IWorldAccessor world, ItemStack stack)
+        /// <summary>
+        /// Why the table doesn't offer something a player has learned, or null when it does (the doctor's page about a
+        /// player counts these, 1.26.10): "gone" (its block or item isn't in the game, or something inside it isn't),
+        /// "version" (a typed block's version the game no longer has), "typeless" (a typed block learned without its
+        /// type), "novalue" (nothing to make it from now).
+        /// </summary>
+        public static string WhyNotOffered(VintageEModSystem mod, IWorldAccessor world, string key)
         {
-            TreeAttribute kept = StackDataUtil.KeptData(stack);
-            if (kept == null) return true;
-            bool any = false;
-            foreach (ItemStack version in StackDataUtil.CreativeVersions(stack.Collectible, world))
+            try
             {
-                any = true;
-                if (version?.Attributes == null) continue;
-                if (StackDataUtil.IsSubset(world, kept, version.Attributes)) return true;
+                ItemStack resolved = PlayerEmc.ResolveStack(world, key);
+                if (resolved == null) return "gone";
+                ItemStack proto = Prototype(mod, world, key);
+                if (proto == null) return "version";
+                if (StackDataUtil.NeedsData(proto.Collectible, world) && StackDataUtil.KeptData(proto) == null) return "typeless";
+                return mod.Emc.GetValue(proto) > 0 ? null : "novalue";
             }
-            return !any;
+            catch { return "gone"; }
         }
 
         /// <param name="mode">0 = one onto cursor, 1 = stack onto cursor, 2 = stack into inventory</param>

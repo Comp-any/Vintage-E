@@ -2666,6 +2666,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the doctor's copy buttons threw " + e); }
             try { CheckShiftClickBurn(); }
             catch (Exception e) { Check(false, "the shift-click to burn checks threw " + e); }
+            try { CheckCollectedClutter(); }
+            catch (Exception e) { Check(false, "the picked-up clutter checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

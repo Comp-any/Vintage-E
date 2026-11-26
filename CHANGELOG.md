@@ -2,6 +2,19 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.26.10 — 2026-11-26
+
+### Fixed
+- **Clutter picked up in survival was learned but never shown, and couldn't be made** (reported by a player who burned 100 to 150 clutter blocks and found none of them in any tablet). The game marks a clutter block that was picked up, and the clutter in its creative inventory has no such mark. Since 1.17.24 Vintage-E hid any learned clutter that didn't match the game's own list exactly, taking it for a type the game no longer has, so every picked-up clutter block was hidden. The burn gave its EMC and the clutter was learned; the table and the tablets just never offered it.
+  - **Nothing was lost.** Clutter learned that way shows up by itself the next time its player joins. It doesn't have to be burned again.
+  - Picked-up clutter and the same clutter from the creative inventory (or learned with the Tome of Knowledge) are one entry now, not two.
+  - Clutter made from EMC carries the game's picked-up mark: it stacks with clutter you picked up, and once placed it can be broken and picked up again without glue.
+  - The check behind it is less strict for every block of this kind (clutter, bookshelves, tapestries, lanterns, shields, typed chests): a version is still hidden when the game no longer has its type, but no longer for carrying something the game's creative list never mentions.
+- **The doctor's page about a player: "has learned what you hold"** asked for the plain block or item only, so for clutter, filled containers and other things learned as an exact version it always said "hasn't learned". It now asks the way the table learns.
+
+### Added
+- **The doctor's page about a player says when things they learned aren't offered by the table**: how many, why (a version the game no longer has, a block learned without its type, gone with a removed mod, no value any more), and which, with the copy button. Before, the page only gave the number learned, so a fault like this one couldn't be seen from it.
+
 ## 1.26.9 — 2026-11-26
 
 ### Changed
