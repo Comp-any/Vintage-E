@@ -1,0 +1,19 @@
+== Checking Fields of Salt (fieldsofsalt)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+✓ assets/vintagee/config/vintagee-methods/fieldsofsalt.json (file, format 1): 1 methods, 1 recipes
+
+== Evaporation pond (Fields of Salt) (fieldsofsalt:evaporationpond) ==
+  r1#1 (read from fieldsofsalt:recipes/evaporationpond/salt.json): 200 Sea water (game:saltwaterportion) → 1 Salt (game:salt) = 2 EMC each
+    Not needed: Salt (game:salt) 4 has a set value (base value), which no recipe changes
+• 0 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 1 making something whose value is set
+
+== What Vintage-E understood from fieldsofsalt ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-fieldsofsalt.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check C&N Jewelry (canjewelry)'s crafting methods (for its author) (/emc diagnose methodcheck canjewelry)
+Check Fields of Salt (fieldsofsalt)'s crafting methods (for its author) (/emc diagnose methodcheck fieldsofsalt)
+Check vinteng's crafting methods (for its author) (/emc diagnose methodcheck vinteng)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
