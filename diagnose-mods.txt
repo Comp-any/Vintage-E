@@ -1,0 +1,10 @@
+== Mods and their coverage ==
+Every mod that adds blocks or items, and how many of them have a value. Click one for its own report.
+vinteng (/emc diagnose mod vinteng): 177 of 274 valued (64.6%)
+Vintage Story (game) (/emc diagnose mod game): 8151 of 8168 valued (99.8%) (648 blacklisted on purpose)
+C&N Jewelry (canjewelry) (/emc diagnose mod canjewelry): 130 of 130 valued (100.0%)
+Fields of Salt (fieldsofsalt) (/emc diagnose mod fieldsofsalt): 22 of 22 valued (100.0%)
+Vintage-E (vintagee) (/emc diagnose mod vintagee): 276 of 276 valued (100.0%) (1 blacklisted on purpose)
+
+== Next ==
+Back to the check-up (/emc diagnose)

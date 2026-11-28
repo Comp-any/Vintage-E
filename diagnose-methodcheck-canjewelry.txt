@@ -1,0 +1,54 @@
+== Checking C&N Jewelry (canjewelry)'s crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+✓ assets/vintagee/config/vintagee-methods/canjewelry.json (file, format 1): 1 methods, 24 recipes
+
+== Gem cutting (C&N Jewelry) (canjewelry:gemcutting) ==
+  baguette cutting chipped#4: left out: the input canjewelry:gem-rough-chipped-* matches nothing - did you mean Small rough ruby (canjewelry:gem-rough-chipped-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/baguette_cutting_geology.json[0])
+  baguette cutting flawless: left out: the input canjewelry:gem-rough-flawed-* matches nothing - did you mean Medium rough ruby (canjewelry:gem-rough-flawed-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/baguette_cutting_geology.json[1])
+  baguette cutting normal#6: left out: the input canjewelry:gem-rough-normal-* matches nothing - did you mean Great rough ruby (canjewelry:gem-rough-normal-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/baguette_cutting_geology.json[2])
+  pear cutting chipped (read from canjewelry:recipes/gemcutting/pear_cutting.json[0]) (13 copies: one per variant or tool): 1 Small rough amethyst (canjewelry:gem-rough-chipped-amethyst) → 1 Small cut amethyst (canjewelry:gem-cut-normal-amethyst) = 2,048 EMC each
+    Not needed: Small cut amethyst (canjewelry:gem-cut-normal-amethyst) 2,048 has a set value (guessed: the middle value of its 3 valued variants that differ in gemtype (canjewelry:gem-cut-normal-emerald)), which no recipe changes
+  pear cutting flawed (read from canjewelry:recipes/gemcutting/pear_cutting.json[1]) (13 copies: one per variant or tool): 1 Medium rough amethyst (canjewelry:gem-rough-flawed-amethyst) → 1 Medium cut amethyst (canjewelry:gem-cut-flawless-amethyst) = 2,048 EMC each
+    Not needed: Medium cut amethyst (canjewelry:gem-cut-flawless-amethyst) 2,048 has a set value (guessed: the middle value of its 3 valued variants that differ in gemtype (canjewelry:gem-cut-flawless-emerald)), which no recipe changes
+  pear cutting normal (read from canjewelry:recipes/gemcutting/pear_cutting.json[2]) (13 copies: one per variant or tool): 1 Great rough amethyst (canjewelry:gem-rough-normal-amethyst) → 1 Great cut amethyst (canjewelry:gem-cut-exquisite-amethyst) = 2,048 EMC each
+    Not needed: Great cut amethyst (canjewelry:gem-cut-exquisite-amethyst) 2,048 has a set value (guessed: the middle value of its 3 valued variants that differ in gemtype (canjewelry:gem-cut-exquisite-emerald)), which no recipe changes
+  pear cutting chipped#13: left out: the input canjewelry:gem-rough-chipped-* matches nothing - did you mean Small rough ruby (canjewelry:gem-rough-chipped-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_geology.json[0])
+  pear cutting chipped#14: left out: the input canjewelry:gem-rough-flawed-* matches nothing - did you mean Medium rough ruby (canjewelry:gem-rough-flawed-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_geology.json[1])
+  pear cutting chipped#15: left out: the input canjewelry:gem-rough-normal-* matches nothing - did you mean Great rough ruby (canjewelry:gem-rough-normal-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_geology.json[2])
+  pear cutting chipped#16: left out: the input game:gem-*-rough matches nothing - did you mean Rough Diamond (game:gem-diamond-rough)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_saltandsands.json[0])
+  pear cutting chipped#17: left out: the input game:gem-*-rough matches nothing - did you mean Rough Diamond (game:gem-diamond-rough)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_saltandsands.json[1])
+  pear cutting chipped#18: left out: the input game:gem-*-rough matches nothing - did you mean Rough Diamond (game:gem-diamond-rough)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/pear_cutting_saltandsands.json[2])
+  round cutting chipped (read from canjewelry:recipes/gemcutting/round_cutting.json[0]) (13 copies: one per variant or tool): 1 Small rough amethyst (canjewelry:gem-rough-chipped-amethyst) → 1 Small cut amethyst (canjewelry:gem-cut-normal-amethyst) = 2,048 EMC each
+    Not needed: Small cut amethyst (canjewelry:gem-cut-normal-amethyst) 2,048 has a set value (guessed: the middle value of its 3 valued variants that differ in gemtype (canjewelry:gem-cut-normal-emerald)), which no recipe changes
+  round cutting flawed (read from canjewelry:recipes/gemcutting/round_cutting.json[1]) (13 copies: one per variant or tool): 1 Medium rough amethyst (canjewelry:gem-rough-flawed-amethyst) → 1 Medium cut amethyst (canjewelry:gem-cut-flawless-amethyst) = 2,048 EMC each
+    Not needed: Medium cut amethyst (canjewelry:gem-cut-flawless-amethyst) 2,048 has a set value (guessed: the middle value of its 3 valued variants that differ in gemtype (canjewelry:gem-cut-flawless-emerald)), which no recipe changes
+  round cutting chipped#22: left out: the input canjewelry:gem-rough-chipped-* matches nothing - did you mean Small rough ruby (canjewelry:gem-rough-chipped-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/round_cutting_geology.json[0])
+  round cutting chipped#23: left out: the input canjewelry:gem-rough-flawed-* matches nothing - did you mean Medium rough ruby (canjewelry:gem-rough-flawed-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/round_cutting_geology.json[1])
+  round cutting chipped#24: left out: the input canjewelry:gem-rough-normal-* matches nothing - did you mean Great rough ruby (canjewelry:gem-rough-normal-ruby)?
+    methods[0].readers[0] (canjewelry:recipes/gemcutting/round_cutting_geology.json[2])
+• 6 used, 0 beaten by a cheaper way, 0 waiting, 12 left out, 0 switched off, 6 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Small rough diamond (canjewelry:gem-rough-chipped-diamond) → 1 Small cut diamond (canjewelry:gem-cut-normal-diamond)
+      + 1 Small rough diamond (canjewelry:gem-rough-chipped-diamond) × 8,192 = 8,192
+      = 8,192 EMC for 1, so 8,192 EMC each Small cut diamond (canjewelry:gem-cut-normal-diamond)
+
+== What Vintage-E understood from canjewelry ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-canjewelry.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check C&N Jewelry (canjewelry)'s crafting methods (for its author) (/emc diagnose methodcheck canjewelry)
+Check Fields of Salt (fieldsofsalt)'s crafting methods (for its author) (/emc diagnose methodcheck fieldsofsalt)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
