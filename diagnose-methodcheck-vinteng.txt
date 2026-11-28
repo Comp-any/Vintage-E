@@ -1,0 +1,205 @@
+== Checking vinteng's crafting methods ==
+For the mod's author: every problem in its documents with where it is (the JSON path), which recipes are used, beaten or waiting, one worked example, and a file of what Vintage-E understood. From the console it is plain text; in the window, Copy takes it all.
+✓ assets/vintagee/config/vintagee-methods/vintageengineering.json (file, format 1): 12 methods, 86 recipes
+
+== Crusher (Vintage Engineering) (vinteng:crusher) ==
+  sawdust-from-logsection (read from vinteng:recipes/vecrusher/sawdust.json[1]): 1 Redwood quarter log (game:logsection-placed-redwood-ne-ud) + 512 Vintage Engineering power → 1 Sawdust (vinteng:sawdust) = 32.02 EMC each
+    Not used: Sawdust (vinteng:sawdust) 32.02 comes from a cheaper way: Crusher (Vintage Engineering) (vinteng): 1 game:log-placed-aged-ud (or 12 more) (+0.026 energy) -> 1 vinteng:sawdust
+• 1 used, 1 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Aged oak log (game:log-placed-aged-ud) (or 12 more) + 512 Vintage Engineering power → 1 Sawdust (vinteng:sawdust)
+      + 1 Aged oak log (game:log-placed-aged-ud) × 32 = 32
+      + 512 Vintage Engineering power of power at 0.00005 EMC each = 0.025 (price: vinteng's suggested price)
+      = 32.02 EMC for 1, so 32.02 EMC each Sawdust (vinteng:sawdust)
+
+== Log splitter (Vintage Engineering) (vinteng:logsplitter) ==
+  firewood (read from vinteng:recipes/velogsplitter/firewood.json[0]) (9 copies: one per variant or tool): 1 Acacia log (game:log-placed-acacia-ud) + 512 Vintage Engineering power → 1 Firewood (game:firewood) + 1 Stick (game:stick) = 32.02 EMC a run
+    Not needed: Firewood (game:firewood) 8 has a set value (base value), which no recipe changes
+  firewood-from-redwood (read from vinteng:recipes/velogsplitter/firewood.json[1]) (12 copies: one per variant or tool): 1 Redwood quarter log (game:logsection-placed-redwood-ne-ns) + 512 Vintage Engineering power → 1 Firewood (game:firewood) + 1 Stick (game:stick) = 32.02 EMC a run
+    Not needed: Firewood (game:firewood) 8 has a set value (base value), which no recipe changes
+  firewood-from-tropical (read from vinteng:recipes/velogsplitter/firewood.json[2]) (3 copies: one per variant or tool): 1 Ebony log (game:log-placed-ebony-ud) + 640 Vintage Engineering power → 1 Firewood (game:firewood) + 1 Stick (game:stick) = 32.03 EMC a run
+    Not needed: Firewood (game:firewood) 8 has a set value (base value), which no recipe changes
+• 0 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 3 making something whose value is set
+
+== Sawmill (Vintage Engineering) (vinteng:sawmill) ==
+  planks-from-logs (read from vinteng:recipes/vesawmill/planks.json[0]) (65 copies: one per variant or tool): 1 Acacia log (game:log-placed-acacia-ud) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Board (Acacia) (game:plank-acacia) + 1 Sawdust (vinteng:sawdust) + 1 Stick (game:stick) = 32.03 EMC a run
+    Not used: Board (Acacia) (game:plank-acacia) 2.66 comes from a cheaper way: grid: 1 game:log-placed-acacia-ud -> 12 game:plank-acacia
+  planks-from-logsections (read from vinteng:recipes/vesawmill/planks.json[1]) (5 copies: one per variant or tool): 1 Redwood quarter log (game:logsection-placed-redwood-ne-ud) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Board (Redwood) (game:plank-redwood) + 1 Sawdust (vinteng:sawdust) + 1 Stick (game:stick) = 32.03 EMC a run
+    Not used: Board (Redwood) (game:plank-redwood) 2.66 comes from a cheaper way: grid: 1 game:log-placed-redwood-ud -> 12 game:plank-redwood
+  planks-from-plank-blocks-ud (read from vinteng:recipes/vesawmill/planks.json[2]) (60 copies: one per variant or tool): 1 Acacia planks (game:planks-acacia-ud) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Board (Acacia) (game:plank-acacia) = 10.7 EMC each
+    Not used: Board (Acacia) (game:plank-acacia) 2.66 comes from a cheaper way: grid: 1 game:log-placed-acacia-ud -> 12 game:plank-acacia
+  planks-from-plank-blocks-ns (read from vinteng:recipes/vesawmill/planks.json[3]) (60 copies: one per variant or tool): 1 Acacia planks (game:planks-acacia-ns) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Board (Acacia) (game:plank-acacia) = 10.7 EMC each
+    Not used: Board (Acacia) (game:plank-acacia) 2.66 comes from a cheaper way: grid: 1 game:log-placed-acacia-ud -> 12 game:plank-acacia
+  planks-from-plank-stairs (read from vinteng:recipes/vesawmill/planks.json[4]) (60 copies: one per variant or tool): 1 Acacia stairs (game:plankstairs-acacia-up-north-free) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 300 Vintage Engineering power → 1 Board (Acacia) (game:plank-acacia) = 8.03 EMC each
+    Not used: Board (Acacia) (game:plank-acacia) 2.66 comes from a cheaper way: grid: 1 game:log-placed-acacia-ud -> 12 game:plank-acacia
+  planks-from-plank-slab (read from vinteng:recipes/vesawmill/planks.json[5]) (60 copies: one per variant or tool): 1 Acacia slab (game:plankslab-acacia-down-free) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 200 Vintage Engineering power → 1 Board (Acacia) (game:plank-acacia) = 5.35 EMC each
+    Not used: Board (Acacia) (game:plank-acacia) 2.66 comes from a cheaper way: grid: 1 game:log-placed-acacia-ud -> 12 game:plank-acacia
+  treatedplanks-from-hblock (read from vinteng:recipes/vesawmill/treatedplanks.json[0]) (5 copies: one per variant or tool): 1 Treated Wood (Horizontal) (vinteng:treatedwood-horizontal-north) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Treated Wood Board (vinteng:plank-treated) + 1 Sawdust (vinteng:sawdust) = 170.7 EMC a run
+    Not used: Treated Wood Board (vinteng:plank-treated) 42.66 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 500 vinteng:creosoteportion-coal + 8 game:plank-aged -> 8 vinteng:plank-treated
+  treatedplanks-from-bblock (read from vinteng:recipes/vesawmill/treatedplanks.json[1]) (5 copies: one per variant or tool): 1 Treated Wood (Bordered) (vinteng:treatedwood-bordered-north) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Treated Wood Board (vinteng:plank-treated) + 1 Sawdust (vinteng:sawdust) = 213.36 EMC a run
+    Not used: Treated Wood Board (vinteng:plank-treated) 42.66 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 500 vinteng:creosoteportion-coal + 8 game:plank-aged -> 8 vinteng:plank-treated
+  treatedplanks-from-pblock (read from vinteng:recipes/vesawmill/treatedplanks.json[2]) (5 copies: one per variant or tool): 1 Treated Wood (Path) (vinteng:treatedwood-path-north) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Treated Wood Board (vinteng:plank-treated) + 1 Sawdust (vinteng:sawdust) = 181.5 EMC a run
+    Not used: Treated Wood Board (vinteng:plank-treated) 42.66 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 500 vinteng:creosoteportion-coal + 8 game:plank-aged -> 8 vinteng:plank-treated
+  treatedplanks-from-rblock (read from vinteng:recipes/vesawmill/treatedplanks.json[3]) (5 copies: one per variant or tool): 1 Treated Wood (Reinforced) (vinteng:treatedwood-reinforced-north) + 0.0001 Saw Blade (vinteng:vesawblade-titanium) (tool wear) + 400 Vintage Engineering power → 1 Treated Wood Board (vinteng:plank-treated) + 1 Sawdust (vinteng:sawdust) = 256.03 EMC a run
+    Not used: Treated Wood Board (vinteng:plank-treated) 42.66 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 500 vinteng:creosoteportion-coal + 8 game:plank-aged -> 8 vinteng:plank-treated
+• 0 used, 15 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+
+== Metal press (Vintage Engineering) (vinteng:metalpress) ==
+  basic-metal-gears (read from vinteng:recipes/vemetalpress/metal-gears.json[0]) (4 copies: one per variant or tool): 1 Brass plate (game:metalplate-brass) + 0.0025 Gear Mold (vinteng:vepressmold-gear-tinbronze) (tool wear) + 250 Vintage Engineering power → 1 Brass Gear (vinteng:metalgear-brass) + 1 Brass bits (game:metalbit-brass) = 346.31 EMC a run
+    Not used: Brass Gear (vinteng:metalgear-brass) 337.01 comes from a cheaper way: Metal press (Vintage Engineering) (vinteng): 1 game:metalplate-brass + 0 vinteng:vepressmold-gear-titanium (+0.025 energy) -> 1 vinteng:metalgear-brass + 1 game:metalbit-brass
+  advanced-nailsandstrips (read from vinteng:recipes/vemetalpress/metal-nailsandstrips.json[1]) (52 copies: one per variant or tool): 1 Bismuth plate (game:metalplate-bismuth) + 0.0001 Nails and Strips Mold (vinteng:vepressmold-nails-titanium) (tool wear) + 500 Vintage Engineering power → 1 Nails and strips (Bismuth) (game:metalnailsandstrips-bismuth) = 512.04 EMC each
+    Not used: Nails and strips (Bismuth) (game:metalnailsandstrips-bismuth) 64 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-bismuth -> 4 game:metalnailsandstrips-bismuth
+  basic-metal-plate (read from vinteng:recipes/vemetalpress/metal-plates.json[0]) (10 copies: one per variant or tool): 2 Bismuth bronze ingot (game:ingot-bismuthbronze) + 0.0025 Plate Mold (vinteng:vepressmold-plate-tinbronze) (tool wear) + 250 Vintage Engineering power → 1 Bismuth bronze plate (game:metalplate-bismuthbronze) = 358.76 EMC each
+    Not used: Bismuth bronze plate (game:metalplate-bismuthbronze) 358.4 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-bismuthbronze -> 1 game:metalplate-bismuthbronze
+  advanced-metal-plate (read from vinteng:recipes/vemetalpress/metal-plates.json[1]) (80 copies: one per variant or tool): 2 Bismuth ingot (game:ingot-bismuth) + 0.0001 Plate Mold (vinteng:vepressmold-plate-titanium) (tool wear) + 500 Vintage Engineering power → 1 Bismuth plate (game:metalplate-bismuth) = 512.04 EMC each
+    Not used: Bismuth plate (game:metalplate-bismuth) 512 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-bismuth -> 1 game:metalplate-bismuth
+  basic-metal-sheet (read from vinteng:recipes/vemetalpress/metal-sheets.json[0]) (10 copies: one per variant or tool): 1 Bismuth bronze ingot (game:ingot-bismuthbronze) + 0.0025 Metal Sheet Mold (vinteng:vepressmold-sheet-tinbronze) (tool wear) + 250 Vintage Engineering power → 1 Bismuth bronze sheet (game:metalsheet-bismuthbronze-down) = 179.56 EMC each
+    Not used: Bismuth bronze sheet (game:metalsheet-bismuthbronze-down) 179.24 comes from a cheaper way: Metal press (Vintage Engineering) (vinteng): 1 game:ingot-bismuthbronze + 0 vinteng:vepressmold-sheet-titanium (+0.025 energy) -> 1 game:metalsheet-bismuthbronze-down
+• 3 used, 5 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Brass plate (game:metalplate-brass) + 0.0001 Gear Mold (vinteng:vepressmold-gear-titanium) (tool wear) + 500 Vintage Engineering power → 1 Brass Gear (vinteng:metalgear-brass) + 1 Brass bits (game:metalbit-brass)
+      + 1 Brass plate (game:metalplate-brass) × 345.6 = 345.6
+      + 0.0001 Gear Mold (vinteng:vepressmold-gear-titanium) × 320 = 0.032
+        tool wear: 1 of 10000 durability
+      + 500 Vintage Engineering power of power at 0.00005 EMC each = 0.025 (price: vinteng's suggested price)
+      345.65 EMC a run
+
+== Extruder (Vintage Engineering) (vinteng:extruder) ==
+  metalbar-from-ingot (read from vinteng:recipes/veextruder/metalbars.json[0]) (20 copies: one per variant or tool): 1 Brass ingot (game:ingot-brass) + 0.0001 Die Cast (Metal Bar) (vinteng:vediecast-bar-titanium) (tool wear) + 600 Vintage Engineering power → 1 Metal Bar (Brass) (vinteng:metalbar-brass) = 172.84 EMC each
+    Not used: Metal Bar (Brass) (vinteng:metalbar-brass) 43.2 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-brass -> 4 vinteng:metalbar-brass
+  steel-bar-from-ingot (read from vinteng:recipes/veextruder/metalbars.json[1]) (3 copies: one per variant or tool): 1 Steel ingot (game:ingot-steel) + 0.0001 Die Cast (Metal Bar) (vinteng:vediecast-bar-titanium) (tool wear) + 600 Vintage Engineering power → 1 Metal Bar (Steel) (vinteng:metalbar-steel) = 296.04 EMC each
+    Not used: Metal Bar (Steel) (vinteng:metalbar-steel) 74 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-steel -> 4 vinteng:metalbar-steel
+  metalrod-from-ingot (read from vinteng:recipes/veextruder/metalrods.json[0]) (45 copies: one per variant or tool): 1 Bismuth bronze ingot (game:ingot-bismuthbronze) + 0.0001 Die Cast (Rod) (vinteng:vediecast-rod-titanium) (tool wear) + 600 Vintage Engineering power → 1 Bismuth bronze rod (game:rod-bismuthbronze) = 179.24 EMC each
+    Not used: Bismuth bronze rod (game:rod-bismuthbronze) 179.2 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-bismuthbronze -> 1 game:rod-bismuthbronze
+  steel-rod-from-ingot (read from vinteng:recipes/veextruder/metalrods.json[1]) (6 copies: one per variant or tool): 1 Meteoric iron ingot (game:ingot-meteoriciron) + 0.0001 Die Cast (Rod) (vinteng:vediecast-rod-titanium) (tool wear) + 600 Vintage Engineering power → 1 Meteoric iron rod (game:rod-meteoriciron) = 384.04 EMC each
+    Not used: Meteoric iron rod (game:rod-meteoriciron) 384 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-meteoriciron -> 1 game:rod-meteoriciron
+  itempipe-from-ingot (read from vinteng:recipes/veextruder/pipes.json[0]) (15 copies: one per variant or tool): 1 Bismuth bronze ingot (game:ingot-bismuthbronze) + 0.0001 Die Cast (Pipes) (vinteng:vediecast-pipe-titanium) (tool wear) + 500 Vintage Engineering power → 1 Transport Pipe (Item) (vinteng:pipenew-item) = 179.24 EMC each
+    Not used: Transport Pipe (Item) (vinteng:pipenew-item) 140.8 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-tinbronze -> 1 vinteng:pipenew-item
+  fluidpipe-from-ingot (read from vinteng:recipes/veextruder/pipes.json[1]) (3 copies: one per variant or tool): 1 Iron ingot (game:ingot-iron) + 0.0001 Die Cast (Pipes) (vinteng:vediecast-pipe-titanium) (tool wear) + 1000 Vintage Engineering power → 1 Transport Pipe (Fluid) (vinteng:pipenew-fluid) = 256.06 EMC each
+    Not used: Transport Pipe (Fluid) (vinteng:pipenew-fluid) 256 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-iron -> 1 vinteng:pipenew-fluid
+  screw-from-bar (read from vinteng:recipes/veextruder/screws.json[0]) (15 copies: one per variant or tool): 1 Metal Bar (Brass) (vinteng:metalbar-brass) + 0.0001 Die Cast (Screws) (vinteng:vediecast-screw-titanium) (tool wear) + 1000 Vintage Engineering power → 1 Brass Screw (vinteng:screw-brass) = 43.28 EMC each
+    Not used: Brass Screw (vinteng:screw-brass) 10.8 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-brass -> 16 vinteng:screw-brass
+  lv-wire-from-bar (read from vinteng:recipes/veextruder/wires.json[0]) (5 copies: one per variant or tool): 1 Metal Bar (Copper) (vinteng:metalbar-copper) + 0.0001 Die Cast (LV Gauge) (vinteng:vediecast-lv-titanium) (tool wear) + 250 Vintage Engineering power → 1 Electrical Wire (LV) (game:catenary-lvpower) = 32.04 EMC each
+    Not used: Electrical Wire (LV) (game:catenary-lvpower) 16 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-copper -> 8 game:catenary-lvpower
+• 2 used, 8 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Metal Bar (Copper) (vinteng:metalbar-copper) + 0.0001 Die Cast (MV Gauge) (vinteng:vediecast-mv-titanium) (tool wear) + 500 Vintage Engineering power → 1 Electrical Wire (MV) (game:catenary-mvpower)
+      + 1 Metal Bar (Copper) (vinteng:metalbar-copper) × 32 = 32
+      + 0.0001 Die Cast (MV Gauge) (vinteng:vediecast-mv-titanium) × 160 = 0.016
+        tool wear: 1 of 10000 durability
+      + 500 Vintage Engineering power of power at 0.00005 EMC each = 0.025 (price: vinteng's suggested price)
+      = 32.04 EMC for 1, so 32.04 EMC each Electrical Wire (MV) (game:catenary-mvpower)
+
+== Mixer (Vintage Engineering) (vinteng:mixer) ==
+  fruitcider (read from vinteng:recipes/vemixer/cider.json[0]) (21 copies: one per variant or tool): 100 Apple juice (game:juiceportion-apple) + 128 Vintage Engineering power → 100 Apple cider (game:ciderportion-apple) = 0.256 EMC each
+    Not used: Apple cider (game:ciderportion-apple) 0.256 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 1 game:juiceportion-apple -> 1 game:ciderportion-apple
+  mead (read from vinteng:recipes/vemixer/cider.json[1]): 100 Honey (game:honeyportion) + 128 Vintage Engineering power → 100 Mead (game:ciderportion-mead) = 0.8 EMC each
+    Not used: Mead (game:ciderportion-mead) 0.8 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 10 game:honeyportion -> 10 game:ciderportion-mead
+  spelt (read from vinteng:recipes/vemixer/cider.json[2]): 100 Water (game:waterportion) + 1 Spelt flour (game:flour-spelt) + 128 Vintage Engineering power → 20 Spelt ale (game:ciderportion-spelt) = 0.45 EMC each
+    Not used: Spelt ale (game:ciderportion-spelt) 0.45 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 1 game:flour-spelt -> 20 game:ciderportion-spelt
+  rice (read from vinteng:recipes/vemixer/cider.json[3]): 100 Water (game:waterportion) + 1 Rice flour (game:flour-rice) + 128 Vintage Engineering power → 20 Sake (game:ciderportion-rice) = 0.45 EMC each
+    Not used: Sake (game:ciderportion-rice) 0.45 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 1 game:flour-rice -> 20 game:ciderportion-rice
+  rye (read from vinteng:recipes/vemixer/cider.json[4]): 100 Water (game:waterportion) + 1 Rye flour (game:flour-rye) + 128 Vintage Engineering power → 20 Rye ale (game:ciderportion-rye) = 0.45 EMC each
+    Not used: Rye ale (game:ciderportion-rye) 0.45 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 1 game:flour-rye -> 20 game:ciderportion-rye
+  amaranth (read from vinteng:recipes/vemixer/cider.json[5]): 100 Water (game:waterportion) + 1 Amaranth flour (game:flour-amaranth) + 128 Vintage Engineering power → 20 Amaranth ale (game:ciderportion-amaranth) = 0.45 EMC each
+    Not used: Amaranth ale (game:ciderportion-amaranth) 0.45 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 1 game:flour-amaranth -> 20 game:ciderportion-amaranth
+  cassava (read from vinteng:recipes/vemixer/cider.json[6]): 100 Water (game:waterportion) + 1 Cassava flour (game:flour-cassava) + 128 Vintage Engineering power → 20 Cassava ale (game:ciderportion-cassava) = 4.1 EMC each
+    Not used: Cassava ale (game:ciderportion-cassava) 4.1 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 1 game:flour-cassava -> 20 game:ciderportion-cassava
+  chromium-hide-huge (read from vinteng:recipes/vemixer/hide-chromium.json[2]): 1 Scraped hide (Huge) (game:hide-scraped-huge) + 300 Chromium sulfate (game:sulfate-full-chromite) + 150 Vintage Engineering power → 1 Chromium tanned hide (Huge) (game:hide-chromium-huge) = 379.09 EMC each
+    Not used: Chromium tanned hide (Huge) (game:hide-chromium-huge) 379.09 comes from a cheaper way: RecipeRegistrySystem.CookingRecipes: 300 game:sulfate-full-chromite + 1 game:hide-scraped-huge -> 1 game:hide-chromium-huge
+  strongtannin_oak (read from vinteng:recipes/vemixer/strongtannin.json[0]): 2 Oak log (game:log-placed-oak-ud) + 1000 Water (game:waterportion) + 128 Vintage Engineering power → 1000 Strong tannin (game:strongtanninportion) = 0.074 EMC each
+    Not used: Strong tannin (game:strongtanninportion) 0.074 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 1 game:log-placed-oak-ud + 1000 game:weaktanninportion -> 1000 game:strongtanninportion
+  strongtannin_acacia (read from vinteng:recipes/vemixer/strongtannin.json[1]): 2 Acacia log (game:log-placed-acacia-ud) + 1000 Water (game:waterportion) + 128 Vintage Engineering power → 1000 Strong tannin (game:strongtanninportion) = 0.074 EMC each
+    Not used: Strong tannin (game:strongtanninportion) 0.074 comes from a cheaper way: RecipeRegistrySystem.BarrelRecipes: 1 game:log-placed-oak-ud + 1000 game:weaktanninportion -> 1000 game:strongtanninportion
+• 12 used, 13 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    100 Water (game:waterportion) + 1 Quicklime (game:quicklime) + 1 Andesite gravel (game:gravel-andesite) + 75 Vintage Engineering power → 1 Concrete Plain (vinteng:concrete-internal-plain)
+      + 100 Water (game:waterportion) × 0.01 = 1
+      + 1 Quicklime (game:quicklime) × 2 = 2
+      + 1 Andesite gravel (game:gravel-andesite) × 2 = 2
+      + 75 Vintage Engineering power of power at 0.00005 EMC each = 0.003 (price: vinteng's suggested price)
+      = 5 EMC for 1, so 5 EMC each Concrete Plain (vinteng:concrete-internal-plain)
+
+== Electric kiln (Vintage Engineering) (vinteng:kiln) ==
+  kiln-blistersteel (read from vinteng:recipes/vekiln/blistersteel.json[0]): 1 Blister steel (game:ingot-blistersteel) + 256 Vintage Engineering power → 1 Steel ingot (game:ingot-steel) + 1 Blister steel bits (game:metalbit-blistersteel) = 296.01 EMC a run
+    Not used: Steel ingot (game:ingot-steel) 296 comes from a cheaper way: RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-blistersteel -> 1 game:ingot-steel
+  kiln-ironbloom (read from vinteng:recipes/vekiln/ironbloom.json[0]): 1 Iron bloom (game:ironbloom) + 256 Vintage Engineering power → 1 Iron ingot (game:ingot-iron) + 1 Iron bits (game:metalbit-iron) = 256.01 EMC a run
+    Not used: Iron bits (game:metalbit-iron) 12.8 comes from a cheaper way: grid: 1 game:ingot-iron -> 20 game:metalbit-iron
+• 1 used, 2 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    8 Crushed quartz (game:crushed-quartz) + 200 Vintage Engineering power → 1 Industrial Glass (vinteng:industrialglass-plain)
+      + 8 Crushed quartz (game:crushed-quartz) × 64 = 512
+      + 200 Vintage Engineering power of power at 0.00005 EMC each = 0.01 (price: vinteng's suggested price)
+      = 512.01 EMC for 1, so 512.01 EMC each Industrial Glass (vinteng:industrialglass-plain)
+
+== Temporal forge (Vintage Engineering) (vinteng:temporalforge) ==
+• 2 used, 0 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Steel Gear (vinteng:metalgear-steel) + 15000 Vintage Engineering power → 1 Temporal gear (game:gear-temporal)
+      + 1 Steel Gear (vinteng:metalgear-steel) × 577.25 = 577.25
+      + 15000 Vintage Engineering power of power at 0.00005 EMC each = 0.75 (price: vinteng's suggested price)
+      = 578 EMC for 1, so 578 EMC each Temporal gear (game:gear-temporal)
+
+== Distillation tower (Vintage Engineering) (vinteng:distillation) ==
+  fruitcider-no-ext (read from vinteng:recipes/vedistillation/ciderportion.json[0]) (21 copies: one per variant or tool): 100 Apple cider (game:ciderportion-apple) + 2000 Vintage Engineering power → 10 Apple brandy (game:spiritportion-apple) = 2.57 EMC each
+    Not used: Apple brandy (game:spiritportion-apple) 2.56 comes from a cheaper way: distillation: 1 game:ciderportion-apple -> 0.1 game:spiritportion-apple
+  graincider-no-ext (read from vinteng:recipes/vedistillation/ciderportion.json[1]) (6 copies: one per variant or tool): 100 Amaranth ale (game:ciderportion-amaranth) + 2000 Vintage Engineering power → 5 Amaranth whiskey (game:spiritportion-amaranth) = 9.02 EMC each
+    Not used: Amaranth whiskey (game:spiritportion-amaranth) 9 comes from a cheaper way: distillation: 1 game:ciderportion-amaranth -> 0.05 game:spiritportion-amaranth
+  crude-no-ext (read from vinteng:recipes/vedistillation/crudeoil.json[0]): 1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 500000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) = 345 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  crude-one-ext (read from vinteng:recipes/vedistillation/crudeoil.json[1]): 1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 750000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) + 350 Heavy Oil (Portion) (vinteng:heavyoilportion) = 357.5 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  crude-two-ext (read from vinteng:recipes/vedistillation/crudeoil.json[2]): 1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 900000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) + 350 Heavy Oil (Portion) (vinteng:heavyoilportion) + 30 Lubricant (Portion) (vinteng:lubricantportion) = 365 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  crude-three-ext (read from vinteng:recipes/vedistillation/crudeoil.json[3]): 1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 1050000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) + 350 Heavy Oil (Portion) (vinteng:heavyoilportion) + 30 Lubricant (Portion) (vinteng:lubricantportion) + 170 Kerosene (Portion) (vinteng:keroseneportion) = 372.5 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  crude-four-ext (read from vinteng:recipes/vedistillation/crudeoil.json[4]): 1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 1200000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) + 350 Heavy Oil (Portion) (vinteng:heavyoilportion) + 30 Lubricant (Portion) (vinteng:lubricantportion) + 170 Kerosene (Portion) (vinteng:keroseneportion) + 190 Gasoline (Portion) (vinteng:gasolineportion) = 380 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  spirit-no-ext (read from vinteng:recipes/vedistillation/spiritportion.json[0]): 100 Apple brandy (game:spiritportion-apple) (or 31 more) + 2000 Vintage Engineering power → 50 Aqua Vitae (game:alcoholportion) = 5.12 EMC each
+    Not used: Aqua Vitae (game:alcoholportion) 5.12 comes from a cheaper way: distillation: 1 game:spiritportion-apple -> 0.5 game:alcoholportion
+• 2 used, 8 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1000 Crude Oil (Portion) (vinteng:crudeoilportion) + 1350000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 170 Diesel Fuel (Portion) (vinteng:dieselportion) + 350 Heavy Oil (Portion) (vinteng:heavyoilportion) + 30 Lubricant (Portion) (vinteng:lubricantportion) + 170 Kerosene (Portion) (vinteng:keroseneportion) + 190 Gasoline (Portion) (vinteng:gasolineportion) + 60 Naptha (Portion) (vinteng:napthaportion)
+      + 1000 Crude Oil (Portion) (vinteng:crudeoilportion) × 0.32 = 320
+      + 1350000 Vintage Engineering power of power at 0.00005 EMC each = 67.5 (price: vinteng's suggested price)
+      387.5 EMC a run
+
+== Chemical plant (Vintage Engineering) (vinteng:chemicalplant) ==
+  cracking-heavyoil (read from vinteng:recipes/vechemplant/cracking.json[0]): 1 Quicklime (game:quicklime) + 500 Heavy Oil (Portion) (vinteng:heavyoilportion) + 500 Water (game:waterportion) + 900000 Vintage Engineering power → 1 Bitumen (vinteng:bitumen) + 400 Diesel Fuel (Portion) (vinteng:dieselportion) + 200 Gasoline (Portion) (vinteng:gasolineportion) + 300 LPG (Portion) (vinteng:lpgportion) = 291.6 EMC a run
+    Not used: Bitumen (vinteng:bitumen) 64 comes from a cheaper way: Mixer (Vintage Engineering) (vinteng): 200 vinteng:crudeoilportion (+0.008 energy) -> 1 vinteng:bitumen
+  cracking-lubricant (read from vinteng:recipes/vechemplant/cracking.json[1]): 300 Lubricant (Portion) (vinteng:lubricantportion) + 200 Water (game:waterportion) + 900000 Vintage Engineering power → 100 Diesel Fuel (Portion) (vinteng:dieselportion) + 200 Gasoline (Portion) (vinteng:gasolineportion) + 200 Naptha (Portion) (vinteng:napthaportion) = 190.76 EMC a run
+    Not used: Diesel Fuel (Portion) (vinteng:dieselportion) 0.239 comes from a cheaper way: Distillation tower (Vintage Engineering) (vinteng): 1000 vinteng:crudeoilportion (+67.5 energy) -> 1 vinteng:bitumen + 170 vinteng:dieselportion + 350 vinteng:heavyoilportion + 30 vinteng:lubricantportion + 170 vinteng:keroseneportion + 190 vinteng:gasolineportion + 60 vinteng:napthaportion
+• 1 used, 2 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    100 Naptha (Portion) (vinteng:napthaportion) + 1 Charcoal (game:charcoal) + 90000 Vintage Engineering power → 1 vinteng:item-plasticpellet (vinteng:plasticpellet)
+      + 100 Naptha (Portion) (vinteng:napthaportion) × 0.239 = 23.96
+      + 1 Charcoal (game:charcoal) × 16 = 16
+      + 90000 Vintage Engineering power of power at 0.00005 EMC each = 4.5 (price: vinteng's suggested price)
+      = 44.46 EMC for 1, so 44.46 EMC each vinteng:item-plasticpellet (vinteng:plasticpellet)
+
+== Blast furnace (Vintage Engineering) (vinteng:blastfurnace) ==
+  blasting-steel (read from vinteng:recipes/veblastfurnace/steel.json[0]): 1 Iron ingot (game:ingot-iron) + 1 Coke (game:coke) → 1 Blister steel (game:ingot-blistersteel) = 320 EMC each
+    Not used: Blister steel (game:ingot-blistersteel) 296 comes from a cheaper way: carburizing (2.5 fuel per ingot in the coffin): 1 game:ingot-iron + 2.5 game:charcoal (or 4 more) -> 1 game:ingot-blistersteel
+• 0 used, 1 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+
+== Creosote oven (Vintage Engineering) (vinteng:creosoteoven) ==
+  woodcharcoal#2 (read from vinteng:recipes/vecreosoteoven/charcoal.json[1]): 1 Redwood quarter log (game:logsection-placed-redwood-ne-ud) → 2 Charcoal (game:charcoal) = 16 EMC each
+    Not used: Charcoal (game:charcoal) 16 comes from a cheaper way: Creosote oven (Vintage Engineering) (vinteng): 1 game:log-placed-acacia-ud -> 2 game:charcoal
+  woodtarcreosote (read from vinteng:recipes/vecreosoteoven/creosote.json[1]) (2 copies: one per variant or tool): 1 Oak log (game:log-placed-oak-ud) → 25 Wood-Tar Creosote (vinteng:creosoteportion-wood) + 1 Charcoal (game:charcoal) = 32 EMC a run
+    Not used: Charcoal (game:charcoal) 16 comes from a cheaper way: Creosote oven (Vintage Engineering) (vinteng): 1 game:log-placed-acacia-ud -> 2 game:charcoal
+• 2 used, 2 beaten by a cheaper way, 0 waiting, 0 left out, 0 switched off, 0 making something whose value is set
+  A worked example (the first recipe in use):
+    1 Acacia log (game:log-placed-acacia-ud) → 2 Charcoal (game:charcoal)
+      + 1 Acacia log (game:log-placed-acacia-ud) × 32 = 32
+      = 32 EMC for 2, so 16 EMC each Charcoal (game:charcoal)
+
+== What Vintage-E understood from vinteng ==
+✓ What Vintage-E understood is saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/methods-vinteng.json
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Check C&N Jewelry (canjewelry)'s crafting methods (for its author) (/emc diagnose methodcheck canjewelry)
+Check Fields of Salt (fieldsofsalt)'s crafting methods (for its author) (/emc diagnose methodcheck fieldsofsalt)
+Check vinteng's crafting methods (for its author) (/emc diagnose methodcheck vinteng)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

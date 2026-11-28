@@ -1,0 +1,22 @@
+type,code,why,name
+item,game:arrow-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Short erel feather stem
+block,game:bonyremains-cowskull-up,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Bony Cow Skull
+item,game:crushed-peridotite,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Crushed peridotite
+block,game:figurehead-eidolon,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Eidolon figurehead (Oak)
+block,game:figurehead-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Erel figurehead (Oak)
+block,game:figurehead-seamonster,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Seamonster figurehead (Oak)
+block,game:figurehead-thunderlord,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Thunderlord figurehead (Oak)
+item,game:ingot-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel ingot
+item,game:ingot-uranium,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Uranium ingot
+item,game:metalbit-stainlesssteel,"27 way(s) to make it, e.g. grid: 1 game:ingot-stainlesssteel -> 20 game:metalbit-stainlesssteel; no value for: game:ingot-stainlesssteel",Stainless steel bits
+item,game:metalbit-uranium,"27 way(s) to make it, e.g. grid: 1 game:ingot-uranium -> 20 game:metalbit-uranium; no value for: game:ingot-uranium",Uranium bits
+item,game:metalplate-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel plate
+item,game:metalplate-uranium,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Uranium plate
+item,game:spear-generic-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Long erel feather stem
+block,vinteng:crudeoil-still-7,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Crude Oil
+block,vinteng:crudeoilwell,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Crude Oil Well Source
+block,vinteng:temporalmatrix-focus,"1 way(s) to make it, e.g. grid: 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 game:returndeath-returndeath2 + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel -> 1 vinteng:temporalmatrix-focus; no value for: game:returndeath-returndeath2 (blacklisted)",Temporal Focuser
+block,vinteng:temporalmatrix-matrix,"1 way(s) to make it, e.g. grid: 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 game:returndeath-returndeath1 + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel + 1 vinteng:machineplate-temporalsteel + 1 vinteng:screw-steel -> 1 vinteng:temporalmatrix-matrix; no value for: game:returndeath-returndeath1 (blacklisted)",Temporal Matrix
+item,vinteng:vecncprogram-grid-blank,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Blank CNC Program (Grid)
+item,vinteng:vecncprogram-grid-encoded,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Encoded CNC Program (Grid)
+block,vinteng:vembtemporalforge-incomplete-north,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Temporal Forge Core
