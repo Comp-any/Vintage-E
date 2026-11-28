@@ -538,7 +538,7 @@ namespace VintageE
                         if (from == null || from == "game" || from == VintageEModSystem.ModId) continue;
                         double? per = ViableCostPer(conv, solver.Values);
                         if (per == null || per.Value <= 0 || per.Value >= baseValue * 0.999) continue;
-                        if (RestsOn(conv, o, solver) || RestsOnGuess(conv, extra, solver)) continue;
+                        if (RestsOnGuess(conv, o, extra, solver)) continue;
                         if (!lowerBase.TryGetValue(o, out var best) || per.Value < best.per) lowerBase[o] = (per.Value, conv);
                     }
                 foreach (var kv in lowerBase)
@@ -809,12 +809,13 @@ namespace VintageE
         }
 
         /// <summary>
-        /// True when an ingredient of this recipe, or anything its value was worked out from (the solver's Via chain), has a
-        /// guessed value or one worked out backwards. A value worked backwards comes from what it makes, which can lead back to
-        /// the very thing being priced: Wildcraft's flower wine, valued from the fruit vinegar it makes, would otherwise have
-        /// priced the game's vinegar at a hundredth of its value, and Butchering's strong bone, valued from its bonemeal, the bone.
+        /// True when this recipe's value rests, anywhere down its chain, on a guessed value or on <paramref name="target"/>
+        /// itself. A value worked out backwards came from what it makes, so the walk follows it there too: Wildcraft's flower
+        /// wine, valued from the fruit vinegar it makes, leads back to the game's vinegar; Butchering's strong bone, valued from
+        /// its bonemeal, to the bone; Coinage's coins, valued from the ingots they smelt into, to the copper ingot. Each of those
+        /// would otherwise have priced the thing from itself, at a fraction of its value.
         /// </summary>
-        static bool RestsOnGuess(Conversion conv, Dictionary<CollectibleObject, double> guessed, EmcSolver<CollectibleObject> solver)
+        static bool RestsOnGuess(Conversion conv, CollectibleObject target, Dictionary<CollectibleObject, double> guessed, EmcSolver<CollectibleObject> solver)
         {
             var seen = new HashSet<CollectibleObject>();
             var stack = new Stack<(CollectibleObject item, int depth)>();
@@ -822,16 +823,19 @@ namespace VintageE
             while (stack.Count > 0)
             {
                 var (item, depth) = stack.Pop();
-                if (guessed.ContainsKey(item) || solver.Inferred.ContainsKey(item)) return true;
-                if (depth >= 12 || !seen.Add(item) || !solver.Via.TryGetValue(item, out object via)) continue;
+                if (item == target || guessed.ContainsKey(item)) return true;
+                if (depth >= 16 || !seen.Add(item) || !solver.Via.TryGetValue(item, out object via)) continue;
                 if (via is EmcSolver<CollectibleObject>.Edge e)
                 {
                     foreach (CollectibleObject[] choice in e.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                    // Worked backwards through this edge: its value came from the edge's output.
+                    if (e.Output != item && e.Output != null) stack.Push((e.Output, depth + 1));
                 }
                 else if (via is EmcSolver<CollectibleObject>.JointEdge j)
                 {
                     if (j.Input != null) stack.Push((j.Input, depth + 1));
                     if (j.Choices != null) foreach (CollectibleObject[] choice in j.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                    if (j.Outputs != null && Array.IndexOf(j.Outputs, item) < 0) foreach (CollectibleObject c in j.Outputs) if (c != null) stack.Push((c, depth + 1));
                 }
             }
             return false;
