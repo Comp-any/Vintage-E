@@ -115,7 +115,7 @@ namespace VintageE
             string[] empty = ItemKnowledgeBook.Unpack(ItemKnowledgeBook.Pack(Array.Empty<string>()));
             string[] damaged = ItemKnowledgeBook.Unpack(new byte[] { 1, 2, 3 });
             string[] cut = ItemKnowledgeBook.Unpack(packed.Take(packed.Length / 2).ToArray());
-            Check(ItemKnowledgeBook.Unpack(null) == null && damaged == null && empty?.Length == 0,
+            Check(ItemKnowledgeBook.Unpack(null) == null && damaged == null && empty?.Length == 0 && cut == null,
                 $"a damaged book reads as nothing, an empty one as empty (null: {ItemKnowledgeBook.Unpack(null)?.Length.ToString() ?? "nothing"}, damaged: {damaged?.Length.ToString() ?? "nothing"}, empty: {empty?.Length.ToString() ?? "nothing"}, cut in half: {cut?.Length.ToString() ?? "nothing"})");
             Check(!mod.Config.KnowledgeBookConsumed && mod.Emc.KnowledgeBookConsumed == mod.Config.KnowledgeBookConsumed && mod.Emc.MaxExactKnowledge == mod.Config.MaxExactKnowledge,
                 $"a Knowledge Sharing Book isn't used up by default (KnowledgeBookConsumed {mod.Config.KnowledgeBookConsumed}), and players' games are told that and the exact-knowledge limit ({mod.Emc.MaxExactKnowledge})");

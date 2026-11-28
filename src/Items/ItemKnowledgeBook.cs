@@ -120,13 +120,20 @@ namespace VintageE
         /// <summary>The book's keys, or null if there's nothing (readable) in it.</summary>
         public static string[] Unpack(byte[] data)
         {
-            // Only what Pack wrote: gzip begins 1F 8B. (Damaged data may otherwise come out as empty text, not an error.)
-            if (data == null || data.Length < 18 || data[0] != 0x1F || data[1] != 0x8B) return null;
+            if (data == null) return null;
+            // A writer who had learned nothing: .NET writes no bytes at all for an empty gzip stream.
+            if (data.Length == 0) return Array.Empty<string>();
+            // Only what Pack wrote: gzip begins 1F 8B and ends with the unpacked length. .NET reads a damaged or cut-off
+            // stream as far as it goes without an error, so the length is what tells a whole book from a damaged one.
+            if (data.Length < 18 || data[0] != 0x1F || data[1] != 0x8B) return null;
             try
             {
                 using var input = new GZipStream(new MemoryStream(data), CompressionMode.Decompress);
-                using var reader = new StreamReader(input, Encoding.UTF8);
-                string text = reader.ReadToEnd();
+                using var unpacked = new MemoryStream();
+                input.CopyTo(unpacked);
+                uint size = BitConverter.ToUInt32(data, data.Length - 4); // little-endian in gzip, as on every platform the game runs on
+                if ((uint)unpacked.Length != size) return null;
+                string text = Encoding.UTF8.GetString(unpacked.GetBuffer(), 0, (int)unpacked.Length);
                 return text.Length == 0 ? Array.Empty<string>() : text.Split('\n');
             }
             catch { return null; }
