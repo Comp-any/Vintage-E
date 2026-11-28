@@ -388,7 +388,7 @@ namespace VintageE
                 if (want <= 0) return;
             }
 
-            int affordable = eachExact <= 0 ? 0 : (int)Math.Min(int.MaxValue, decimal.Floor(emc / eachExact));
+            int affordable = EmcAmount.HowMany(emc, eachExact);
             int amount = Math.Min(want, affordable);
             if (amount <= 0)
             {

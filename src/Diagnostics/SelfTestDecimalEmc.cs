@@ -28,6 +28,17 @@ namespace VintageE
                 && EmcAmount.Multiply(decimal.MaxValue, 2m) == decimal.MaxValue,
                 "adding past the largest decimal stops there instead of throwing");
 
+            // Dividing a total by a value (how many can be made, how many fit) overflows long before the total does.
+            Check(EmcAmount.Divide(decimal.MaxValue, 0.0001m) == decimal.MaxValue && EmcAmount.Divide(5m, 0m) == 0m && EmcAmount.Divide(10m, 4m) == 2.5m,
+                "dividing the largest total by the smallest value stops at the largest decimal (and by 0 gives 0) instead of throwing");
+            Check(EmcAmount.HowMany(decimal.MaxValue, 0.0001m) == int.MaxValue && EmcAmount.HowMany(10m, 3m) == 3 && EmcAmount.HowMany(10m, 0.0001m) == 100000
+                && EmcAmount.HowMany(-5m, 1m) == 0 && EmcAmount.HowMany(5m, 0m) == 0 && EmcAmount.HowMany(0.00009m, 0.0001m) == 0,
+                $"how many fit is counted without throwing ({EmcAmount.HowMany(decimal.MaxValue, 0.0001m)} items of 0.0001 for the largest balance)");
+            decimal full = decimal.MaxValue;
+            for (int i = 0; i < 3; i++) full = EmcAmount.Add(full, EmcAmount.From(10_485_760));
+            Check(full == decimal.MaxValue && EmcAmount.Add(full, -1m) == decimal.MaxValue - 1m,
+                "a balance at the ceiling stays there when more is added, and spending from it works");
+
             // The point of it: small amounts on a huge total.
             decimal exact = 1_000_000_000_000_000m;
             double rough = 1e15;

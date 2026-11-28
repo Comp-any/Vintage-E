@@ -189,8 +189,7 @@ namespace VintageE
                 decimal value = mod.Emc.IsNoTransmute(stack.Collectible) ? 0 : EmcTransfer.PerTick(mod.BurnValue(stack));
                 if (value <= 0 || EmcAmount.Add(Stored, value) > capacity) continue;
 
-                decimal room = decimal.Floor((capacity - Stored) / value);
-                int fits = room >= int.MaxValue ? int.MaxValue : (int)room;
+                int fits = EmcAmount.HowMany(capacity - Stored, value);
                 int n = (int)Math.Min(Math.Floor(burnBudget), Math.Min(stack.StackSize, fits));
                 if (n <= 0) continue;
                 slot.TakeOut(n);

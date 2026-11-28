@@ -44,7 +44,7 @@ namespace VintageE
             if (api.Side == EnumAppSide.Server) RegisterGameTickListener(OnServerTick, 1000);
         }
 
-        double Fill => capacity <= 0 ? 1 : (double)(Stored / capacity);
+        double Fill => capacity <= 0 ? 1 : (double)EmcAmount.Divide(Stored, capacity);
 
         public decimal AcceptEmc(decimal amount)
         {

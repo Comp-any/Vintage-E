@@ -48,6 +48,24 @@ namespace VintageE
             catch (OverflowException) { return (a > 0) == (b > 0) ? decimal.MaxValue : decimal.MinValue; }
         }
 
+        /// <summary>a ÷ b, stopping at the largest (or smallest) decimal instead of throwing; 0 when b is 0. A total
+        /// over a tiny value (0.0001) overflows long before the total itself does.</summary>
+        public static decimal Divide(decimal a, decimal b)
+        {
+            if (b == 0) return 0m;
+            try { return a / b; }
+            catch (OverflowException) { return (a > 0) == (b > 0) ? decimal.MaxValue : decimal.MinValue; }
+        }
+
+        /// <summary>How many whole <paramref name="each"/> fit in <paramref name="total"/>: 0 when either isn't above
+        /// zero, at most <see cref="int.MaxValue"/>, never throwing.</summary>
+        public static int HowMany(decimal total, decimal each)
+        {
+            if (total <= 0 || each <= 0) return 0;
+            decimal n = decimal.Floor(Divide(total, each));
+            return n >= int.MaxValue ? int.MaxValue : (int)n;
+        }
+
         /// <summary>For places that only show or compare roughly (sorting, bars, logs).</summary>
         public static double ToDouble(decimal v) => (double)v;
 

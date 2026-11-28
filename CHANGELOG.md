@@ -2,6 +2,11 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.27.1 — 2026-11-28
+
+### Fixed
+- **No EMC total can overflow.** Since 1.27.0 totals stop at the largest number they can hold (about 79 octillion EMC) instead of overflowing, but two sums divided a total by an item's value, and a total divided by a value as small as 0.0001 overflows long before the total does. Making things at the table counted how many you could afford that way, so with a balance past about 7.9 septillion it would have failed instead of working. A condenser counted how many items fit in its store the same way. Both now stop at the largest count instead. Nobody can reach these amounts with today's tiers; it is fixed before the planned higher tiers.
+
 ## 1.27.0 — 2026-11-28
 
 ### Changed
