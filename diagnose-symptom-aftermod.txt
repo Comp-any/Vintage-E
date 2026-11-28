@@ -1,0 +1,15 @@
+== Values changed or vanished after I added or updated a mod ==
+Another mod's recipes and patches feed into the mapping. These show what it changed, and where it comes through.
+• Other mods' patches: 2 mods patch things the mapper reads:
+  C&N Jewelry (canjewelry) (/emc diagnose mod canjewelry): 20 recipe patches
+  vinteng (/emc diagnose mod vinteng): 1 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+Which other mods change recipes, processing or values (/emc diagnose patches)
+✓ Server log: no Vintage-E errors or warnings.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+What changed since the previous mapping (/emc diagnose changes)
+Everything from one mod has no value (/emc diagnose mods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

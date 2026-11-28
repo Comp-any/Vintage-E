@@ -1,0 +1,138 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 1107 base-game values differ with the 3 other mods loaded:
+
+== Through no single mod (751 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Wire Relay (HV) (game:wirerelay-hvpower-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (EV) (game:wirerelay-evpower-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (All Power) (game:wirerelay-allpower-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Communication) (game:wirerelay-communication-up): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (HV) (game:wirerelay-hvpower-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (EV) (game:wirerelay-evpower-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (All Power) (game:wirerelay-allpower-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Communication) (game:wirerelay-communication-down): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (HV) (game:wirerelay-hvpower-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (EV) (game:wirerelay-evpower-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (All Power) (game:wirerelay-allpower-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (Communication) (game:wirerelay-communication-north): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (HV) (game:wirerelay-hvpower-east): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-east)
+  Wire Relay (EV) (game:wirerelay-evpower-east): none → 10.88
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-east)
+  ... and 731 more
+
+== Through vinteng: 255 values ==
+  Platinum plate (game:metalplate-platinum): none → 511.91
+    RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-platinum -> 1 game:metalplate-platinum
+  Platinum ingot (game:ingot-platinum): none → 255.95
+    worked backwards from Metal press (Vintage Engineering) (vinteng): 1 game:ingot-platinum + 0 vinteng:vepressmold-sheet-titanium (+0.025 energy) -> 1 game:metalsheet-platinum-down
+  Wire Relay (MV) (game:wirerelay-mvpower-up): none → 21.77
+    grid: 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned + 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-mvpower-up
+  Wire Relay (MV) (game:wirerelay-mvpower-down): none → 21.77
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-down
+  Wire Relay (MV) (game:wirerelay-mvpower-north): none → 21.77
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-north
+  Wire Relay (MV) (game:wirerelay-mvpower-east): none → 21.77
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-east
+  Wire Relay (MV) (game:wirerelay-mvpower-south): none → 21.77
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-south
+  Wire Relay (MV) (game:wirerelay-mvpower-west): none → 21.77
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-west
+  Platinum bits (game:metalbit-platinum): none → 12.79
+    grid: 1 game:ingot-platinum -> 20 game:metalbit-platinum
+  Wire Relay (LV) (game:wirerelay-lvpower-up): none → 10.88
+    grid: 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-lvpower-up
+  Wire Relay (LV) (game:wirerelay-lvpower-down): none → 10.88
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-down
+  Wire Relay (LV) (game:wirerelay-lvpower-north): none → 10.88
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-north
+  Wire Relay (LV) (game:wirerelay-lvpower-east): none → 10.88
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-east
+  Wire Relay (LV) (game:wirerelay-lvpower-south): none → 10.88
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-south
+  Wire Relay (LV) (game:wirerelay-lvpower-west): none → 10.88
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-west
+  Nails and strips (Cupronickel) (game:metalnailsandstrips-cupronickel): 64 → 409.96
+    Metal press (Vintage Engineering) (vinteng): 1 game:metalplate-cupronickel + 0.003 vinteng:vepressmold-nails-tinbronze (+0.013 energy) -> 1 game:metalnailsandstrips-cupronickel
+  Electrical Wire (HV) (game:catenary-hvpower): 16 → 80.06
+    Extruder (Vintage Engineering) (vinteng): 1 vinteng:metalbar-steel + 0 vinteng:vediecast-hv-titanium (+0.05 energy) -> 1 game:catenary-hvpower
+  Chromium tanned hide (Medium) (game:hide-chromium-medium): 32 → 133.03
+    Mixer (Vintage Engineering) (vinteng): 1 game:hide-scraped-medium + 100 game:sulfate-full-chromite (+0.008 energy) -> 1 game:hide-chromium-medium
+  Sturdy leather backpack (game:backpack-sturdy): 920.42 → 427.1
+    grid: 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain -> 1 game:backpack-sturdy
+  Sturdy leather pillion cushion (game:hoovedwearables-lowerbackside-pillion-sturdyleather): 644.29 → 298.97
+    grid: 1 game:leather-sturdy-plain + 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain + 2 game:leather-sturdy-plain -> 1 game:hoovedwearables-lowerbackside-pillion-sturdyleather
+  ... and 235 more
+
+== Through C&N Jewelry (canjewelry): 101 values ==
+  Lapis lazuli (game:ore-lapislazuli-limestone): none → 131.74
+    block drops: 1.25 game:ore-lapislazuli + 0.01 canjewelry:gem-rough-chipped-lapislazuli + 0.005 canjewelry:gem-rough-flawed-lapislazuli + 0.001 canjewelry:gem-rough-normal-lapislazuli -> 1 game:ore-lapislazuli-limestone
+  Lapis lazuli (game:ore-lapislazuli-bauxite): none → 131.74
+    block drops: 1.25 game:ore-lapislazuli + 0.01 canjewelry:gem-rough-chipped-lapislazuli + 0.005 canjewelry:gem-rough-flawed-lapislazuli + 0.001 canjewelry:gem-rough-normal-lapislazuli -> 1 game:ore-lapislazuli-bauxite
+  Lapis lazuli (game:ore-lapislazuli-whitemarble): none → 131.74
+    block drops: 1.25 game:ore-lapislazuli + 0.01 canjewelry:gem-rough-chipped-lapislazuli + 0.005 canjewelry:gem-rough-flawed-lapislazuli + 0.001 canjewelry:gem-rough-normal-lapislazuli -> 1 game:ore-lapislazuli-whitemarble
+  Lapis lazuli (game:ore-lapislazuli-redmarble): none → 131.74
+    block drops: 1.25 game:ore-lapislazuli + 0.01 canjewelry:gem-rough-chipped-lapislazuli + 0.005 canjewelry:gem-rough-flawed-lapislazuli + 0.001 canjewelry:gem-rough-normal-lapislazuli -> 1 game:ore-lapislazuli-redmarble
+  Lapis lazuli (game:ore-lapislazuli-greenmarble): none → 131.74
+    block drops: 1.25 game:ore-lapislazuli + 0.01 canjewelry:gem-rough-chipped-lapislazuli + 0.005 canjewelry:gem-rough-flawed-lapislazuli + 0.001 canjewelry:gem-rough-normal-lapislazuli -> 1 game:ore-lapislazuli-greenmarble
+  Quartz (game:ore-quartz-andesite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-andesite
+  Quartz (game:ore-quartz-chalk): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-chalk
+  Quartz (game:ore-quartz-chert): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-chert
+  Quartz (game:ore-quartz-conglomerate): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-conglomerate
+  Quartz (game:ore-quartz-limestone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-limestone
+  Quartz (game:ore-quartz-claystone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-claystone
+  Quartz (game:ore-quartz-granite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-granite
+  Quartz (game:ore-quartz-sandstone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-sandstone
+  Quartz (game:ore-quartz-shale): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-shale
+  Quartz (game:ore-quartz-basalt): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-basalt
+  Quartz (game:ore-quartz-peridotite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-peridotite
+  Quartz (game:ore-quartz-phyllite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-phyllite
+  Quartz (game:ore-quartz-slate): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-slate
+  Fluorite (game:ore-fluorite-chalk): none → 71.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-chalk
+  Fluorite (game:ore-fluorite-chert): none → 71.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-chert
+  ... and 81 more
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)
