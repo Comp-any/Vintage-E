@@ -188,8 +188,29 @@ namespace VintageE
         public List<string> CollectorFuels = new List<string>
         {
             "game:charcoal", "game:ore-lignite", "game:ore-bituminouscoal", "game:ore-anthracite", "game:coke",
-            "vintagee:alchemicalfuel-alchemicalcoal", "vintagee:alchemicalfuel-mobiusfuel", "vintagee:alchemicalfuel-aeternalisfuel"
+            "vintagee:alchemicalfuel-alchemicalcoal", "vintagee:alchemicalfuel-mobiusfuel", "vintagee:alchemicalfuel-aeternalisfuel",
+            // Project Expansion's (1.29.4): only there with the Expansion setting on; the fuel slot skips what isn't.
+            "vintagee:alchemicalfuel-magentafuel", "vintagee:alchemicalfuel-pinkfuel", "vintagee:alchemicalfuel-purplefuel",
+            "vintagee:alchemicalfuel-violetfuel", "vintagee:alchemicalfuel-bluefuel", "vintagee:alchemicalfuel-cyanfuel",
+            "vintagee:alchemicalfuel-greenfuel", "vintagee:alchemicalfuel-limefuel", "vintagee:alchemicalfuel-yellowfuel",
+            "vintagee:alchemicalfuel-orangefuel", "vintagee:alchemicalfuel-whitefuel"
         };
+
+        /// <summary>Project Expansion's fuels after aeternalis (1.29.4), in order: added to a saved CollectorFuels once.</summary>
+        public static readonly string[] ExpansionFuels =
+        {
+            "vintagee:alchemicalfuel-magentafuel", "vintagee:alchemicalfuel-pinkfuel", "vintagee:alchemicalfuel-purplefuel",
+            "vintagee:alchemicalfuel-violetfuel", "vintagee:alchemicalfuel-bluefuel", "vintagee:alchemicalfuel-cyanfuel",
+            "vintagee:alchemicalfuel-greenfuel", "vintagee:alchemicalfuel-limefuel", "vintagee:alchemicalfuel-yellowfuel",
+            "vintagee:alchemicalfuel-orangefuel", "vintagee:alchemicalfuel-whitefuel"
+        };
+
+        /// <summary>
+        /// Which additions to CollectorFuels this settings file has had (1.29.4: 1 = Project Expansion's fuels). Not a
+        /// setting: kept in the file so a list an admin trimmed afterwards isn't added to again.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("CollectorFuelsVersion")]
+        int collectorFuelsVersion;
 
         /// <summary>
         /// What matter shears get from creatures when right-clicked in the air (ProjectE shears every shearable creature
@@ -346,6 +367,13 @@ namespace VintageE
             HostileCreatures ??= new List<string>();
             StackDataModes ??= new Dictionary<string, string>();
             CollectorFuels ??= new List<string>();
+            // A list saved before 1.29.4 that still ends with aeternalis gets Project Expansion's fuels after it, once.
+            if (collectorFuelsVersion < 1)
+            {
+                if (CollectorFuels.Count > 0 && CollectorFuels[CollectorFuels.Count - 1] == "vintagee:alchemicalfuel-aeternalisfuel")
+                    CollectorFuels.AddRange(ExpansionFuels.Where(f => !CollectorFuels.Contains(f)));
+                collectorFuelsVersion = 1;
+            }
             ShearableCreatures ??= new Dictionary<string, string>();
             if (double.IsNaN(ShearRegrowHours) || double.IsInfinity(ShearRegrowHours) || ShearRegrowHours < 0) ShearRegrowHours = 24;
             if (MaxExactKnowledge < 0) MaxExactKnowledge = 0;

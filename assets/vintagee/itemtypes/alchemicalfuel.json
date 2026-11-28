@@ -6,7 +6,18 @@
       "states": [
         "alchemicalcoal",
         "mobiusfuel",
-        "aeternalisfuel"
+        "aeternalisfuel",
+        "magentafuel",
+        "pinkfuel",
+        "purplefuel",
+        "violetfuel",
+        "bluefuel",
+        "cyanfuel",
+        "greenfuel",
+        "limefuel",
+        "yellowfuel",
+        "orangefuel",
+        "whitefuel"
       ]
     }
   ],
@@ -61,6 +72,50 @@
         "type": "item",
         "code": "vintagee:matter-dark"
       }
+    },
+    "*-magentafuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 10240
+    },
+    "*-pinkfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 40960
+    },
+    "*-purplefuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 163840
+    },
+    "*-violetfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 655360
+    },
+    "*-bluefuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 2621440
+    },
+    "*-cyanfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 10485760
+    },
+    "*-greenfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 41943040
+    },
+    "*-limefuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 167772160
+    },
+    "*-yellowfuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 671088640
+    },
+    "*-orangefuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 2684354560
+    },
+    "*-whitefuel": {
+      "burnTemperature": 1600,
+      "burnDuration": 10737418240
     }
   },
   "attributesByType": {
@@ -79,6 +134,72 @@
     "*-aeternalisfuel": {
       "inForge": {
         "durationMul": 64,
+        "tempGainDeg": 600
+      }
+    },
+    "*-magentafuel": {
+      "inForge": {
+        "durationMul": 256,
+        "tempGainDeg": 600
+      }
+    },
+    "*-pinkfuel": {
+      "inForge": {
+        "durationMul": 1024,
+        "tempGainDeg": 600
+      }
+    },
+    "*-purplefuel": {
+      "inForge": {
+        "durationMul": 4096,
+        "tempGainDeg": 600
+      }
+    },
+    "*-violetfuel": {
+      "inForge": {
+        "durationMul": 16384,
+        "tempGainDeg": 600
+      }
+    },
+    "*-bluefuel": {
+      "inForge": {
+        "durationMul": 65536,
+        "tempGainDeg": 600
+      }
+    },
+    "*-cyanfuel": {
+      "inForge": {
+        "durationMul": 262144,
+        "tempGainDeg": 600
+      }
+    },
+    "*-greenfuel": {
+      "inForge": {
+        "durationMul": 1048576,
+        "tempGainDeg": 600
+      }
+    },
+    "*-limefuel": {
+      "inForge": {
+        "durationMul": 4194304,
+        "tempGainDeg": 600
+      }
+    },
+    "*-yellowfuel": {
+      "inForge": {
+        "durationMul": 16777216,
+        "tempGainDeg": 600
+      }
+    },
+    "*-orangefuel": {
+      "inForge": {
+        "durationMul": 67108864,
+        "tempGainDeg": 600
+      }
+    },
+    "*-whitefuel": {
+      "inForge": {
+        "durationMul": 268435456,
         "tempGainDeg": 600
       }
     }

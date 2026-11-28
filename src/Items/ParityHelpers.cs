@@ -466,6 +466,9 @@ namespace VintageE
         /// up to 250 blocks. What breaks drops where the player clicked. Returns how many broke.
         /// </summary>
         public static int VeinMine(IWorldAccessor world, IPlayer player, CollectibleObject tool, BlockPos start, BlockFacing face, int charge)
+            => TabletMining.During(player, () => VeinMineCore(world, player, tool, start, face, charge));
+
+        static int VeinMineCore(IWorldAccessor world, IPlayer player, CollectibleObject tool, BlockPos start, BlockFacing face, int charge)
         {
             IBlockAccessor ba = world.BlockAccessor;
             Block first = ba.GetBlock(start);
@@ -516,6 +519,9 @@ namespace VintageE
         /// blocks across and 10 × up and down of the player. Nothing at charge 0. What breaks drops at the player.
         /// </summary>
         public static int ClearAround(IWorldAccessor world, IPlayer player, Entity at, System.Func<Block, bool> match, int charge)
+            => TabletMining.During(player, () => ClearAroundCore(world, player, at, match, charge));
+
+        static int ClearAroundCore(IWorldAccessor world, IPlayer player, Entity at, System.Func<Block, bool> match, int charge)
         {
             if (charge <= 0 || at == null) return 0;
             int h = 5 * charge, v = 10 * charge;
@@ -547,6 +553,9 @@ namespace VintageE
         /// around the clicked block (on its level). Nothing at charge 0. What breaks drops where the player clicked.
         /// </summary>
         public static int DigFlat(IWorldAccessor world, IPlayer player, CollectibleObject tool, BlockPos center, int charge)
+            => TabletMining.During(player, () => DigFlatCore(world, player, tool, center, charge));
+
+        static int DigFlatCore(IWorldAccessor world, IPlayer player, CollectibleObject tool, BlockPos center, int charge)
         {
             if (charge <= 0) return 0;
             IBlockAccessor ba = world.BlockAccessor;

@@ -196,6 +196,8 @@ namespace VintageE
             // 1.29.3: Project Expansion's books.
             api.RegisterItemClass("VintageEItemKnowledgeBook", typeof(ItemKnowledgeBook));
             api.RegisterItemClass("VintageEItemAlchemicalBook", typeof(ItemAlchemicalBook));
+            // 1.29.4: the Storm Collector.
+            api.RegisterBlockEntityClass("VintageEStormCollector", typeof(BEStormCollector));
             api.RegisterEntityBehaviorClass(EntityBehaviorVintageE.Code, typeof(EntityBehaviorVintageE));
             api.RegisterEntity("VintageEProjectile", typeof(EntityVintageEProjectile));
 

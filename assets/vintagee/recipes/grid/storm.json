@@ -1,0 +1,78 @@
+[
+  {
+    "ingredientPattern": "GLG,GCG,GTG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "L": {
+        "type": "block",
+        "code": "game:lightningrod"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk1"
+      },
+      "T": {
+        "type": "item",
+        "code": "game:gear-temporal"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:stormcollector-mk1"
+    },
+    "name": "vintagee:stormcollector-mk1"
+  },
+  {
+    "ingredientPattern": "GMG,GSG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-dark"
+      },
+      "S": {
+        "type": "block",
+        "code": "vintagee:stormcollector-mk1"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:stormcollector-mk2"
+    },
+    "name": "vintagee:stormcollector-mk2"
+  },
+  {
+    "ingredientPattern": "GMG,GSG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "S": {
+        "type": "block",
+        "code": "vintagee:stormcollector-mk2"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:stormcollector-mk3"
+    },
+    "name": "vintagee:stormcollector-mk3"
+  }
+]

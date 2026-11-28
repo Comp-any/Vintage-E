@@ -55,7 +55,9 @@ add-on by DonovanDMC. These files are Project Expansion's own artwork, used unde
   `assets/vintagee/shapes/block/powerflower.json`, ported from Project Expansion's
   `models/block/power_flower/base.json` (also the base of the New look's version of it);
 - since 1.29.3 (copied by `tools/gen_books.py`): the Knowledge Sharing Book and Alchemical Book textures in
-  `assets/vintagee/textures/projecte/expansion/book-*.png` (Original look).
+  `assets/vintagee/textures/projecte/expansion/book-*.png` (Original look);
+- since 1.29.4 (copied by `tools/gen_fuels.py`): the fuel and fuel block textures in
+  `assets/vintagee/textures/projecte/expansion/fuel-*.png` and `fuelblock-*.png` (Original look).
 
 Where Project Expansion's texture is animated, the first frame is used (Vintage Story doesn't play Minecraft's texture
 animations). Project Expansion credits its matter block textures to 32polaris.

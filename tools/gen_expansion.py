@@ -495,9 +495,12 @@ def manifest():
             "blocktypes/emclink.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
             # 1.29.3 (tools/gen_books.py): the Basic Alchemical Book stays; the others are made from the bigger stars.
             "itemtypes/alchemicalbook.json": {"group": "tier", "states": ["advanced", "master", "arcane"]},
+            # 1.29.4 (tools/gen_fuels.py): magenta to white fuel and their blocks.
+            "itemtypes/alchemicalfuel.json": {"group": "type", "states": [f"{t[1]}fuel" for t in MATTERS if t[1] != "fading"]},
+            "blocktypes/alchemicalfuelblock.json": {"group": "type", "states": [f"{t[1]}fuel" for t in MATTERS if t[1] != "fading"]},
         },
         "files": ["itemtypes/star.json", "itemtypes/finalstarshard.json", "itemtypes/finalstar.json", "blocktypes/compactsun.json"],
-        "recipes": ["recipes/grid/expansion.json", "recipes/grid/expansion-flowers.json", "recipes/grid/expansion-books.json"],
+        "recipes": ["recipes/grid/expansion.json", "recipes/grid/expansion-flowers.json", "recipes/grid/expansion-books.json", "recipes/grid/expansion-fuels.json"],
         # Emptied while Expansion is ON: what stands in for things that only exist with it (1.29.3: the Knowledge
         # Sharing Book with red matter instead of violet).
         "recipesWhenOn": ["recipes/grid/books-noexpansion.json"],
@@ -518,6 +521,12 @@ def main():
     # The books (1.29.3), likewise.
     import gen_books
     gen_books.main()
+    # The fuel tiers (1.29.4), likewise.
+    import gen_fuels
+    gen_fuels.main()
+    # The Storm Collector (1.29.4): not one of Project Expansion's tiers, but its New look entries go in the same map.
+    import gen_storm
+    gen_storm.main()
     print(f"{len(TIERS)} tiers, {len(MATTERS)} matters, {len(STAR_SIZES) * len(STAR_TIERS)} stars, {len(rs)} recipes, "
           f"{len(entries)} language lines, {len(tex)} textures (plus the New look's matter)")
 

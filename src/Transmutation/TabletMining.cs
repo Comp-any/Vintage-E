@@ -139,6 +139,29 @@ namespace VintageE
             catch (Exception e) { Guard.Report(sapi.Logger, "burning what " + player.PlayerName + " mined", e); }
         }
 
+        /// <summary>
+        /// Vintage-E's own area actions (1.29.4: the matter tools' ore veins, clearing and flat digging, the Destruction
+        /// Catalyst) break blocks without the game's break events. They run inside this: what drops while
+        /// <paramref name="action"/> runs is burned as a break's drops are. Nested or with nobody to burn for, it just runs.
+        /// </summary>
+        public static T During<T>(IPlayer player, System.Func<T> action)
+        {
+            if (!Patched || breaking != null || !(player is IServerPlayer sp) || sp.Entity == null || sp.WorldData?.CurrentGameMode == EnumGameMode.Creative)
+                return action();
+            ItemStack tablet = TabletOf(sp);
+            if (tablet == null) return action();
+            breaking = sp;
+            breakingTablet = tablet;
+            try { return action(); }
+            finally
+            {
+                var items = caught.ToList();
+                Close();
+                try { Burn(sp, tablet, items); }
+                catch (Exception e) { Guard.Report(sapi.Logger, "burning what " + sp.PlayerName + " mined", e); }
+            }
+        }
+
         /// <summary>Burns the caught drops that pass the tablet's filter and can be burned; the rest stay where they fell.</summary>
         public static int Burn(IServerPlayer player, ItemStack tablet, IEnumerable<EntityItem> items)
         {

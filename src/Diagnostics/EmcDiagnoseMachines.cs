@@ -176,6 +176,15 @@ namespace VintageE
                         else if (!online && waiting != null) x.Explain(x.L("diag-mach-table-offline-why"));
                         break;
                     }
+                case BEStormCollector sc:
+                    {
+                        x.Info(x.L("diag-mach-storm", name, EmcFormat.Total(sc.Stored), EmcFormat.Total(sc.Capacity), EmcFormat.Format(sc.RateNow()),
+                            (int)Math.Round(sc.Rain * 100), sc.Thunder ? x.L("diag-yes") : x.L("diag-no"), sc.TemporalStorm ? x.L("diag-yes") : x.L("diag-no"), sc.Strikes));
+                        if (!sc.UnderSky) { x.Warn(x.L("diag-mach-storm-roof")); x.Explain(x.L("diag-mach-storm-roof-why")); }
+                        else if (sc.RateNow() <= 0) x.Explain(x.L("diag-mach-storm-calm"));
+                        Neighbours(x, pos, sc.Stored >= sc.Capacity);
+                        break;
+                    }
                 case BEPowerFlower fl:
                     {
                         bool online = OwnedMachine.OnlineOwner(x.Sapi, fl.OwnerUid) != null;

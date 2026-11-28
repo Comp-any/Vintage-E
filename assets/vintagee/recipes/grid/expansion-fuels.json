@@ -1,0 +1,607 @@
+[
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-magentafuel"
+    },
+    "name": "vintagee:alchemicalfuel-magentafuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-magentafuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-magentafuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-magentafuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-magentafuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-magentafuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-magentafuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-magentafuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-pinkfuel"
+    },
+    "name": "vintagee:alchemicalfuel-pinkfuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-pinkfuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-pinkfuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-pinkfuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-pinkfuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-pinkfuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-pinkfuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-pinkfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-purplefuel"
+    },
+    "name": "vintagee:alchemicalfuel-purplefuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-purplefuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-purplefuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-purplefuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-purplefuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-purplefuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-purplefuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-purplefuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-violetfuel"
+    },
+    "name": "vintagee:alchemicalfuel-violetfuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-violetfuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-violetfuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-violetfuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-violetfuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-violetfuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-violetfuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-violetfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-bluefuel"
+    },
+    "name": "vintagee:alchemicalfuel-bluefuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-bluefuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-bluefuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-bluefuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-bluefuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-bluefuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-bluefuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-bluefuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-cyanfuel"
+    },
+    "name": "vintagee:alchemicalfuel-cyanfuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-cyanfuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-cyanfuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-cyanfuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-cyanfuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-cyanfuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-cyanfuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-cyanfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-greenfuel"
+    },
+    "name": "vintagee:alchemicalfuel-greenfuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-greenfuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-greenfuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-greenfuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-greenfuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-greenfuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-greenfuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-greenfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-limefuel"
+    },
+    "name": "vintagee:alchemicalfuel-limefuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-limefuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-limefuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-limefuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-limefuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-limefuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-limefuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-limefuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-yellowfuel"
+    },
+    "name": "vintagee:alchemicalfuel-yellowfuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-yellowfuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-yellowfuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-yellowfuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-yellowfuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-yellowfuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-yellowfuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-yellowfuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-orangefuel"
+    },
+    "name": "vintagee:alchemicalfuel-orangefuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-orangefuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-orangefuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-orangefuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-orangefuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-orangefuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-orangefuel-from-block"
+  },
+  {
+    "ingredientPattern": "PFF,FF_",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-orangefuel"
+      }
+    },
+    "width": 3,
+    "height": 2,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-whitefuel"
+    },
+    "name": "vintagee:alchemicalfuel-whitefuel"
+  },
+  {
+    "ingredientPattern": "FFF,FFF,FFF",
+    "ingredients": {
+      "F": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-whitefuel"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:alchemicalfuelblock-whitefuel"
+    },
+    "name": "vintagee:alchemicalfuelblock-whitefuel"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:alchemicalfuelblock-whitefuel"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalfuel-whitefuel",
+      "quantity": 9
+    },
+    "name": "vintagee:alchemicalfuel-whitefuel-from-block"
+  }
+]

@@ -12,7 +12,18 @@
     "vintagee:block/matterblock-yellow": "vintagee:newlook/block/matterblock-yellow",
     "vintagee:block/matterblock-orange": "vintagee:newlook/block/matterblock-orange",
     "vintagee:block/matterblock-white": "vintagee:newlook/block/matterblock-white",
-    "vintagee:block/matterblock-fading": "vintagee:newlook/block/matterblock-fading"
+    "vintagee:block/matterblock-fading": "vintagee:newlook/block/matterblock-fading",
+    "vintagee:block/alchemicalfuelblock-magentafuel": "vintagee:newlook/block/fuel-magenta",
+    "vintagee:block/alchemicalfuelblock-pinkfuel": "vintagee:newlook/block/fuel-pink",
+    "vintagee:block/alchemicalfuelblock-purplefuel": "vintagee:newlook/block/fuel-purple",
+    "vintagee:block/alchemicalfuelblock-violetfuel": "vintagee:newlook/block/fuel-violet",
+    "vintagee:block/alchemicalfuelblock-bluefuel": "vintagee:newlook/block/fuel-blue",
+    "vintagee:block/alchemicalfuelblock-cyanfuel": "vintagee:newlook/block/fuel-cyan",
+    "vintagee:block/alchemicalfuelblock-greenfuel": "vintagee:newlook/block/fuel-green",
+    "vintagee:block/alchemicalfuelblock-limefuel": "vintagee:newlook/block/fuel-lime",
+    "vintagee:block/alchemicalfuelblock-yellowfuel": "vintagee:newlook/block/fuel-yellow",
+    "vintagee:block/alchemicalfuelblock-orangefuel": "vintagee:newlook/block/fuel-orange",
+    "vintagee:block/alchemicalfuelblock-whitefuel": "vintagee:newlook/block/fuel-white"
   },
   "overrides": [
     {
@@ -3770,6 +3781,934 @@
           "z": 0.562
         },
         "scale": 1.23
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-magentafuel",
+      "label": "magenta fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-magenta"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-magentafuel",
+      "label": "magenta fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-magenta",
+        "east": "vintagee:newlook/block/fuel-magenta",
+        "south": "vintagee:newlook/block/fuel-magenta",
+        "west": "vintagee:newlook/block/fuel-magenta",
+        "up": "vintagee:newlook/block/fuel-magenta",
+        "down": "vintagee:newlook/block/fuel-magenta"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-pinkfuel",
+      "label": "pink fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-pink"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-pinkfuel",
+      "label": "pink fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-pink",
+        "east": "vintagee:newlook/block/fuel-pink",
+        "south": "vintagee:newlook/block/fuel-pink",
+        "west": "vintagee:newlook/block/fuel-pink",
+        "up": "vintagee:newlook/block/fuel-pink",
+        "down": "vintagee:newlook/block/fuel-pink"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-purplefuel",
+      "label": "purple fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-purple"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-purplefuel",
+      "label": "purple fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-purple",
+        "east": "vintagee:newlook/block/fuel-purple",
+        "south": "vintagee:newlook/block/fuel-purple",
+        "west": "vintagee:newlook/block/fuel-purple",
+        "up": "vintagee:newlook/block/fuel-purple",
+        "down": "vintagee:newlook/block/fuel-purple"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-violetfuel",
+      "label": "violet fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-violet"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-violetfuel",
+      "label": "violet fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-violet",
+        "east": "vintagee:newlook/block/fuel-violet",
+        "south": "vintagee:newlook/block/fuel-violet",
+        "west": "vintagee:newlook/block/fuel-violet",
+        "up": "vintagee:newlook/block/fuel-violet",
+        "down": "vintagee:newlook/block/fuel-violet"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-bluefuel",
+      "label": "blue fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-blue"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-bluefuel",
+      "label": "blue fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-blue",
+        "east": "vintagee:newlook/block/fuel-blue",
+        "south": "vintagee:newlook/block/fuel-blue",
+        "west": "vintagee:newlook/block/fuel-blue",
+        "up": "vintagee:newlook/block/fuel-blue",
+        "down": "vintagee:newlook/block/fuel-blue"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-cyanfuel",
+      "label": "cyan fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-cyan"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-cyanfuel",
+      "label": "cyan fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-cyan",
+        "east": "vintagee:newlook/block/fuel-cyan",
+        "south": "vintagee:newlook/block/fuel-cyan",
+        "west": "vintagee:newlook/block/fuel-cyan",
+        "up": "vintagee:newlook/block/fuel-cyan",
+        "down": "vintagee:newlook/block/fuel-cyan"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-greenfuel",
+      "label": "green fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-green"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-greenfuel",
+      "label": "green fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-green",
+        "east": "vintagee:newlook/block/fuel-green",
+        "south": "vintagee:newlook/block/fuel-green",
+        "west": "vintagee:newlook/block/fuel-green",
+        "up": "vintagee:newlook/block/fuel-green",
+        "down": "vintagee:newlook/block/fuel-green"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-limefuel",
+      "label": "lime fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-lime"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-limefuel",
+      "label": "lime fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-lime",
+        "east": "vintagee:newlook/block/fuel-lime",
+        "south": "vintagee:newlook/block/fuel-lime",
+        "west": "vintagee:newlook/block/fuel-lime",
+        "up": "vintagee:newlook/block/fuel-lime",
+        "down": "vintagee:newlook/block/fuel-lime"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-yellowfuel",
+      "label": "yellow fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-yellow"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-yellowfuel",
+      "label": "yellow fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-yellow",
+        "east": "vintagee:newlook/block/fuel-yellow",
+        "south": "vintagee:newlook/block/fuel-yellow",
+        "west": "vintagee:newlook/block/fuel-yellow",
+        "up": "vintagee:newlook/block/fuel-yellow",
+        "down": "vintagee:newlook/block/fuel-yellow"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-orangefuel",
+      "label": "orange fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-orange"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-orangefuel",
+      "label": "orange fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-orange",
+        "east": "vintagee:newlook/block/fuel-orange",
+        "south": "vintagee:newlook/block/fuel-orange",
+        "west": "vintagee:newlook/block/fuel-orange",
+        "up": "vintagee:newlook/block/fuel-orange",
+        "down": "vintagee:newlook/block/fuel-orange"
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuel-whitefuel",
+      "label": "white fuel",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/lump",
+      "textures": {
+        "fuel": "vintagee:newlook/block/fuel-white"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 1.88
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.188,
+          "z": 0.484
+        },
+        "scale": 0.56
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.484
+        },
+        "scale": 2.0
+      }
+    },
+    {
+      "code": "vintagee:alchemicalfuelblock-whitefuel",
+      "label": "white fuel block",
+      "cube": true,
+      "preview_only": true,
+      "textures": {
+        "north": "vintagee:newlook/block/fuel-white",
+        "east": "vintagee:newlook/block/fuel-white",
+        "south": "vintagee:newlook/block/fuel-white",
+        "west": "vintagee:newlook/block/fuel-white",
+        "up": "vintagee:newlook/block/fuel-white",
+        "down": "vintagee:newlook/block/fuel-white"
+      }
+    },
+    {
+      "code": "vintagee:stormcollector-mk1",
+      "label": "storm collector mk1",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/stormcollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/brass",
+        "glow": "game:block/stone/gem/citrine",
+        "glass": "game:block/stone/gem/aquamarine",
+        "rod": "game:block/metal/plate/copper"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:stormcollector-mk2",
+      "label": "storm collector mk2",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/stormcollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/silver",
+        "glow": "game:block/stone/gem/amethyst",
+        "glass": "game:block/stone/gem/aquamarine",
+        "rod": "game:block/metal/plate/copper"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:stormcollector-mk3",
+      "label": "storm collector mk3",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/stormcollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/gold",
+        "glow": "game:block/stone/gem/ruby",
+        "glass": "game:block/stone/gem/aquamarine",
+        "rod": "game:block/metal/plate/copper"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
       }
     }
   ]

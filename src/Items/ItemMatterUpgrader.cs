@@ -14,7 +14,7 @@ namespace VintageE
     /// </summary>
     public class ItemMatterUpgrader : Item
     {
-        static readonly string[] Families = { "energycollector-", "antimatterrelay-", "powerflower-", "emclink-" };
+        static readonly string[] Families = { "energycollector-", "antimatterrelay-", "powerflower-", "emclink-", "stormcollector-" };
 
         /// <summary>The next tier of a machine block, or null if it's the last, not one this upgrades, or not in the game (the Expansion tiers off).</summary>
         /// <summary>Whether this is a collector, relay, Power Flower or EMC Link (any tier).</summary>

@@ -1,0 +1,90 @@
+{
+  "code": "stormcollector",
+  "class": "VintageEBlockEmcMachine",
+  "entityClass": "VintageEStormCollector",
+  "entityBehaviors": [
+    {
+      "name": "AttractsLightning",
+      "properties": {
+        "artificialElevation": 5,
+        "elevationAttractivenessMultiplier": 2
+      }
+    }
+  ],
+  "variantgroups": [
+    {
+      "code": "tier",
+      "states": [
+        "mk1",
+        "mk2",
+        "mk3"
+      ]
+    }
+  ],
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "mechanics": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "blockmaterial": "Metal",
+  "drawtype": "cube",
+  "textures": {
+    "up": {
+      "base": "block/stormcollector-{tier}-top"
+    },
+    "down": {
+      "base": "block/transmutationtable-bottom"
+    },
+    "north": {
+      "base": "block/stormcollector-{tier}-side"
+    },
+    "east": {
+      "base": "block/stormcollector-{tier}-side"
+    },
+    "south": {
+      "base": "block/stormcollector-{tier}-side"
+    },
+    "west": {
+      "base": "block/stormcollector-{tier}-side"
+    }
+  },
+  "attributesByType": {
+    "*-mk1": {
+      "emcPerSecond": 8,
+      "thunderMultiplier": 3,
+      "temporalPerSecond": 40,
+      "lightningEmc": 4000,
+      "capacity": 20000,
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk2": {
+      "emcPerSecond": 24,
+      "thunderMultiplier": 3,
+      "temporalPerSecond": 120,
+      "lightningEmc": 12000,
+      "capacity": 60000,
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk3": {
+      "emcPerSecond": 80,
+      "thunderMultiplier": 3,
+      "temporalPerSecond": 400,
+      "lightningEmc": 40000,
+      "capacity": 200000,
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    }
+  },
+  "resistance": 4,
+  "requiredMiningTier": 2,
+  "sounds": {
+    "place": "game:block/ingot",
+    "break": "game:block/ingot",
+    "hit": "game:block/ingot"
+  }
+}

@@ -331,7 +331,10 @@ namespace VintageE
         /// ProjectE's destruction: a 3×3 area <paramref name="depth"/> blocks deep into the clicked face, paying
         /// <paramref name="costEach"/> per block broken. The drops are gathered where you clicked.
         /// </summary>
-        void Destroy(IServerPlayer player, BlockSelection sel, int depth, double costEach)
+        void Destroy(IServerPlayer player, BlockSelection sel, int depth, double costEach) =>
+            TabletMining.During(player, () => { DestroyCore(player, sel, depth, costEach); return 0; });
+
+        void DestroyCore(IServerPlayer player, BlockSelection sel, int depth, double costEach)
         {
             IWorldAccessor world = player.Entity.World;
             IBlockAccessor ba = world.BlockAccessor;

@@ -195,6 +195,9 @@ namespace VintageE
         {
             if (path == "finalstarshard" || path == "finalstar" || path == "compactsun" || path.StartsWith("star-", StringComparison.Ordinal)) return true;
             if (path.StartsWith("alchemicalbook-", StringComparison.Ordinal) && path != "alchemicalbook-basic") return true;
+            if ((path.StartsWith("alchemicalfuel-", StringComparison.Ordinal) || path.StartsWith("alchemicalfuelblock-", StringComparison.Ordinal))
+                && !path.EndsWith("-alchemicalcoal", StringComparison.Ordinal) && !path.EndsWith("-mobiusfuel", StringComparison.Ordinal) && !path.EndsWith("-aeternalisfuel", StringComparison.Ordinal))
+                return true;
             foreach (string prefix in new[] { "energycollector-mk", "antimatterrelay-mk", "powerflower-mk", "emclink-mk" })
             {
                 if (path.StartsWith(prefix, StringComparison.Ordinal) && int.TryParse(path.Substring(prefix.Length), NumberStyles.Integer, CultureInfo.InvariantCulture, out int mk) && mk >= 4) return true;

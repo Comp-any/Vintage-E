@@ -114,6 +114,38 @@
         "master",
         "arcane"
       ]
+    },
+    "itemtypes/alchemicalfuel.json": {
+      "group": "type",
+      "states": [
+        "magentafuel",
+        "pinkfuel",
+        "purplefuel",
+        "violetfuel",
+        "bluefuel",
+        "cyanfuel",
+        "greenfuel",
+        "limefuel",
+        "yellowfuel",
+        "orangefuel",
+        "whitefuel"
+      ]
+    },
+    "blocktypes/alchemicalfuelblock.json": {
+      "group": "type",
+      "states": [
+        "magentafuel",
+        "pinkfuel",
+        "purplefuel",
+        "violetfuel",
+        "bluefuel",
+        "cyanfuel",
+        "greenfuel",
+        "limefuel",
+        "yellowfuel",
+        "orangefuel",
+        "whitefuel"
+      ]
     }
   },
   "files": [
@@ -125,7 +157,8 @@
   "recipes": [
     "recipes/grid/expansion.json",
     "recipes/grid/expansion-flowers.json",
-    "recipes/grid/expansion-books.json"
+    "recipes/grid/expansion-books.json",
+    "recipes/grid/expansion-fuels.json"
   ],
   "recipesWhenOn": [
     "recipes/grid/books-noexpansion.json"

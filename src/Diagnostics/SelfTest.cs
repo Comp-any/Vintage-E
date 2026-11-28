@@ -103,7 +103,9 @@ namespace VintageE
                 Check(charcoal != null && meat != null, "found charcoal and raw red meat");
                 if (fuelled != null && charcoal != null && meat != null)
                 {
-                    fuelled.fuelSlot.Itemstack = new ItemStack(charcoal, 4);
+                    // A full stack (1.29.4): the furnace ticks on real time, so a few seconds the server spends on other
+                    // checks come as one long tick that burns a whole piece; with 4 it could burn out before the meat cooked.
+                    fuelled.fuelSlot.Itemstack = new ItemStack(charcoal, 64);
                     fuelled.inputSlot.Itemstack = new ItemStack(meat, 1);
                     fuelled.canIgniteFuel = true;
                     fuelled.MarkDirty(true);
@@ -135,21 +137,30 @@ namespace VintageE
                 }
                 if (heatFuel != null && charcoal != null)
                 {
-                    heatFuel.fuelSlot.Itemstack = new ItemStack(charcoal, 4);
+                    heatFuel.fuelSlot.Itemstack = new ItemStack(charcoal, 64);
                     heatFuel.canIgniteFuel = false; // cold: the firepit would wait for a firestarter
                     heatFuel.SetHeatingMode(true);
                     heatFuel.MarkDirty(true);
                 }
+                // What the furnaces did over the wait, not only at its end (1.29.4): the hottest they got and whether they burned.
+                double heatEmcMax = 0, heatFuelMax = 0;
+                bool heatFuelLit = false;
+                long watchFurnaces = sapi.Event.RegisterGameTickListener(_ =>
+                {
+                    if (heatEmc != null) heatEmcMax = Math.Max(heatEmcMax, heatEmc.furnaceTemperature);
+                    if (heatFuel != null) { heatFuelMax = Math.Max(heatFuelMax, heatFuel.furnaceTemperature); heatFuelLit |= heatFuel.IsBurning; }
+                }, 500);
                 sapi.Event.RegisterCallback(_ =>
                 {
+                    sapi.Event.UnregisterGameTickListener(watchFurnaces);
                     try
                     {
                         Check(heatEmc != null && heatEmc.IsBurning && heatEmc.furnaceTemperature > 300,
-                            $"a furnace in heating mode with nothing to heat keeps itself hot on EMC ({heatEmc?.furnaceTemperature:0} °C, burning {heatEmc?.IsBurning})");
+                            $"a furnace in heating mode with nothing to heat keeps itself hot on EMC ({heatEmc?.furnaceTemperature:0} °C, up to {heatEmcMax:0}, burning {heatEmc?.IsBurning})");
                         Check(idleEmc != null && !idleEmc.IsBurning && idleEmc.furnaceTemperature < 100,
                             $"a furnace in normal mode with nothing to heat stays cold ({idleEmc?.furnaceTemperature:0} °C, burning {idleEmc?.IsBurning})");
-                        Check(heatFuel != null && heatFuel.IsBurning && heatFuel.furnaceTemperature > 300,
-                            $"a cold furnace with fuel lights itself in heating mode ({heatFuel?.furnaceTemperature:0} °C, burning {heatFuel?.IsBurning}, fuel left {heatFuel?.fuelSlot?.StackSize})");
+                        Check(heatFuel != null && heatFuelLit && heatFuelMax > 300,
+                            $"a cold furnace with fuel lights itself in heating mode (up to {heatFuelMax:0} °C, now {heatFuel?.furnaceTemperature:0} °C, burning {heatFuel?.IsBurning}, fuel left {heatFuel?.fuelSlot?.StackSize})");
                     }
                     catch (Exception e) { Check(false, "heating mode check threw " + e); }
                 }, 30000);
@@ -2639,7 +2650,7 @@ namespace VintageE
             Block now = sapi.World.BlockAccessor.GetBlock(be.Pos);
             ItemStack output = be.outputSlot?.Itemstack;
             ItemStack input = be.inputSlot?.Itemstack;
-            Line($"  {label}: block {now?.Code}, {be.furnaceTemperature:0} °C, max {be.maxTemperature}, burning {be.IsBurning}, input {input?.Collectible.Code} x{input?.StackSize}, output {output?.Collectible.Code} x{output?.StackSize}");
+            Line($"  {label}: block {now?.Code}, {be.furnaceTemperature:0} °C, max {be.maxTemperature}, burning {be.IsBurning}, fuel {be.fuelSlot?.Itemstack?.Collectible.Code} x{be.fuelSlot?.StackSize}, input {input?.Collectible.Code} x{input?.StackSize}, output {output?.Collectible.Code} x{output?.StackSize}");
             Check(output?.Collectible?.Code?.Path?.Contains("cooked") == true, label + " cooked the meat");
         }
 
@@ -2693,6 +2704,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the Power Flower, EMC Link and Matter Upgrader checks threw " + e); }
             try { CheckBooks(); }
             catch (Exception e) { Check(false, "the book and Burn what I mine checks threw " + e); }
+            try { CheckFuelsAndStorm(); }
+            catch (Exception e) { Check(false, "the fuel tier and Storm Collector checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

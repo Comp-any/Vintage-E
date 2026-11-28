@@ -2,6 +2,29 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.4 — 2026-11-28
+
+Project Expansion's fuel tiers, a Storm Collector, and "Burn what I mine" for the matter tools' area actions.
+
+### Added
+- **Magenta to White Fuel, and their blocks** (Project Expansion's 11 fuel tiers after aeternalis).
+  - Each is 4 of the fuel before it with the philosopher's stone, which you keep; magenta is made from aeternalis.
+  - Each burns at 1,600 °C (the hottest the game's fuels go) for 4 times as long as the one before. In a forge it lasts 4 times longer again each tier.
+  - 9 make a block, and a block breaks back into 9.
+  - An Energy Collector's fuel slot upgrades fuel through them, paying the difference in value from its EMC. A server's saved fuel list gets them added after aeternalis automatically, once.
+  - They come with the `Expansion` setting, as the other Project Expansion tiers do.
+- **The Storm Collector MK1 to MK3**: EMC from the weather instead of the sun.
+  - Up to 8 / 24 / 80 EMC a second in full rain or snow, if it can see the sky, and three times that in a thunderstorm.
+  - 40 / 120 / 400 a second more during a temporal storm, wherever it stands.
+  - 4,000 / 12,000 / 40,000 EMC at once when lightning strikes it. It carries the game's own lightning-rod behaviour, so it draws the strikes around it; lightning still hurts anyone standing close.
+  - It stores what it makes, feeds condensers, relays, furnaces and EMC Links next to it, and gives its EMC with sneak + right-click (empty hand or a Klein star), as a collector does.
+  - Recipe: an Energy Collector MK1 with the game's lightning rod above it, a temporal gear below and glass around it. MK2 and MK3 are made with dark and red matter as collectors are, and the Matter Upgrader works on it.
+  - The doctor's machines page shows what it's getting from the weather and says when something above it stops the rain.
+
+### Changed
+- **"Burn what I mine" now also burns what Vintage-E's own area actions break**: the matter pickaxe's and shovel's ore and gravel veins, clearing logs and leaves, the shovel's and hammer's flat digging, and the Destruction Catalyst. These break blocks without the game's break events, so before this their drops landed as usual.
+- **The server test's furnace checks** don't fail on a busy server any more. The furnaces tick on real time, so a few seconds the server spends on other checks come as one long tick that burns a whole piece of fuel, and their 4 charcoal could run out. They now get a full stack, and the heating check judges the hottest the furnace got during the wait. (Earlier notes blamed rain; the game's firepits don't react to rain at all.)
+
 ## 1.29.3 — 2026-11-28
 
 Project Expansion's books, and its Alchemical Collection as a switch on the tablet.
