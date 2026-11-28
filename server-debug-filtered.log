@@ -1,0 +1,329 @@
+28.11.2026 10:45:12.194 [VerboseDebug] [VSCreativeMod.dll] Check for mod systems in mod ~/work/Vintage-E/Vintage-E/vs/Mods/VSCreativeMod.dll
+28.11.2026 10:45:12.229 [VerboseDebug] [VSCreativeMod.dll] Selected assembly ~/work/Vintage-E/Vintage-E/vs/Mods/VSCreativeMod.dll
+28.11.2026 10:45:12.238 [VerboseDebug] [VSEssentials.dll] Check for mod systems in mod ~/work/Vintage-E/Vintage-E/vs/Mods/VSEssentials.dll
+28.11.2026 10:45:12.255 [VerboseDebug] [VSEssentials.dll] Selected assembly ~/work/Vintage-E/Vintage-E/vs/Mods/VSEssentials.dll
+28.11.2026 10:45:12.256 [VerboseDebug] [VSSurvivalMod.dll] Check for mod systems in mod ~/work/Vintage-E/Vintage-E/vs/Mods/VSSurvivalMod.dll
+28.11.2026 10:45:12.263 [VerboseDebug] [VSSurvivalMod.dll] Selected assembly ~/work/Vintage-E/Vintage-E/vs/Mods/VSSurvivalMod.dll
+28.11.2026 10:45:12.283 [VerboseDebug] [vintagee] Check for mod systems in mod /home/runner/work/Vintage-E/Vintage-E/data/Mods/vintagee/VintageE.dll
+28.11.2026 10:45:12.289 [VerboseDebug] [vintagee] Loaded assembly /home/runner/work/Vintage-E/Vintage-E/data/Mods/vintagee/VintageE.dll
+28.11.2026 10:45:12.300 [VerboseDebug] Instantiate mod systems for vintagee
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 0: Unmet DependsOn condition (ancientarmory)
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 1: Unmet DependsOn condition (ancientarmory)
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 2: Unmet DependsOn condition (ancientarmory)
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 3: Unmet DependsOn condition (ancientarmoryfix)
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 4: Unmet DependsOn condition (ancientarmoryfix)
+28.11.2026 10:45:12.792 [VerboseDebug] Patch file vintagee:patches/compat/ancientarmory.json, patch 5: Unmet DependsOn condition (ancientarmoryfix)
+28.11.2026 10:45:21.534 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/primitivesurvival.json: its mod 'primitivesurvival' isn't loaded
+28.11.2026 10:45:21.534 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/butchering.json: its mod 'butchering' isn't loaded
+28.11.2026 10:45:21.534 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/wildcraftfruit.json: its mod 'wildcraftfruit' isn't loaded
+28.11.2026 10:45:21.534 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/fromgoldencombs.json: its mod 'fromgoldencombs' isn't loaded
+28.11.2026 10:45:21.534 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/wildcrafttree.json: its mod 'wildcrafttree' isn't loaded
+28.11.2026 10:45:21.535 [VerboseDebug] [vintagee] EMC: not loading vintagee:config/vintagee-emc-compat/em.json: its mod 'em' isn't loaded
+28.11.2026 10:45:21.568 [VerboseDebug] Starting system: ErrorReporter
+28.11.2026 10:45:21.568 [VerboseDebug] Starting system: ModSystemControlPoints
+28.11.2026 10:45:21.575 [VerboseDebug] Starting system: WeatherSystemCommands
+28.11.2026 10:45:21.599 [VerboseDebug] Starting system: ModSystemCatchCreature
+28.11.2026 10:45:21.603 [VerboseDebug] Starting system: ModSystemCommandHandbook
+28.11.2026 10:45:21.603 [VerboseDebug] Starting system: ModSystemCorpseReturnTeleporter
+28.11.2026 10:45:21.607 [VerboseDebug] Starting system: ModSystemClimateSpecificTraderTypes
+28.11.2026 10:45:21.612 [VerboseDebug] Starting system: VintageEModSystem
+28.11.2026 10:45:36.740 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:36.760 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.760 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.761 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.761 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.761 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.761 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:36.761 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:37.737 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+1. game:a -> game:b -> game:a  /emc set <value>
+1. game:a -> game:b -> game:a  /emc set <value>
+1. game:a -> game:b -> game:a  /emc set <value>
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/primitivesurvival.json: its mod 'primitivesurvival' isn't loaded
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/butchering.json: its mod 'butchering' isn't loaded
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/wildcraftfruit.json: its mod 'wildcraftfruit' isn't loaded
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/fromgoldencombs.json: its mod 'fromgoldencombs' isn't loaded
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/wildcrafttree.json: its mod 'wildcrafttree' isn't loaded
+28.11.2026 10:45:47.331 [VerboseDebug] EMC: not loading vintagee:config/vintagee-emc-compat/em.json: its mod 'em' isn't loaded
+28.11.2026 10:45:47.340 [VerboseDebug] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.340 [VerboseDebug] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.340 [VerboseDebug] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.340 [VerboseDebug] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.341 [VerboseDebug] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.341 [VerboseDebug] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.341 [VerboseDebug] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source block drops: 3803 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source built in stages: 12 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source grid: 11084 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source placement states: 7227 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:47.929 [VerboseDebug] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.944 [VerboseDebug] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:47.945 [VerboseDebug] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source block drops: 3803 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source built in stages: 12 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source grid: 11084 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source placement states: 7227 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:48.493 [VerboseDebug] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:45:49.324 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:49.332 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.332 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.333 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.333 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.333 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.333 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.333 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source method vintagee:selftest-off: 0 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source method vintagee:selftest-press: 16 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:49.853 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:45:50.702 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:50.712 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:50.720 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:50.728 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.738 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:50.739 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source method vintagee:selftest-off: 0 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source method vintagee:selftest-press: 15 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:51.365 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:45:51.843 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:45:51.852 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.852 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.852 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.853 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.853 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.853 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:51.853 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:45:52.693 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:45:53.268 [VerboseDebug] [vintagee] EMC: crafting methods for butchering not used: the mod isn't loaded
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.329 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.330 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:46:47.815 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.350 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.351 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:46:51.799 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:powderedsulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:sulfur' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:cotton' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-limonite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-hematite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.310 [VerboseDebug] [vintagee] EMC rule 'game:ore-*-magnetite' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.311 [VerboseDebug] [vintagee] EMC rule 'game:pineapple-*' from vintagee:config/vintagee-emc.json matched nothing
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source attributes: beehive kiln: 193 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source attributes: carburizing: 1 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source attributes: clay oven baking: 24 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source attributes: distillation: 59 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source attributes: fruit press: 25 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source behaviours: ground-storage processing: 101 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source behaviours: squeezing: 1 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source block drops: 3803 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source block drops (single item): 3060 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source built in stages: 12 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source casting (tool molds): 810 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source custom recipe: 0 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source grid: 11084 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source item properties: drying/curing/ripening/etc.: 46 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source item properties: pulverizer crushing: 158 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source item properties: quern grinding: 236 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source item properties: smelting/firing/cooking: 322 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source placement states: 7227 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.BarrelRecipes: 377 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.ClayFormingRecipes: 88 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.CookingRecipes (cooking): 22 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.KnappingRecipes: 37 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.MetalAlloys (alloys): 9 conversions
+28.11.2026 10:46:52.807 [VerboseDebug] [vintagee] EMC source RecipeRegistrySystem.SmithingRecipes: 291 conversions
