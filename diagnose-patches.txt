@@ -1,0 +1,91 @@
+== Other mods changing recipes and items ==
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Steep and Brew (steepandbrew) (/emc diagnose mod steepandbrew): 240 recipe patches, 4 patches to how items are processed (ground storage, squeezing, burning, drying)
+    mnflowers-teas.json → steepandbrew:itemtypes/liquid/tea.json
+    mnflowers-teas.json → steepandbrew:recipes/cooking/mnflowers-teas.json
+    mnflowers-teas.json → steepandbrew:recipes/barrel/mnflowers-teas.json
+  DairyPlus (dairyplus) (/emc diagnose mod dairyplus): 239 recipe patches
+    vinegarcurdle.json → dairyplus:recipes/cooking/tofu.json
+    vinegarcurdle.json → dairyplus:recipes/cooking/curds.json
+    vinegarcurdle.json → dairyplus:recipes/cooking/curds.json
+  UraniumExpanded (uraniumexpanded) (/emc diagnose mod uraniumexpanded): 176 recipe patches, 26 patches to how items are processed (ground storage, squeezing, burning, drying)
+    mechanical.json → betterruins:recipes/grid/schematic-mechanical/mechanical.json
+    mechanical.json → betterruins:recipes/grid/schematic-mechanical/mechanical.json
+    disabled-legacy-uranium-glass.json → uraniumexpanded:recipes/migration/legacy-uranium-glass.json
+  Boric Alchemy (boricalchemy) (/emc diagnose mod boricalchemy): 119 recipe patches, 32 patches to how items are processed (ground storage, squeezing, burning, drying), 1 patches to Vintage-E's own files
+    hexgirls.json → recipes/grid/COMPAT/compatibilityweirness
+    workoriaaaaaa.json → recipes/cooking/COMPAT/secondpage
+    workoriaaaaaa.json → recipes/cooking/COMPAT/secondpage
+  VSInstrumentsRedux (vsinstrumentsredux) (/emc diagnose mod vsinstrumentsredux): 95 recipe patches
+    expansion_toggles.json → vsinstrumentsredux:recipes/grid/acousticbass.json
+    expansion_toggles.json → vsinstrumentsredux:recipes/grid/acousticguitar.json
+    expansion_toggles.json → vsinstrumentsredux:recipes/grid/autoharp.json
+  Easy Building (easybuilding) (/emc diagnose mod easybuilding): 85 recipe patches
+    resourceedit.json → game:recipes/grid/clay.json
+    resourceedit.json → game:recipes/grid/clay.json
+    resourceedit.json → game:recipes/grid/clay.json
+  WOO Fantasy Additions (woofantasy) (/emc diagnose mod woofantasy): 74 recipe patches
+    butcherybagleather.json → butchering:recipes/grid/butcherybags/butcherybagleather.json
+    cursedblood.json → woofantasy:recipes/barrel/cursedblood.json
+    butcherybaghide.json → butchering:recipes/grid/butcherybags/butcherybaghide.json
+  improved_metallurgy (/emc diagnose mod improved_metallurgy): 16 recipe patches, 43 patches to how items are processed (ground storage, squeezing, burning, drying)
+    flyingmachine.json → flyingmachine:recipes/smithing/cylinder.json
+    flyingmachine.json → improved_metallurgy:recipes/grid/compat/flyingmachine-wingspar-duralumin.json
+    flyingmachine.json → improved_metallurgy:recipes/grid/compat/flyingmachine-wing-duralumin.json
+  Overhaul lib legacy compat (overhaulliblegacycompat) (/emc diagnose mod overhaulliblegacycompat): 42 recipe patches
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+  usefulstuff (/emc diagnose mod usefulstuff): 40 recipe patches
+    clothingrecycling.json → usefulstuff:recipes/grid/clothingshred.json
+    clothingrecycling.json → usefulstuff:recipes/grid/clothingshred.json
+    clothingrecycling.json → usefulstuff:recipes/grid/clothingshred.json
+  rustyshell (/emc diagnose mod rustyshell): 37 recipe patches
+    compatibility-chemistrylib.json → rustyshell:recipes/grid/gasmask.json
+    compatibility-chemistrylib.json → rustyshell:recipes/grid/shot.json
+    compatibility-chemistrylib.json → rustyshell:recipes/grid/landmine.json
+  ImmersiveWoodworking (immersivewoodworking) (/emc diagnose mod immersivewoodworking): 29 recipe patches
+    stringsense_cord.json → stringsense:recipes/grid/cord.json
+    stringsense_cord.json → stringsense:recipes/grid/cord.json
+    stringsense_cord.json → immersivewoodworking:recipes/grid/rope-bast.json
+  Expanded Matter (em) (/emc diagnose mod em): 16 recipe patches, 8 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+    survival-recipes-barrel-dye-orange.json → game:recipes/barrel/dye/orange.json
+  Bookbinders (bookbinders) (/emc diagnose mod bookbinders): 21 recipe patches, 2 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-grid-parchment.json → game:recipes/grid/parchment.json
+    survival-recipes-grid-books.json → game:recipes/grid/books.json
+    survival-recipes-grid-books.json → game:recipes/grid/books.json
+  Thievery (thievery) (/emc diagnose mod thievery): 12 recipe patches
+    survival-recipes-smithing-padlock.json → game:recipes/smithing/padlock.json
+    survival-recipes-smithing-padlock.json → game:recipes/smithing/padlock.json
+    survival-recipes-smithing-padlock.json → game:recipes/smithing/padlock.json
+  Just The Pepper (justthepepper) (/emc diagnose mod justthepepper): 11 recipe patches
+    cropseeds.json → wildfarmingrevival:recipes/grid/cropseeds.json
+    pepperseed.json → expandedfoods:recipes/grid/choppedvegetable.json
+    pepperseed.json → expandedfoods:recipes/grid/choppedvegetable.json
+  CompostTweak (rlldtco0001) (/emc diagnose mod rlldtco0001): 5 recipe patches
+    leaflitter-recipes.json → leaflitter:recipes/barrel/compostfromlitter.json
+    leaflitter-recipes.json → leaflitter:recipes/barrel/compostfromlitterblocks.json
+    survival-recipes-barrel-compost.json → game:recipes/barrel/compost.json
+  Craftable Companion (craftablecompanion) (/emc diagnose mod craftablecompanion): 4 recipe patches
+    biodiversity_trees_modsupport.json → craftablecompanion:recipes/grid/Biodiversity_Trees_Modsupport_Crafting.json
+    biodiversity_trees_modsupport.json → craftablecompanion:recipes/grid/Biodiversity_Trees_Modsupport_Crafting.json
+    biodiversity_trees_modsupport.json → craftablecompanion:recipes/grid/Biodiversity_Trees_Modsupport_Crafting.json
+  Panning Machine (panningmachine) (/emc diagnose mod panningmachine): 4 recipe patches
+    panningmachine-alchemref.json → panningmachine:recipes/grid/panningmachine-alchemref-recipe.json
+    panningmachine-allclasses.json → panningmachine:recipes/grid/panningmachine-allclasses-copper-recipe.json
+    panningmachine-allclasses.json → panningmachine:recipes/grid/panningmachine-allclasses-tinbronze-recipe.json
+  Grassroots (grassroots) (/emc diagnose mod grassroots): 3 recipe patches
+    foodshelves-compat.json → foodshelves:recipes/grid/other/floursack.json
+    foodshelves-compat.json → foodshelves:recipes/grid/other/floursack.json
+    candle-hempwick.json → game:recipes/cooking/candle.json
+  Chicken Feed (chickenfeed) (/emc diagnose mod chickenfeed): 1 recipe patches
+    primitivesurvival.json → chickenfeed:recipes/grid/chicken-feed.json
+  vinteng (/emc diagnose mod vinteng): 1 patches to how items are processed (ground storage, squeezing, burning, drying)
+    steelplateprops.json → game:itemtypes/resource/metalplate.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

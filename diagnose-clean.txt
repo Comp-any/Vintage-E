@@ -1,0 +1,369 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 5799 base-game values differ with the 51 other mods loaded:
+
+== Through Boric Alchemy (boricalchemy): 3474 values ==
+  Magnesium Plate (game:metalplate-magnesium): none → 1,690.9
+    casting (tool molds): 2 game:ingot-magnesium -> 1 game:metalplate-magnesium
+  Cobalt Plate (game:metalplate-cobalt): none → 1,289.7
+    RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-cobalt -> 1 game:metalplate-cobalt
+  Magnesium Ingot (game:ingot-magnesium): none → 845.43
+    smelting/firing/cooking: 20 game:metalbit-magnesium -> 1 game:ingot-magnesium
+  Cobalt Ingot (game:ingot-cobalt): none → 644.82
+    smelting/firing/cooking: 20 game:metalbit-cobalt -> 1 game:ingot-cobalt
+  Alchemical Aluminium Plate (game:metalplate-aluminium): none → 503.55
+    casting (tool molds): 2 game:ingot-aluminium -> 1 game:metalplate-aluminium
+  Alchemical Aluminium Ingot (game:ingot-aluminium): none → 251.77
+    smelting/firing/cooking: 20 game:metalbit-aluminium -> 1 game:ingot-aluminium
+  Magnesium Bits (game:metalbit-magnesium): none → 42.27
+    worked backwards from grid: 4 game:metalbit-magnesium -> 3 boricalchemy:magnesiumpowder
+  Cobalt Bits (game:metalbit-cobalt): none → 32.24
+    RecipeRegistrySystem.CookingRecipes: 2 boricalchemy:cobaltoxide_ii_iii + 1 game:charcoal -> 3 game:metalbit-cobalt
+  Barite Ore (game:ore-barite-chalk): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-chalk
+  Barite Ore (game:ore-barite-chert): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-chert
+  Barite Ore (game:ore-barite-conglomerate): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-conglomerate
+  Barite Ore (game:ore-barite-limestone): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-limestone
+  Barite Ore (game:ore-barite-claystone): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-claystone
+  Spodumene Ore (game:ore-spodumene-granite): none → 32
+    block drops: 1 boricalchemy:spodumene -> 1 game:ore-spodumene-granite
+  Barite Ore (game:ore-barite-shale): none → 32
+    block drops: 1 boricalchemy:barite -> 1 game:ore-barite-shale
+  Spodumene Ore (game:ore-spodumene-phyllite): none → 32
+    block drops: 1 boricalchemy:spodumene -> 1 game:ore-spodumene-phyllite
+  Spodumene Ore (game:ore-spodumene-slate): none → 32
+    block drops: 1 boricalchemy:spodumene -> 1 game:ore-spodumene-slate
+  Arsenopyrite Ore (game:ore-arsenopyrite-andesite): none → 24
+    block drops: 1 boricalchemy:arsenopyrite -> 1 game:ore-arsenopyrite-andesite
+  Arsenopyrite Ore (game:ore-arsenopyrite-chert): none → 24
+    block drops: 1 boricalchemy:arsenopyrite -> 1 game:ore-arsenopyrite-chert
+  Arsenopyrite Ore (game:ore-arsenopyrite-conglomerate): none → 24
+    block drops: 1 boricalchemy:arsenopyrite -> 1 game:ore-arsenopyrite-conglomerate
+  ... and 3454 more
+
+== Through no single mod (1116 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Reinforced Edhelthim Block (game:metalblock-new-riveted-edhelthim): 512 → none
+  game:block-metalsheet-edhelthim-north (game:metalsheet-edhelthim-north): 256 → none
+  game:block-metalsheet-edhelthim-east (game:metalsheet-edhelthim-east): 256 → none
+  game:block-metalsheet-edhelthim-south (game:metalsheet-edhelthim-south): 256 → none
+  game:block-metalsheet-edhelthim-west (game:metalsheet-edhelthim-west): 256 → none
+  game:block-metalsheet-edhelthim-up (game:metalsheet-edhelthim-up): 256 → none
+  Wire Relay (HV) (game:wirerelay-hvpower-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (EV) (game:wirerelay-evpower-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (All Power) (game:wirerelay-allpower-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Communication) (game:wirerelay-communication-up): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (HV) (game:wirerelay-hvpower-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (EV) (game:wirerelay-evpower-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (All Power) (game:wirerelay-allpower-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Communication) (game:wirerelay-communication-down): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (HV) (game:wirerelay-hvpower-north): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (EV) (game:wirerelay-evpower-north): none → 5.84
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  ... and 1096 more
+
+== Through Expanded Matter (em): 517 values ==
+  Crushed peridotite (game:crushed-peridotite): none → 2
+    worked backwards from quern grinding: 1 game:crushed-peridotite -> 2 em:powdered-stone-peridotite
+  Corundum (game:ore-corundum): 64 → 1
+    worked backwards from pulverizer crushing: 1 game:ore-corundum -> 1 em:crushed-ore-corundum
+  Corundum bits (game:looseores-corundum-peridotite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-peridotite-free
+  Corundum bits (game:looseores-corundum-phyllite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-phyllite-free
+  Corundum bits (game:looseores-corundum-slate-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-slate-free
+  Corundum bits (game:looseores-corundum-whitemarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-whitemarble-free
+  Corundum bits (game:looseores-corundum-redmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-redmarble-free
+  Corundum bits (game:looseores-corundum-greenmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-greenmarble-free
+  Corundum (game:ore-corundum-peridotite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-peridotite
+  Corundum (game:ore-corundum-phyllite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-phyllite
+  Corundum (game:ore-corundum-slate): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-slate
+  Corundum in white marble (game:ore-corundum-whitemarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-whitemarble
+  Corundum in pink marble (game:ore-corundum-redmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-redmarble
+  Corundum in green marble (game:ore-corundum-greenmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-greenmarble
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-andesite): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-andesite -> 1 em:crushed-metal-gold
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-chalk): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-chalk -> 1 em:crushed-metal-gold
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-chert): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-chert -> 1 em:crushed-metal-gold
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-conglomerate): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-conglomerate -> 1 em:crushed-metal-gold
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-limestone): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-limestone -> 1 em:crushed-metal-gold
+  Poor chunk of Native gold in quartz (game:ore-poor-quartz_nativegold-claystone): 102.4 → 9.45
+    worked backwards from pulverizer crushing: 1 game:ore-poor-quartz_nativegold-claystone -> 1 em:crushed-metal-gold
+  ... and 497 more
+
+== Through Grassroots (grassroots): 463 values ==
+  Flax twine (game:flaxtwine): 0.044 → 0.666
+    grid: 1 game:clothes-lowerbody-farmhand (or 67 more) -> 6 game:flaxtwine
+  Linen (Diamond stitches) (game:linen-diamond-north): 0.177 → 2.66
+    placement state: 1 game:linen-diamond-down -> 1 game:linen-diamond-north
+  Linen (Normal stitches) (game:linen-normal-north): 0.177 → 2.66
+    placement state: 1 game:linen-normal-down -> 1 game:linen-normal-north
+  Linen (Offset stitches) (game:linen-offset-north): 0.177 → 2.66
+    placement state: 1 game:linen-offset-down -> 1 game:linen-offset-north
+  Linen (Square stitches) (game:linen-square-north): 0.177 → 2.66
+    placement state: 1 game:linen-square-down -> 1 game:linen-square-north
+  Linen (Diamond stitches) (game:linen-diamond-east): 0.177 → 2.66
+    placement state: 1 game:linen-diamond-down -> 1 game:linen-diamond-east
+  Linen (Normal stitches) (game:linen-normal-east): 0.177 → 2.66
+    placement state: 1 game:linen-normal-down -> 1 game:linen-normal-east
+  Linen (Offset stitches) (game:linen-offset-east): 0.177 → 2.66
+    placement state: 1 game:linen-offset-down -> 1 game:linen-offset-east
+  Linen (Square stitches) (game:linen-square-east): 0.177 → 2.66
+    placement state: 1 game:linen-square-down -> 1 game:linen-square-east
+  Linen (Diamond stitches) (game:linen-diamond-south): 0.177 → 2.66
+    placement state: 1 game:linen-diamond-down -> 1 game:linen-diamond-south
+  Linen (Normal stitches) (game:linen-normal-south): 0.177 → 2.66
+    placement state: 1 game:linen-normal-down -> 1 game:linen-normal-south
+  Linen (Offset stitches) (game:linen-offset-south): 0.177 → 2.66
+    placement state: 1 game:linen-offset-down -> 1 game:linen-offset-south
+  Linen (Square stitches) (game:linen-square-south): 0.177 → 2.66
+    placement state: 1 game:linen-square-down -> 1 game:linen-square-south
+  Linen (Diamond stitches) (game:linen-diamond-west): 0.177 → 2.66
+    placement state: 1 game:linen-diamond-down -> 1 game:linen-diamond-west
+  Linen (Normal stitches) (game:linen-normal-west): 0.177 → 2.66
+    placement state: 1 game:linen-normal-down -> 1 game:linen-normal-west
+  Linen (Offset stitches) (game:linen-offset-west): 0.177 → 2.66
+    placement state: 1 game:linen-offset-down -> 1 game:linen-offset-west
+  Linen (Square stitches) (game:linen-square-west): 0.177 → 2.66
+    placement state: 1 game:linen-square-down -> 1 game:linen-square-west
+  Linen (Diamond stitches) (game:linen-diamond-up): 0.177 → 2.66
+    placement state: 1 game:linen-diamond-down -> 1 game:linen-diamond-up
+  Linen (Normal stitches) (game:linen-normal-up): 0.177 → 2.66
+    placement state: 1 game:linen-normal-down -> 1 game:linen-normal-up
+  Linen (Offset stitches) (game:linen-offset-up): 0.177 → 2.66
+    placement state: 1 game:linen-offset-down -> 1 game:linen-offset-up
+  ... and 443 more
+
+== Through UraniumExpanded (uraniumexpanded): 122 values ==
+  game:block-metalsheet-uraniumsteel-north (game:metalsheet-uraniumsteel-north): 0.343 → 792
+    placement state: 1 game:metalsheet-uraniumsteel-down -> 1 game:metalsheet-uraniumsteel-north
+  game:block-metalsheet-uraniumsteel-east (game:metalsheet-uraniumsteel-east): 0.343 → 792
+    placement state: 1 game:metalsheet-uraniumsteel-down -> 1 game:metalsheet-uraniumsteel-east
+  game:block-metalsheet-uraniumsteel-south (game:metalsheet-uraniumsteel-south): 0.343 → 792
+    placement state: 1 game:metalsheet-uraniumsteel-down -> 1 game:metalsheet-uraniumsteel-south
+  game:block-metalsheet-uraniumsteel-west (game:metalsheet-uraniumsteel-west): 0.343 → 792
+    placement state: 1 game:metalsheet-uraniumsteel-down -> 1 game:metalsheet-uraniumsteel-west
+  game:block-metalsheet-uraniumsteel-up (game:metalsheet-uraniumsteel-up): 0.343 → 792
+    placement state: 1 game:metalsheet-uraniumsteel-down -> 1 game:metalsheet-uraniumsteel-up
+  Uranium steel sheet (game:metalsheet-uraniumsteel-down): 0.343 → 792
+    grid: 1 game:metalplate-uraniumsteel + 2 game:metalnailsandstrips-uraniumsteel -> 1 game:metalsheet-uraniumsteel-down
+  Uranium steel ingot (game:ingot-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-blisteruraniumsteel -> 1 game:ingot-uraniumsteel
+  Uranium steel metalplate (game:metalplate-uraniumsteel): 0.275 → 633.6
+    RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-uraniumsteel -> 1 game:metalplate-uraniumsteel
+  Uranium steel spear head (game:spearhead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:spearhead-uraniumsteel
+  Uranium steel knife blade (game:knifeblade-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:knifeblade-uraniumsteel
+  Uranium steel axe head (game:axehead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:axehead-uraniumsteel
+  Uranium steel saw blade (game:sawblade-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:sawblade-uraniumsteel
+  Uranium steel pickaxe head (game:pickaxehead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:pickaxehead-uraniumsteel
+  Uranium steel falx blade (game:bladehead-falx-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:bladehead-falx-uraniumsteel
+  Uranium steel cleaver head (game:cleaverhead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:cleaverhead-uraniumsteel
+  Uranium steel scythe head (game:scythehead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:scythehead-uraniumsteel
+  Uranium steel hammer head (game:hammerhead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:hammerhead-uraniumsteel
+  Uranium steel shovel head (game:shovelhead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:shovelhead-uraniumsteel
+  Uranium steel hoe head (game:hoehead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:hoehead-uraniumsteel
+  Uranium steel prospecting pick head (game:prospectingpickhead-uraniumsteel): 0.137 → 316.8
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-uraniumsteel -> 1 game:prospectingpickhead-uraniumsteel
+  ... and 102 more
+
+== Through vinteng: 52 values ==
+  Wire Relay (MV) (game:wirerelay-mvpower-up): none → 11.69
+    grid: 1 game:glassslab-plain-north-free (or 252 more) + 1 vinteng:lvrelaybase-burned + 1 game:glassslab-plain-north-free (or 252 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-mvpower-up
+  Wire Relay (MV) (game:wirerelay-mvpower-down): none → 11.69
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-down
+  Wire Relay (MV) (game:wirerelay-mvpower-north): none → 11.69
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-north
+  Wire Relay (MV) (game:wirerelay-mvpower-east): none → 11.69
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-east
+  Wire Relay (MV) (game:wirerelay-mvpower-south): none → 11.69
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-south
+  Wire Relay (MV) (game:wirerelay-mvpower-west): none → 11.69
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-west
+  Wire Relay (LV) (game:wirerelay-lvpower-up): none → 5.84
+    grid: 1 game:glassslab-plain-north-free (or 252 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-lvpower-up
+  Wire Relay (LV) (game:wirerelay-lvpower-down): none → 5.84
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-down
+  Wire Relay (LV) (game:wirerelay-lvpower-north): none → 5.84
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-north
+  Wire Relay (LV) (game:wirerelay-lvpower-east): none → 5.84
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-east
+  Wire Relay (LV) (game:wirerelay-lvpower-south): none → 5.84
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-south
+  Wire Relay (LV) (game:wirerelay-lvpower-west): none → 5.84
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-west
+  game:block-ironfence-base-empty (game:ironfence-base-empty): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-empty
+  game:block-ironfence-base-n (game:ironfence-base-n): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-n
+  game:block-ironfence-base-e (game:ironfence-base-e): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-e
+  game:block-ironfence-base-s (game:ironfence-base-s): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-s
+  game:block-ironfence-base-w (game:ironfence-base-w): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-w
+  game:block-ironfence-base-ne (game:ironfence-base-ne): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-ne
+  game:block-ironfence-base-ns (game:ironfence-base-ns): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-ns
+  game:block-ironfence-base-nw (game:ironfence-base-nw): 35.45 → 64
+    placement state: 1 game:ironfence-base-ew -> 1 game:ironfence-base-nw
+  ... and 32 more
+
+== Through ImmersiveWoodworking (immersivewoodworking): 24 values ==
+  Bark decoction poultice (from bast) (game:poultice-bast-bark-medicinal): none → 0.562
+    grid: 25 immersivewoodworking:barkbrew + 2 immersivewoodworking:bark-bast -> 4 game:poultice-bast-bark-medicinal
+  Bark decoction poultice (from linen) (game:poultice-linen-bark-medicinal): 16.04 → 0.841
+    grid: 25 immersivewoodworking:barkbrew + 1 grassroots:gr-hemp-linen-diamond-north (or 23 more) -> 4 game:poultice-linen-bark-medicinal
+  Bark decoction poultice (from reeds) (game:poultice-reed-bark-medicinal): 9.21 → 2.43
+    grid: 25 immersivewoodworking:barkbrew + 2 game:cattailtops -> 4 game:poultice-reed-bark-medicinal
+  Strong tannin (game:strongtanninportion): 0.074 → 0.042
+    RecipeRegistrySystem.BarrelRecipes: 1 immersivewoodworking:barkcrushed + 200 game:weaktanninportion -> 200 game:strongtanninportion
+  Weak tannin (game:weaktanninportion): 0.042 → 0.026
+    RecipeRegistrySystem.BarrelRecipes: 1 immersivewoodworking:barkcrushed + 200 game:waterportion -> 200 game:weaktanninportion
+  Head lamellar (Wood) (game:armor-head-lamellar-wood): 45.34 → 65.58
+    grid: 1 game:firewood + 1 game:firewood + 1 game:firewood + 1 game:firewood + 1 game:hide-pelt-bear-black-complete (or 12 more) + 1 game:firewood + 1 game:resin (or 1 more) -> 1 game:armor-head-lamellar-wood
+  Large wooden gear (game:largegear3): 945.79 → 669.2
+    grid: 1 game:largegearsection-wood + 6 game:plank-veryaged + 1 game:largegearsection-wood + 6 game:plank-veryaged + 1 game:woodenaxle-ud + 6 game:plank-veryaged + 1 game:largegearsection-wood + 6 game:plank-veryaged + 1 game:largegearsection-wood -> 1 game:largegear3
+  Brake (game:brake-north): 62.44 → 87.6
+    grid: 1 game:log-placed-aged-ud (or 12 more) + 1 game:woodenaxle-ud + 2 game:resin (or 1 more) -> 1 game:brake-north
+  game:block-brake-east (game:brake-east): 62.44 → 87.6
+    placement state: 1 game:brake-north -> 1 game:brake-east
+  game:block-brake-south (game:brake-south): 62.44 → 87.6
+    placement state: 1 game:brake-north -> 1 game:brake-south
+  game:block-brake-west (game:brake-west): 62.44 → 87.6
+    placement state: 1 game:brake-north -> 1 game:brake-west
+  Helve hammer base (game:helvehammerbase-north): 51.22 → 38.2
+    grid: 1 game:plank-veryaged + 1 game:plank-veryaged + 1 game:plank-veryaged + 1 game:resin (or 1 more) -> 1 game:helvehammerbase-north
+  game:block-helvehammerbase-east (game:helvehammerbase-east): 51.22 → 38.2
+    placement state: 1 game:helvehammerbase-north -> 1 game:helvehammerbase-east
+  game:block-helvehammerbase-south (game:helvehammerbase-south): 51.22 → 38.2
+    placement state: 1 game:helvehammerbase-north -> 1 game:helvehammerbase-south
+  game:block-helvehammerbase-west (game:helvehammerbase-west): 51.22 → 38.2
+    placement state: 1 game:helvehammerbase-north -> 1 game:helvehammerbase-west
+  Leg Lamellar (Wood) (game:armor-legs-lamellar-wood): 87.46 → 115.17
+    grid: 1 game:hide-pelt-bear-black-complete (or 12 more) + 1 game:resin (or 1 more) + 1 game:hide-pelt-bear-black-complete (or 12 more) + 2 game:firewood + 2 game:firewood + 2 game:firewood + 2 game:firewood + 2 game:firewood -> 1 game:armor-legs-lamellar-wood
+  Honey-sulfur poultice (from bast) (game:poultice-bast-honey-sulfur): 9.21 → 7
+    grid: 1 game:powder-sulfur + 25 game:honeyportion + 1 game:powder-sulfur + 2 immersivewoodworking:bark-bast -> 4 game:poultice-bast-honey-sulfur
+  Body lamellar (Wood) (game:armor-body-lamellar-wood): 117.34 → 137.58
+    grid: 2 game:firewood + 1 game:hide-pelt-bear-black-complete (or 9 more) + 2 game:firewood + 2 game:firewood + 1 game:resin (or 1 more) + 2 game:firewood + 2 game:firewood + 2 game:firewood + 2 game:firewood -> 1 game:armor-body-lamellar-wood
+  Large gear section (game:largegearsection-wood): 134.44 → 117
+    grid: 2 game:plank-veryaged + 2 game:resin (or 1 more) + 12 game:stick + 1 game:plank-veryaged + 1 game:plank-veryaged + 1 game:plank-veryaged -> 1 game:largegearsection-wood
+  Prepared hide (Large) (game:hide-prepared-large): 85.2 → 75.6
+    RecipeRegistrySystem.BarrelRecipes: 600 game:weaktanninportion + 1 game:hide-scraped-large -> 1 game:hide-prepared-large
+  ... and 4 more
+
+== Through improved_metallurgy: 23 values ==
+  Inconel plate (game:metalplate-inconel): none → 592.56
+    RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-inconel -> 1 game:metalplate-inconel
+  Inconel ingot (game:ingot-inconel): none → 296.28
+    RecipeRegistrySystem.MetalAlloys: 0.082 game:ingot-pigiron + 0.628 game:ingot-nickel + 0.219 game:ingot-chromium + 0.036 improved_metallurgy:nugget-cobalt + 0.036 game:nugget-rhodochrosite -> 1 game:ingot-inconel
+  Duralumin plate (game:metalplate-duralumin): none → 151.27
+    casting (tool molds): 2 game:ingot-duralumin -> 1 game:metalplate-duralumin
+  Aluminum plate (game:metalplate-aluminum): none → 145.76
+    casting (tool molds): 2 game:ingot-aluminum -> 1 game:metalplate-aluminum
+  Duralumin ingot (game:ingot-duralumin): none → 75.63
+    RecipeRegistrySystem.MetalAlloys: 0.95 game:ingot-aluminum + 0.05 game:ingot-copper -> 1 game:ingot-duralumin
+  Nails and strips (Inconel) (game:metalnailsandstrips-inconel): none → 74.07
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-inconel -> 4 game:metalnailsandstrips-inconel
+  Aluminum ingot (game:ingot-aluminum): none → 72.88
+    RecipeRegistrySystem.MetalAlloys: 0.6 improved_metallurgy:alumina + 0.3 improved_metallurgy:potassium + 0.1 improved_metallurgy:cryolite -> 1 game:ingot-aluminum
+  Inconel bits (game:metalbit-inconel): none → 14.81
+    grid: 1 game:ingot-inconel -> 20 game:metalbit-inconel
+  Duralumin bits (game:metalbit-duralumin): none → 3.78
+    grid: 1 game:ingot-duralumin -> 20 game:metalbit-duralumin
+  Aluminum bits (game:metalbit-aluminum): none → 3.64
+    grid: 1 game:ingot-aluminum -> 20 game:metalbit-aluminum
+  Uranium steel plaque (game:plaque-fancy-uraniumsteel-wall-north): 0.275 → 633.6
+    grid: 1 game:metalplate-uraniumsteel + 1 game:metalnailsandstrips-bismuth (or 33 more) -> 1 game:plaque-fancy-uraniumsteel-wall-north
+  Plaque (game:plaque-fancy-uraniumsteel-wall-east): 0.275 → 633.6
+    placement state: 1 game:plaque-fancy-uraniumsteel-wall-north -> 1 game:plaque-fancy-uraniumsteel-wall-east
+  Plaque (game:plaque-fancy-uraniumsteel-wall-south): 0.275 → 633.6
+    placement state: 1 game:plaque-fancy-uraniumsteel-wall-north -> 1 game:plaque-fancy-uraniumsteel-wall-south
+  Plaque (game:plaque-fancy-uraniumsteel-wall-west): 0.275 → 633.6
+    placement state: 1 game:plaque-fancy-uraniumsteel-wall-north -> 1 game:plaque-fancy-uraniumsteel-wall-west
+  Riveted aluminum block (game:metalblock-new-riveted-aluminum): 512 → 145.76
+    grid: 1 game:metalplate-aluminum + 1 game:metalplate-aluminum + 1 game:metalplate-aluminum + 1 game:metalplate-aluminum + 1 game:metalplate-aluminum + 1 game:metalplate-aluminum -> 6 game:metalblock-new-riveted-aluminum
+  Riveted duralumin block (game:metalblock-new-riveted-duralumin): 512 → 151.27
+    grid: 1 game:metalplate-duralumin + 1 game:metalplate-duralumin + 1 game:metalplate-duralumin + 1 game:metalplate-duralumin + 1 game:metalplate-duralumin + 1 game:metalplate-duralumin -> 6 game:metalblock-new-riveted-duralumin
+  Inconel sheet (game:metalsheet-inconel-north): 256 → 740.7
+    placement state: 1 game:metalsheet-inconel-down -> 1 game:metalsheet-inconel-north
+  Inconel sheet (game:metalsheet-inconel-east): 256 → 740.7
+    placement state: 1 game:metalsheet-inconel-down -> 1 game:metalsheet-inconel-east
+  Inconel sheet (game:metalsheet-inconel-south): 256 → 740.7
+    placement state: 1 game:metalsheet-inconel-down -> 1 game:metalsheet-inconel-south
+  Inconel sheet (game:metalsheet-inconel-west): 256 → 740.7
+    placement state: 1 game:metalsheet-inconel-down -> 1 game:metalsheet-inconel-west
+  ... and 3 more
+
+== Through DairyPlus (dairyplus): 4 values ==
+  Raw cheese (salted) (game:rawcheese-salted): 161.27 → 212.2
+    grid: 6 dairyplus:curd-whole + 4 game:salt -> 1 game:rawcheese-salted
+  Cheddar cheese (4 slices) (game:cheese-cheddar-4slice): 161.27 → 212.2
+    transitions (ripen): 1 game:rawcheese-salted -> 1 game:cheese-cheddar-4slice
+  Raw cheese (waxed) (game:rawcheese-waxed): 177.27 → 228.2
+    grid: 1 game:rawcheese-salted + 1 game:beeswax -> 1 game:rawcheese-waxed
+  Waxed cheddar cheese (game:cheese-waxedcheddar-4slice): 177.27 → 228.2
+    transitions (ripen): 1 game:rawcheese-waxed -> 1 game:cheese-waxedcheddar-4slice
+
+== Through Craftable Companion (craftablecompanion): 3 values ==
+  Jonas sub-assembly (Finely balanced oscillator) (game:jonasframes-oscillator01): 2,048 → 81.92
+    worked backwards from grid: 1 game:jonasframes-oscillator01 + 2 game:metal-parts + 1 game:metalplate-copper + 1 game:rod-blackbronze + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) -> 1 craftablecompanion:companionmech-part-wheels
+  Jonas sub-assembly (Intricately wound spring) (game:jonasframes-spring01): 2,048 → 122.88
+    worked backwards from grid: 1 game:gear-temporal + 1 game:gear-temporal + 1 game:jonasframes-spring01 + 1 game:solderbar-tin (or 3 more) + 3 game:metal-parts + 1 game:metalplate-blackbronze + 2 game:metalnailsandstrips-blackbronze -> 1 craftablecompanion:companionmech-part-power-supply
+  Jonas sub-assembly (An exquisite planetary gear) (game:jonasframes-gears02): 2,048 → 163.84
+    worked backwards from grid: 1 game:metalplate-copper + 1 game:plank-aged (or 13 more) + 1 game:solderbar-tin (or 3 more) + 1 game:gear-temporal + 4 game:metal-parts + 1 game:jonasframes-gears02 -> 1 craftablecompanion:companionmech-part-cognizance-component
+
+== Through WOO Fantasy Additions (woofantasy): 1 values ==
+  Bony soil (game:bonysoil): 12 → 547.76
+    worked backwards from grid: 5 game:bonysoil + 1 woofantasy:reagent-pinchofmemory -> 5 woofantasy:fantasysoil-gravesoil-none
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)

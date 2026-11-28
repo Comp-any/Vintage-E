@@ -1,0 +1,154 @@
+== Bug report ==
+Everything a report needs in one short text: versions, the mod list, the check-up's results, other mods' patches, values out of line, the server log's Vintage-E lines and the settings you changed. Addresses, player ids and user folders are taken out.
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/bug-report.txt. Copy puts the same text on the clipboard.
+Post it as a comment on the Mod DB page (https://mods.vintagestory.at/show/mod/74355) or as a GitHub issue, with a line on what you expected to happen. Read it over first: your settings are in it.
+
+== The report ==
+Vintage-E 1.29.4 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-28 13:40
+
+
+== Mods (52) ==
+abyssaldepths 1.0.20, algernonsterrainsampler 1.3.0, attributerenderinglibrary 3.2.0, axleinblocks 1.22.7
+bookbinders 1.5.1, boricalchemy 3.3.4, chickenfeed 1.1.13, craftablecompanion 1.5.5, dairyplus 2.0.0
+decoclockrevival 1.22.5, dumbwaiter 0.3.7, easybuilding 1.2.5, electricalprogressivecore 3.4.0, em 3.8.3
+foragersgamble 1.3.2, genelib 3.2.1, grassroots 0.7.13, herbarium 1.4.4, immersivewoodworking 1.4.0
+improvedmetallurgy 1.3.1, itemrarity 1.2.3, jaunt 3.3.1, jsonpatcheslib 1.5.9, justthepepper 3.1.1
+leaflitter 2.0.0, ndlflowergrowth 2.6.2, ndltreegrowth 2.8.2, ndlwoodentorchholder 3.1.0, novelty 1.2.5
+obsidiancraft 2.0.1, overhaulliblegacycompat 1.2.17, panningmachine 1.2.7, petai 5.1.2, realisticwater 0.4.0
+repairablelocust 2.0.6, riftworks 1.1.21, rlldtco0001 2.3.2, rustyshellfork 0.3.0, scoopofjammod 1.2.0
+shadehouse 1.11.0, shearlib 1.3.0, steepandbrew 0.7.1, thievery 1.3.1, uraniumexpanded 2.1.2
+usefulstuff17 1.6.4, vanillamoremolds 2.2.0, vintagee 1.29.4, vintageengineering 0.6.2
+vsinstrumentsredux 2.3.0, woofantasy 0.5.29, wwaymarkers 1.0.6, xlibfork 1.0.44
+
+
+== Diagnosis ==
+⚠ EMC mapped: 32129 values, worked out in 11613 ms.
+  15884 of the 17894 blocks and items in the creative inventory have a value (88.8%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 2 loaded, giving 2117 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  1 recipes were skipped because the mapper couldn't read them (an ingredient or output it doesn't know). The server log lists them at Debug level.
+✓ Compatibility files: 1 active, valuing 23 items.
+  Expanded Matter 23
+  Files waiting for a mod that isn't loaded: Butchering, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+⚠ Mod coverage: 7 mods have values for less than three quarters of their items:
+    WOO Fantasy Additions (woofantasy): 1812 of 3161 valued (57.3%)
+    Deco clock revival (decoclockrevival): 236 of 376 valued (62.8%)
+    vinteng: 179 of 274 valued (65.3%)
+    NDL Wooden Torch Holders (ndlwoodentorchholder): 13 of 91 valued (14.3%)
+    VanillaMoreMolds (vanillamoremolds): 84 of 144 valued (58.3%)
+    xlib: 0 of 29 valued (0.0%)
+    Just The Pepper (justthepepper): 3 of 16 valued (18.8%)
+⚠ Value loops: 29, holding 94 items.
+    Combustion Engine Generator (Running) (boricalchemy:combustiongenerator) → Combustion Engine Generator (No Fuel) (boricalchemy:combustiongeneratordry)
+    Oily Limestone (boricalchemy:oilylimestone) → Oily Limestone Stone (boricalchemy:oilylimestone)
+    Oily Shale Stone (boricalchemy:oilyrocks) → Oily Shale (boricalchemy:oilyshale)
+⚠ Items without a value: 2010 (1586 that nothing makes, 334 waiting on an ingredient, 90 in loops).
+  woofantasy:knowledgescroll 105 e.g. woofantasy:knowledgescroll-dragonsteel-tools; woofantasy:spearhead 95 e.g. woofantasy:spearhead-generic-cobalt; woofantasy:swordblade 95 e.g. woofantasy:swordblade-gladius-cobalt; woofantasy:axeweaponhead 76 e.g. woofantasy:axeweaponhead-bearded-cobalt; woofantasy:clubhead 76 e.g. woofantasy:clubhead-flanged-cobalt; woofantasy:knifeweaponblade 76 e.g. woofantasy:knifeweaponblade-dagger-cobalt; woofantasy:sword 75 e.g. woofantasy:sword-gladius-cobalt; vinteng:concrete 61 e.g. vinteng:concrete-reinforced-uncolored; vanillamoremolds:vmmtoolmold 60 e.g. vanillamoremolds:vmmtoolmold-blue-raw-sawblade; woofantasy:axeweapon 60 e.g. woofantasy:axeweapon-bearded-cobalt; woofantasy:club 60 e.g. woofantasy:club-flanged-cobalt; woofantasy:knifeweapon 60 e.g. woofantasy:knifeweapon-dagger-cobalt; woofantasy:polearm 60 e.g. woofantasy:polearm-boar-cobalt; woofantasy:herbharvestable 44 e.g. woofantasy:herbharvestable-basil-wild; woofantasy:rune 40 e.g. woofantasy:rune-bismuthbronze
+• Mapping statistics: 57336 recipes and processes from 23 sources.
+  23740 values from recipes and processing, 1724 priced from a recipe that uses them, 233 from fixed ratios, 338 from trader prices, 2299 copied from a look-alike variant, 1589 fallback values, 89 estimated as fuel or food.
+  72 items sit in recipe loops that kept making each other cheaper; they keep their first value. 0 had to be dropped. /emc loop lists them under settled loops.
+⚠ Free EMC: 60 items can be made for less than they're worth (the worst gives 32,447 free per craft).
+⚠ Blacklist: 13 blacklisted items hold back 21 recipes.
+⚠ Metal tiers: 41 tool or armour families out of order.
+• Skipped recipes: 1 (unreadable, or naming an ingredient that doesn't exist).
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 470 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+• Value swings: no earlier mapping to compare with yet.
+⚠ Solver: 19 item(s) have a recipe whose ingredients all have values, yet got no value.
+  Jug of Phosphorus Trichloride (boricalchemy:glassflaskphosphorustrichloride) ← grid: 1x boricalchemy:glassflaskphospherus + 1x boricalchemy:gascontainer-chlorine + 1x boricalchemy:gascontainer-chlorine (came out below the floor, or the recipe was skipped)
+  Debarker disc (immersivewoodworking:debarkerdisc) ← grid: 1x [54 options] + 1x [34 options] + 1x [54 options] (came out below the floor, or the recipe was skipped)
+  Solid Edhelthim (woofantasy:edhelthim) ← BarrelRecipes: 1000x woofantasy:edhelthimportion + 1x woofantasy:reagent-fourthieves (came out below the floor, or the recipe was skipped)
+  Abyssalite Ingot (game:ingot-abyssalite) ← smelting/firing/cooking: 1x game:metalnailsandstrips-abyssalite (in a loop)
+  Petrified Darkness Ingot (game:ingot-petrifieddarkness) ← smelting/firing/cooking: 1x game:metalnailsandstrips-petrifieddarkness (in a loop)
+  Prime Materia Infused Metal Ingot (game:ingot-primemateriametal) ← smelting/firing/cooking: 1x game:metalnailsandstrips-primemateriametal (in a loop)
+  ... and 13 more
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 44 value(s) were copied from a look-alike variant in a family that doesn't agree (color (33), stage (8), wood (2), rock (1)).
+  color: 33 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 1,203.1 ← Calcium Fluoride Glass (game:glass-calfluoride); the family runs from Glass (game:glass-plain) 3.69 to Calcium Fluoride Glass (game:glass-calfluoride) 1,203.1
+    Orange-brown aged book (game:book-aged-orangebrown) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Orange aged book (game:book-aged-orange) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    ... and 30 more
+  stage: 8 copied value(s), e.g.
+    Hindu Kush (Indica) - Ready to Harvest (grassroots:crop-hindukush-8) 83.68 ← Hindu Kush (Indica) - Nearly Ready (grassroots:crop-hindukush-7); the family runs from Growing Hindu Kush (Indica) (grassroots:crop-hindukush-1) 30.43 to Hindu Kush (Indica) - Nearly Ready (grassroots:crop-hindukush-7) 83.68
+    Red Congo (Sativa) - Ready to Harvest (grassroots:crop-redcongo-8) 83.68 ← Red Congo (Sativa) - Nearly Ready (grassroots:crop-redcongo-7); the family runs from Growing Red Congo (Sativa) (grassroots:crop-redcongo-1) 30.43 to Red Congo (Sativa) - Nearly Ready (grassroots:crop-redcongo-7) 83.68
+    Mazar-i-Sharif (Indica) - Ready to Harvest (grassroots:crop-mazarisharif-8) 83.68 ← Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:crop-mazarisharif-7); the family runs from Growing Mazar-i-Sharif (Indica) (grassroots:crop-mazarisharif-1) 30.43 to Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:crop-mazarisharif-7) 83.68
+    ... and 5 more
+  wood: 2 copied value(s), e.g.
+    Support beam (Rotten wood) (game:supportbeam-rotten) 2.17 ← Support beam (Very aged wood) (game:supportbeam-veryaged); the family runs from Support beam (Aged) (game:supportbeam-aged) 0.175 to Support beam (Very aged wood) (game:supportbeam-veryaged) 2.17
+    Support beam (Very rotten wood) (game:supportbeam-veryrotten) 2.17 ← Support beam (Very aged wood) (game:supportbeam-veryaged); the family runs from Support beam (Aged) (game:supportbeam-aged) 0.175 to Support beam (Very aged wood) (game:supportbeam-veryaged) 2.17
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+• Other mods: 12 were skipped by the game because something they need isn't installed: aldiclassesadvancedfeatures (needs aldiclasses@*), autoconfiglib (needs configlib (Dependency 'configlib_1.13.2.zip' (configlib) has dependency errors itself)), bdcrop (needs biodiversity@1.1.4), configlib (needs vsimgui@1.2.0), electricalprogressiveindustry (needs electricalprogressivebasics@3.1.0), fluffydreg (needs playermodellib@1.18.3 (Dependency 'playermodellib_1.25.0.zip' (playermodellib) has dependency errors itself)), playermodellib (needs overhaullib@2.0.10), ppex (needs exlib@0.8.4), …
+• Other mods: 3 JSON patch(es) failed to apply (by mod: em (3)).
+• Other mods: 36 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: game (23), armory (9), decoclockrevival (4)).
+
+== Other mods' crafting methods ==
+✓ Crafting methods: 0 mod(s) send them (0 by file, 0 by code): 0 methods, 0 recipes
+  assets/vintagee/config/vintagee-methods/butchering.json waits for butchering, which isn't loaded
+• Recipes Vintage-E can't see: 5 mod(s) keep recipe data it doesn't read (dairyplus, immersivewoodworking, justthepepper, uraniumexpanded, vinteng)
+  DairyPlus (dairyplus): recipes/simmering (1)  Draft a method file for it
+  ImmersiveWoodworking (immersivewoodworking): recipes/simmering (1)  Draft a method file for it
+  Just The Pepper (justthepepper): recipes/plants_jsons (1)  Draft a method file for it
+  UraniumExpanded (uraniumexpanded): recipes/migration (1)  Draft a method file for it
+  vinteng: recipes/veblastfurnace (1), recipes/vechemplant (2), recipes/vecreosoteoven (2), recipes/vecrusher (1), recipes/vedistillation (3), recipes/veextruder (5), recipes/vekiln (3), recipes/velogsplitter (1), recipes/vemetalpress (4), recipes/vemixer (9), recipes/vesawmill (2), recipes/vetempforge (2)  Draft a method file for it
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== Other mods changing recipes and items ==
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Steep and Brew (steepandbrew): 240 recipe patches, 4 processing patches
+  DairyPlus (dairyplus): 239 recipe patches
+  UraniumExpanded (uraniumexpanded): 176 recipe patches, 26 processing patches
+  Boric Alchemy (boricalchemy): 119 recipe patches, 32 processing patches, 1 patches to Vintage-E's own files
+  VSInstrumentsRedux (vsinstrumentsredux): 95 recipe patches
+  Easy Building (easybuilding): 85 recipe patches
+  WOO Fantasy Additions (woofantasy): 74 recipe patches
+  improved_metallurgy: 16 recipe patches, 43 processing patches
+  Overhaul lib legacy compat (overhaulliblegacycompat): 42 recipe patches
+  usefulstuff: 40 recipe patches
+  rustyshell: 37 recipe patches
+  ImmersiveWoodworking (immersivewoodworking): 29 recipe patches
+  Expanded Matter (em): 16 recipe patches, 8 processing patches
+  Bookbinders (bookbinders): 21 recipe patches, 2 processing patches
+  Thievery (thievery): 12 recipe patches
+  Just The Pepper (justthepepper): 11 recipe patches
+  CompostTweak (rlldtco0001): 5 recipe patches
+  Craftable Companion (craftablecompanion): 4 recipe patches
+  Panning Machine (panningmachine): 4 recipe patches
+  Grassroots (grassroots): 3 recipe patches
+  Chicken Feed (chickenfeed): 1 recipe patches
+  vinteng: 1 processing patches
+
+== Values out of line with their family ==
+⚠ Values out of line: 13 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  game:metalbit-ferrocerium 0.016 (family 9.28) ← grid: 1 game:bowl-blue-fired (or 21 more) + 2 game:blastingpowder + 1 game:flint + 1 game:metalbit-ferrocerium → 1 boricalchemy:mine
+  game:ore-graphite 8,164.5 (family 40.08) ← grid: 1 game:ore-graphite + 1 boricalchemy:gascontainer-methane + 1 boricalchemy:gascontainer-hydrogen + 1 boricalchemy:gascontainer-empty → 1 game:gem-diamond-rough (returns boricalchemy:gascontainer-air)
+  boricalchemy:soliddye-red 0.225 (family 30.24) ← BarrelRecipes: 1500 game:waterportion + 1 boricalchemy:soliddye-red → 1500 game:dye-red
+  woofantasy:mummifieddragon-flesh 2,682.5 (family 91.29) ← fruit press: 1 woofantasy:mummifieddragon-flesh → 1000 woofantasy:bloodportion-ancientdragon + 1 woofantasy:pressedmash-dragon
+  grassroots:gr-hemp-oilportion 0.304 (family 8) ← fruit press: 1 grassroots:seeds-hindukush → 50 grassroots:gr-hemp-oilportion + 1 grassroots:gr-hemp-mash
+  game:jonasframes-oscillator01 81.92 (family 2,048) ← grid: 1 game:jonasframes-oscillator01 + 2 game:metal-parts + 1 game:metalplate-copper + 1 game:rod-blackbronze + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) → 1 craftablecompanion:companionmech-part-wheels
+  grassroots:gr-hemp-twine 0.404 (family 8) ← grid: 1 game:jug-blue-fired (or 21 more) + 1 grassroots:gr-hemp-twine + 100 game:alcoholportion + 1 game:rope → 1 boricalchemy:molotov
+  game:jonasframes-spring01 122.88 (family 2,048) ← grid: 1 game:gear-temporal + 1 game:gear-temporal + 1 game:jonasframes-spring01 + 1 game:solderbar-tin (or 3 more) + 3 game:metal-parts + 1 game:metalplate-blackbronze + 2 game:metalnailsandstrips-blackbronze → 1 craftablecompanion:companionmech-part-power-supply
+  game:ore-fluorite 548.51 (family 40.08) ← CookingRecipes: 200 game:acid-full-sulfuric + 2 game:ore-fluorite → 200 boricalchemy:hydrofluoricacid
+  immersivewoodworking:bark-tan-green 3.2 (family 0.25) ← BarrelRecipes: 1 immersivewoodworking:bark-tan-green + 100 game:waterportion → 100 game:weaktanninportion
+  immersivewoodworking:bark-tan-dry 3.2 (family 0.25) ← BarrelRecipes: 1 immersivewoodworking:bark-tan-dry + 100 game:waterportion → 100 game:weaktanninportion
+  game:jonasframes-gears02 163.84 (family 2,048) ← grid: 1 game:metalplate-copper + 1 game:plank-aged (or 13 more) + 1 game:solderbar-tin (or 3 more) + 1 game:gear-temporal + 4 game:metal-parts + 1 game:jonasframes-gears02 → 1 craftablecompanion:companionmech-part-cognizance-component
+  game:treeseed-redwood 460 (family 46) ← block drops: 0.002 game:treeseed-redwood + 0.02 game:stick → 1 game:leaves-grown-redwood
+
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, CollectorFuelsVersion=1, SelfTestOnStart=true, ProjectESounds=true
+
+
+== Next ==
+Back to the check-up (/emc diagnose)

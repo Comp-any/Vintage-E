@@ -1,0 +1,10 @@
+== Skipped recipes ==
+Skipped recipes: 1 the mapper couldn't read:
+  Items made only by a skipped recipe stay without a value. An ingredient code that matches nothing is almost always the other mod's recipe naming an item that was renamed or removed.
+  the ingredient ... matches no block or item (1)
+    grid: rustyshell:recipes/grid/shot.json -> rustyshell:shot-12pdr-round-common-stone (the ingredient 'game:rock-*' matches no block or item)
+  → A missing ingredient is the other mod's to fix (tell its author the recipe name). Items that lost their only recipe this way can be pinned meanwhile.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

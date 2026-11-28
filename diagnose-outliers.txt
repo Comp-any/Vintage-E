@@ -1,0 +1,35 @@
+== Values out of line with their family ==
+⚠ Values out of line: 13 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Ferrocerium Bits (game:metalbit-ferrocerium) 0.016 (its family's middle value is 9.28)
+    worked backwards from grid: 1 game:bowl-blue-fired (or 21 more) + 2 game:blastingpowder + 1 game:flint + 1 game:metalbit-ferrocerium -> 1 boricalchemy:mine
+  Graphite (game:ore-graphite) 8,164.5 (its family's middle value is 40.08)
+    worked backwards from grid: 1 game:ore-graphite + 1 boricalchemy:gascontainer-methane + 1 boricalchemy:gascontainer-hydrogen + 1 boricalchemy:gascontainer-empty -> 1 game:gem-diamond-rough (returns boricalchemy:gascontainer-air)
+  Solid Red Dye (boricalchemy:soliddye-red) 0.225 (its family's middle value is 30.24)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1500 game:waterportion + 1 boricalchemy:soliddye-red -> 1500 game:dye-red
+  Mummified Dragon Flesh (woofantasy:mummifieddragon-flesh) 2,682.5 (its family's middle value is 91.29)
+    worked backwards from fruit press: 1 woofantasy:mummifieddragon-flesh -> 1000 woofantasy:bloodportion-ancientdragon + 1 woofantasy:pressedmash-dragon
+  Hemp Oil (grassroots:gr-hemp-oilportion) 0.304 (its family's middle value is 8)
+    worked backwards from fruit press: 1 grassroots:seeds-hindukush -> 50 grassroots:gr-hemp-oilportion + 1 grassroots:gr-hemp-mash
+  Jonas sub-assembly (Finely balanced oscillator) (game:jonasframes-oscillator01) 81.92 (its family's middle value is 2,048)
+    worked backwards from grid: 1 game:jonasframes-oscillator01 + 2 game:metal-parts + 1 game:metalplate-copper + 1 game:rod-blackbronze + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) + 2 game:plank-aged (or 13 more) -> 1 craftablecompanion:companionmech-part-wheels
+  Hemp Twine (grassroots:gr-hemp-twine) 0.404 (its family's middle value is 8)
+    worked backwards from grid: 1 game:jug-blue-fired (or 21 more) + 1 grassroots:gr-hemp-twine + 100 game:alcoholportion + 1 game:rope -> 1 boricalchemy:molotov
+  Jonas sub-assembly (Intricately wound spring) (game:jonasframes-spring01) 122.88 (its family's middle value is 2,048)
+    worked backwards from grid: 1 game:gear-temporal + 1 game:gear-temporal + 1 game:jonasframes-spring01 + 1 game:solderbar-tin (or 3 more) + 3 game:metal-parts + 1 game:metalplate-blackbronze + 2 game:metalnailsandstrips-blackbronze -> 1 craftablecompanion:companionmech-part-power-supply
+  Fluorite (game:ore-fluorite) 548.51 (its family's middle value is 40.08)
+    worked backwards from RecipeRegistrySystem.CookingRecipes: 200 game:acid-full-sulfuric + 2 game:ore-fluorite -> 200 boricalchemy:hydrofluoricacid
+  Fresh tanning bark (immersivewoodworking:bark-tan-green) 3.2 (its family's middle value is 0.25)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1 immersivewoodworking:bark-tan-green + 100 game:waterportion -> 100 game:weaktanninportion
+  Dried tanning bark (immersivewoodworking:bark-tan-dry) 3.2 (its family's middle value is 0.25)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 1 immersivewoodworking:bark-tan-dry + 100 game:waterportion -> 100 game:weaktanninportion
+  Jonas sub-assembly (An exquisite planetary gear) (game:jonasframes-gears02) 163.84 (its family's middle value is 2,048)
+    worked backwards from grid: 1 game:metalplate-copper + 1 game:plank-aged (or 13 more) + 1 game:solderbar-tin (or 3 more) + 1 game:gear-temporal + 4 game:metal-parts + 1 game:jonasframes-gears02 -> 1 craftablecompanion:companionmech-part-cognizance-component
+  Redwood seed (game:treeseed-redwood) 460 (its family's middle value is 46)
+    worked backwards from block drops: 0.002 game:treeseed-redwood + 0.02 game:stick -> 1 game:leaves-grown-redwood
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
