@@ -1,0 +1,37 @@
+{
+  "//": "Fields of Salt's evaporation ponds (mod id fieldsofsalt, checked with its 1.3.0 release): recipes/evaporationpond says what a pond turns into what, a liquid in litres into an item, over evaporationTime hours. Sea water into salt is the one recipe. The game's salt has a base value (4), which a recipe never changes, so this lists the pond as a way to make salt (item reports' \"Made by\") without moving any value.",
+  "format": 1,
+  "requiresMod": "fieldsofsalt",
+  "methods": [
+    {
+      "code": "fieldsofsalt:evaporationpond",
+      "name": "Evaporation pond (Fields of Salt)",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/evaporationpond",
+          "domain": "fieldsofsalt",
+          "recipe": {
+            "inputs": [
+              {
+                "code": "$input.code",
+                "type": "$input.type",
+                "litres": "$input.litres",
+                "quantity": "$input.quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "code": "$output.code",
+                "type": "$output.type",
+                "quantity": "=default($output.quantity, 1)"
+              }
+            ],
+            "note": "Left in the sun for its evaporationTime (game hours); time isn't charged."
+          }
+        }
+      ]
+    }
+  ]
+}

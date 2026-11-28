@@ -488,14 +488,14 @@ namespace VintageE
             ReadCosts(doc, ro["costs"], path + ".costs", recipe.Costs, dom);
             ReadSteps(doc, ro["steps"], path + ".steps", recipe, dom);
 
-            // Named *s: each slot's names (an anyOf slot's alternatives may name theirs alike), at most 8 slots, no two alike.
+            // Named *s: each slot's names (an anyOf slot's alternatives may name theirs alike), at most 8 different names.
+            // Two slots with the same name are linked, as in the game's own recipes: both take the same variant (the sand
+            // and the gravel of one rock), so a copy is made only for the variants every one of them has.
             var slotNames = recipe.Inputs.Concat(recipe.Tools)
                 .Select(slot => slot.All().Where(st => st.Name != null).Select(st => st.Name).Distinct().ToList())
                 .Where(l => l.Count > 0).ToList();
-            if (slotNames.Count > MaxNames) doc.Problems.Add(new MethodProblem { Path = path + ".inputs", Message = "more than " + MaxNames + " named inputs; the recipe is left out", Error = true });
-            foreach (string dup in slotNames.SelectMany(l => l).GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key))
-                doc.Problems.Add(new MethodProblem { Path = path + ".inputs", Message = "two inputs are named \"" + dup + "\"; the recipe is left out", Error = true });
             var named = new HashSet<string>(slotNames.SelectMany(l => l), StringComparer.Ordinal);
+            if (named.Count > MaxNames) doc.Problems.Add(new MethodProblem { Path = path + ".inputs", Message = "more than " + MaxNames + " named inputs; the recipe is left out", Error = true });
 
             if (recipe.Outputs.Count == 0 && recipe.OneOf.Count == 0 && doc.Problems.Count(p => p.Error) == before)
                 doc.Problems.Add(new MethodProblem { Path = path, Message = "the recipe has no \"outputs\" (or \"oneOf\"); it is left out", Error = true });

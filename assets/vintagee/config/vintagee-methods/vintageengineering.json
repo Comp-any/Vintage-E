@@ -1,0 +1,571 @@
+{
+  "//": "Vintage Engineering's machines (mod id vinteng; checked against its 0.6.2 source, github.com/FlexibleGames/VintageEngineering). Each machine keeps its recipes in recipes/<machine> as plain JSON (ingredients, outputs, powerpercraft, attributes), which Vintage-E reads here so the mod's gears, concrete, wires, plastics, oil products and the rest get values. Vintage-E doesn't read these lists by itself, so nothing is superseded.",
+  "//power": "Power: each recipe's powerpercraft, in Vintage Engineering's own power. Its LV generator makes 100 a second while charcoal (32 EMC) burns for 40 s, about 0.008 EMC a unit, but its solar panels and kinetic converter make power for nothing, and its big machines draw up to 15,000 a second. Priced at 0.008, a chemical plant on free power would turn 120 EMC a second into its outputs, so power is priced at 0.00005 instead: no machine makes more than 0.75 EMC a second from power alone, and values come almost entirely from the ingredients. A server can set its own price with EnergyEmc in /emc configure.",
+  "//seconds": "A recipe takes powerpercraft / the machine's power a second (its block's maxpps): crusher, sawmill, press, extruder and mixer 100, log splitter 50, kiln 200 (and at least its requirestime), temporal forge 5000, distillation tower 2000, chemical plant 15000.",
+  "//outputs": "An output's \"variable\" adds or takes off up to that many at random, so it counts as its stacksize. Liquids are given in litres. Codes without a domain are Vintage Engineering's, as in the mod.",
+  "//tools": "The sawmill's blades, the press's molds and the extruder's dies are named by the recipe's \"requires\" and \"requiresvariants\" and lose 1 durability a craft, so a craft costs that share of the tool.",
+  "//names": "Some mixer recipes name two inputs alike (the sand and the gravel of one rock): since Vintage-E 1.29.5 these are linked to the same variant, as in the game.",
+  "format": 1,
+  "requiresMod": "vinteng",
+  "domain": "vinteng",
+  "energyUnits": {
+    "power": {
+      "name": "Vintage Engineering power",
+      "emcPerUnit": 5e-05
+    }
+  },
+  "methods": [
+    {
+      "code": "vinteng:crusher",
+      "name": "Crusher (Vintage Engineering)",
+      "machine": "block:vinteng:vecrusher-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vecrusher",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 100"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:logsplitter",
+      "name": "Log splitter (Vintage Engineering)",
+      "machine": "block:vinteng:velogsplitter-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/velogsplitter",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 50"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:sawmill",
+      "name": "Sawmill (Vintage Engineering)",
+      "machine": "block:vinteng:vesawmill-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vesawmill",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "tools": [
+              {
+                "code": "$attributes.requires",
+                "type": "item",
+                "allowedVariants": "$attributes.requiresvariants",
+                "wear": 1
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 100"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:metalpress",
+      "name": "Metal press (Vintage Engineering)",
+      "machine": "block:vinteng:vemetalpress-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vemetalpress",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "tools": [
+              {
+                "code": "$attributes.requires",
+                "type": "item",
+                "allowedVariants": "$attributes.requiresvariants",
+                "wear": 1
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 100"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:extruder",
+      "name": "Extruder (Vintage Engineering)",
+      "machine": "block:vinteng:veextruder-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/veextruder",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "tools": [
+              {
+                "code": "$attributes.requires",
+                "type": "item",
+                "allowedVariants": "$attributes.requiresvariants",
+                "wear": 1
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 100"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:mixer",
+      "name": "Mixer (Vintage Engineering)",
+      "machine": "block:vinteng:vemixer-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vemixer",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 100"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:kiln",
+      "name": "Electric kiln (Vintage Engineering)",
+      "machine": "block:vinteng:vekiln-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vekiln",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=max($powerpercraft / 200, default($attributes.requirestime, 0))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:temporalforge",
+      "name": "Temporal forge (Vintage Engineering)",
+      "machine": "block:vinteng:vembtemporalforge-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vetempforge",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 5000"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:distillation",
+      "name": "Distillation tower (Vintage Engineering)",
+      "machine": "block:vinteng:vembdistillationbase-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vedistillation",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 2000"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:chemicalplant",
+      "name": "Chemical plant (Vintage Engineering)",
+      "machine": "block:vinteng:vembchemicalplant-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vechemplant",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "costs": {
+              "energy": {
+                "unit": "vinteng:power",
+                "amount": "$powerpercraft"
+              },
+              "seconds": "=$powerpercraft / 15000"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:blastfurnace",
+      "name": "Blast furnace (Vintage Engineering)",
+      "machine": "block:vinteng:veblastfurnace-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/veblastfurnace",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "note": "Its coke is an ingredient; the blowers it needs are left out."
+          }
+        }
+      ]
+    },
+    {
+      "code": "vinteng:creosoteoven",
+      "name": "Creosote oven (Vintage Engineering)",
+      "machine": "block:vinteng:vembcreosoteoven-*",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vecreosoteoven",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "=default($stacksize, $quantity)",
+                "litres": "$litres"
+              }
+            ],
+            "note": "Heated by a fire under it, which isn't counted (as the game's own charcoal pit counts no fire)."
+          }
+        }
+      ]
+    }
+  ]
+}

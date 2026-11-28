@@ -189,22 +189,31 @@ namespace VintageE
         void CollectChoice(MethodRecipe recipe, List<MethodStack> ins, List<MethodStack> tools, MethodRecipeResult result)
         {
             MethodDef m = recipe.Method;
-            // 1. The named *s (of ingredients and tools): what each matches, grouped by what the * stood for.
+            // 1. The named *s (of ingredients and tools): what each matches, grouped by what the * stood for. Inputs that
+            // share a name are linked (as in the game's recipes): they take the same variant, so only the variants every one
+            // of them has are made.
             var named = ins.Concat(tools).Where(i => i.Name != null).ToList();
-            var groups = new List<(string name, MethodStack stack, List<(string value, CollectibleObject[] items)> values)>();
-            foreach (MethodStack st in named)
+            var groups = new List<(string name, List<(MethodStack stack, Dictionary<string, CollectibleObject[]> byValue)> stacks, List<string> values)>();
+            foreach (var sameName in named.GroupBy(i => i.Name, StringComparer.Ordinal))
             {
-                if (MethodParser.Placeholder.IsMatch(st.Code)) { result.Skipped = "the named input " + st.Code + " can't use another {name} in its own code"; return; }
-                var byValue = new Dictionary<string, List<CollectibleObject>>(StringComparer.Ordinal);
-                foreach (CollectibleObject c in Resolve(st.Code, st.Type))
+                var stacks = new List<(MethodStack stack, Dictionary<string, CollectibleObject[]> byValue)>();
+                foreach (MethodStack st in sameName)
                 {
-                    string captured = Capture(st.Code, c);
-                    if (captured == null || !VariantAllowed(st, captured)) continue;
-                    if (!byValue.TryGetValue(captured, out var list)) byValue[captured] = list = new List<CollectibleObject>();
-                    list.Add(c);
+                    if (MethodParser.Placeholder.IsMatch(st.Code)) { result.Skipped = "the named input " + st.Code + " can't use another {name} in its own code"; return; }
+                    var byValue = new Dictionary<string, List<CollectibleObject>>(StringComparer.Ordinal);
+                    foreach (CollectibleObject c in Resolve(st.Code, st.Type))
+                    {
+                        string captured = Capture(st.Code, c);
+                        if (captured == null || !VariantAllowed(st, captured)) continue;
+                        if (!byValue.TryGetValue(captured, out var list)) byValue[captured] = list = new List<CollectibleObject>();
+                        list.Add(c);
+                    }
+                    if (byValue.Count == 0) { result.Skipped = "the input " + st.Code + " matches nothing"; result.BadCode = st.Code; return; }
+                    stacks.Add((st, byValue.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray(), StringComparer.Ordinal)));
                 }
-                if (byValue.Count == 0) { result.Skipped = "the input " + st.Code + " matches nothing"; result.BadCode = st.Code; return; }
-                groups.Add((st.Name, st, byValue.OrderBy(kv => kv.Key, StringComparer.Ordinal).Select(kv => (kv.Key, kv.Value.ToArray())).ToList()));
+                var values = stacks[0].byValue.Keys.Where(v => stacks.All(x => x.byValue.ContainsKey(v))).OrderBy(v => v, StringComparer.Ordinal).ToList();
+                if (values.Count == 0) { result.Skipped = "the inputs named \"" + sameName.Key + "\" have no variant in common"; return; }
+                groups.Add((sameName.Key, stacks, values));
             }
             long combos = 1;
             foreach (var g in groups)
@@ -224,10 +233,10 @@ namespace VintageE
                     CollectVariant(recipe, ins, tools, result, captures, picked, m);
                     return;
                 }
-                foreach (var (value, items) in groups[depth].values)
+                foreach (string value in groups[depth].values)
                 {
                     captures[groups[depth].name] = value;
-                    picked[groups[depth].stack] = items;
+                    foreach (var (stack, byValue) in groups[depth].stacks) picked[stack] = byValue[value];
                     Expand(depth + 1);
                 }
             }

@@ -101,7 +101,7 @@ namespace VintageE
             Check(bad.Methods.Count == 1 && bad.Methods[0].Recipes.Count == 1 && bad.Methods[0].Recipes[0].Code == "ok" && bad.Problems.Any(p => p.Path.EndsWith("quantiy") && p.Message.Contains("\"quantity\"")),
                 "methods: only the good recipe is kept, a misspelt key is a warning with a suggestion (" + bad.Methods.FirstOrDefault()?.Recipes.Count + " kept)");
 
-            // Named inputs: a name on an exact code is ignored, two inputs with one name and more than 8 names are refused,
+            // Named inputs: a name on an exact code is ignored, two inputs with one name are linked, more than 8 names are refused,
             // "true" as a string, an empty input list with a worn tool, a typed machine code, the default code by position.
             MethodDoc rules = ParseTest(@"{ ""format"": 1, ""methods"": [ { ""code"": ""r"", ""machine"": ""block:mypress-*"", ""recipes"": [
                 { ""inputs"": [ { ""code"": ""game:stone-granite"", ""name"": ""rock"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"", ""main"": ""true"" } ] },
@@ -115,7 +115,8 @@ namespace VintageE
             Check(rm != null && rm.Machine == "block:vintagee:mypress-*", "methods: a typed machine code gets its domain after \"block:\" (" + rm?.Machine + ")");
             Check(rm != null && rm.Recipes.Any(rc => rc.Code == "#1" && rc.Inputs[0].Name == null && rc.Outputs[0].Main), "methods: a name on an exact code is ignored, and \"true\" as a string counts (" + string.Join("; ", rules.Problems) + ")");
             Check(rm != null && rm.SwitchedOffInDocument == 1 && !rm.Recipes.Any(rc => rc.Code == "off"), "methods: \"enabled\": \"false\" switches a recipe off, and is counted");
-            Check(rules.Problems.Any(p => p.Error && p.Message.Contains("two inputs are named")) && rules.Problems.Any(p => p.Error && p.Message.Contains("more than 8 named inputs")), "methods: two inputs with one name, and more than 8 names, are refused");
+            Check(!rules.Problems.Any(p => p.Message.Contains("two inputs are named")) && rm != null && rm.Recipes.Any(rc => rc.Code == "dup") && rules.Problems.Any(p => p.Error && p.Message.Contains("more than 8 named inputs")),
+                "methods: two inputs with one name are kept (they're linked to one variant), and more than 8 names are refused");
             Check(rm != null && rm.Recipes.Any(rc => rc.Code == "toolonly"), "methods: a recipe with only a worn tool is kept (its wear is the cost)");
 
             // Numbers by variant, formulas, alternatives, "like", "steps", names with capitals, either-mod requirements, a domain.
@@ -298,7 +299,9 @@ namespace VintageE
                         { ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""costs"": { ""seconds"": 2, ""emc"": 10000 }, ""repeat"": 3 }, { ""costs"": { ""emc"": 500 } } ] },
                     { ""code"": ""weighted"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""game:metalbit-copper"", ""share"": 3 }, { ""code"": ""game:nugget-nativecopper"" } ], ""costs"": { ""emc"": 50000 } },
                     { ""code"": ""nowait"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"", ""main"": true }, { ""code"": ""game:metalbit-copper"", ""waitForValue"": false } ], ""costs"": { ""emc"": 50000 } },
-                    { ""code"": ""fuelled"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ], ""costs"": { ""energy"": { ""unit"": ""testfuel"", ""amount"": 2000 }, ""seconds"": 1 } }
+                    { ""code"": ""fuelled"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ], ""costs"": { ""energy"": { ""unit"": ""testfuel"", ""amount"": 2000 }, ""seconds"": 1 } },
+                    { ""code"": ""linked"", ""inputs"": [ { ""code"": ""game:ingot-*"", ""name"": ""m"", ""allowedVariants"": [ ""copper"", ""tinbronze"" ] }, { ""code"": ""game:metalplate-*"", ""name"": ""m"", ""allowedVariants"": [ ""copper"", ""iron"" ] } ],
+                      ""outputs"": [ { ""code"": ""game:metalbit-{m}"" } ], ""costs"": { ""emc"": 1000000000 } }
                   ] },
                 { ""code"": ""selftest-off"", ""name"": ""Switched off"", ""recipes"": [ { ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ] } ] }
             ] }";
@@ -328,7 +331,7 @@ namespace VintageE
                 mod.Config.DisabledMethods.Add("vintagee:selftest-off");
                 mod.CollectMethods("self-test");
                 MethodDoc doc = mod.Methods.Docs.FirstOrDefault(dd => dd.Route == "code" && dd.ModId == "vintagee");
-                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 17, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
+                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 18, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
                 Check(mod.Methods.Fingerprint != fingerprintBefore, "methods: the cache's fingerprint changes with the methods");
                 EmcMappingReport report = mod.RecalculateEmc("self-test: crafting methods");
                 Check(report != null, "methods: mapped with the test methods");
@@ -358,6 +361,9 @@ namespace VintageE
                 Check(wear != null && dur > 0 && Math.Abs(wear.Quantity - 1.0 / dur) < 1e-9, "methods: a tool's wear costs 1 / its durability of the tool (" + wear?.Quantity + " of a hammer with " + dur + ")");
                 var results = report.MethodResults;
                 MethodRecipeResult typo = results.FirstOrDefault(rr => rr.Recipe.Code == "typo");
+                MethodRecipeResult linked = results.FirstOrDefault(rr => rr.Recipe.Code == "linked");
+                Check(linked != null && linked.Skipped == null && linked.Conversions == 1 && convs.Any(c => c.Method.Recipe.Code == "linked" && c.Output?.Code.ToString() == "game:metalbit-copper"),
+                    "methods: two inputs with one name take the same variant: copper ingots and plates, not tin bronze ingots with iron plates (" + (linked == null ? "no result" : linked.Conversions + " copies" + (linked.Skipped != null ? ", " + linked.Skipped : "")) + ")");
                 Check(typo != null && typo.Skipped != null && typo.BadCode == "game:ingot-coper", "methods: a code that matches nothing leaves the recipe out and names the code (" + typo?.Skipped + ")");
                 Check(results.Any(rr => rr.Recipe.Method.Code == "vintagee:selftest-off" && rr.Disabled) && !convs.Any(c => c.Method.Method.Code == "vintagee:selftest-off"), "methods: a switched-off method makes nothing");
                 Check(!report.SupersedeHits.Contains("NoSuchRecipeList"), "methods: a supersede entry that matches nothing is noted");

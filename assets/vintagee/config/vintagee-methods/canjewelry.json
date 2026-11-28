@@ -1,0 +1,39 @@
+{
+  "//": "C&N Jewelry's gem cutting (mod id canjewelry, checked with its 0.8.2 release): recipes/gemcutting holds one recipe per cut, a rough gem shaped by a voxel pattern into a cut gem of that gem type. Vintage-E reads them here, so cut gems are valued from the rough gem they're cut from instead of being guessed. The pattern only decides the cut's shape; no material is lost, so a recipe is one rough gem for one cut gem.",
+  "format": 1,
+  "requiresMod": "canjewelry",
+  "methods": [
+    {
+      "code": "canjewelry:gemcutting",
+      "name": "Gem cutting (C&N Jewelry)",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/gemcutting",
+          "domain": "canjewelry",
+          "recipe": {
+            "code": "$name",
+            "inputs": [
+              {
+                "code": "$ingredient.code",
+                "type": "$ingredient.type",
+                "quantity": "=default($ingredient.quantity, 1)",
+                "name": "$ingredient.name",
+                "allowedVariants": "$ingredient.allowedVariants",
+                "skipVariants": "$ingredient.skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "code": "$output.code",
+                "type": "$output.type",
+                "quantity": "=default($output.quantity, default($output.stacksize, 1))"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
