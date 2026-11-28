@@ -12,12 +12,15 @@ Values for other mods' own crafting methods.
   - The sawmill's blades, the press's molds and the extruder's dies wear by 1 a craft, and that share of the tool is counted.
   - Its power is priced very low (0.00005 EMC a unit): its solar panels and kinetic converter make power for free, so a priced power would let its big machines turn free power into EMC. A server can set its own price with `EnergyEmc`.
   - Crude oil, which is pumped from wells, gets 32 EMC a litre (like the game's tar), so the oil chain has something to start from.
-- **C&N Jewelry:** gem cutting is read, so cut gems are valued from the rough gem they're cut from instead of being guessed.
+  - A machine with several outputs shares its cost by amount (litres or count), with heavy oil and lubricant counting double, so the chemical plant's cracking (heavy oil and water into more litres of lighter oils) doesn't make EMC.
+  - With it, items reach 97% valued (from 65%). Its temporal forge makes temporal gears (worth 4,096) from a steel gear for about 625, and its creosote oven makes 2 charcoal from one log: the doctor's free-EMC check lists both.
+- **C&N Jewelry:** gem cutting is read, so cut gems are valued from the rough gem they're cut from. Its recipes for gems another mod adds (Geology, Salt and Sands) wait for that mod.
 - **Fields of Salt:** the evaporation pond is listed as a way to make salt. Salt keeps its base value.
 - The server test can pick mods by Mod DB tag, leave some out and skip a first batch, retries a failed mod download, and uses a mod's newest 1.22 release when it has none marked for the exact game version.
 
 ### Changed
 - **Crafting method files: two inputs with the same name are linked**, as in the game's own recipes. They take the same variant (the sand and the gravel of one rock), so a copy is made only for the variants both have. Before, such a recipe was left out.
+- **A recipe whose allowed variants nothing loaded has** (another mod's gems or metals) counts as a recipe for a mod that isn't loaded, as the game quietly skips it, instead of a warning in the check-up.
 
 ## 1.29.4 — 2026-11-28
 
