@@ -1,0 +1,6 @@
+== Other mods changing recipes and items ==
+✓ Other mods' patches: none of the 0 mods with patch files change recipes, processing or EMC values.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
