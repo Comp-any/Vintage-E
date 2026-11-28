@@ -1,0 +1,53 @@
+== A crafting method file for Fields of Salt (fieldsofsalt) ==
+Drafted 1 method(s); read back, they make 1 recipe(s) with 0 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-fieldsofsalt.json
+  • recipes/evaporationpond: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/evaporationpond: fields not used (a tool, a die, a heat level, a second ingredient?): outputTexture, evaporationTime
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-28 for Fields of Salt (fieldsofsalt) 1.3.0 with Vintage-E 1.29.4. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/fieldsofsalt/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "fieldsofsalt",
+  "methods": [
+    {
+      "//": "Drafted from the folder recipes/evaporationpond (1 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): outputTexture, evaporationTime.",
+      "code": "fieldsofsalt:evaporationpond",
+      "name": "evaporationpond",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/evaporationpond",
+          "domain": "fieldsofsalt",
+          "recipe": {
+            "inputs": [
+              {
+                "code": "$input.code",
+                "type": "$input.type",
+                "litres": "$input.litres"
+              }
+            ],
+            "outputs": [
+              {
+                "code": "$output.code",
+                "type": "$output.type",
+                "quantity": "$output.quantity"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+
+== What the guesses were made from (the first entry of each) ==
+recipes/evaporationpond: {"input":{"code":"game:saltwaterportion","type":"item","litres":2},"output":{"code":"game:salt","type":"item","quantity":1},"outputTexture":{"base":"game:block/stone/rock/halite1"},"evaporationTime":24}
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

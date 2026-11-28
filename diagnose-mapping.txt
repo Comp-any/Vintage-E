@@ -1,0 +1,278 @@
+== Is EMC mapped at all? ==
+✓ EMC mapped: 28057 values, worked out in 2657 ms.
+  14141 of the 14567 blocks and items in the creative inventory have a value (97.1%).
+
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 2 loaded, giving 2263 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+  4 recipes were skipped because the mapper couldn't read them (an ingredient or output it doesn't know). The server log lists them at Debug level.
+✓ Compatibility files: 1 active, valuing 3 items.
+  Expanded Matter: 3
+  Files waiting for a mod that isn't loaded: Butchering, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+⚠ Mod coverage: 6 mods have values for less than three quarters of their items:
+    vinteng (/emc diagnose mod vinteng): 177 of 274 valued (64.6%)
+    NDL MushroomGrowth (ndlmushroomgrowth) (/emc diagnose mod ndlmushroomgrowth): 1 of 91 valued (1.1%)
+    C&N Jewelry (canjewelry) (/emc diagnose mod canjewelry): 96 of 130 valued (73.8%)
+    xlib (/emc diagnose mod xlib): 0 of 29 valued (0.0%)
+    More Animals (moreanimals) (/emc diagnose mod moreanimals): 0 of 20 valued (0.0%)
+    Tabletop Games (tabletopgames) (/emc diagnose mod tabletopgames): 9 of 19 valued (47.4%)
+  → Click a mod to see why, and which raw materials would fix the most items at once.
+⚠ Value loops: 24, holding 84 items.
+  In a loop, each item is only made from the next one, so none of them can get a value first.
+    Growing Blue Agave (floralzonescaribbeanregion:crop-agavetequilana-1) → Blue Agave Seeds (floralzonescaribbeanregion:seeds-agavetequilana)
+    Growing Mexican Cotton (floralzonescaribbeanregion:crop-gossypiumhirsutum-1) → Mexican Cotton Seeds (floralzonescaribbeanregion:seeds-gossypiumhirsutum)
+    Growing Garlic (floralzonescosmopolitanregion:crop-alliumsativum-1) → Garlic seeds (floralzonescosmopolitanregion:seeds-alliumsativum)
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+• Items without a value: 426 (315 that nothing makes, 38 waiting on an ingredient, 73 in loops).
+  The biggest families:
+    vinteng:concrete (61): Reinforced Concrete (vinteng:concrete-reinforced-uncolored)
+    ndlmushroomgrowth:mushroomspores (45): Almond Mushroom Spores (Ground) (ndlmushroomgrowth:mushroomspores-almondmushroom)
+    canjewelry:gem (34): Great cut diamond (canjewelry:gem-cut-exquisite-diamond)
+    ndlmushroomgrowth:gtroughgrown (33): Ground Trough (Almond Mushroom) (ndlmushroomgrowth:gtroughgrown-almondmushroom)
+    xlib:skillbook (29): Brick red book (xlib:skillbook-normal-brickred)
+    moreanimals:egg (20): Raw pheasant egg (moreanimals:egg-pheasant-raw)
+    bovinae:cheese (12): Antelope cheddar (4 slices) (bovinae:cheese-antelope-cheddar-4slice)
+    ndlmushroomgrowth:wtroughgrown (12): Wall Trough (Bearded Tooth) (ndlmushroomgrowth:wtroughgrown-beardedtooth-north)
+    krpgenchantment:lore (11): Enchanter's Manual (Orange brown) (krpgenchantment:lore-book-normal-orangebrown)
+    feverstonewilds:egg (10): 1 Cockatrice egg (feverstonewilds:egg-cockatrice-1)
+    vinteng:metalgear (9): Copper Gear (vinteng:metalgear-copper)
+    bovinae:rawcheese (8): Raw antelope cheese (salted) (bovinae:rawcheese-antelope-salted)
+    floralzonesneozeylandicregion:beam (8): Norfolk Island Pine roofing beam (floralzonesneozeylandicregion:beam-plane-araucariaheterophylla-free)
+    floralzonescaperegion:beam (6): Common yellowwood roofing beam (floralzonescaperegion:beam-plane-afrocarpusfalcatus-free)
+    bovinae:cottagecheeseportion (4): Antelope cottage cheese (bovinae:cottagecheeseportion-antelope)
+  → Click a family's example to see why it has no value and what fixes it. /emc missing lists them all and can set values from its window.
+• Mapping statistics: 51708 recipes and processes from 24 sources.
+  18270 values from recipes and processing, 2529 priced from a recipe that uses them, 190 from fixed ratios, 348 from trader prices, 2596 copied from a look-alike variant, 1627 fallback values, 234 estimated as fuel or food.
+⚠ Free EMC: 18 items can be made for less than they're worth (the worst gives 768 free per craft).
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+⚠ Blacklist: 2 blacklisted items hold back 2 recipes.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+⚠ Metal tiers: 2 tool or armour families out of order.
+  Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+• Skipped recipes: 4 (unreadable, or naming an ingredient that doesn't exist).
+  Every skipped recipe and why (/emc diagnose skipped)
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 661 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: no earlier mapping to compare with yet.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 18 value(s) were copied from a look-alike variant in a family that doesn't agree (color (10), wood (6), rock (1), model (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  color: 10 copied value(s), e.g.
+    Blue Grape Clippings (floralzonesmediterraneanregion:grapeclipping-blue) 220.32 ← White Grape Clippings (floralzonesmediterraneanregion:grapeclipping-white); the family runs from Purple Grape Clippings (floralzonesmediterraneanregion:grapeclipping-purple) 55.08 to White Grape Clippings (floralzonesmediterraneanregion:grapeclipping-white) 220.32
+    Yellow Grape Clippings (floralzonesmediterraneanregion:grapeclipping-yellow) 220.32 ← White Grape Clippings (floralzonesmediterraneanregion:grapeclipping-white); the family runs from Purple Grape Clippings (floralzonesmediterraneanregion:grapeclipping-purple) 55.08 to White Grape Clippings (floralzonesmediterraneanregion:grapeclipping-white) 220.32
+    Cultivated Blue Grape Vine (floralzonesmediterraneanregion:smallberrybush-cultivated-vitisvinifera-blue-empty) 244.32 ← Cultivated White Grape Vine (floralzonesmediterraneanregion:smallberrybush-cultivated-vitisvinifera-white-empty); the family runs from Cultivated Purple Grape Vine (floralzonesmediterraneanregion:smallberrybush-cultivated-vitisvinifera-purple-empty) 79.08 to Cultivated White Grape Vine (floralzonesmediterraneanregion:smallberrybush-cultivated-vitisvinifera-white-empty) 244.32
+    ... and 7 more
+  wood: 6 copied value(s), e.g.
+    Coconut Palm log (floralzonescosmopolitanregion:lognarrow-grown-cocosnucifera-ud) 22.4 ← White Mangrove Roots (floralzonescosmopolitanregion:lognarrow-grown-lagunculariaracemosa-ud); the family runs from Papaya Stalk (floralzonescosmopolitanregion:lognarrow-grown-caricapapaya-ud) 4 to White Mangrove Roots (floralzonescosmopolitanregion:lognarrow-grown-lagunculariaracemosa-ud) 22.4
+    Coconut Palm log (floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud) 22.4 ← White Mangrove Roots (floralzonescosmopolitanregion:lognarrow-placed-lagunculariaracemosa-ud); the family runs from Papaya Stalk (floralzonescosmopolitanregion:lognarrow-placed-caricapapaya-ud) 4 to White Mangrove Roots (floralzonescosmopolitanregion:lognarrow-placed-lagunculariaracemosa-ud) 22.4
+    floralzonescosmopolitanregion:block-lognarrow-grown-cocosnucifera-ns (floralzonescosmopolitanregion:lognarrow-grown-cocosnucifera-ns) 22.4 ← floralzonescosmopolitanregion:block-lognarrow-grown-lagunculariaracemosa-ns (floralzonescosmopolitanregion:lognarrow-grown-lagunculariaracemosa-ns); the family runs from floralzonescosmopolitanregion:block-lognarrow-grown-caricapapaya-ns (floralzonescosmopolitanregion:lognarrow-grown-caricapapaya-ns) 4 to floralzonescosmopolitanregion:block-lognarrow-grown-lagunculariaracemosa-ns (floralzonescosmopolitanregion:lognarrow-grown-lagunculariaracemosa-ns) 22.4
+    ... and 3 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  model: 1 copied value(s), e.g.
+    Small piece of driftwood (game:flotsam-driftwood-4) 24 ← Large piece of driftwood (game:flotsam-driftwood-3); the family runs from Driftwood (game:flotsam-driftwood-1) 8 to Large piece of driftwood (game:flotsam-driftwood-3) 24
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+• Other mods: 5 were skipped by the game because something they need isn't installed: autoconfiglib (needs configlib (Dependency 'configlib_1.13.2.zip' (configlib) has dependency errors itself)), configlib (needs vsimgui@1.2.0), playermodellib (needs overhaullib@2.0.10), sandwich (needs expandedfoods, aculinaryartillery), vintageskavenrat (needs playermodellib@* (Dependency 'playermodellib_1.25.0.zip' (playermodellib) has dependency errors itself))
+  The game leaves these mods out entirely, so this doesn't break Vintage-E, but their items and recipes don't exist in this world and can't have values.
+  → Install what they need from the Mod DB (the name after 'needs' is a mod id), or remove them.
+• Other mods: 9 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: armory (9)).
+  The game ignores those recipes, so Vintage-E can't learn from them. Usually the mod named expects another mod, or an older version of one, to be installed.
+  Show everything other mods did at start-up (/emc diagnose startup)
+
+== Other mods' crafting methods ==
+✓ Crafting methods: 0 mod(s) send them (0 by file, 0 by code): 0 methods, 0 recipes
+  A mod sends its crafting methods in a file (assets/<modid>/config/vintagee-methods/) or from its code (the game's event bus, no reference to Vintage-E needed). docs/crafting-methods.md in Vintage-E's repository describes the format.
+  assets/vintagee/config/vintagee-methods/butchering.json waits for butchering, which isn't loaded
+• Recipes Vintage-E can't see: 4 mod(s) keep recipe data it doesn't read (canjewelry, fieldsofsalt, gourmand, vinteng)
+  These folders under recipes/ and block or item attributes named like ...Recipes hold recipes of a kind Vintage-E doesn't know, so what those machines make is valued another way or guessed. It's a guess from the names, so it may list data the game does read.
+  C&N Jewelry (canjewelry): recipes/gemcutting (8)  Draft a method file for it (/emc diagnose draftmethods canjewelry)
+  Fields of Salt (fieldsofsalt): recipes/evaporationpond (1)  Draft a method file for it (/emc diagnose draftmethods fieldsofsalt)
+  Gourmand (gourmand): recipes/matchers (149)  Draft a method file for it (/emc diagnose draftmethods gourmand)
+  vinteng: recipes/veblastfurnace (1), recipes/vechemplant (2), recipes/vecreosoteoven (2), recipes/vecrusher (1), recipes/vedistillation (3), recipes/veextruder (5), recipes/vekiln (3), recipes/velogsplitter (1), recipes/vemetalpress (4), recipes/vemixer (9), recipes/vesawmill (2), recipes/vetempforge (2)  Draft a method file for it (/emc diagnose draftmethods vinteng)
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+  Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Your game ==
+The checks of your own game (version, EMC table, patches) need a player: run /emc diagnose in the game.
+
+== Server log ==
+✓ Server log: no Vintage-E errors or warnings.
+
+== Other mods changing recipes and items ==
+• Other mods' patches: 25 mods patch things the mapper reads:
+  Fauna of the Stone Age: Dinornithiformes Plus (dinornithidae) (/emc diagnose mod dinornithidae): 252 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Floral Zones: Cosmopolitan Region (floralzonescosmopolitanregion) (/emc diagnose mod floralzonescosmopolitanregion): 208 recipe patches
+    vanilla meals.json → game:recipes/cooking/jam
+    vanilla meals.json → game:recipes/cooking/meatystew
+    vanilla meals.json → game:recipes/cooking/porridge
+  Floral Zones: Mediterranean Region (floralzonesmediterraneanregion) (/emc diagnose mod floralzonesmediterraneanregion): 167 recipe patches
+    source.json → fieldsofsalt:recipes/grid/sourcefzmr.json
+    connector.json → fieldsofsalt:recipes/grid/connectorfzmr.json
+    channel.json → fieldsofsalt:recipes/grid/channelfzmr.json
+  Fauna of the Stone Age: Spheniscidae (spheniscidae) (/emc diagnose mod spheniscidae): 120 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Floral Zones: Caribbean Region (floralzonescaribbeanregion) (/emc diagnose mod floralzonescaribbeanregion): 103 recipe patches
+    source.json → fieldsofsalt:recipes/grid/sourcefzcar.json
+    connector.json → fieldsofsalt:recipes/grid/connectorfzcar.json
+    channel.json → fieldsofsalt:recipes/grid/channelfzcar.json
+  Floral Zones: Central Australia Region (floralzonescentralaustralianregion) (/emc diagnose mod floralzonescentralaustralianregion): 95 recipe patches
+    source.json → fieldsofsalt:recipes/grid/sourcefzaus.json
+    connector.json → fieldsofsalt:recipes/grid/connectorfzaus.json
+    channel.json → fieldsofsalt:recipes/grid/channelfzaus.json
+  Floral Zones: East Asiatic Region (floralzoneseastasiaticregion) (/emc diagnose mod floralzoneseastasiaticregion): 84 recipe patches
+    goji meals.json → game:recipes/cooking/jam
+    goji meals.json → game:recipes/cooking/meatystew
+    goji meals.json → game:recipes/cooking/porridge
+  Floral Zones: Neozeylandic Region (floralzonesneozeylandicregion) (/emc diagnose mod floralzonesneozeylandicregion): 61 recipe patches
+    source.json → fieldsofsalt:recipes/grid/sourcefznzl.json
+    connector.json → fieldsofsalt:recipes/grid/connectorfznzl.json
+    channel.json → fieldsofsalt:recipes/grid/channelfznzl.json
+  Floral Zones: Cape Region (floralzonescaperegion) (/emc diagnose mod floralzonescaperegion): 55 recipe patches
+    source.json → fieldsofsalt:recipes/grid/sourcefzcr.json
+    connector.json → fieldsofsalt:recipes/grid/connectorfzcr.json
+    channel.json → fieldsofsalt:recipes/grid/channelfzcr.json
+  Fauna of the Stone Age: Chelonioidea (chelonioidea) (/emc diagnose mod chelonioidea): 42 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Overhaul lib legacy compat (overhaulliblegacycompat) (/emc diagnose mod overhaulliblegacycompat): 42 recipe patches
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+    armorcomponents.json → game:recipes/grid/claycovering-armorcomponents.json
+  Expanded Matter (em) (/emc diagnose mod em): 16 recipe patches, 8 patches to how items are processed (ground storage, squeezing, burning, drying)
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+    survival-recipes-barrel-dye-yellow.json → game:recipes/barrel/dye/yellow.json
+    survival-recipes-barrel-dye-orange.json → game:recipes/barrel/dye/orange.json
+  maketea (/emc diagnose mod maketea): 23 recipe patches
+    flowertea-hod.json → maketea:recipes/teapot/flowertea.json
+    flowertea-hod.json → maketea:recipes/teapot/flowertea.json
+    flowertea-hod.json → maketea:recipes/teapot/flowertea.json
+  C&N Jewelry (canjewelry) (/emc diagnose mod canjewelry): 20 recipe patches
+    add-cutting.json → canjewelry:recipes/gemcutting/baguette_cutting.json
+    add-cutting.json → canjewelry:recipes/gemcutting/baguette_cutting.json
+    add-cutting.json → canjewelry:recipes/gemcutting/baguette_cutting.json
+  Metal Cookware (metalpots) (/emc diagnose mod metalpots): 17 recipe patches
+    metalcans.json → metalpots:recipes/smithing/metalcrock
+    metalcans.json → metalpots:recipes/clayforming/crockmold
+    metalpots.json → metalpots:recipes/grid/metalpot
+  Fauna of the Stone Age: Bovinae (bovinae) (/emc diagnose mod bovinae): 16 recipe patches
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+    eland cheese meals.json → game:recipes/cooking/scrambledeggs
+  More Animals (moreanimals) (/emc diagnose mod moreanimals): 16 recipe patches
+    birds-butcherable.json → moreanimals:recipes/grid/butchering/rot.json
+    scrambledeggs.json → game:recipes/cooking/scrambledeggs.json
+    scrambledeggs.json → game:recipes/cooking/scrambledeggs.json
+  Feverstone Wilds (feverstonewilds) (/emc diagnose mod feverstonewilds): 1 recipe patches, 6 patches to how items are processed (ground storage, squeezing, burning, drying)
+    fswfishdropeggs.json → feverstonewilds:itemtypes/food/fsw-fishraw.json
+    fswfishdropeggs.json → feverstonewilds:itemtypes/food/fsw-fishraw.json
+    fswfishdropeggs.json → feverstonewilds:itemtypes/food/fsw-fishraw.json
+  Tabletop Games (tabletopgames) (/emc diagnose mod tabletopgames): 7 recipe patches
+    disable-recipes.json → tabletopgames:recipes/grid/compatibility-wildcrafttree/board-generic.json
+    disable-recipes.json → tabletopgames:recipes/grid/compatibility-floralzones/board-generic.json
+    disable-recipes.json → tabletopgames:recipes/grid/compatibility-floralzones/board-generic.json
+  Fauna of the Stone Age: Meiolaniidae (meiolaniidae) (/emc diagnose mod meiolaniidae): 6 recipe patches
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/meatystew
+    egg meals.json → game:recipes/cooking/scrambledeggs
+  Fauna of the Stone Age: Cervinae (cervinae) (/emc diagnose mod cervinae): 4 recipe patches
+    deer cheese meals.json → game:recipes/cooking/scrambledeggs
+    deer cheese meals.json → game:recipes/cooking/scrambledeggs
+    deer cheese meals.json → game:recipes/cooking/scrambledeggs
+  Envelopes (envelopes) (/emc diagnose mod envelopes): 1 recipe patches
+    writtenword.json → envelopes:recipes/grid/add-letter.json
+  Toolsmith (toolsmith) (/emc diagnose mod toolsmith): 1 recipe patches
+    supportbeam-output-to-4.json → game:recipes/grid/supportbeams.json
+  vinteng (/emc diagnose mod vinteng): 1 patches to how items are processed (ground storage, squeezing, burning, drying)
+    steelplateprops.json → game:itemtypes/resource/metalplate.json
+  Wind Chimes (windchimes) (/emc diagnose mod windchimes): 1 recipe patches
+    brass.json → game:recipes/smithing/rod.json
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+
+== Values out of line with their family ==
+⚠ Values out of line: 45 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Powdered kernite (em:powdered-ore-kernite) 156.35 (its family's middle value is 6.4)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 em:powdered-ore-kernite -> 100 em:dilutedkerniteportion
+  clutter (game:clutter) 608.26 (its family's middle value is 32)
+    worked backwards from grid: 100 game:acid-full-sulfuric + 1 game:clutter -> 1 confession:brazier-unlit
+  Powdered borax (game:powder-borax) 156.85 (its family's middle value is 13.77)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 2 game:powder-borax -> 500 game:dilutedboraxportion
+  game:block-crystal-olivine-small1-down (game:crystal-olivine-small1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-down (game:crystal-olivine-small2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-down (game:crystal-olivine-small3-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-north (game:crystal-olivine-small1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-north (game:crystal-olivine-small2-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-north (game:crystal-olivine-small3-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-east (game:crystal-olivine-small1-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-east (game:crystal-olivine-small2-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-east (game:crystal-olivine-small3-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-south (game:crystal-olivine-small1-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-south (game:crystal-olivine-small2-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-south (game:crystal-olivine-small3-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-west (game:crystal-olivine-small1-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-west (game:crystal-olivine-small2-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-west (game:crystal-olivine-small3-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large1-down (game:crystal-olivine-large1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large2-down (game:crystal-olivine-large2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster1-down (game:crystal-olivine-cluster1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster2-down (game:crystal-olivine-cluster2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large1-north (game:crystal-olivine-large1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large2-north (game:crystal-olivine-large2-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster1-north (game:crystal-olivine-cluster1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  ... and 20 more
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== What are you seeing? ==
+Pick the closest. Each opens a report for just that; Back returns here.
+An item shows no EMC value: walk me through it (/emc diagnose novalue)
+Describe what's happening (step by step) (/emc diagnose symptom)
+What the table and tablet refused lately, and why (/emc diagnose watch)
+Arcane Tablet: the Emc Craft link or crafting window isn't working (/emc diagnose emccraft)
+A machine, chute, the tablet's magnet, a Klein star or a trinket isn't doing what it should (/emc diagnose machines)
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+One block or item has no value (hold it first) (/emc diagnose hand)
+Everything from one mod has no value (/emc diagnose mods)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Nothing has a value, or I want every mapping check (/emc diagnose mapping)
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+What changed since the previous mapping (/emc diagnose changes)
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+A player's state (knowledge, EMC, mode) (/emc diagnose players)
+Put together a bug report to post (/emc diagnose bugreport)
+The full list of missing items is in /emc missing, where values can be set from the window.
+From the server console: /emc diagnose hand | <code> | <mod id> | mods | sporadic | mapping | trace hand | trace <code>.

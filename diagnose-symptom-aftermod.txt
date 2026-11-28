@@ -1,0 +1,21 @@
+== Values changed or vanished after I added or updated a mod ==
+Another mod's recipes and patches feed into the mapping. These show what it changed, and where it comes through.
+• Other mods' patches: 25 mods patch things the mapper reads:
+  Fauna of the Stone Age: Dinornithiformes Plus (dinornithidae) (/emc diagnose mod dinornithidae): 252 recipe patches
+  Floral Zones: Cosmopolitan Region (floralzonescosmopolitanregion) (/emc diagnose mod floralzonescosmopolitanregion): 208 recipe patches
+  Floral Zones: Mediterranean Region (floralzonesmediterraneanregion) (/emc diagnose mod floralzonesmediterraneanregion): 167 recipe patches
+  Fauna of the Stone Age: Spheniscidae (spheniscidae) (/emc diagnose mod spheniscidae): 120 recipe patches
+  Floral Zones: Caribbean Region (floralzonescaribbeanregion) (/emc diagnose mod floralzonescaribbeanregion): 103 recipe patches
+  Floral Zones: Central Australia Region (floralzonescentralaustralianregion) (/emc diagnose mod floralzonescentralaustralianregion): 95 recipe patches
+  Floral Zones: East Asiatic Region (floralzoneseastasiaticregion) (/emc diagnose mod floralzoneseastasiaticregion): 84 recipe patches
+  Floral Zones: Neozeylandic Region (floralzonesneozeylandicregion) (/emc diagnose mod floralzonesneozeylandicregion): 61 recipe patches
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+Which other mods change recipes, processing or values (/emc diagnose patches)
+✓ Server log: no Vintage-E errors or warnings.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+What changed since the previous mapping (/emc diagnose changes)
+Everything from one mod has no value (/emc diagnose mods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

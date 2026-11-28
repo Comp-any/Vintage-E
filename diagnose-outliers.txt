@@ -1,0 +1,60 @@
+== Values out of line with their family ==
+⚠ Values out of line: 45 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Powdered kernite (em:powdered-ore-kernite) 156.35 (its family's middle value is 6.4)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 em:powdered-ore-kernite -> 100 em:dilutedkerniteportion
+  clutter (game:clutter) 608.26 (its family's middle value is 32)
+    worked backwards from grid: 100 game:acid-full-sulfuric + 1 game:clutter -> 1 confession:brazier-unlit
+  Powdered borax (game:powder-borax) 156.85 (its family's middle value is 13.77)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 2 game:powder-borax -> 500 game:dilutedboraxportion
+  game:block-crystal-olivine-small1-down (game:crystal-olivine-small1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-down (game:crystal-olivine-small2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-down (game:crystal-olivine-small3-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-north (game:crystal-olivine-small1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-north (game:crystal-olivine-small2-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-north (game:crystal-olivine-small3-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-east (game:crystal-olivine-small1-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-east (game:crystal-olivine-small2-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-east (game:crystal-olivine-small3-east) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-south (game:crystal-olivine-small1-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-south (game:crystal-olivine-small2-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-south (game:crystal-olivine-small3-south) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small1-west (game:crystal-olivine-small1-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small2-west (game:crystal-olivine-small2-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-small3-west (game:crystal-olivine-small3-west) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large1-down (game:crystal-olivine-large1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large2-down (game:crystal-olivine-large2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster1-down (game:crystal-olivine-cluster1-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster2-down (game:crystal-olivine-cluster2-down) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large1-north (game:crystal-olivine-large1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-large2-north (game:crystal-olivine-large2-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  game:block-crystal-olivine-cluster1-north (game:crystal-olivine-cluster1-north) 12 (its family's middle value is 128)
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-olivine-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-olivine-east
+  ... and 20 more
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

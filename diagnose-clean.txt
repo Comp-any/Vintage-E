@@ -1,0 +1,371 @@
+== A mapping without other mods' recipes ==
+Vintage-E mapped once more using only the base game's and its own recipes, then compared every base-game value with the live mapping. Each difference is listed under the mod whose recipe or item it comes through.
+⚠ 1823 base-game values differ with the 57 other mods loaded:
+
+== Through Expanded Matter (em): 732 values ==
+  Corundum (game:ore-corundum): 64 → 1
+    worked backwards from pulverizer crushing: 1 game:ore-corundum -> 1 em:crushed-ore-corundum
+  Corundum bits (game:looseores-corundum-peridotite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-peridotite-free
+  Corundum bits (game:looseores-corundum-phyllite-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-phyllite-free
+  Corundum bits (game:looseores-corundum-slate-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-slate-free
+  Corundum bits (game:looseores-corundum-whitemarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-whitemarble-free
+  Corundum bits (game:looseores-corundum-redmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-redmarble-free
+  Corundum bits (game:looseores-corundum-greenmarble-free): 64 → 1
+    block drops: 1 game:ore-corundum -> 1 game:looseores-corundum-greenmarble-free
+  Corundum (game:ore-corundum-peridotite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-peridotite
+  Corundum (game:ore-corundum-phyllite): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-phyllite
+  Corundum (game:ore-corundum-slate): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-slate
+  Corundum in white marble (game:ore-corundum-whitemarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-whitemarble
+  Corundum in pink marble (game:ore-corundum-redmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-redmarble
+  Corundum in green marble (game:ore-corundum-greenmarble): 80 → 1.25
+    block drops: 1.25 game:ore-corundum -> 1 game:ore-corundum-greenmarble
+  White dye (game:dye-white): 2.09 → 0.073
+    RecipeRegistrySystem.BarrelRecipes: 200 game:dilutedchromiteportion + 1 em:powdered-ore-magnesiumoxide -> 200 game:dye-white
+  Bountiful chunk of Hematite (game:ore-bountiful-hematite-granite): 12.8 → 102.4
+    worked backwards from pulverizer crushing: 1 game:ore-bountiful-hematite-granite -> 8 em:crushed-ore-hematite
+  Bountiful chunk of Hematite (game:ore-bountiful-hematite-peridotite): 12.8 → 102.4
+    worked backwards from pulverizer crushing: 1 game:ore-bountiful-hematite-peridotite -> 8 em:crushed-ore-hematite
+  Kernite (game:ore-kernite): 40 → 312.7
+    worked backwards from quern grinding: 1 game:ore-kernite -> 2 em:powdered-ore-kernite
+  Kernite bits (game:looseores-kernite-chalk-free): 40 → 312.7
+    block drops: 1 game:ore-kernite -> 1 game:looseores-kernite-chalk-free
+  Kernite bits (game:looseores-kernite-chert-free): 40 → 312.7
+    block drops: 1 game:ore-kernite -> 1 game:looseores-kernite-chert-free
+  Kernite bits (game:looseores-kernite-conglomerate-free): 40 → 312.7
+    block drops: 1 game:ore-kernite -> 1 game:looseores-kernite-conglomerate-free
+  ... and 712 more
+
+== Through no single mod (570 values: another mod's patch to a base-game recipe or item, or a guess that moved) ==
+  Henbox (game:henbox-1egg): none → 13.83
+    guessed from its only valued variant game:henbox-empty (differs in: eggCount)
+  Henbox (game:henbox-2eggs): none → 13.83
+    guessed from its only valued variant game:henbox-empty (differs in: eggCount)
+  Henbox (game:henbox-3eggs): none → 13.83
+    guessed from its only valued variant game:henbox-empty (differs in: eggCount)
+  Wire Relay (HV) (game:wirerelay-hvpower-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (EV) (game:wirerelay-evpower-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (All Power) (game:wirerelay-allpower-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (Communication) (game:wirerelay-communication-up): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  Wire Relay (HV) (game:wirerelay-hvpower-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (EV) (game:wirerelay-evpower-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (All Power) (game:wirerelay-allpower-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (Communication) (game:wirerelay-communication-down): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-down)
+  Wire Relay (HV) (game:wirerelay-hvpower-north): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (EV) (game:wirerelay-evpower-north): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (All Power) (game:wirerelay-allpower-north): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (Red Signal Wire) (game:wirerelay-signalred-north): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  Wire Relay (Green Signal Wire) (game:wirerelay-signalgreen-north): none → 7.42
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-north)
+  ... and 550 more
+
+== Through Wind Chimes (windchimes): 240 values ==
+  Large milky quartz crystal (variant 1) (game:crystal-milkyquartz-large1-up): 448 → 64
+    worked backwards from block drops (single item): 1 game:crystal-milkyquartz-large1-down -> 1 game:crystal-milkyquartz-large1-up
+  Large rose quartz crystal (variant 1) (game:crystal-rosequartz-large1-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-rosequartz-large1-down -> 1 game:crystal-rosequartz-large1-up
+  Large smoky quartz crystal (variant 1) (game:crystal-smokyquartz-large1-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-smokyquartz-large1-down -> 1 game:crystal-smokyquartz-large1-up
+  Large amethyst crystal (variant 1) (game:crystal-amethyst-large1-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-amethyst-large1-down -> 1 game:crystal-amethyst-large1-up
+  Large milky quartz crystal (variant 2) (game:crystal-milkyquartz-large2-up): 448 → 64
+    worked backwards from block drops (single item): 1 game:crystal-milkyquartz-large2-down -> 1 game:crystal-milkyquartz-large2-up
+  Large rose quartz crystal (variant 2) (game:crystal-rosequartz-large2-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-rosequartz-large2-down -> 1 game:crystal-rosequartz-large2-up
+  Large smoky quartz crystal (variant 2) (game:crystal-smokyquartz-large2-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-smokyquartz-large2-down -> 1 game:crystal-smokyquartz-large2-up
+  Large amethyst crystal (variant 2) (game:crystal-amethyst-large2-up): 896 → 128
+    worked backwards from block drops (single item): 1 game:crystal-amethyst-large2-down -> 1 game:crystal-amethyst-large2-up
+  game:block-crystal-milkyquartz-large1-down (game:crystal-milkyquartz-large1-down): 448 → 64
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-milkyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-milkyquartz-east
+  game:block-crystal-rosequartz-large1-down (game:crystal-rosequartz-large1-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-rosequartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-rosequartz-east
+  game:block-crystal-smokyquartz-large1-down (game:crystal-smokyquartz-large1-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-smokyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-smokyquartz-east
+  game:block-crystal-amethyst-large1-down (game:crystal-amethyst-large1-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-amethyst-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-amethyst-east
+  game:block-crystal-milkyquartz-large2-down (game:crystal-milkyquartz-large2-down): 448 → 64
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-milkyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-milkyquartz-east
+  game:block-crystal-rosequartz-large2-down (game:crystal-rosequartz-large2-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-rosequartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-rosequartz-east
+  game:block-crystal-smokyquartz-large2-down (game:crystal-smokyquartz-large2-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-smokyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-smokyquartz-east
+  game:block-crystal-amethyst-large2-down (game:crystal-amethyst-large2-down): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-amethyst-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-amethyst-east
+  game:block-crystal-milkyquartz-large1-north (game:crystal-milkyquartz-large1-north): 448 → 64
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-milkyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-milkyquartz-east
+  game:block-crystal-rosequartz-large1-north (game:crystal-rosequartz-large1-north): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-rosequartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-rosequartz-east
+  game:block-crystal-smokyquartz-large1-north (game:crystal-smokyquartz-large1-north): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-smokyquartz-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-smokyquartz-east
+  game:block-crystal-amethyst-large1-north (game:crystal-amethyst-large1-north): 896 → 128
+    worked backwards from grid: 1 game:metalplate-molybdochalkos + 1 game:crystal-amethyst-small1-up (or 41 more) + 1 game:metalnailsandstrips-molybdochalkos -> 1 windchimes:doorchime-crystal-amethyst-east
+  ... and 220 more
+
+== Through confession: 111 values ==
+  clutter (game:clutter): 32 → 608.26
+    worked backwards from grid: 100 game:acid-full-sulfuric + 1 game:clutter -> 1 confession:brazier-unlit
+  Blue glass (game:glass-blue): 16.5 → 128
+    worked backwards from grid: 1 game:glass-blue -> 2 game:glassslab-blue-down-free
+  Red glass (game:glass-red): 16.5 → 128
+    worked backwards from grid: 1 game:glass-red -> 2 game:glassslab-red-down-free
+  Yellow glass (game:glass-yellow): 16.5 → 128
+    worked backwards from grid: 1 game:glass-yellow -> 2 game:glassslab-yellow-down-free
+  Brown glass (game:glass-brown): 16.5 → 128
+    worked backwards from grid: 1 game:glass-brown -> 2 game:glassslab-brown-down-free
+  Blue glass slab (game:glassslab-blue-north-free): 8.25 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-north-free
+  Red glass slab (game:glassslab-red-north-free): 8.25 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-north-free
+  Yellow glass slab (game:glassslab-yellow-north-free): 8.25 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-north-free
+  Brown glass slab (game:glassslab-brown-north-free): 8.25 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-north-free
+  Blue glass slab (game:glassslab-blue-east-free): 8.25 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-east-free
+  Red glass slab (game:glassslab-red-east-free): 8.25 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-east-free
+  Yellow glass slab (game:glassslab-yellow-east-free): 8.25 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-east-free
+  Brown glass slab (game:glassslab-brown-east-free): 8.25 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-east-free
+  Blue glass slab (game:glassslab-blue-south-free): 8.25 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-south-free
+  Red glass slab (game:glassslab-red-south-free): 8.25 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-south-free
+  Yellow glass slab (game:glassslab-yellow-south-free): 8.25 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-south-free
+  Brown glass slab (game:glassslab-brown-south-free): 8.25 → 64
+    block drops: 1 game:glassslab-brown-down-free -> 1 game:glassslab-brown-south-free
+  Blue glass slab (game:glassslab-blue-west-free): 8.25 → 64
+    block drops: 1 game:glassslab-blue-down-free -> 1 game:glassslab-blue-west-free
+  Red glass slab (game:glassslab-red-west-free): 8.25 → 64
+    block drops: 1 game:glassslab-red-down-free -> 1 game:glassslab-red-west-free
+  Yellow glass slab (game:glassslab-yellow-west-free): 8.25 → 64
+    block drops: 1 game:glassslab-yellow-down-free -> 1 game:glassslab-yellow-west-free
+  ... and 91 more
+
+== Through C&N Jewelry (canjewelry): 76 values ==
+  Nickel ore (game:ore-bountiful-pentlandite-peridotite): none → 182.43
+    block drops: 0.01 game:crystalizedore-bountiful-pentlandite-peridotite + 1.25 game:ore-bountiful-pentlandite-peridotite + 0.005 canjewelry:gem-rough-chipped-fluorite + 0.001 canjewelry:gem-rough-flawed-fluorite + 0 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-bountiful-pentlandite-peridotite
+  Nickel ore (game:ore-rich-pentlandite-peridotite): none → 133.67
+    block drops: 0.01 game:crystalizedore-rich-pentlandite-peridotite + 1.25 game:ore-rich-pentlandite-peridotite + 0.005 canjewelry:gem-rough-chipped-fluorite + 0.001 canjewelry:gem-rough-flawed-fluorite + 0 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-rich-pentlandite-peridotite
+  Quartz (game:ore-quartz-andesite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-andesite
+  Quartz (game:ore-quartz-chalk): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-chalk
+  Quartz (game:ore-quartz-chert): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-chert
+  Quartz (game:ore-quartz-conglomerate): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-conglomerate
+  Quartz (game:ore-quartz-limestone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-limestone
+  Quartz (game:ore-quartz-claystone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-claystone
+  Quartz (game:ore-quartz-granite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-granite
+  Quartz (game:ore-quartz-sandstone): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-sandstone
+  Quartz (game:ore-quartz-shale): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-shale
+  Quartz (game:ore-quartz-basalt): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-basalt
+  Quartz (game:ore-quartz-peridotite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-peridotite
+  Quartz (game:ore-quartz-phyllite): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-phyllite
+  Quartz (game:ore-quartz-slate): none → 124.54
+    block drops: 0.2 game:clearquartz + 1.25 game:ore-quartz + 0.01 canjewelry:gem-rough-chipped-quartz + 0.005 canjewelry:gem-rough-flawed-quartz + 0.001 canjewelry:gem-rough-normal-quartz -> 1 game:ore-quartz-slate
+  Fluorite (game:ore-fluorite-chalk): none → 111.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-chalk
+  Fluorite (game:ore-fluorite-chert): none → 111.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-chert
+  Fluorite (game:ore-fluorite-conglomerate): none → 111.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-conglomerate
+  Fluorite (game:ore-fluorite-limestone): none → 111.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-limestone
+  Fluorite (game:ore-fluorite-claystone): none → 111.74
+    block drops: 1.25 game:ore-fluorite + 0.01 canjewelry:gem-rough-chipped-fluorite + 0.005 canjewelry:gem-rough-flawed-fluorite + 0.001 canjewelry:gem-rough-normal-fluorite -> 1 game:ore-fluorite-claystone
+  ... and 56 more
+
+== Through vinteng: 52 values ==
+  Wire Relay (MV) (game:wirerelay-mvpower-up): none → 14.85
+    grid: 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned + 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-mvpower-up
+  Wire Relay (MV) (game:wirerelay-mvpower-down): none → 14.85
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-down
+  Wire Relay (MV) (game:wirerelay-mvpower-north): none → 14.85
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-north
+  Wire Relay (MV) (game:wirerelay-mvpower-east): none → 14.85
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-east
+  Wire Relay (MV) (game:wirerelay-mvpower-south): none → 14.85
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-south
+  Wire Relay (MV) (game:wirerelay-mvpower-west): none → 14.85
+    placement state: 1 game:wirerelay-mvpower-up -> 1 game:wirerelay-mvpower-west
+  Wire Relay (LV) (game:wirerelay-lvpower-up): none → 7.42
+    grid: 1 game:glassslab-plain-north-free (or 120 more) + 1 vinteng:lvrelaybase-burned -> 1 game:wirerelay-lvpower-up
+  Wire Relay (LV) (game:wirerelay-lvpower-down): none → 7.42
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-down
+  Wire Relay (LV) (game:wirerelay-lvpower-north): none → 7.42
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-north
+  Wire Relay (LV) (game:wirerelay-lvpower-east): none → 7.42
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-east
+  Wire Relay (LV) (game:wirerelay-lvpower-south): none → 7.42
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-south
+  Wire Relay (LV) (game:wirerelay-lvpower-west): none → 7.42
+    placement state: 1 game:wirerelay-lvpower-up -> 1 game:wirerelay-lvpower-west
+  game:block-ironfence-top-empty (game:ironfence-top-empty): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-empty
+  game:block-ironfence-top-n (game:ironfence-top-n): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-n
+  game:block-ironfence-top-e (game:ironfence-top-e): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-e
+  game:block-ironfence-top-s (game:ironfence-top-s): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-s
+  game:block-ironfence-top-w (game:ironfence-top-w): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-w
+  game:block-ironfence-top-ne (game:ironfence-top-ne): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-ne
+  game:block-ironfence-top-ns (game:ironfence-top-ns): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-ns
+  game:block-ironfence-top-nw (game:ironfence-top-nw): 113.15 → 53.33
+    placement state: 1 game:ironfence-top-ew -> 1 game:ironfence-top-nw
+  ... and 32 more
+
+== Through Fauna of the Stone Age: Dinornithiformes Plus (dinornithidae): 12 values ==
+  Embroidered fur shirt (game:clothes-upperbody-embroideredfur): 2,435.1 → 1,607.4
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:sewingkit + 1 game:cloth-white + 1 game:cloth-white -> 1 game:clothes-upperbody-embroideredfur (returns game:hide-pelt-small, game:hide-pelt-small)
+  Embroidered fur pants (game:clothes-lowerbody-embroideredfur): 1,511.6 → 1,097.7
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:cloth-white + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:sewingkit -> 1 game:clothes-lowerbody-embroideredfur (returns game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small)
+  Embroidered fur parka (game:clothes-upperbodyover-embroideredfur): 1,519.6 → 1,105.7
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:cloth-white + 1 game:sewingkit -> 1 game:clothes-upperbodyover-embroideredfur
+  Pelt (Huge) (game:hide-pelt-huge): 112 → 88
+    grid: 1 dinornithidae:pelt-pelt-female-dinornisnovaezealandiae (or 1 more) -> 2 game:hide-pelt-huge
+  Pelt (Large) (game:hide-pelt-large): 64 → 53.33
+    grid: 1 dinornithidae:pelt-pelt-female-euryapteryxcurtus (or 1 more) -> 3 game:hide-pelt-large
+  Arctic hunter mittens (game:clothes-hand-arctichunter): 568.09 → 562.92
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:cloth-red -> 1 game:clothes-hand-arctichunter
+  Arctic hunter boots (game:clothes-foot-arctichunter): 568.09 → 562.92
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:cloth-red -> 1 game:clothes-foot-arctichunter
+  Arctic hunter shirt (game:clothes-upperbody-arctichunter): 584.09 → 578.92
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:cloth-red + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) -> 1 game:clothes-upperbody-arctichunter (returns game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small)
+  Arctic hunter parka (game:clothes-upperbodyover-arctichunter): 592.09 → 586.92
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:cloth-red -> 1 game:clothes-upperbodyover-arctichunter
+  Arctic fisher shirt (game:clothes-upperbody-arcticfisher): 1,612.2 → 1,601.8
+    grid: 1 game:cloth-red + 1 game:cloth-red + 1 game:sewingkit + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) -> 1 game:clothes-upperbody-arcticfisher (returns game:hide-pelt-small, game:hide-pelt-small)
+  Arctic hunter pants (game:clothes-lowerbody-arctichunter): 840.09 → 834.92
+    grid: 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:cloth-red + 1 game:hide-pelt-bear-black-complete (or 4 more) + 1 game:flaxtwine + 1 game:flaxtwine -> 1 game:clothes-lowerbody-arctichunter (returns game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small, game:hide-pelt-small)
+  Reindeer herder fur coat (game:clothes-upperbodyover-reindeer-herder-fur-coat): 4,760.2 → 4,749.8
+    grid: 1 game:hide-pelt-bear-black-complete (or 7 more) + 2 game:cloth-red + 1 game:hide-pelt-bear-black-complete (or 7 more) + 1 game:cloth-plain + 2 game:cloth-blue + 1 game:cloth-plain + 1 game:cloth-plain + 1 game:sewingkit + 1 game:cloth-plain -> 1 game:clothes-upperbodyover-reindeer-herder-fur-coat
+
+== Through Floral Zones: Caribbean Region (floralzonescaribbeanregion): 7 values ==
+  Pine quarter logs corner (game:logquad-barkedcorner-pine-north): 32 → 11.2
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud -> 1 game:logquad-barkedcorner-pine-north
+  game:block-logquad-barkedcorner-pine-east (game:logquad-barkedcorner-pine-east): 32 → 11.2
+    block drops: 1 game:logquad-barkedcorner-pine-north -> 1 game:logquad-barkedcorner-pine-east
+  game:block-logquad-barkedcorner-pine-south (game:logquad-barkedcorner-pine-south): 32 → 11.2
+    block drops: 1 game:logquad-barkedcorner-pine-north -> 1 game:logquad-barkedcorner-pine-south
+  game:block-logquad-barkedcorner-pine-west (game:logquad-barkedcorner-pine-west): 32 → 11.2
+    block drops: 1 game:logquad-barkedcorner-pine-north -> 1 game:logquad-barkedcorner-pine-west
+  Pine quarter logs (game:logquad-placed-pine-ud): 32 → 11.2
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud + 1 floralzonescaribbeanregion:lognarrow-placed-pinuscaribaea-ud -> 1 game:logquad-placed-pine-ud
+  Pine quarter logs (game:logquad-placed-pine-ns): 32 → 11.2
+    block drops: 1 game:logquad-placed-pine-ud -> 1 game:logquad-placed-pine-ns
+  Pine quarter logs (game:logquad-placed-pine-we): 32 → 11.2
+    block drops: 1 game:logquad-placed-pine-ud -> 1 game:logquad-placed-pine-we
+
+== Through Tabletop Games (tabletopgames): 6 values ==
+  Platinum plate (game:metalplate-platinum): none → 2
+    RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-platinum -> 1 game:metalplate-platinum
+  Stainless steel plate (game:metalplate-stainlesssteel): none → 2
+    worked backwards from grid: 1 game:metalplate-stainlesssteel -> 40 game:metalbit-stainlesssteel
+  Platinum ingot (game:ingot-platinum): none → 1
+    worked backwards from RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-platinum -> 16 tabletopgames:chesspiece
+  Stainless steel ingot (game:ingot-stainlesssteel): none → 1
+    worked backwards from RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-stainlesssteel -> 16 tabletopgames:chesspiece
+  Platinum bits (game:metalbit-platinum): none → 0.05
+    grid: 1 game:ingot-platinum -> 20 game:metalbit-platinum
+  Stainless steel bits (game:metalbit-stainlesssteel): none → 0.05
+    grid: 1 game:ingot-stainlesssteel -> 20 game:metalbit-stainlesssteel
+
+== Through Floral Zones: Cosmopolitan Region (floralzonescosmopolitanregion): 5 values ==
+  Aqua Vitae (game:alcoholportion): 5.12 → 0.4
+    distillation: 1 floralzonescosmopolitanregion:spiritportion-cucurbitaficifolia -> 0.5 game:alcoholportion
+  Rush matting (game:rushmat): 32 → 4
+    grid: 1 floralzonescosmopolitanregion:palmleaf-cocosnucifera + 1 floralzonescosmopolitanregion:palmleaf-cocosnucifera + 1 floralzonescosmopolitanregion:palmleaf-cocosnucifera + 1 floralzonescosmopolitanregion:palmleaf-cocosnucifera -> 1 game:rushmat
+  Alcohol-soaked bandage (game:bandage-alcoholed): 118.4 → 24
+    grid: 20 game:alcoholportion + 1 game:bandage-clean -> 1 game:bandage-alcoholed
+  Hunter backpack (game:hunterbackpack): 80 → 35
+    grid: 3 floralzonescosmopolitanregion:bolboschoenusmaritimusbundle (or 1 more) + 1 game:hide-pelt-bear-sun-complete (or 2 more) + 3 floralzonescosmopolitanregion:bolboschoenusmaritimusbundle (or 1 more) + 3 floralzonescosmopolitanregion:bolboschoenusmaritimusbundle (or 1 more) + 3 floralzonescosmopolitanregion:bolboschoenusmaritimusbundle (or 1 more) + 3 floralzonescosmopolitanregion:bolboschoenusmaritimusbundle (or 1 more) -> 1 game:hunterbackpack
+  Dough stinkbait (game:fishingbait-dough): 6 → 3.6
+    RecipeRegistrySystem.CookingRecipes: 100 game:waterportion + 1 game:vegetable-fennel (or 3 more) + 1 game:dough-spelt (or 12 more) -> 3 game:fishingbait-dough
+
+== Through Adventurer's Walking Stick (walkingstick): 5 values ==
+  Bony Cow Skull (game:bonyremains-cowskull-up): none → 104
+    worked backwards from grid: 1 game:bonyremains-cowskull-up + 1 walkingstick:walkingstick -> 1 walkingstick:walkingstick-cowskull
+  game:block-bonyremains-cowskull-north (game:bonyremains-cowskull-north): none → 104
+    placement state: 1 game:bonyremains-cowskull-up -> 1 game:bonyremains-cowskull-north
+  game:block-bonyremains-cowskull-east (game:bonyremains-cowskull-east): none → 104
+    placement state: 1 game:bonyremains-cowskull-up -> 1 game:bonyremains-cowskull-east
+  game:block-bonyremains-cowskull-south (game:bonyremains-cowskull-south): none → 104
+    placement state: 1 game:bonyremains-cowskull-up -> 1 game:bonyremains-cowskull-south
+  game:block-bonyremains-cowskull-west (game:bonyremains-cowskull-west): none → 104
+    placement state: 1 game:bonyremains-cowskull-up -> 1 game:bonyremains-cowskull-west
+
+== Through Floral Zones: Neozeylandic Region (floralzonesneozeylandicregion): 3 values ==
+  Raw long bowstave (game:bowstave-long-raw): 64 → 32
+    grid: 1 floralzonesneozeylandicregion:lognarrow-placed-psuedopanaxcrassifolius-ud (or 1 more) + 1 floralzonesneozeylandicregion:lognarrow-placed-psuedopanaxcrassifolius-ud (or 1 more) -> 1 game:bowstave-long-raw
+  Dry long bowstave (game:bowstave-long-dry): 512 → 480
+    transitions (dry): 1 game:bowstave-long-raw (+448 time bonus) -> 1 game:bowstave-long-dry
+  Longbow (game:bow-long): 948 → 916
+    grid: 1 game:fat-rendered + 1 game:flaxtwine + 1 game:bowstave-long-dry + 1 game:hide-pelt-fox-arctic (or 6 more) + 1 game:flaxtwine + 1 game:fat-rendered + 1 game:flaxtwine -> 1 game:bow-long
+
+== Through Fauna of the Stone Age: Bovinae (bovinae): 1 values ==
+  Salted hide (Large) (game:hide-salted-large): 64 → 60
+    grid: 1 bovinae:pelt-salted-baby-bospriscus (or 13 more) -> 1 game:hide-salted-large
+
+== Through Fauna of the Stone Age: Vombatidae Plus (vombatidae): 1 values ==
+  Salted hide (Huge) (game:hide-salted-huge): 112 → 92
+    grid: 1 vombatidae:pelt-salted-female-thylacoleocarnifex (or 3 more) -> 1 game:hide-salted-huge
+
+== Through Floral Zones: Central Australia Region (floralzonescentralaustralianregion): 1 values ==
+  Empty beenade (game:beenade-opened): 44 → 32
+    grid: 1 floralzonescentralaustralianregion:triodiascariosabundle + 1 floralzonescentralaustralianregion:triodiascariosabundle + 25 game:honeyportion + 1 floralzonescentralaustralianregion:triodiascariosabundle + 1 game:clay-blue (or 2 more) + 1 floralzonescentralaustralianregion:triodiascariosabundle + 1 game:clay-blue (or 2 more) -> 1 game:beenade-opened
+
+== Through Floral Zones: Cape Region (floralzonescaperegion): 1 values ==
+  Henbox (game:henbox-empty): none → 13.83
+    grid: 1 floralzonescaperegion:plank-afrocarpusfalcatus (or 2 more) + 1 game:drygrass + 1 floralzonescaperegion:plank-afrocarpusfalcatus (or 2 more) + 1 floralzonescaperegion:plank-afrocarpusfalcatus (or 2 more) + 1 floralzonescaperegion:plank-afrocarpusfalcatus (or 2 more) + 1 floralzonescaperegion:plank-afrocarpusfalcatus (or 2 more) -> 1 game:henbox-empty
+
+== Next ==
+  → A change isn't a fault by itself: a mod that adds a cheaper recipe makes things cheaper, as it should. It is one when a base-game material becomes many times dearer or loses its value. Pin those with /emc set; the mod named is where the recipe lives.
+Values that look wrong next to their family (/emc diagnose outliers)
+Which other mods change recipes, processing or values (/emc diagnose patches)
+Back to the check-up (/emc diagnose)

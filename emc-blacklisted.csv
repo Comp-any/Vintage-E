@@ -1,0 +1,2115 @@
+type,code,in_creative_inventory,name
+item,bovinae:creature-bovinae-adult-female-boselaphustragocamelus,yes,Nilgai (Female)
+item,bovinae:creature-bovinae-adult-female-bosprimigeniusprimigenius,yes,Eurasian Aurochs (Female)
+item,bovinae:creature-bovinae-adult-female-bosprimigeniusprimigenius-semitamed,yes,Semitamed Eurasian Aurochs (Female)
+item,bovinae:creature-bovinae-adult-female-bosprimigeniusprimigenius-tamed,yes,Tamed Eurasian Aurochs (Female)
+item,bovinae:creature-bovinae-adult-female-bospriscus,yes,Steppe Bison (Female)
+item,bovinae:creature-bovinae-adult-female-bostaurustaurus-semitamed,yes,Taurine Cow
+item,bovinae:creature-bovinae-adult-female-bostaurustaurus-tamed,yes,Tamed Taurine Cow
+item,bovinae:creature-bovinae-adult-female-bubalusarnee,yes,Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusarnee-semitamed,yes,Semitamed Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusarnee-tamed,yes,Tamed Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusbrevicornis,yes,Short-Horned Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusbubalis-semitamed,yes,Domestic Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusbubalis-tamed,yes,Tamed Domestic Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubaluscebuensis,yes,Cebu Tamaraw (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusdepressicornis,yes,Lowland Anoa (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusgrovesi,yes,Groves's Anoa (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusmephistopheles,yes,Devil-Horned Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusmindorensis,yes,Tamaraw (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusmurrensis,yes,European Water Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-bubalusquarlesi,yes,Mountain Anoa (Female)
+item,bovinae:creature-bovinae-adult-female-pseudoryxnghetinhensis,yes,Saola (Female)
+item,bovinae:creature-bovinae-adult-female-syncerusantiquus,yes,Giant Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-synceruscaffer,yes,African Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-syncerusnanus,yes,Forest Buffalo (Female)
+item,bovinae:creature-bovinae-adult-female-taurotragusderbianus,yes,Giant Eland (Female)
+item,bovinae:creature-bovinae-adult-female-taurotragusoryx,yes,Common Eland (Female)
+item,bovinae:creature-bovinae-adult-female-tetracerusquadricornis,yes,Chousingha (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusangasii,yes,Lowland Nyala (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusbuxtoni,yes,Mountain Nyala (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphuseurycerus,yes,Bongo (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusimberbis,yes,Lesser Kudu (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusscriptus,yes,Harnessed Bushbuck (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusspekii,yes,Sitatunga (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphusstrepsiceros,yes,Greater Kudu (Female)
+item,bovinae:creature-bovinae-adult-female-tragelaphussylvaticus,yes,Cape Bushbuck (Female)
+item,bovinae:creature-bovinae-adult-male-boselaphustragocamelus,yes,Nilgai (Male)
+item,bovinae:creature-bovinae-adult-male-bosprimigeniusprimigenius,yes,Eurasian Aurochs (Male)
+item,bovinae:creature-bovinae-adult-male-bosprimigeniusprimigenius-semitamed,yes,Semitamed Eurasian Aurochs (Male)
+item,bovinae:creature-bovinae-adult-male-bosprimigeniusprimigenius-tamed,yes,Tamed Eurasian Aurochs (Male)
+item,bovinae:creature-bovinae-adult-male-bospriscus,yes,Steppe Bison (Male)
+item,bovinae:creature-bovinae-adult-male-bostaurustaurus-semitamed,yes,Taurine Bull
+item,bovinae:creature-bovinae-adult-male-bostaurustaurus-tamed,yes,Tamed Taurine Bull
+item,bovinae:creature-bovinae-adult-male-bubalusarnee,yes,Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusarnee-semitamed,yes,Semitamed Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusarnee-tamed,yes,Tamed Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusbrevicornis,yes,Short-Horned Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusbubalis-semitamed,yes,Domestic Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusbubalis-tamed,yes,Tamed Domestic Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubaluscebuensis,yes,Cebu Tamaraw (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusdepressicornis,yes,Lowland Anoa (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusgrovesi,yes,Groves's Anoa (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusmephistopheles,yes,Devil-Horned Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusmindorensis,yes,Tamaraw (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusmurrensis,yes,European Water Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-bubalusquarlesi,yes,Mountain Anoa (Male)
+item,bovinae:creature-bovinae-adult-male-pseudoryxnghetinhensis,yes,Saola (Male)
+item,bovinae:creature-bovinae-adult-male-syncerusantiquus,yes,Giant Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-synceruscaffer,yes,African Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-syncerusnanus,yes,Forest Buffalo (Male)
+item,bovinae:creature-bovinae-adult-male-taurotragusderbianus,yes,Giant Eland (Male)
+item,bovinae:creature-bovinae-adult-male-taurotragusoryx,yes,Common Eland (Male)
+item,bovinae:creature-bovinae-adult-male-tetracerusquadricornis,yes,Chousingha (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusangasii,yes,Lowland Nyala (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusbuxtoni,yes,Mountain Nyala (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphuseurycerus,yes,Bongo (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusimberbis,yes,Lesser Kudu (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusscriptus,yes,Harnessed Bushbuck (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusspekii,yes,Sitatunga (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphusstrepsiceros,yes,Greater Kudu (Male)
+item,bovinae:creature-bovinae-adult-male-tragelaphussylvaticus,yes,Cape Bushbuck (Male)
+item,bovinae:creature-bovinae-baby-female-boselaphustragocamelus,yes,Nilgai Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bosprimigeniusprimigenius,yes,Eurasian Aurochs Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bospriscus,yes,Steppe Bison Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bostaurustaurus,yes,Taurine Cattle Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusarnee,yes,Water Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusbrevicornis,yes,Short-Horned Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusbubalis,yes,Domestic Water Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubaluscebuensis,yes,Cebu Tamaraw Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusdepressicornis,yes,Lowland Anoa Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusgrovesi,yes,Groves's Anoa Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusmephistopheles,yes,Devil-Horned Water Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusmindorensis,yes,Tamaraw Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusmurrensis,yes,European Water Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-bubalusquarlesi,yes,Mountain Anoa Calf (Female)
+item,bovinae:creature-bovinae-baby-female-pseudoryxnghetinhensis,yes,Saola Calf (Female)
+item,bovinae:creature-bovinae-baby-female-syncerusantiquus,yes,Giant Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-synceruscaffer,yes,African Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-syncerusnanus,yes,Forest Buffalo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-taurotragusderbianus,yes,Giant Eland Calf (Female)
+item,bovinae:creature-bovinae-baby-female-taurotragusoryx,yes,Common Eland Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tetracerusquadricornis,yes,Chousingha Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusangasii,yes,Lowland Nyala Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusbuxtoni,yes,Mountain Nyala Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphuseurycerus,yes,Bongo Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusimberbis,yes,Lesser Kudu Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusscriptus,yes,Harnessed Bushbuck Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusspekii,yes,Sitatunga Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphusstrepsiceros,yes,Greater Kudu Calf (Female)
+item,bovinae:creature-bovinae-baby-female-tragelaphussylvaticus,yes,Cape Bushbuck Calf (Female)
+item,bovinae:creature-bovinae-baby-male-boselaphustragocamelus,yes,Nilgai Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bosprimigeniusprimigenius,yes,Eurasian Aurochs Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bospriscus,yes,Steppe Bison Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bostaurustaurus,yes,Taurine Cattle Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusarnee,yes,Water Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusbrevicornis,yes,Short-Horned Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusbubalis,yes,Domestic Water Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubaluscebuensis,yes,Cebu Tamaraw Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusdepressicornis,yes,Lowland Anoa Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusgrovesi,yes,Groves's Anoa Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusmephistopheles,yes,Devil-Horned Water Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusmindorensis,yes,Tamaraw Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusmurrensis,yes,European Water Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-bubalusquarlesi,yes,Mountain Anoa Calf (Male)
+item,bovinae:creature-bovinae-baby-male-pseudoryxnghetinhensis,yes,Saola Calf (Male)
+item,bovinae:creature-bovinae-baby-male-syncerusantiquus,yes,Giant Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-synceruscaffer,yes,African Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-syncerusnanus,yes,Forest Buffalo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-taurotragusderbianus,yes,Giant Eland Calf (Male)
+item,bovinae:creature-bovinae-baby-male-taurotragusoryx,yes,Common Eland Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tetracerusquadricornis,yes,Chousingha Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusangasii,yes,Lowland Nyala Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusbuxtoni,yes,Mountain Nyala Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphuseurycerus,yes,Bongo Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusimberbis,yes,Lesser Kudu Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusscriptus,yes,Harnessed Bushbuck Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusspekii,yes,Sitatunga Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphusstrepsiceros,yes,Greater Kudu Calf (Male)
+item,bovinae:creature-bovinae-baby-male-tragelaphussylvaticus,yes,Cape Bushbuck Calf (Male)
+item,bovinae:creature-bovinae-carcass,yes,Bovine Carcass
+item,cervinae:creature-cervidae-cervini-adult-female-megalocerosgiganteus,yes,Giant Deer (Female)
+item,cervinae:creature-cervidae-cervini-adult-female-megalocerosgiganteus-semitamed,yes,Semitamed Giant Deer (Female)
+item,cervinae:creature-cervidae-cervini-adult-female-megalocerosgiganteus-tamed,yes,Tamed Giant Deer (Female)
+item,cervinae:creature-cervidae-cervini-adult-male-megalocerosgiganteus,yes,Giant Deer (Male)
+item,cervinae:creature-cervidae-cervini-adult-male-megalocerosgiganteus-semitamed,yes,Semitamed Giant Deer (Male)
+item,cervinae:creature-cervidae-cervini-adult-male-megalocerosgiganteus-tamed,yes,Tamed Giant Deer (Male)
+item,cervinae:creature-cervidae-cervini-baby-female-megalocerosgiganteus,yes,Giant Deer Calf (Female)
+item,cervinae:creature-cervidae-cervini-baby-male-megalocerosgiganteus,yes,Giant Deer Calf (Male)
+item,cervinae:creature-cervidae-cervini-carcass,yes,Deer Carcass
+item,chelonioidea:creature-chelonioidea-adult-female-carettacaretta,yes,Loggerhead Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-cheloniamydas,yes,Green Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-dermochelyscoriacea,yes,Leatherback Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-eretmochelysimbricata,yes,Hawksbill Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-lepidochelyskempii,yes,Atlantic Ridley Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-lepidochelysolivacea,yes,Pacific Ridley Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-female-natatordepressus,yes,Flatback Sea Turtle (Female)
+item,chelonioidea:creature-chelonioidea-adult-male-carettacaretta,yes,Loggerhead Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-cheloniamydas,yes,Green Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-dermochelyscoriacea,yes,Leatherback Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-eretmochelysimbricata,yes,Hawksbill Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-lepidochelyskempii,yes,Atlantic Ridley Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-lepidochelysolivacea,yes,Pacific Ridley Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-adult-male-natatordepressus,yes,Flatback Sea Turtle (Male)
+item,chelonioidea:creature-chelonioidea-baby-female-carettacaretta,yes,Loggerhead Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-cheloniamydas,yes,Green Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-dermochelyscoriacea,yes,Leatherback Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-eretmochelysimbricata,yes,Hawksbill Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-lepidochelyskempii,yes,Atlantic Ridley Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-lepidochelysolivacea,yes,Pacific Ridley Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-female-natatordepressus,yes,Flatback Sea Turtle Hatchling (Female)
+item,chelonioidea:creature-chelonioidea-baby-male-carettacaretta,yes,Loggerhead Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-cheloniamydas,yes,Green Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-dermochelyscoriacea,yes,Leatherback Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-eretmochelysimbricata,yes,Hawksbill Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-lepidochelyskempii,yes,Atlantic Ridley Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-lepidochelysolivacea,yes,Pacific Ridley Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-baby-male-natatordepressus,yes,Flatback Sea Turtle Hatchling (Male)
+item,chelonioidea:creature-chelonioidea-egg-carettacaretta-raw,yes,Loggerhead Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-cheloniamydas-raw,yes,Green Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-dermochelyscoriacea-raw,yes,Leatherback Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-eretmochelysimbricata-raw,yes,Hawksbill Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-lepidochelyskempii-raw,yes,Atlantic Ridley Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-lepidochelysolivacea-raw,yes,Pacific Ridley Sea Turtle Egg
+item,chelonioidea:creature-chelonioidea-egg-natatordepressus-raw,yes,Flatback Sea Turtle Egg
+item,dinornithidae:creature-acanthisittidae-adult-female-acanthisittachloris,yes,Rifleman (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-dendroscansordecurvirostris,yes,Long-Billed Wren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-pachyplichasjagmi,yes,North Island Stout-Legged Wren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-pachyplichasyaldwyni,yes,South Island Stout-Legged Wren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-traversialyalli,yes,Lyall's Wren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-xenicusgilviventris,yes,New Zealand Rockwren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-female-xenicuslongipes,yes,Bushwren (Female)
+item,dinornithidae:creature-acanthisittidae-adult-male-acanthisittachloris,yes,Rifleman (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-dendroscansordecurvirostris,yes,Long-Billed Wren (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-pachyplichasjagmi,yes,North Island Stout-Legged Wren (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-pachyplichasyaldwyni,yes,South Island Stout-Legged Wren (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-traversialyalli,yes,Lyall's Wren (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-xenicusgilviventris,yes,New Zealand Rockwren (Male)
+item,dinornithidae:creature-acanthisittidae-adult-male-xenicuslongipes,yes,Bushwren (Male)
+item,dinornithidae:creature-acanthisittidae-baby-female-acanthisittachloris,yes,Rifleman Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-dendroscansordecurvirostris,yes,Long-Billed Wren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-pachyplichasjagmi,yes,North Island Stout-Legged Wren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-pachyplichasyaldwyni,yes,South Island Stout-Legged Wren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-traversialyalli,yes,Lyall's Wren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-xenicusgilviventris,yes,New Zealand Rockwren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-female-xenicuslongipes,yes,Bushwren Chick (Female)
+item,dinornithidae:creature-acanthisittidae-baby-male-acanthisittachloris,yes,Rifleman Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-dendroscansordecurvirostris,yes,Long-Billed Wren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-pachyplichasjagmi,yes,North Island Stout-Legged Wren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-pachyplichasyaldwyni,yes,South Island Stout-Legged Wren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-traversialyalli,yes,Lyall's Wren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-xenicusgilviventris,yes,New Zealand Rockwren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-baby-male-xenicuslongipes,yes,Bushwren Chick (Male)
+item,dinornithidae:creature-acanthisittidae-egg-acanthisittachloris-raw,yes,Rifleman Egg
+item,dinornithidae:creature-acanthisittidae-egg-dendroscansordecurvirostris-raw,yes,Long-Billed Wren Egg
+item,dinornithidae:creature-acanthisittidae-egg-pachyplichasjagmi-raw,yes,North Island Stout-Legged Wren Egg
+item,dinornithidae:creature-acanthisittidae-egg-pachyplichasyaldwyni-raw,yes,South Island Stout-Legged Wren Egg
+item,dinornithidae:creature-acanthisittidae-egg-traversialyalli-raw,yes,Lyall's Wren Egg
+item,dinornithidae:creature-acanthisittidae-egg-xenicusgilviventris-raw,yes,New Zealand Rockwren Egg
+item,dinornithidae:creature-acanthisittidae-egg-xenicuslongipes-raw,yes,Bushwren Egg
+item,dinornithidae:creature-acanthisittidae-nest-acanthisittachloris-empty,no,Rifleman Nest
+item,dinornithidae:creature-acanthisittidae-nest-acanthisittachloris-incubating,no,Rifleman Nest
+item,dinornithidae:creature-acanthisittidae-nest-acanthisittachloris-mature,no,Rifleman Nest
+item,dinornithidae:creature-acanthisittidae-nest-dendroscansordecurvirostris-empty,no,Long-Billed Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-dendroscansordecurvirostris-incubating,no,Long-Billed Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-dendroscansordecurvirostris-mature,no,Long-Billed Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasjagmi-empty,no,North Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasjagmi-incubating,no,North Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasjagmi-mature,no,North Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasyaldwyni-empty,no,South Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasyaldwyni-incubating,no,South Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-pachyplichasyaldwyni-mature,no,South Island Stout-Legged Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-traversialyalli-empty,no,Lyall's Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-traversialyalli-incubating,no,Lyall's Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-traversialyalli-mature,no,Lyall's Wren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicusgilviventris-empty,no,New Zealand Rockwren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicusgilviventris-incubating,no,New Zealand Rockwren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicusgilviventris-mature,no,New Zealand Rockwren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicuslongipes-empty,no,Bushwren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicuslongipes-incubating,no,Bushwren Nest
+item,dinornithidae:creature-acanthisittidae-nest-xenicuslongipes-mature,no,Bushwren Nest
+item,dinornithidae:creature-aegothelidae-adult-female-aegothelesnovaezealandiae,yes,New Zealand Owlet-Nightjar (Female)
+item,dinornithidae:creature-aegothelidae-adult-male-aegothelesnovaezealandiae,yes,New Zealand Owlet-Nightjar (Male)
+item,dinornithidae:creature-aegothelidae-baby-female-aegothelesnovaezealandiae,yes,New Zealand Owlet-Nightjar Chick (Female)
+item,dinornithidae:creature-aegothelidae-baby-male-aegothelesnovaezealandiae,yes,New Zealand Owlet-Nightjar Chick (Male)
+item,dinornithidae:creature-aegothelidae-egg-aegothelesnovaezealandiae-raw,yes,New Zealand Owlet-Nightjar Egg
+item,dinornithidae:creature-aegothelidae-nest-aegothelesnovaezealandiae-empty,no,New Zealand Owlet-Nightjar Nest
+item,dinornithidae:creature-aegothelidae-nest-aegothelesnovaezealandiae-incubating,no,New Zealand Owlet-Nightjar Nest
+item,dinornithidae:creature-aegothelidae-nest-aegothelesnovaezealandiae-mature,no,New Zealand Owlet-Nightjar Nest
+item,dinornithidae:creature-anatidae-adult-female-anasaucklandica,yes,Auckland Teal (Female)
+item,dinornithidae:creature-anatidae-adult-female-anaschlorotis,yes,Brown Teal (Female)
+item,dinornithidae:creature-anatidae-adult-female-anasnesiotis,yes,Campbell Teal (Female)
+item,dinornithidae:creature-anatidae-adult-female-chenonettafinschi,yes,Finsch's Duck (Female)
+item,dinornithidae:creature-anatidae-adult-female-cnemiorniscalcitrans,yes,South Island Goose (Female)
+item,dinornithidae:creature-anatidae-adult-female-cnemiornisgracilis,yes,North Island Goose (Female)
+item,dinornithidae:creature-anatidae-adult-male-anasaucklandica,yes,Auckland Teal (Male)
+item,dinornithidae:creature-anatidae-adult-male-anaschlorotis,yes,Brown Teal (Male)
+item,dinornithidae:creature-anatidae-adult-male-anasnesiotis,yes,Campbell Teal (Male)
+item,dinornithidae:creature-anatidae-adult-male-chenonettafinschi,yes,Finsch's Duck (Male)
+item,dinornithidae:creature-anatidae-adult-male-cnemiorniscalcitrans,yes,South Island Goose (Male)
+item,dinornithidae:creature-anatidae-adult-male-cnemiornisgracilis,yes,North Island Goose (Male)
+item,dinornithidae:creature-anatidae-baby-female-anasaucklandica,yes,Auckland Teal Chick (Female)
+item,dinornithidae:creature-anatidae-baby-female-anaschlorotis,yes,Brown Teal Chick (Female)
+item,dinornithidae:creature-anatidae-baby-female-anasnesiotis,yes,Campbell Teal Chick (Female)
+item,dinornithidae:creature-anatidae-baby-female-chenonettafinschi,yes,Finsch's Duck Chick (Female)
+item,dinornithidae:creature-anatidae-baby-female-cnemiorniscalcitrans,yes,South Island Goose Chick (Female)
+item,dinornithidae:creature-anatidae-baby-female-cnemiornisgracilis,yes,North Island Goose Chick (Female)
+item,dinornithidae:creature-anatidae-baby-male-anasaucklandica,yes,Auckland Teal Chick (Male)
+item,dinornithidae:creature-anatidae-baby-male-anaschlorotis,yes,Brown Teal Chick (Male)
+item,dinornithidae:creature-anatidae-baby-male-anasnesiotis,yes,Campbell Teal Chick (Male)
+item,dinornithidae:creature-anatidae-baby-male-chenonettafinschi,yes,Finsch's Duck Chick (Male)
+item,dinornithidae:creature-anatidae-baby-male-cnemiorniscalcitrans,yes,South Island Goose Chick (Male)
+item,dinornithidae:creature-anatidae-baby-male-cnemiornisgracilis,yes,North Island Goose Chick (Male)
+item,dinornithidae:creature-anatidae-egg-anasaucklandica-raw,yes,Auckland Teal Egg
+item,dinornithidae:creature-anatidae-egg-anaschlorotis-raw,yes,Brown Teal Egg
+item,dinornithidae:creature-anatidae-egg-anasnesiotis-raw,yes,Campbell Teal Egg
+item,dinornithidae:creature-anatidae-egg-chenonettafinschi-raw,yes,Finsch's Duck Egg
+item,dinornithidae:creature-anatidae-egg-cnemiorniscalcitrans-raw,yes,South Island Goose Egg
+item,dinornithidae:creature-anatidae-egg-cnemiornisgracilis-raw,yes,North Island Goose Egg
+item,dinornithidae:creature-anatidae-nest-anasaucklandica-empty,no,Auckland Teal Nest
+item,dinornithidae:creature-anatidae-nest-anasaucklandica-incubating,no,Auckland Teal Nest
+item,dinornithidae:creature-anatidae-nest-anasaucklandica-mature,no,Auckland Teal Nest
+item,dinornithidae:creature-anatidae-nest-anaschlorotis-empty,no,Brown Teal Nest
+item,dinornithidae:creature-anatidae-nest-anaschlorotis-incubating,no,Brown Teal Nest
+item,dinornithidae:creature-anatidae-nest-anaschlorotis-mature,no,Brown Teal Nest
+item,dinornithidae:creature-anatidae-nest-anasnesiotis-empty,no,Campbell Teal Nest
+item,dinornithidae:creature-anatidae-nest-anasnesiotis-incubating,no,Campbell Teal Nest
+item,dinornithidae:creature-anatidae-nest-anasnesiotis-mature,no,Campbell Teal Nest
+item,dinornithidae:creature-anatidae-nest-chenonettafinschi-empty,no,Finsch's Duck Nest
+item,dinornithidae:creature-anatidae-nest-chenonettafinschi-incubating,no,Finsch's Duck Nest
+item,dinornithidae:creature-anatidae-nest-chenonettafinschi-mature,no,Finsch's Duck Nest
+item,dinornithidae:creature-anatidae-nest-cnemiorniscalcitrans-empty,no,South Island Goose Nest
+item,dinornithidae:creature-anatidae-nest-cnemiorniscalcitrans-incubating,no,South Island Goose Nest
+item,dinornithidae:creature-anatidae-nest-cnemiorniscalcitrans-mature,no,South Island Goose Nest
+item,dinornithidae:creature-anatidae-nest-cnemiornisgracilis-empty,no,North Island Goose Nest
+item,dinornithidae:creature-anatidae-nest-cnemiornisgracilis-incubating,no,North Island Goose Nest
+item,dinornithidae:creature-anatidae-nest-cnemiornisgracilis-mature,no,North Island Goose Nest
+item,dinornithidae:creature-apterygidae-adult-female-apteryxaustralis,yes,Southern Brown Kiwi (Female)
+item,dinornithidae:creature-apterygidae-adult-female-apteryxhaastii,yes,Great Spotted Kiwi (Female)
+item,dinornithidae:creature-apterygidae-adult-female-apteryxmantelli,yes,North Island Brown Kiwi (Female)
+item,dinornithidae:creature-apterygidae-adult-female-apteryxowenii,yes,Little Spotted Kiwi (Female)
+item,dinornithidae:creature-apterygidae-adult-female-apteryxrowi,yes,Okarito Kiwi (Female)
+item,dinornithidae:creature-apterygidae-adult-male-apteryxaustralis,yes,Southern Brown Kiwi (Male)
+item,dinornithidae:creature-apterygidae-adult-male-apteryxhaastii,yes,Great Spotted Kiwi (Male)
+item,dinornithidae:creature-apterygidae-adult-male-apteryxmantelli,yes,North Island Brown Kiwi (Male)
+item,dinornithidae:creature-apterygidae-adult-male-apteryxowenii,yes,Little Spotted Kiwi (Male)
+item,dinornithidae:creature-apterygidae-adult-male-apteryxrowi,yes,Okarito Kiwi (Male)
+item,dinornithidae:creature-apterygidae-baby-female-apteryxaustralis,yes,Southern Brown Kiwi Chick (Female)
+item,dinornithidae:creature-apterygidae-baby-female-apteryxhaastii,yes,Great Spotted Kiwi Chick (Female)
+item,dinornithidae:creature-apterygidae-baby-female-apteryxmantelli,yes,North Island Brown Kiwi Chick (Female)
+item,dinornithidae:creature-apterygidae-baby-female-apteryxowenii,yes,Little Spotted Kiwi Chick (Female)
+item,dinornithidae:creature-apterygidae-baby-female-apteryxrowi,yes,Okarito Kiwi Chick (Female)
+item,dinornithidae:creature-apterygidae-baby-male-apteryxaustralis,yes,Southern Brown Kiwi Chick (Male)
+item,dinornithidae:creature-apterygidae-baby-male-apteryxhaastii,yes,Great Spotted Kiwi Chick (Male)
+item,dinornithidae:creature-apterygidae-baby-male-apteryxmantelli,yes,North Island Brown Kiwi Chick (Male)
+item,dinornithidae:creature-apterygidae-baby-male-apteryxowenii,yes,Little Spotted Kiwi Chick (Male)
+item,dinornithidae:creature-apterygidae-baby-male-apteryxrowi,yes,Okarito Kiwi Chick (Male)
+item,dinornithidae:creature-apterygidae-egg-apteryxaustralis-raw,yes,Southern Brown Kiwi Egg
+item,dinornithidae:creature-apterygidae-egg-apteryxhaastii-raw,yes,Great Spotted Kiwi Egg
+item,dinornithidae:creature-apterygidae-egg-apteryxmantelli-raw,yes,North Island Brown Kiwi Egg
+item,dinornithidae:creature-apterygidae-egg-apteryxowenii-raw,yes,Little Spotted Kiwi Egg
+item,dinornithidae:creature-apterygidae-egg-apteryxrowi-raw,yes,Okarito Kiwi Egg
+item,dinornithidae:creature-apterygidae-nest-apteryxaustralis-empty,no,Southern Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxaustralis-incubating,no,Southern Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxaustralis-mature,no,Southern Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxhaastii-empty,no,Great Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxhaastii-incubating,no,Great Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxhaastii-mature,no,Great Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxmantelli-empty,no,North Island Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxmantelli-incubating,no,North Island Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxmantelli-mature,no,North Island Brown Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxowenii-empty,no,Little Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxowenii-incubating,no,Little Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxowenii-mature,no,Little Spotted Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxrowi-empty,no,Okarito Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxrowi-incubating,no,Okarito Kiwi Nest
+item,dinornithidae:creature-apterygidae-nest-apteryxrowi-mature,no,Okarito Kiwi Nest
+item,dinornithidae:creature-aptornithidae-adult-female-aptornisdefossor,yes,South Island Adzebill (Female)
+item,dinornithidae:creature-aptornithidae-adult-female-aptornisotidiformis,yes,North Island Adzebill (Female)
+item,dinornithidae:creature-aptornithidae-adult-male-aptornisdefossor,yes,South Island Adzebill (Male)
+item,dinornithidae:creature-aptornithidae-adult-male-aptornisotidiformis,yes,North Island Adzebill (Male)
+item,dinornithidae:creature-aptornithidae-baby-female-aptornisdefossor,yes,South Island Adzebill Chick (Female)
+item,dinornithidae:creature-aptornithidae-baby-female-aptornisotidiformis,yes,North Island Adzebill Chick (Female)
+item,dinornithidae:creature-aptornithidae-baby-male-aptornisdefossor,yes,South Island Adzebill Chick (Male)
+item,dinornithidae:creature-aptornithidae-baby-male-aptornisotidiformis,yes,North Island Adzebill Chick (Male)
+item,dinornithidae:creature-aptornithidae-egg-aptornisdefossor-raw,yes,South Island Adzebill Egg
+item,dinornithidae:creature-aptornithidae-egg-aptornisotidiformis-raw,yes,North Island Adzebill Egg
+item,dinornithidae:creature-aptornithidae-nest-aptornisdefossor-empty,no,South Island Adzebill Nest
+item,dinornithidae:creature-aptornithidae-nest-aptornisdefossor-incubating,no,South Island Adzebill Nest
+item,dinornithidae:creature-aptornithidae-nest-aptornisdefossor-mature,no,South Island Adzebill Nest
+item,dinornithidae:creature-aptornithidae-nest-aptornisotidiformis-empty,no,North Island Adzebill Nest
+item,dinornithidae:creature-aptornithidae-nest-aptornisotidiformis-incubating,no,North Island Adzebill Nest
+item,dinornithidae:creature-aptornithidae-nest-aptornisotidiformis-mature,no,North Island Adzebill Nest
+item,dinornithidae:creature-dinornithidae-adult-female-dinornisnovaezealandiae,yes,North Island Giant Moa (Female)
+item,dinornithidae:creature-dinornithidae-adult-female-dinornisrobustus,yes,South Island Giant Moa (Female)
+item,dinornithidae:creature-dinornithidae-adult-male-dinornisnovaezealandiae,yes,North Island Giant Moa (Male)
+item,dinornithidae:creature-dinornithidae-adult-male-dinornisrobustus,yes,South Island Giant Moa (Male)
+item,dinornithidae:creature-dinornithidae-baby-female-dinornisnovaezealandiae,yes,North Island Giant Moa Chick (Female)
+item,dinornithidae:creature-dinornithidae-baby-female-dinornisrobustus,yes,South Island Giant Moa Chick (Female)
+item,dinornithidae:creature-dinornithidae-baby-male-dinornisnovaezealandiae,yes,North Island Giant Moa Chick (Male)
+item,dinornithidae:creature-dinornithidae-baby-male-dinornisrobustus,yes,South Island Giant Moa Chick (Male)
+item,dinornithidae:creature-dinornithidae-carcass,no,Moa Carcass
+item,dinornithidae:creature-dinornithidae-egg-dinornisnovaezealandiae-raw,yes,North Island Giant Moa Egg
+item,dinornithidae:creature-dinornithidae-egg-dinornisrobustus-raw,yes,South Island Giant Moa Egg
+item,dinornithidae:creature-dinornithidae-nest-dinornisnovaezealandiae-empty,no,North Island Giant Moa Nest
+item,dinornithidae:creature-dinornithidae-nest-dinornisnovaezealandiae-incubating,no,North Island Giant Moa Nest
+item,dinornithidae:creature-dinornithidae-nest-dinornisnovaezealandiae-mature,no,North Island Giant Moa Nest
+item,dinornithidae:creature-dinornithidae-nest-dinornisrobustus-empty,no,South Island Giant Moa Nest
+item,dinornithidae:creature-dinornithidae-nest-dinornisrobustus-incubating,no,South Island Giant Moa Nest
+item,dinornithidae:creature-dinornithidae-nest-dinornisrobustus-mature,no,South Island Giant Moa Nest
+item,dinornithidae:creature-emeidae-adult-female-anomalopteryxdidiformis,yes,Bush Moa (Female)
+item,dinornithidae:creature-emeidae-adult-female-emeuscrassus,yes,Eastern Moa (Female)
+item,dinornithidae:creature-emeidae-adult-female-euryapteryxcurtus,yes,Coastal Moa (Female)
+item,dinornithidae:creature-emeidae-adult-female-pachyornisaustralis,yes,Crested Moa (Female)
+item,dinornithidae:creature-emeidae-adult-female-pachyorniselephantopus,yes,Heavy-Footed Moa (Female)
+item,dinornithidae:creature-emeidae-adult-female-pachyornisgeranoides,yes,Mantell's Moa (Female)
+item,dinornithidae:creature-emeidae-adult-male-anomalopteryxdidiformis,yes,Bush Moa (Male)
+item,dinornithidae:creature-emeidae-adult-male-emeuscrassus,yes,Eastern Moa (Male)
+item,dinornithidae:creature-emeidae-adult-male-euryapteryxcurtus,yes,Coastal Moa (Male)
+item,dinornithidae:creature-emeidae-adult-male-pachyornisaustralis,yes,Crested Moa (Male)
+item,dinornithidae:creature-emeidae-adult-male-pachyorniselephantopus,yes,Heavy-Footed Moa (Male)
+item,dinornithidae:creature-emeidae-adult-male-pachyornisgeranoides,yes,Mantell's Moa (Male)
+item,dinornithidae:creature-emeidae-baby-female-anomalopteryxdidiformis,yes,Bush Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-female-emeuscrassus,yes,Eastern Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-female-euryapteryxcurtus,yes,Coastal Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-female-pachyornisaustralis,yes,Crested Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-female-pachyorniselephantopus,yes,Heavy-Footed Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-female-pachyornisgeranoides,yes,Mantell's Moa Chick (Female)
+item,dinornithidae:creature-emeidae-baby-male-anomalopteryxdidiformis,yes,Bush Moa Chick (Male)
+item,dinornithidae:creature-emeidae-baby-male-emeuscrassus,yes,Eastern Moa Chick (Male)
+item,dinornithidae:creature-emeidae-baby-male-euryapteryxcurtus,yes,Coastal Moa Chick (Male)
+item,dinornithidae:creature-emeidae-baby-male-pachyornisaustralis,yes,Crested Moa Chick (Male)
+item,dinornithidae:creature-emeidae-baby-male-pachyorniselephantopus,yes,Heavy-Footed Moa Chick (Male)
+item,dinornithidae:creature-emeidae-baby-male-pachyornisgeranoides,yes,Mantell's Moa Chick (Male)
+item,dinornithidae:creature-emeidae-egg-anomalopteryxdidiformis-raw,yes,Bush Moa Egg
+item,dinornithidae:creature-emeidae-egg-emeuscrassus-raw,yes,Eastern Moa Egg
+item,dinornithidae:creature-emeidae-egg-euryapteryxcurtus-raw,yes,Coastal Moa Egg
+item,dinornithidae:creature-emeidae-egg-pachyornisaustralis-raw,yes,Crested Moa Egg
+item,dinornithidae:creature-emeidae-egg-pachyorniselephantopus-raw,yes,Heavy-Footed Moa Egg
+item,dinornithidae:creature-emeidae-egg-pachyornisgeranoides-raw,yes,Mantell's Moa Egg
+item,dinornithidae:creature-emeidae-nest-anomalopteryxdidiformis-empty,no,Bush Moa Nest
+item,dinornithidae:creature-emeidae-nest-anomalopteryxdidiformis-incubating,no,Bush Moa Nest
+item,dinornithidae:creature-emeidae-nest-anomalopteryxdidiformis-mature,no,Bush Moa Nest
+item,dinornithidae:creature-emeidae-nest-emeuscrassus-empty,no,Eastern Moa Nest
+item,dinornithidae:creature-emeidae-nest-emeuscrassus-incubating,no,Eastern Moa Nest
+item,dinornithidae:creature-emeidae-nest-emeuscrassus-mature,no,Eastern Moa Nest
+item,dinornithidae:creature-emeidae-nest-euryapteryxcurtus-empty,no,Coastal Moa Nest
+item,dinornithidae:creature-emeidae-nest-euryapteryxcurtus-incubating,no,Coastal Moa Nest
+item,dinornithidae:creature-emeidae-nest-euryapteryxcurtus-mature,no,Coastal Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisaustralis-empty,no,Crested Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisaustralis-incubating,no,Crested Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisaustralis-mature,no,Crested Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyorniselephantopus-empty,no,Heavy-Footed Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyorniselephantopus-incubating,no,Heavy-Footed Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyorniselephantopus-mature,no,Heavy-Footed Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisgeranoides-empty,no,Mantell's Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisgeranoides-incubating,no,Mantell's Moa Nest
+item,dinornithidae:creature-emeidae-nest-pachyornisgeranoides-mature,no,Mantell's Moa Nest
+item,dinornithidae:creature-megalapterygidae-adult-female-megalapteryxdidinus,yes,Upland Moa (Female)
+item,dinornithidae:creature-megalapterygidae-adult-male-megalapteryxdidinus,yes,Upland Moa (Male)
+item,dinornithidae:creature-megalapterygidae-baby-female-megalapteryxdidinus,yes,Upland Moa Chick (Female)
+item,dinornithidae:creature-megalapterygidae-baby-male-megalapteryxdidinus,yes,Upland Moa Chick (Male)
+item,dinornithidae:creature-megalapterygidae-egg-megalapteryxdidinus-raw,yes,Upland Moa Egg
+item,dinornithidae:creature-megalapterygidae-nest-megalapteryxdidinus-empty,no,Upland Moa Nest
+item,dinornithidae:creature-megalapterygidae-nest-megalapteryxdidinus-incubating,no,Upland Moa Nest
+item,dinornithidae:creature-megalapterygidae-nest-megalapteryxdidinus-mature,no,Upland Moa Nest
+item,dinornithidae:creature-rallidae-adult-female-cabalusmodestus,yes,Chatham Rail (Female)
+item,dinornithidae:creature-rallidae-adult-female-diaphorapteryxhawkinsi,yes,Hawkin's Rail (Female)
+item,dinornithidae:creature-rallidae-adult-female-gallirallusaustralis,yes,Weka (Female)
+item,dinornithidae:creature-rallidae-adult-female-hypotaenidiadieffenbachii,yes,Dieffenbach's Rail (Female)
+item,dinornithidae:creature-rallidae-adult-female-hypotaenidiaphilippensis,yes,Banded Rail (Female)
+item,dinornithidae:creature-rallidae-adult-female-hypotaenidiasylvestris,yes,Lord Howe Woodhen (Female)
+item,dinornithidae:creature-rallidae-adult-female-lewiniamuelleri,yes,Auckland Rail (Female)
+item,dinornithidae:creature-rallidae-adult-female-porphyrioalbus,yes,Lord Howe Swamphen (Female)
+item,dinornithidae:creature-rallidae-adult-female-porphyriohochstetteri,yes,South Island Takahe (Female)
+item,dinornithidae:creature-rallidae-adult-female-porphyriomantelli,yes,North Island Takahe (Female)
+item,dinornithidae:creature-rallidae-adult-female-tribonyxhodgenorum,yes,Hodgens' Waterhen (Female)
+item,dinornithidae:creature-rallidae-adult-male-cabalusmodestus,yes,Chatham Rail (Male)
+item,dinornithidae:creature-rallidae-adult-male-diaphorapteryxhawkinsi,yes,Hawkin's Rail (Male)
+item,dinornithidae:creature-rallidae-adult-male-gallirallusaustralis,yes,Weka (Male)
+item,dinornithidae:creature-rallidae-adult-male-hypotaenidiadieffenbachii,yes,Dieffenbach's Rail (Male)
+item,dinornithidae:creature-rallidae-adult-male-hypotaenidiaphilippensis,yes,Banded Rail (Male)
+item,dinornithidae:creature-rallidae-adult-male-hypotaenidiasylvestris,yes,Lord Howe Woodhen (Male)
+item,dinornithidae:creature-rallidae-adult-male-lewiniamuelleri,yes,Auckland Rail (Male)
+item,dinornithidae:creature-rallidae-adult-male-porphyrioalbus,yes,Lord Howe Swamphen (Male)
+item,dinornithidae:creature-rallidae-adult-male-porphyriohochstetteri,yes,South Island Takahe (Male)
+item,dinornithidae:creature-rallidae-adult-male-porphyriomantelli,yes,North Island Takahe (Male)
+item,dinornithidae:creature-rallidae-adult-male-tribonyxhodgenorum,yes,Hodgens' Waterhen (Male)
+item,dinornithidae:creature-rallidae-baby-female-cabalusmodestus,yes,Chatham Rail Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-diaphorapteryxhawkinsi,yes,Hawkin's Rail Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-gallirallusaustralis,yes,Weka Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-hypotaenidiadieffenbachii,yes,Dieffenbach's Rail Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-hypotaenidiaphilippensis,yes,Banded Rail Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-hypotaenidiasylvestris,yes,Lord Howe Woodhen Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-lewiniamuelleri,yes,Auckland Rail Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-porphyrioalbus,yes,Lord Howe Swamphen Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-porphyriohochstetteri,yes,South Island Takahe Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-porphyriomantelli,yes,North Island Takahe Chick (Female)
+item,dinornithidae:creature-rallidae-baby-female-tribonyxhodgenorum,yes,Hodgens' Waterhen Chick (Female)
+item,dinornithidae:creature-rallidae-baby-male-cabalusmodestus,yes,Chatham Rail Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-diaphorapteryxhawkinsi,yes,Hawkin's Rail Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-gallirallusaustralis,yes,Weka Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-hypotaenidiadieffenbachii,yes,Dieffenbach's Rail Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-hypotaenidiaphilippensis,yes,Banded Rail Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-hypotaenidiasylvestris,yes,Lord Howe Woodhen Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-lewiniamuelleri,yes,Auckland Rail Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-porphyrioalbus,yes,Lord Howe Swamphen Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-porphyriohochstetteri,yes,South Island Takahe Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-porphyriomantelli,yes,North Island Takahe Chick (Male)
+item,dinornithidae:creature-rallidae-baby-male-tribonyxhodgenorum,yes,Hodgens' Waterhen Chick (Male)
+item,dinornithidae:creature-rallidae-egg-cabalusmodestus-raw,yes,Chatham Rail Egg
+item,dinornithidae:creature-rallidae-egg-diaphorapteryxhawkinsi-raw,yes,Hawkin's Rail Egg
+item,dinornithidae:creature-rallidae-egg-gallirallusaustralis-raw,yes,Weka Egg
+item,dinornithidae:creature-rallidae-egg-hypotaenidiadieffenbachii-raw,yes,Dieffenbach's Rail Egg
+item,dinornithidae:creature-rallidae-egg-hypotaenidiaphilippensis-raw,yes,Banded Rail Egg
+item,dinornithidae:creature-rallidae-egg-hypotaenidiasylvestris-raw,yes,Lord Howe Woodhen Egg
+item,dinornithidae:creature-rallidae-egg-lewiniamuelleri-raw,yes,Auckland Rail Egg
+item,dinornithidae:creature-rallidae-egg-porphyrioalbus-raw,yes,Lord Howe Swamphen Egg
+item,dinornithidae:creature-rallidae-egg-porphyriohochstetteri-raw,yes,South Island Takahe Egg
+item,dinornithidae:creature-rallidae-egg-porphyriomantelli-raw,yes,North Island Takahe Egg
+item,dinornithidae:creature-rallidae-egg-tribonyxhodgenorum-raw,yes,Hodgens' Waterhen Egg
+item,dinornithidae:creature-rallidae-nest-cabalusmodestus-empty,no,Chatham Rail Nest
+item,dinornithidae:creature-rallidae-nest-cabalusmodestus-incubating,no,Chatham Rail Nest
+item,dinornithidae:creature-rallidae-nest-cabalusmodestus-mature,no,Chatham Rail Nest
+item,dinornithidae:creature-rallidae-nest-diaphorapteryxhawkinsi-empty,no,Hawkin's Rail Nest
+item,dinornithidae:creature-rallidae-nest-diaphorapteryxhawkinsi-incubating,no,Hawkin's Rail Nest
+item,dinornithidae:creature-rallidae-nest-diaphorapteryxhawkinsi-mature,no,Hawkin's Rail Nest
+item,dinornithidae:creature-rallidae-nest-gallirallusaustralis-empty,no,Weka Nest
+item,dinornithidae:creature-rallidae-nest-gallirallusaustralis-incubating,no,Weka Nest
+item,dinornithidae:creature-rallidae-nest-gallirallusaustralis-mature,no,Weka Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiadieffenbachii-empty,no,Dieffenbach's Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiadieffenbachii-incubating,no,Dieffenbach's Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiadieffenbachii-mature,no,Dieffenbach's Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiaphilippensis-empty,no,Banded Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiaphilippensis-incubating,no,Banded Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiaphilippensis-mature,no,Banded Rail Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiasylvestris-empty,no,Lord Howe Woodhen Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiasylvestris-incubating,no,Lord Howe Woodhen Nest
+item,dinornithidae:creature-rallidae-nest-hypotaenidiasylvestris-mature,no,Lord Howe Woodhen Nest
+item,dinornithidae:creature-rallidae-nest-lewiniamuelleri-empty,no,Auckland Rail Nest
+item,dinornithidae:creature-rallidae-nest-lewiniamuelleri-incubating,no,Auckland Rail Nest
+item,dinornithidae:creature-rallidae-nest-lewiniamuelleri-mature,no,Auckland Rail Nest
+item,dinornithidae:creature-rallidae-nest-porphyrioalbus-empty,no,Lord Howe Swamphen Nest
+item,dinornithidae:creature-rallidae-nest-porphyrioalbus-incubating,no,Lord Howe Swamphen Nest
+item,dinornithidae:creature-rallidae-nest-porphyrioalbus-mature,no,Lord Howe Swamphen Nest
+item,dinornithidae:creature-rallidae-nest-porphyriohochstetteri-empty,no,South Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-porphyriohochstetteri-incubating,no,South Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-porphyriohochstetteri-mature,no,South Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-porphyriomantelli-empty,no,North Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-porphyriomantelli-incubating,no,North Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-porphyriomantelli-mature,no,North Island Takahe Nest
+item,dinornithidae:creature-rallidae-nest-tribonyxhodgenorum-empty,no,Hodgens' Waterhen Nest
+item,dinornithidae:creature-rallidae-nest-tribonyxhodgenorum-incubating,no,Hodgens' Waterhen Nest
+item,dinornithidae:creature-rallidae-nest-tribonyxhodgenorum-mature,no,Hodgens' Waterhen Nest
+item,dinornithidae:creature-strigopidae-adult-female-strigopshabroptila,yes,Kakapo (Female)
+item,dinornithidae:creature-strigopidae-adult-male-strigopshabroptila,yes,Kakapo (Male)
+item,dinornithidae:creature-strigopidae-baby-female-strigopshabroptila,yes,Kakapo Chick (Female)
+item,dinornithidae:creature-strigopidae-baby-male-strigopshabroptila,yes,Kakapo Chick (Male)
+item,dinornithidae:creature-strigopidae-egg-strigopshabroptila-raw,yes,Kakapo Egg
+item,dinornithidae:creature-strigopidae-nest-strigopshabroptila-empty,no,Kakapo Nest
+item,dinornithidae:creature-strigopidae-nest-strigopshabroptila-incubating,no,Kakapo Nest
+item,dinornithidae:creature-strigopidae-nest-strigopshabroptila-mature,no,Kakapo Nest
+item,felinae:creature-felinae-adult-female-caracalcaracal,yes,Caracal (Female)
+item,felinae:creature-felinae-adult-female-lynxcanadensis,yes,Canada Lynx (Female)
+item,felinae:creature-felinae-adult-female-lynxlynx,yes,Eurasian Lynx (Female)
+item,felinae:creature-felinae-adult-female-lynxpardinus,yes,Iberian Lynx (Female)
+item,felinae:creature-felinae-adult-male-caracalcaracal,yes,Caracal (Male)
+item,felinae:creature-felinae-adult-male-lynxcanadensis,yes,Canada Lynx (Male)
+item,felinae:creature-felinae-adult-male-lynxlynx,yes,Eurasian Lynx (Male)
+item,felinae:creature-felinae-adult-male-lynxpardinus,yes,Iberian Lynx (Male)
+item,felinae:creature-felinae-baby-female-caracalcaracal,yes,Caracal Kitten (Female)
+item,felinae:creature-felinae-baby-female-lynxcanadensis,yes,Canada Lynx Kitten (Female)
+item,felinae:creature-felinae-baby-female-lynxlynx,yes,Eurasian Lynx Kitten (Female)
+item,felinae:creature-felinae-baby-female-lynxpardinus,yes,Iberian Lynx Kitten (Female)
+item,felinae:creature-felinae-baby-male-caracalcaracal,yes,Caracal Kitten (Male)
+item,felinae:creature-felinae-baby-male-lynxcanadensis,yes,Canada Lynx Kitten (Male)
+item,felinae:creature-felinae-baby-male-lynxlynx,yes,Eurasian Lynx Kitten (Male)
+item,felinae:creature-felinae-baby-male-lynxpardinus,yes,Iberian Lynx Kitten (Male)
+item,feverstonewilds:creature-bison-calf-tamed,yes,Tamed Bison Calf
+item,feverstonewilds:creature-bison-calf-wild,yes,Wild Bison Calf
+item,feverstonewilds:creature-bison-tamed-female,yes,Tamed Bison Cow
+item,feverstonewilds:creature-bison-tamed-male,yes,Tamed Bison Bull
+item,feverstonewilds:creature-bison-wild-female,yes,Wild Bison Cow
+item,feverstonewilds:creature-bison-wild-male,yes,Wild Bison Bull
+item,feverstonewilds:creature-buromenfish-freshwater,yes,Freshwater Buromenfish
+item,feverstonewilds:creature-buromenfish-saltwater,yes,Saltwater Buromenfish
+item,feverstonewilds:creature-cockatrice-chick,yes,Cockatrice chick
+item,feverstonewilds:creature-cockatrice-female,yes,Female Cockatrice
+item,feverstonewilds:creature-cockatrice-male,yes,Male Cockatrice
+item,feverstonewilds:creature-direwolf-female,yes,Female Direwolf
+item,feverstonewilds:creature-direwolf-male,yes,Male Direwolf
+item,feverstonewilds:creature-direwolf-pup,yes,Direwolf Pup
+item,feverstonewilds:creature-discus-freshwater,yes,Freshwater Discus
+item,feverstonewilds:creature-eel-freshwater,yes,Freshwater Eel
+item,feverstonewilds:creature-eel-saltwater,yes,Saltwater Eel
+item,feverstonewilds:creature-faunling-female,yes,Female Faunling
+item,feverstonewilds:creature-faunling-male,yes,Male Faunling
+item,feverstonewilds:creature-foal-tamed-donkey,yes,Tamed Donkey Foal
+item,feverstonewilds:creature-foal-tamed-quarter,yes,Tamed Quarter-Horse Foal
+item,feverstonewilds:creature-foal-tamed-shire,yes,Tamed Shire Foal
+item,feverstonewilds:creature-foal-wild-donkey,yes,Wild Donkey Foal
+item,feverstonewilds:creature-foal-wild-quarter,yes,Wild Quarter-Horse Foal
+item,feverstonewilds:creature-foal-wild-shire,yes,Wild Shire Foal
+item,feverstonewilds:creature-geodecrab,yes,Geode Crab
+item,feverstonewilds:creature-ghostfish-freshwater,yes,Freshwater Ghostfish
+item,feverstonewilds:creature-ghostfish-saltwater,yes,Saltwater Ghostfish
+item,feverstonewilds:creature-giraffe-female-adult,yes,Female Giraffe
+item,feverstonewilds:creature-giraffe-female-calf,yes,Young Giraffe
+item,feverstonewilds:creature-giraffe-male-adult,yes,Male Giraffe
+item,feverstonewilds:creature-giraffe-male-calf,yes,Young Giraffe
+item,feverstonewilds:creature-golem-andesite-cassiterite,yes,Andesite Golem
+item,feverstonewilds:creature-golem-andesite-hematite,yes,Andesite Golem
+item,feverstonewilds:creature-golem-andesite-nativecopper,yes,Andesite Golem
+item,feverstonewilds:creature-golem-basalt-cassiterite,yes,Basalt Golem
+item,feverstonewilds:creature-golem-basalt-hematite,yes,Basalt Golem
+item,feverstonewilds:creature-golem-basalt-nativecopper,yes,Basalt Golem
+item,feverstonewilds:creature-golem-granite-cassiterite,yes,Granite Golem
+item,feverstonewilds:creature-golem-granite-hematite,yes,Granite Golem
+item,feverstonewilds:creature-golem-granite-nativecopper,yes,Granite Golem
+item,feverstonewilds:creature-golem-limestone-hematite,yes,Limestone Golem
+item,feverstonewilds:creature-golem-limestone-nativecopper,yes,Limestone Golem
+item,feverstonewilds:creature-griffon-adolescent-tamed-female,yes,Tamed Female Adolescent Griffon
+item,feverstonewilds:creature-griffon-adolescent-tamed-male,yes,Tamed Male Adolescent Griffon
+item,feverstonewilds:creature-griffon-adolescent-wild-female,yes,Female Adolescent Griffon
+item,feverstonewilds:creature-griffon-adolescent-wild-male,yes,Male Adolescent Griffon
+item,feverstonewilds:creature-griffon-cub-tamed,yes,Tamed Griffon Cub
+item,feverstonewilds:creature-griffon-cub-wild,yes,Wild Griffon Cub
+item,feverstonewilds:creature-griffon-egg,yes,Griffon Egg
+item,feverstonewilds:creature-griffon-egg-broken,yes,Broken Griffon Egg
+item,feverstonewilds:creature-griffon-juvenile-tamed-female,yes,Tamed Female Juvenile Griffon
+item,feverstonewilds:creature-griffon-juvenile-tamed-male,yes,Tamed Male Juvenile Griffon
+item,feverstonewilds:creature-griffon-juvenile-wild-female,yes,Female Juvenile Griffon
+item,feverstonewilds:creature-griffon-juvenile-wild-male,yes,Male Juvenile Griffon
+item,feverstonewilds:creature-griffon-tamed-female,yes,Tamed Female Griffon
+item,feverstonewilds:creature-griffon-tamed-male,yes,Tamed Male Griffon
+item,feverstonewilds:creature-griffon-wild-female,yes,Wild Female Griffon
+item,feverstonewilds:creature-griffon-wild-male,yes,Wild Male Griffon
+item,feverstonewilds:creature-hellboar-female,yes,Female hellboar
+item,feverstonewilds:creature-hellboar-male,yes,Male hellboar
+item,feverstonewilds:creature-hellboar-piglet,yes,Hellboar piglet
+item,feverstonewilds:creature-horse-tamed-female-donkey,yes,Tamed Female Donkey
+item,feverstonewilds:creature-horse-tamed-female-quarter,yes,Tamed Quarter-Horse Mare
+item,feverstonewilds:creature-horse-tamed-female-shire,yes,Tamed Shire Mare
+item,feverstonewilds:creature-horse-tamed-male-donkey,yes,Tamed Male Donkey
+item,feverstonewilds:creature-horse-tamed-male-quarter,yes,Tamed Quarter-Horse Stallion
+item,feverstonewilds:creature-horse-tamed-male-shire,yes,Tamed Shire Stallion
+item,feverstonewilds:creature-horse-wild-female-donkey,yes,Wild Female Donkey
+item,feverstonewilds:creature-horse-wild-female-quarter,yes,Wild Quarter-Horse Mare
+item,feverstonewilds:creature-horse-wild-female-shire,yes,Wild Shire Mare
+item,feverstonewilds:creature-horse-wild-male-donkey,yes,Wild Male Donkey
+item,feverstonewilds:creature-horse-wild-male-quarter,yes,Wild Quarter-Horse Stallion
+item,feverstonewilds:creature-horse-wild-male-shire,yes,Wild Shire Stallion
+item,feverstonewilds:creature-orca,yes,Orca
+item,feverstonewilds:creature-ostrich-chick,yes,Ostrich chick
+item,feverstonewilds:creature-ostrich-female,yes,Female ostrich
+item,feverstonewilds:creature-ostrich-male,yes,Male ostrich
+item,feverstonewilds:creature-scorpion,yes,Scorpion
+item,feverstonewilds:creature-shark-freshwater,yes,Freshwater Bullshark
+item,feverstonewilds:creature-shark-hammerhead,yes,Hammerhead Shark
+item,feverstonewilds:creature-shark-saltwater,yes,Saltwater Bullshark
+item,feverstonewilds:creature-snail,yes,A snail.
+item,feverstonewilds:creature-spider,yes,Spider
+item,feverstonewilds:creature-stingray-freshwater,yes,Freshwater Stingray
+item,feverstonewilds:creature-stingray-saltwater,yes,Saltwater Stingray
+item,feverstonewilds:creature-tame-cockatrice-chick,yes,Tamed Cockatrice chick
+item,feverstonewilds:creature-tame-cockatrice-female,yes,Tamed Female Cockatrice
+item,feverstonewilds:creature-tame-cockatrice-male,yes,Tamed Male Cockatrice
+item,feverstonewilds:creature-tame-direwolf-female,yes,Tamed Female Direwolf
+item,feverstonewilds:creature-tame-direwolf-male,yes,Tamed Male Direwolf
+item,feverstonewilds:creature-tame-direwolf-pup,yes,Tamed Direwolf Pup
+item,feverstonewilds:creature-tame-ostrich-chick,yes,Tamed ostrich chick
+item,feverstonewilds:creature-tame-ostrich-female,yes,Tamed Female ostrich
+item,feverstonewilds:creature-tame-ostrich-male,yes,Tamed Male ostrich
+item,feverstonewilds:creature-toad,yes,Toad
+item,feverstonewilds:creature-wild-griffon-nest-eggs,yes,Wild Griffon Nest (3 Eggs)
+item,game:air,no,game:item-air
+block,game:basereturnteleporter,yes,Base return teleporter
+block,game:basereturnteleporter-fried,yes,Fried base return teleporter
+item,game:blade-longsword-admin,yes,Admin blade
+block,game:boilingwater-d-1,no,game:block-boilingwater-d-1
+block,game:boilingwater-d-2,no,game:block-boilingwater-d-2
+block,game:boilingwater-d-3,no,game:block-boilingwater-d-3
+block,game:boilingwater-d-4,no,game:block-boilingwater-d-4
+block,game:boilingwater-d-5,no,game:block-boilingwater-d-5
+block,game:boilingwater-d-6,no,game:block-boilingwater-d-6
+block,game:boilingwater-d-7,no,game:block-boilingwater-d-7
+block,game:boilingwater-e-1,no,game:block-boilingwater-e-1
+block,game:boilingwater-e-2,no,game:block-boilingwater-e-2
+block,game:boilingwater-e-3,no,game:block-boilingwater-e-3
+block,game:boilingwater-e-4,no,game:block-boilingwater-e-4
+block,game:boilingwater-e-5,no,game:block-boilingwater-e-5
+block,game:boilingwater-e-6,no,game:block-boilingwater-e-6
+block,game:boilingwater-e-7,no,game:block-boilingwater-e-7
+block,game:boilingwater-n-1,no,game:block-boilingwater-n-1
+block,game:boilingwater-n-2,no,game:block-boilingwater-n-2
+block,game:boilingwater-n-3,no,game:block-boilingwater-n-3
+block,game:boilingwater-n-4,no,game:block-boilingwater-n-4
+block,game:boilingwater-n-5,no,game:block-boilingwater-n-5
+block,game:boilingwater-n-6,no,game:block-boilingwater-n-6
+block,game:boilingwater-n-7,no,game:block-boilingwater-n-7
+block,game:boilingwater-ne-1,no,game:block-boilingwater-ne-1
+block,game:boilingwater-ne-2,no,game:block-boilingwater-ne-2
+block,game:boilingwater-ne-3,no,game:block-boilingwater-ne-3
+block,game:boilingwater-ne-4,no,game:block-boilingwater-ne-4
+block,game:boilingwater-ne-5,no,game:block-boilingwater-ne-5
+block,game:boilingwater-ne-6,no,game:block-boilingwater-ne-6
+block,game:boilingwater-ne-7,no,game:block-boilingwater-ne-7
+block,game:boilingwater-nw-1,no,game:block-boilingwater-nw-1
+block,game:boilingwater-nw-2,no,game:block-boilingwater-nw-2
+block,game:boilingwater-nw-3,no,game:block-boilingwater-nw-3
+block,game:boilingwater-nw-4,no,game:block-boilingwater-nw-4
+block,game:boilingwater-nw-5,no,game:block-boilingwater-nw-5
+block,game:boilingwater-nw-6,no,game:block-boilingwater-nw-6
+block,game:boilingwater-nw-7,no,game:block-boilingwater-nw-7
+block,game:boilingwater-s-1,no,game:block-boilingwater-s-1
+block,game:boilingwater-s-2,no,game:block-boilingwater-s-2
+block,game:boilingwater-s-3,no,game:block-boilingwater-s-3
+block,game:boilingwater-s-4,no,game:block-boilingwater-s-4
+block,game:boilingwater-s-5,no,game:block-boilingwater-s-5
+block,game:boilingwater-s-6,no,game:block-boilingwater-s-6
+block,game:boilingwater-s-7,no,game:block-boilingwater-s-7
+block,game:boilingwater-se-1,no,game:block-boilingwater-se-1
+block,game:boilingwater-se-2,no,game:block-boilingwater-se-2
+block,game:boilingwater-se-3,no,game:block-boilingwater-se-3
+block,game:boilingwater-se-4,no,game:block-boilingwater-se-4
+block,game:boilingwater-se-5,no,game:block-boilingwater-se-5
+block,game:boilingwater-se-6,no,game:block-boilingwater-se-6
+block,game:boilingwater-se-7,no,game:block-boilingwater-se-7
+block,game:boilingwater-still-1,no,game:block-boilingwater-still-1
+block,game:boilingwater-still-2,no,game:block-boilingwater-still-2
+block,game:boilingwater-still-3,no,game:block-boilingwater-still-3
+block,game:boilingwater-still-4,no,game:block-boilingwater-still-4
+block,game:boilingwater-still-5,no,game:block-boilingwater-still-5
+block,game:boilingwater-still-6,no,game:block-boilingwater-still-6
+block,game:boilingwater-still-7,yes,Boiling water
+block,game:boilingwater-sw-1,no,game:block-boilingwater-sw-1
+block,game:boilingwater-sw-2,no,game:block-boilingwater-sw-2
+block,game:boilingwater-sw-3,no,game:block-boilingwater-sw-3
+block,game:boilingwater-sw-4,no,game:block-boilingwater-sw-4
+block,game:boilingwater-sw-5,no,game:block-boilingwater-sw-5
+block,game:boilingwater-sw-6,no,game:block-boilingwater-sw-6
+block,game:boilingwater-sw-7,no,game:block-boilingwater-sw-7
+block,game:boilingwater-w-1,no,game:block-boilingwater-w-1
+block,game:boilingwater-w-2,no,game:block-boilingwater-w-2
+block,game:boilingwater-w-3,no,game:block-boilingwater-w-3
+block,game:boilingwater-w-4,no,game:block-boilingwater-w-4
+block,game:boilingwater-w-5,no,game:block-boilingwater-w-5
+block,game:boilingwater-w-6,no,game:block-boilingwater-w-6
+block,game:boilingwater-w-7,no,game:block-boilingwater-w-7
+block,game:chiseledblock,no,Granite rock
+item,game:clayworkitem-blue,no,game:item-clayworkitem-blue
+item,game:clayworkitem-fire,no,game:item-clayworkitem-fire
+item,game:clayworkitem-red,no,game:item-clayworkitem-red
+block,game:clutter-devastation,yes,game:clutter-
+block,game:clutter-elevator-elevatorrail,yes,game:clutter-
+block,game:clutteredbookshelfwithlore,yes,game:bookshelf-
+block,game:commandblock-normal,yes,Command block
+block,game:conditionalblock-east,yes,Conditional logic block
+block,game:conditionalblock-north,no,Conditional logic block
+block,game:conditionalblock-south,no,Conditional logic block
+block,game:conditionalblock-west,no,Conditional logic block
+block,game:corpsereturnteleporter-east,no,Terminus teleporter
+block,game:corpsereturnteleporter-north,yes,Terminus teleporter
+block,game:corpsereturnteleporter-south,no,Terminus teleporter
+block,game:corpsereturnteleporter-west,no,Terminus teleporter
+block,game:creativeblock-0,yes,Creativeblock (0)
+block,game:creativeblock-1,yes,Creativeblock (1)
+block,game:creativeblock-10,yes,Creativeblock (10)
+block,game:creativeblock-11,yes,Creativeblock (11)
+block,game:creativeblock-12,yes,Creativeblock (12)
+block,game:creativeblock-13,yes,Creativeblock (13)
+block,game:creativeblock-14,yes,Creativeblock (14)
+block,game:creativeblock-15,yes,Creativeblock (15)
+block,game:creativeblock-16,yes,Creativeblock (16)
+block,game:creativeblock-17,yes,Creativeblock (17)
+block,game:creativeblock-18,yes,Creativeblock (18)
+block,game:creativeblock-19,yes,Creativeblock (19)
+block,game:creativeblock-2,yes,Creativeblock (2)
+block,game:creativeblock-20,yes,Creativeblock (20)
+block,game:creativeblock-21,yes,Creativeblock (21)
+block,game:creativeblock-22,yes,Creativeblock (22)
+block,game:creativeblock-23,yes,Creativeblock (23)
+block,game:creativeblock-24,yes,Creativeblock (24)
+block,game:creativeblock-25,yes,Creativeblock (25)
+block,game:creativeblock-26,yes,Creativeblock (26)
+block,game:creativeblock-27,yes,Creativeblock (27)
+block,game:creativeblock-28,yes,Creativeblock (28)
+block,game:creativeblock-29,yes,Creativeblock (29)
+block,game:creativeblock-3,yes,Creativeblock (3)
+block,game:creativeblock-30,yes,Creativeblock (30)
+block,game:creativeblock-31,yes,Creativeblock (31)
+block,game:creativeblock-32,yes,Creativeblock (32)
+block,game:creativeblock-33,yes,Creativeblock (33)
+block,game:creativeblock-34,yes,Creativeblock (34)
+block,game:creativeblock-35,yes,Creativeblock (35)
+block,game:creativeblock-36,yes,Creativeblock (36)
+block,game:creativeblock-37,yes,Creativeblock (37)
+block,game:creativeblock-38,yes,Creativeblock (38)
+block,game:creativeblock-39,yes,Creativeblock (39)
+block,game:creativeblock-4,yes,Creativeblock (4)
+block,game:creativeblock-40,yes,Creativeblock (40)
+block,game:creativeblock-41,yes,Creativeblock (41)
+block,game:creativeblock-42,yes,Creativeblock (42)
+block,game:creativeblock-43,yes,Creativeblock (43)
+block,game:creativeblock-44,yes,Creativeblock (44)
+block,game:creativeblock-45,yes,Creativeblock (45)
+block,game:creativeblock-46,yes,Creativeblock (46)
+block,game:creativeblock-47,yes,Creativeblock (47)
+block,game:creativeblock-48,yes,Creativeblock (48)
+block,game:creativeblock-49,yes,Creativeblock (49)
+block,game:creativeblock-5,yes,Creativeblock (5)
+block,game:creativeblock-50,yes,Creativeblock (50)
+block,game:creativeblock-51,yes,Creativeblock (51)
+block,game:creativeblock-52,yes,Creativeblock (52)
+block,game:creativeblock-53,yes,Creativeblock (53)
+block,game:creativeblock-54,yes,Creativeblock (54)
+block,game:creativeblock-55,yes,Creativeblock (55)
+block,game:creativeblock-56,yes,Creativeblock (56)
+block,game:creativeblock-57,yes,Creativeblock (57)
+block,game:creativeblock-58,yes,Creativeblock (58)
+block,game:creativeblock-59,yes,Creativeblock (59)
+block,game:creativeblock-6,yes,Creativeblock (6)
+block,game:creativeblock-60,yes,Creativeblock (60)
+block,game:creativeblock-61,yes,Creativeblock (61)
+block,game:creativeblock-62,yes,Creativeblock (62)
+block,game:creativeblock-63,yes,Creativeblock (63)
+block,game:creativeblock-64,yes,Creativeblock (64)
+block,game:creativeblock-65,yes,Creativeblock (65)
+block,game:creativeblock-66,yes,Creativeblock (66)
+block,game:creativeblock-67,yes,Creativeblock (67)
+block,game:creativeblock-68,yes,Creativeblock (68)
+block,game:creativeblock-69,yes,Creativeblock (69)
+block,game:creativeblock-7,yes,Creativeblock (7)
+block,game:creativeblock-70,yes,Creativeblock (70)
+block,game:creativeblock-71,yes,Creativeblock (71)
+block,game:creativeblock-72,yes,Creativeblock (72)
+block,game:creativeblock-73,yes,Creativeblock (73)
+block,game:creativeblock-74,yes,Creativeblock (74)
+block,game:creativeblock-75,yes,Creativeblock (75)
+block,game:creativeblock-76,yes,Creativeblock (76)
+block,game:creativeblock-77,yes,Creativeblock (77)
+block,game:creativeblock-78,yes,Creativeblock (78)
+block,game:creativeblock-79,yes,Creativeblock (79)
+block,game:creativeblock-8,yes,Creativeblock (8)
+block,game:creativeblock-9,yes,Creativeblock (9)
+block,game:creativeglow-32,yes,Creativeglow (32)
+block,game:creativeglow-33,yes,Creativeglow (33)
+block,game:creativeglow-34,yes,Creativeglow (34)
+block,game:creativeglow-35,yes,Creativeglow (35)
+block,game:creativeglow-36,yes,Creativeglow (36)
+block,game:creativeglow-37,yes,Creativeglow (37)
+block,game:creativeglow-38,yes,Creativeglow (38)
+block,game:creativeglow-39,yes,Creativeglow (39)
+block,game:creativeglow-40,yes,Creativeglow (40)
+block,game:creativeglow-41,yes,Creativeglow (41)
+block,game:creativeglow-42,yes,Creativeglow (42)
+block,game:creativeglow-43,yes,Creativeglow (43)
+block,game:creativeglow-44,yes,Creativeglow (44)
+block,game:creativeglow-45,yes,Creativeglow (45)
+block,game:creativeglow-46,yes,Creativeglow (46)
+block,game:creativeglow-47,yes,Creativeglow (47)
+block,game:creativeglow-48,yes,Creativeglow (48)
+block,game:creativeglow-49,yes,Creativeglow (49)
+block,game:creativeglow-50,yes,Creativeglow (50)
+block,game:creativeglow-51,yes,Creativeglow (51)
+block,game:creativeglow-52,yes,Creativeglow (52)
+block,game:creativeglow-53,yes,Creativeglow (53)
+block,game:creativeglow-54,yes,Creativeglow (54)
+block,game:creativeglow-55,yes,Creativeglow (55)
+block,game:creativeglow-56,yes,Creativeglow (56)
+block,game:creativeglow-57,yes,Creativeglow (57)
+block,game:creativeglow-58,yes,Creativeglow (58)
+block,game:creativeglow-59,yes,Creativeglow (59)
+block,game:creativeglow-79,yes,Creativeglow (79)
+block,game:creativegrass-medium-normal,yes,Creative grass
+block,game:creativelight-32,yes,Creativelight (32)
+block,game:creativelight-33,yes,Creativelight (33)
+block,game:creativelight-34,yes,Creativelight (34)
+block,game:creativelight-35,yes,Creativelight (35)
+block,game:creativelight-36,yes,Creativelight (36)
+block,game:creativelight-37,yes,Creativelight (37)
+block,game:creativelight-38,yes,Creativelight (38)
+block,game:creativelight-39,yes,Creativelight (39)
+block,game:creativelight-40,yes,Creativelight (40)
+block,game:creativelight-41,yes,Creativelight (41)
+block,game:creativelight-42,yes,Creativelight (42)
+block,game:creativelight-43,yes,Creativelight (43)
+block,game:creativelight-44,yes,Creativelight (44)
+block,game:creativelight-45,yes,Creativelight (45)
+block,game:creativelight-46,yes,Creativelight (46)
+block,game:creativelight-47,yes,Creativelight (47)
+block,game:creativelight-48,yes,Creativelight (48)
+block,game:creativelight-49,yes,Creativelight (49)
+block,game:creativelight-50,yes,Creativelight (50)
+block,game:creativelight-51,yes,Creativelight (51)
+block,game:creativelight-52,yes,Creativelight (52)
+block,game:creativelight-53,yes,Creativelight (53)
+block,game:creativelight-54,yes,Creativelight (54)
+block,game:creativelight-55,yes,Creativelight (55)
+block,game:creativelight-56,yes,Creativelight (56)
+block,game:creativelight-57,yes,Creativelight (57)
+block,game:creativelight-58,yes,Creativelight (58)
+block,game:creativelight-59,yes,Creativelight (59)
+block,game:creativelight-79,yes,Creativelight (79)
+block,game:creativerotor-east,no,Auto rotor (Creative)
+block,game:creativerotor-north,yes,Auto rotor (Creative)
+block,game:creativerotor-south,no,Auto rotor (Creative)
+block,game:creativerotor-west,no,Auto rotor (Creative)
+item,game:creature-bear-black-adult-female,yes,Black bear (female)
+item,game:creature-bear-black-adult-male,yes,Black bear (male)
+item,game:creature-bear-brown-adult-female,yes,Brown bear (female)
+item,game:creature-bear-brown-adult-male,yes,Brown bear (male)
+item,game:creature-bear-panda-adult-female,yes,Panda bear (female)
+item,game:creature-bear-panda-adult-male,yes,Panda bear (male)
+item,game:creature-bear-polar-adult-female,yes,Polar bear (female)
+item,game:creature-bear-polar-adult-male,yes,Polar bear (male)
+item,game:creature-bear-sun-adult-female,yes,Sun bear (female)
+item,game:creature-bear-sun-adult-male,yes,Sun bear (male)
+item,game:creature-bell-normal,yes,Bell
+item,game:creature-bowtorn-corrupt,yes,Corrupt bowtorn
+item,game:creature-bowtorn-deep,yes,Deep bowtorn
+item,game:creature-bowtorn-gearfoot,yes,Gearfoot bowtorn
+item,game:creature-bowtorn-nightmare,yes,Nightmare bowtorn
+item,game:creature-bowtorn-surface,yes,Surface bowtorn
+item,game:creature-bowtorn-tainted,yes,Tainted bowtorn
+item,game:creature-chicken-baby,yes,Chick
+item,game:creature-chicken-hen,yes,Hen
+item,game:creature-chicken-rooster,yes,Rooster
+item,game:creature-deer-caribou-adult-female,yes,Caribou (female)
+item,game:creature-deer-caribou-adult-male,yes,Caribou (male)
+item,game:creature-deer-caribou-baby-female,yes,Caribou calf (female)
+item,game:creature-deer-caribou-baby-male,yes,Caribou calf (male)
+item,game:creature-deer-chital-adult-female,yes,Chital deer (female)
+item,game:creature-deer-chital-adult-male,yes,Chital deer (male)
+item,game:creature-deer-chital-baby-female,yes,Chital deer fawn (female)
+item,game:creature-deer-chital-baby-male,yes,Chital deer fawn (male)
+item,game:creature-deer-elk-adult-female,yes,Elk (female)
+item,game:creature-deer-elk-adult-male,yes,Elk (male)
+item,game:creature-deer-elk-baby-female,yes,Elk calf (female)
+item,game:creature-deer-elk-baby-male,yes,Elk calf (male)
+item,game:creature-deer-fallow-adult-female,yes,Fallow deer (female)
+item,game:creature-deer-fallow-adult-male,yes,Fallow deer (male)
+item,game:creature-deer-fallow-baby-female,yes,Fallow deer fawn (female)
+item,game:creature-deer-fallow-baby-male,yes,Fallow deer fawn (male)
+item,game:creature-deer-guemal-adult-female,yes,Guemal deer (female)
+item,game:creature-deer-guemal-adult-male,yes,Guemal deer (male)
+item,game:creature-deer-guemal-baby-female,yes,Guemal deer fawn (female)
+item,game:creature-deer-guemal-baby-male,yes,Guemal deer fawn (male)
+item,game:creature-deer-marsh-adult-female,yes,Marsh deer (female)
+item,game:creature-deer-marsh-adult-male,yes,Marsh deer (male)
+item,game:creature-deer-marsh-baby-female,yes,Marsh deer fawn (female)
+item,game:creature-deer-marsh-baby-male,yes,Marsh deer fawn (male)
+item,game:creature-deer-moose-adult-female,yes,Moose (female)
+item,game:creature-deer-moose-adult-male,yes,Moose (male)
+item,game:creature-deer-moose-baby-female,yes,Moose calf (female)
+item,game:creature-deer-moose-baby-male,yes,Moose calf (male)
+item,game:creature-deer-pampas-adult-female,yes,Pampas deer (female)
+item,game:creature-deer-pampas-adult-male,yes,Pampas deer (male)
+item,game:creature-deer-pampas-baby-female,yes,Pampas deer fawn (female)
+item,game:creature-deer-pampas-baby-male,yes,Pampas deer fawn (male)
+item,game:creature-deer-pudu-adult-female,yes,Pudu deer (female)
+item,game:creature-deer-pudu-adult-male,yes,Pudu deer (male)
+item,game:creature-deer-pudu-baby-female,yes,Pudu deer fawn (female)
+item,game:creature-deer-pudu-baby-male,yes,Pudu deer fawn (male)
+item,game:creature-deer-redbrocket-adult-female,yes,Red brocket deer (female)
+item,game:creature-deer-redbrocket-adult-male,yes,Red brocket deer (male)
+item,game:creature-deer-redbrocket-baby-female,yes,Red brocket deer fawn (female)
+item,game:creature-deer-redbrocket-baby-male,yes,Red brocket deer fawn (male)
+item,game:creature-deer-taruca-adult-female,yes,Taruca deer (female)
+item,game:creature-deer-taruca-adult-male,yes,Taruca deer (male)
+item,game:creature-deer-taruca-baby-female,yes,Taruca deer fawn (female)
+item,game:creature-deer-taruca-baby-male,yes,Taruca deer fawn (male)
+item,game:creature-deer-water-adult-female,yes,Water deer (female)
+item,game:creature-deer-water-adult-male,yes,Water deer (male)
+item,game:creature-deer-water-baby-female,yes,Water deer fawn (female)
+item,game:creature-deer-water-baby-male,yes,Water deer fawn (male)
+item,game:creature-deer-whitetail-adult-female,yes,Whitetail deer (female)
+item,game:creature-deer-whitetail-adult-male,yes,Whitetail deer (male)
+item,game:creature-deer-whitetail-baby-female,yes,Whitetail deer fawn (female)
+item,game:creature-deer-whitetail-baby-male,yes,Whitetail deer fawn (male)
+item,game:creature-drifter-corrupt,yes,Corrupt Drifter
+item,game:creature-drifter-deep,yes,Deep Drifter
+item,game:creature-drifter-double-headed,yes,Double-headed Drifter
+item,game:creature-drifter-nightmare,yes,Nightmare Drifter
+item,game:creature-drifter-normal,yes,Surface Drifter
+item,game:creature-drifter-tainted,yes,Tainted Drifter
+item,game:creature-earthworm,yes,Live worm
+item,game:creature-earthworm-dead,yes,Dead worm
+item,game:creature-fox-arctic-adult-female,yes,Arctic fox (female)
+item,game:creature-fox-arctic-adult-male,yes,Arctic fox (male)
+item,game:creature-fox-arctic-baby-female,yes,Arctic fox kit (female)
+item,game:creature-fox-arctic-baby-male,yes,Arctic fox kit (male)
+item,game:creature-fox-red-adult-female,yes,Fox (female)
+item,game:creature-fox-red-adult-male,yes,Fox (male)
+item,game:creature-fox-red-baby-female,yes,Fox kit (female)
+item,game:creature-fox-red-baby-male,yes,Fox kit (male)
+item,game:creature-gazelle-thomson-adult-female,yes,Gazelle (female)
+item,game:creature-gazelle-thomson-adult-male,yes,Gazelle (male)
+item,game:creature-gazelle-thomson-baby-female,yes,Gazelle calf (female)
+item,game:creature-gazelle-thomson-baby-male,yes,Gazelle calf (male)
+item,game:creature-goat-angora-adult-female,yes,Angora goat (female)
+item,game:creature-goat-angora-adult-male,yes,Angora goat (male)
+item,game:creature-goat-angora-baby-female,yes,Angora goat kid (female)
+item,game:creature-goat-angora-baby-male,yes,Angora goat kid (male)
+item,game:creature-goat-ibexalp-adult-female,yes,Alpine ibex (female)
+item,game:creature-goat-ibexalp-adult-male,yes,Alpine ibex (male)
+item,game:creature-goat-ibexalp-baby-female,yes,Alpine ibex kid (female)
+item,game:creature-goat-ibexalp-baby-male,yes,Alpine ibex kid (male)
+item,game:creature-goat-ibexnub-adult-female,yes,Nubian ibex (female)
+item,game:creature-goat-ibexnub-adult-male,yes,Nubian ibex (male)
+item,game:creature-goat-ibexnub-baby-female,yes,Nubian ibex kid (female)
+item,game:creature-goat-ibexnub-baby-male,yes,Nubian ibex kid (male)
+item,game:creature-goat-markhor-adult-female,yes,Markhor goat (female)
+item,game:creature-goat-markhor-adult-male,yes,Markhor goat (male)
+item,game:creature-goat-markhor-baby-female,yes,Markhor goat kid (female)
+item,game:creature-goat-markhor-baby-male,yes,Markhor goat kid (male)
+item,game:creature-goat-mountain-adult-female,yes,Mountain goat (female)
+item,game:creature-goat-mountain-adult-male,yes,Mountain goat (male)
+item,game:creature-goat-mountain-baby-female,yes,Mountain goat kid (female)
+item,game:creature-goat-mountain-baby-male,yes,Mountain goat kid (male)
+item,game:creature-goat-muskox-adult-female,yes,Musk ox (female)
+item,game:creature-goat-muskox-adult-male,yes,Musk ox (male)
+item,game:creature-goat-muskox-baby-female,yes,Musk ox calf (female)
+item,game:creature-goat-muskox-baby-male,yes,Musk ox calf (male)
+item,game:creature-goat-nubian-adult-female,yes,Nubian goat (female)
+item,game:creature-goat-nubian-adult-male,yes,Nubian goat (male)
+item,game:creature-goat-nubian-baby-female,yes,Nubian goat kid (female)
+item,game:creature-goat-nubian-baby-male,yes,Nubian goat kid (male)
+item,game:creature-goat-sirohi-adult-female,yes,Sirohi goat (female)
+item,game:creature-goat-sirohi-adult-male,yes,Sirohi goat (male)
+item,game:creature-goat-sirohi-baby-female,yes,Sirohi goat kid (female)
+item,game:creature-goat-sirohi-baby-male,yes,Sirohi goat kid (male)
+item,game:creature-goat-takingold-adult-female,yes,Golden takin (female)
+item,game:creature-goat-takingold-adult-male,yes,Golden takin (male)
+item,game:creature-goat-takingold-baby-female,yes,Golden takin kid (female)
+item,game:creature-goat-takingold-baby-male,yes,Golden takin kid (male)
+item,game:creature-goat-turdag-adult-female,yes,Tur goat (female)
+item,game:creature-goat-turdag-adult-male,yes,Tur goat (male)
+item,game:creature-goat-turdag-baby-female,yes,Tur goat kid (female)
+item,game:creature-goat-turdag-baby-male,yes,Tur goat kid (male)
+item,game:creature-goat-valais-adult-female,yes,Valais goat (female)
+item,game:creature-goat-valais-adult-male,yes,Valais goat (male)
+item,game:creature-goat-valais-baby-female,yes,Valais goat kid (female)
+item,game:creature-goat-valais-baby-male,yes,Valais goat kid (male)
+item,game:creature-grub,yes,Grub
+item,game:creature-hare-arctic-adult-female,yes,Arctic hare (female)
+item,game:creature-hare-arctic-adult-male,yes,Arctic hare (male)
+item,game:creature-hare-arctic-baby-female,yes,Arctic hare baby (female)
+item,game:creature-hare-arctic-baby-male,yes,Arctic hare baby (male)
+item,game:creature-hare-cape-adult-female,yes,Desert hare (female)
+item,game:creature-hare-cape-adult-male,yes,Desert hare (male)
+item,game:creature-hare-cape-baby-female,yes,Desert hare baby (female)
+item,game:creature-hare-cape-baby-male,yes,Desert hare baby (male)
+item,game:creature-hare-european-adult-female,yes,Brown hare (female)
+item,game:creature-hare-european-adult-male,yes,Brown hare (male)
+item,game:creature-hare-european-baby-female,yes,Brown hare baby (female)
+item,game:creature-hare-european-baby-male,yes,Brown hare baby (male)
+item,game:creature-hare-indian-adult-female,yes,River hare (female)
+item,game:creature-hare-indian-adult-male,yes,River hare (male)
+item,game:creature-hare-indian-baby-female,yes,River hare baby (female)
+item,game:creature-hare-indian-baby-male,yes,River hare baby (male)
+item,game:creature-hare-jackblack-adult-female,yes,Jackrabbit (female)
+item,game:creature-hare-jackblack-adult-male,yes,Jackrabbit (male)
+item,game:creature-hare-jackblack-baby-female,yes,Jackrabbit baby (female)
+item,game:creature-hare-jackblack-baby-male,yes,Jackrabbit baby (male)
+item,game:creature-hare-scrub-adult-female,yes,Scrub hare (female)
+item,game:creature-hare-scrub-adult-male,yes,Scrub hare (male)
+item,game:creature-hare-scrub-baby-female,yes,Scrub hare baby (female)
+item,game:creature-hare-scrub-baby-male,yes,Scrub hare baby (male)
+item,game:creature-hyena-spotted-adult-female,yes,Hyena (female)
+item,game:creature-hyena-spotted-adult-male,yes,Hyena (male)
+item,game:creature-hyena-spotted-baby-female,yes,Hyena pup (female)
+item,game:creature-hyena-spotted-baby-male,yes,Hyena pup (male)
+item,game:creature-locust-bronze,yes,Bronze Locust
+item,game:creature-locust-bronze-hacked,yes,Hacked bronze locust
+item,game:creature-locust-corrupt,yes,Corrupt Locust
+item,game:creature-locust-corrupt-hacked,yes,Hacked corrupt locust
+item,game:creature-locust-corrupt-sawblade,yes,Corrupt Sawblade Locust
+item,game:creature-pig-eurasian-adult-female,yes,Gray sow
+item,game:creature-pig-eurasian-adult-male,yes,Gray boar
+item,game:creature-pig-eurasian-baby-female,yes,Gray hog piglet (female)
+item,game:creature-pig-eurasian-baby-male,yes,Gray hog piglet (male)
+item,game:creature-pig-eurasian-elder-female,yes,Large gray sow
+item,game:creature-pig-eurasian-elder-male,yes,Large gray boar
+item,game:creature-pig-redriver-adult-female,yes,Redriver sow
+item,game:creature-pig-redriver-adult-male,yes,Redriver boar
+item,game:creature-pig-redriver-baby-female,yes,Redriver piglet (female)
+item,game:creature-pig-redriver-baby-male,yes,Redriver piglet (male)
+item,game:creature-pig-warthog-adult-female,yes,Warthog sow
+item,game:creature-pig-warthog-adult-male,yes,Warthog boar
+item,game:creature-pig-warthog-baby-female,yes,Warthog piglet (female)
+item,game:creature-pig-warthog-baby-male,yes,Warthog piglet (male)
+item,game:creature-raccoon-common-adult-female,yes,Raccoon (female)
+item,game:creature-raccoon-common-adult-male,yes,Raccoon (male)
+item,game:creature-raccoon-common-baby-female,yes,Raccoon pup (female)
+item,game:creature-raccoon-common-baby-male,yes,Raccoon pup (male)
+item,game:creature-sheep-bighorn-adult-female,yes,Bighorn ewe
+item,game:creature-sheep-bighorn-adult-male,yes,Bighorn ram
+item,game:creature-sheep-bighorn-baby-female,yes,Bighorn lamb (female)
+item,game:creature-sheep-bighorn-baby-male,yes,Bighorn lamb (male)
+item,game:creature-sheep-mouflon-adult-female,yes,Mouflon ewe
+item,game:creature-sheep-mouflon-adult-male,yes,Mouflon ram
+item,game:creature-sheep-mouflon-baby-female,yes,Mouflon lamb (female)
+item,game:creature-sheep-mouflon-baby-male,yes,Mouflon lamb (male)
+item,game:creature-shiver-bellhead,yes,Bellhead shiver
+item,game:creature-shiver-corrupt,yes,Corrupt shiver
+item,game:creature-shiver-deep,yes,Deep shiver
+item,game:creature-shiver-deepsplit,yes,Deepsplit shiver
+item,game:creature-shiver-nightmare,yes,Nightmare shiver
+item,game:creature-shiver-stilt,yes,Stilt shiver
+item,game:creature-shiver-surface,yes,Surface shiver
+item,game:creature-shiver-tainted,yes,Tainted shiver
+item,game:creature-tameddeer-albinoelk-female-adult,yes,Tamed albino elk (female)
+item,game:creature-tameddeer-albinoelk-male-adult,yes,Tamed albino elk (male)
+item,game:creature-tameddeer-elk-female-adult,yes,Tamed elk (female)
+item,game:creature-tameddeer-elk-male-adult,yes,Tamed elk (male)
+item,game:creature-trader-female-agriculture-cold,yes,Agriculture trader (cold)
+item,game:creature-trader-female-agriculture-desert,yes,Agriculture trader (desert)
+item,game:creature-trader-female-agriculture-temperate,yes,Agriculture trader (temperate)
+item,game:creature-trader-female-artisan-cold,yes,Artisan trader (cold)
+item,game:creature-trader-female-artisan-desert,yes,Artisan trader (desert)
+item,game:creature-trader-female-artisan-temperate,yes,Artisan trader (temperate)
+item,game:creature-trader-female-buildmaterials-cold,yes,Building materials trader (cold)
+item,game:creature-trader-female-buildmaterials-desert,yes,Building materials trader (desert)
+item,game:creature-trader-female-buildmaterials-temperate,yes,Building materials trader (temperate)
+item,game:creature-trader-female-clothing-cold,yes,Clothing trader (cold)
+item,game:creature-trader-female-clothing-desert,yes,Clothing trader (desert)
+item,game:creature-trader-female-clothing-temperate,yes,Clothing trader (temperate)
+item,game:creature-trader-female-commodities-cold,yes,Commodities trader (cold)
+item,game:creature-trader-female-commodities-desert,yes,Commodities trader (desert)
+item,game:creature-trader-female-commodities-temperate,yes,Commodities trader (temperate)
+item,game:creature-trader-female-furniture-cold,yes,Furniture trader (cold)
+item,game:creature-trader-female-furniture-desert,yes,Furniture trader (desert)
+item,game:creature-trader-female-furniture-temperate,yes,Furniture trader (temperate)
+item,game:creature-trader-female-luxuries-cold,yes,Luxuries trader (cold)
+item,game:creature-trader-female-luxuries-desert,yes,Luxuries trader (desert)
+item,game:creature-trader-female-luxuries-temperate,yes,Luxuries trader (temperate)
+item,game:creature-trader-female-survivalgoods-cold,yes,Survival goods trader (cold)
+item,game:creature-trader-female-survivalgoods-desert,yes,Survival goods trader (desert)
+item,game:creature-trader-female-survivalgoods-temperate,yes,Survival goods trader (temperate)
+item,game:creature-trader-female-treasurehunter-cold,yes,Treasure hunter trader (cold)
+item,game:creature-trader-female-treasurehunter-desert,yes,Treasure hunter trader (desert)
+item,game:creature-trader-female-treasurehunter-temperate,yes,Treasure hunter trader (temperate)
+item,game:creature-trader-male-agriculture-cold,yes,Agriculture trader (cold)
+item,game:creature-trader-male-agriculture-desert,yes,Agriculture trader (desert)
+item,game:creature-trader-male-agriculture-temperate,yes,Agriculture trader (temperate)
+item,game:creature-trader-male-artisan-cold,yes,Artisan trader (cold)
+item,game:creature-trader-male-artisan-desert,yes,Artisan trader (desert)
+item,game:creature-trader-male-artisan-temperate,yes,Artisan trader (temperate)
+item,game:creature-trader-male-buildmaterials-cold,yes,Building materials trader (cold)
+item,game:creature-trader-male-buildmaterials-desert,yes,Building materials trader (desert)
+item,game:creature-trader-male-buildmaterials-temperate,yes,Building materials trader (temperate)
+item,game:creature-trader-male-clothing-cold,yes,Clothing trader (cold)
+item,game:creature-trader-male-clothing-desert,yes,Clothing trader (desert)
+item,game:creature-trader-male-clothing-temperate,yes,Clothing trader (temperate)
+item,game:creature-trader-male-commodities-cold,yes,Commodities trader (cold)
+item,game:creature-trader-male-commodities-desert,yes,Commodities trader (desert)
+item,game:creature-trader-male-commodities-temperate,yes,Commodities trader (temperate)
+item,game:creature-trader-male-furniture-cold,yes,Furniture trader (cold)
+item,game:creature-trader-male-furniture-desert,yes,Furniture trader (desert)
+item,game:creature-trader-male-furniture-temperate,yes,Furniture trader (temperate)
+item,game:creature-trader-male-luxuries-cold,yes,Luxuries trader (cold)
+item,game:creature-trader-male-luxuries-desert,yes,Luxuries trader (desert)
+item,game:creature-trader-male-luxuries-temperate,yes,Luxuries trader (temperate)
+item,game:creature-trader-male-survivalgoods-cold,yes,Survival goods trader (cold)
+item,game:creature-trader-male-survivalgoods-desert,yes,Survival goods trader (desert)
+item,game:creature-trader-male-survivalgoods-temperate,yes,Survival goods trader (temperate)
+item,game:creature-trader-male-treasurehunter-cold,yes,Treasure hunter trader (cold)
+item,game:creature-trader-male-treasurehunter-desert,yes,Treasure hunter trader (desert)
+item,game:creature-trader-male-treasurehunter-temperate,yes,Treasure hunter trader (temperate)
+item,game:creature-villager-nadiya-female-generic-generic,yes,Female Nadiyan villager
+item,game:creature-villager-nadiya-male-generic-generic,yes,Male Nadiyan villager
+item,game:creature-wolf-eurasian-adult-female,yes,Wolf (female)
+item,game:creature-wolf-eurasian-adult-male,yes,Wolf (male)
+item,game:creature-wolf-eurasian-baby-female,yes,Wolf pup (female)
+item,game:creature-wolf-eurasian-baby-male,yes,Wolf pup (male)
+block,game:cropprop,yes,Crop prop
+item,game:decalcan-alchemy,yes,Decal can (Alchemy symbols)
+item,game:decalcan-geometry,yes,Decal can (Geometric symbols)
+item,game:decalcan-scribbles,yes,Decal can (Scribbles)
+block,game:decorlore-schematic1x1,yes,Strange schematic
+block,game:decorlore-tobias-board,yes,"Chaotic board covered in notes, scribbles, and string"
+block,game:devastatedsoil-0,yes,Devastated soil
+block,game:devastatedsoil-1,yes,Devastated soil
+block,game:devastatedsoil-10,yes,Devastated soil
+block,game:devastatedsoil-2,yes,Devastated soil
+block,game:devastatedsoil-3,yes,Devastated soil
+block,game:devastatedsoil-4,yes,Devastated soil
+block,game:devastatedsoil-5,yes,Devastated soil
+block,game:devastatedsoil-6,yes,Devastated soil
+block,game:devastatedsoil-7,yes,Devastated soil
+block,game:devastatedsoil-8,yes,Devastated soil
+block,game:devastatedsoil-9,yes,Devastated soil
+block,game:devastatedsoil-chiselable-0,yes,Devastated soil
+block,game:devastationgrowth-normal,yes,Devastation growth
+block,game:devgrowth-bush,yes,Devastation growth
+block,game:devgrowth-shard,yes,Devastated shards
+block,game:devgrowth-shrike,yes,Devastated briar
+block,game:devgrowth-thorns,yes,Devastated thorns
+block,game:devplate-flat,yes,Rusty metal plates
+block,game:door-devastation-towergate,yes,Large gate with heavy locking bolts
+block,game:dpanel-conduithorizontal1-aged,yes,Tower Conduit
+block,game:dpanel-conduithorizontal1-new,yes,Tower Conduit
+block,game:dpanel-conduitleftdown1-aged,yes,Tower Conduit
+block,game:dpanel-conduitleftdown1-new,yes,Tower Conduit
+block,game:dpanel-conduitleftup1-aged,yes,Tower Conduit
+block,game:dpanel-conduitleftup1-new,yes,Tower Conduit
+block,game:dpanel-conduitrightdown1-aged,yes,Tower Conduit
+block,game:dpanel-conduitrightdown1-new,yes,Tower Conduit
+block,game:dpanel-conduitrightup1-aged,yes,Tower Conduit
+block,game:dpanel-conduitrightup1-new,yes,Tower Conduit
+block,game:dpanel-conduitstraight1-aged,yes,Tower Conduit
+block,game:dpanel-conduitstraight1-new,yes,Tower Conduit
+block,game:dpanel-panel1-aged,yes,Tower Panel
+block,game:dpanel-panel1-new,yes,Tower Panel
+block,game:dpanel-panel2-aged,yes,Tower Panel
+block,game:dpanel-panel2-new,yes,Tower Panel
+block,game:dpanel-panel3-aged,yes,Tower Panel
+block,game:dpanel-panel3-new,yes,Tower Panel
+block,game:dpanel-panel4-aged,yes,Tower Panel
+block,game:dpanel-panel4-new,yes,Tower Panel
+block,game:dpanel-panel5-aged,yes,Tower Panel
+block,game:dpanel-panel5-new,yes,Tower Panel
+block,game:dpanel-panel6-aged,yes,Tower Panel
+block,game:dpanel-panel6-new,yes,Tower Panel
+block,game:dpanel-port1-aged,yes,Port
+block,game:dpanel-port1-new,yes,Port
+block,game:drock,yes,Devastation rock
+block,game:elevatorcontrol-lever1,yes,Elevator Control
+block,game:elevatorcontrol-lever2,yes,Elevator Activate Control
+block,game:ember,yes,Ember
+item,game:entitymover,yes,Entity mover tool
+block,game:genericwood,yes,Generic wood
+block,game:groundstorage,no,game:block-groundstorage
+block,game:ingotpile,no,Pile of metal ingots
+block,game:initcommandblock-normal,yes,Init Command block (run on init)
+block,game:jonas-boilerdoor-east,no,game:block-jonas-boilerdoor-east
+block,game:jonas-boilerdoor-north,yes,Boiler door
+block,game:jonas-boilerdoor-south,no,game:block-jonas-boilerdoor-south
+block,game:jonas-boilerdoor-west,no,game:block-jonas-boilerdoor-west
+block,game:jonas-gasifier-east,no,game:block-jonas-gasifier-east
+block,game:jonas-gasifier-north,no,game:block-jonas-gasifier-north
+block,game:jonas-gasifier-south,yes,Gasifier
+block,game:jonas-gasifier-west,no,game:block-jonas-gasifier-west
+block,game:jonas-gasifiertank-east,no,game:block-jonas-gasifiertank-east
+block,game:jonas-gasifiertank-north,no,game:block-jonas-gasifiertank-north
+block,game:jonas-gasifiertank-south,yes,Gasifier tank
+block,game:jonas-gasifiertank-west,no,game:block-jonas-gasifiertank-west
+block,game:jonas-hydraulicsystem-genmixer-east,no,game:block-jonas-hydraulicsystem-genmixer-east
+block,game:jonas-hydraulicsystem-genmixer-north,no,game:block-jonas-hydraulicsystem-genmixer-north
+block,game:jonas-hydraulicsystem-genmixer-south,yes,Mixer paddles
+block,game:jonas-hydraulicsystem-genmixer-west,no,game:block-jonas-hydraulicsystem-genmixer-west
+block,game:jonas-hydraulicsystem-genvalve2-east,no,game:block-jonas-hydraulicsystem-genvalve2-east
+block,game:jonas-hydraulicsystem-genvalve2-north,no,game:block-jonas-hydraulicsystem-genvalve2-north
+block,game:jonas-hydraulicsystem-genvalve2-south,yes,Pipe branch with valves
+block,game:jonas-hydraulicsystem-genvalve2-west,no,game:block-jonas-hydraulicsystem-genvalve2-west
+block,game:jonas-hydraulicsystem-pumpdoor1-east,no,game:block-jonas-hydraulicsystem-pumpdoor1-east
+block,game:jonas-hydraulicsystem-pumpdoor1-north,no,game:block-jonas-hydraulicsystem-pumpdoor1-north
+block,game:jonas-hydraulicsystem-pumpdoor1-south,yes,Incomplete hydraulic actuator
+block,game:jonas-hydraulicsystem-pumpdoor1-west,no,game:block-jonas-hydraulicsystem-pumpdoor1-west
+block,game:jonas-hydraulicsystem-pumpdoor2-east,no,game:block-jonas-hydraulicsystem-pumpdoor2-east
+block,game:jonas-hydraulicsystem-pumpdoor2-north,no,game:block-jonas-hydraulicsystem-pumpdoor2-north
+block,game:jonas-hydraulicsystem-pumpdoor2-south,yes,Hydraulic actuator
+block,game:jonas-hydraulicsystem-pumpdoor2-west,no,game:block-jonas-hydraulicsystem-pumpdoor2-west
+block,game:jonas-hydraulicsystem-pumphead1-east,no,game:block-jonas-hydraulicsystem-pumphead1-east
+block,game:jonas-hydraulicsystem-pumphead1-north,no,game:block-jonas-hydraulicsystem-pumphead1-north
+block,game:jonas-hydraulicsystem-pumphead1-south,yes,Liquid pump
+block,game:jonas-hydraulicsystem-pumphead1-west,no,game:block-jonas-hydraulicsystem-pumphead1-west
+block,game:jonas-lamp,yes,game:clutter-
+block,game:jonas-poweramplifier-bracket-east,no,game:block-jonas-poweramplifier-bracket-east
+block,game:jonas-poweramplifier-bracket-north,no,game:block-jonas-poweramplifier-bracket-north
+block,game:jonas-poweramplifier-bracket-south,yes,Massive iron bracing
+block,game:jonas-poweramplifier-bracket-west,no,game:block-jonas-poweramplifier-bracket-west
+block,game:jonas-poweramplifier-core-east,no,game:block-jonas-poweramplifier-core-east
+block,game:jonas-poweramplifier-core-north,no,game:block-jonas-poweramplifier-core-north
+block,game:jonas-poweramplifier-core-south,yes,Concentric amplifier core
+block,game:jonas-poweramplifier-core-west,no,game:block-jonas-poweramplifier-core-west
+block,game:jonas-poweramplifier-gearbox-east,no,game:block-jonas-poweramplifier-gearbox-east
+block,game:jonas-poweramplifier-gearbox-north,no,game:block-jonas-poweramplifier-gearbox-north
+block,game:jonas-poweramplifier-gearbox-south,yes,Massive bronze gearbox
+block,game:jonas-poweramplifier-gearbox-west,no,game:block-jonas-poweramplifier-gearbox-west
+block,game:jonas-poweramplifier-genpto-east,no,game:block-jonas-poweramplifier-genpto-east
+block,game:jonas-poweramplifier-genpto-north,no,game:block-jonas-poweramplifier-genpto-north
+block,game:jonas-poweramplifier-genpto-south,yes,Bronze gearbox
+block,game:jonas-poweramplifier-genpto-west,no,game:block-jonas-poweramplifier-genpto-west
+block,game:jonas-poweramplifier-lever4-east,no,game:block-jonas-poweramplifier-lever4-east
+block,game:jonas-poweramplifier-lever4-north,no,game:block-jonas-poweramplifier-lever4-north
+block,game:jonas-poweramplifier-lever4-south,yes,Group of four levers
+block,game:jonas-poweramplifier-lever4-west,no,game:block-jonas-poweramplifier-lever4-west
+block,game:jonas-poweramplifier-ptoflange-east,no,game:block-jonas-poweramplifier-ptoflange-east
+block,game:jonas-poweramplifier-ptoflange-north,no,game:block-jonas-poweramplifier-ptoflange-north
+block,game:jonas-poweramplifier-ptoflange-south,yes,Power shaft flange
+block,game:jonas-poweramplifier-ptoflange-west,no,game:block-jonas-poweramplifier-ptoflange-west
+block,game:jonas-poweramplifier-ptoshaft-east,no,game:block-jonas-poweramplifier-ptoshaft-east
+block,game:jonas-poweramplifier-ptoshaft-north,no,game:block-jonas-poweramplifier-ptoshaft-north
+block,game:jonas-poweramplifier-ptoshaft-south,yes,Power shaft
+block,game:jonas-poweramplifier-ptoshaft-west,no,game:block-jonas-poweramplifier-ptoshaft-west
+block,game:jonas-poweramplifier-sideend-east,no,game:block-jonas-poweramplifier-sideend-east
+block,game:jonas-poweramplifier-sideend-north,no,game:block-jonas-poweramplifier-sideend-north
+block,game:jonas-poweramplifier-sideend-south,yes,Concentric amplifier diffuser
+block,game:jonas-poweramplifier-sideend-west,no,game:block-jonas-poweramplifier-sideend-west
+block,game:jonas-steamengine-beam-east,no,game:block-jonas-steamengine-beam-east
+block,game:jonas-steamengine-beam-north,no,game:block-jonas-steamengine-beam-north
+block,game:jonas-steamengine-beam-south,yes,Atmospheric engine beam
+block,game:jonas-steamengine-beam-west,no,game:block-jonas-steamengine-beam-west
+block,game:jonas-steamengine-gear12-east,no,game:block-jonas-steamengine-gear12-east
+block,game:jonas-steamengine-gear12-north,no,game:block-jonas-steamengine-gear12-north
+block,game:jonas-steamengine-gear12-south,yes,12-tooth gear
+block,game:jonas-steamengine-gear12-west,no,game:block-jonas-steamengine-gear12-west
+block,game:jonas-steamengine-gear24-east,no,game:block-jonas-steamengine-gear24-east
+block,game:jonas-steamengine-gear24-north,no,game:block-jonas-steamengine-gear24-north
+block,game:jonas-steamengine-gear24-south,yes,24-tooth gear
+block,game:jonas-steamengine-gear24-west,no,game:block-jonas-steamengine-gear24-west
+block,game:jonas-steamengine-gear36-east,no,game:block-jonas-steamengine-gear36-east
+block,game:jonas-steamengine-gear36-north,no,game:block-jonas-steamengine-gear36-north
+block,game:jonas-steamengine-gear36-south,yes,36-tooth gear
+block,game:jonas-steamengine-gear36-west,no,game:block-jonas-steamengine-gear36-west
+block,game:jonas-steamengine-gearjunction-east,no,game:block-jonas-steamengine-gearjunction-east
+block,game:jonas-steamengine-gearjunction-north,no,game:block-jonas-steamengine-gearjunction-north
+block,game:jonas-steamengine-gearjunction-south,yes,Gear junction
+block,game:jonas-steamengine-gearjunction-west,no,game:block-jonas-steamengine-gearjunction-west
+block,game:jonas-steamengine-pistonbottom-east,no,game:block-jonas-steamengine-pistonbottom-east
+block,game:jonas-steamengine-pistonbottom-north,no,game:block-jonas-steamengine-pistonbottom-north
+block,game:jonas-steamengine-pistonbottom-south,yes,"Atmospheric engine piston, bottom portion"
+block,game:jonas-steamengine-pistonbottom-west,no,game:block-jonas-steamengine-pistonbottom-west
+block,game:jonas-steamengine-pistonmiddle-east,no,game:block-jonas-steamengine-pistonmiddle-east
+block,game:jonas-steamengine-pistonmiddle-north,no,game:block-jonas-steamengine-pistonmiddle-north
+block,game:jonas-steamengine-pistonmiddle-south,yes,"Atmospheric engine piston, middle portion"
+block,game:jonas-steamengine-pistonmiddle-west,no,game:block-jonas-steamengine-pistonmiddle-west
+block,game:jonas-steamengine-pistontop-east,no,game:block-jonas-steamengine-pistontop-east
+block,game:jonas-steamengine-pistontop-north,no,game:block-jonas-steamengine-pistontop-north
+block,game:jonas-steamengine-pistontop-south,yes,"Atmospheric engine piston, top portion"
+block,game:jonas-steamengine-pistontop-west,no,game:block-jonas-steamengine-pistontop-west
+block,game:jonas-steamengine-support-east,no,game:block-jonas-steamengine-support-east
+block,game:jonas-steamengine-support-north,no,game:block-jonas-steamengine-support-north
+block,game:jonas-steamengine-support-south,no,Wood timber framework
+block,game:jonas-steamengine-support-west,no,game:block-jonas-steamengine-support-west
+block,game:jonas-steamengine-valve1-east,no,game:block-jonas-steamengine-valve1-east
+block,game:jonas-steamengine-valve1-north,no,game:block-jonas-steamengine-valve1-north
+block,game:jonas-steamengine-valve1-south,yes,Iron pipe valve with trip lever
+block,game:jonas-steamengine-valve1-west,no,game:block-jonas-steamengine-valve1-west
+block,game:jonas-steamengine-valve2-east,no,game:block-jonas-steamengine-valve2-east
+block,game:jonas-steamengine-valve2-north,no,game:block-jonas-steamengine-valve2-north
+block,game:jonas-steamengine-valve2-south,yes,Iron pipe valve with trip lever
+block,game:jonas-steamengine-valve2-west,no,game:block-jonas-steamengine-valve2-west
+block,game:jonaslens-east,no,The Lens
+block,game:jonaslens-north,yes,The Lens
+block,game:jonaslens-south,no,The Lens
+block,game:jonaslens-west,no,The Lens
+item,game:largegear-temporal,yes,Large temporal gear
+block,game:lava-d-1,no,game:block-lava-d-1
+block,game:lava-d-2,no,game:block-lava-d-2
+block,game:lava-d-3,no,game:block-lava-d-3
+block,game:lava-d-4,no,game:block-lava-d-4
+block,game:lava-d-5,no,game:block-lava-d-5
+block,game:lava-d-6,no,game:block-lava-d-6
+block,game:lava-d-7,no,game:block-lava-d-7
+block,game:lava-e-1,no,game:block-lava-e-1
+block,game:lava-e-2,no,game:block-lava-e-2
+block,game:lava-e-3,no,game:block-lava-e-3
+block,game:lava-e-4,no,game:block-lava-e-4
+block,game:lava-e-5,no,game:block-lava-e-5
+block,game:lava-e-6,no,game:block-lava-e-6
+block,game:lava-e-7,no,game:block-lava-e-7
+block,game:lava-n-1,no,game:block-lava-n-1
+block,game:lava-n-2,no,game:block-lava-n-2
+block,game:lava-n-3,no,game:block-lava-n-3
+block,game:lava-n-4,no,game:block-lava-n-4
+block,game:lava-n-5,no,game:block-lava-n-5
+block,game:lava-n-6,no,game:block-lava-n-6
+block,game:lava-n-7,no,game:block-lava-n-7
+block,game:lava-ne-1,no,game:block-lava-ne-1
+block,game:lava-ne-2,no,game:block-lava-ne-2
+block,game:lava-ne-3,no,game:block-lava-ne-3
+block,game:lava-ne-4,no,game:block-lava-ne-4
+block,game:lava-ne-5,no,game:block-lava-ne-5
+block,game:lava-ne-6,no,game:block-lava-ne-6
+block,game:lava-ne-7,no,game:block-lava-ne-7
+block,game:lava-nw-1,no,game:block-lava-nw-1
+block,game:lava-nw-2,no,game:block-lava-nw-2
+block,game:lava-nw-3,no,game:block-lava-nw-3
+block,game:lava-nw-4,no,game:block-lava-nw-4
+block,game:lava-nw-5,no,game:block-lava-nw-5
+block,game:lava-nw-6,no,game:block-lava-nw-6
+block,game:lava-nw-7,no,game:block-lava-nw-7
+block,game:lava-s-1,no,game:block-lava-s-1
+block,game:lava-s-2,no,game:block-lava-s-2
+block,game:lava-s-3,no,game:block-lava-s-3
+block,game:lava-s-4,no,game:block-lava-s-4
+block,game:lava-s-5,no,game:block-lava-s-5
+block,game:lava-s-6,no,game:block-lava-s-6
+block,game:lava-s-7,no,game:block-lava-s-7
+block,game:lava-se-1,no,game:block-lava-se-1
+block,game:lava-se-2,no,game:block-lava-se-2
+block,game:lava-se-3,no,game:block-lava-se-3
+block,game:lava-se-4,no,game:block-lava-se-4
+block,game:lava-se-5,no,game:block-lava-se-5
+block,game:lava-se-6,no,game:block-lava-se-6
+block,game:lava-se-7,no,game:block-lava-se-7
+block,game:lava-still-1,no,game:block-lava-still-1
+block,game:lava-still-2,no,game:block-lava-still-2
+block,game:lava-still-3,no,game:block-lava-still-3
+block,game:lava-still-4,no,game:block-lava-still-4
+block,game:lava-still-5,no,game:block-lava-still-5
+block,game:lava-still-6,no,game:block-lava-still-6
+block,game:lava-still-7,yes,Still Lava
+block,game:lava-sw-1,no,game:block-lava-sw-1
+block,game:lava-sw-2,no,game:block-lava-sw-2
+block,game:lava-sw-3,no,game:block-lava-sw-3
+block,game:lava-sw-4,no,game:block-lava-sw-4
+block,game:lava-sw-5,no,game:block-lava-sw-5
+block,game:lava-sw-6,no,game:block-lava-sw-6
+block,game:lava-sw-7,no,game:block-lava-sw-7
+block,game:lava-w-1,no,game:block-lava-w-1
+block,game:lava-w-2,no,game:block-lava-w-2
+block,game:lava-w-3,no,game:block-lava-w-3
+block,game:lava-w-4,no,game:block-lava-w-4
+block,game:lava-w-5,no,game:block-lava-w-5
+block,game:lava-w-6,no,game:block-lava-w-6
+block,game:lava-w-7,no,game:block-lava-w-7
+item,game:letter-faded,yes,Faded and crumpled letter
+item,game:letter-lazaret,yes,Letter with directions to the lazaret
+item,game:locatormap-cavetobias,yes,Map to Tobias' cave
+item,game:locatormap-devastationarea,yes,Map to the devastation
+item,game:locatormap-dungeon,yes,Map to an abandoned dungeon
+item,game:locatormap-resonancearchive,yes,Map to the resonance archive
+item,game:locatormap-treasurehunter,yes,Map to the treasure hunter
+item,game:locatormap-treasures,yes,Treasure map
+block,game:locustnest-cage,yes,Locust nest (Cage)
+block,game:locustnest-metalspike-large,yes,Metal spikes
+block,game:locustnest-metalspike-medium,yes,Metal spikes
+block,game:locustnest-metalspike-none,yes,Metal spikes
+block,game:locustnest-metalspike-none-upsidedown,yes,Metal spikes
+block,game:locustnest-metalspike-small,yes,Metal spikes
+block,game:locustnest-metalspike-tiny,yes,Metal spikes
+block,game:locustnest-stalagmite-main1,yes,Locust nest
+block,game:locustnest-stalagmite-small1,yes,Locust nest
+block,game:locustnest-stalagmite-small2,yes,Locust nest
+item,game:lootrandomizer,yes,Loot randomizer
+block,game:lootvessel-arcticsupplies,yes,Cracked vessel (Arctic supplies)
+block,game:lootvessel-farming,yes,Cracked vessel (Farming)
+block,game:lootvessel-food,yes,Cracked vessel (Food)
+block,game:lootvessel-forage,yes,Cracked vessel (Forage)
+block,game:lootvessel-ore,yes,Cracked vessel (Ore)
+block,game:lootvessel-seed,yes,Cracked vessel (Seed)
+block,game:lootvessel-tool,yes,Cracked vessel (Tool)
+item,game:lore-book-aged-brickred,yes,Aged lore book (Brick red)
+item,game:lore-book-aged-cherryred,yes,Aged lore book (Cherry red)
+item,game:lore-book-aged-darkbeige,yes,Aged lore book (Dark beige)
+item,game:lore-book-aged-darkgray,yes,Aged lore book (Dark gray)
+item,game:lore-book-aged-darkgreen,yes,Aged lore book (Dark green)
+item,game:lore-book-aged-darkolive,yes,Aged lore book (Dark olive)
+item,game:lore-book-aged-gray,yes,Aged lore book (Gray)
+item,game:lore-book-aged-olive,yes,Aged lore book (Olive)
+item,game:lore-book-aged-orange,yes,Aged lore book (Orange)
+item,game:lore-book-aged-orangebrown,yes,Aged lore book (Orange brown)
+item,game:lore-book-aged-purpleorange,yes,Aged lore book (Purple orange)
+item,game:lore-book-rotten-brown,yes,Rotten lore book (Brown)
+item,game:lore-book-rotten-gray,yes,Rotten lore book (Gray)
+item,game:lore-book-rotten-green,yes,Rotten lore book (Green)
+item,game:lore-book-rotten-purple,yes,Rotten lore book (Purple)
+item,game:lore-book-rotten-rust,yes,Rotten lore book (Rust)
+item,game:lore-paper,yes,Paper
+item,game:lore-scroll,yes,Scroll
+item,game:magicwand,yes,Magic wand (Worldedit)
+block,game:mantle,yes,Mantle
+item,game:measuringrope,yes,Measuring rope
+block,game:meta-aboveground,yes,Meta (Above ground)
+block,game:meta-blocklayer,yes,Meta (block layer)
+block,game:meta-collider,yes,Meta (Collider)
+block,game:meta-connector,yes,Meta (connector)
+block,game:meta-filler,yes,Meta (Filler)
+block,game:meta-music,yes,Meta (music)
+block,game:meta-pathway,yes,Meta (Pathway)
+block,game:meta-selectablecollider,yes,Meta (Selectable Collider)
+block,game:meta-spawner,yes,Meta (Spawner)
+block,game:meta-underground,yes,Meta (Underground)
+block,game:microblock,no,Granite rock
+block,game:multiblock-monolithic-0-0-0,no,game:block-multiblock-monolithic-0-0-0
+block,game:multiblock-monolithic-0-0-n1,no,game:block-multiblock-monolithic-0-0-n1
+block,game:multiblock-monolithic-0-0-n2,no,game:block-multiblock-monolithic-0-0-n2
+block,game:multiblock-monolithic-0-0-p1,no,game:block-multiblock-monolithic-0-0-p1
+block,game:multiblock-monolithic-0-0-p2,no,game:block-multiblock-monolithic-0-0-p2
+block,game:multiblock-monolithic-0-n1-0,no,game:block-multiblock-monolithic-0-n1-0
+block,game:multiblock-monolithic-0-n1-n1,no,game:block-multiblock-monolithic-0-n1-n1
+block,game:multiblock-monolithic-0-n1-n2,no,game:block-multiblock-monolithic-0-n1-n2
+block,game:multiblock-monolithic-0-n1-p1,no,game:block-multiblock-monolithic-0-n1-p1
+block,game:multiblock-monolithic-0-n1-p2,no,game:block-multiblock-monolithic-0-n1-p2
+block,game:multiblock-monolithic-0-n2-0,no,game:block-multiblock-monolithic-0-n2-0
+block,game:multiblock-monolithic-0-n2-n1,no,game:block-multiblock-monolithic-0-n2-n1
+block,game:multiblock-monolithic-0-n2-n2,no,game:block-multiblock-monolithic-0-n2-n2
+block,game:multiblock-monolithic-0-n2-p1,no,game:block-multiblock-monolithic-0-n2-p1
+block,game:multiblock-monolithic-0-n2-p2,no,game:block-multiblock-monolithic-0-n2-p2
+block,game:multiblock-monolithic-0-p1-0,no,game:block-multiblock-monolithic-0-p1-0
+block,game:multiblock-monolithic-0-p1-n1,no,game:block-multiblock-monolithic-0-p1-n1
+block,game:multiblock-monolithic-0-p1-n2,no,game:block-multiblock-monolithic-0-p1-n2
+block,game:multiblock-monolithic-0-p1-p1,no,game:block-multiblock-monolithic-0-p1-p1
+block,game:multiblock-monolithic-0-p1-p2,no,game:block-multiblock-monolithic-0-p1-p2
+block,game:multiblock-monolithic-0-p2-0,no,game:block-multiblock-monolithic-0-p2-0
+block,game:multiblock-monolithic-0-p2-n1,no,game:block-multiblock-monolithic-0-p2-n1
+block,game:multiblock-monolithic-0-p2-n2,no,game:block-multiblock-monolithic-0-p2-n2
+block,game:multiblock-monolithic-0-p2-p1,no,game:block-multiblock-monolithic-0-p2-p1
+block,game:multiblock-monolithic-0-p2-p2,no,game:block-multiblock-monolithic-0-p2-p2
+block,game:multiblock-monolithic-0-p3-0,no,game:block-multiblock-monolithic-0-p3-0
+block,game:multiblock-monolithic-0-p3-n1,no,game:block-multiblock-monolithic-0-p3-n1
+block,game:multiblock-monolithic-0-p3-n2,no,game:block-multiblock-monolithic-0-p3-n2
+block,game:multiblock-monolithic-0-p3-p1,no,game:block-multiblock-monolithic-0-p3-p1
+block,game:multiblock-monolithic-0-p3-p2,no,game:block-multiblock-monolithic-0-p3-p2
+block,game:multiblock-monolithic-n1-0-0,no,game:block-multiblock-monolithic-n1-0-0
+block,game:multiblock-monolithic-n1-0-n1,no,game:block-multiblock-monolithic-n1-0-n1
+block,game:multiblock-monolithic-n1-0-n2,no,game:block-multiblock-monolithic-n1-0-n2
+block,game:multiblock-monolithic-n1-0-p1,no,game:block-multiblock-monolithic-n1-0-p1
+block,game:multiblock-monolithic-n1-0-p2,no,game:block-multiblock-monolithic-n1-0-p2
+block,game:multiblock-monolithic-n1-n1-0,no,game:block-multiblock-monolithic-n1-n1-0
+block,game:multiblock-monolithic-n1-n1-n1,no,game:block-multiblock-monolithic-n1-n1-n1
+block,game:multiblock-monolithic-n1-n1-n2,no,game:block-multiblock-monolithic-n1-n1-n2
+block,game:multiblock-monolithic-n1-n1-p1,no,game:block-multiblock-monolithic-n1-n1-p1
+block,game:multiblock-monolithic-n1-n1-p2,no,game:block-multiblock-monolithic-n1-n1-p2
+block,game:multiblock-monolithic-n1-n2-0,no,game:block-multiblock-monolithic-n1-n2-0
+block,game:multiblock-monolithic-n1-n2-n1,no,game:block-multiblock-monolithic-n1-n2-n1
+block,game:multiblock-monolithic-n1-n2-n2,no,game:block-multiblock-monolithic-n1-n2-n2
+block,game:multiblock-monolithic-n1-n2-p1,no,game:block-multiblock-monolithic-n1-n2-p1
+block,game:multiblock-monolithic-n1-n2-p2,no,game:block-multiblock-monolithic-n1-n2-p2
+block,game:multiblock-monolithic-n1-p1-0,no,game:block-multiblock-monolithic-n1-p1-0
+block,game:multiblock-monolithic-n1-p1-n1,no,game:block-multiblock-monolithic-n1-p1-n1
+block,game:multiblock-monolithic-n1-p1-n2,no,game:block-multiblock-monolithic-n1-p1-n2
+block,game:multiblock-monolithic-n1-p1-p1,no,game:block-multiblock-monolithic-n1-p1-p1
+block,game:multiblock-monolithic-n1-p1-p2,no,game:block-multiblock-monolithic-n1-p1-p2
+block,game:multiblock-monolithic-n1-p2-0,no,game:block-multiblock-monolithic-n1-p2-0
+block,game:multiblock-monolithic-n1-p2-n1,no,game:block-multiblock-monolithic-n1-p2-n1
+block,game:multiblock-monolithic-n1-p2-n2,no,game:block-multiblock-monolithic-n1-p2-n2
+block,game:multiblock-monolithic-n1-p2-p1,no,game:block-multiblock-monolithic-n1-p2-p1
+block,game:multiblock-monolithic-n1-p2-p2,no,game:block-multiblock-monolithic-n1-p2-p2
+block,game:multiblock-monolithic-n1-p3-0,no,game:block-multiblock-monolithic-n1-p3-0
+block,game:multiblock-monolithic-n1-p3-n1,no,game:block-multiblock-monolithic-n1-p3-n1
+block,game:multiblock-monolithic-n1-p3-n2,no,game:block-multiblock-monolithic-n1-p3-n2
+block,game:multiblock-monolithic-n1-p3-p1,no,game:block-multiblock-monolithic-n1-p3-p1
+block,game:multiblock-monolithic-n1-p3-p2,no,game:block-multiblock-monolithic-n1-p3-p2
+block,game:multiblock-monolithic-n2-0-0,no,game:block-multiblock-monolithic-n2-0-0
+block,game:multiblock-monolithic-n2-0-n1,no,game:block-multiblock-monolithic-n2-0-n1
+block,game:multiblock-monolithic-n2-0-n2,no,game:block-multiblock-monolithic-n2-0-n2
+block,game:multiblock-monolithic-n2-0-p1,no,game:block-multiblock-monolithic-n2-0-p1
+block,game:multiblock-monolithic-n2-0-p2,no,game:block-multiblock-monolithic-n2-0-p2
+block,game:multiblock-monolithic-n2-n1-0,no,game:block-multiblock-monolithic-n2-n1-0
+block,game:multiblock-monolithic-n2-n1-n1,no,game:block-multiblock-monolithic-n2-n1-n1
+block,game:multiblock-monolithic-n2-n1-n2,no,game:block-multiblock-monolithic-n2-n1-n2
+block,game:multiblock-monolithic-n2-n1-p1,no,game:block-multiblock-monolithic-n2-n1-p1
+block,game:multiblock-monolithic-n2-n1-p2,no,game:block-multiblock-monolithic-n2-n1-p2
+block,game:multiblock-monolithic-n2-n2-0,no,game:block-multiblock-monolithic-n2-n2-0
+block,game:multiblock-monolithic-n2-n2-n1,no,game:block-multiblock-monolithic-n2-n2-n1
+block,game:multiblock-monolithic-n2-n2-n2,no,game:block-multiblock-monolithic-n2-n2-n2
+block,game:multiblock-monolithic-n2-n2-p1,no,game:block-multiblock-monolithic-n2-n2-p1
+block,game:multiblock-monolithic-n2-n2-p2,no,game:block-multiblock-monolithic-n2-n2-p2
+block,game:multiblock-monolithic-n2-p1-0,no,game:block-multiblock-monolithic-n2-p1-0
+block,game:multiblock-monolithic-n2-p1-n1,no,game:block-multiblock-monolithic-n2-p1-n1
+block,game:multiblock-monolithic-n2-p1-n2,no,game:block-multiblock-monolithic-n2-p1-n2
+block,game:multiblock-monolithic-n2-p1-p1,no,game:block-multiblock-monolithic-n2-p1-p1
+block,game:multiblock-monolithic-n2-p1-p2,no,game:block-multiblock-monolithic-n2-p1-p2
+block,game:multiblock-monolithic-n2-p2-0,no,game:block-multiblock-monolithic-n2-p2-0
+block,game:multiblock-monolithic-n2-p2-n1,no,game:block-multiblock-monolithic-n2-p2-n1
+block,game:multiblock-monolithic-n2-p2-n2,no,game:block-multiblock-monolithic-n2-p2-n2
+block,game:multiblock-monolithic-n2-p2-p1,no,game:block-multiblock-monolithic-n2-p2-p1
+block,game:multiblock-monolithic-n2-p2-p2,no,game:block-multiblock-monolithic-n2-p2-p2
+block,game:multiblock-monolithic-n2-p3-0,no,game:block-multiblock-monolithic-n2-p3-0
+block,game:multiblock-monolithic-n2-p3-n1,no,game:block-multiblock-monolithic-n2-p3-n1
+block,game:multiblock-monolithic-n2-p3-n2,no,game:block-multiblock-monolithic-n2-p3-n2
+block,game:multiblock-monolithic-n2-p3-p1,no,game:block-multiblock-monolithic-n2-p3-p1
+block,game:multiblock-monolithic-n2-p3-p2,no,game:block-multiblock-monolithic-n2-p3-p2
+block,game:multiblock-monolithic-p1-0-0,no,game:block-multiblock-monolithic-p1-0-0
+block,game:multiblock-monolithic-p1-0-n1,no,game:block-multiblock-monolithic-p1-0-n1
+block,game:multiblock-monolithic-p1-0-n2,no,game:block-multiblock-monolithic-p1-0-n2
+block,game:multiblock-monolithic-p1-0-p1,no,game:block-multiblock-monolithic-p1-0-p1
+block,game:multiblock-monolithic-p1-0-p2,no,game:block-multiblock-monolithic-p1-0-p2
+block,game:multiblock-monolithic-p1-n1-0,no,game:block-multiblock-monolithic-p1-n1-0
+block,game:multiblock-monolithic-p1-n1-n1,no,game:block-multiblock-monolithic-p1-n1-n1
+block,game:multiblock-monolithic-p1-n1-n2,no,game:block-multiblock-monolithic-p1-n1-n2
+block,game:multiblock-monolithic-p1-n1-p1,no,game:block-multiblock-monolithic-p1-n1-p1
+block,game:multiblock-monolithic-p1-n1-p2,no,game:block-multiblock-monolithic-p1-n1-p2
+block,game:multiblock-monolithic-p1-n2-0,no,game:block-multiblock-monolithic-p1-n2-0
+block,game:multiblock-monolithic-p1-n2-n1,no,game:block-multiblock-monolithic-p1-n2-n1
+block,game:multiblock-monolithic-p1-n2-n2,no,game:block-multiblock-monolithic-p1-n2-n2
+block,game:multiblock-monolithic-p1-n2-p1,no,game:block-multiblock-monolithic-p1-n2-p1
+block,game:multiblock-monolithic-p1-n2-p2,no,game:block-multiblock-monolithic-p1-n2-p2
+block,game:multiblock-monolithic-p1-p1-0,no,game:block-multiblock-monolithic-p1-p1-0
+block,game:multiblock-monolithic-p1-p1-n1,no,game:block-multiblock-monolithic-p1-p1-n1
+block,game:multiblock-monolithic-p1-p1-n2,no,game:block-multiblock-monolithic-p1-p1-n2
+block,game:multiblock-monolithic-p1-p1-p1,no,game:block-multiblock-monolithic-p1-p1-p1
+block,game:multiblock-monolithic-p1-p1-p2,no,game:block-multiblock-monolithic-p1-p1-p2
+block,game:multiblock-monolithic-p1-p2-0,no,game:block-multiblock-monolithic-p1-p2-0
+block,game:multiblock-monolithic-p1-p2-n1,no,game:block-multiblock-monolithic-p1-p2-n1
+block,game:multiblock-monolithic-p1-p2-n2,no,game:block-multiblock-monolithic-p1-p2-n2
+block,game:multiblock-monolithic-p1-p2-p1,no,game:block-multiblock-monolithic-p1-p2-p1
+block,game:multiblock-monolithic-p1-p2-p2,no,game:block-multiblock-monolithic-p1-p2-p2
+block,game:multiblock-monolithic-p1-p3-0,no,game:block-multiblock-monolithic-p1-p3-0
+block,game:multiblock-monolithic-p1-p3-n1,no,game:block-multiblock-monolithic-p1-p3-n1
+block,game:multiblock-monolithic-p1-p3-n2,no,game:block-multiblock-monolithic-p1-p3-n2
+block,game:multiblock-monolithic-p1-p3-p1,no,game:block-multiblock-monolithic-p1-p3-p1
+block,game:multiblock-monolithic-p1-p3-p2,no,game:block-multiblock-monolithic-p1-p3-p2
+block,game:multiblock-monolithic-p2-0-0,no,game:block-multiblock-monolithic-p2-0-0
+block,game:multiblock-monolithic-p2-0-n1,no,game:block-multiblock-monolithic-p2-0-n1
+block,game:multiblock-monolithic-p2-0-n2,no,game:block-multiblock-monolithic-p2-0-n2
+block,game:multiblock-monolithic-p2-0-p1,no,game:block-multiblock-monolithic-p2-0-p1
+block,game:multiblock-monolithic-p2-0-p2,no,game:block-multiblock-monolithic-p2-0-p2
+block,game:multiblock-monolithic-p2-n1-0,no,game:block-multiblock-monolithic-p2-n1-0
+block,game:multiblock-monolithic-p2-n1-n1,no,game:block-multiblock-monolithic-p2-n1-n1
+block,game:multiblock-monolithic-p2-n1-n2,no,game:block-multiblock-monolithic-p2-n1-n2
+block,game:multiblock-monolithic-p2-n1-p1,no,game:block-multiblock-monolithic-p2-n1-p1
+block,game:multiblock-monolithic-p2-n1-p2,no,game:block-multiblock-monolithic-p2-n1-p2
+block,game:multiblock-monolithic-p2-n2-0,no,game:block-multiblock-monolithic-p2-n2-0
+block,game:multiblock-monolithic-p2-n2-n1,no,game:block-multiblock-monolithic-p2-n2-n1
+block,game:multiblock-monolithic-p2-n2-n2,no,game:block-multiblock-monolithic-p2-n2-n2
+block,game:multiblock-monolithic-p2-n2-p1,no,game:block-multiblock-monolithic-p2-n2-p1
+block,game:multiblock-monolithic-p2-n2-p2,no,game:block-multiblock-monolithic-p2-n2-p2
+block,game:multiblock-monolithic-p2-p1-0,no,game:block-multiblock-monolithic-p2-p1-0
+block,game:multiblock-monolithic-p2-p1-n1,no,game:block-multiblock-monolithic-p2-p1-n1
+block,game:multiblock-monolithic-p2-p1-n2,no,game:block-multiblock-monolithic-p2-p1-n2
+block,game:multiblock-monolithic-p2-p1-p1,no,game:block-multiblock-monolithic-p2-p1-p1
+block,game:multiblock-monolithic-p2-p1-p2,no,game:block-multiblock-monolithic-p2-p1-p2
+block,game:multiblock-monolithic-p2-p2-0,no,game:block-multiblock-monolithic-p2-p2-0
+block,game:multiblock-monolithic-p2-p2-n1,no,game:block-multiblock-monolithic-p2-p2-n1
+block,game:multiblock-monolithic-p2-p2-n2,no,game:block-multiblock-monolithic-p2-p2-n2
+block,game:multiblock-monolithic-p2-p2-p1,no,game:block-multiblock-monolithic-p2-p2-p1
+block,game:multiblock-monolithic-p2-p2-p2,no,game:block-multiblock-monolithic-p2-p2-p2
+block,game:multiblock-monolithic-p2-p3-0,no,game:block-multiblock-monolithic-p2-p3-0
+block,game:multiblock-monolithic-p2-p3-n1,no,game:block-multiblock-monolithic-p2-p3-n1
+block,game:multiblock-monolithic-p2-p3-n2,no,game:block-multiblock-monolithic-p2-p3-n2
+block,game:multiblock-monolithic-p2-p3-p1,no,game:block-multiblock-monolithic-p2-p3-p1
+block,game:multiblock-monolithic-p2-p3-p2,no,game:block-multiblock-monolithic-p2-p3-p2
+item,game:npcguidestick,yes,NPC guide stick
+block,game:oxidation-rust-3tall-bot,yes,Oxidation layer (bottom)
+block,game:oxidation-rust-3tall-mid,yes,Oxidation layer (mid)
+block,game:oxidation-rust-3tall-top,yes,Oxidation layer (top)
+block,game:oxidation-rust-dripping,yes,Dripping oxidation layer
+block,game:oxidation-rust-normal,yes,Oxidation layer
+block,game:paint-scratched-white,yes,Scratched white paint
+block,game:pie-raw,yes,Empty pie crust
+block,game:platepile,no,game:block-platepile
+block,game:precipitate-dust-heavy,yes,Dust (heavy)
+block,game:precipitate-dust-light,yes,Dust (light)
+block,game:precipitate-dust-sparse,yes,Dust (sparse)
+block,game:randomizer-normal,yes,Block Randomizer
+block,game:rapidwater-d-1,no,game:block-rapidwater-d-1
+block,game:rapidwater-d-2,no,game:block-rapidwater-d-2
+block,game:rapidwater-d-3,no,game:block-rapidwater-d-3
+block,game:rapidwater-d-4,no,game:block-rapidwater-d-4
+block,game:rapidwater-d-5,no,game:block-rapidwater-d-5
+block,game:rapidwater-d-6,no,game:block-rapidwater-d-6
+block,game:rapidwater-d-7,no,game:block-rapidwater-d-7
+block,game:rapidwater-e-1,no,game:block-rapidwater-e-1
+block,game:rapidwater-e-2,no,game:block-rapidwater-e-2
+block,game:rapidwater-e-3,no,game:block-rapidwater-e-3
+block,game:rapidwater-e-4,no,game:block-rapidwater-e-4
+block,game:rapidwater-e-5,no,game:block-rapidwater-e-5
+block,game:rapidwater-e-6,no,game:block-rapidwater-e-6
+block,game:rapidwater-e-7,no,game:block-rapidwater-e-7
+block,game:rapidwater-n-1,no,game:block-rapidwater-n-1
+block,game:rapidwater-n-2,no,game:block-rapidwater-n-2
+block,game:rapidwater-n-3,no,game:block-rapidwater-n-3
+block,game:rapidwater-n-4,no,game:block-rapidwater-n-4
+block,game:rapidwater-n-5,no,game:block-rapidwater-n-5
+block,game:rapidwater-n-6,no,game:block-rapidwater-n-6
+block,game:rapidwater-n-7,no,game:block-rapidwater-n-7
+block,game:rapidwater-ne-1,no,game:block-rapidwater-ne-1
+block,game:rapidwater-ne-2,no,game:block-rapidwater-ne-2
+block,game:rapidwater-ne-3,no,game:block-rapidwater-ne-3
+block,game:rapidwater-ne-4,no,game:block-rapidwater-ne-4
+block,game:rapidwater-ne-5,no,game:block-rapidwater-ne-5
+block,game:rapidwater-ne-6,no,game:block-rapidwater-ne-6
+block,game:rapidwater-ne-7,no,game:block-rapidwater-ne-7
+block,game:rapidwater-nw-1,no,game:block-rapidwater-nw-1
+block,game:rapidwater-nw-2,no,game:block-rapidwater-nw-2
+block,game:rapidwater-nw-3,no,game:block-rapidwater-nw-3
+block,game:rapidwater-nw-4,no,game:block-rapidwater-nw-4
+block,game:rapidwater-nw-5,no,game:block-rapidwater-nw-5
+block,game:rapidwater-nw-6,no,game:block-rapidwater-nw-6
+block,game:rapidwater-nw-7,no,game:block-rapidwater-nw-7
+block,game:rapidwater-s-1,no,game:block-rapidwater-s-1
+block,game:rapidwater-s-2,no,game:block-rapidwater-s-2
+block,game:rapidwater-s-3,no,game:block-rapidwater-s-3
+block,game:rapidwater-s-4,no,game:block-rapidwater-s-4
+block,game:rapidwater-s-5,no,game:block-rapidwater-s-5
+block,game:rapidwater-s-6,no,game:block-rapidwater-s-6
+block,game:rapidwater-s-7,no,game:block-rapidwater-s-7
+block,game:rapidwater-se-1,no,game:block-rapidwater-se-1
+block,game:rapidwater-se-2,no,game:block-rapidwater-se-2
+block,game:rapidwater-se-3,no,game:block-rapidwater-se-3
+block,game:rapidwater-se-4,no,game:block-rapidwater-se-4
+block,game:rapidwater-se-5,no,game:block-rapidwater-se-5
+block,game:rapidwater-se-6,no,game:block-rapidwater-se-6
+block,game:rapidwater-se-7,no,game:block-rapidwater-se-7
+block,game:rapidwater-still-1,no,Rapidly flowing water
+block,game:rapidwater-still-2,no,Rapidly flowing water
+block,game:rapidwater-still-3,no,Rapidly flowing water
+block,game:rapidwater-still-4,no,Rapidly flowing water
+block,game:rapidwater-still-5,no,Rapidly flowing water
+block,game:rapidwater-still-6,no,Rapidly flowing water
+block,game:rapidwater-still-7,yes,Rapidly flowing water
+block,game:rapidwater-sw-1,no,game:block-rapidwater-sw-1
+block,game:rapidwater-sw-2,no,game:block-rapidwater-sw-2
+block,game:rapidwater-sw-3,no,game:block-rapidwater-sw-3
+block,game:rapidwater-sw-4,no,game:block-rapidwater-sw-4
+block,game:rapidwater-sw-5,no,game:block-rapidwater-sw-5
+block,game:rapidwater-sw-6,no,game:block-rapidwater-sw-6
+block,game:rapidwater-sw-7,no,game:block-rapidwater-sw-7
+block,game:rapidwater-w-1,no,game:block-rapidwater-w-1
+block,game:rapidwater-w-2,no,game:block-rapidwater-w-2
+block,game:rapidwater-w-3,no,game:block-rapidwater-w-3
+block,game:rapidwater-w-4,no,game:block-rapidwater-w-4
+block,game:rapidwater-w-5,no,game:block-rapidwater-w-5
+block,game:rapidwater-w-6,no,game:block-rapidwater-w-6
+block,game:rapidwater-w-7,no,game:block-rapidwater-w-7
+item,game:returnbase-returnbasebottom,yes,Base return teleporter alignment pylon
+item,game:returnbase-returnbaseend,yes,Base return teleporter thermal diffusion port
+item,game:returnbase-returnbasetop,yes,Base return teleporter reductive interval pylon
+item,game:returndeath-returndeath1,yes,Terminus teleporter thanatos coupling
+item,game:returndeath-returndeath2,yes,Terminus teleporter transpressor
+item,game:returndeath-returndeath3,yes,Terminus teleporter transit anodes
+item,game:rustypart-eidolon2tr,yes,Eidolon elucidatory vessel
+block,game:saltwater-d-1,no,Saltwater
+block,game:saltwater-d-2,no,Saltwater
+block,game:saltwater-d-3,no,Saltwater
+block,game:saltwater-d-4,no,Saltwater
+block,game:saltwater-d-5,no,Saltwater
+block,game:saltwater-d-6,no,Saltwater
+block,game:saltwater-d-7,no,Saltwater
+block,game:saltwater-e-1,no,Saltwater
+block,game:saltwater-e-2,no,Saltwater
+block,game:saltwater-e-3,no,Saltwater
+block,game:saltwater-e-4,no,Saltwater
+block,game:saltwater-e-5,no,Saltwater
+block,game:saltwater-e-6,no,Saltwater
+block,game:saltwater-e-7,no,Saltwater
+block,game:saltwater-n-1,no,Saltwater
+block,game:saltwater-n-2,no,Saltwater
+block,game:saltwater-n-3,no,Saltwater
+block,game:saltwater-n-4,no,Saltwater
+block,game:saltwater-n-5,no,Saltwater
+block,game:saltwater-n-6,no,Saltwater
+block,game:saltwater-n-7,no,Saltwater
+block,game:saltwater-ne-1,no,Saltwater
+block,game:saltwater-ne-2,no,Saltwater
+block,game:saltwater-ne-3,no,Saltwater
+block,game:saltwater-ne-4,no,Saltwater
+block,game:saltwater-ne-5,no,Saltwater
+block,game:saltwater-ne-6,no,Saltwater
+block,game:saltwater-ne-7,no,Saltwater
+block,game:saltwater-nw-1,no,Saltwater
+block,game:saltwater-nw-2,no,Saltwater
+block,game:saltwater-nw-3,no,Saltwater
+block,game:saltwater-nw-4,no,Saltwater
+block,game:saltwater-nw-5,no,Saltwater
+block,game:saltwater-nw-6,no,Saltwater
+block,game:saltwater-nw-7,no,Saltwater
+block,game:saltwater-s-1,no,Saltwater
+block,game:saltwater-s-2,no,Saltwater
+block,game:saltwater-s-3,no,Saltwater
+block,game:saltwater-s-4,no,Saltwater
+block,game:saltwater-s-5,no,Saltwater
+block,game:saltwater-s-6,no,Saltwater
+block,game:saltwater-s-7,no,Saltwater
+block,game:saltwater-se-1,no,Saltwater
+block,game:saltwater-se-2,no,Saltwater
+block,game:saltwater-se-3,no,Saltwater
+block,game:saltwater-se-4,no,Saltwater
+block,game:saltwater-se-5,no,Saltwater
+block,game:saltwater-se-6,no,Saltwater
+block,game:saltwater-se-7,no,Saltwater
+block,game:saltwater-still-1,no,Saltwater
+block,game:saltwater-still-2,no,Saltwater
+block,game:saltwater-still-3,no,Saltwater
+block,game:saltwater-still-4,no,Saltwater
+block,game:saltwater-still-5,no,Saltwater
+block,game:saltwater-still-6,no,Saltwater
+block,game:saltwater-still-7,yes,Saltwater
+block,game:saltwater-sw-1,no,Saltwater
+block,game:saltwater-sw-2,no,Saltwater
+block,game:saltwater-sw-3,no,Saltwater
+block,game:saltwater-sw-4,no,Saltwater
+block,game:saltwater-sw-5,no,Saltwater
+block,game:saltwater-sw-6,no,Saltwater
+block,game:saltwater-sw-7,no,Saltwater
+block,game:saltwater-w-1,no,Saltwater
+block,game:saltwater-w-2,no,Saltwater
+block,game:saltwater-w-3,no,Saltwater
+block,game:saltwater-w-4,no,Saltwater
+block,game:saltwater-w-5,no,Saltwater
+block,game:saltwater-w-6,no,Saltwater
+block,game:saltwater-w-7,no,Saltwater
+item,game:schematic-customtranslocator,yes,Customized translocator schematic
+block,game:slopetestobj-east,no,Slope test block
+block,game:slopetestobj-north,yes,Slope test block
+block,game:slopetestobj-south,no,Slope test block
+block,game:slopetestobj-west,no,Slope test block
+item,game:stackrandomizer-accessory-highstatus,yes,Accessory randomizer (High status)
+item,game:stackrandomizer-accessory-lowstatus,yes,Accessory randomizer (Low status)
+item,game:stackrandomizer-accessory-mediumstatus,yes,Accessory randomizer (Medium status)
+item,game:stackrandomizer-alljonas,yes,Jonas Parts&Frames Stack randomizer
+item,game:stackrandomizer-armor,yes,Armor randomizer
+item,game:stackrandomizer-butterfly,yes,Butterfly pin randomizer
+item,game:stackrandomizer-cloth-highstatus,yes,Cloth randomizer (High status)
+item,game:stackrandomizer-cloth-lowstatus,yes,Cloth randomizer (Low status)
+item,game:stackrandomizer-cloth-mediumstatus,yes,Cloth randomizer (Medium status)
+item,game:stackrandomizer-clutter-chains-and-fences,yes,Chains and fences clutter randomizer
+item,game:stackrandomizer-clutter-displaycase,yes,Displaycase clutter randomizer
+item,game:stackrandomizer-clutter-furniture,yes,Furniture clutter randomizer
+item,game:stackrandomizer-clutter-intact,yes,Intact clutter randomizer
+item,game:stackrandomizer-clutter-lab,yes,Lab clutter randomizer
+item,game:stackrandomizer-clutter-ruined-toys-clothing,yes,Ruined toys and clothing clutter randomizer
+item,game:stackrandomizer-clutter-ruined-weapons,yes,Ruined weapons clutter randomizer
+item,game:stackrandomizer-clutter-science,yes,Science clutter randomizer
+item,game:stackrandomizer-clutter-scribe,yes,Scribe clutter randomizer
+item,game:stackrandomizer-clutter-tobias,yes,Tobias cave randomizer
+item,game:stackrandomizer-clutter-workshop-advanced,yes,Advanced workshop clutter randomizer
+item,game:stackrandomizer-clutter-workshop-basic,yes,Basic workshop clutter randomizer
+item,game:stackrandomizer-coppertool,yes,Tool randomizer (Copper)
+item,game:stackrandomizer-copperweapon,yes,Weapon randomizer (Copper)
+item,game:stackrandomizer-fuel,yes,Fuel randomizer
+item,game:stackrandomizer-gear,yes,Gear randomizer
+item,game:stackrandomizer-ingot,yes,Ingot randomizer
+item,game:stackrandomizer-jonasframes,yes,Jonasframes randomizer
+item,game:stackrandomizer-jonasparts,yes,Jonas parts randomizer
+item,game:stackrandomizer-kitchen,yes,Food and kitchen tools randomizer
+item,game:stackrandomizer-lantern,yes,Lantern randomizer
+item,game:stackrandomizer-lazaret,yes,Lazaret randomizer
+item,game:stackrandomizer-library,yes,Library randomizer
+item,game:stackrandomizer-lore-diaries,yes,Lore randomizer (D)
+item,game:stackrandomizer-lore-jonas,yes,Lore randomizer (J)
+item,game:stackrandomizer-lore-research,yes,Lore randomizer (R)
+item,game:stackrandomizer-lore-tobias,yes,Lore randomizer (T)
+item,game:stackrandomizer-lore-villager,yes,Lore randomizer (V)
+item,game:stackrandomizer-materials-building,yes,Building materials randomizer
+item,game:stackrandomizer-materials-mining,yes,Mining materials randomizer
+item,game:stackrandomizer-mines,yes,Mines randomizer
+item,game:stackrandomizer-ore,yes,Ore Randomizer
+item,game:stackrandomizer-painting,yes,Painting randomizer
+item,game:stackrandomizer-resource,yes,Resource randomizer
+item,game:stackrandomizer-ruinedweapon,yes,Stack randomizer (Ruined weapons)
+item,game:stackrandomizer-seed,yes,Seed randomizer
+item,game:stackrandomizer-theater,yes,Theater randomizer
+item,game:stackrandomizer-tuningcylinder,yes,Tuning cylinder randomizer
+block,game:statictranslocator-broken-east,no,Broken static translocator
+block,game:statictranslocator-broken-north,yes,Broken static translocator
+block,game:statictranslocator-broken-south,no,Broken static translocator
+block,game:statictranslocator-broken-west,no,Broken static translocator
+block,game:statictranslocator-normal-east,no,Repaired Static translocator
+block,game:statictranslocator-normal-north,no,Repaired Static translocator
+block,game:statictranslocator-normal-south,no,Repaired Static translocator
+block,game:statictranslocator-normal-west,no,Repaired Static translocator
+block,game:statictranslocator-unrepairable-east,no,game:block-statictranslocator-unrepairable-east
+block,game:statictranslocator-unrepairable-north,yes,Ruined static translocator
+block,game:statictranslocator-unrepairable-south,no,game:block-statictranslocator-unrepairable-south
+block,game:statictranslocator-unrepairable-west,no,game:block-statictranslocator-unrepairable-west
+block,game:teleporterbase,yes,Teleporter
+item,game:textureflipper,yes,Textureflipper
+block,game:tickerblock-normal,yes,Ticker block
+item,game:tobtlocatorpart,yes,Illuminal divergence manifold
+block,game:vertexeater,yes,Vertexeater
+block,game:wallscribbles-art,yes,Wall scribbles (art)
+block,game:wallscribbles-carving,yes,Wall scribbles (carving)
+block,game:wallscribbles-maze,yes,Wall scribbles (maze)
+block,game:wallscribbles-scribbles,yes,Wall scribbles (mixed)
+block,game:wallscribbles-tally,yes,Wall scribbles (tally)
+block,game:wallscribbles-text,yes,Wall scribbles (text)
+block,game:water-d-1,no,Flowing water
+block,game:water-d-2,no,Flowing water
+block,game:water-d-3,no,Flowing water
+block,game:water-d-4,no,Flowing water
+block,game:water-d-5,no,Flowing water
+block,game:water-d-6,no,Flowing water
+block,game:water-d-7,no,Flowing water
+block,game:water-e-1,no,Flowing water
+block,game:water-e-2,no,Flowing water
+block,game:water-e-3,no,Flowing water
+block,game:water-e-4,no,Flowing water
+block,game:water-e-5,no,Flowing water
+block,game:water-e-6,no,Flowing water
+block,game:water-e-7,no,Flowing water
+block,game:water-n-1,no,Flowing water
+block,game:water-n-2,no,Flowing water
+block,game:water-n-3,no,Flowing water
+block,game:water-n-4,no,Flowing water
+block,game:water-n-5,no,Flowing water
+block,game:water-n-6,no,Flowing water
+block,game:water-n-7,no,Flowing water
+block,game:water-ne-1,no,Flowing water
+block,game:water-ne-2,no,Flowing water
+block,game:water-ne-3,no,Flowing water
+block,game:water-ne-4,no,Flowing water
+block,game:water-ne-5,no,Flowing water
+block,game:water-ne-6,no,Flowing water
+block,game:water-ne-7,no,Flowing water
+block,game:water-nw-1,no,Flowing water
+block,game:water-nw-2,no,Flowing water
+block,game:water-nw-3,no,Flowing water
+block,game:water-nw-4,no,Flowing water
+block,game:water-nw-5,no,Flowing water
+block,game:water-nw-6,no,Flowing water
+block,game:water-nw-7,no,Flowing water
+block,game:water-s-1,no,Flowing water
+block,game:water-s-2,no,Flowing water
+block,game:water-s-3,no,Flowing water
+block,game:water-s-4,no,Flowing water
+block,game:water-s-5,no,Flowing water
+block,game:water-s-6,no,Flowing water
+block,game:water-s-7,no,Flowing water
+block,game:water-se-1,no,Flowing water
+block,game:water-se-2,no,Flowing water
+block,game:water-se-3,no,Flowing water
+block,game:water-se-4,no,Flowing water
+block,game:water-se-5,no,Flowing water
+block,game:water-se-6,no,Flowing water
+block,game:water-se-7,no,Flowing water
+block,game:water-still-1,no,Flowing water
+block,game:water-still-2,no,Flowing water
+block,game:water-still-3,no,Flowing water
+block,game:water-still-4,no,Flowing water
+block,game:water-still-5,no,Flowing water
+block,game:water-still-6,no,Flowing water
+block,game:water-still-7,yes,Still Water
+block,game:water-sw-1,no,Flowing water
+block,game:water-sw-2,no,Flowing water
+block,game:water-sw-3,no,Flowing water
+block,game:water-sw-4,no,Flowing water
+block,game:water-sw-5,no,Flowing water
+block,game:water-sw-6,no,Flowing water
+block,game:water-sw-7,no,Flowing water
+block,game:water-w-1,no,Flowing water
+block,game:water-w-2,no,Flowing water
+block,game:water-w-3,no,Flowing water
+block,game:water-w-4,no,Flowing water
+block,game:water-w-5,no,Flowing water
+block,game:water-w-6,no,Flowing water
+block,game:water-w-7,no,Flowing water
+item,game:workitem-bismuth,no,Work item (Bismuth)
+item,game:workitem-bismuthbronze,no,Work item (Bismuth bronze)
+item,game:workitem-blackbronze,no,Work item (Black bronze)
+item,game:workitem-blistersteel,no,Work item (Blister steel)
+item,game:workitem-brass,no,Work item (Brass)
+item,game:workitem-chromium,no,Work item (Chromium)
+item,game:workitem-copper,no,Work item (Copper)
+item,game:workitem-cupronickel,no,Work item (Cupronickel)
+item,game:workitem-electrum,no,Work item (Electrum)
+item,game:workitem-gold,no,Work item (Gold)
+item,game:workitem-iron,no,Work item (Iron)
+item,game:workitem-lead,no,Work item (Lead)
+item,game:workitem-meteoriciron,no,Work item (Meteoric iron)
+item,game:workitem-molybdochalkos,no,Work item (Molybdochalkos)
+item,game:workitem-nickel,no,Work item (Nickel)
+item,game:workitem-platinum,no,Work item (Platinum)
+item,game:workitem-silver,no,Work item (Silver)
+item,game:workitem-stainlesssteel,no,Work item (Stainless steel)
+item,game:workitem-steel,no,Work item (Steel)
+item,game:workitem-tin,no,Work item (Tin)
+item,game:workitem-tinbronze,no,Work item (Tin bronze)
+item,game:workitem-titanium,no,Work item (Titanium)
+item,game:workitem-uranium,no,Work item (Uranium)
+item,game:workitem-zinc,no,Work item (Zinc)
+block,game:worldgenhook-normal,yes,Worldgen meta block
+item,iniidae:creature-cetacea-adult-female-lipotesvexillifer,yes,Baiji (Female)
+item,iniidae:creature-cetacea-adult-male-lipotesvexillifer,yes,Baiji (Male)
+item,iniidae:creature-cetacea-baby-female-lipotesvexillifer,yes,Baiji Calf (Female)
+item,iniidae:creature-cetacea-baby-male-lipotesvexillifer,yes,Baiji Calf (Male)
+item,manidae:creature-manidae-adult-female-crassicaudata,yes,Indian Pangolin (Female)
+item,manidae:creature-manidae-adult-female-culionensis,yes,Philippine Pangolin (Female)
+item,manidae:creature-manidae-adult-female-gigantea,yes,Giant Pangolin (Female)
+item,manidae:creature-manidae-adult-female-javanica,yes,Sunda Pangolin (Female)
+item,manidae:creature-manidae-adult-female-mysteria,yes,Asian Mystery Pangolin (Female)
+item,manidae:creature-manidae-adult-female-pentadactyla,yes,Chinese Pangolin (Female)
+item,manidae:creature-manidae-adult-female-temminckii,yes,Ground Pangolin (Female)
+item,manidae:creature-manidae-adult-female-tetradactyla,yes,Long-Tailed Pangolin (Female)
+item,manidae:creature-manidae-adult-female-tricuspis,yes,Tree Pangolin (Female)
+item,manidae:creature-manidae-adult-male-crassicaudata,yes,Indian Pangolin (Male)
+item,manidae:creature-manidae-adult-male-culionensis,yes,Philippine Pangolin (Male)
+item,manidae:creature-manidae-adult-male-gigantea,yes,Giant Pangolin (Male)
+item,manidae:creature-manidae-adult-male-javanica,yes,Sunda Pangolin (Male)
+item,manidae:creature-manidae-adult-male-mysteria,yes,Asian Mystery Pangolin (Male)
+item,manidae:creature-manidae-adult-male-pentadactyla,yes,Chinese Pangolin (Male)
+item,manidae:creature-manidae-adult-male-temminckii,yes,Ground Pangolin (Male)
+item,manidae:creature-manidae-adult-male-tetradactyla,yes,Long-Tailed Pangolin (Male)
+item,manidae:creature-manidae-adult-male-tricuspis,yes,Tree Pangolin (Male)
+item,manidae:creature-manidae-baby-female-crassicaudata,yes,Indian Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-culionensis,yes,Philippine Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-gigantea,yes,Giant Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-javanica,yes,Sunda Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-mysteria,yes,Asian Mystery Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-pentadactyla,yes,Chinese Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-temminckii,yes,Ground Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-tetradactyla,yes,Long-Tailed Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-female-tricuspis,yes,Tree Pangolin Pup (Female)
+item,manidae:creature-manidae-baby-male-crassicaudata,yes,Indian Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-culionensis,yes,Philippine Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-gigantea,yes,Giant Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-javanica,yes,Sunda Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-mysteria,yes,Asian Mystery Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-pentadactyla,yes,Chinese Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-temminckii,yes,Ground Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-tetradactyla,yes,Long-Tailed Pangolin Pup (Male)
+item,manidae:creature-manidae-baby-male-tricuspis,yes,Tree Pangolin Pup (Male)
+item,meiolaniidae:creature-meiolaniidae-adult-female-ninjemysoweni,yes,Owen's Horned Turtle (Female)
+item,meiolaniidae:creature-meiolaniidae-adult-male-ninjemysoweni,yes,Owen's Horned Turtle (Male)
+item,meiolaniidae:creature-meiolaniidae-baby-female-ninjemysoweni,yes,Owen's Horned Turtle Hatchling (Female)
+item,meiolaniidae:creature-meiolaniidae-baby-male-ninjemysoweni,yes,Owen's Horned Turtle Hatchling (Male)
+item,meiolaniidae:creature-meiolaniidae-egg-ninjemysoweni-raw,yes,Owen's Horned Turtle Egg
+item,moreanimals:creature-capercaillie-chick-female,yes,Capercaillie chick (female)
+item,moreanimals:creature-capercaillie-chick-male,yes,Capercaillie chick (male)
+item,moreanimals:creature-capercaillie-cock,yes,Capercaillie cock
+item,moreanimals:creature-capercaillie-cockpoult,yes,Capercaillie poult
+item,moreanimals:creature-capercaillie-hen,yes,Capercaillie hen
+item,moreanimals:creature-capercaillie-henpoult,yes,Capercaillie poult
+item,moreanimals:creature-goldenpheasant-chick-female,yes,Golden pheasant chick (female)
+item,moreanimals:creature-goldenpheasant-chick-male,yes,Golden pheasant chick (male)
+item,moreanimals:creature-goldenpheasant-cock,yes,Golden pheasant cock
+item,moreanimals:creature-goldenpheasant-cockpoult,yes,Golden pheasant poult
+item,moreanimals:creature-goldenpheasant-hen,yes,Golden pheasant hen
+item,moreanimals:creature-goldenpheasant-henpoult,yes,Golden pheasant poult
+item,moreanimals:creature-pheasant-chick-female,yes,Pheasant chick (female)
+item,moreanimals:creature-pheasant-chick-male,yes,Pheasant chick (male)
+item,moreanimals:creature-pheasant-cock,yes,Pheasant cock
+item,moreanimals:creature-pheasant-cockpoult,yes,Pheasant poult
+item,moreanimals:creature-pheasant-hen,yes,Pheasant hen
+item,moreanimals:creature-pheasant-henpoult,yes,Pheasant poult
+item,moreanimals:creature-wildturkey-chick-female,yes,Wild turkey chick (female)
+item,moreanimals:creature-wildturkey-chick-male,yes,Wild turkey chick (male)
+item,moreanimals:creature-wildturkey-cock,yes,Wild turkey cock
+item,moreanimals:creature-wildturkey-cockpoult,yes,Wild turkey poult
+item,moreanimals:creature-wildturkey-hen,yes,Wild turkey hen
+item,moreanimals:creature-wildturkey-henpoult,yes,Wild turkey poult
+item,spheniscidae:creature-spheniscidae-adult-female-aptenodytesforsteri,yes,Emperor Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-aptenodytespatagonicus,yes,King Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudypteschrysocome,yes,Southern Rockhopper Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudypteschrysolophus,yes,Macaroni Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptesmoseleyi,yes,Northern Rockhopper Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptespachyrhynchus,yes,Fiordland Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptesrobustus,yes,Snares Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptesschlegeli,yes,Royal Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptessclateri,yes,Erect-Crested Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudypteswarhami,yes,Chatham Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptulaminor,yes,Little Blue Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-eudyptulanovaehollandiae,yes,Australian Little Blue Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-megadyptesantipodes,yes,Yellow-Eyed Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-pygoscelisadeliae,yes,Adelie Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-pygoscelisantarcticus,yes,Chinstrap Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-pygoscelispapua,yes,Gentoo Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-spheniscusdemersus,yes,African Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-spheniscushumboldti,yes,Humboldt Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-spheniscusmagellanicus,yes,Magellanic Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-female-spheniscusmendiculus,yes,Galapagos Penguin (Female)
+item,spheniscidae:creature-spheniscidae-adult-male-aptenodytesforsteri,yes,Emperor Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-aptenodytespatagonicus,yes,King Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudypteschrysocome,yes,Southern Rockhopper Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudypteschrysolophus,yes,Macaroni Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptesmoseleyi,yes,Northern Rockhopper Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptespachyrhynchus,yes,Fiordland Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptesrobustus,yes,Snares Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptesschlegeli,yes,Royal Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptessclateri,yes,Erect-Crested Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudypteswarhami,yes,Chatham Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptulaminor,yes,Little Blue Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-eudyptulanovaehollandiae,yes,Australian Little Blue Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-megadyptesantipodes,yes,Yellow-Eyed Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-pygoscelisadeliae,yes,Adelie Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-pygoscelisantarcticus,yes,Chinstrap Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-pygoscelispapua,yes,Gentoo Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-spheniscusdemersus,yes,African Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-spheniscushumboldti,yes,Humboldt Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-spheniscusmagellanicus,yes,Magellanic Penguin (Male)
+item,spheniscidae:creature-spheniscidae-adult-male-spheniscusmendiculus,yes,Galapagos Penguin (Male)
+item,spheniscidae:creature-spheniscidae-baby-female-aptenodytesforsteri,yes,Emperor Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-aptenodytespatagonicus,yes,King Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudypteschrysocome,yes,Southern Rockhopper Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudypteschrysolophus,yes,Macaroni Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptesmoseleyi,yes,Northern Rockhopper Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptespachyrhynchus,yes,Fiordland Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptesrobustus,yes,Snares Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptesschlegeli,yes,Royal Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptessclateri,yes,Erect-Crested Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudypteswarhami,yes,Chatham Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptulaminor,yes,Little Blue Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-eudyptulanovaehollandiae,yes,Australian Little Blue Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-megadyptesantipodes,yes,Yellow-Eyed Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-pygoscelisadeliae,yes,Adelie Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-pygoscelisantarcticus,yes,Chinstrap Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-pygoscelispapua,yes,Gentoo Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-spheniscusdemersus,yes,African Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-spheniscushumboldti,yes,Humboldt Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-spheniscusmagellanicus,yes,Magellanic Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-female-spheniscusmendiculus,yes,Galapagos Penguin Chick (Female)
+item,spheniscidae:creature-spheniscidae-baby-male-aptenodytesforsteri,yes,Emperor Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-aptenodytespatagonicus,yes,King Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudypteschrysocome,yes,Southern Rockhopper Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudypteschrysolophus,yes,Macaroni Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptesmoseleyi,yes,Northern Rockhopper Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptespachyrhynchus,yes,Fiordland Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptesrobustus,yes,Snares Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptesschlegeli,yes,Royal Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptessclateri,yes,Erect-Crested Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudypteswarhami,yes,Chatham Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptulaminor,yes,Little Blue Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-eudyptulanovaehollandiae,yes,Australian Little Blue Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-megadyptesantipodes,yes,Yellow-Eyed Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-pygoscelisadeliae,yes,Adelie Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-pygoscelisantarcticus,yes,Chinstrap Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-pygoscelispapua,yes,Gentoo Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-spheniscusdemersus,yes,African Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-spheniscushumboldti,yes,Humboldt Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-spheniscusmagellanicus,yes,Magellanic Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-baby-male-spheniscusmendiculus,yes,Galapagos Penguin Chick (Male)
+item,spheniscidae:creature-spheniscidae-egg-aptenodytesforsteri-raw,yes,Emperor Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-aptenodytespatagonicus-raw,yes,King Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudypteschrysocome-raw,yes,Southern Rockhopper Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudypteschrysolophus-raw,yes,Macaroni Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptesmoseleyi-raw,yes,Northern Rockhopper Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptespachyrhynchus-raw,yes,Fiordland Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptesrobustus-raw,yes,Snares Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptesschlegeli-raw,yes,Royal Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptessclateri-raw,yes,Erect-Crested Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudypteswarhami-raw,yes,Chatham Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptulaminor-raw,yes,Little Blue Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-eudyptulanovaehollandiae-raw,yes,Australian Little Blue Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-megadyptesantipodes-raw,yes,Yellow-Eyed Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-pygoscelisadeliae-raw,yes,Adelie Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-pygoscelisantarcticus-raw,yes,Chinstrap Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-pygoscelispapua-raw,yes,Gentoo Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-spheniscusdemersus-raw,yes,African Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-spheniscushumboldti-raw,yes,Humboldt Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-spheniscusmagellanicus-raw,yes,Magellanic Penguin Egg
+item,spheniscidae:creature-spheniscidae-egg-spheniscusmendiculus-raw,yes,Galapagos Penguin Egg
+item,thylacinidae:creature-dasyuridae-adult-female-sarcophilusharrisii,yes,Tasmanian Devil (Female)
+item,thylacinidae:creature-dasyuridae-adult-female-sarcophiluslaniarius,yes,Queensland Devil (Female)
+item,thylacinidae:creature-dasyuridae-adult-male-sarcophilusharrisii,yes,Tasmanian Devil (Male)
+item,thylacinidae:creature-dasyuridae-adult-male-sarcophiluslaniarius,yes,Queensland Devil (Male)
+item,thylacinidae:creature-dasyuridae-baby-female-sarcophilusharrisii,yes,Tasmanian Devil Imp (Female)
+item,thylacinidae:creature-dasyuridae-baby-female-sarcophiluslaniarius,yes,Queensland Devil Imp (Female)
+item,thylacinidae:creature-dasyuridae-baby-male-sarcophilusharrisii,yes,Tasmanian Devil Imp (Male)
+item,thylacinidae:creature-dasyuridae-baby-male-sarcophiluslaniarius,yes,Queensland Devil Imp (Male)
+item,vintagee:gadget-tomeofknowledge,yes,Tome of Knowledge
+item,vombatidae:creature-diprotodontidae-adult-female-zygomaturustrilobus,yes,Mungo Swamp Cow
+item,vombatidae:creature-diprotodontidae-adult-male-zygomaturustrilobus,yes,Mungo Swamp Bull
+item,vombatidae:creature-diprotodontidae-baby-female-zygomaturustrilobus,yes,Mungo Swamp Joey (Female)
+item,vombatidae:creature-diprotodontidae-baby-male-zygomaturustrilobus,yes,Mungo Swamp Joey (Male)
+item,vombatidae:creature-diprotodontidae-carcass,yes,Diprotodont Carcass
+item,vombatidae:creature-thylacoleonidae-adult-female-thylacoleocarnifex,yes,Queensland Lion (Female)
+item,vombatidae:creature-thylacoleonidae-adult-male-thylacoleocarnifex,yes,Queensland Lion (Male)
+item,vombatidae:creature-thylacoleonidae-baby-female-thylacoleocarnifex,yes,Queensland Lion Joey (Female)
+item,vombatidae:creature-thylacoleonidae-baby-male-thylacoleocarnifex,yes,Queensland Lion Joey (Male)
+item,vombatidae:creature-thylacoleonidae-carcass,yes,Marsupial Lion Carcass
+item,vombatidae:creature-vombatidae-adult-female-lasiorhinuskrefftii,yes,Northern Hairy-Nosed Wombat (Female)
+item,vombatidae:creature-vombatidae-adult-female-lasiorhinuslatifrons,yes,Southern Hairy-Nosed Wombat (Female)
+item,vombatidae:creature-vombatidae-adult-female-phascolonusgigas,yes,Owen's Giant Wombat (Female)
+item,vombatidae:creature-vombatidae-adult-female-vombatushacketti,yes,Hackett's Wombat (Female)
+item,vombatidae:creature-vombatidae-adult-female-vombatusursinus,yes,Common Wombat (Female)
+item,vombatidae:creature-vombatidae-adult-male-lasiorhinuskrefftii,yes,Northern Hairy-Nosed Wombat (Male)
+item,vombatidae:creature-vombatidae-adult-male-lasiorhinuslatifrons,yes,Southern Hairy-Nosed Wombat (Male)
+item,vombatidae:creature-vombatidae-adult-male-phascolonusgigas,yes,Owen's Giant Wombat (Male)
+item,vombatidae:creature-vombatidae-adult-male-vombatushacketti,yes,Hackett's Wombat (Male)
+item,vombatidae:creature-vombatidae-adult-male-vombatusursinus,yes,Common Wombat (Male)
+item,vombatidae:creature-vombatidae-baby-female-lasiorhinuskrefftii,yes,Northern Hairy-Nosed Wombat Joey (Female)
+item,vombatidae:creature-vombatidae-baby-female-lasiorhinuslatifrons,yes,Southern Hairy-Nosed Wombat Joey (Female)
+item,vombatidae:creature-vombatidae-baby-female-phascolonusgigas,yes,Owen's Giant Wombat Joey (Female)
+item,vombatidae:creature-vombatidae-baby-female-vombatushacketti,yes,Hackett's Wombat Joey (Female)
+item,vombatidae:creature-vombatidae-baby-female-vombatusursinus,yes,Common Wombat Joey (Female)
+item,vombatidae:creature-vombatidae-baby-male-lasiorhinuskrefftii,yes,Northern Hairy-Nosed Wombat Joey (Male)
+item,vombatidae:creature-vombatidae-baby-male-lasiorhinuslatifrons,yes,Southern Hairy-Nosed Wombat Joey (Male)
+item,vombatidae:creature-vombatidae-baby-male-phascolonusgigas,yes,Owen's Giant Wombat Joey (Male)
+item,vombatidae:creature-vombatidae-baby-male-vombatushacketti,yes,Hackett's Wombat Joey (Male)
+item,vombatidae:creature-vombatidae-baby-male-vombatusursinus,yes,Common Wombat Joey (Male)

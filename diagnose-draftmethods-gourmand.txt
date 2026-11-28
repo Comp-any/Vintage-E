@@ -1,0 +1,45 @@
+== A crafting method file for Gourmand (gourmand) ==
+Drafted 1 method(s); read back, they make 0 recipe(s) with 1 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-gourmand.json
+  • recipes/matchers: no field looked like an ingredient: fill "inputs" by hand
+  • recipes/matchers: no field looked like a result: fill "outputs" by hand
+  • recipes/matchers: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/matchers: fields not used (a tool, a die, a heat level, a second ingredient?): dependsOn, attributes
+  methods[0].readers[0] (gourmand:recipes/matchers/collectible/aculinaryartillery/potable-container.json[0]): the recipe has no "outputs" (or "oneOf"); it is left out
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-28 for Gourmand (gourmand) 1.9.7 with Vintage-E 1.29.4. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/gourmand/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "gourmand",
+  "methods": [
+    {
+      "//": "Drafted from the folder recipes/matchers (149 files). Check: no field looked like an ingredient: fill \"inputs\" by hand. Check: no field looked like a result: fill \"outputs\" by hand. Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): dependsOn, attributes.",
+      "code": "gourmand:matchers",
+      "name": "matchers",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/matchers",
+          "domain": "gourmand",
+          "recipe": {
+            "code": "$code",
+            "inputs": [],
+            "outputs": []
+          }
+        }
+      ]
+    }
+  ]
+}
+
+== What the guesses were made from (the first entry of each) ==
+recipes/matchers: {"dependsOn":[{"modId":"floralzonesmediterraneanregion"}],"code":{"match":"floralzonesmediterraneanregion:ciderportion-*","type":"item","outputs":["ciderportion"]},"attributes":[{"path":["waterTightContainerProps","nutritionPropsPerLitre","foodcategory"],"outputs":["ciderportion-category"]}]}
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

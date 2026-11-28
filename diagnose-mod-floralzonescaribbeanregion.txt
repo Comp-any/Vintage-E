@@ -1,0 +1,55 @@
+== Floral Zones: Caribbean Region (floralzonescaribbeanregion) ==
+198 of its 211 blocks and items have a value (93.8%); 0 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'floralzonescaribbeanregion'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Why the rest has no value ==
+⚠ 7 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    beam (2): False Tamarind roofing beam (floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free), False Tamarind roof ridge (floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free)
+    silvertorchcactus (2): Jumping Prickly Pear (floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha), Lava cactus (floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus)
+    cotton (1): Mexican Cotton Boll (floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll)
+    vegetable (1): Agave Piña Bulb (floralzonescaribbeanregion:vegetable-agavetequilana)
+    fruit (1): Cuban Royal Palm Fruit (floralzonescaribbeanregion:fruit-roystonearegia)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/floralzonescaribbeanregion.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 4 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Cooked Piña Bulb (floralzonescaribbeanregion:fruit-agavetequilana): 1 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item floralzonescaribbeanregion:fruit-agavetequilana)
+    Cuban Royal Palm Fruit (floralzonescaribbeanregion:fruit-roystonearegia): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item floralzonescaribbeanregion:fruit-roystonearegia)
+    Mexican Cotton Boll (floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll)
+    Mexican Cotton Seeds (floralzonescaribbeanregion:seeds-gossypiumhirsutum): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item floralzonescaribbeanregion:seeds-gossypiumhirsutum)
+    Agave Piña Bulb (floralzonescaribbeanregion:vegetable-agavetequilana): 1 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item floralzonescaribbeanregion:vegetable-agavetequilana)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+⚠ 2 items sit in value loops (2 loops).
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+Draft a compatibility file for its 7 raw materials (/emc diagnose draftcompat floralzonescaribbeanregion)
+Pin all 5 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are Floral Zones: Caribbean Region (floralzonescaribbeanregion) items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.29.4 with Floral Zones: Caribbean Region (floralzonescaribbeanregion) 1.0.31: these items have no value: floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll, floralzonescaribbeanregion:vegetable-agavetequilana, floralzonescaribbeanregion:fruit-roystonearegia, floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free, floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free, floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha, floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus. /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (13) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  False Tamarind roofing beam (floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free)  why? (/emc diagnose item floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free)
+  False Tamarind roof ridge (floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free)  why? (/emc diagnose item floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free)
+  Mexican Cotton Boll (floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll)  why? (/emc diagnose item floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll)
+  Mexican Cotton Fiber (floralzonescaribbeanregion:cotton-gossypiumhirsutum-fiber)  why? (/emc diagnose item floralzonescaribbeanregion:cotton-gossypiumhirsutum-fiber)
+  Cooked Piña Bulb (floralzonescaribbeanregion:fruit-agavetequilana)  why? (/emc diagnose item floralzonescaribbeanregion:fruit-agavetequilana)
+  Cuban Royal Palm Fruit (floralzonescaribbeanregion:fruit-roystonearegia)  why? (/emc diagnose item floralzonescaribbeanregion:fruit-roystonearegia)
+  Dry agave mash (floralzonescaribbeanregion:pressedmash-agavetequilana)  why? (/emc diagnose item floralzonescaribbeanregion:pressedmash-agavetequilana)
+  Dry royal palmfruit mash (floralzonescaribbeanregion:pressedmash-roystonearegia)  why? (/emc diagnose item floralzonescaribbeanregion:pressedmash-roystonearegia)
+  Blue Agave Seeds (floralzonescaribbeanregion:seeds-agavetequilana)  why? (/emc diagnose item floralzonescaribbeanregion:seeds-agavetequilana)
+  Mexican Cotton Seeds (floralzonescaribbeanregion:seeds-gossypiumhirsutum)  why? (/emc diagnose item floralzonescaribbeanregion:seeds-gossypiumhirsutum)
+  Lava cactus (floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus)  why? (/emc diagnose item floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus)
+  Jumping Prickly Pear (floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha)  why? (/emc diagnose item floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha)
+  Agave Piña Bulb (floralzonescaribbeanregion:vegetable-agavetequilana)  why? (/emc diagnose item floralzonescaribbeanregion:vegetable-agavetequilana)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

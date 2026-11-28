@@ -1,0 +1,73 @@
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 18 items can be made for less than they're worth (2 of them by processing):
+  Smoky quartz (game:smokyquartz): worth 896, costs 128: 768 free each time
+    grid: 1 game:crystal-smokyquartz-large1-up -> 7 game:smokyquartz (and 6 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:smokyquartz)
+  Amethyst (game:amethyst): worth 896, costs 128: 768 free each time
+    grid: 1 game:crystal-amethyst-large1-up -> 7 game:amethyst (and 6 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:amethyst)
+  Rose quartz (game:rosequartz): worth 896, costs 128: 768 free each time
+    grid: 1 game:crystal-rosequartz-large1-up -> 7 game:rosequartz (and 6 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:rosequartz)
+  Clear quartz (game:clearquartz): worth 448, costs 64: 384 free each time
+    grid: 1 game:crystal-milkyquartz-large1-up -> 7 game:clearquartz (and 6 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clearquartz)
+  Crushed graphite (em:crushed-ore-graphite): worth 128, costs 64: 64 free each time (processing: smelting, grinding, drying...)
+    pulverizer crushing: 1 game:ore-graphite -> 2 em:crushed-ore-graphite
+    Trace its value down to the raw materials (/emc diagnose trace em:crushed-ore-graphite)
+  Coconut quarter logs (floralzonescosmopolitanregion:logquad-placed-cocosnucifera-ud): worth 192, costs 134.4: 57.6 free each time
+    grid: 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud + 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud + 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud + 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud + 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud + 1 floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud -> 6 floralzonescosmopolitanregion:logquad-placed-cocosnucifera-ud
+    Ingredients whose value is a guess or a trader price: Coconut Palm log (floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud) 22.4
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescosmopolitanregion:logquad-placed-cocosnucifera-ud)
+  Ruby Saltbush juice (floralzonescentralaustralianregion:juiceportion-enchylaenatomentosa): worth 28.12, costs 2.06: 26.05 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 floralzonescentralaustralianregion:fruit-enchylaenatomentosa -> 31.25 floralzonescentralaustralianregion:juiceportion-enchylaenatomentosa + 1 floralzonescentralaustralianregion:pressedmash-enchylaenatomentosa
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescentralaustralianregion:juiceportion-enchylaenatomentosa)
+  Stick (game:stick): worth 32, costs 8: 24 free each time
+    grid: 1 game:agedfirewood (or 1 more) -> 8 game:stick (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:stick)
+  Chilu quarter logs (floralzonescaribbeanregion:logquad-placed-comarostaphylisarbutoides-ud): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud -> 1 floralzonescaribbeanregion:logquad-placed-comarostaphylisarbutoides-ud
+    Ingredients whose value is a guess or a trader price: Chilu log (floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-placed-comarostaphylisarbutoides-ud)
+  Cuban Royal Palm quarter logs (floralzonescaribbeanregion:logquad-placed-roystonearegia-ud): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud -> 1 floralzonescaribbeanregion:logquad-placed-roystonearegia-ud
+    Ingredients whose value is a guess or a trader price: Cuban Royal Palm log (floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-placed-roystonearegia-ud)
+  Cabbage Palmetto quarter logs (floralzonescaribbeanregion:logquad-placed-sabalpalmetto-ud): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud -> 1 floralzonescaribbeanregion:logquad-placed-sabalpalmetto-ud
+    Ingredients whose value is a guess or a trader price: Cabbage Palmetto log (floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-placed-sabalpalmetto-ud)
+  Giant Daisy Tree quarter logs (floralzonescaribbeanregion:logquad-placed-scalesiapedunculata-ud): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud -> 1 floralzonescaribbeanregion:logquad-placed-scalesiapedunculata-ud
+    Ingredients whose value is a guess or a trader price: Giant Daisy Tree log (floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-placed-scalesiapedunculata-ud)
+  Chilu quarter logs corner (floralzonescaribbeanregion:logquad-barkedcorner-comarostaphylisarbutoides-north): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud + 1 floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud -> 1 floralzonescaribbeanregion:logquad-barkedcorner-comarostaphylisarbutoides-north
+    Ingredients whose value is a guess or a trader price: Chilu log (floralzonescaribbeanregion:lognarrow-placed-comarostaphylisarbutoides-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-barkedcorner-comarostaphylisarbutoides-north)
+  Cuban Royal Palm quarter logs corner (floralzonescaribbeanregion:logquad-barkedcorner-roystonearegia-north): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud + 1 floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud -> 1 floralzonescaribbeanregion:logquad-barkedcorner-roystonearegia-north
+    Ingredients whose value is a guess or a trader price: Cuban Royal Palm log (floralzonescaribbeanregion:lognarrow-placed-roystonearegia-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-barkedcorner-roystonearegia-north)
+  Cabbage Palmetto quarter logs corner (floralzonescaribbeanregion:logquad-barkedcorner-sabalpalmetto-north): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud + 1 floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud -> 1 floralzonescaribbeanregion:logquad-barkedcorner-sabalpalmetto-north
+    Ingredients whose value is a guess or a trader price: Cabbage Palmetto log (floralzonescaribbeanregion:lognarrow-placed-sabalpalmetto-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-barkedcorner-sabalpalmetto-north)
+  Giant Daisy Tree quarter logs corner (floralzonescaribbeanregion:logquad-barkedcorner-scalesiapedunculata-north): worth 32, costs 11.2: 20.8 free each time
+    grid: 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud + 1 floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud -> 1 floralzonescaribbeanregion:logquad-barkedcorner-scalesiapedunculata-north
+    Ingredients whose value is a guess or a trader price: Giant Daisy Tree log (floralzonescaribbeanregion:lognarrow-placed-scalesiapedunculata-ud) 2.8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescaribbeanregion:logquad-barkedcorner-scalesiapedunculata-north)
+  Firewood (game:firewood): worth 16, costs 4: 12 free each time
+    grid: 1 floralzonescosmopolitanregion:lognarrow-grown-lagunculariaracemosa-ud (or 29 more) -> 2 game:firewood (and 2 more recipes with the same output)
+    Ingredients whose value is a guess or a trader price: Coconut Palm log (floralzonescosmopolitanregion:lognarrow-grown-cocosnucifera-ud) 22.4, Coconut Palm log (floralzonescosmopolitanregion:lognarrow-placed-cocosnucifera-ud) 22.4, floralzonescosmopolitanregion:block-lognarrow-grown-cocosnucifera-ns (floralzonescosmopolitanregion:lognarrow-grown-cocosnucifera-ns) 22.4
+    Trace its value down to the raw materials (/emc diagnose trace game:firewood)
+  Coconut Milk (floralzonescosmopolitanregion:juiceportion-cocosnucifera): worth 22.5, costs 17: 5.5 free each time
+    RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 floralzonescosmopolitanregion:flour-cocosnucifera -> 25 floralzonescosmopolitanregion:juiceportion-cocosnucifera
+    Ingredients whose value is a guess or a trader price: Coconut Flour (floralzonescosmopolitanregion:flour-cocosnucifera) 8
+    Trace its value down to the raw materials (/emc diagnose trace floralzonescosmopolitanregion:juiceportion-cocosnucifera)
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

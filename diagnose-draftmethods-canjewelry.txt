@@ -1,0 +1,55 @@
+== A crafting method file for C&N Jewelry (canjewelry) ==
+Drafted 1 method(s); read back, they make 24 recipe(s) with 0 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-canjewelry.json
+  • recipes/gemcutting: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/gemcutting: fields not used (a tool, a die, a heat level, a second ingredient?): pattern
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-28 for C&N Jewelry (canjewelry) 0.8.2 with Vintage-E 1.29.4. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/canjewelry/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "canjewelry",
+  "methods": [
+    {
+      "//": "Drafted from the folder recipes/gemcutting (8 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): pattern.",
+      "code": "canjewelry:gemcutting",
+      "name": "gemcutting",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/gemcutting",
+          "domain": "canjewelry",
+          "recipe": {
+            "code": "$name",
+            "inputs": [
+              {
+                "code": "$ingredient.code",
+                "type": "$ingredient.type",
+                "name": "$ingredient.name",
+                "allowedVariants": "$ingredient.allowedVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "code": "$output.code",
+                "type": "$output.type",
+                "quantity": "$output.quantity"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+
+== What the guesses were made from (the first entry of each) ==
+recipes/gemcutting: {"ingredient":{"type":"item","code":"canjewelry:gem-rough-chipped-*","name":"gemtype","allowedVariants":["diamond","corundum","emerald","fluorite","lapislazuli","malachite","olivine","quartz","uranium","ruby","citrine","amethyst","topaz"]},"pattern":[ ["_________","__#####__","__#####__","__#####__","__#####__","__#####__","__#####__","__#####__","_________"],["_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_"],["_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_"],["_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_","_#######_"],["_________","__#####__","__#####__","__#####__","__#####__","__#####__","__#####__","__#####__","_________"],["_________","___###___","___###___","___###___","___###___","___###___","___###___","___###___","_________"] ],"name":"baguette cutting chipped","output":{"type":"item","code":"canjewelry:gem-cut-normal-{gemtype}","quantity":1,"attributes":{"cutgemtree":{"cuttingtype":"baguette"} }} }
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)

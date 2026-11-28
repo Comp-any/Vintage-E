@@ -1,0 +1,36 @@
+== A compatibility file for Floral Zones: Caribbean Region (floralzonescaribbeanregion) ==
+Drafted values for 7 raw materials: 2 guessed from related items, 5 left at 1 for you to set. 6 more items will follow once these have values.
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-emc-compat-floralzonescaribbeanregion.json
+  Open it and adjust the numbers. Each has a // line saying where its guess came from; think stone 1, copper ingot 128, a fish 24. 0 means 'no EMC on purpose'.
+  Then post it on the Vintage-E Mod DB page (https://mods.vintagestory.at/show/mod/74355) so it can ship with Vintage-E for everyone. The suggested comment:
+    "Vintage-E 1.29.4: a compatibility file for Floral Zones: Caribbean Region (floralzonescaribbeanregion) 1.0.31 (7 raw materials), drafted with /emc diagnose and adjusted: [paste the file]"
+  Until it ships, the same values can be pinned on this server now (they go into FixedValues in your settings):
+  Pin all 2 missing items that have a suggested value, and remap (in the window)
+
+== The file ==
+{
+  "name": "Floral Zones: Caribbean Region",
+  "requiresMod": "floralzonescaribbeanregion",
+  "//": "Drafted by /emc diagnose draftcompat on 2026-11-28 for Floral Zones: Caribbean Region (floralzonescaribbeanregion) 1.0.31 with Vintage-E 1.29.4. Last-resort values for raw materials nothing the mapper reads makes; a recipe, trader price, ratio rule or variant always wins over them. Each number is a guess from related items (see its // line) - adjust them to what the item is worth next to the base game's (stone 1, copper ingot 128, a fish 24), then share the file on the Vintage-E Mod DB page so it can ship with the mod.",
+  "values": {
+    "//floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free": "no related item has a value: set this by hand (0 means no EMC on purpose)",
+    "floralzonescaribbeanregion:beam-plane-lysilomalatisiliquum-free": 1,
+    "//floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free": "no related item has a value: set this by hand (0 means no EMC on purpose)",
+    "floralzonescaribbeanregion:beam-ridge-lysilomalatisiliquum-free": 1,
+    "//floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll": "no related item has a value: set this by hand (0 means no EMC on purpose)",
+    "floralzonescaribbeanregion:cotton-gossypiumhirsutum-boll": 1,
+    "//floralzonescaribbeanregion:fruit-roystonearegia": "the middle value of its 8 valued variants",
+    "floralzonescaribbeanregion:fruit-roystonearegia": 8,
+    "//floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus": "no related item has a value: set this by hand (0 means no EMC on purpose)",
+    "floralzonescaribbeanregion:silvertorchcactus-brachycereusnesioticus": 1,
+    "//floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha": "no related item has a value: set this by hand (0 means no EMC on purpose)",
+    "floralzonescaribbeanregion:silvertorchcactus-opuntiatriacantha": 1,
+    "//floralzonescaribbeanregion:vegetable-agavetequilana": "the middle value of its 6 valued variants",
+    "floralzonescaribbeanregion:vegetable-agavetequilana": 89.5
+  }
+}
+
+
+== Next ==
+Everything from Floral Zones: Caribbean Region (floralzonescaribbeanregion) (/emc diagnose mod floralzonescaribbeanregion)
+Back to the check-up (/emc diagnose)
