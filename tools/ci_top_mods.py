@@ -1,6 +1,10 @@
 """Picks the most-downloaded Vintage Story mods for the server test, leaving out libraries and APIs.
 
-Usage: python3 ci_top_mods.py <how many> <game version> <output file>
+Usage: python3 ci_top_mods.py "<how many> [tags=a,b] [exclude=id,id] [skip=K]" <game version> <output file>
+
+  tags=     only mods with at least one of these Mod DB tags (case doesn't matter), e.g. crafting,technology
+  exclude=  mod ids to leave out (ones already tested, say)
+  skip=     leave out the first K mods that pass every other filter (for a second batch)
 
 Asks the Mod DB (https://mods.vintagestory.at/api/mods) for every mod, sorts by downloads, drops anything that is a
 library, an API, a framework, a tool or a pack rather than a content mod, and keeps the first N whose latest release
@@ -39,7 +43,12 @@ def is_library(mod):
 
 
 def main():
-    n, gv, out = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+    spec, gv, out = sys.argv[1].split(), sys.argv[2], sys.argv[3]
+    n = int(spec[0])
+    opts = dict(o.split("=", 1) for o in spec[1:] if "=" in o)
+    want_tags = {t.strip().lower() for t in opts.get("tags", "").split(",") if t.strip()}
+    exclude = {t.strip().lower() for t in opts.get("exclude", "").split(",") if t.strip()}
+    skip = int(opts.get("skip", "0") or 0)
     mods = get("https://mods.vintagestory.at/api/mods").get("mods", [])
     mods.sort(key=lambda m: -(m.get("downloads") or 0))
     chosen, libs, log = [], [], []
@@ -58,6 +67,12 @@ def main():
                 libs.append(modid)
             log.append("skip  %-28s %8s  %s" % (modid, mod.get("downloads"), why))
             continue
+        tags = [t.lower() for t in (mod.get("tags") or [])]
+        if want_tags and not want_tags.intersection(tags):
+            continue
+        if modid.lower() in exclude:
+            log.append("skip  %-28s %8s  excluded" % (modid, mod.get("downloads")))
+            continue
         # Does its latest release fit this game version?
         try:
             info = get("https://mods.vintagestory.at/api/v2/mods/install-information?ids=%s&gv=%s" % (modid, gv)).get("data", {})
@@ -68,8 +83,12 @@ def main():
         except Exception as e:  # noqa: BLE001
             log.append("skip  %-28s %8s  install-information failed: %s" % (modid, mod.get("downloads"), e))
             continue
+        if skip > 0:
+            skip -= 1
+            log.append("skip  %-28s %8s  in an earlier batch" % (modid, mod.get("downloads")))
+            continue
         chosen.append(modid)
-        log.append("take  %-28s %8s  %s" % (modid, mod.get("downloads"), mod.get("name")))
+        log.append("take  %-28s %8s  %s [%s]" % (modid, mod.get("downloads"), mod.get("name"), ", ".join(mod.get("tags") or [])))
     # Libraries after the content mods: they load if some mod needs them and are harmless otherwise.
     usable_libs = []
     for lib in libs:
@@ -82,7 +101,7 @@ def main():
     with open(out, "w", encoding="utf-8") as f:
         f.write(",".join(chosen + usable_libs))
     with open(out + ".txt", "w", encoding="utf-8") as f:
-        f.write("Top %d content mods by downloads for game %s (plus %d libraries after them)\n\n" % (len(chosen), gv, len(usable_libs)))
+        f.write("Top %d content mods by downloads for game %s (plus %d libraries after them); asked for: %s\n\n" % (len(chosen), gv, len(usable_libs), sys.argv[1]))
         f.write("\n".join(log) + "\n\nlibraries added: " + ", ".join(usable_libs) + "\n")
     print("chose", len(chosen), "mods and", len(usable_libs), "libraries")
 
