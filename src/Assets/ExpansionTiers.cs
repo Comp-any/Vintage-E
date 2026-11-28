@@ -68,7 +68,7 @@ namespace VintageE
         /// Takes the tiers out, file by file: <paramref name="read"/> gives a file's text (null when it isn't there),
         /// <paramref name="write"/> stores the changed text. Returns how many states, types and recipes were taken out.
         /// </summary>
-        public static int Strip(JObject manifest, Func<string, string> read, Action<string, string> write)
+        public static int Strip(JObject manifest, System.Func<string, string> read, System.Action<string, string> write)
         {
             int removed = 0;
             if (manifest["states"] is JObject states)
