@@ -71,7 +71,7 @@ namespace VintageE
             // The learned line asks with the key a burn adds.
             CollectibleObject stick = sapi.World.GetItem(new AssetLocation("game:stick"));
             Block clutter = sapi.World.GetBlock(new AssetLocation("game:clutter"));
-            Block lantern = sapi.World.GetBlock(new AssetLocation("game:lantern-up"));
+            Block lantern = sapi.World.GetBlock(new AssetLocation("game:lantern-small-up"));
             var stacks = new System.Collections.Generic.List<ItemStack>();
             if (stick != null) stacks.Add(new ItemStack(stick, 5));
             foreach (Block typed in new[] { clutter, lantern })
@@ -84,17 +84,20 @@ namespace VintageE
                     stacks.Add(picked);
                 }
             }
-            int same = 0, burned = 0;
+            int same = 0, burned = 0, lanterns = 0, clutters = 0;
             string first = null;
             foreach (ItemStack s in stacks)
             {
                 if (mod.Transmutation == null) break;
                 if (mod.Transmutation.PlanBurn(null, s, out TransmutationService.BurnPlan plan, out _, learnOnly: true) != null || plan?.Key == null) continue;
                 burned++;
+                if (s.Collectible == lantern) lanterns++;
+                if (s.Collectible == clutter) clutters++;
                 if (plan.Key == EmcCommands.KnowledgeKey(mod, s)) same++;
                 else first ??= s.Collectible.Code + ": burn " + plan.Key + ", tooltip " + EmcCommands.KnowledgeKey(mod, s);
             }
-            Check(burned >= 3 && same == burned, $"the learned line asks about the same entry a burn adds ({same} of {burned}: a stick, clutter and lanterns{(first == null ? "" : "; " + first)})");
+            Check(lanterns > 0 && clutters > 0 && same == burned,
+                $"the learned line asks about the same entry a burn adds ({same} of {burned}: a stick, {clutters} clutter types, {lanterns} lantern versions{(first == null ? "" : "; " + first)})");
 
             // The commands, as the console runs them.
             string fuels = RunCommand("/emc fuels");
