@@ -301,7 +301,9 @@ namespace VintageE
                     { ""code"": ""nowait"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"", ""main"": true }, { ""code"": ""game:metalbit-copper"", ""waitForValue"": false } ], ""costs"": { ""emc"": 50000 } },
                     { ""code"": ""fuelled"", ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ], ""costs"": { ""energy"": { ""unit"": ""testfuel"", ""amount"": 2000 }, ""seconds"": 1 } },
                     { ""code"": ""linked"", ""inputs"": [ { ""code"": ""game:ingot-*"", ""name"": ""m"", ""allowedVariants"": [ ""copper"", ""tinbronze"" ] }, { ""code"": ""game:metalplate-*"", ""name"": ""m"", ""allowedVariants"": [ ""copper"", ""iron"" ] } ],
-                      ""outputs"": [ { ""code"": ""game:metalbit-{m}"" } ], ""costs"": { ""emc"": 1000000000 } }
+                      ""outputs"": [ { ""code"": ""game:metalbit-{m}"" } ], ""costs"": { ""emc"": 1000000000 } },
+                    { ""code"": ""absentvariants"", ""inputs"": [ { ""code"": ""game:ingot-*"", ""name"": ""m"", ""allowedVariants"": [ ""unobtainium"", ""mithril"" ] } ],
+                      ""outputs"": [ { ""code"": ""game:metalbit-copper"" } ], ""costs"": { ""emc"": 1000000000 } }
                   ] },
                 { ""code"": ""selftest-off"", ""name"": ""Switched off"", ""recipes"": [ { ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""outputs"": [ { ""code"": ""vintagee:matter-red"" } ] } ] }
             ] }";
@@ -331,7 +333,7 @@ namespace VintageE
                 mod.Config.DisabledMethods.Add("vintagee:selftest-off");
                 mod.CollectMethods("self-test");
                 MethodDoc doc = mod.Methods.Docs.FirstOrDefault(dd => dd.Route == "code" && dd.ModId == "vintagee");
-                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 18, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
+                Check(doc != null && doc.Usable && doc.Methods.Count == 2 && doc.RecipeCount == 19, "methods: a document sent through the game's event bus is read (" + (doc == null ? "none" : doc.Methods.Count + " methods, " + doc.RecipeCount + " recipes; " + string.Join("; ", doc.Problems)) + ")");
                 Check(mod.Methods.Fingerprint != fingerprintBefore, "methods: the cache's fingerprint changes with the methods");
                 EmcMappingReport report = mod.RecalculateEmc("self-test: crafting methods");
                 Check(report != null, "methods: mapped with the test methods");
@@ -361,6 +363,9 @@ namespace VintageE
                 Check(wear != null && dur > 0 && Math.Abs(wear.Quantity - 1.0 / dur) < 1e-9, "methods: a tool's wear costs 1 / its durability of the tool (" + wear?.Quantity + " of a hammer with " + dur + ")");
                 var results = report.MethodResults;
                 MethodRecipeResult typo = results.FirstOrDefault(rr => rr.Recipe.Code == "typo");
+                MethodRecipeResult absentVariants = results.FirstOrDefault(rr => rr.Recipe.Code == "absentvariants");
+                Check(absentVariants != null && absentVariants.Skipped != null && absentVariants.AbsentVariants != null && absentVariants.AbsentVariants.Contains("unobtainium"),
+                    "methods: a recipe whose allowed variants nothing loaded has is left out as one for another mod, not a mistake (" + absentVariants?.Skipped + ")");
                 MethodRecipeResult linked = results.FirstOrDefault(rr => rr.Recipe.Code == "linked");
                 Check(linked != null && linked.Skipped == null && linked.Conversions == 1 && convs.Any(c => c.Method.Recipe.Code == "linked" && c.Output?.Code.ToString() == "game:metalbit-copper"),
                     "methods: two inputs with one name take the same variant: copper ingots and plates, not tin bronze ingots with iron plates (" + (linked == null ? "no result" : linked.Conversions + " copies" + (linked.Skipped != null ? ", " + linked.Skipped : "")) + ")");

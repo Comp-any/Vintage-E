@@ -14,6 +14,7 @@
           "domain": "canjewelry",
           "recipe": {
             "code": "$name",
+            "enabled": "$enabled",
             "inputs": [
               {
                 "code": "$ingredient.code",
@@ -35,5 +36,6 @@
         }
       ]
     }
-  ]
+  ],
+  "//other": "Some of its cutting files are for gems another mod adds (Geology, Salt and Sands): with that mod missing, their allowedVariants match nothing and Vintage-E counts them as recipes for a mod that isn't loaded, as the game skips them."
 }

@@ -2214,6 +2214,7 @@
   "diag-meth-waiting-unknown": "Waiting: everything it uses has a value, yet the mapping gave its output none from it (the trace of what it makes says more)",
   "diag-meth-absentmod": "{0} isn't loaded, so this recipe waits for it: nothing to fix",
   "diag-meth-optional": "{0} recipe(s) are for mods that aren't loaded ({1}); they are left out until those mods are, which is normal",
+  "diag-meth-variantsof": "the mod with {0}",
   "diag-meth-parseproblems": "{0} problem(s) in the documents themselves left something out:",
   "diag-meth-waitingmore": "and {0} more document(s) waiting for a mod that isn't loaded",
   "diag-meth-unit-unused": "(no recipe in use needs it)",

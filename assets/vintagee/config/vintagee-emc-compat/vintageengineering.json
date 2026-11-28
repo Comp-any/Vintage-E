@@ -1,6 +1,6 @@
 {
   "name": "Vintage Engineering",
-  "requiresMod": "vinteng",
+  "requiresMod": "vintageengineering",
   "//": "Crude oil is pumped from wells, so no recipe makes it and Vintage Engineering's oil products (bitumen, diesel, gasoline, kerosene, naphtha, lubricant, LPG, heavy oil, plastic, asphalt) had nothing to be valued from. It is pegged here; the method file vintagee-methods/vintageengineering.json values everything made from it. Only used when nothing else values the item.",
   "litreValues": {
     "//crudeoilportion": "like the game's tar (32 a litre), the nearest thing to it: a thick fuel from deep underground",

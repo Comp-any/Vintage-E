@@ -109,6 +109,12 @@ namespace VintageE
             try { return x.Sapi.ModLoader.GetMod(domain) == null; } catch { return false; }
         }
 
+        /// <summary>A recipe left out because it's for a mod that isn't loaded: a code of that mod, or only variants it adds.</summary>
+        static bool Optional(Ctx x, MethodRecipeResult r) => r != null && (r.AbsentVariants != null || ForAbsentMod(x, r.BadCode));
+
+        /// <summary>What an optional recipe waits for: the mod, or the variants nothing loaded has.</summary>
+        static string OptionalLabel(Ctx x, MethodRecipeResult r) => r.AbsentVariants != null ? x.L("diag-meth-variantsof", r.AbsentVariants) : DomainOf(r.BadCode);
+
         /// <summary>What one conversion costs per run at today's values (ingredients, costs, less what's handed back), or null with what's missing.</summary>
         static double? RunCost(Ctx x, Conversion conv, List<CollectibleObject> lacking)
         {
@@ -209,9 +215,9 @@ namespace VintageE
             if (result != null && result.Disabled) { r.Add(head + ": " + x.L("diag-meth-off"), EmcLineStyle.Note, indent); return; }
             if (convs == null || convs.Count == 0)
             {
-                bool absent = ForAbsentMod(x, result?.BadCode);
+                bool absent = Optional(x, result);
                 r.Add(head + ": " + x.L("diag-meth-skipped", result?.Skipped ?? x.L("diag-meth-notread")) + (result?.BadCode != null && !absent ? Suggest(x, result.BadCode) : ""), absent ? EmcLineStyle.Note : EmcLineStyle.Warn, indent);
-                if (absent) x.Note(x.L("diag-meth-absentmod", DomainOf(result.BadCode)), indent + 1);
+                if (absent) x.Note(x.L("diag-meth-absentmod", OptionalLabel(x, result)), indent + 1);
                 return;
             }
             MethodOutcome outcome = OutcomeOf(x, convs, out Conversion used, out List<CollectibleObject> lacking);
@@ -336,7 +342,7 @@ namespace VintageE
             int read = results.Count, off = results.Count(rr => rr.Disabled);
             var allSkipped = results.Where(rr => !rr.Disabled && rr.Skipped != null).ToList();
             // A recipe for a mod that isn't loaded (an optional extra) is left out as it should be: counted, not a problem.
-            var optional = allSkipped.Where(rr => ForAbsentMod(x, rr.BadCode)).ToList();
+            var optional = allSkipped.Where(rr => Optional(x, rr)).ToList();
             var skipped = allSkipped.Except(optional).ToList();
             var parseProblems = Snap(x).UsableDocs.SelectMany(d => d.Problems.Where(p => p.Error && !ForAbsentMod(x, p.BadCode)).Select(p => (d, p))).ToList();
             int used = results.Count(rr => !rr.Disabled && rr.Skipped == null && convs.TryGetValue(rr.Recipe, out var cl) && OutcomeOf(x, cl, out _, out _) == MethodOutcome.Used);
@@ -351,7 +357,7 @@ namespace VintageE
                 foreach (var s in g.Take(3))
                     x.Note(s.Recipe.Method.Doc.Source + " " + s.Recipe.Path + (s.BadCode != null ? Suggest(x, s.BadCode) : ""), 2);
             }
-            if (optional.Count > 0) x.Note(x.L("diag-meth-optional", optional.Count, string.Join(", ", optional.Select(o => DomainOf(o.BadCode)).Distinct().Take(6))), 1);
+            if (optional.Count > 0) x.Note(x.L("diag-meth-optional", optional.Count, string.Join(", ", optional.Select(o => OptionalLabel(x, o)).Distinct().Take(6))), 1);
             if (parseProblems.Count > 0) r.Add(x.L("diag-meth-parseproblems", parseProblems.Count), EmcLineStyle.Text, 1);
             foreach (var (d, p) in parseProblems.Take(8)) r.Add(d.Source + " " + p, EmcLineStyle.Text, 2);
             if (parseProblems.Count > 8) x.Note(x.L("diag-more", parseProblems.Count - 8), 2);
@@ -1030,7 +1036,7 @@ namespace VintageE
                     if (res?.Disabled == true) { off++; continue; }
                     if (!convs.TryGetValue(recipe, out var list) || list.Count == 0)
                     {
-                        if (ForAbsentMod(x, res?.BadCode)) { optional++; continue; }
+                        if (Optional(x, res)) { optional++; continue; }
                         skipped++;
                         r.Add(recipe.Code + ": " + x.L("diag-meth-skipped", res?.Skipped ?? x.L("diag-meth-notread")) + (res?.BadCode != null ? Suggest(x, res.BadCode) : ""), EmcLineStyle.Warn, 1);
                         x.Note(recipe.Path, 2);
@@ -1046,7 +1052,7 @@ namespace VintageE
                 }
                 x.Info(x.L("diag-methodcheck-counts", used, beaten, waiting, skipped, off, set));
                 if (m.SwitchedOffInDocument > 0) x.Note(x.L("diag-methodcheck-enabledoff", m.SwitchedOffInDocument), 1);
-                if (optional > 0) x.Note(x.L("diag-meth-optional", optional, string.Join(", ", m.Recipes.Select(rc => results.TryGetValue(rc, out var rr) ? rr.BadCode : null).Where(b => ForAbsentMod(x, b)).Select(DomainOf).Distinct().Take(6))), 1);
+                if (optional > 0) x.Note(x.L("diag-meth-optional", optional, string.Join(", ", m.Recipes.Select(rc => results.TryGetValue(rc, out var rr) ? rr : null).Where(rr => rr != null && !rr.Disabled && Optional(x, rr)).Select(rr => OptionalLabel(x, rr)).Distinct().Take(6))), 1);
                 foreach (string s in m.Supersedes)
                 {
                     if (x.Report.SupersedeRefused.TryGetValue(s, out string owner)) r.Add(x.L("diag-meth-supersede-refused", m.Code, s, ModName(x, owner)), EmcLineStyle.Warn, 1);

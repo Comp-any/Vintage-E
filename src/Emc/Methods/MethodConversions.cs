@@ -18,6 +18,10 @@ namespace VintageE
         public string Skipped;
         /// <summary>The code that matched nothing, when that's why.</summary>
         public string BadCode;
+        /// <summary>Left out because a wildcard input's allowedVariants are all variants nothing loaded has (another mod's
+        /// gems or metals, say), as the game quietly skips such a recipe: a recipe for a mod that isn't loaded, not a fault.
+        /// The variants it allows, for the report; null otherwise.</summary>
+        public string AbsentVariants;
         public bool Disabled;
         /// <summary>Variants switched off by a DisabledMethods entry with "?name=value".</summary>
         public int DisabledVariants;
@@ -166,7 +170,7 @@ namespace VintageE
                 if (combos.Count > MaxChoices) combos = combos.Take(MaxChoices).ToList();
                 result.Notes.Add("its anyOf alternatives make more than " + MaxChoices + " combinations: each alternative is tried once, with the other slots at their first choice");
             }
-            string firstSkip = null, firstBad = null;
+            string firstSkip = null, firstBad = null, firstAbsent = null;
             foreach (var picked in combos)
             {
                 var ins = recipe.Inputs.Select(st => st.AnyOf != null ? picked[st] : st).ToList();
@@ -176,13 +180,13 @@ namespace VintageE
                 {
                     result.FailedChoices++;
                     result.ChoiceFailure ??= result.Skipped;
-                    firstSkip ??= result.Skipped;
-                    firstBad ??= result.BadCode;
+                    if (firstSkip == null) { firstSkip = result.Skipped; firstBad = result.BadCode; firstAbsent = result.AbsentVariants; }
                     result.Skipped = null;
                     result.BadCode = null;
+                    result.AbsentVariants = null;
                 }
             }
-            if (result.Conversions == 0 && firstSkip != null) { result.Skipped = firstSkip; result.BadCode = firstBad; }
+            if (result.Conversions == 0 && firstSkip != null) { result.Skipped = firstSkip; result.BadCode = firstBad; result.AbsentVariants = firstAbsent; }
         }
 
         /// <summary>One choice of each anyOf slot: the named *s expanded into variants.</summary>
@@ -208,7 +212,19 @@ namespace VintageE
                         if (!byValue.TryGetValue(captured, out var list)) byValue[captured] = list = new List<CollectibleObject>();
                         list.Add(c);
                     }
-                    if (byValue.Count == 0) { result.Skipped = "the input " + st.Code + " matches nothing"; result.BadCode = st.Code; return; }
+                    if (byValue.Count == 0)
+                    {
+                        // Things match the code, but none of the variants it allows: those come from a mod that isn't loaded
+                        // (the game skips such a recipe without a word), so it's an optional recipe rather than a mistake.
+                        if (st.AllowedVariants != null && st.AllowedVariants.Length > 0 && Resolve(st.Code, st.Type).Any(c => Capture(st.Code, c) != null))
+                        {
+                            result.AbsentVariants = string.Join(", ", st.AllowedVariants.Take(4)) + (st.AllowedVariants.Length > 4 ? ", …" : "");
+                            result.Skipped = "none of the variants " + st.Code + " allows (" + result.AbsentVariants + ") exists";
+                        }
+                        else result.Skipped = "the input " + st.Code + " matches nothing";
+                        result.BadCode = st.Code;
+                        return;
+                    }
                     stacks.Add((st, byValue.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray(), StringComparer.Ordinal)));
                 }
                 var values = stacks[0].byValue.Keys.Where(v => stacks.All(x => x.byValue.ContainsKey(v))).OrderBy(v => v, StringComparer.Ordinal).ToList();
