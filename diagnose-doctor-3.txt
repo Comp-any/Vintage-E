@@ -1,0 +1,16 @@
+/doctor emc item game:ingot-copper
+
+== Copper ingot ==
+Code game:ingot-copper, from Vintage Story (game).
+✓ It has a value: 128 EMC.
+  From: base value
+The server knows this item's value. If your game shows none:
+The tooltip needs Vintage-E on your side too, in the same version as the server. A game that joined while a remap was running gets the new values when it finishes; rejoining always fetches them.
+
+== Next ==
+The full story of its value: Copper ingot (game:ingot-copper)
+Trace its value down to the raw materials (/doctor emc trace game:ingot-copper)
+Everything from Vintage Story (game) (/doctor emc mod game)
+Values come and go, or differ between stacks or players (/doctor emc sporadic)
+Describe what's happening (step by step) (/doctor emc symptom)
+Back to the check-up (/doctor emc)
