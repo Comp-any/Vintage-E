@@ -115,10 +115,27 @@ jobs:
             ids=$(echo "$EXTRA_MODS" | tr -d ' ')
             curl -fsSL "https://mods.vintagestory.at/api/v2/mods/install-information?ids=${ids}&gv=${VS_VERSION}" -o extra.json || echo '{}' > extra.json
             cat extra.json; echo
-            python3 - "$data/Mods" <<'PY'
+            python3 - "$data/Mods" "$VS_VERSION" <<'PY'
           import json, sys, time, urllib.request
           info = json.load(open("extra.json")).get("data", {})
+          gv = sys.argv[2]
+          major, minor, patch = (gv.split(".") + ["0", "0"])[:3]
           for mod, r in info.items():
+              # No release marked for this exact version: take the newest one marked for an earlier patch of the
+              # same minor version (1.22.6, 1.22.5 ... 1.22.0), which usually loads fine.
+              if "fileUrl" not in r and patch.isdigit():
+                  for p in range(int(patch) - 1, -1, -1):
+                      older = "%s.%s.%d" % (major, minor, p)
+                      try:
+                          req = urllib.request.Request("https://mods.vintagestory.at/api/v2/mods/install-information?ids=%s&gv=%s" % (mod, older), headers={"User-Agent": "Vintage-E server test"})
+                          with urllib.request.urlopen(req, timeout=60) as resp:
+                              got = (json.loads(resp.read().decode("utf-8")).get("data") or {}).get(mod) or {}
+                      except Exception as e:  # noqa: BLE001
+                          got = {}
+                      if "fileUrl" in got:
+                          print("no release for", gv, "for", mod, "- using the one for", older)
+                          r = got
+                          break
               if "fileUrl" not in r:
                   print("no file for", mod, r); continue
               url = r["fileUrl"] if r["fileUrl"].startswith("http") else "https://mods.vintagestory.at" + r["fileUrl"]
