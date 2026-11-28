@@ -183,6 +183,10 @@ namespace VintageE
             ProjectELook.Result nl = mod.TestLooks.TryGetValue(ProjectELook.LookNew, out var rn) ? rn : null;
             var newCollector = nl?.Objects?.GetValueOrDefault("vintagee:energycollector-mk12") as Block;
             var newStar = nl?.Objects?.GetValueOrDefault("vintagee:star-colossal-vier") as Item;
+            string NewSwap(string key) => nl != null && nl.Swapped.TryGetValue(key, out string v) ? v : null;
+            Check(NewSwap("vintagee:energycollector-mk8#glow") == "game:block/stone/gem/sapphire" && NewSwap("vintagee:antimatterrelay-mk16#glow") == "game:block/stone/gem/diamond"
+                  && NewSwap("vintagee:energycollector-mk4#glow") == "vintagee:newlook/material/magentamatter",
+                $"New look: the tiers glow with the game's gems where it has one of their colour, as MK1-3 do ({NewSwap("vintagee:energycollector-mk8#glow") ?? "unchanged"}, {NewSwap("vintagee:antimatterrelay-mk16#glow") ?? "unchanged"}; magenta: {NewSwap("vintagee:energycollector-mk4#glow") ?? "unchanged"})");
             Check(newCollector?.Shape?.Base?.ToString() == "vintagee:newlook/block/energycollector" && newStar?.Shape?.Base?.ToString() == "vintagee:newlook/item/star",
                 $"New look: the new collectors and stars get the same models as MK1-3 and the Klein stars ({newCollector?.Shape?.Base}, {newStar?.Shape?.Base})");
         }

@@ -1,5 +1,5 @@
 {
-  "//": "Written by tools/gen_expansion.py. Read with vintagee-new-look.json (the New look): the Project Expansion tiers' models, the same as MK1-3's with the game's metals and each tier's matter.",
+  "//": "Written by tools/gen_expansion.py. Read with vintagee-new-look.json (the New look): the Project Expansion tiers' models, the same as MK1-3's, with the game's metals and gems and each tier's matter in Vintage Story's muted colours.",
   "textures": {
     "vintagee:block/matterblock-magenta": "vintagee:newlook/block/matterblock-magenta",
     "vintagee:block/matterblock-pink": "vintagee:newlook/block/matterblock-pink",
@@ -252,8 +252,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/purplematter",
-        "glass": "vintagee:newlook/material/purplematter"
+        "glow": "game:block/stone/gem/amethyst",
+        "glass": "game:block/stone/gem/amethyst"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -278,7 +278,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/purplematter",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/purplematter"
+        "glow": "game:block/stone/gem/amethyst"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -366,8 +366,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/violetmatter",
-        "glass": "vintagee:newlook/material/violetmatter"
+        "glow": "game:block/stone/gem/onyx",
+        "glass": "game:block/stone/gem/onyx"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -392,7 +392,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/violetmatter",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/violetmatter"
+        "glow": "game:block/stone/gem/onyx"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -480,8 +480,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/bluematter",
-        "glass": "vintagee:newlook/material/bluematter"
+        "glow": "game:block/stone/gem/sapphire",
+        "glass": "game:block/stone/gem/sapphire"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -506,7 +506,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/bluematter",
         "metal": "game:block/metal/plate/platinum",
-        "glow": "vintagee:newlook/material/bluematter"
+        "glow": "game:block/stone/gem/sapphire"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -594,8 +594,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/cyanmatter",
-        "glass": "vintagee:newlook/material/cyanmatter"
+        "glow": "game:block/stone/gem/aquamarine",
+        "glass": "game:block/stone/gem/aquamarine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -620,7 +620,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/cyanmatter",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/cyanmatter"
+        "glow": "game:block/stone/gem/aquamarine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -708,8 +708,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/greenmatter",
-        "glass": "vintagee:newlook/material/greenmatter"
+        "glow": "game:block/stone/gem/emerald",
+        "glass": "game:block/stone/gem/emerald"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -734,7 +734,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/greenmatter",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/greenmatter"
+        "glow": "game:block/stone/gem/emerald"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -822,8 +822,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/limematter",
-        "glass": "vintagee:newlook/material/limematter"
+        "glow": "game:block/stone/gem/olivine",
+        "glass": "game:block/stone/gem/olivine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -848,7 +848,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/limematter",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/limematter"
+        "glow": "game:block/stone/gem/olivine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -936,8 +936,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/yellowmatter",
-        "glass": "vintagee:newlook/material/yellowmatter"
+        "glow": "game:block/stone/gem/citrine",
+        "glass": "game:block/stone/gem/citrine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -962,7 +962,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/yellowmatter",
         "metal": "game:block/metal/plate/electrum",
-        "glow": "vintagee:newlook/material/yellowmatter"
+        "glow": "game:block/stone/gem/citrine"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1050,8 +1050,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/orangematter",
-        "glass": "vintagee:newlook/material/orangematter"
+        "glow": "game:block/stone/gem/topaz",
+        "glass": "game:block/stone/gem/topaz"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1076,7 +1076,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/orangematter",
         "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/orangematter"
+        "glow": "game:block/stone/gem/topaz"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1164,8 +1164,8 @@
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
         "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/whitematter",
-        "glass": "vintagee:newlook/material/whitematter"
+        "glow": "game:block/stone/gem/quartz",
+        "glass": "game:block/stone/gem/quartz"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1190,7 +1190,7 @@
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/whitematter",
         "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/whitematter"
+        "glow": "game:block/stone/gem/quartz"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1391,9 +1391,9 @@
       "textures": {
         "wood": "game:block/wood/planks/ebony1",
         "frame": "game:block/wood/debarked/ebony",
-        "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/finalmatter",
-        "glass": "vintagee:newlook/material/finalmatter"
+        "metal": "game:block/metal/plate/gold",
+        "glow": "game:block/stone/gem/diamond",
+        "glass": "game:block/stone/gem/diamond"
       },
       "drawtype": "JSON",
       "selectionbox": {
@@ -1417,8 +1417,8 @@
       "textures": {
         "stone": "game:block/stone/polishedrock/granite",
         "matter": "vintagee:newlook/material/finalmatter",
-        "metal": "game:block/metal/plate/titanium",
-        "glow": "vintagee:newlook/material/finalmatter"
+        "metal": "game:block/metal/plate/gold",
+        "glow": "game:block/stone/gem/diamond"
       },
       "drawtype": "JSON",
       "selectionbox": {

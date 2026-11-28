@@ -205,6 +205,8 @@ jobs:
             python3 tools/ci_textures.py "$clientassets" analysis || true
             python3 tools/render_look.py assets/vintagee/config/vintagee-new-look.json analysis/look-new-preview.png \
               --game-assets "$clientassets" --missing analysis/look-new-missing.txt || true
+            python3 tools/render_look.py assets/vintagee/config/vintagee-new-look-expansion.json analysis/look-new-expansion-preview.png \
+              --game-assets "$clientassets" --missing analysis/look-new-expansion-missing.txt || true
           else
             echo "no client assets" > analysis/look-new-missing.txt
           fi

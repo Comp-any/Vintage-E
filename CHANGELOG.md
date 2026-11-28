@@ -2,6 +2,16 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.1 — 2026-11-28
+
+### Changed
+- **The New look's new tiers now look like Vintage Story.** In 1.29.0 the MK4 to MK16 collectors and relays in the New look glowed with brightly coloured matter textures. Now:
+  - They glow with the game's own gems, as MK1–3 do with citrine, amethyst and ruby: amethyst (Purple), onyx (Violet), sapphire (Blue), aquamarine (Cyan), emerald (Green), olivine (Lime), citrine (Yellow), topaz (Orange), quartz (White) and diamond (Final).
+  - Magenta, Pink and Fading, which have no gem of their colour in the game, glow with their matter.
+  - Their matter, matter blocks and relay cores are drawn in the same dark, muted, veined style as the New look's dark and red matter.
+  - The Final tier's fittings are gold.
+  - Nothing changes in the Middle or Original looks.
+
 ## 1.29.0 — 2026-11-28
 
 Project Expansion's tiers (a ProjectE add-on for Minecraft), with Vintage-E's own numbers and recipes.

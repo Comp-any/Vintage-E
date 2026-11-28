@@ -12,7 +12,8 @@ Writes (and rewrites, so it can be run again after changing the tables below):
     alongside the generated maps (ProjectELook.LoadMap);
   - config/vintagee-expansion.json: what the Expansion setting takes out when it's off (ExpansionTiers.cs);
   - textures: the default (Middle) look drawn with tools/gen_textures.py's own code in each tier's colours, the New
-    look's matter with tools/gen_newlook.py's, and the Original look and every star from Project Expansion's art
+    look's matter with tools/gen_newlook.py's in muted colours (its collectors and relays glow with the game's gems,
+    as MK1-3 do), and the Original look and every star from Project Expansion's art
     (MIT, tools/vendor/projectexpansion; see THIRD-PARTY-NOTICES.md).
 
 The numbers continue Vintage-E's own MK1-3 (x3, then x10/3, so every two tiers is x10), not Project Expansion's x6.
@@ -57,7 +58,16 @@ MAGNUM_EIN = 204_800_000  # Klein Star Omega (51,200,000) x 4
 # The New look: frame metal by Project Expansion's rarity bands, star metal by size, star gem by tier (as the Klein stars).
 TIER_METAL = {**{m: "platinum" for m in ("magenta", "pink", "purple", "violet", "blue")},
               **{m: "electrum" for m in ("cyan", "green", "lime", "yellow")},
-              **{m: "titanium" for m in ("orange", "white", "fading", "final")}}
+              **{m: "titanium" for m in ("orange", "white", "fading")}, "final": "gold"}
+# The New look glows with the game's own gems, as MK1-3 do (citrine, amethyst, ruby), wherever the game has one in the
+# tier's colour; magenta, pink and fading have none and glow with their matter.
+TIER_GEM = {"purple": "amethyst", "violet": "onyx", "blue": "sapphire", "cyan": "aquamarine", "green": "emerald", "lime": "olivine",
+            "yellow": "citrine", "orange": "topaz", "white": "quartz", "final": "diamond"}
+# The New look's matter, in Vintage Story's muted colours: hue (degrees) and saturation, drawn dark with light veins
+# like the New look's dark and red matter (gen_newlook.py); white is light, fading nearly colourless.
+NEW_MATTER = {"magenta": (305, 0.5), "pink": (330, 0.38), "purple": (282, 0.5), "violet": (262, 0.5), "blue": (222, 0.5),
+              "cyan": (188, 0.5), "green": (128, 0.45), "lime": (88, 0.45), "yellow": (50, 0.5), "orange": (28, 0.55),
+              "white": (40, 0.05), "fading": (250, 0.08), "final": (44, 0.55)}
 STAR_METAL = {"magnum": "platinum", "colossal": "electrum", "gargantuan": "titanium"}
 STAR_GEM = {"ein": "quartz", "zwei": "citrine", "drei": "topaz", "vier": "emerald", "sphere": "sapphire", "omega": "amethyst"}
 G = "game:"
@@ -98,6 +108,16 @@ def rgb(h):
 
 def mixc(a, b, t):
     return tuple(int(round(a[i] + (b[i] - a[i]) * t)) for i in range(3))
+
+
+def new_matter_stops(name):
+    """Five colours for gen_newlook.matter_texture (dark, mid, light, vein, glint), as its dark matter's: about
+    11%, 23%, 36%, 63% and 90% bright, half saturated; white matter light, the Final tier's brighter, like red matter."""
+    import colorsys
+    hue, sat = NEW_MATTER[name]
+    values = {"white": (0.42, 0.56, 0.68, 0.84, 0.98), "final": (0.15, 0.30, 0.45, 0.75, 0.97)}.get(name, (0.11, 0.23, 0.36, 0.63, 0.90))
+    sats = (sat, sat, sat * 0.95, sat * 1.0, sat * 0.6)
+    return tuple(tuple(int(round(c * 255)) for c in colorsys.hsv_to_rgb(hue / 360, s, v)) for s, v in zip(sats, values))
 
 
 # ---------------------------------------------------------------- files
@@ -357,8 +377,7 @@ def textures_and_looks():
         written.append(save_png(vendor(f"collector-{name}"), f"projecte/expansion/collector-{name}"))
         written.append(save_png(vendor(f"relay-{name}"), f"projecte/expansion/relay-{name}"))
         # New: a matter material in this tier's colours, drawn as gen_newlook.py draws dark and red matter.
-        B, Gl = rgb(base), rgb(glow)
-        stops = (mixc((0, 0, 0), B, 0.6), B, mixc(B, Gl, 0.35), mixc(B, Gl, 0.7), Gl)
+        stops = new_matter_stops(name)
         newmat[name] = gn.save(gn.matter_texture(100 + mk * 2, *stops), f"material/{name}matter")
         if name == "final":
             continue
@@ -403,10 +422,11 @@ def textures_and_looks():
     gem = lambda m: G + "block/stone/gem/" + m
     for mk, name, *_ in TIERS:
         mat = newmat[name]
+        shine = gem(TIER_GEM[name]) if name in TIER_GEM else mat
         new_ov.append(gn.block(f"energycollector-mk{mk}", coll_shape, {"wood": G + "block/wood/planks/ebony1", "frame": G + "block/wood/debarked/ebony",
-                                                                     "metal": plate(TIER_METAL[name]), "glow": mat, "glass": mat}, f"collector mk{mk}"))
+                                                                     "metal": plate(TIER_METAL[name]), "glow": shine, "glass": shine}, f"collector mk{mk}"))
         new_ov.append(gn.block(f"antimatterrelay-mk{mk}", relay_shape, {"stone": G + "block/stone/polishedrock/granite", "matter": mat,
-                                                                      "metal": plate(TIER_METAL[name]), "glow": mat}, f"relay mk{mk}"))
+                                                                      "metal": plate(TIER_METAL[name]), "glow": shine}, f"relay mk{mk}"))
         if name == "final":
             continue
         new_tex[f"{MOD}:block/matterblock-{name}"] = f"{MOD}:newlook/block/matterblock-{name}"
@@ -417,7 +437,7 @@ def textures_and_looks():
     new_ov.append(gn.item("finalstarshard", star, {"metal": plate("gold"), "gem": gem("diamond")}, "final star shard"))
     dump("config/vintagee-new-look-expansion.json", {
         "//": "Written by tools/gen_expansion.py. Read with vintagee-new-look.json (the New look): the Project Expansion tiers' models, "
-              "the same as MK1-3's with the game's metals and each tier's matter.",
+              "the same as MK1-3's, with the game's metals and gems and each tier's matter in Vintage Story's muted colours.",
         "textures": new_tex, "overrides": new_ov})
     return written
 
