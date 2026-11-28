@@ -1,0 +1,10 @@
+== The tooltip shows a value, but the table won't burn or create it ==
+A value alone isn't enough. The item also mustn't be on the no-transmute list, a container with contents is protected, and creating needs you to have learned it.
+What the table and tablet refused lately, and why (/emc diagnose watch)
+Hold the block or item, then run /emc diagnose hand (or click the question below).
+Also: the table only takes what's on your mouse cursor; a worn tool burns for less; an item with contents burns as item + contents (or not at all when protected).
+One block or item has no value (hold it first) (/emc diagnose hand)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
