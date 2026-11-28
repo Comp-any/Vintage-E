@@ -1,0 +1,70 @@
+== What the last mapping changed ==
+The mapping of 2026-11-28 14:45 compared with the current one (2026-11-28 14:46).
+✓ The same 60 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  4 values now come through those mods' methods
+11 items gained a value, 0 lost theirs, 11132 changed.
+
+== Changed value (11132), by family ==
+  game:clothes (484): Copper bracelet (game:clothes-arm-copper-bracelet) 0.001 → 0
+    worked backwards from grid: 1 game:clothes-arm-copper-bracelet -> 2 game:metalbit-copper
+  bricklayers:claytilesslab (462): Hardened clay slab (Blue) (bricklayers:claytilesslab-dull-blurple-down-free) 67.78 → 59.89
+    grid: 1 bricklayers:claytiles-dull-blurple -> 2 bricklayers:claytilesslab-dull-blurple-down-free
+  capreolinae:taxidermy (341): Western Roe Deer Taxidermy (Fawn) (capreolinae:taxidermy-capreolini-baby-capreoluscapreolus-00) 151 → 149.1
+    grid: 1 capreolinae:pelt-pelt-capreolini-baby-capreoluscapreolus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 capreolinae:taxidermy-capreolini-baby-capreoluscapreolus-00
+  capreolinae:headmount (341): Western Roe Deer Head Mount (Fawn) (capreolinae:headmount-capreolini-baby-capreoluscapreolus-00) 139 → 138.52
+    grid: 1 capreolinae:pelt-pelt-capreolini-baby-capreoluscapreolus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 capreolinae:headmount-capreolini-baby-capreoluscapreolus-00
+  rpvoicechat:speaker (336): Speaker (Aged) (rpvoicechat:speaker-aged-up-north) 237.65 → 237.58
+    grid: 2 game:plank-aged + 1 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 2 game:plank-aged + 3 game:metal-parts + 2 game:plank-aged + 2 game:plank-aged + 4 rpvoicechat:telegraphwire + 2 game:plank-aged -> 1 rpvoicechat:speaker-aged-up-north
+  bovinae:headmount (335): Mountain Anoa Head Mount (Calf) (bovinae:headmount-baby-bubalusquarlesi-00) 139 → 138.52
+    grid: 1 bovinae:pelt-pelt-baby-bubalusquarlesi + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 bovinae:headmount-baby-bubalusquarlesi-00
+  bovinae:taxidermy (326): Mountain Anoa Taxidermy (Calf) (bovinae:taxidermy-baby-bubalusquarlesi-00) 151 → 149.1
+    grid: 1 bovinae:pelt-pelt-baby-bubalusquarlesi + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 bovinae:taxidermy-baby-bubalusquarlesi-00
+  alchemy:herbrack (297): Herb Rack (alchemy:herbrack-agedacacia-tinbronze) 153.46 → 32.66
+    same as its variant alchemy:herbrack-veryaged-tinbronze (differs in: wood)
+  rustboundmagic:spellcipher (246): Cipher: Plunder I (rustboundmagic:spellcipher-plunder1) 173.05 → 167.83
+    trader price: 5 x 33.57 EMC per gear
+  game:cobblestonestairs (228): Andesite cobblestone stairs (game:cobblestonestairs-andesite-up-north-free) 5.5 → 5.26
+    grid: 1 game:stone-andesite + 1 game:stone-andesite + 1 game:stone-andesite + 1 game:clay-blue (or 10 more) + 1 game:stone-andesite + 1 game:stone-andesite + 1 game:stone-andesite + 1 game:stone-andesite -> 2 game:cobblestonestairs-andesite-up-north-free
+  rustboundmagic:mageweave (216): Fire imbued mageweave (Diamond stitches) (rustboundmagic:mageweave-fire-diamond-north) 79.05 → 75.71
+    guessed from its only valued variant rustboundmagic:mageweave-none-diamond-north (differs in: element)
+  game:cobblestoneslab (209): Andesite cobblestone slab (game:cobblestoneslab-andesite-down-free) 3 → 2.88
+    grid: 1 game:cobblestone-andesite -> 2 game:cobblestoneslab-andesite-down-free
+  wildcraftfruit:clipping (192): Pokeweed clipping (green) (wildcraftfruit:clipping-pokeberry-green) 17.3 → 16.78
+    trader price: 0.5 x 33.57 EMC per gear
+  bricklayers:glassslabcolored (187): Dull opaque red glass slab (bricklayers:glassslabcolored-dull-red-down-free) 53.87 → 53.87
+    grid: 1 bricklayers:glasscolored-dull-red -> 2 bricklayers:glassslabcolored-dull-red-down-free
+  bricklayers:glazedplanter (180): Raw glazed planter (Milky Blue) (bricklayers:glazedplanter-raw-milky-blue-plain) 568.4 → 558.9
+    RecipeRegistrySystem.BarrelRecipes: 12 bricklayers:glazing-milky-blue + 1 bricklayers:plantercolored-burnt-blurple -> 1 bricklayers:glazedplanter-raw-milky-blue-plain
+  bricklayers:glazedflowerpot (180): Raw glazed flowerpot (Milky Blue) (bricklayers:glazedflowerpot-raw-milky-blue-plain) 269.2 → 266.23
+    RecipeRegistrySystem.BarrelRecipes: 6 bricklayers:glazing-milky-blue + 1 bricklayers:flowerpotcolored-burnt-blurple -> 1 bricklayers:glazedflowerpot-raw-milky-blue-plain
+  game:armor (147): Chain head armor (Copper) (game:armor-head-chain-copper) 0.096 → 0.055
+    grid: 1 game:metalchain-copper + 1 game:metalchain-copper + 1 game:metalchain-copper -> 1 game:armor-head-chain-copper
+  caninae:taxidermy (138): Dire Wolf Taxidermy (Pup) (caninae:taxidermy-canina-baby-aenocyon-dirus) 151 → 149.1
+    grid: 1 caninae:pelt-pelt-canina-baby-aenocyon-dirus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 caninae:taxidermy-canina-baby-aenocyon-dirus
+  caninae:headmount (138): Dire Wolf Head Mount (Pup) (caninae:headmount-canina-baby-aenocyon-dirus) 139 → 138.52
+    grid: 1 caninae:pelt-pelt-canina-baby-aenocyon-dirus + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 caninae:headmount-canina-baby-aenocyon-dirus
+  game:metalsheet (120): Copper sheet (game:metalsheet-copper-down) 0.008 → 0.023
+    grid: 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:metalplate-copper + 1 game:metalnailsandstrips-bismuth (or 14 more) -> 1 game:metalsheet-copper-down
+  rustboundmagic:elementalcrystals (120): Large rust crystal (rustboundmagic:elementalcrystals-rust-large-up) 0.738 → 0.743
+    worked backwards from block drops: 1 rustboundmagic:elementalcrystals-rust-large-up + 1 rustboundmagic:elementalbrazier-none-north -> 1 rustboundmagic:elementalbrazier-rust-north
+  elephantidae:taxidermy (118): Cyprus Dwarf Elephant Taxidermy (Calf)  (elephantidae:taxidermy-baby-palaeoloxodoncypriotes-00) 161 → 159.1
+    grid: 1 elephantidae:pelt-pelt-baby-palaeoloxodoncypriotes + 1 game:metalnailsandstrips-bismuth (or 14 more) + 4 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 elephantidae:taxidermy-baby-palaeoloxodoncypriotes-00
+  elephantidae:headmount (118): Cyprus Dwarf Elephant Head Mount (Calf) (elephantidae:headmount-baby-palaeoloxodoncypriotes-00) 149 → 148.52
+    grid: 1 elephantidae:pelt-pelt-baby-palaeoloxodoncypriotes + 1 game:metalnailsandstrips-bismuth (or 14 more) + 1 game:clay-blue (or 10 more) + 1 game:debarkedlog-aged-ud (or 47 more) + 1 game:glass-plain (or 10 more) + 1 game:powder-borax -> 1 elephantidae:headmount-baby-palaeoloxodoncypriotes-00
+  stonebakeoven:ovencontrollercobble (114): Cobble stone oven heat source (Andesite) (stonebakeoven:ovencontrollercobble-andesite-extinct-east) 70 → 69.79
+    grid: 1 game:cobblestone-andesite + 8 game:clay-fire + 2 game:metalplate-copper + 8 game:clay-fire -> 1 stonebakeoven:ovencontrollercobble-andesite-extinct-east
+  stonebakeoven:ovencontrollerplain (114): Plain stone oven heat source (Andesite) (stonebakeoven:ovencontrollerplain-andesite-extinct-east) 65 → 65.03
+    grid: 1 game:rock-andesite + 8 game:clay-fire + 2 game:metalplate-copper + 8 game:clay-fire -> 1 stonebakeoven:ovencontrollerplain-andesite-extinct-east
+
+== Gained a value (11), by family ==
+  alchemy:potioncauldron (8): Brewing Cauldron (alchemy:potioncauldron-copper-construct0) 0.055, Brewing Cauldron (alchemy:potioncauldron-copper-construct1) 0.055, Brewing Cauldron (alchemy:potioncauldron-copper-construct2) 0.055
+  game:metalplate (1): Copper plate (game:metalplate-copper) 0.018
+  game:hopper (1): Hopper (game:hopper) 60.02
+  game:shingleblock (1): Copper shingle block (game:shingleblock-copper) 0.013
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)
