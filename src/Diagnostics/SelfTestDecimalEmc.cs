@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
@@ -162,6 +163,9 @@ namespace VintageE
             // Shown as before, cut off rather than rounded, and never throwing.
             Check(EmcFormat.Total(1_234_567.899m) == "1,234,567.89" && EmcFormat.Total(0.0129m) == "0.012" && EmcFormat.Total(12.5m) == "12.5",
                 $"totals show as before ({EmcFormat.Total(1_234_567.899m)}, {EmcFormat.Total(0.0129m)}, {EmcFormat.Total(12.5m)})");
+            Check(EmcFormat.Short(1_234_567) == "1.23 " + Lang.Get("vintagee:number-million") && EmcFormat.Short(4.5e12) == "4.5 " + Lang.Get("vintagee:number-trillion")
+                && EmcFormat.ShortTotal(3_518_437_208_883_200_000m) == "3.51 " + Lang.Get("vintagee:number-quintillion"),
+                $"the short form goes past trillions ({EmcFormat.Short(1_234_567)}, {EmcFormat.Short(4.5e12)}, {EmcFormat.ShortTotal(3_518_437_208_883_200_000m)})");
             string most = null;
             try { most = EmcFormat.Total(decimal.MaxValue) + " / " + EmcFormat.ShortTotal(decimal.MaxValue); }
             catch (Exception e) { most = "threw " + e.GetType().Name; }

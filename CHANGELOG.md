@@ -2,6 +2,20 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.27.0 — 2026-11-28
+
+### Changed
+- **EMC totals are kept exactly, however large they get.** A player's balance, what a Klein star holds, the Gem of Eternal Density's store and the stores of Energy Collectors, Antimatter Relays and Energy Condensers were kept as a `double` (a floating-point number), which keeps only about 15 to 16 digits. Item values have up to four decimals, so once a total passed about a hundred billion its fractions began to round away, and past a quadrillion burning something worth 0.05 added nothing and something worth 0.09 added 0.125. They are now kept as a `decimal`: exact to 0.0001 up to about 7.9 × 10²⁴ (7.9 septillion), with whole EMC up to 7.9 × 10²⁸. The largest planned Klein star, 3.5 quintillion, fits a million times over.
+  - **Nothing changes for small totals**, and nothing is shown differently: totals still show two decimals (three below 1), cut off rather than rounded.
+  - **A total past the largest number stops there** instead of wrapping round or breaking the save.
+  - A player's game is sent the exact balance as well.
+  - Item values themselves (the table of what things are worth) are unchanged.
+
+### Worlds from before
+- **Nothing to do.** A world from an older version loads with every balance, star and machine store as it was. Each total is saved twice: as before, and as the exact number beside it, added the first time it changes.
+- **Going back to an older version still works.** It reads the totals as before (rounded to what a double holds). If it changes one, coming back to 1.27.0 or newer takes the older version's number, so nothing it did is lost.
+- A setting that worked out to NaN (not a number) or an infinity can no longer get into a machine's store: it now adds nothing. Since 1.21.1 such a store was put right when it was loaded; now it can't happen at all.
+
 ## 1.26.10 — 2026-11-26
 
 ### Fixed

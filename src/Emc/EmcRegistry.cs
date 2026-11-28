@@ -389,11 +389,18 @@ namespace VintageE
         /// <summary>A short form for very large numbers (1.23 million, 4.5 billion), for places where the full number won't fit.</summary>
         public static string Short(double v)
         {
-            if (v < 1_000_000) return Format(v);
-            if (v < 1_000_000_000) return (Math.Floor(v / 10_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-million");
-            if (v < 1_000_000_000_000) return (Math.Floor(v / 10_000_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-billion");
-            return (Math.Floor(v / 10_000_000_000) / 100).ToString("0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-trillion");
+            if (!(v >= 1_000_000)) return Format(v);
+            // Up to octillions since 1.27.0: exact totals reach about 79 octillion (the largest decimal).
+            int i = ShortUnits.Length - 1;
+            while (i > 0 && v < ShortUnits[i].At) i--;
+            return (Math.Floor(v / ShortUnits[i].Hundredth) / 100).ToString("#,0.##", CultureInfo.InvariantCulture) + " " + Lang.Get("vintagee:number-" + ShortUnits[i].Word);
         }
+
+        static readonly (double At, double Hundredth, string Word)[] ShortUnits =
+        {
+            (1e6, 1e4, "million"), (1e9, 1e7, "billion"), (1e12, 1e10, "trillion"), (1e15, 1e13, "quadrillion"),
+            (1e18, 1e16, "quintillion"), (1e21, 1e19, "sextillion"), (1e24, 1e22, "septillion"), (1e27, 1e25, "octillion"),
+        };
 
         public static string Format(double v)
         {
