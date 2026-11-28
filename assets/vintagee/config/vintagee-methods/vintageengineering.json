@@ -47,7 +47,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -93,7 +93,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -147,7 +147,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -201,7 +201,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -255,7 +255,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -301,7 +301,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -347,7 +347,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -393,7 +393,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -439,7 +439,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -485,7 +485,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "costs": {
@@ -531,7 +531,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "note": "Its coke is an ingredient; the blowers it needs are left out."
@@ -571,7 +571,7 @@
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
                 "litres": "$litres",
-                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
+                "share": "=default($litres, default($stacksize, default($quantity, 1))) * (1 + count($code, 'heavyoil') + count($code, 'lubricant'))"
               }
             ],
             "note": "Heated by a fire under it, which isn't counted (as the game's own charcoal pit counts no fire)."
@@ -580,5 +580,5 @@
       ]
     }
   ],
-  "//shares": "A machine with several outputs (the distillation tower's oils, the chemical plant's cracking) shares its cost by amount, litres for a liquid and count for an item, so 0.3 L of LPG isn't worth as much as 1.7 L of diesel. Outputs that already have a value keep it."
+  "//shares": "A machine with several outputs (the distillation tower's oils, the chemical plant's cracking) shares its cost by amount, litres for a liquid and count for an item, so 0.3 L of LPG isn't worth as much as 1.7 L of diesel. Heavy oil and lubricant count double: the chemical plant cracks 5 L of heavy oil and 5 L of water into 9 L of lighter oils (and 3 L of lubricant and 2 of water into 5), so at the same price a litre, cracking would make EMC out of water. Outputs that already have a value keep it."
 }
