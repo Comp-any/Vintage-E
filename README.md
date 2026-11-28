@@ -57,6 +57,12 @@ Vintage-E follows ProjectE (its 1.21.1 source) where Vintage Story allows. These
 - **The extra-function key** is B, not ProjectE's C (the game's character window). **The Ring of Arcana** has every effect on at once here, so its fire-projectile key takes turns between the shots of the effects that are on, where ProjectE's fires the one for its mode.
 - Kept on purpose: the Ignition Ring burns creatures instead of setting fires around you, the Gem of Eternal Density eats only things worth 8 EMC or less, the Mind Stone keeps your body temperature (Vintage Story has no experience), the Watch speeds up the world's time, the Tome of Knowledge is creative-only, armour has three pieces, the matter furnaces are firepits, the divining rods look 16/32/128 deep and wear out, and the bags, condensers, Swiftwolf's speeds and the Ring of Arcana's switches are Vintage-E's own.
 
+## Maybe later
+
+Ideas from the Project Expansion addon for ProjectE that aren't being made yet:
+
+- **Transmutation Interface.** A block that shows everything you've learned to a storage mod's network as one big container, so its terminal can take items paid from your EMC and put items in to burn them. Vanilla Vintage Story has no storage network to connect it to, so it only makes sense with a storage mod such as QP's Storage Controller or Storage Lectern, and whether those would see it as a container is untested.
+
 ## Hoppers and chutes
 
 A chute only takes things out of a block through an opening that pulls: the open top of a chute standing under the block, or the side opening of an elbow, T or 3-way chute that turns down. A chute lying flat and a hopper never take anything out of a block; they only carry or catch what is put into them.
