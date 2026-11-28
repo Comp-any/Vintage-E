@@ -28,6 +28,8 @@ namespace VintageE
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
         {
+            // The Matter Upgrader works on the machine itself (1.29.2): the click goes to the item, not the machine's own use.
+            if (byPlayer?.InventoryManager?.ActiveHotbarSlot?.Itemstack?.Collectible is ItemMatterUpgrader && ItemMatterUpgrader.Upgradable(this)) return false;
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is IEmcInteractable machine)
             {
                 return machine.OnInteract(byPlayer, blockSel);

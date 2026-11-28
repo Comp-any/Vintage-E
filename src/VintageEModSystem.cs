@@ -187,6 +187,12 @@ namespace VintageE
             api.RegisterBlockEntityClass("VintageEInterdictionTorch", typeof(BEInterdictionTorch));
             api.RegisterBlockEntityClass("VintageENovaExplosive", typeof(BENovaExplosive));
             api.RegisterBlockEntityClass("VintageEPedestal", typeof(BEPedestal));
+            // 1.29.2: Project Expansion's owned machines.
+            api.RegisterBlockClass("VintageEBlockOwnedMachine", typeof(BlockOwnedMachine));
+            api.RegisterBlockClass("VintageEBlockCompactSun", typeof(BlockCompactSun));
+            api.RegisterBlockEntityClass("VintageEPowerFlower", typeof(BEPowerFlower));
+            api.RegisterBlockEntityClass("VintageEEmcLink", typeof(BEEmcLink));
+            api.RegisterItemClass("VintageEItemMatterUpgrader", typeof(ItemMatterUpgrader));
             api.RegisterEntityBehaviorClass(EntityBehaviorVintageE.Code, typeof(EntityBehaviorVintageE));
             api.RegisterEntity("VintageEProjectile", typeof(EntityVintageEProjectile));
 

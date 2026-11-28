@@ -38,10 +38,22 @@ namespace VintageE
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
+            ReadTier();
+            if (api.Side == EnumAppSide.Server) RegisterGameTickListener(OnServerTick, 1000);
+        }
+
+        void ReadTier()
+        {
             capacity = EmcTransfer.PerTick(Block?.Attributes?["capacity"].AsDouble(100000) ?? 100000);
             bonusPerSecond = Block?.Attributes?["bonusPerSecond"].AsDouble(1) ?? 1;
             transferPerSecond = Block?.Attributes?["transferPerSecond"].AsDouble(64) ?? 64;
-            if (api.Side == EnumAppSide.Server) RegisterGameTickListener(OnServerTick, 1000);
+        }
+
+        /// <summary>The Matter Upgrader swaps the block in place (1.29.2): what it holds stays, the new tier's numbers apply.</summary>
+        public override void OnExchanged(Block block)
+        {
+            base.OnExchanged(block);
+            ReadTier();
         }
 
         double Fill => capacity <= 0 ? 1 : (double)EmcAmount.Divide(Stored, capacity);

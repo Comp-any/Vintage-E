@@ -70,14 +70,53 @@
         "white",
         "fading"
       ]
+    },
+    "blocktypes/powerflower.json": {
+      "group": "tier",
+      "states": [
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    },
+    "blocktypes/emclink.json": {
+      "group": "tier",
+      "states": [
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
     }
   },
   "files": [
     "itemtypes/star.json",
-    "itemtypes/finalstarshard.json"
+    "itemtypes/finalstarshard.json",
+    "itemtypes/finalstar.json",
+    "blocktypes/compactsun.json"
   ],
   "recipes": [
-    "recipes/grid/expansion.json"
+    "recipes/grid/expansion.json",
+    "recipes/grid/expansion-flowers.json"
   ],
   "tiers": [
     {

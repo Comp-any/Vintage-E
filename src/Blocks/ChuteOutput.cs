@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -44,6 +45,53 @@ namespace VintageE
     /// </summary>
     public static class ChuteOutput
     {
+        /// <summary>Where a machine hands what it makes to chutes: down, then the four sides.</summary>
+        public static readonly BlockFacing[] HandOutFaces = { BlockFacing.DOWN, BlockFacing.NORTH, BlockFacing.EAST, BlockFacing.SOUTH, BlockFacing.WEST };
+
+        /// <summary>
+        /// Hands items from <paramref name="source"/> (asked again after each move) to the chutes and hoppers next to a
+        /// machine that lead away but can't pull for themselves, up to <paramref name="perTick"/> into each, only into an
+        /// empty chute (as the game's chutes do among themselves), and not towards a full chest at the end. The condenser
+        /// since 1.22.1, the EMC Link since 1.29.2. Returns whether anything moved.
+        /// </summary>
+        public static bool HandOut(ICoreAPI api, BlockPos pos, System.Func<ItemSlot> source, int perTick)
+        {
+            ItemSlot from = source();
+            if (from == null) return false;
+            IBlockAccessor ba = api.World.BlockAccessor;
+            bool moved = false;
+            foreach (BlockFacing dir in HandOutFaces)
+            {
+                if (Link(ba, pos, dir, out BlockEntityItemFlow chute, out BlockEntityContainer end) != ChuteLink.HandedTo) continue;
+                BlockFacing back = dir.Opposite;
+                ItemSlot into = chute.Inventory?.GetAutoPushIntoSlot(back, from);
+                if (into == null || !into.Empty) continue;
+                if (!(end is BlockEntityItemFlow) && end.Inventory?.GetAutoPushIntoSlot(back, from) == null) continue;
+                var op = new ItemStackMoveOperation(api.World, EnumMouseButton.Left, 0, EnumMergePriority.DirectMerge, perTick);
+                if (from.TryPutInto(into, ref op) <= 0 || into.Itemstack == null) continue;
+                into.Itemstack.Attributes.SetInt("chuteQHTravelled", dir.IsHorizontal ? 1 : 0);
+                into.Itemstack.Attributes.SetInt("chuteDir", dir.Index);
+                from.MarkDirty();
+                into.MarkDirty();
+                chute.MarkDirty(false);
+                moved = true;
+                from = source();
+                if (from == null) break;
+            }
+            return moved;
+        }
+
+        /// <summary>Whether anything next to a machine would take what it makes: a chute that pulls from it, or a chute or hopper it can hand to.</summary>
+        public static bool HasTaker(IBlockAccessor ba, BlockPos pos)
+        {
+            foreach (BlockFacing dir in BlockFacing.ALLFACES)
+            {
+                ChuteLink link = Link(ba, pos, dir, out _, out _);
+                if (link == ChuteLink.Pulls || link == ChuteLink.HandedTo && dir != BlockFacing.UP) return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// The game's chutes move a stack at most three chutes sideways before it needs a drop
         /// (<c>MaxHorizontalTravel</c>); the machine's push counts as the first, so two straight chutes can still push on.

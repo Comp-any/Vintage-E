@@ -2,6 +2,40 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.2 — 2026-11-28
+
+More from Project Expansion: the machines that work for one player.
+
+### Added
+- **Power Flowers MK1 to MK16.** A machine named for its shape (a flower of collector cubes on a relay base, Project Expansion's own model), not a plant.
+  - It makes EMC every second, day and night, with no sunlight: as much as 18 collectors and 30 relay bonuses of its tier. That's 102 EMC a second at MK1, 1,020 at MK3, and 3.06 billion at MK16.
+  - It pays straight into the personal EMC of whoever placed it. While they're away it keeps what it makes and pays it all when they're back. Broken, the block takes what it was keeping with it (and is worth that much more), and pays it to whoever places it next.
+  - Recipe (Project Expansion's): two "compressed collectors" (9 collectors of the tier each; Vintage-E has no compressed collector), the tier's EMC Link and 6 relays of the tier. Or the flower before it with 5 relays.
+- **EMC Links MK1 to MK16.** They tie their owner's personal EMC to automation:
+  - **Making:** right-click one with something you've learned to set what it makes (with a bucket or other liquid container, its liquid). Sneak + right-click with an item changes it; with an empty hand, clears it. It then makes that from your EMC: into the chutes and hoppers that take a condenser's copies, into your hand when you right-click it, or for a liquid into the barrels and other liquid containers next to it.
+  - **Burning:** what hoppers and chutes put into it is burned into your EMC and learned, as the transmutation table does.
+  - **EMC:** what collectors and relays next to it push in goes to you.
+  - **Limits a second (Project Expansion's):** 16^MK EMC taken in, 2^(MK−1) items made and burned, 2^(MK−1) buckets of liquid, 3 input slots a tier. The Final link has no limits.
+  - It only works while its owner is in the game. Only its owner (or an admin) can use it.
+  - Recipe (Project Expansion's): low, medium and high covalence dust around a transmutation tablet and a condenser MK1 for MK1; then the link before it and the tier's matter (dark, red, magenta… and the Final Star Shard).
+- **The Matter Upgrader.** Right-click a collector, relay, Power Flower or EMC Link with it to turn it into the next tier where it stands. What's in it stays: its EMC, its Klein star, its owner. You must have learned the next tier, and you pay the difference in their EMC values. Only a flower's or link's owner can upgrade it. It isn't used up. Recipe: Project Expansion's, with medium covalence dust for Minecraft's lime dye.
+- **The Final Star:** 8 Final Power Flowers around 16 temporal gears (Project Expansion uses a dragon egg). It holds no EMC: it's for showing off, and for making Compact Suns.
+- **The Compact Sun:** 4 Final Stars and 4 Final Star Shards around yellow matter. Under a Power Flower it makes ×10; on top of an Energy Collector the collector works in full sun all the time, ×10. It warms like a fire and sets alight whatever stands on it.
+- **Settings:** `PowerFlowerMultiplier` (1), `EmcLinkLimitMultiplier` (1) and `CompactSunBonus` (10).
+- **`/emc setowner <player>`** (admin): gives the flower or link you're looking at to another player.
+- **The doctor's machines page** covers flowers and links:
+  - who owns it, whether they're in the game, its rate or limits, and the EMC and items waiting;
+  - for a link, what it makes and why it can't: nothing set, not learned, too little EMC, or nothing to take it;
+  - a collector with a Compact Sun on it.
+- MK1–3 and the Matter Upgrader are always there. MK4 and up, the Final Star and the Compact Sun come with the `Expansion` setting, as the other Project Expansion tiers do.
+- All three looks:
+  - **Middle:** the flower's cubes in the tier's colour; links are dark plates with a chain on the sides and a core on top.
+  - **New:** the flower in the game's metals and gems; links have the condenser's model in white marble; the sun is a gold cage round a glowing core; the Final Star has the Gargantuan star's three rings in gold.
+  - **Original:** Project Expansion's own textures and model.
+
+### Changed
+- The condenser's way of handing copies to chutes is now shared with the EMC Link; it works as before.
+
 ## 1.29.1 — 2026-11-28
 
 ### Changed

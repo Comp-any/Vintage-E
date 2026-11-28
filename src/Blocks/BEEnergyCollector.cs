@@ -38,24 +38,47 @@ namespace VintageE
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-            JsonObject attrs = Block?.Attributes ?? api.World.BlockAccessor.GetBlock(Pos)?.Attributes;
-            ratePerSecond = attrs?["emcPerSecond"].AsDouble(4) ?? 4;
-            capacity = EmcTransfer.PerTick(attrs?["capacity"].AsDouble(10000) ?? 10000);
+            ReadTier(api);
             if (api.Side == EnumAppSide.Server)
             {
                 RegisterGameTickListener(OnServerTick, 1000);
             }
         }
 
+        void ReadTier(ICoreAPI api)
+        {
+            JsonObject attrs = (Block ?? api.World.BlockAccessor.GetBlock(Pos))?.Attributes;
+            ratePerSecond = attrs?["emcPerSecond"].AsDouble(4) ?? 4;
+            capacity = EmcTransfer.PerTick(attrs?["capacity"].AsDouble(10000) ?? 10000);
+        }
+
+        /// <summary>The Matter Upgrader swaps the block in place (1.29.2): what it holds stays, the new tier's numbers apply.</summary>
+        public override void OnExchanged(Block block)
+        {
+            base.OnExchanged(block);
+            if (Api != null) ReadTier(Api);
+        }
+
         VintageEModSystem Mod => VintageEModSystem.Of(Api);
+
+        /// <summary>
+        /// EMC a second now: the sky light reaching it (at least the dark factor), the server's machine speed, and since
+        /// 1.29.2 a Compact Sun right above it, which counts as full sun and multiplies the output.
+        /// </summary>
+        public double RateNow()
+        {
+            VintageEConfig cfg = Mod.Config;
+            bool compactSun = BlockCompactSun.Above(Api.World, Pos);
+            int sun = Api.World.BlockAccessor.GetLightLevel(Pos.UpCopy(), EnumLightLevelType.TimeOfDaySunLight);
+            int maxSun = Math.Max(1, Api.World.SunBrightness);
+            double light = compactSun ? 1 : Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
+            return ratePerSecond * cfg.MachineSpeedMultiplier * light * (compactSun ? BlockCompactSun.Bonus(Api) : 1);
+        }
 
         void OnServerTick(float dt)
         {
             VintageEConfig cfg = Mod.Config;
-            int sun = Api.World.BlockAccessor.GetLightLevel(Pos.UpCopy(), EnumLightLevelType.TimeOfDaySunLight);
-            int maxSun = Math.Max(1, Api.World.SunBrightness);
-            double light = Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
-            double rate = ratePerSecond * cfg.MachineSpeedMultiplier * light;
+            double rate = RateNow();
 
             decimal before = Stored;
             Stored = Math.Min(capacity, EmcAmount.Add(Stored, EmcTransfer.PerTick(rate * dt)));

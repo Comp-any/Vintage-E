@@ -158,6 +158,8 @@ namespace VintageE
         {
             double v = GetValue(stack.Collectible);
             if (stack.Collectible is IEmcStorageItem) v += (double)StoredEmc.Get(stack); // Klein stars are worth what they hold
+            // A broken Power Flower or EMC Link is worth the EMC it was holding for its owner as well (1.29.2).
+            if (stack.Collectible is BlockOwnedMachine) v += (double)EmcAmount.Read(stack.Attributes, OwnedMachine.HeldKey);
             return v;
         }
 

@@ -201,6 +201,12 @@ namespace VintageE
                     .WithDescription("List the fuels an Energy Collector's fuel slot upgrades, cheapest first, with their EMC values")
                     .RequiresPrivilege(Privilege.chat)
                     .HandleWith(Safe(args => Fuels(mod, sapi, args)))
+                .EndSubCommand()
+                .BeginSubCommand("setowner")
+                    .WithDescription("Give the Power Flower or EMC Link you're looking at to an online player")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(new OnlinePlayerArgParser("player", sapi, true))
+                    .HandleWith(Safe(args => SetOwner(sapi, args)))
                 .EndSubCommand();
         }
 
@@ -240,6 +246,7 @@ namespace VintageE
             ("/emc knowledge [player]", "cmdhelp-knowledge", false),
             ("/emc forgetall <player>", "cmdhelp-forgetall", true),
             ("/emc fuels", "cmdhelp-fuels", false),
+            ("/emc setowner <player>", "cmdhelp-setowner", true),
         };
 
         static TextCommandResult Help(TextCommandCallingArgs args)

@@ -1,0 +1,202 @@
+{
+  "code": "powerflower",
+  "class": "VintageEBlockOwnedMachine",
+  "entityClass": "VintageEPowerFlower",
+  "variantgroups": [
+    {
+      "code": "tier",
+      "states": [
+        "mk1",
+        "mk2",
+        "mk3",
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    }
+  ],
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "mechanics": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "blockmaterial": "Metal",
+  "drawtype": "json",
+  "shape": {
+    "base": "block/powerflower"
+  },
+  "textures": {
+    "collector": {
+      "base": "block/powerflower-{tier}-petal"
+    },
+    "relay": {
+      "base": "block/antimatterrelay-{tier}-side"
+    }
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "sidesolid": {
+    "all": false,
+    "down": true
+  },
+  "emitsideao": {
+    "all": false
+  },
+  "lightAbsorption": 0,
+  "attributesByType": {
+    "*-mk1": {
+      "emcPerSecond": 102
+    },
+    "*-mk2": {
+      "emcPerSecond": 306
+    },
+    "*-mk3": {
+      "emcPerSecond": 1020
+    },
+    "*-mk4": {
+      "emcPerSecond": 3060
+    },
+    "*-mk5": {
+      "emcPerSecond": 10200
+    },
+    "*-mk6": {
+      "emcPerSecond": 30600
+    },
+    "*-mk7": {
+      "emcPerSecond": 102000
+    },
+    "*-mk8": {
+      "emcPerSecond": 306000
+    },
+    "*-mk9": {
+      "emcPerSecond": 1020000
+    },
+    "*-mk10": {
+      "emcPerSecond": 3060000
+    },
+    "*-mk11": {
+      "emcPerSecond": 10200000
+    },
+    "*-mk12": {
+      "emcPerSecond": 30600000
+    },
+    "*-mk13": {
+      "emcPerSecond": 102000000
+    },
+    "*-mk14": {
+      "emcPerSecond": 306000000
+    },
+    "*-mk15": {
+      "emcPerSecond": 1020000000
+    },
+    "*-mk16": {
+      "emcPerSecond": 3060000000
+    }
+  },
+  "lightHsvByType": {
+    "*-mk1": [
+      12,
+      4,
+      8
+    ],
+    "*-mk2": [
+      49,
+      5,
+      8
+    ],
+    "*-mk3": [
+      0,
+      6,
+      9
+    ],
+    "*-mk4": [
+      52,
+      5,
+      9
+    ],
+    "*-mk5": [
+      58,
+      4,
+      9
+    ],
+    "*-mk6": [
+      49,
+      5,
+      10
+    ],
+    "*-mk7": [
+      46,
+      5,
+      10
+    ],
+    "*-mk8": [
+      40,
+      6,
+      10
+    ],
+    "*-mk9": [
+      32,
+      5,
+      11
+    ],
+    "*-mk10": [
+      21,
+      5,
+      11
+    ],
+    "*-mk11": [
+      16,
+      5,
+      11
+    ],
+    "*-mk12": [
+      10,
+      5,
+      12
+    ],
+    "*-mk13": [
+      5,
+      6,
+      12
+    ],
+    "*-mk14": [
+      0,
+      0,
+      12
+    ],
+    "*-mk15": [
+      0,
+      0,
+      13
+    ],
+    "*-mk16": [
+      8,
+      4,
+      13
+    ]
+  },
+  "resistance": 4,
+  "requiredMiningTier": 2,
+  "sounds": {
+    "place": "game:block/ingot",
+    "break": "game:block/ingot",
+    "hit": "game:block/ingot"
+  }
+}

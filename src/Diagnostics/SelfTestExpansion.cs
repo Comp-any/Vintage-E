@@ -193,8 +193,8 @@ namespace VintageE
 
         static bool IsExpansionCode(string path)
         {
-            if (path == "finalstarshard" || path.StartsWith("star-", StringComparison.Ordinal)) return true;
-            foreach (string prefix in new[] { "energycollector-mk", "antimatterrelay-mk" })
+            if (path == "finalstarshard" || path == "finalstar" || path == "compactsun" || path.StartsWith("star-", StringComparison.Ordinal)) return true;
+            foreach (string prefix in new[] { "energycollector-mk", "antimatterrelay-mk", "powerflower-mk", "emclink-mk" })
             {
                 if (path.StartsWith(prefix, StringComparison.Ordinal) && int.TryParse(path.Substring(prefix.Length), NumberStyles.Integer, CultureInfo.InvariantCulture, out int mk) && mk >= 4) return true;
             }

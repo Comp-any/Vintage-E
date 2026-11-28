@@ -489,9 +489,12 @@ def manifest():
             "blocktypes/antimatterrelay.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
             "blocktypes/matterblock.json": {"group": "type", "states": [t[1] for t in MATTERS]},
             "itemtypes/matter.json": {"group": "type", "states": [t[1] for t in MATTERS]},
+            # 1.29.2 (tools/gen_flowers.py): MK1-3 stay.
+            "blocktypes/powerflower.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
+            "blocktypes/emclink.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
         },
-        "files": ["itemtypes/star.json", "itemtypes/finalstarshard.json"],
-        "recipes": ["recipes/grid/expansion.json"],
+        "files": ["itemtypes/star.json", "itemtypes/finalstarshard.json", "itemtypes/finalstar.json", "blocktypes/compactsun.json"],
+        "recipes": ["recipes/grid/expansion.json", "recipes/grid/expansion-flowers.json"],
         "tiers": [{"mk": t[0], "matter": t[1]} for t in TIERS],
     })
 
@@ -503,6 +506,9 @@ def main():
     write_lang(entries)
     tex = textures_and_looks()
     manifest()
+    # The flowers, links, sun, star and upgrader add to the look maps written above (1.29.2).
+    import gen_flowers
+    gen_flowers.main()
     print(f"{len(TIERS)} tiers, {len(MATTERS)} matters, {len(STAR_SIZES) * len(STAR_TIERS)} stars, {len(rs)} recipes, "
           f"{len(entries)} language lines, {len(tex)} textures (plus the New look's matter)")
 

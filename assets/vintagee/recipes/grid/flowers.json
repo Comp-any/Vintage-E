@@ -1,0 +1,267 @@
+[
+  {
+    "ingredientPattern": "LMH,TCT,HML",
+    "ingredients": {
+      "L": {
+        "type": "item",
+        "code": "vintagee:covalencedust-low"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:covalencedust-medium"
+      },
+      "H": {
+        "type": "item",
+        "code": "vintagee:covalencedust-high"
+      },
+      "T": {
+        "type": "item",
+        "code": "vintagee:transmutationtablet"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycondenser-mk1"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:emclink-mk1"
+    },
+    "name": "vintagee:emclink-mk1"
+  },
+  {
+    "ingredientPattern": "CLC,RRR,RRR",
+    "ingredients": {
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk1",
+        "quantity": 9
+      },
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk1"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk1"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:powerflower-mk1"
+    },
+    "name": "vintagee:powerflower-mk1"
+  },
+  {
+    "ingredientPattern": "LMH,TCT,HML",
+    "ingredients": {
+      "L": {
+        "type": "item",
+        "code": "vintagee:covalencedust-low"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:covalencedust-medium"
+      },
+      "H": {
+        "type": "item",
+        "code": "vintagee:covalencedust-high"
+      },
+      "T": {
+        "type": "item",
+        "code": "vintagee:matter-dark"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:emclink-mk1"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:emclink-mk2"
+    },
+    "name": "vintagee:emclink-mk2"
+  },
+  {
+    "ingredientPattern": "CLC,RRR,RRR",
+    "ingredients": {
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk2",
+        "quantity": 9
+      },
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk2"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk2"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:powerflower-mk2"
+    },
+    "name": "vintagee:powerflower-mk2"
+  },
+  {
+    "ingredientPattern": "CLC,RPR,RRR",
+    "ingredients": {
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk2",
+        "quantity": 9
+      },
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk2"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk2"
+      },
+      "P": {
+        "type": "block",
+        "code": "vintagee:powerflower-mk1"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:powerflower-mk2"
+    },
+    "name": "vintagee:powerflower-mk2-upgrade"
+  },
+  {
+    "ingredientPattern": "LMH,TCT,HML",
+    "ingredients": {
+      "L": {
+        "type": "item",
+        "code": "vintagee:covalencedust-low"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:covalencedust-medium"
+      },
+      "H": {
+        "type": "item",
+        "code": "vintagee:covalencedust-high"
+      },
+      "T": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:emclink-mk2"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:emclink-mk3"
+    },
+    "name": "vintagee:emclink-mk3"
+  },
+  {
+    "ingredientPattern": "CLC,RRR,RRR",
+    "ingredients": {
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk3",
+        "quantity": 9
+      },
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk3"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk3"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:powerflower-mk3"
+    },
+    "name": "vintagee:powerflower-mk3"
+  },
+  {
+    "ingredientPattern": "CLC,RPR,RRR",
+    "ingredients": {
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk3",
+        "quantity": 9
+      },
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk3"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk3"
+      },
+      "P": {
+        "type": "block",
+        "code": "vintagee:powerflower-mk2"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:powerflower-mk3"
+    },
+    "name": "vintagee:powerflower-mk3-upgrade"
+  },
+  {
+    "ingredientPattern": "LCL,PMR,LDL",
+    "ingredients": {
+      "L": {
+        "type": "block",
+        "code": "vintagee:emclink-mk1"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk1"
+      },
+      "P": {
+        "type": "block",
+        "code": "vintagee:powerflower-mk1"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:covalencedust-medium"
+      },
+      "R": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk1"
+      },
+      "D": {
+        "type": "item",
+        "code": "vintagee:matter-dark"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matterupgrader"
+    },
+    "name": "vintagee:matterupgrader"
+  }
+]

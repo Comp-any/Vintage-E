@@ -93,6 +93,8 @@ namespace VintageE
                 benchSite = new BlockPos(x - 20, y, z - 20);
                 try { CheckParity(x, y, z); }
                 catch (Exception e) { Check(false, "ProjectE parity checks threw " + e); }
+                try { ownedSite = Pad(x, z, 2, -16, 8, 3); } // the flowers and links (1.29.2), checked at the end
+                catch (Exception e) { Check(false, "clearing a place for the flowers and links threw " + e); }
 
                 BlockEntityFirepit fuelled = PlaceFurnace(new BlockPos(x + 2, y, z), "dark");
                 BlockEntityFirepit onEmc = PlaceFurnace(new BlockPos(x + 4, y, z), "red");
@@ -2687,6 +2689,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the quick wins checks (EMC display, learned line, commands) threw " + e); }
             try { CheckExpansionTiers(); }
             catch (Exception e) { Check(false, "the Project Expansion tier checks threw " + e); }
+            try { CheckFlowersAndLinks(); }
+            catch (Exception e) { Check(false, "the Power Flower, EMC Link and Matter Upgrader checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

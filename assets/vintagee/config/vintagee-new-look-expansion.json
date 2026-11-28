@@ -2587,10 +2587,737 @@
       }
     },
     {
-      "code": "vintagee:finalstarshard",
-      "label": "final star shard",
+      "code": "vintagee:powerflower-mk1",
+      "label": "power flower mk1",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/brass",
+        "glow": "game:block/stone/gem/citrine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk1",
+      "label": "emc link mk1",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/brass",
+        "matter": "vintagee:newlook/material/darkmatter",
+        "glow": "game:block/stone/gem/citrine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk2",
+      "label": "power flower mk2",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/silver",
+        "glow": "game:block/stone/gem/amethyst"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk2",
+      "label": "emc link mk2",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/silver",
+        "matter": "vintagee:newlook/material/darkmatter",
+        "glow": "game:block/stone/gem/amethyst"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk3",
+      "label": "power flower mk3",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/gold",
+        "glow": "game:block/stone/gem/ruby"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk3",
+      "label": "emc link mk3",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/gold",
+        "matter": "vintagee:newlook/material/redmatter",
+        "glow": "game:block/stone/gem/ruby"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk4",
+      "label": "power flower mk4",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/magentamatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk4",
+      "label": "emc link mk4",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/platinum",
+        "matter": "vintagee:newlook/material/magentamatter",
+        "glow": "vintagee:newlook/material/magentamatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk5",
+      "label": "power flower mk5",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/pinkmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk5",
+      "label": "emc link mk5",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/platinum",
+        "matter": "vintagee:newlook/material/pinkmatter",
+        "glow": "vintagee:newlook/material/pinkmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk6",
+      "label": "power flower mk6",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "game:block/stone/gem/amethyst"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk6",
+      "label": "emc link mk6",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/platinum",
+        "matter": "vintagee:newlook/material/purplematter",
+        "glow": "game:block/stone/gem/amethyst"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk7",
+      "label": "power flower mk7",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "game:block/stone/gem/onyx"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk7",
+      "label": "emc link mk7",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/platinum",
+        "matter": "vintagee:newlook/material/violetmatter",
+        "glow": "game:block/stone/gem/onyx"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk8",
+      "label": "power flower mk8",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "game:block/stone/gem/sapphire"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk8",
+      "label": "emc link mk8",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/platinum",
+        "matter": "vintagee:newlook/material/bluematter",
+        "glow": "game:block/stone/gem/sapphire"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk9",
+      "label": "power flower mk9",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "game:block/stone/gem/aquamarine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk9",
+      "label": "emc link mk9",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/electrum",
+        "matter": "vintagee:newlook/material/cyanmatter",
+        "glow": "game:block/stone/gem/aquamarine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk10",
+      "label": "power flower mk10",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "game:block/stone/gem/emerald"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk10",
+      "label": "emc link mk10",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/electrum",
+        "matter": "vintagee:newlook/material/greenmatter",
+        "glow": "game:block/stone/gem/emerald"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk11",
+      "label": "power flower mk11",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "game:block/stone/gem/olivine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk11",
+      "label": "emc link mk11",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/electrum",
+        "matter": "vintagee:newlook/material/limematter",
+        "glow": "game:block/stone/gem/olivine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk12",
+      "label": "power flower mk12",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "game:block/stone/gem/citrine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk12",
+      "label": "emc link mk12",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/electrum",
+        "matter": "vintagee:newlook/material/yellowmatter",
+        "glow": "game:block/stone/gem/citrine"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk13",
+      "label": "power flower mk13",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "game:block/stone/gem/topaz"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk13",
+      "label": "emc link mk13",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/titanium",
+        "matter": "vintagee:newlook/material/orangematter",
+        "glow": "game:block/stone/gem/topaz"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk14",
+      "label": "power flower mk14",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "game:block/stone/gem/quartz"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk14",
+      "label": "emc link mk14",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/titanium",
+        "matter": "vintagee:newlook/material/whitematter",
+        "glow": "game:block/stone/gem/quartz"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk15",
+      "label": "power flower mk15",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/fadingmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk15",
+      "label": "emc link mk15",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/titanium",
+        "matter": "vintagee:newlook/material/fadingmatter",
+        "glow": "vintagee:newlook/material/fadingmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:powerflower-mk16",
+      "label": "power flower mk16",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/powerflower",
+      "textures": {
+        "metal": "game:block/metal/plate/gold",
+        "glow": "game:block/stone/gem/diamond"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      }
+    },
+    {
+      "code": "vintagee:emclink-mk16",
+      "label": "emc link mk16",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycondenser",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/whitemarble",
+        "metal": "game:block/metal/plate/gold",
+        "matter": "vintagee:newlook/material/finalmatter",
+        "glow": "game:block/stone/gem/diamond"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0312,
+        "y1": 0.0,
+        "z1": 0.0312,
+        "x2": 0.9688,
+        "y2": 0.9844,
+        "z2": 0.9688
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:compactsun",
+      "label": "compact sun",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/compactsun",
+      "textures": {
+        "metal": "game:block/metal/plate/gold",
+        "core": "vintagee:newlook/material/finalmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:finalstar",
+      "label": "final star",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
         "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/diamond"
@@ -2648,6 +3375,71 @@
           "z": 0.5
         },
         "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:matterupgrader",
+      "label": "matter upgrader",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/rod",
+      "textures": {
+        "wood": "game:block/wood/debarked/ebony",
+        "cord": "game:block/leather/plain",
+        "metal": "game:block/stone/gem/olivine"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.484,
+          "z": 0.5
+        },
+        "scale": 0.97
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.484,
+          "z": 0.5
+        },
+        "scale": 0.29
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.0,
+          "z": 0.5
+        },
+        "scale": 1.2
       }
     }
   ]

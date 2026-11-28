@@ -147,6 +147,18 @@ namespace VintageE
         [System.ComponentModel.Description("Project Expansion's tiers: Energy Collectors and Anti-Matter Relays MK4 to MK16, magenta to fading matter and their blocks, the Final Star Shard, and the Magnum, Colossal and Gargantuan stars. Off: none of them exist on this server at all (no blocks, items, recipes or handbook pages). Takes effect after a restart. Decide before players make any: switching it off in a world that already has these blocks and items loses them.")]
         public bool Expansion = true;
 
+        /// <summary>Multiplies what every Power Flower makes (1.29.2). Their base rates are 18 collectors and 30 relay bonuses of their tier, in the block JSON.</summary>
+        [System.ComponentModel.Description("Multiplies what every Power Flower makes. Their base rates (18 collectors and 30 relay bonuses of their tier) are in the block JSON.")]
+        public double PowerFlowerMultiplier = 1.0;
+
+        /// <summary>Multiplies every EMC Link's limits a second (1.29.2): EMC taken in, items made and burned, litres made. Final links have none.</summary>
+        [System.ComponentModel.Description("Multiplies every EMC Link's limits a second: EMC taken in, items made and burned, litres made. Final links have no limits.")]
+        public double EmcLinkLimitMultiplier = 1.0;
+
+        /// <summary>How many times more a Power Flower makes with a Compact Sun under it, and a collector with one on top (1.29.2, 10 as in Project Expansion).</summary>
+        [System.ComponentModel.Description("How many times more a Power Flower makes with a Compact Sun under it. A collector with a Compact Sun on top works at full light, times this.")]
+        public int CompactSunBonus = 10;
+
         /// <summary>Fraction of output a collector keeps at night or underground (0 = nothing without sun).</summary>
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;
@@ -355,6 +367,9 @@ namespace VintageE
             if (Bad(WatchSlowDown)) WatchSlowDown = 3;
             if (WatchSlowDown < 1) WatchSlowDown = 1;
             if (Bad(MachineSpeedMultiplier) || MachineSpeedMultiplier <= 0) MachineSpeedMultiplier = 1.0;
+            if (Bad(PowerFlowerMultiplier) || PowerFlowerMultiplier < 0) PowerFlowerMultiplier = 1.0;
+            if (Bad(EmcLinkLimitMultiplier) || EmcLinkLimitMultiplier < 0) EmcLinkLimitMultiplier = 1.0;
+            CompactSunBonus = Math.Clamp(CompactSunBonus, 1, 1000);
             if (MaxMappingPasses < 4) MaxMappingPasses = 4;
             if (TableUseRange < 2) TableUseRange = 2;
             CraftingMethods = CraftingRoutes.Normalize(CraftingMethods);

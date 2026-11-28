@@ -3,6 +3,7 @@ using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace VintageE
@@ -117,9 +118,11 @@ namespace VintageE
                     {
                         int sun = world.BlockAccessor.GetLightLevel(pos.UpCopy(), EnumLightLevelType.TimeOfDaySunLight);
                         int maxSun = Math.Max(1, world.SunBrightness);
-                        double light = Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
-                        x.Info(x.L("diag-mach-collector", name, EmcFormat.Total(c.Stored), EmcFormat.Total(c.Capacity), EmcFormat.Format(c.RatePerSecond * cfg.MachineSpeedMultiplier * light), (int)Math.Round(light * 100)));
-                        if (light <= cfg.CollectorDarkFactor + 1e-9) { x.Warn(x.L("diag-mach-collector-dark")); x.Explain(x.L("diag-mach-collector-dark-why")); }
+                        bool compactSun = BlockCompactSun.Above(world, pos);
+                        double light = compactSun ? 1 : Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
+                        x.Info(x.L("diag-mach-collector", name, EmcFormat.Total(c.Stored), EmcFormat.Total(c.Capacity), EmcFormat.Format(c.RateNow()), (int)Math.Round(light * 100)));
+                        if (compactSun) x.Ok(x.L("diag-mach-collector-sun", BlockCompactSun.Bonus(x.Sapi)));
+                        else if (light <= cfg.CollectorDarkFactor + 1e-9) { x.Warn(x.L("diag-mach-collector-dark")); x.Explain(x.L("diag-mach-collector-dark-why")); }
                         Neighbours(x, pos, c.Stored >= c.Capacity);
                         StarIn(x, c.Star);
                         break;
@@ -157,6 +160,41 @@ namespace VintageE
                         x.Info(x.L("diag-mach-table", name, t.OwnerName ?? x.L("diag-mach-table-noowner"), online ? x.L("diag-yes") : x.L("diag-no"), waiting == null ? "-" : waiting.StackSize + " " + waiting.GetName()));
                         if (t.OwnerUid == null) x.Explain(x.L("diag-mach-table-noowner-why"));
                         else if (!online && waiting != null) x.Explain(x.L("diag-mach-table-offline-why"));
+                        break;
+                    }
+                case BEPowerFlower fl:
+                    {
+                        bool online = OwnedMachine.OnlineOwner(x.Sapi, fl.OwnerUid) != null;
+                        x.Info(x.L("diag-mach-flower", name, fl.OwnerName ?? x.L("diag-mach-table-noowner"), online ? x.L("diag-yes") : x.L("diag-no"), EmcFormat.Format(fl.PerSecond), fl.SunBonus, EmcFormat.Total(fl.Stored)));
+                        if (fl.OwnerUid == null) { x.Warn(x.L("diag-mach-owned-noowner")); x.Fix(x.L("diag-mach-owned-noowner-fix")); }
+                        else if (!online && fl.Stored > 0) x.Explain(x.L("diag-mach-flower-offline-why"));
+                        if (fl.SunBonus <= 1) x.Explain(x.L("diag-mach-flower-sun-how", BlockCompactSun.Bonus(x.Sapi)));
+                        break;
+                    }
+                case BEEmcLink ln:
+                    {
+                        IServerPlayer owner = OwnedMachine.OnlineOwner(x.Sapi, ln.OwnerUid);
+                        ItemStack product = ln.TargetKey == null ? null : TransmutationService.Prototype(x.Mod, world, ln.TargetKey);
+                        int waiting = 0;
+                        for (int i = 1; i <= ln.InputSlots; i++) waiting += ln.Inventory[i].StackSize;
+                        string limits = ln.Unlimited ? x.L("diag-mach-link-unlimited")
+                            : x.L("diag-mach-link-limits", EmcFormat.Total(ln.EmcLimit), ln.ItemLimit, EmcFormat.Format(ln.LitreLimit), ln.InputSlots);
+                        x.Info(x.L("diag-mach-link", name, ln.OwnerName ?? x.L("diag-mach-table-noowner"), owner != null ? x.L("diag-yes") : x.L("diag-no"),
+                            product == null ? "-" : product.GetName(), limits, EmcFormat.Total(ln.Buffer), waiting));
+                        if (ln.OwnerUid == null) { x.Warn(x.L("diag-mach-owned-noowner")); x.Fix(x.L("diag-mach-owned-noowner-fix")); }
+                        else if (owner == null && (ln.Buffer > 0 || waiting > 0)) x.Explain(x.L("diag-mach-link-offline-why"));
+                        if (ln.TargetKey != null && product == null) { x.Warn(x.L("diag-mach-link-gone", ln.TargetKey)); x.Fix(x.L("diag-mach-link-notarget-why")); }
+                        else if (product == null) x.Explain(x.L("diag-mach-link-notarget-why"));
+                        else
+                        {
+                            double v = x.Mod.Emc.GetValue(product);
+                            if (v <= 0) x.Warn(x.L("diag-mach-condenser-novalue", product.GetName()));
+                            else if (x.Mod.Emc.IsNoTransmute(product.Collectible)) x.Warn(x.L("diag-mach-condenser-notransmute", product.GetName()));
+                            else if (owner != null && !PlayerEmc.Knows(owner, ln.TargetKey)) { x.Warn(x.L("diag-mach-link-notlearned", owner.PlayerName, product.GetName())); x.Explain(x.L("diag-mach-link-notlearned-why")); }
+                            else if (owner != null && PlayerEmc.GetEmc(owner) < EmcAmount.From(v)) x.Warn(x.L("diag-mach-link-poor", owner.PlayerName, product.GetName(), EmcFormat.Format(v)));
+                            else x.Ok(x.L("diag-mach-condenser-target", product.GetName(), EmcFormat.Format(v)));
+                            if (EmcRegistry.ItemsPerLitre(product.Collectible) <= 0 && !ChuteOutput.HasTaker(world.BlockAccessor, pos)) x.Explain(x.L("diag-mach-link-notaker"));
+                        }
                         break;
                     }
                 case BEPedestal pd:

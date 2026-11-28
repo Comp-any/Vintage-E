@@ -54,10 +54,12 @@ namespace VintageE
         }
 
         /// <summary>Whether a hopper (or anything else) may put this stack in: the table has an owner and it can be burned.</summary>
-        public bool Accepts(ItemStack stack)
+        public bool Accepts(ItemStack stack) => OwnerUid != null && Api?.Side == EnumAppSide.Server && Burnable(Mod, stack);
+
+        /// <summary>Whether a machine may take this stack in to burn it (the table, an EMC Link since 1.29.2).</summary>
+        public static bool Burnable(VintageEModSystem mod, ItemStack stack)
         {
-            if (stack?.Collectible == null || OwnerUid == null || Api?.Side != EnumAppSide.Server) return false;
-            VintageEModSystem mod = Mod;
+            if (stack?.Collectible == null) return false;
             if (mod == null || mod.Emc.IsNoTransmute(stack.Collectible)) return false;
             if (stack.Collectible is IEmcStorageItem) return false; // a Klein star would lose what it holds
             StackDataTable data = mod.Emc.StackData;

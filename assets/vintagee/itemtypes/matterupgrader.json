@@ -1,0 +1,17 @@
+{
+  "code": "matterupgrader",
+  "class": "VintageEItemMatterUpgrader",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/matterupgrader"
+  },
+  "materialDensity": 2000
+}

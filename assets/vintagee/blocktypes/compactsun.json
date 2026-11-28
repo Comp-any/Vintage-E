@@ -1,0 +1,42 @@
+{
+  "code": "compactsun",
+  "class": "VintageEBlockCompactSun",
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "mechanics": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "blockmaterial": "Metal",
+  "drawtype": "cube",
+  "textures": {
+    "all": {
+      "base": "block/compactsun"
+    }
+  },
+  "lightHsv": [
+    8,
+    3,
+    18
+  ],
+  "behaviors": [
+    {
+      "name": "HeatSource",
+      "properties": {
+        "heatStrength": 10
+      }
+    }
+  ],
+  "resistance": 6,
+  "requiredMiningTier": 3,
+  "sounds": {
+    "place": "game:block/ingot",
+    "break": "game:block/ingot",
+    "hit": "game:block/ingot"
+  }
+}

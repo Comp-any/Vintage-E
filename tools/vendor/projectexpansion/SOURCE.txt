@@ -1,2 +1,4 @@
 168bcf2491b9fde679295fd412ad9c93fd3d93f1 2026-06-24
 DonovanDMC/ProjectExpansion, branch 1.21.1, src/main/resources/assets/projectexpansion/textures (MIT, see LICENSE)
+powerflower-model.json: src/generated/resources/assets/projectexpansion/models/block/power_flower/base.json (same commit, MIT), ported to Vintage Story's shape format by tools/gen_flowers.py.
+emclink-*.png, sun.png, matterupgrader.png, finalstar.png, collector-/relay-basic|dark|red.png (1.29.2): textures/block/emc_link, block/sun.png, item/matter_upgrader.png, item/star/final.png, block/collector and block/relay.

@@ -48,7 +48,12 @@ add-on by DonovanDMC. These files are Project Expansion's own artwork, used unde
 - the Magnum, Colossal and Gargantuan star textures, `assets/vintagee/textures/item/star-*.png`, and the Final Star
   Shard's, `assets/vintagee/textures/item/finalstarshard.png`;
 - the collector, relay, matter and matter block textures in `assets/vintagee/textures/projecte/expansion/`, used when
-  the `Look` is `Original`.
+  the `Look` is `Original`;
+- since 1.29.2 (copied by `tools/gen_flowers.py`): the Final Star's texture, `assets/vintagee/textures/item/finalstar.png`;
+  the EMC Link, Compact Sun and Matter Upgrader textures and the MK1–3 collector and relay textures in
+  `assets/vintagee/textures/projecte/expansion/` (Original look); and the Power Flower's model,
+  `assets/vintagee/shapes/block/powerflower.json`, ported from Project Expansion's
+  `models/block/power_flower/base.json` (also the base of the New look's version of it).
 
 Where Project Expansion's texture is animated, the first frame is used (Vintage Story doesn't play Minecraft's texture
 animations). Project Expansion credits its matter block textures to 32polaris.

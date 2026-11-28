@@ -1,0 +1,278 @@
+{
+  "code": "emclink",
+  "class": "VintageEBlockOwnedMachine",
+  "entityClass": "VintageEEmcLink",
+  "variantgroups": [
+    {
+      "code": "tier",
+      "states": [
+        "mk1",
+        "mk2",
+        "mk3",
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    }
+  ],
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "mechanics": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "blockmaterial": "Metal",
+  "drawtype": "cube",
+  "textures": {
+    "up": {
+      "base": "block/emclink-{tier}-top"
+    },
+    "down": {
+      "base": "block/emclink-{tier}-top"
+    },
+    "north": {
+      "base": "block/emclink-{tier}-side"
+    },
+    "east": {
+      "base": "block/emclink-{tier}-side"
+    },
+    "south": {
+      "base": "block/emclink-{tier}-side"
+    },
+    "west": {
+      "base": "block/emclink-{tier}-side"
+    }
+  },
+  "attributesByType": {
+    "*-mk1": {
+      "emcPerSecond": 16,
+      "itemsPerSecond": 1,
+      "litresPerSecond": 10,
+      "inputSlots": 3,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk2": {
+      "emcPerSecond": 256,
+      "itemsPerSecond": 2,
+      "litresPerSecond": 20,
+      "inputSlots": 6,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk3": {
+      "emcPerSecond": 4096,
+      "itemsPerSecond": 4,
+      "litresPerSecond": 40,
+      "inputSlots": 9,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk4": {
+      "emcPerSecond": 65536,
+      "itemsPerSecond": 8,
+      "litresPerSecond": 80,
+      "inputSlots": 12,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk5": {
+      "emcPerSecond": 1048576,
+      "itemsPerSecond": 16,
+      "litresPerSecond": 160,
+      "inputSlots": 15,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk6": {
+      "emcPerSecond": 16777216,
+      "itemsPerSecond": 32,
+      "litresPerSecond": 320,
+      "inputSlots": 18,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk7": {
+      "emcPerSecond": 268435456,
+      "itemsPerSecond": 64,
+      "litresPerSecond": 640,
+      "inputSlots": 21,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk8": {
+      "emcPerSecond": 4294967296,
+      "itemsPerSecond": 128,
+      "litresPerSecond": 1280,
+      "inputSlots": 24,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk9": {
+      "emcPerSecond": 68719476736,
+      "itemsPerSecond": 256,
+      "litresPerSecond": 2560,
+      "inputSlots": 27,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk10": {
+      "emcPerSecond": 1099511627776,
+      "itemsPerSecond": 512,
+      "litresPerSecond": 5120,
+      "inputSlots": 30,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk11": {
+      "emcPerSecond": 17592186044416,
+      "itemsPerSecond": 1024,
+      "litresPerSecond": 10240,
+      "inputSlots": 33,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk12": {
+      "emcPerSecond": 281474976710656,
+      "itemsPerSecond": 2048,
+      "litresPerSecond": 20480,
+      "inputSlots": 36,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk13": {
+      "emcPerSecond": 4503599627370496,
+      "itemsPerSecond": 4096,
+      "litresPerSecond": 40960,
+      "inputSlots": 39,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk14": {
+      "emcPerSecond": 72057594037927936,
+      "itemsPerSecond": 8192,
+      "litresPerSecond": 81920,
+      "inputSlots": 42,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk15": {
+      "emcPerSecond": 1152921504606846976,
+      "itemsPerSecond": 16384,
+      "litresPerSecond": 163840,
+      "inputSlots": 45,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    },
+    "*-mk16": {
+      "unlimited": true,
+      "inputSlots": 48,
+      "interactionHelp": "vintagee:blockhelp-link",
+      "sneakInteractionHelp": "vintagee:blockhelp-link-sneak"
+    }
+  },
+  "lightHsvByType": {
+    "*-mk1": [
+      12,
+      4,
+      4
+    ],
+    "*-mk2": [
+      49,
+      5,
+      4
+    ],
+    "*-mk3": [
+      0,
+      6,
+      5
+    ],
+    "*-mk4": [
+      52,
+      5,
+      5
+    ],
+    "*-mk5": [
+      58,
+      4,
+      5
+    ],
+    "*-mk6": [
+      49,
+      5,
+      6
+    ],
+    "*-mk7": [
+      46,
+      5,
+      6
+    ],
+    "*-mk8": [
+      40,
+      6,
+      6
+    ],
+    "*-mk9": [
+      32,
+      5,
+      7
+    ],
+    "*-mk10": [
+      21,
+      5,
+      7
+    ],
+    "*-mk11": [
+      16,
+      5,
+      7
+    ],
+    "*-mk12": [
+      10,
+      5,
+      8
+    ],
+    "*-mk13": [
+      5,
+      6,
+      8
+    ],
+    "*-mk14": [
+      0,
+      0,
+      8
+    ],
+    "*-mk15": [
+      0,
+      0,
+      9
+    ],
+    "*-mk16": [
+      8,
+      4,
+      9
+    ]
+  },
+  "resistance": 5,
+  "requiredMiningTier": 2,
+  "sounds": {
+    "place": "game:block/ingot",
+    "break": "game:block/ingot",
+    "hit": "game:block/ingot"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "code": "finalstar",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/finalstar"
+  },
+  "lightHsv": [
+    8,
+    4,
+    12
+  ],
+  "materialDensity": 3000
+}

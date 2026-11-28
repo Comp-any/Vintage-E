@@ -238,7 +238,6 @@ namespace VintageE
             }
         }
 
-        static readonly BlockFacing[] HandOutFaces = { BlockFacing.DOWN, BlockFacing.NORTH, BlockFacing.EAST, BlockFacing.SOUTH, BlockFacing.WEST };
 
         /// <summary>How many copies one chute is handed per tick (twice a second): about what a chute moves on in that time.</summary>
         const int HandOutPerTick = 2;
@@ -250,34 +249,7 @@ namespace VintageE
         /// don't have, so before 1.22.1 those took nothing. Marked the way the game's chutes mark what they pass on
         /// (direction and distance travelled sideways), so the chute carries it away from the condenser.
         /// </summary>
-        bool HandOutCopies()
-        {
-            ItemSlot source = inventory.GetAutoPullFromSlot(BlockFacing.DOWN);
-            if (source == null) return false;
-            IBlockAccessor ba = Api.World.BlockAccessor;
-            bool moved = false;
-            foreach (BlockFacing dir in HandOutFaces)
-            {
-                if (ChuteOutput.Link(ba, Pos, dir, out BlockEntityItemFlow chute, out BlockEntityContainer end) != ChuteLink.HandedTo) continue;
-                BlockFacing back = dir.Opposite;
-                ItemSlot into = chute.Inventory?.GetAutoPushIntoSlot(back, source);
-                // Like the game's chutes among themselves: only into an empty chute.
-                if (into == null || !into.Empty) continue;
-                // A full chest at the end: keep the copies here instead of leaving them stuck in the chute.
-                if (!(end is BlockEntityItemFlow) && end.Inventory?.GetAutoPushIntoSlot(back, source) == null) continue;
-                var op = new ItemStackMoveOperation(Api.World, EnumMouseButton.Left, 0, EnumMergePriority.DirectMerge, HandOutPerTick);
-                if (source.TryPutInto(into, ref op) <= 0 || into.Itemstack == null) continue;
-                into.Itemstack.Attributes.SetInt("chuteQHTravelled", dir.IsHorizontal ? 1 : 0);
-                into.Itemstack.Attributes.SetInt("chuteDir", dir.Index);
-                source.MarkDirty();
-                into.MarkDirty();
-                chute.MarkDirty(false);
-                moved = true;
-                source = inventory.GetAutoPullFromSlot(BlockFacing.DOWN);
-                if (source == null) break;
-            }
-            return moved;
-        }
+        bool HandOutCopies() => ChuteOutput.HandOut(Api, Pos, () => inventory.GetAutoPullFromSlot(BlockFacing.DOWN), HandOutPerTick);
 
         bool Insert(ItemStack stack)
         {
