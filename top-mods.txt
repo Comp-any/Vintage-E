@@ -1,0 +1,148 @@
+Top 45 content mods by downloads for game 1.22.7 (plus 17 libraries after them); asked for: 45 tags=crafting,technology,food,cooking,magic,agriculture,farming exclude=betterruins,carryon,primitivesurvival,chiseltools,butchering,foodshelves,fromgoldencombs,alchemy,millwright,stonebakeoven,prospecttogether,rpvoicechat,purposefulstorage,tailorsdelight,bloodtrail,vsroofing,hydrateordiedrate,bricklayers,knapster,vinconomy,tankardsandgoblets,pantherinae,capreolinae,realsmoke,rustboundmagic,sortablestorage,caninae,noticeboard,wool,coinage,bettertraders,xskillsfork,dressmakers,fagreenwich,watersheds,footprints,machairodontinae,wildcraftfruit,elephantidae,translocatorengineeringredux,cbr,sirenia,rhinocerotidae,plainsandvalleys,fagothic,aldiclasses,molds,casuariidae,racialequality,koboldrdx,em,wildcrafttree,herbarium
+
+skip  betterruins                   1253549  excluded
+skip  primitivesurvival             1024284  excluded
+skip  overhaullib                    899548  tagged library
+skip  aculinaryartillery             840389  tagged library
+skip  expandedfoods                  816077  no release for 1.22.7
+skip  vsimgui                        754457  a known library id
+skip  configlib                      729273  a known library id
+skip  butchering                     695792  excluded
+skip  commonlib                      635476  tagged library
+skip  fromgoldencombs                603299  excluded
+skip  em                             600844  tagged library
+skip  alchemy                        570547  excluded
+skip  petai                          553926  tagged library
+skip  playermodellib                 540729  a known library id
+skip  attributerenderinglibrary      521792  tagged library
+skip  stonebakeoven                  475916  excluded
+skip  stonequarry                    456991  no release for 1.22.7
+skip  rpvoicechat                    424195  excluded
+skip  xlib                           397743  tagged library
+skip  tailorsdelight                 369581  excluded
+skip  smithingplus                   360995  no release for 1.22.7
+skip  vsroofing                      343098  excluded
+skip  betterfirepit                  340224  no release for 1.22.7
+skip  hydrateordiedrate              332228  excluded
+skip  knapster                       322975  excluded
+skip  jsonpatcheslib                 321943  a known library id
+skip  bricklayers                    321285  excluded
+skip  jaunt                          316648  tagged library
+skip  wildfarmingrevival             293687  no release for 1.22.7
+skip  vinconomy                      293264  excluded
+skip  tankardsandgoblets             272669  excluded
+skip  pantherinae                    270234  excluded
+skip  genelib                        269893  tagged library
+skip  capreolinae                    268881  excluded
+take  walkingstick                   267038  Adventurer's Walking Stick [Crafting, Immersive, QoL, Utility]
+skip  rustboundmagic                 258773  excluded
+take  tabletopgames                  256988  Tabletop Games [Crafting, Furniture, Other, Storage, Tweak, Utility]
+skip  herbarium                      251878  tagged library
+skip  caninae                        245690  excluded
+skip  wool                           239191  excluded
+skip  coinage                        236318  excluded
+take  toolsmith                      236036  Toolsmith [Crafting, Tweak, Utility]
+skip  overhaulliblegacycompat        235117  sounds like a library: lib
+skip  dressmakers                    227320  excluded
+skip  instruments                    220419  no release for 1.22.7
+take  bovinae                        213126  Fauna of the Stone Age: Bovinae [Animals, Crafting, Creatures, Food, Furniture, Mounts, Taming]
+skip  elephantidae                   209444  excluded
+skip  machairodontinae               208966  excluded
+skip  xlibfork                       208733  tagged library
+skip  wildcraftfruit                 207468  excluded
+skip  shearlib                       200294  tagged library
+skip  translocatorengineeringredux   197006  excluded
+skip  rhinocerotidae                 193021  excluded
+skip  sirenia                        192752  excluded
+skip  extrainfo                      192710  no release for 1.22.7
+skip  aldiclasses                    189226  excluded
+skip  molds                          187732  excluded
+skip  PipeLeaf                       187441  no release for 1.22.7
+skip  hpspinningwheel                181021  no release for 1.22.7
+skip  casuariidae                    178991  excluded
+skip  claywheel                      177953  no release for 1.22.7
+skip  ancienttools                   177262  no release for 1.22.7
+take  windchimes                     170762  Wind Chimes [Cosmetics, Crafting, Furniture]
+skip  medievalexpansionpatch         168947  no release for 1.22.7
+take  feverstonewilds                163041  Feverstone Wilds [Animals, Armor, Cosmetics, Crafting, Creatures, Fantasy, Feverstone, Food, Fun, Furry, Magic, Mounts, Pets, Realism, Taming]
+skip  thecritterpack                 153674  no release for 1.22.7
+skip  spyglass                       153434  no release for 1.22.7
+take  woodenfortifications           149861  Wooden Fortifications [Crafting]
+take  canjewelry                     149687  C&N Jewelry [Cosmetics, Crafting, Utility]
+skip  medievalexpansion              148621  no release for 1.22.7
+take  apelanterns                    148402  More Lanterns [Cosmetics, Crafting, Furniture]
+take  moreanimals                    145716  More Animals [Creatures, Food]
+take  envelopes                      145524  Envelopes [Cosmetics, Crafting, Technology]
+skip  substrate                      145018  no release for 1.22.7
+take  dinornithidae                  144734  Fauna of the Stone Age: Dinornithiformes Plus [Animals, Crafting, Creatures, Food, Furniture]
+take  cervinae                       141213  Fauna of the Stone Age: Cervinae [Animals, Crafting, Creatures, Food, Furniture]
+skip  awearablelight                 140976  no release for 1.22.7
+skip  long-term_food                 134914  no release for 1.22.7
+take  floralzonescaribbeanregion     134581  Floral Zones: Caribbean Region [Crafting, Flora, Food, Worldgen]
+take  manidae                        134556  Fauna of the Stone Age: Manidae [Animals, Crafting, Creatures, Furniture]
+skip  apegrapes                      133652  no release for 1.22.7
+take  felinae                        132388  Fauna of the Stone Age: Felinae [Animals, Crafting, Creatures, Furniture]
+take  spheniscidae                   132210  Fauna of the Stone Age: Spheniscidae [Animals, Crafting, Creatures, Food, Furniture]
+skip  joyofsailing                   128180  sounds like a library: library
+take  electricalprogressivebasics    127439  Electrical Progressive: Basics [Technology]
+take  floralzonescaperegion          127342  Floral Zones: Cape Region [Crafting, Flora, Food, Worldgen]
+take  slowtox                        127284  SlowTox [Alcohol, Food, QoL, Realism, Tweak]
+take  krpgenchantment                126146  KRPG Enchantment [Clothing, Magic, Other, Weapons]
+take  floralzoneseastasiaticregion   125736  Floral Zones: East Asiatic Region [Crafting, Flora, Food, Worldgen]
+take  floralzonescentralaustralianregion   124943  Floral Zones: Central Australian Region [Crafting, Flora, Food, Worldgen]
+skip  decor                          124856  no release for 1.22.7
+skip  electricalprogressivecore      124643  tagged library
+take  floralzonesmediterraneanregion   124583  Floral Zones: Mediterranean Region [Crafting, Flora, Food, Worldgen]
+take  electricalprogressiveqol       122546  Electrical Progressive: QOL [QoL, Technology]
+take  floralzonesneozeylandicregion   120697  Floral Zones: Neozeylandic Region [Crafting, Flora, Food, Worldgen]
+skip  carryonlib                     119755  tagged library
+skip  heraldry                       117030  no release for 1.22.7
+skip  wildcrafttree                  116287  excluded
+skip  efmealsmodule                  115942  no release for 1.22.7
+take  metalpots                      111588  Metal Cooking Pots [Food, QoL]
+take  floralzonescosmopolitanregion   108414  Floral Zones: Cosmopolitan Region [Crafting, Flora, Food, Furniture, Worldgen]
+skip  vanvar                         102546  no release for 1.22.7
+skip  materialneeds                  101738  no release for 1.22.7
+skip  autoconfiglib                   99665  a known library id
+take  vombatidae                      99504  Fauna of the Stone Age: Vombatidae Plus [Animals, Crafting, Creatures, Furniture]
+take  arthursjournal                  98792  Wanderer's Sketchbook [Crafting, QoL, Technology, Utility]
+skip  lupinerace                      98059  sounds like a library: Lib
+take  vsairshipmod                    97768  VS AIRSHIP MOD [Airship, Flight, Fuel, Mount, Realism, Technology, Travel & Exploration, Utility]
+take  iniidae                         96329  Fauna of the Stone Age: Iniidae Plus [Animals, Crafting, Creatures, Furniture]
+skip  efchefstricks                   94668  no release for 1.22.7
+take  chelonioidea                    93355  Fauna of the Stone Age: Chelonioidea [Animals, Crafting, Creatures, Food, Furniture]
+skip  viveriidae                      90177  no release for 1.22.7
+skip  helvehammerext                  87325  no release for 1.22.7
+take  medievalarchitecture            86101  Medieval Architecture [Building, Confession, Cosmetics, Crafting, Medieval]
+skip  clothierheirloomsmod            85824  no release for 1.22.7
+take  meiolaniidae                    85280  Fauna of the Stone Age: Meiolaniidae [Animals, Crafting, Creatures, Food, Furniture]
+skip  Spear-Expantion-by-Kanahaku     85084  no release for 1.22.7
+skip  vsquest                         83631  tagged library
+take  diversediets                    82583  Diverse Diets [Creatures, Food, Utility]
+skip  flags                           82326  no release for 1.22.7
+skip  saltandsands                    77355  no release for 1.22.7
+take  eternalstew                     74333  Eternal Stew [Food, Simplification]
+skip  firewoodtosticks                73453  no release for 1.22.7
+skip  wildcraft                       72714  no release for 1.22.7
+take  gourmand                        72384  Gourmand [Food, Other]
+skip  canmarket                       72078  no release for 1.22.7
+skip  workbenchexpansion              71717  no release for 1.22.7
+skip  qptech                          70276  no release for 1.22.7
+skip  canoemode                       69535  no release for 1.22.7
+take  electricalprogressiveequipment    68670  Electrical Progressive: Equipment [Technology, Weapons]
+skip  vintageskavenrat                66857  sounds like a library: Lib
+take  thylacinidae                    65396  Fauna of the Stone Age: Thylacinidae Plus [Animals, Crafting, Creatures, Furniture]
+take  maketeaforked                   65298  Make Tea Forked [Crafting, Food]
+skip  vichnybackpack                  64364  no release for 1.22.7
+skip  vintageengineering              64274  tagged library
+skip  postsandbeams                   63860  no release for 1.22.7
+skip  FendragonBCS                    62133  no release for 1.22.7
+take  fieldsofsalt                    61123  Fields of Salt [Crafting, Utility]
+take  ndlmushroomgrowth               61089  NDL ExpandedGrowth (Mushroom Growth Module) [Crafting, Food, QoL, Tweak, Utility]
+skip  algernonsterrainsampler         58941  tagged library
+take  sandwich                        58136  Sammiches [Food]
+skip  bettersticks                    58118  no release for 1.22.7
+skip  immersivewoodchopping           58045  no release for 1.22.7
+take  sticksfromfirewoodmallow        57986  Sticks from Firewood | Mallow's QOL Mods [Crafting]
+
+libraries added: configlib, em, petai, playermodellib, attributerenderinglibrary, jsonpatcheslib, jaunt, genelib, herbarium, overhaulliblegacycompat, xlibfork, shearlib, electricalprogressivecore, autoconfiglib, vintageskavenrat, vintageengineering, algernonsterrainsampler
