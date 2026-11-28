@@ -1,0 +1,11 @@
+== Mods and their coverage ==
+Every mod that adds blocks or items, and how many of them have a value. Click one for its own report.
+vinteng (/emc diagnose mod vinteng): 177 of 274 valued (64.6%)
+Alchemy (alchemy) (/emc diagnose mod alchemy): 667 of 724 valued (92.1%)
+Vintage Story (game) (/emc diagnose mod game): 8152 of 8169 valued (99.8%) (648 blacklisted on purpose)
+Electrical Progressive: Basics (electricalprogressivebasics) (/emc diagnose mod electricalprogressivebasics): 101 of 107 valued (94.4%)
+Electrical Progressive: Core (electricalprogressivecore) (/emc diagnose mod electricalprogressivecore): 1 of 1 valued (100.0%)
+Vintage-E (vintagee) (/emc diagnose mod vintagee): 276 of 276 valued (100.0%) (1 blacklisted on purpose)
+
+== Next ==
+Back to the check-up (/emc diagnose)

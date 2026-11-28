@@ -1,0 +1,6 @@
+VintageEngineering_0.6.2.zip
+alchemy_2.1.25.zip
+effectlib_1.2.5.zip
+electricalprogressivebasics_3.4.0.zip
+electricalprogressivecore_3.4.0.zip
+vintagee

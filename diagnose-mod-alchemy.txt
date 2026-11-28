@@ -1,0 +1,94 @@
+== Alchemy (alchemy) ==
+667 of its 724 blocks and items have a value (92.1%); 0 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'alchemy'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Why the rest has no value ==
+⚠ 9 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    herbrack (9): Herb Rack (alchemy:herbrack-agedacacia-platinum), Herb Rack (alchemy:herbrack-agedebony-platinum), Herb Rack (alchemy:herbrack-rottenebony-platinum), ...
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/alchemy.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 48 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Herb Rack Frame (Platinum) (alchemy:herbracktop-platinum): 14 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item alchemy:herbracktop-platinum)
+    Herb Rack Frame (Stainless steel) (alchemy:herbracktop-stainlesssteel): 14 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item alchemy:herbracktop-stainlesssteel)
+    Herb Rack Frame (Uranium) (alchemy:herbracktop-uranium): 14 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item alchemy:herbracktop-uranium)
+    Platinum ingot (game:ingot-platinum): 2 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-platinum)
+    Stainless steel ingot (game:ingot-stainlesssteel): 2 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:ingot-stainlesssteel)
+    Uranium ingot (game:ingot-uranium): 2 item(s) wait on it. (nothing makes it: give it a value)  why? (/emc diagnose item game:ingot-uranium)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+Draft a compatibility file for its 9 raw materials (/emc diagnose draftcompat alchemy)
+Pin all 57 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are Alchemy (alchemy) items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.29.4 with Alchemy (alchemy) 2.1.25: these items have no value: alchemy:herbrack-agedacacia-platinum, alchemy:herbrack-agedebony-platinum, alchemy:herbrack-rottenebony-platinum, alchemy:herbrack-agedacacia-stainlesssteel, alchemy:herbrack-agedebony-stainlesssteel, alchemy:herbrack-rottenebony-stainlesssteel, alchemy:herbrack-agedacacia-uranium, alchemy:herbrack-agedebony-uranium, alchemy:herbrack-rottenebony-uranium. /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (57) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Herb Rack (alchemy:herbrack-acacia-platinum)  why? (/emc diagnose item alchemy:herbrack-acacia-platinum)
+  Herb Rack (alchemy:herbrack-acacia-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-acacia-stainlesssteel)
+  Herb Rack (alchemy:herbrack-acacia-uranium)  why? (/emc diagnose item alchemy:herbrack-acacia-uranium)
+  Herb Rack (alchemy:herbrack-aged-platinum)  why? (/emc diagnose item alchemy:herbrack-aged-platinum)
+  Herb Rack (alchemy:herbrack-aged-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-aged-stainlesssteel)
+  Herb Rack (alchemy:herbrack-aged-uranium)  why? (/emc diagnose item alchemy:herbrack-aged-uranium)
+  Herb Rack (alchemy:herbrack-agedacacia-platinum)  why? (/emc diagnose item alchemy:herbrack-agedacacia-platinum)
+  Herb Rack (alchemy:herbrack-agedacacia-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-agedacacia-stainlesssteel)
+  Herb Rack (alchemy:herbrack-agedacacia-uranium)  why? (/emc diagnose item alchemy:herbrack-agedacacia-uranium)
+  Herb Rack (alchemy:herbrack-agedebony-platinum)  why? (/emc diagnose item alchemy:herbrack-agedebony-platinum)
+  Herb Rack (alchemy:herbrack-agedebony-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-agedebony-stainlesssteel)
+  Herb Rack (alchemy:herbrack-agedebony-uranium)  why? (/emc diagnose item alchemy:herbrack-agedebony-uranium)
+  Herb Rack (alchemy:herbrack-baldcypress-platinum)  why? (/emc diagnose item alchemy:herbrack-baldcypress-platinum)
+  Herb Rack (alchemy:herbrack-baldcypress-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-baldcypress-stainlesssteel)
+  Herb Rack (alchemy:herbrack-baldcypress-uranium)  why? (/emc diagnose item alchemy:herbrack-baldcypress-uranium)
+  Herb Rack (alchemy:herbrack-birch-platinum)  why? (/emc diagnose item alchemy:herbrack-birch-platinum)
+  Herb Rack (alchemy:herbrack-birch-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-birch-stainlesssteel)
+  Herb Rack (alchemy:herbrack-birch-uranium)  why? (/emc diagnose item alchemy:herbrack-birch-uranium)
+  Herb Rack (alchemy:herbrack-ebony-platinum)  why? (/emc diagnose item alchemy:herbrack-ebony-platinum)
+  Herb Rack (alchemy:herbrack-ebony-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-ebony-stainlesssteel)
+  Herb Rack (alchemy:herbrack-ebony-uranium)  why? (/emc diagnose item alchemy:herbrack-ebony-uranium)
+  Herb Rack (alchemy:herbrack-kapok-platinum)  why? (/emc diagnose item alchemy:herbrack-kapok-platinum)
+  Herb Rack (alchemy:herbrack-kapok-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-kapok-stainlesssteel)
+  Herb Rack (alchemy:herbrack-kapok-uranium)  why? (/emc diagnose item alchemy:herbrack-kapok-uranium)
+  Herb Rack (alchemy:herbrack-larch-platinum)  why? (/emc diagnose item alchemy:herbrack-larch-platinum)
+  Herb Rack (alchemy:herbrack-larch-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-larch-stainlesssteel)
+  Herb Rack (alchemy:herbrack-larch-uranium)  why? (/emc diagnose item alchemy:herbrack-larch-uranium)
+  Herb Rack (alchemy:herbrack-maple-platinum)  why? (/emc diagnose item alchemy:herbrack-maple-platinum)
+  Herb Rack (alchemy:herbrack-maple-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-maple-stainlesssteel)
+  Herb Rack (alchemy:herbrack-maple-uranium)  why? (/emc diagnose item alchemy:herbrack-maple-uranium)
+  Herb Rack (alchemy:herbrack-oak-platinum)  why? (/emc diagnose item alchemy:herbrack-oak-platinum)
+  Herb Rack (alchemy:herbrack-oak-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-oak-stainlesssteel)
+  Herb Rack (alchemy:herbrack-oak-uranium)  why? (/emc diagnose item alchemy:herbrack-oak-uranium)
+  Herb Rack (alchemy:herbrack-pine-platinum)  why? (/emc diagnose item alchemy:herbrack-pine-platinum)
+  Herb Rack (alchemy:herbrack-pine-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-pine-stainlesssteel)
+  Herb Rack (alchemy:herbrack-pine-uranium)  why? (/emc diagnose item alchemy:herbrack-pine-uranium)
+  Herb Rack (alchemy:herbrack-purpleheart-platinum)  why? (/emc diagnose item alchemy:herbrack-purpleheart-platinum)
+  Herb Rack (alchemy:herbrack-purpleheart-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-purpleheart-stainlesssteel)
+  Herb Rack (alchemy:herbrack-purpleheart-uranium)  why? (/emc diagnose item alchemy:herbrack-purpleheart-uranium)
+  Herb Rack (alchemy:herbrack-redwood-platinum)  why? (/emc diagnose item alchemy:herbrack-redwood-platinum)
+  Herb Rack (alchemy:herbrack-redwood-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-redwood-stainlesssteel)
+  Herb Rack (alchemy:herbrack-redwood-uranium)  why? (/emc diagnose item alchemy:herbrack-redwood-uranium)
+  Herb Rack (alchemy:herbrack-rottenebony-platinum)  why? (/emc diagnose item alchemy:herbrack-rottenebony-platinum)
+  Herb Rack (alchemy:herbrack-rottenebony-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-rottenebony-stainlesssteel)
+  Herb Rack (alchemy:herbrack-rottenebony-uranium)  why? (/emc diagnose item alchemy:herbrack-rottenebony-uranium)
+  Herb Rack (alchemy:herbrack-veryaged-platinum)  why? (/emc diagnose item alchemy:herbrack-veryaged-platinum)
+  Herb Rack (alchemy:herbrack-veryaged-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-veryaged-stainlesssteel)
+  Herb Rack (alchemy:herbrack-veryaged-uranium)  why? (/emc diagnose item alchemy:herbrack-veryaged-uranium)
+  Herb Rack (alchemy:herbrack-walnut-platinum)  why? (/emc diagnose item alchemy:herbrack-walnut-platinum)
+  Herb Rack (alchemy:herbrack-walnut-stainlesssteel)  why? (/emc diagnose item alchemy:herbrack-walnut-stainlesssteel)
+  Herb Rack (alchemy:herbrack-walnut-uranium)  why? (/emc diagnose item alchemy:herbrack-walnut-uranium)
+  Herb Rack Hook (Platinum) (alchemy:herbrackhook-platinum)  why? (/emc diagnose item alchemy:herbrackhook-platinum)
+  Herb Rack Hook (Stainless steel) (alchemy:herbrackhook-stainlesssteel)  why? (/emc diagnose item alchemy:herbrackhook-stainlesssteel)
+  Herb Rack Hook (Uranium) (alchemy:herbrackhook-uranium)  why? (/emc diagnose item alchemy:herbrackhook-uranium)
+  Herb Rack Frame (Platinum) (alchemy:herbracktop-platinum)  why? (/emc diagnose item alchemy:herbracktop-platinum)
+  Herb Rack Frame (Stainless steel) (alchemy:herbracktop-stainlesssteel)  why? (/emc diagnose item alchemy:herbracktop-stainlesssteel)
+  Herb Rack Frame (Uranium) (alchemy:herbracktop-uranium)  why? (/emc diagnose item alchemy:herbracktop-uranium)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

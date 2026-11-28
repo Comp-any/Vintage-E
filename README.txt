@@ -1,0 +1,1 @@
+game=1.22.7 commit=3cae38cc9ddd247d7c7ef9261e9ee469dee493ae run=46150392942 extraMods=aculinaryartillery,vintageengineering,lavoisier,alchemy,alchemistry,expandedfoods,stonequarry,smithingplus,ancienttools,electricalprogressivecore,electricalprogressivebasics,effectlib doctor=false

@@ -1,0 +1,463 @@
+== A crafting method file for vinteng ==
+Drafted 12 method(s); read back, they make 79 recipe(s) with 7 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-vinteng.json
+  • recipes/veblastfurnace: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/veblastfurnace: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/vechemplant: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vechemplant: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes
+  • recipes/vecreosoteoven: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vecreosoteoven: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes
+  • recipes/vecrusher: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vecrusher: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/vedistillation: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vedistillation: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes
+  • recipes/veextruder: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/veextruder: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/vekiln: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vekiln: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/velogsplitter: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/velogsplitter: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/vemetalpress: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vemetalpress: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft
+  • recipes/vemixer: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/vemixer: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft
+  methods[9].readers[0] (vinteng:recipes/vemixer/oil-products.json[0]).inputs: two inputs are named "type"; the recipe is left out
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[0]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[1]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[2]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[3]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[4]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  methods[10].readers[0] (vinteng:recipes/vesawmill/planks.json[5]).outputs[0].code: {wood} has nothing to fill it: no input names its * "wood"
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-28 for vinteng ? with Vintage-E 1.29.4. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/vinteng/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "vinteng",
+  "methods": [
+    {
+      "//": "Drafted from the folder recipes/veblastfurnace (1 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:veblastfurnace",
+      "name": "veblastfurnace",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/veblastfurnace",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vechemplant (2 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes.",
+      "code": "vinteng:vechemplant",
+      "name": "vechemplant",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vechemplant",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vecreosoteoven (2 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes.",
+      "code": "vinteng:vecreosoteoven",
+      "name": "vecreosoteoven",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vecreosoteoven",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "name": "$name",
+                "skipVariants": "$skipVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vecrusher (1 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:vecrusher",
+      "name": "vecrusher",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vecrusher",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vedistillation (3 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft, attributes.",
+      "code": "vinteng:vedistillation",
+      "name": "vedistillation",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vedistillation",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "litres": "$litres",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "litres": "$litres"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/veextruder (5 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:veextruder",
+      "name": "veextruder",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/veextruder",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vekiln (3 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:vekiln",
+      "name": "vekiln",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vekiln",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/velogsplitter (1 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:velogsplitter",
+      "name": "velogsplitter",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/velogsplitter",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vemetalpress (4 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:vemetalpress",
+      "name": "vemetalpress",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vemetalpress",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity",
+                "name": "$name",
+                "allowedVariants": "$allowedVariants"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vemixer (9 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): powerpercraft.",
+      "code": "vinteng:vemixer",
+      "name": "vemixer",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vemixer",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "litres": "$litres",
+                "name": "$name"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "litres": "$litres"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vesawmill (2 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:vesawmill",
+      "name": "vesawmill",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vesawmill",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "//": "Drafted from the folder recipes/vetempforge (2 files). Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): attributes, powerpercraft.",
+      "code": "vinteng:vetempforge",
+      "name": "vetempforge",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/vetempforge",
+          "domain": "vinteng",
+          "recipe": {
+            "code": "$code",
+            "enabled": "$enabled",
+            "inputs": [
+              {
+                "each": "$ingredients",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$quantity"
+              }
+            ],
+            "outputs": [
+              {
+                "each": "$outputs",
+                "code": "$code",
+                "type": "$type",
+                "quantity": "$stacksize"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+
+== What the guesses were made from (the first entry of each) ==
+recipes/veblastfurnace: {"code":"blasting-steel","enabled":true,"attributes":{"requireblowers":true,"blowercount":2},"powerpercraft":30,"ingredients":[{"type":"item","code":"game:ingot-iron","quantity":1},{"type":"item","code":"game:coke","quantity":1}],"outputs":[{"type":"item","code":"game:ingot-blistersteel","stacksize":1}]}
+recipes/vechemplant: {"code":"cracking-heavyoil","powerpercraft":900000,"attributes":{"soot":16},"ingredients":[{"type":"item","code":"game:quicklime","quantity":1},{"type":"item","code":"vinteng:heavyoilportion","litres":5},{"type":"item","code":"game:waterportion","litres":5}],"outputs":[{"type":"item","code":"vinteng:bitumen","stacksize":1,"variable":0,"slotid":3},{"type":"item","code":"vinteng:dieselportion","litres":4,"slotid":4},{"type":"item","code":"vinteng:gasolineportion","litres":2,"slotid":5},{"type":"item","code":"vinteng:lpgportion","litres":3,"slotid":6}]}
+recipes/vecreosoteoven: {"code":"woodcharcoal","powerpercraft":2,"attributes":{"mintemp":230},"ingredients":[{"type":"block","code":"game:log-placed-*-ud","name":"wood","skipVariants":["oak","pine"],"quantity":1}],"outputs":[{"type":"item","code":"game:charcoal","quantity":2}]}
+recipes/vecrusher: {"code":"sawdust-from-logs","enabled":true,"attributes":{},"powerpercraft":512,"ingredients":[{"type":"block","code":"game:log-placed-*-ud","quantity":1}],"outputs":[{"type":"item","code":"vinteng:sawdust","stacksize":32,"variable":8}]}
+recipes/vedistillation: {"code":"fruitcider-no-ext","powerpercraft":2000,"attributes":{"soot":1},"ingredients":[{"type":"item","code":"game:ciderportion-*","name":"fruit","allowedVariants":["apple","blueberry","cranberry","redcurrant","whitecurrant","blackcurrant","saguaro","pineapple","cherry","peach","pear","orange","mango","breadfruit","lychee","pomegranate","beautyberry","blackberry","cloudberry","raspberry","strawberry"],"litres":1}],"outputs":[{"type":"item","code":"game:spiritportion-{fruit}","litres":0.1,"slotid":2}]}
+recipes/veextruder: {"code":"itempipe-from-ingot","enabled":true,"attributes":{"requires":"vinteng:vediecast-pipe-*","requiresdurability":true,"requirestemp":-1},"powerpercraft":500,"ingredients":[{"type":"item","code":"game:ingot-*","quantity":1,"name":"metal","allowedVariants":["tinbronze","bismuthbronze","blackbronze"]}],"outputs":[{"type":"block","code":"vinteng:pipenew-item","stacksize":2}]}
+recipes/vekiln: {"code":"kiln-ironbloom","enabled":true,"attributes":{"requirestemp":1400,"requirestime":30},"powerpercraft":256,"ingredients":[{"type":"item","code":"game:ironbloom","quantity":1}],"outputs":[{"type":"item","code":"game:ingot-iron","stacksize":1},{"type":"item","code":"game:metalbit-iron","stacksize":2,"variable":1}]}
+recipes/velogsplitter: {"code":"firewood","enabled":true,"attributes":{},"powerpercraft":512,"ingredients":[{"type":"block","code":"game:log-*","quantity":1,"name":"woodtype","allowedVariants":["placed-birch-ud","placed-oak-ud","placed-maple-ud","placed-pine-ud","placed-acacia-ud","placed-redwood-ud","placed-larch-ud","placed-baldcypress-ud","placed-walnut-ud"]}],"outputs":[{"type":"item","code":"game:firewood","stacksize":8},{"type":"item","code":"game:stick","stacksize":2,"variable":1}]}
+recipes/vemetalpress: {"code":"basic-nailsandstrips","enabled":true,"attributes":{"requires":"vinteng:vepressmold-nails-tinbronze","requiresdurability":true,"requirestemp":-1},"powerpercraft":250,"ingredients":[{"type":"item","code":"game:metalplate-*","quantity":1,"name":"metal","allowedVariants":["copper","cupronickel","tinbronze","bismuthbronze","blackbronze","silver","gold"]}],"outputs":[{"type":"item","code":"game:metalnailsandstrips-{metal}","stacksize":9,"variable":1}]}
+recipes/vemixer: {"code":"fruitcider","powerpercraft":128,"ingredients":[{"type":"item","code":"game:juiceportion-*","name":"fruit","litres":1}],"outputs":[{"type":"item","code":"game:ciderportion-{fruit}","litres":1}]}
+recipes/vesawmill: {"code":"treatedplanks-from-hblock","enabled":true,"attributes":{"requires":"vinteng:vesawblade-*","requiresvariants":["tinbronze","iron","meteoriciron","steel","titanium"],"requiresdurability":true},"powerpercraft":400,"ingredients":[{"type":"block","code":"vinteng:treatedwood-horizontal-north","quantity":1}],"outputs":[{"type":"item","code":"vinteng:plank-treated","stacksize":3,"variable":1},{"type":"item","code":"vinteng:sawdust","stacksize":1,"variable":1}]}
+recipes/vetempforge: {"code":"forge-temporal-steel","enabled":true,"attributes":{},"powerpercraft":25000,"ingredients":[{"type":"item","code":"game:ingot-steel","quantity":1}],"outputs":[{"type":"item","code":"vinteng:ingot-temporalsteel","stacksize":1}]}
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
