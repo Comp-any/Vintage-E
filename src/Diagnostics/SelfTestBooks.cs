@@ -107,9 +107,16 @@ namespace VintageE
             byte[] packed = ItemKnowledgeBook.Pack(many);
             string[] unpacked = ItemKnowledgeBook.Unpack(packed);
             int raw = System.Text.Encoding.UTF8.GetByteCount(string.Join("\n", many));
-            Check(unpacked != null && unpacked.SequenceEqual(many) && packed.Length < raw / 3 && ItemKnowledgeBook.Unpack(null) == null && ItemKnowledgeBook.Unpack(new byte[] { 1, 2, 3 }) == null
-                  && ItemKnowledgeBook.Unpack(ItemKnowledgeBook.Pack(Array.Empty<string>()))?.Length == 0,
-                $"a book carries what's written in it: {many.Length} things in {packed.Length:#,0} bytes ({raw:#,0} unpacked), read back exactly; a damaged one reads as nothing");
+            int firstDiff = unpacked == null ? -1 : Enumerable.Range(0, Math.Min(unpacked.Length, many.Length)).FirstOrDefault(i => unpacked[i] != many[i], -1);
+            string diff = unpacked == null ? "nothing read back" : firstDiff >= 0 ? $"first difference at {firstDiff}: [{many[firstDiff]}] read as [{unpacked[firstDiff]}]"
+                : unpacked.Length != many.Length ? $"{unpacked.Length} read back" : "all the same";
+            Check(unpacked != null && unpacked.SequenceEqual(many), $"a book carries what's written in it, read back exactly: {many.Length} things ({diff})");
+            Check(packed.Length < raw / 3, $"what a book carries is compressed: {packed.Length:#,0} bytes for {raw:#,0}");
+            string[] empty = ItemKnowledgeBook.Unpack(ItemKnowledgeBook.Pack(Array.Empty<string>()));
+            string[] damaged = ItemKnowledgeBook.Unpack(new byte[] { 1, 2, 3 });
+            string[] cut = ItemKnowledgeBook.Unpack(packed.Take(packed.Length / 2).ToArray());
+            Check(ItemKnowledgeBook.Unpack(null) == null && damaged == null && empty?.Length == 0,
+                $"a damaged book reads as nothing, an empty one as empty (null: {ItemKnowledgeBook.Unpack(null)?.Length.ToString() ?? "nothing"}, damaged: {damaged?.Length.ToString() ?? "nothing"}, empty: {empty?.Length.ToString() ?? "nothing"}, cut in half: {cut?.Length.ToString() ?? "nothing"})");
             Check(!mod.Config.KnowledgeBookConsumed && mod.Emc.KnowledgeBookConsumed == mod.Config.KnowledgeBookConsumed && mod.Emc.MaxExactKnowledge == mod.Config.MaxExactKnowledge,
                 $"a Knowledge Sharing Book isn't used up by default (KnowledgeBookConsumed {mod.Config.KnowledgeBookConsumed}), and players' games are told that and the exact-knowledge limit ({mod.Emc.MaxExactKnowledge})");
 

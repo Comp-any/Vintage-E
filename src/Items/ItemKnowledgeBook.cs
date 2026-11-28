@@ -120,7 +120,8 @@ namespace VintageE
         /// <summary>The book's keys, or null if there's nothing (readable) in it.</summary>
         public static string[] Unpack(byte[] data)
         {
-            if (data == null || data.Length == 0) return null;
+            // Only what Pack wrote: gzip begins 1F 8B. (Damaged data may otherwise come out as empty text, not an error.)
+            if (data == null || data.Length < 18 || data[0] != 0x1F || data[1] != 0x8B) return null;
             try
             {
                 using var input = new GZipStream(new MemoryStream(data), CompressionMode.Decompress);
