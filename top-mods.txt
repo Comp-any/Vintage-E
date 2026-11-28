@@ -1,0 +1,91 @@
+Top 50 content mods by downloads for game 1.22.7 (plus 12 libraries after them); asked for: 50
+
+take  betterruins                   1253603  BetterRuins [Crafting, Exploration, Lore, Story, Structures, Travel & Exploration, Worldgen]
+take  carryon                       1138989  Carry On [QoL, Storage]
+take  primitivesurvival             1024311  Primitive Survival [Cosmetics, Creatures, Farming, Food, Goat, Storage, Survival, Transportation]
+skip  overhaullib                    899569  tagged library
+take  chiseltools                    880549  QP's Chisel Tools [Cosmetics, QoL, Utility]
+skip  aculinaryartillery             840418  tagged library
+skip  expandedfoods                  816108  no release for 1.22.7
+skip  vsimgui                        754487  a known library id
+skip  configlib                      729295  a known library id
+take  butchering                     695822  Butchering [Crafting, Food]
+take  foodshelves                    683284  Food Shelves [Furniture, QoL, Storage]
+skip  commonlib                      635486  tagged library
+take  fromgoldencombs                603313  From Golden Combs [Food, QoL]
+skip  em                             600870  tagged library
+take  alchemy                        570578  Alchemy [Crafting, Magic, QoL]
+skip  petai                          553950  tagged library
+take  millwright                     552506  Millwright [mechanics, QoL]
+skip  playermodellib                 540758  a known library id
+skip  attributerenderinglibrary      521833  tagged library
+skip  animalcages                    505938  no release for 1.22.7
+skip  rivers                         478495  no release for 1.22.7
+skip  playercorpse                   476310  no release for 1.22.7
+take  stonebakeoven                  475941  Stone Bake Oven [Food, Furniture]
+skip  stonequarry                    456993  no release for 1.22.7
+take  rpvoicechat                    424219  RP Voice Chat [Audio, Crafting, Immersive, QoL, Sound, Technology, Utility, Voice]
+take  prospecttogether               420368  ProspectTogether [Other, QoL]
+skip  xskills                        418964  no release for 1.22.7
+skip  wolftaming                     400711  no release for 1.22.7
+skip  xlib                           397744  tagged library
+take  purposefulstorage              383410  Purposeful Storage [Furniture, QoL, Storage]
+take  tailorsdelight                 369599  Tailor's Delight [Cosmetics, Crafting, Furniture]
+take  bloodtrail                     362642  Blood Trail [Other, QoL, Realism, Tracking]
+skip  smithingplus                   361001  no release for 1.22.7
+skip  bedspawnv2                     349076  no release for 1.22.7
+take  vsroofing                      343134  VS Roofing Mod [Building, Crafting, QoL, Utility]
+skip  betterfirepit                  340227  no release for 1.22.7
+skip  egocaribautomapmarkers         336511  no release for 1.22.7
+take  hydrateordiedrate              332254  Hydrate or Diedrate [Clothing, Food, Other, Survival]
+take  knapster                       322987  Knapster [Accessibility, Crafting, Other, QoL, Tweak, Utility]
+skip  jsonpatcheslib                 321970  a known library id
+take  bricklayers                    321290  Bricklayers [Cosmetics, Crafting, QoL]
+skip  jaunt                          316664  tagged library
+skip  wildfarmingrevival             293687  no release for 1.22.7
+take  vinconomy                      293272  Vinconomy - A Vintage Story Economy Mod [Crafting, Economy, Furniture, Other, QoL, Storage, Utility]
+take  th3dungeon                     292390  Ancient Dungeons (Th3Dungeon) [Worldgen]
+skip  cartwrightscaravan             279108  no release for 1.22.7
+skip  terraprety                     275456  no release for 1.22.7
+take  tankardsandgoblets             272688  Tankards, Goblets and More! [Alcohol, Food, Furniture]
+take  realsmoke                      272533  Real Smoke [Graphics, Realism, Tweak]
+skip  cats                           271522  no release for 1.22.7
+take  pantherinae                    270240  Fauna of the Stone Age: Pantherinae [Animals, Crafting, Creatures, Furniture]
+skip  genelib                        269908  tagged library
+take  capreolinae                    268886  Fauna of the Stone Age: Capreolinae [Animals, Crafting, Creatures, Food, Furniture, Mounts, Taming]
+take  walkingstick                   267054  Adventurer's Walking Stick [Crafting, Immersive, QoL, Utility]
+take  shelfobsessed                  263908  Shelf Obsessed [Storage]
+take  rustboundmagic                 258782  Rustbound Magic [Crafting, Magic, Utility, Weapons]
+take  tabletopgames                  257000  Tabletop Games [Crafting, Furniture, Other, Storage, Tweak, Utility]
+skip  farseer                        254230  no release for 1.22.7
+take  sortablestorage                252004  Sortable Storage [QoL]
+skip  herbarium                      251886  tagged library
+take  noticeboard                    245867  Notice Board [Other, Utility]
+take  caninae                        245697  Fauna of the Stone Age: Caninae [Animals, Crafting, Creatures, Furniture, Taming]
+take  wool                           239209  Wool 🙵 More [Clothing, Crafting]
+take  coinage                        236325  Coinage [Cosmetics, Crafting, Economy, Utility]
+take  toolsmith                      236052  Toolsmith [Crafting, Tweak, Utility]
+take  vsvillage                      235487  VS Village [Creatures, Worldgen]
+take  xskillsfork                    235290  xSkills Fork [QoL, Roleplay, Survival]
+skip  overhaulliblegacycompat        235140  sounds like a library: lib
+take  bettertraders                  232059  BetterTraders [Worldgen]
+take  dressmakers                    227328  Dressmakers [Crafting]
+take  watersheds                     226892  Algernon's Watersheds [Terrain, Worldgen]
+take  fagreenwich                    223914  Forgotten Armory: Greenwich style [Armor, Clothing, Cosmetics]
+take  footprints                     222143  Footprints [Other, QoL, Realism, Tracking]
+skip  instruments                    220419  no release for 1.22.7
+skip  morepiles                      216741  no release for 1.22.7
+skip  cralutweaks                    213183  no release for 1.22.7
+take  bovinae                        213133  Fauna of the Stone Age: Bovinae [Animals, Crafting, Creatures, Food, Furniture, Mounts, Taming]
+take  elephantidae                   209451  Fauna of the Stone Age: Elephantidae [Animals, Crafting, Creatures, Food, Furniture, Mounts, Taming]
+take  machairodontinae               208972  Fauna of the Stone Age: Machairodontinae [Animals, Crafting, Creatures, Furniture]
+skip  xlibfork                       208747  tagged library
+take  wildcraftfruit                 207474  Wildcraft: Fruits and Nuts [Food, Tweak, Worldgen]
+take  fatemplar                      203939  Forgotten Armory: Templar Style [Armor, Clothing, Cosmetics]
+take  cbr                            202837  Chiseled Block Retention [Chisel, QoL, Simplification, Tweak]
+skip  shearlib                       200309  tagged library
+take  translocatorengineeringredux   197006  Translocator Engineering - Redux [Technology, Teleport]
+skip  vanity                         193206  no release for 1.22.7
+take  rhinocerotidae                 193028  Fauna of the Stone Age: Rhinocerotidae [Animals, Crafting, Creatures, Furniture]
+
+libraries added: configlib, em, petai, playermodellib, attributerenderinglibrary, jsonpatcheslib, jaunt, genelib, herbarium, overhaulliblegacycompat, xlibfork, shearlib

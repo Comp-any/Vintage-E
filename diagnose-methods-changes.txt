@@ -1,0 +1,64 @@
+== What the last mapping changed ==
+The mapping of 2026-11-28 14:36 compared with the current one (2026-11-28 14:37).
+✓ The same 60 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  4 values now come through those mods' methods
+0 items gained a value, 0 lost theirs, 5138 changed.
+
+== Changed value (5138), by family ==
+  game:clothes (481): Copper torc (game:clothes-neck-copper-torc) 0.008 → 1.85
+    worked backwards from grid: 1 game:clothes-neck-copper-torc -> 10 game:metalbit-copper
+  rustboundmagic:spellcipher (246): Cipher: Plunder I (rustboundmagic:spellcipher-plunder1) 173.05 → 167.83
+    trader price: 5 x 33.57 EMC per gear
+  rustboundmagic:mageweave (216): Fire imbued mageweave (Diamond stitches) (rustboundmagic:mageweave-fire-diamond-north) 79.05 → 75.71
+    guessed from its only valued variant rustboundmagic:mageweave-none-diamond-north (differs in: element)
+  wildcraftfruit:clipping (192): Pokeweed clipping (green) (wildcraftfruit:clipping-pokeberry-green) 17.3 → 16.78
+    trader price: 0.5 x 33.57 EMC per gear
+  bricklayers:glassslabcolored (154): Dull opaque red glass slab (bricklayers:glassslabcolored-dull-red-down-free) 60.27 → 54.05
+    grid: 1 bricklayers:glasscolored-dull-red -> 2 bricklayers:glassslabcolored-dull-red-down-free
+  game:armor (134): Chain head armor (Tin bronze) (game:armor-head-chain-tinbronze) 844.8 → 120
+    grid: 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze -> 1 game:armor-head-chain-tinbronze
+  stonebakeoven:ovencontrollercobble (114): Cobble stone oven heat source (Andesite) (stonebakeoven:ovencontrollercobble-andesite-extinct-north) 70.06 → 70.03
+    same as its variant stonebakeoven:ovencontrollercobble-andesite-extinct-east (differs in: side)
+  stonebakeoven:ovencontrollerplain (114): Plain stone oven heat source (Andesite) (stonebakeoven:ovencontrollerplain-andesite-extinct-north) 65.06 → 65.03
+    same as its variant stonebakeoven:ovencontrollerplain-andesite-extinct-east (differs in: side)
+  rpvoicechat:bellhammer (112): Bell Hammer (Aged) (rpvoicechat:bellhammer-aged-up-east) 570.11 → 562.8
+    same as its variant rpvoicechat:bellhammer-aged-up-north (differs in: side)
+  wildcraftfruit:clippingbucket (110): Marita clipping in a bucket (wildcraftfruit:clippingbucket-marita) 93.55 → 91.46
+    grid: 1000 game:waterportion + 1 game:woodbucket + 1 wildcraftfruit:clipping-marita-green -> 1 wildcraftfruit:clippingbucket-marita
+  petai:petnest (108): Medium pet cushion (petai:petnest-medium-plain-north) 1,142.2 → 1,112.1
+    grid: 1 petai:petnest-small-plain + 1 petai:petnest-small-plain -> 1 petai:petnest-medium-plain-north
+  stonebakeoven:ovencontrollerbrick (90): Brick stone oven heat source (Andesite) (stonebakeoven:ovencontrollerbrick-andesite-extinct-north) 64.97 → 64.94
+    same as its variant stonebakeoven:ovencontrollerbrick-andesite-extinct-east (differs in: side)
+  primitivesurvival:woodlantern (78): primitivesurvival:woodlantern-aged-up (primitivesurvival:woodlantern-aged-up) 98.69 → 98.68
+    grid: 1 game:plank-aged + 1 game:candle + 1 game:plank-aged + 1 game:plank-aged + 1 game:metalplate-copper + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged + 1 game:plank-aged -> 1 primitivesurvival:woodlantern-aged-up
+  tailorsdelight:panel (73): White table cloth (tailorsdelight:panel-cloth-table-none-white) 232.06 → 225.8
+    grid: 1 wool:cloth-wool-white + 1 tailorsdelight:needle-bone (or 1 more) -> 1 tailorsdelight:panel-cloth-table-none-white
+  game:painting (72): Painting (Bog Fort) (game:painting-bogfort-north) 276.88 → 268.53
+    trader price: 8 x 33.57 EMC per gear
+  bricklayers:glazedbrickstairs (72): Glazed brick stairs (Milky blue) (bricklayers:glazedbrickstairs-milky-blue-up-north-free) 352.5 → 341.63
+    grid: 1 bricklayers:glazedbrick-burnt-milky-blue + 1 bricklayers:glazedbrick-burnt-milky-blue + 1 bricklayers:glazedbrick-burnt-milky-blue + 1 game:mortar + 1 bricklayers:glazedbrick-burnt-milky-blue + 1 bricklayers:glazedbrick-burnt-milky-blue + 1 bricklayers:glazedbrick-burnt-milky-blue + 1 bricklayers:glazedbrick-burnt-milky-blue -> 2 bricklayers:glazedbrickstairs-milky-blue-up-north-free
+  game:ore (70): Poor chunk of Native copper (game:ore-poor-nativecopper-andesite) 19.2 → 0.555
+    worked backwards from pulverizer crushing: 1 game:ore-poor-nativecopper-andesite -> 3 em:crushed-metal-copper
+  bricklayers:glazedbrickslab (66): Glazed brick slab (Milky blue) (bricklayers:glazedbrickslab-milky-blue-down-free) 201.4 → 195.18
+    grid: 1 bricklayers:glazedbricks-milky-blue -> 2 bricklayers:glazedbrickslab-milky-blue-down-free
+  game:door (56): 2 by 4 gate (Aged) (game:door-2x4gate-aged) 405.33 → 135.33
+    grid: 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 10 game:metalnailsandstrips-tinbronze -> 1 game:door-2x4gate-aged
+  rpvoicechat:radioconsole (56): Radio station console (Aged) (rpvoicechat:radioconsole-aged-north) 1,071.5 → 1,056.9
+    grid: 2 game:plank-aged + 2 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:jonasparts-tank02 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioconsole-aged-north
+  rpvoicechat:telephone (56): Telephone (Aged) (rpvoicechat:telephone-aged-north) 1,406.6 → 1,399.3
+    grid: 1 rpvoicechat:callbell + 4 game:metal-parts + 1 rpvoicechat:connector-plain-north (or 65 more) + 3 game:plank-aged + 1 game:jonasparts-cylinder02 + 3 game:plank-aged + 3 game:plank-aged + 3 rpvoicechat:telegraphwire + 3 game:plank-aged -> 1 rpvoicechat:telephone-aged-north
+  rpvoicechat:radioemitter (56): Radio transmitter (Aged) (rpvoicechat:radioemitter-aged-north) 1,030.6 → 1,008.7
+    grid: 2 game:plank-aged + 1 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:jonasparts-tank02 + 1 game:jonasparts-cylinder01 + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioemitter-aged-north
+  rpvoicechat:radioreceiver (56): Radio receiver (Aged) (rpvoicechat:radioreceiver-aged-north) 561.53 → 554.22
+    grid: 2 game:plank-aged + 1 game:rod-copper + 2 game:plank-aged + 2 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radioreceiver-aged-north
+  rpvoicechat:printer (56): Printer (rpvoicechat:printer-aged-north) 552.86 → 545.55
+    grid: 2 rpvoicechat:telegraphwire + 2 game:metal-parts + 4 game:plank-aged + 4 game:plank-aged + 1 game:jonasparts-tank01 + 1 game:glass-plain (or 10 more) + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged -> 1 rpvoicechat:printer-aged-north
+  rpvoicechat:radiomixingconsole (56): Mixing console (Aged) (rpvoicechat:radiomixingconsole-aged-north) 1,115 → 1,107.7
+    grid: 2 game:plank-aged + 3 rpvoicechat:connector-plain-north (or 65 more) + 2 game:plank-aged + 2 rpvoicechat:telegraphwire + 1 game:jonasparts-valve01 + 1 game:glasspane-leaded-aged-ns (or 25 more) + 2 game:plank-aged + 2 game:metal-parts + 2 game:plank-aged -> 1 rpvoicechat:radiomixingconsole-aged-north
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)
