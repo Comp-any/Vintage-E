@@ -367,6 +367,9 @@ namespace VintageE
             HostileCreatures ??= new List<string>();
             StackDataModes ??= new Dictionary<string, string>();
             CollectorFuels ??= new List<string>();
+            // The game's settings loader adds a saved list to the default one instead of replacing it, so the file's
+            // fuels came back after the defaults, and every save wrote the longer list: it grew at each restart (1.29.4).
+            CollectorFuels = CollectorFuels.Where(f => !string.IsNullOrWhiteSpace(f)).Select(f => f.Trim()).Distinct().ToList();
             // A list saved before 1.29.4 that still ends with aeternalis gets Project Expansion's fuels after it, once.
             if (collectorFuelsVersion < 1)
             {

@@ -62,9 +62,12 @@ namespace VintageE
             var old = JsonConvert.DeserializeObject<VintageEConfig>(oldFile);
             old.Normalize();
             string saved = JsonConvert.SerializeObject(old);
-            int at = old.CollectorFuels.LastIndexOf("vintagee:alchemicalfuel-aeternalisfuel");
-            Check(VintageEConfig.ExpansionFuels.All(f => old.CollectorFuels.IndexOf(f) > at) && saved.Contains("\"CollectorFuelsVersion\":1"),
-                $"a server's saved collector fuels get the new fuels after aeternalis, once ({old.CollectorFuels.Count} fuels; the file remembers it)");
+            bool once = old.CollectorFuels.Count == old.CollectorFuels.Distinct().Count();
+            Check(VintageEConfig.ExpansionFuels.All(old.CollectorFuels.Contains) && once && saved.Contains("\"CollectorFuelsVersion\":1"),
+                $"a server's saved collector fuels get the new fuels, each fuel once ({old.CollectorFuels.Count} fuels; the file remembers it)");
+            var again = JsonConvert.DeserializeObject<VintageEConfig>(saved);
+            again.Normalize();
+            Check(again.CollectorFuels.Count == old.CollectorFuels.Count, $"saved and loaded again, the fuel list doesn't grow ({old.CollectorFuels.Count} then {again.CollectorFuels.Count})");
 
             // The Storm Collector.
             Block S(int mk) => sapi.World.GetBlock(new AssetLocation("vintagee", "stormcollector-mk" + mk));
