@@ -1,0 +1,55 @@
+== vinteng ==
+267 of its 274 blocks and items have a value (97.4%); 0 are blacklisted on purpose (creative, technical or story items).
+Vintage-E has no compatibility file for 'vinteng'. Its raw materials only get a value if a recipe makes them, you pin them, or the mod gives them an emcValue attribute.
+
+== Its crafting methods ==
+✓ Its crafting methods: 12 methods, 86 recipes (0 problem(s) in the documents, 0 recipe(s) left out)
+  66 values come through them; 64 of those include power
+    Charcoal (game:charcoal) 16
+    Sawdust (vinteng:sawdust) 32.02
+    Bitumen (vinteng:bitumen) 64
+    Coal-Tar Creosote (vinteng:creosoteportion-coal) 0.64
+    Asphalt (vinteng:asphalt) 5.5
+    Molybdochalkos sheet (game:metalsheet-molybdochalkos-down) 185.64
+  vinteng:power (Vintage Engineering power): 0.00005 EMC a unit, from vinteng's suggested price
+  look (/emc diagnose methods vinteng) check (/emc diagnose methodcheck vinteng)
+
+== Why the rest has no value ==
+⚠ 5 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    vecncprogram (2): Blank CNC Program (Grid) (vinteng:vecncprogram-grid-blank), Encoded CNC Program (Grid) (vinteng:vecncprogram-grid-encoded)
+    vembtemporalforge (1): Temporal Forge Core (vinteng:vembtemporalforge-incomplete-north)
+    crudeoil (1): Crude Oil (vinteng:crudeoil-still-7)
+    crudeoilwell (1): Crude Oil Well Source (vinteng:crudeoilwell)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/vinteng.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 2 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Terminus teleporter thanatos coupling (game:returndeath-returndeath1): 1 item(s) wait on it. (blacklisted: allow it, or give it a value)  why? (/emc diagnose item game:returndeath-returndeath1)
+    Terminus teleporter transpressor (game:returndeath-returndeath2): 1 item(s) wait on it. (blacklisted: allow it, or give it a value)  why? (/emc diagnose item game:returndeath-returndeath2)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+Draft a compatibility file for its 5 raw materials (/emc diagnose draftcompat vinteng)
+Pin all 2 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are vinteng items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.29.6 with vinteng ?: these items have no value: vinteng:vecncprogram-grid-blank, vinteng:vecncprogram-grid-encoded, vinteng:vembtemporalforge-incomplete-north, vinteng:crudeoil-still-7, vinteng:crudeoilwell. /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (7) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Crude Oil (vinteng:crudeoil-still-7)  why? (/emc diagnose item vinteng:crudeoil-still-7)
+  Crude Oil Well Source (vinteng:crudeoilwell)  why? (/emc diagnose item vinteng:crudeoilwell)
+  Temporal Focuser (vinteng:temporalmatrix-focus)  why? (/emc diagnose item vinteng:temporalmatrix-focus)
+  Temporal Matrix (vinteng:temporalmatrix-matrix)  why? (/emc diagnose item vinteng:temporalmatrix-matrix)
+  Blank CNC Program (Grid) (vinteng:vecncprogram-grid-blank)  why? (/emc diagnose item vinteng:vecncprogram-grid-blank)
+  Encoded CNC Program (Grid) (vinteng:vecncprogram-grid-encoded)  why? (/emc diagnose item vinteng:vecncprogram-grid-encoded)
+  Temporal Forge Core (vinteng:vembtemporalforge-incomplete-north)  why? (/emc diagnose item vinteng:vembtemporalforge-incomplete-north)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

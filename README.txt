@@ -1,0 +1,1 @@
+game=1.22.7 commit=ebf9a13edd3f92f925b1f6769ec707f3e28b7476 run=46156052447 extraMods=vintageengineering,canjewelry,fieldsofsalt doctor=false
