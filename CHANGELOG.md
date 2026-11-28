@@ -25,6 +25,9 @@ Project Expansion's fuel tiers, a Storm Collector, and "Burn what I mine" for th
 - **"Burn what I mine" now also burns what Vintage-E's own area actions break**: the matter pickaxe's and shovel's ore and gravel veins, clearing logs and leaves, the shovel's and hammer's flat digging, and the Destruction Catalyst. These break blocks without the game's break events, so before this their drops landed as usual.
 - **The server test's furnace checks** don't fail on a busy server any more. The furnaces tick on real time, so a few seconds the server spends on other checks come as one long tick that burns a whole piece of fuel, and their 4 charcoal could run out. They now get a full stack, and the heating check judges the hottest the furnace got during the wait. (Earlier notes blamed rain; the game's firepits don't react to rain at all.)
 
+### Fixed
+- **`CollectorFuels` in the server's config no longer grows each restart.** The game's config loader adds a saved list to the default one rather than replacing it, so every fuel was listed once more each time the server loaded and saved the file. Each fuel is now kept once, and the repeats already in a config are removed when it loads.
+
 ## 1.29.3 — 2026-11-28
 
 Project Expansion's books, and its Alchemical Collection as a switch on the tablet.
