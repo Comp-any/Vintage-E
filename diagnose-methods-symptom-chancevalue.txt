@@ -1,0 +1,10 @@
+== Something from a chance roll is worth a lot ==
+An output that only comes some of the time counts as its average: at 10% it takes ten runs on average, so one is worth ten runs' ingredients. That is fair, but it can look high.
+  Red Matter (vintagee:matter-red) 600: from vintagee:selftest-press/red, which makes it 25% of the time, so one costs about 4 runs
+    Pin it at 328 and remap (in the window) (the middle value of its 1 valued variants)
+Pin a value if you'd rather have a lower one (anything made from it follows).
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
