@@ -9,7 +9,7 @@ Other mods' recipes count first.
 ### Changed
 - **A cheaper recipe from another mod now lowers a value Vintage-E sets itself.** With Vintage Engineering, its temporal forge makes a temporal gear from a steel gear for about 625, so the gear is worth that instead of 4,096, and burning gears made that way no longer makes EMC. The same goes for any of Vintage-E's own base values that another mod's recipe or crafting method makes for less.
   - The base game's own recipes never do it (Vintage-E's values are pegged against them), so a world without other mods keeps every value.
-  - Only recipes whose ingredients are valued from real recipes and base values count: one that rests on a guessed value somewhere down its chain, or on the item itself, doesn't.
+  - Only recipes whose ingredients are valued forwards from real recipes and base values count: one that rests anywhere down its chain on a guessed value, a value worked out backwards (from what something makes), or the item itself, doesn't.
   - Values the server sets (`BaseValues`, `FixedValues`), an item's own `emcValue` and another mod's value file never change.
   - The new setting `ModRecipesLowerBaseValues` (on) switches it off. The item's report says which recipe lowered it and what its base value was.
 - **A mod's own crafting methods come before Vintage-E's file for it.** When a mod Vintage-E ships a method file for (Vintage Engineering, C&N Jewelry, Fields of Salt, Butchering) sends its own, from a file or from its code, Vintage-E's steps aside, whatever the methods are called, and the doctor says so. Before, the two could clash and the mod's own could be the one left out.

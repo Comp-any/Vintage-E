@@ -808,7 +808,12 @@ namespace VintageE
             return null;
         }
 
-        /// <summary>True when an ingredient of this recipe, or anything its value was worked out from (the solver's Via chain), has a guessed value.</summary>
+        /// <summary>
+        /// True when an ingredient of this recipe, or anything its value was worked out from (the solver's Via chain), has a
+        /// guessed value or one worked out backwards. A value worked backwards comes from what it makes, which can lead back to
+        /// the very thing being priced: Wildcraft's flower wine, valued from the fruit vinegar it makes, would otherwise have
+        /// priced the game's vinegar at a hundredth of its value, and Butchering's strong bone, valued from its bonemeal, the bone.
+        /// </summary>
         static bool RestsOnGuess(Conversion conv, Dictionary<CollectibleObject, double> guessed, EmcSolver<CollectibleObject> solver)
         {
             var seen = new HashSet<CollectibleObject>();
@@ -817,7 +822,7 @@ namespace VintageE
             while (stack.Count > 0)
             {
                 var (item, depth) = stack.Pop();
-                if (guessed.ContainsKey(item)) return true;
+                if (guessed.ContainsKey(item) || solver.Inferred.ContainsKey(item)) return true;
                 if (depth >= 12 || !seen.Add(item) || !solver.Via.TryGetValue(item, out object via)) continue;
                 if (via is EmcSolver<CollectibleObject>.Edge e)
                 {
