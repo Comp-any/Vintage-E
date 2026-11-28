@@ -65,9 +65,9 @@ namespace VintageE
             bool once = old.CollectorFuels.Count == old.CollectorFuels.Distinct().Count();
             Check(VintageEConfig.ExpansionFuels.All(old.CollectorFuels.Contains) && once && saved.Contains("\"CollectorFuelsVersion\":1"),
                 $"a server's saved collector fuels get the new fuels, each fuel once ({old.CollectorFuels.Count} fuels; the file remembers it)");
-            var again = JsonConvert.DeserializeObject<VintageEConfig>(saved);
-            again.Normalize();
-            Check(again.CollectorFuels.Count == old.CollectorFuels.Count, $"saved and loaded again, the fuel list doesn't grow ({old.CollectorFuels.Count} then {again.CollectorFuels.Count})");
+            var reloaded = JsonConvert.DeserializeObject<VintageEConfig>(saved);
+            reloaded.Normalize();
+            Check(reloaded.CollectorFuels.Count == old.CollectorFuels.Count, $"saved and loaded again, the fuel list doesn't grow ({old.CollectorFuels.Count} then {reloaded.CollectorFuels.Count})");
 
             // The Storm Collector.
             Block S(int mk) => sapi.World.GetBlock(new AssetLocation("vintagee", "stormcollector-mk" + mk));
