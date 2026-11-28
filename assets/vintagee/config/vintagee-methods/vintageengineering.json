@@ -46,7 +46,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -91,7 +92,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -144,7 +146,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -197,7 +200,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -250,7 +254,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -295,7 +300,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -340,7 +346,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -385,7 +392,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -430,7 +438,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -475,7 +484,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "costs": {
@@ -520,7 +530,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "note": "Its coke is an ingredient; the blowers it needs are left out."
@@ -559,7 +570,8 @@
                 "code": "$code",
                 "type": "$type",
                 "quantity": "=default($stacksize, $quantity)",
-                "litres": "$litres"
+                "litres": "$litres",
+                "share": "=default($litres, default($stacksize, default($quantity, 1)))"
               }
             ],
             "note": "Heated by a fire under it, which isn't counted (as the game's own charcoal pit counts no fire)."
@@ -567,5 +579,6 @@
         }
       ]
     }
-  ]
+  ],
+  "//shares": "A machine with several outputs (the distillation tower's oils, the chemical plant's cracking) shares its cost by amount, litres for a liquid and count for an item, so 0.3 L of LPG isn't worth as much as 1.7 L of diesel. Outputs that already have a value keep it."
 }
