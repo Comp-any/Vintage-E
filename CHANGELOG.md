@@ -10,6 +10,7 @@ All notable changes to Vintage-E. Each GitHub release uses its section from this
   - Magenta, Pink and Fading, which have no gem of their colour in the game, glow with their matter.
   - Their matter, matter blocks and relay cores are drawn in the same dark, muted, veined style as the New look's dark and red matter.
   - The Final tier's fittings are gold.
+  - **The bigger stars can be told apart.** They had the Klein stars' model with only a few pixels of different metal. Now, as in Project Expansion's own sprites, they have rings around them: one silver ring for Magnum, two gold rings for Colossal, and a three-ring electrum setting for Gargantuan. The tier still shows in the gem, as with the Klein stars.
   - Nothing changes in the Middle or Original looks.
 
 ## 1.29.0 — 2026-11-28

@@ -1438,9 +1438,9 @@
       "code": "vintagee:star-magnum-ein",
       "label": "magnum star ein",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/quartz"
       },
       "guiTransform": {
@@ -1502,9 +1502,9 @@
       "code": "vintagee:star-magnum-zwei",
       "label": "magnum star zwei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/citrine"
       },
       "guiTransform": {
@@ -1566,9 +1566,9 @@
       "code": "vintagee:star-magnum-drei",
       "label": "magnum star drei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/topaz"
       },
       "guiTransform": {
@@ -1630,9 +1630,9 @@
       "code": "vintagee:star-magnum-vier",
       "label": "magnum star vier",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/emerald"
       },
       "guiTransform": {
@@ -1694,9 +1694,9 @@
       "code": "vintagee:star-magnum-sphere",
       "label": "magnum star sphere",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/sapphire"
       },
       "guiTransform": {
@@ -1758,9 +1758,9 @@
       "code": "vintagee:star-magnum-omega",
       "label": "magnum star omega",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-magnum",
       "textures": {
-        "metal": "game:block/metal/plate/platinum",
+        "metal": "game:block/metal/plate/silver",
         "gem": "game:block/stone/gem/amethyst"
       },
       "guiTransform": {
@@ -1822,9 +1822,9 @@
       "code": "vintagee:star-colossal-ein",
       "label": "colossal star ein",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/quartz"
       },
       "guiTransform": {
@@ -1886,9 +1886,9 @@
       "code": "vintagee:star-colossal-zwei",
       "label": "colossal star zwei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/citrine"
       },
       "guiTransform": {
@@ -1950,9 +1950,9 @@
       "code": "vintagee:star-colossal-drei",
       "label": "colossal star drei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/topaz"
       },
       "guiTransform": {
@@ -2014,9 +2014,9 @@
       "code": "vintagee:star-colossal-vier",
       "label": "colossal star vier",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/emerald"
       },
       "guiTransform": {
@@ -2078,9 +2078,9 @@
       "code": "vintagee:star-colossal-sphere",
       "label": "colossal star sphere",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/sapphire"
       },
       "guiTransform": {
@@ -2142,9 +2142,9 @@
       "code": "vintagee:star-colossal-omega",
       "label": "colossal star omega",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-colossal",
       "textures": {
-        "metal": "game:block/metal/plate/electrum",
+        "metal": "game:block/metal/plate/gold",
         "gem": "game:block/stone/gem/amethyst"
       },
       "guiTransform": {
@@ -2206,9 +2206,9 @@
       "code": "vintagee:star-gargantuan-ein",
       "label": "gargantuan star ein",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/quartz"
       },
       "guiTransform": {
@@ -2270,9 +2270,9 @@
       "code": "vintagee:star-gargantuan-zwei",
       "label": "gargantuan star zwei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/citrine"
       },
       "guiTransform": {
@@ -2334,9 +2334,9 @@
       "code": "vintagee:star-gargantuan-drei",
       "label": "gargantuan star drei",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/topaz"
       },
       "guiTransform": {
@@ -2398,9 +2398,9 @@
       "code": "vintagee:star-gargantuan-vier",
       "label": "gargantuan star vier",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/emerald"
       },
       "guiTransform": {
@@ -2462,9 +2462,9 @@
       "code": "vintagee:star-gargantuan-sphere",
       "label": "gargantuan star sphere",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/sapphire"
       },
       "guiTransform": {
@@ -2526,9 +2526,9 @@
       "code": "vintagee:star-gargantuan-omega",
       "label": "gargantuan star omega",
       "kind": "item",
-      "shape": "vintagee:newlook/item/star",
+      "shape": "vintagee:newlook/item/star-gargantuan",
       "textures": {
-        "metal": "game:block/metal/plate/titanium",
+        "metal": "game:block/metal/plate/electrum",
         "gem": "game:block/stone/gem/amethyst"
       },
       "guiTransform": {

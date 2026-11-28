@@ -68,7 +68,10 @@ TIER_GEM = {"purple": "amethyst", "violet": "onyx", "blue": "sapphire", "cyan": 
 NEW_MATTER = {"magenta": (305, 0.5), "pink": (330, 0.38), "purple": (282, 0.5), "violet": (262, 0.5), "blue": (222, 0.5),
               "cyan": (188, 0.5), "green": (128, 0.45), "lime": (88, 0.45), "yellow": (50, 0.5), "orange": (28, 0.55),
               "white": (40, 0.05), "fading": (250, 0.08), "final": (44, 0.55)}
-STAR_METAL = {"magnum": "platinum", "colossal": "electrum", "gargantuan": "titanium"}
+STAR_METAL = {"magnum": "silver", "colossal": "gold", "gargantuan": "electrum"}
+# The New look tells the sizes apart as Project Expansion's sprites do, by rings around the Klein star's model: one ring
+# for Magnum, two for Colossal, three (an armillary setting) for Gargantuan, in the size's metal.
+STAR_RINGS = {"magnum": 1, "colossal": 2, "gargantuan": 3}
 STAR_GEM = {"ein": "quartz", "zwei": "citrine", "drei": "topaz", "vier": "emerald", "sphere": "sapphire", "omega": "amethyst"}
 G = "game:"
 
@@ -431,15 +434,50 @@ def textures_and_looks():
             continue
         new_tex[f"{MOD}:block/matterblock-{name}"] = f"{MOD}:newlook/block/matterblock-{name}"
         new_ov.append(gn.item(f"matter-{name}", orb, {"matter": mat}, f"{name} matter"))
+    ringed = star_shapes()
     for size in STAR_SIZES:
         for tier in STAR_TIERS:
-            new_ov.append(gn.item(f"star-{size}-{tier}", star, {"metal": plate(STAR_METAL[size]), "gem": gem(STAR_GEM[tier])}, f"{size} star {tier}"))
+            new_ov.append(gn.item(f"star-{size}-{tier}", ringed[size], {"metal": plate(STAR_METAL[size]), "gem": gem(STAR_GEM[tier])}, f"{size} star {tier}"))
     new_ov.append(gn.item("finalstarshard", star, {"metal": plate("gold"), "gem": gem("diamond")}, "final star shard"))
     dump("config/vintagee-new-look-expansion.json", {
         "//": "Written by tools/gen_expansion.py. Read with vintagee-new-look.json (the New look): the Project Expansion tiers' models, "
               "the same as MK1-3's, with the game's metals and gems and each tier's matter in Vintage Story's muted colours.",
         "textures": new_tex, "overrides": new_ov})
     return written
+
+
+def star_shapes():
+    """The New look's bigger stars: the Klein star's model (newlook/item/star) with metal rings around it."""
+    base = json.load(open(os.path.join(gn.SHAPES, "item", "star.json")))
+    lo, hi, t = 3.4, 12.6, 0.7  # half-size 4.6 around the core, between it and the spike tips
+    cx, cy, cz = 8.0, 7.0, 8.0
+
+    def square(name, axis):
+        # Four bars of a square ring around the star's centre, in the plane across `axis`.
+        a0, a1 = (cy - 4.6, cy + 4.6)
+        thin = (lambda c: (c - t / 2, c + t / 2))
+        bars = []
+        if axis == "y":  # lying flat
+            y0, y1 = thin(cy)
+            bars = [((lo, y0, lo), (hi, y1, lo + t)), ((lo, y0, hi - t), (hi, y1, hi)),
+                    ((lo, y0, lo + t), (lo + t, y1, hi - t)), ((hi - t, y0, lo + t), (hi, y1, hi - t))]
+        elif axis == "z":  # upright, facing north
+            z0, z1 = thin(cz)
+            bars = [((lo, a0, z0), (hi, a0 + t, z1)), ((lo, a1 - t, z0), (hi, a1, z1)),
+                    ((lo, a0 + t, z0), (lo + t, a1 - t, z1)), ((hi - t, a0 + t, z0), (hi, a1 - t, z1))]
+        else:  # upright, facing east
+            x0, x1 = thin(cx)
+            bars = [((x0, a0, lo), (x1, a0 + t, hi)), ((x0, a1 - t, lo), (x1, a1, hi)),
+                    ((x0, a0 + t, lo), (x1, a1 - t, lo + t)), ((x0, a0 + t, hi - t), (x1, a1 - t, hi))]
+        return [gn.box(f"{name}-{i}", f, to, "metal") for i, (f, to) in enumerate(bars)]
+
+    out = {}
+    for size, rings in STAR_RINGS.items():
+        els = json.loads(json.dumps(base["elements"]))
+        for axis in ("y", "z", "x")[:rings]:
+            els += square("ring-" + axis, axis)
+        out[size] = gn.save_shape(f"item/star-{size}", gn.shape(dict(base["textures"]), els))
+    return out
 
 
 def manifest():
