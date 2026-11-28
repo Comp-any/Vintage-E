@@ -1,0 +1,61 @@
+type,code,why,name
+item,game:arrow-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Short erel feather stem
+block,game:bonyremains-cowskull-up,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Bony Cow Skull
+block,game:figurehead-eidolon,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Eidolon figurehead (Oak)
+block,game:figurehead-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Erel figurehead (Oak)
+block,game:figurehead-seamonster,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Seamonster figurehead (Oak)
+block,game:figurehead-thunderlord,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Thunderlord figurehead (Oak)
+item,game:ingot-platinum,"stuck in a value loop: game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum (each is only made from the next, and nothing outside the loop gives any of them a value)",Platinum ingot
+item,game:ingot-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel ingot
+item,game:metalbit-platinum,"stuck in a value loop: game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum (each is only made from the next, and nothing outside the loop gives any of them a value)",Platinum bits
+item,game:metalbit-stainlesssteel,"27 way(s) to make it, e.g. grid: 1 game:ingot-stainlesssteel -> 20 game:metalbit-stainlesssteel; no value for: game:ingot-stainlesssteel",Stainless steel bits
+item,game:metalplate-platinum,"1 way(s) to make it, e.g. RecipeRegistrySystem.SmithingRecipes: 2 game:ingot-platinum -> 1 game:metalplate-platinum; no value for: game:ingot-platinum",Platinum plate
+item,game:metalplate-stainlesssteel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Stainless steel plate
+item,game:spear-generic-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Long erel feather stem
+item,wildcrafttree:boat-sailed-ash,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Ash sailboat
+item,wildcrafttree:boat-sailed-azobe,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Azobe sailboat
+item,wildcrafttree:boat-sailed-banyan,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Banyan sailboat
+item,wildcrafttree:boat-sailed-bearnut,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Bearnut sailboat
+item,wildcrafttree:boat-sailed-beech,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Beech sailboat
+item,wildcrafttree:boat-sailed-bluemahoe,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Blue mahoe sailboat
+item,wildcrafttree:boat-sailed-catalpa,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Catalpa sailboat
+item,wildcrafttree:boat-sailed-cedar,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Cedar pine sailboat
+item,wildcrafttree:boat-sailed-charred,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Charred sailboat
+item,wildcrafttree:boat-sailed-chlorociboria,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Chlorociboria-dyed sailboat
+item,wildcrafttree:boat-sailed-dalbergia,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Grenadill sailboat
+item,wildcrafttree:boat-sailed-douglasfir,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Douglas fir sailboat
+item,wildcrafttree:boat-sailed-elm,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Elm sailboat
+item,wildcrafttree:boat-sailed-empresstree,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Empress wood sailboat
+item,wildcrafttree:boat-sailed-eucalyptus,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Eucalyptus sailboat
+item,wildcrafttree:boat-sailed-fir,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Fir sailboat
+item,wildcrafttree:boat-sailed-ghostgum,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Ghost gum sailboat
+item,wildcrafttree:boat-sailed-ginkgo,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Ginkgo sailboat
+item,wildcrafttree:boat-sailed-guajacum,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Lignum vitae sailboat
+item,wildcrafttree:boat-sailed-honeylocust,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Honey locust sailboat
+item,wildcrafttree:boat-sailed-horsechestnut,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Chestnut sailboat
+item,wildcrafttree:boat-sailed-jacaranda,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Palissandre sailboat
+item,wildcrafttree:boat-sailed-kauri,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Kauri sailboat
+item,wildcrafttree:boat-sailed-leadwood,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Leadwood sailboat
+item,wildcrafttree:boat-sailed-linden,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Linden sailboat
+item,wildcrafttree:boat-sailed-mahogany,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Mahogany sailboat
+item,wildcrafttree:boat-sailed-mangrove,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Mangrove sailboat
+item,wildcrafttree:boat-sailed-ohia,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Ohia sailboat
+item,wildcrafttree:boat-sailed-poplar,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Poplar sailboat
+item,wildcrafttree:boat-sailed-redcedar,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Red cedar sailboat
+item,wildcrafttree:boat-sailed-sal,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Sal sailboat
+item,wildcrafttree:boat-sailed-sapele,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Sapele sailboat
+item,wildcrafttree:boat-sailed-satinash,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Satinash sailboat
+item,wildcrafttree:boat-sailed-saxaul,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Saxaul sailboat
+item,wildcrafttree:boat-sailed-spruce,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Spruce sailboat
+item,wildcrafttree:boat-sailed-spurgetree,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Spurge wood sailboat
+item,wildcrafttree:boat-sailed-sycamore,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Sycamore sailboat
+item,wildcrafttree:boat-sailed-tamanu,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Tamanu sailboat
+item,wildcrafttree:boat-sailed-tigerwood,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Tigerwood sailboat
+item,wildcrafttree:boat-sailed-tuja,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Thuya sailboat
+item,wildcrafttree:boat-sailed-umnini,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Pink ivory sailboat
+item,wildcrafttree:boat-sailed-willow,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Willow sailboat
+item,wildcrafttree:boat-sailed-yew,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Yew sailboat
+block,wildcrafttree:figurehead-eidolon,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Eidolon figurehead (Oak)
+block,wildcrafttree:figurehead-erel,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Erel figurehead (Oak)
+block,wildcrafttree:figurehead-seamonster,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Seamonster figurehead (Oak)
+block,wildcrafttree:figurehead-thunderlord,"nothing the mod can read makes it (no recipe, drop or process): loot, creative-only, or made a way the mod doesn't know",Thunderlord figurehead (Oak)
