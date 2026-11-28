@@ -167,6 +167,10 @@ namespace VintageE
         [System.ComponentModel.Description("Whether the Alchemical Books can teleport during a temporal storm. Off by default.")]
         public bool AlchemicalBookInStorms = false;
 
+        /// <summary>Whether reading a Knowledge Sharing Book uses it up, as in Project Expansion (1.29.3; off by default: it can be passed on).</summary>
+        [System.ComponentModel.Description("Whether reading a Knowledge Sharing Book uses it up, as in Project Expansion. Off by default: the book can be read by one player after another.")]
+        public bool KnowledgeBookConsumed = false;
+
         /// <summary>Fraction of output a collector keeps at night or underground (0 = nothing without sun).</summary>
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;

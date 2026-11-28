@@ -389,6 +389,8 @@ namespace VintageE
                 case "WatchSlowDown":
                 case "TableUseRange":
                 case "CollectorFuels":
+                case "MaxExactKnowledge":
+                case "KnowledgeBookConsumed":
                     // Players' games keep a copy of these (values of worn tools, sounds, the numbers tooltips quote):
                     // it travels with the table, so send that again.
                     mod.RefreshMirroredSettings();

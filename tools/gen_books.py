@@ -88,23 +88,31 @@ def recipes():
 
 def lang_lines():
     out = {}
-    kb = ("Sneak + right-click to write everything you've learned into it. Give it to another player: when they right-click it, they "
-          "learn everything you had learned (what you know now, if you're in the game) and the book is used up. Exact versions (a filled "
-          "bucket, a gold shield) count against their limit of exact things learned, as usual. Made from violet matter, 16 temporal gears "
-          "(Project Expansion uses nether stars) and a book; red matter instead while Project Expansion's tiers are off.")
+    kb = ("Sneak + right-click to write everything you've learned into it, then give it to someone: when they right-click it, they learn "
+          "what's written in it. It isn't used up, so it can go from one player to the next (the server can make reading it use it up, as in "
+          "Project Expansion); write it again to bring it up to date. Its tooltip says how many things are in it and how many of them you'd "
+          "learn. Exact versions (a filled bucket, a gold shield) count against your limit of exact things learned, as usual. Made from violet "
+          "matter, 16 temporal gears (Project Expansion uses nether stars) and a book; red matter instead while Project Expansion's tiers are off.")
     out["item-knowledgebook"] = "Knowledge Sharing Book"
     out["itemdesc-knowledgebook"] = kb
     out["vintagee:item-handbooktitle-vintagee:knowledgebook"] = "How it works"
     out["vintagee:item-handbooktext-vintagee:knowledgebook"] = kb
     out["knowledgebook-blank"] = "Blank: sneak + right-click to write what you've learned in it."
-    out["knowledgebook-by"] = "Written by {0} ({1} things)"
-    out["knowledgebook-written"] = "Everything you've learned ({0} things) is written in the book. Give it to someone: reading it teaches them all of it."
+    out["knowledgebook-by"] = "Written by {0}: {1} things"
+    out["knowledgebook-yours"] = "Your own knowledge: give it to someone else"
+    out["knowledgebook-wouldlearn"] = "You'd learn {0} of them"
+    out["knowledgebook-wouldlearn-limit"] = "You'd learn {0} of them ({1} exact versions past your limit would be left out)"
+    out["knowledgebook-knowall"] = "You know all of it already"
+    out["knowledgebook-usedup"] = "Used up when it's read (this server's setting)"
+    out["knowledgebook-written"] = "Everything you've learned ({0} things) is written in the book. Whoever reads it learns it all; write it again to bring it up to date."
     out["knowledgebook-self"] = "That's your own knowledge: give the book to someone else."
     out["knowledgebook-noowner"] = "This book is blank. Sneak + right-click to write what you've learned in it."
-    out["knowledgebook-gone"] = "Nothing of {0}'s knowledge can be found for this book any more."
+    out["knowledgebook-gone"] = "Nothing can be read in this book."
     out["knowledgebook-learned"] = "You learned {0} new things from {1}'s book."
-    out["knowledgebook-learned-limit"] = "You learned {0} new things from {1}'s book. {2} exact versions were left out: you're at the server's limit of {3}."
-    out["knowledgebook-nothing"] = "You learned nothing new from {0}'s book; it isn't used up."
+    out["knowledgebook-limit-note"] = "{0} exact versions were left out: you're at the server's limit of {1}."
+    out["knowledgebook-kept-note"] = "You can pass the book on."
+    out["knowledgebook-usedup-note"] = "The book is used up."
+    out["knowledgebook-nothing"] = "You learned nothing new from {0}'s book."
 
     names = {"basic": "Basic", "advanced": "Advanced", "master": "Master", "arcane": "Arcane"}
     cheaper = {"basic": "", "advanced": " (half the Basic book's price)", "master": " (a tenth of the Basic book's price)", "arcane": ""}

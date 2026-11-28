@@ -41,6 +41,10 @@ namespace VintageE
         /// would ignore the request, so a player's game on such a server leaves a shift-click to the game.
         /// </summary>
         [ProtoMember(19)] public bool BurnBySlot;
+        /// <summary>The server's MaxExactKnowledge and KnowledgeBookConsumed (1.29.3), for the Knowledge Sharing Book's tooltip.</summary>
+        /// <remarks>IsRequired: 0 (no exact versions at all) is a real limit; -1, a server that doesn't say.</remarks>
+        [ProtoMember(20, IsRequired = true)] public int MaxExactKnowledge = -1;
+        [ProtoMember(21)] public bool KnowledgeBookConsumed;
     }
 
     /// <summary>

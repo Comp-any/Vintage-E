@@ -1295,6 +1295,8 @@ namespace VintageE
             Emc.WatchSlowDown = Config.WatchSlowDown;
             Emc.TableUseRange = Config.TableUseRange;
             Emc.CollectorFuels = Config.CollectorFuels?.ToArray();
+            Emc.MaxExactKnowledge = Config.MaxExactKnowledge;
+            Emc.KnowledgeBookConsumed = Config.KnowledgeBookConsumed;
         }
 
         /// <summary>

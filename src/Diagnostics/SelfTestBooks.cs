@@ -102,18 +102,23 @@ namespace VintageE
             Check(PlayerEmc.IsExact(exact) && PlayerEmc.CountsAsExact(sapi.World, exact) && learn.SequenceEqual(new[] { flint, exact }) && skipped == 0
                   && capped.SequenceEqual(new[] { granite, flint }) && skippedAtLimit == 1,
                 $"a Knowledge Sharing Book teaches what the reader doesn't know and is still in the game ({learn.Count}: {string.Join(", ", learn.Select(k => k.Length > 40 ? k.Substring(0, 40) + "…" : k))}), and leaves out exact versions past the limit ({skippedAtLimit})");
-            var stored = new[] { granite, flint, exact };
-            ItemKnowledgeBook.Store(sapi, "vintagee-selftest", stored);
-            string[] loaded = ItemKnowledgeBook.Load(sapi, "vintagee-selftest");
-            Check(loaded != null && loaded.SequenceEqual(stored) && ItemKnowledgeBook.Load(sapi, "vintagee-selftest-nobody") == null,
-                "a writer's knowledge is kept in the world's save data for when they're away, and a writer with no book has none");
-            ItemKnowledgeBook.Store(sapi, "vintagee-selftest", Array.Empty<string>());
+            // The book carries what's written in it, compressed: read back exactly, even a big list, and small.
+            string[] many = sapi.World.Collectibles.Where(c => c?.Code != null).Select(PlayerEmc.KeyOf).Where(k => k != null).Append(exact).ToArray();
+            byte[] packed = ItemKnowledgeBook.Pack(many);
+            string[] unpacked = ItemKnowledgeBook.Unpack(packed);
+            int raw = System.Text.Encoding.UTF8.GetByteCount(string.Join("\n", many));
+            Check(unpacked != null && unpacked.SequenceEqual(many) && packed.Length < raw / 3 && ItemKnowledgeBook.Unpack(null) == null && ItemKnowledgeBook.Unpack(new byte[] { 1, 2, 3 }) == null
+                  && ItemKnowledgeBook.Unpack(ItemKnowledgeBook.Pack(Array.Empty<string>()))?.Length == 0,
+                $"a book carries what's written in it: {many.Length} things in {packed.Length:#,0} bytes ({raw:#,0} unpacked), read back exactly; a damaged one reads as nothing");
+            Check(!mod.Config.KnowledgeBookConsumed && mod.Emc.KnowledgeBookConsumed == mod.Config.KnowledgeBookConsumed && mod.Emc.MaxExactKnowledge == mod.Config.MaxExactKnowledge,
+                $"a Knowledge Sharing Book isn't used up by default (KnowledgeBookConsumed {mod.Config.KnowledgeBookConsumed}), and players' games are told that and the exact-knowledge limit ({mod.Emc.MaxExactKnowledge})");
 
             // A copy made from EMC is a blank book, and a book's writing doesn't change what it's learned as.
             var written1 = new ItemStack(kb);
             written1.Attributes.SetString(ItemKnowledgeBook.OwnerKey, "someone");
             written1.Attributes.SetString(ItemKnowledgeBook.OwnerNameKey, "Someone");
             written1.Attributes.SetInt(ItemKnowledgeBook.CountKey, 12);
+            written1.Attributes.SetBytes(ItemKnowledgeBook.KeysKey, packed);
             var bound = new ItemStack(B("basic"));
             bound.Attributes.SetString(ItemAlchemicalBook.PlacesKey, places.ToJson());
             Check(EmcCommands.KnowledgeKey(mod, written1) == PlayerEmc.KeyOf(kb) && EmcCommands.KnowledgeKey(mod, bound) == PlayerEmc.KeyOf(B("basic"))

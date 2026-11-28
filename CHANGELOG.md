@@ -8,10 +8,11 @@ Project Expansion's books, and its Alchemical Collection as a switch on the tabl
 
 ### Added
 - **The Knowledge Sharing Book.**
-  - Sneak + right-click to write everything you've learned into it, then give it to another player. When they right-click it, they learn everything you had learned, and the book is used up.
-  - If you're in the game when they read it, they learn what you know now. If you're away, they learn what you knew when you last wrote a book. (Project Expansion's book only works while its writer is online.)
-  - Exact versions (a filled bucket, a gold shield) count against the reader's limit of exact things learned, as usual; past it, they're left out and the reader is told how many.
-  - A book that teaches nothing new isn't used up.
+  - Sneak + right-click to write everything you've learned into it, then give it to another player. When they right-click it, they learn what's written in it.
+  - **It isn't used up**, so it can go from one player to the next. The server setting `KnowledgeBookConsumed` makes reading it use it up, as in Project Expansion.
+  - What's written travels in the book itself (compressed), so it works whether or not its writer is in the game. Project Expansion's book only works while its writer is online. Write it again to bring it up to date.
+  - **Its tooltip** says who wrote it and how many things are in it, and how many of them you'd learn (or that you know them all already).
+  - Exact versions (a filled bucket, a gold shield) count against the reader's limit of exact things learned, as usual. Past it, they're left out, and the reader and the tooltip say how many.
   - Recipe (Project Expansion's): violet matter, a book, and 8 temporal gears in place of each nether star. While Project Expansion's tiers are off, red matter takes the violet matter's place, so the book is always there.
 - **The Basic, Advanced, Master and Arcane Alchemical Books.**
   - Right-click to open a window of places:
@@ -32,7 +33,7 @@ Project Expansion's books, and its Alchemical Collection as a switch on the tabl
   - What drops from the blocks you break is burned into your EMC and learned. That includes what your matter tools break around the block, and the logs from trees your axe fells.
   - It goes through the magnet's filter (only these, or all except these; with nothing in the filter, everything that has a value). The filter shows when the switch is on, even with no magnet in the tablet.
   - What spills out of a container you break is never burned.
-- **Settings:** `AlchemicalBookCostMultiplier` (1) and `AlchemicalBookInStorms` (off).
+- **Settings:** `KnowledgeBookConsumed` (off), `AlchemicalBookCostMultiplier` (1) and `AlchemicalBookInStorms` (off).
 - **The doctor's machines page** says who has "Burn what I mine" on. If the hook that keeps containers' contents safe couldn't be put in place, it says so, with a copy button: the switch then does nothing.
 - All three looks:
   - **Middle:** books in Project Expansion's colours.
