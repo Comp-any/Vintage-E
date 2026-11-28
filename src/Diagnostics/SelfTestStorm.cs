@@ -29,7 +29,7 @@ namespace VintageE
             bool baseThere = F("aeternalisfuel") != null && FB("aeternalisfuel") != null;
             Check(baseThere && (on ? there.Count == types.Count : there.Count == 0 && types.All(t => F(t) == null && FB(t) == null)),
                 on ? $"magenta to white fuel and their blocks are there ({there.Count} of {types.Count})" : $"switched off, none of the fuel tiers are there ({there.Count})");
-            List<CollectibleObject> chain = BEEnergyCollector.Chain(mod, sapi.World);
+            List<CollectibleObject> chain = FuelUpgrader.Chain(mod, sapi.World);
             string last = chain.LastOrDefault()?.Code?.ToString();
             Check(last == (on ? "vintagee:alchemicalfuel-whitefuel" : "vintagee:alchemicalfuel-aeternalisfuel"),
                 $"a collector's fuel slot upgrades through {chain.Count} fuels, up to {last}");
