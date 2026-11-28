@@ -1,0 +1,76 @@
+== Wildcraft: Trees and Shrubs (wildcrafttree) ==
+4316 of its 4363 blocks and items have a value (98.9%); 0 are blacklisted on purpose (creative, technical or story items).
+✓ Its compatibility file (Wildcraft: Trees and Shrubs) is active: 224 items got a value from its 28 rules.
+
+== Why the rest has no value ==
+⚠ 47 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    boat (43): Cedar pine sailboat (wildcrafttree:boat-sailed-cedar), Fir sailboat (wildcrafttree:boat-sailed-fir), Spruce sailboat (wildcrafttree:boat-sailed-spruce), ...
+    figurehead (4): wildcrafttree:figurehead-eidolon (wildcrafttree:figurehead-eidolon), wildcrafttree:figurehead-erel (wildcrafttree:figurehead-erel), wildcrafttree:figurehead-seamonster (wildcrafttree:figurehead-seamonster), ...
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → To do a whole mod at once for everyone, write a compatibility file: assets/vintagee/config/vintagee-emc-compat/wildcrafttree.json with "requiresMod" and "values" (the files shipped with Vintage-E show the format). Please share it so it can be included.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+Draft a compatibility file for its 47 raw materials (/emc diagnose draftcompat wildcrafttree)
+Pin all 47 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are Wildcraft: Trees and Shrubs (wildcrafttree) items made in a way Vintage-E can't read (its own machine, a custom recipe type, a drop it doesn't know). Vintage-E can be taught them with a compatibility file; the fastest way to get one is to ask:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.29.6 with Wildcraft: Trees and Shrubs (wildcrafttree) 1.3.4: these items have no value: wildcrafttree:boat-sailed-cedar, wildcrafttree:boat-sailed-fir, wildcrafttree:boat-sailed-spruce, wildcrafttree:boat-sailed-douglasfir, wildcrafttree:boat-sailed-tuja, wildcrafttree:boat-sailed-redcedar, wildcrafttree:boat-sailed-yew, wildcrafttree:boat-sailed-kauri, wildcrafttree:boat-sailed-ginkgo, wildcrafttree:boat-sailed-sycamore, wildcrafttree:boat-sailed-honeylocust, wildcrafttree:boat-sailed-dalbergia, ... (47). /emc diagnose says nothing the mapper reads makes them."
+  If the mod makes them in its own machine or recipe type, its author can help too: items can carry "attributes": { "emcValue": <n> } in their JSON, which Vintage-E reads directly.
+  Meanwhile, values pinned on this server (/emc set, or BaseValues in the settings) fill the gap for your players right away.
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (47) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Ash sailboat (wildcrafttree:boat-sailed-ash)  why? (/emc diagnose item wildcrafttree:boat-sailed-ash)
+  Azobe sailboat (wildcrafttree:boat-sailed-azobe)  why? (/emc diagnose item wildcrafttree:boat-sailed-azobe)
+  Banyan sailboat (wildcrafttree:boat-sailed-banyan)  why? (/emc diagnose item wildcrafttree:boat-sailed-banyan)
+  Bearnut sailboat (wildcrafttree:boat-sailed-bearnut)  why? (/emc diagnose item wildcrafttree:boat-sailed-bearnut)
+  Beech sailboat (wildcrafttree:boat-sailed-beech)  why? (/emc diagnose item wildcrafttree:boat-sailed-beech)
+  Blue mahoe sailboat (wildcrafttree:boat-sailed-bluemahoe)  why? (/emc diagnose item wildcrafttree:boat-sailed-bluemahoe)
+  Catalpa sailboat (wildcrafttree:boat-sailed-catalpa)  why? (/emc diagnose item wildcrafttree:boat-sailed-catalpa)
+  Cedar pine sailboat (wildcrafttree:boat-sailed-cedar)  why? (/emc diagnose item wildcrafttree:boat-sailed-cedar)
+  Charred sailboat (wildcrafttree:boat-sailed-charred)  why? (/emc diagnose item wildcrafttree:boat-sailed-charred)
+  Chlorociboria-dyed sailboat (wildcrafttree:boat-sailed-chlorociboria)  why? (/emc diagnose item wildcrafttree:boat-sailed-chlorociboria)
+  Grenadill sailboat (wildcrafttree:boat-sailed-dalbergia)  why? (/emc diagnose item wildcrafttree:boat-sailed-dalbergia)
+  Douglas fir sailboat (wildcrafttree:boat-sailed-douglasfir)  why? (/emc diagnose item wildcrafttree:boat-sailed-douglasfir)
+  Elm sailboat (wildcrafttree:boat-sailed-elm)  why? (/emc diagnose item wildcrafttree:boat-sailed-elm)
+  Empress wood sailboat (wildcrafttree:boat-sailed-empresstree)  why? (/emc diagnose item wildcrafttree:boat-sailed-empresstree)
+  Eucalyptus sailboat (wildcrafttree:boat-sailed-eucalyptus)  why? (/emc diagnose item wildcrafttree:boat-sailed-eucalyptus)
+  Fir sailboat (wildcrafttree:boat-sailed-fir)  why? (/emc diagnose item wildcrafttree:boat-sailed-fir)
+  Ghost gum sailboat (wildcrafttree:boat-sailed-ghostgum)  why? (/emc diagnose item wildcrafttree:boat-sailed-ghostgum)
+  Ginkgo sailboat (wildcrafttree:boat-sailed-ginkgo)  why? (/emc diagnose item wildcrafttree:boat-sailed-ginkgo)
+  Lignum vitae sailboat (wildcrafttree:boat-sailed-guajacum)  why? (/emc diagnose item wildcrafttree:boat-sailed-guajacum)
+  Honey locust sailboat (wildcrafttree:boat-sailed-honeylocust)  why? (/emc diagnose item wildcrafttree:boat-sailed-honeylocust)
+  Chestnut sailboat (wildcrafttree:boat-sailed-horsechestnut)  why? (/emc diagnose item wildcrafttree:boat-sailed-horsechestnut)
+  Palissandre sailboat (wildcrafttree:boat-sailed-jacaranda)  why? (/emc diagnose item wildcrafttree:boat-sailed-jacaranda)
+  Kauri sailboat (wildcrafttree:boat-sailed-kauri)  why? (/emc diagnose item wildcrafttree:boat-sailed-kauri)
+  Leadwood sailboat (wildcrafttree:boat-sailed-leadwood)  why? (/emc diagnose item wildcrafttree:boat-sailed-leadwood)
+  Linden sailboat (wildcrafttree:boat-sailed-linden)  why? (/emc diagnose item wildcrafttree:boat-sailed-linden)
+  Mahogany sailboat (wildcrafttree:boat-sailed-mahogany)  why? (/emc diagnose item wildcrafttree:boat-sailed-mahogany)
+  Mangrove sailboat (wildcrafttree:boat-sailed-mangrove)  why? (/emc diagnose item wildcrafttree:boat-sailed-mangrove)
+  Ohia sailboat (wildcrafttree:boat-sailed-ohia)  why? (/emc diagnose item wildcrafttree:boat-sailed-ohia)
+  Poplar sailboat (wildcrafttree:boat-sailed-poplar)  why? (/emc diagnose item wildcrafttree:boat-sailed-poplar)
+  Red cedar sailboat (wildcrafttree:boat-sailed-redcedar)  why? (/emc diagnose item wildcrafttree:boat-sailed-redcedar)
+  Sal sailboat (wildcrafttree:boat-sailed-sal)  why? (/emc diagnose item wildcrafttree:boat-sailed-sal)
+  Sapele sailboat (wildcrafttree:boat-sailed-sapele)  why? (/emc diagnose item wildcrafttree:boat-sailed-sapele)
+  Satinash sailboat (wildcrafttree:boat-sailed-satinash)  why? (/emc diagnose item wildcrafttree:boat-sailed-satinash)
+  Saxaul sailboat (wildcrafttree:boat-sailed-saxaul)  why? (/emc diagnose item wildcrafttree:boat-sailed-saxaul)
+  Spruce sailboat (wildcrafttree:boat-sailed-spruce)  why? (/emc diagnose item wildcrafttree:boat-sailed-spruce)
+  Spurge wood sailboat (wildcrafttree:boat-sailed-spurgetree)  why? (/emc diagnose item wildcrafttree:boat-sailed-spurgetree)
+  Sycamore sailboat (wildcrafttree:boat-sailed-sycamore)  why? (/emc diagnose item wildcrafttree:boat-sailed-sycamore)
+  Tamanu sailboat (wildcrafttree:boat-sailed-tamanu)  why? (/emc diagnose item wildcrafttree:boat-sailed-tamanu)
+  Tigerwood sailboat (wildcrafttree:boat-sailed-tigerwood)  why? (/emc diagnose item wildcrafttree:boat-sailed-tigerwood)
+  Thuya sailboat (wildcrafttree:boat-sailed-tuja)  why? (/emc diagnose item wildcrafttree:boat-sailed-tuja)
+  Pink ivory sailboat (wildcrafttree:boat-sailed-umnini)  why? (/emc diagnose item wildcrafttree:boat-sailed-umnini)
+  Willow sailboat (wildcrafttree:boat-sailed-willow)  why? (/emc diagnose item wildcrafttree:boat-sailed-willow)
+  Yew sailboat (wildcrafttree:boat-sailed-yew)  why? (/emc diagnose item wildcrafttree:boat-sailed-yew)
+  wildcrafttree:figurehead-eidolon (wildcrafttree:figurehead-eidolon)  why? (/emc diagnose item wildcrafttree:figurehead-eidolon)
+  wildcrafttree:figurehead-erel (wildcrafttree:figurehead-erel)  why? (/emc diagnose item wildcrafttree:figurehead-erel)
+  wildcrafttree:figurehead-seamonster (wildcrafttree:figurehead-seamonster)  why? (/emc diagnose item wildcrafttree:figurehead-seamonster)
+  wildcrafttree:figurehead-thunderlord (wildcrafttree:figurehead-thunderlord)  why? (/emc diagnose item wildcrafttree:figurehead-thunderlord)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
