@@ -263,7 +263,7 @@ namespace VintageE
         /// mod id: the file's "domain", or the first mod it requires),
         /// whatever its methods are called. <paramref name="missing"/> gives a document's first required mod that isn't loaded.
         /// </summary>
-        internal static void MarkReplaced(List<MethodDoc> docs, Func<MethodDoc, string> missing)
+        internal static void MarkReplaced(List<MethodDoc> docs, System.Func<MethodDoc, string> missing)
         {
             foreach (MethodDoc standIn in docs.Where(d => d.StandIn && d.Error == null))
             {
