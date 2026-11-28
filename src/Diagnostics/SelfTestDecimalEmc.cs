@@ -34,9 +34,9 @@ namespace VintageE
             Check(EmcAmount.HowMany(decimal.MaxValue, 0.0001m) == int.MaxValue && EmcAmount.HowMany(10m, 3m) == 3 && EmcAmount.HowMany(10m, 0.0001m) == 100000
                 && EmcAmount.HowMany(-5m, 1m) == 0 && EmcAmount.HowMany(5m, 0m) == 0 && EmcAmount.HowMany(0.00009m, 0.0001m) == 0,
                 $"how many fit is counted without throwing ({EmcAmount.HowMany(decimal.MaxValue, 0.0001m)} items of 0.0001 for the largest balance)");
-            decimal full = decimal.MaxValue;
-            for (int i = 0; i < 3; i++) full = EmcAmount.Add(full, EmcAmount.From(10_485_760));
-            Check(full == decimal.MaxValue && EmcAmount.Add(full, -1m) == decimal.MaxValue - 1m,
+            decimal ceiling = decimal.MaxValue;
+            for (int i = 0; i < 3; i++) ceiling = EmcAmount.Add(ceiling, EmcAmount.From(10_485_760));
+            Check(ceiling == decimal.MaxValue && EmcAmount.Add(ceiling, -1m) == decimal.MaxValue - 1m,
                 "a balance at the ceiling stays there when more is added, and spending from it works");
 
             // The point of it: small amounts on a huge total.
