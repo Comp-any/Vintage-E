@@ -69,8 +69,12 @@ namespace VintageE
             CollectibleObject gear = sapi.World.GetItem(new AssetLocation("game:gear-temporal"));
             CollectibleObject copper = sapi.World.GetItem(new AssetLocation("game:ingot-copper"));
             double gearBefore = gear != null && values.TryGetValue(gear, out double g0) ? g0 : 0;
-            Check(gear != null && copper != null && gearBefore >= 4096 - 0.01 && before.Origins.TryGetValue(gear, out string o0) && o0 == "base value",
-                "base values: the temporal gear starts at its base value (" + gearBefore + ")");
+            // A loaded mod may already make the gear for less (Vintage Engineering's temporal forge): then its base value is what it was before.
+            bool alreadyLowered = gear != null && before.LoweredBase.ContainsKey(gear);
+            double gearBase = alreadyLowered ? before.LoweredBase[gear].was : gearBefore;
+            int loweredBefore = before.LoweredBase.Count;
+            Check(gear != null && copper != null && gearBase >= 4096 - 0.01 && (alreadyLowered || before.Origins.TryGetValue(gear, out string o0) && o0 == "base value"),
+                "base values: the temporal gear's base value is 4096 (" + gearBase + (alreadyLowered ? ", lowered to " + gearBefore + " by a loaded mod" : "") + ")");
             bool saved = mod.Config.ModRecipesLowerBaseValues;
             EventBusListenerDelegate listener = OnGearCollect;
             sapi.Event.RegisterEventBusListener(listener, 0.5, MethodRegistry.CollectEvent);
@@ -82,12 +86,13 @@ namespace VintageE
                 if (report == null) { Check(false, "base values: mapped with the mod's recipe"); return; }
                 double cu = report.Values.TryGetValue(copper, out double c1) ? c1 : 0, gv = report.Values.TryGetValue(gear, out double g1) ? g1 : 0;
                 report.Origins.TryGetValue(gear, out string origin);
-                Check(cu > 0 && Math.Abs(gv - (cu + 100)) < 0.01 && report.LoweredBase.ContainsKey(gear) && origin != null && origin.Contains("cheaper than its base value of 4096"),
-                    "base values: another mod's recipe that makes a temporal gear for less lowers it to that recipe's cost (" + gv + " = copper ingot " + cu + " + 100; " + origin + ")");
+                double expect = Math.Min(cu + 100, alreadyLowered ? gearBefore : double.MaxValue);
+                Check(cu > 0 && Math.Abs(gv - expect) < 0.01 && report.LoweredBase.ContainsKey(gear) && origin != null && origin.Contains("cheaper than its base value of 4096"),
+                    "base values: another mod's recipe that makes a temporal gear for less lowers it to the cheapest such recipe's cost (" + gv + "; copper ingot " + cu + " + 100; " + origin + ")");
                 mod.Config.ModRecipesLowerBaseValues = false;
                 report = mod.RecalculateEmc("self-test: base values kept");
                 double kept = report != null && report.Values.TryGetValue(gear, out double g2) ? g2 : 0;
-                Check(Math.Abs(kept - gearBefore) < 0.01 && report.LoweredBase.Count == 0, "base values: with ModRecipesLowerBaseValues off the temporal gear keeps its base value (" + kept + ")");
+                Check(Math.Abs(kept - gearBase) < 0.01 && report.LoweredBase.Count == 0, "base values: with ModRecipesLowerBaseValues off the temporal gear keeps its base value (" + kept + ")");
             }
             finally
             {
@@ -98,7 +103,7 @@ namespace VintageE
             EmcMappingReport after = mod.RecalculateEmc("self-test: the mod's recipe removed");
             if (after == null) { Check(false, "base values: mapped again without the mod's recipe"); return; }
             int changed = values.Count(kv => !after.Values.TryGetValue(kv.Key, out double v) || Math.Abs(v - kv.Value) > 1e-6) + after.Values.Keys.Count(k => !values.ContainsKey(k));
-            Check(changed == 0 && after.LoweredBase.Count == 0, "base values: without the mod's recipe every value is back as it was (" + changed + " differ, " + after.LoweredBase.Count + " lowered)");
+            Check(changed == 0 && after.LoweredBase.Count == loweredBefore, "base values: without the mod's recipe every value is back as it was (" + changed + " differ, " + after.LoweredBase.Count + " lowered by loaded mods, as before)");
         }
 
         void CheckMethodParser()
