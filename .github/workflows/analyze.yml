@@ -116,15 +116,24 @@ jobs:
             curl -fsSL "https://mods.vintagestory.at/api/v2/mods/install-information?ids=${ids}&gv=${VS_VERSION}" -o extra.json || echo '{}' > extra.json
             cat extra.json; echo
             python3 - "$data/Mods" <<'PY'
-          import json, sys, urllib.request
+          import json, sys, time, urllib.request
           info = json.load(open("extra.json")).get("data", {})
           for mod, r in info.items():
               if "fileUrl" not in r:
                   print("no file for", mod, r); continue
               url = r["fileUrl"] if r["fileUrl"].startswith("http") else "https://mods.vintagestory.at" + r["fileUrl"]
               dest = sys.argv[1] + "/" + r["fileName"]
-              urllib.request.urlretrieve(url, dest)
-              print("added", mod, r.get("recommendedUpgrade", ""), "->", dest)
+              # The Mod DB sometimes answers 500 for a moment: try three times, then go on without that one mod.
+              for attempt in range(3):
+                  try:
+                      req = urllib.request.Request(url, headers={"User-Agent": "Vintage-E server test"})
+                      with urllib.request.urlopen(req, timeout=120) as resp, open(dest, "wb") as f:
+                          f.write(resp.read())
+                      print("added", mod, r.get("recommendedUpgrade", ""), "->", dest)
+                      break
+                  except Exception as e:  # noqa: BLE001
+                      print("download of", mod, "failed (try", attempt + 1, "of 3):", e)
+                      time.sleep(5 * (attempt + 1))
           PY
             ls -la "$data/Mods"
           fi
