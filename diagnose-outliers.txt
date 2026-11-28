@@ -1,0 +1,51 @@
+== Values out of line with their family ==
+⚠ Values out of line: 21 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  'Priced from a recipe that uses it' means nothing makes the item, so its value was taken from a recipe it goes into. When several recipes use it, the highest result wins, and another mod's recipe can push a base-game material far above what it's worth.
+  Fresh capers (wildcraftfruit:flower-caper) 16 (its family's middle value is 0.266)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 wildcraftfruit:vinegarportion-fruit + 1 wildcraftfruit:flower-caper -> 1 wildcraftfruit:pickledvegetable-caper
+  Fresh jonjoli (wildcraftfruit:flower-jonjoli) 16 (its family's middle value is 0.266)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 wildcraftfruit:vinegarportion-fruit + 1 wildcraftfruit:flower-jonjoli -> 1 wildcraftfruit:pickledvegetable-jonjoli
+  Bride-in-white seed (wildcrafttree:treeseed-brideinwhite) 0.777 (its family's middle value is 46)
+    worked backwards from block drops: 0.02 game:stick + 0.6 wildcrafttree:leaves-brideinwhite + 0.1 wildcrafttree:willowcane-brideinwhite + 0.04 wildcrafttree:treeseed-brideinwhite -> 1 wildcrafttree:leaves-grown-brideinwhite
+  Red willow seed (wildcrafttree:treeseed-redwillow) 0.777 (its family's middle value is 46)
+    worked backwards from block drops: 0.02 game:stick + 0.6 wildcrafttree:leaves-willow + 0.1 wildcrafttree:willowcane-redwillow + 0.04 wildcrafttree:treeseed-redwillow -> 1 wildcrafttree:leaves-grown-redwillow
+  Willow seed (wildcrafttree:treeseed-willow) 1.55 (its family's middle value is 46)
+    worked backwards from block drops: 0.02 game:stick + 0.6 wildcrafttree:leaves-willow + 0.1 wildcrafttree:willowcane-willow + 0.02 wildcrafttree:treeseed-willow -> 1 wildcrafttree:leaves-grown-willow
+  Eucalyptus seed (wildcrafttree:treeseed-eucalyptus) 1.55 (its family's middle value is 46)
+    worked backwards from block drops: 0.02 game:stick + 0.6 wildcrafttree:leaves-eucalyptus + 0.1 wildcrafttree:willowcane-eucalyptus + 0.02 wildcrafttree:treeseed-eucalyptus -> 1 wildcrafttree:leaves-grown-eucalyptus
+  Powdered kernite (em:powdered-ore-kernite) 154.58 (its family's middle value is 6.4)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 em:powdered-ore-kernite -> 100 em:dilutedkerniteportion
+  Cashew apple juice (wildcraftfruit:juiceportion-cashewapple) 0.012 (its family's middle value is 0.256)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewwhole -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Cashew apple cider (wildcraftfruit:ciderportion-cashewapple) 0.013 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple -> 500 wildcraftfruit:ciderportion-cashewapple
+  Dry cashew apple mash (wildcraftfruit:pressedmash-cashewapple) 0.394 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewwhole -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Cashew apple (wildcraftfruit:fruit-cashewapple) 0.788 (its family's middle value is 16)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-cashewapple -> 31.25 wildcraftfruit:juiceportion-cashewapple + 1 wildcraftfruit:pressedmash-cashewapple
+  Powdered borax (game:powder-borax) 155.08 (its family's middle value is 13.41)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 game:waterportion + 2 game:powder-borax -> 500 game:dilutedboraxportion
+  Hawthorn (wildcraftfruit:fruit-hawthorn) 1.4 (its family's middle value is 16)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-hawthorn -> 100 game:dye-orange
+  Paper lantern berry (wildcraftfruit:fruit-husktomato) 1.4 (its family's middle value is 16)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 100 game:waterportion + 2 wildcraftfruit:fruit-husktomato -> 100 game:dye-orange
+  Husk cherry (wildcraftfruit:fruit-newhusktomato) 1.4 (its family's middle value is 16)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-newhusktomato -> 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  Dry hawthorn mash (wildcraftfruit:pressedmash-hawthorn) 0.702 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-hawthorn -> 31.25 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn
+  Dry husk cherry mash (wildcraftfruit:pressedmash-husktomato) 0.702 (its family's middle value is 8)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-husktomato -> 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  Hawthorn wine (wildcraftfruit:ciderportion-hawthorn) 0.023 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn -> 500 wildcraftfruit:ciderportion-hawthorn
+  Husk cherry wine (wildcraftfruit:ciderportion-husktomato) 0.023 (its family's middle value is 0.272)
+    worked backwards from RecipeRegistrySystem.BarrelRecipes: 500 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato -> 500 wildcraftfruit:ciderportion-husktomato
+  Hawthorn juice (wildcraftfruit:juiceportion-hawthorn) 0.022 (its family's middle value is 0.256)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-hawthorn -> 31.25 wildcraftfruit:juiceportion-hawthorn + 1 wildcraftfruit:pressedmash-hawthorn
+  Husk cherry juice (wildcraftfruit:juiceportion-husktomato) 0.022 (its family's middle value is 0.256)
+    worked backwards from fruit press: 1 wildcraftfruit:fruit-husktomato -> 31.25 wildcraftfruit:juiceportion-husktomato + 1 wildcraftfruit:pressedmash-husktomato
+  → If one is wrong, pin it: hold it and run /emc set <value> (the family's middle value is a good start). Everything made from it follows. 'A mapping without other mods' shows which mod moved it.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
