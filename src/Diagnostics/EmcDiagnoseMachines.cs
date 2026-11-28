@@ -103,16 +103,16 @@ namespace VintageE
                         int sun = world.BlockAccessor.GetLightLevel(pos.UpCopy(), EnumLightLevelType.TimeOfDaySunLight);
                         int maxSun = Math.Max(1, world.SunBrightness);
                         double light = Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
-                        x.Info(x.L("diag-mach-collector", name, EmcFormat.Format(c.Stored), EmcFormat.Format(c.Capacity), EmcFormat.Format(c.RatePerSecond * cfg.MachineSpeedMultiplier * light), (int)Math.Round(light * 100)));
+                        x.Info(x.L("diag-mach-collector", name, EmcFormat.Total(c.Stored), EmcFormat.Total(c.Capacity), EmcFormat.Format(c.RatePerSecond * cfg.MachineSpeedMultiplier * light), (int)Math.Round(light * 100)));
                         if (light <= cfg.CollectorDarkFactor + 1e-9) { x.Warn(x.L("diag-mach-collector-dark")); x.Explain(x.L("diag-mach-collector-dark-why")); }
-                        Neighbours(x, pos, c.Stored >= c.Capacity - 1e-6);
+                        Neighbours(x, pos, c.Stored >= c.Capacity);
                         StarIn(x, c.Star);
                         break;
                     }
                 case BEAntimatterRelay rl:
-                    x.Info(x.L("diag-mach-relay", name, EmcFormat.Format(rl.Stored), EmcFormat.Format(rl.Capacity), EmcFormat.Format(rl.TransferPerSecond * cfg.MachineSpeedMultiplier)));
+                    x.Info(x.L("diag-mach-relay", name, EmcFormat.Total(rl.Stored), EmcFormat.Total(rl.Capacity), EmcFormat.Format(rl.TransferPerSecond * cfg.MachineSpeedMultiplier)));
                     if (rl.Stored <= 0) { x.Warn(x.L("diag-mach-relay-empty")); x.Explain(x.L("diag-mach-relay-empty-why")); }
-                    Neighbours(x, pos, rl.Stored >= rl.Capacity - 1e-6);
+                    Neighbours(x, pos, rl.Stored >= rl.Capacity);
                     StarIn(x, rl.Star);
                     break;
                 case BEEnergyCondenser cd:
@@ -120,7 +120,7 @@ namespace VintageE
                         ItemStack target = cd.Inventory[BEEnergyCondenser.TargetSlot]?.Itemstack;
                         int filled = 0, free = 0;
                         for (int i = 1; i < cd.Inventory.Count; i++) { if (cd.Inventory[i].Empty) free++; else filled++; }
-                        x.Info(x.L("diag-mach-condenser", name, EmcFormat.Format(cd.Stored), EmcFormat.Format(cd.Capacity), EmcFormat.Format(cd.IncomingPerSecond), filled, free));
+                        x.Info(x.L("diag-mach-condenser", name, EmcFormat.Total(cd.Stored), EmcFormat.Total(cd.Capacity), EmcFormat.Format(cd.IncomingPerSecond), filled, free));
                         if (target == null) { x.Warn(x.L("diag-mach-condenser-notarget")); x.Explain(x.L("diag-mach-condenser-notarget-why")); }
                         else if (target.Collectible is IEmcStorageItem) x.Info(x.L("diag-mach-condenser-star", target.GetName()));
                         else
@@ -129,7 +129,7 @@ namespace VintageE
                             if (v <= 0) { x.Warn(x.L("diag-mach-condenser-novalue", target.GetName())); x.Fix(x.L("diag-mach-condenser-novalue-fix")); }
                             else if (x.Mod.Emc.IsNoTransmute(target.Collectible)) x.Warn(x.L("diag-mach-condenser-notransmute", target.GetName()));
                             else x.Ok(x.L("diag-mach-condenser-target", target.GetName(), EmcFormat.Format(v)));
-                            if (v > 0 && cd.Stored < v && filled == 0 && cd.IncomingPerSecond <= 0) { x.Warn(x.L("diag-mach-condenser-starved")); x.Explain(x.L("diag-mach-condenser-starved-why")); }
+                            if (v > 0 && (double)cd.Stored < v && filled == 0 && cd.IncomingPerSecond <= 0) { x.Warn(x.L("diag-mach-condenser-starved")); x.Explain(x.L("diag-mach-condenser-starved-why")); }
                         }
                         if (free == 0) { x.Warn(x.L("diag-mach-condenser-full")); x.Explain(x.L("diag-mach-condenser-full-why")); }
                         CondenserChutes(x, pos);

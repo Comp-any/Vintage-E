@@ -109,7 +109,7 @@ namespace VintageE
                 if (onEmc is BEMatterFurnace emcFurnace && meat != null)
                 {
                     emcFurnace.inputSlot.Itemstack = new ItemStack(meat, 1);
-                    double took = emcFurnace.AcceptEmc(500);
+                    decimal took = emcFurnace.AcceptEmc(500);
                     Check(took == 500, "red furnace accepts 500 EMC");
                     emcFurnace.MarkDirty(true);
                 }
@@ -255,7 +255,7 @@ namespace VintageE
                     Check(flat != null && Faces(flat, "pullFaces").Length == 0 && Faces(hopperBlock, "pullFaces").Length == 0,
                         "in the game, a straight chute lying flat and a hopper never pull from a container (which is why they took nothing)");
                     BlockEntityContainer Put(BlockPos at, Block b) => b == null ? null : Place<BlockEntityContainer>(at, b.Code.ToString());
-                    BEEnergyCondenser Cond(BlockPos at, int copies, double emc = 0)
+                    BEEnergyCondenser Cond(BlockPos at, int copies, decimal emc = 0)
                     {
                         var c = Place<BEEnergyCondenser>(at, "vintagee:energycondenser-mk1");
                         if (c == null) return null;
@@ -385,7 +385,7 @@ namespace VintageE
                     {
                         // The rate is only what came in over the last few seconds (none at night), so it's shown, not checked.
                         Check(condenser != null && collector != null && condenser.Stored >= 400,
-                            $"condenser took the collector's EMC: {EmcFormat.Format(condenser?.Stored ?? 0)} stored, {EmcFormat.Format(condenser?.IncomingPerSecond ?? 0)} a second coming in");
+                            $"condenser took the collector's EMC: {EmcFormat.Total(condenser?.Stored ?? 0)} stored, {EmcFormat.Format(condenser?.IncomingPerSecond ?? 0)} a second coming in");
                         ItemStack fed = table?.Inventory[0].Itemstack;
                         Check(table != null && hopper != null && fed?.Collectible == stickItem && fed.StackSize > 0,
                             $"a hopper on the table fed it sticks to burn ({fed?.StackSize ?? 0} waiting for its owner to come online, {hopper?.Inventory[0].StackSize ?? -1} left in the hopper)");
@@ -2333,10 +2333,14 @@ namespace VintageE
                 && broken.RepairTalismanClothingMinCondition == 0 && broken.RepairTalismanClothingMaxCondition == 100,
                 $"NaN and infinite settings go back to usable values (dark factor {broken.CollectorDarkFactor}, fallback {broken.FallbackValue}, table range {broken.TableUseRange}, clothing {broken.RepairTalismanClothingPercentPerMinute}/{broken.RepairTalismanClothingMinCondition}/{broken.RepairTalismanClothingMaxCondition})");
 
-            // Machines neither take a NaN nor keep one from a save.
-            double relayTook = new BEAntimatterRelay().AcceptEmc(double.NaN), condenserTook = new BEEnergyCondenser().AcceptEmc(double.PositiveInfinity);
-            Check(relayTook == 0 && condenserTook == 0 && EmcTransfer.Clean(double.NaN) == 0 && EmcTransfer.Clean(-5) == 0 && EmcTransfer.Clean(12.5) == 12.5,
-                $"machines refuse EMC that isn't a number (relay took {relayTook}, condenser {condenserTook}) and read a broken store back as 0");
+            // Machines neither take a NaN nor keep one from a save. Since 1.27.0 their stores are decimal, which can't
+            // hold one: a NaN or an infinity from a setting becomes 0 where a rate turns into EMC (EmcTransfer.PerTick).
+            decimal relayTook = new BEAntimatterRelay().AcceptEmc(-5), condenserTook = new BEEnergyCondenser().AcceptEmc(0);
+            var brokenStore = new TreeAttribute();
+            brokenStore.SetDouble("emc", double.NaN);
+            Check(relayTook == 0 && condenserTook == 0 && EmcTransfer.PerTick(double.NaN) == 0 && EmcTransfer.PerTick(double.PositiveInfinity) == 0 && EmcTransfer.PerTick(-5) == 0
+                && EmcTransfer.PerTick(12.5) == 12.5m && EmcTransfer.Clean(double.NaN) == 0 && EmcAmount.Read(brokenStore, "emc") == 0,
+                $"machines take no EMC that isn't a positive number (relay took {relayTook}, condenser {condenserTook}), a NaN rate adds nothing, and a broken store reads back as 0");
 
             // /emc configure: the multipliers tooltips quote reach players' games at once (they travel with the table).
             double cost = mod.Config.TrinketCostMultiplier, speed = mod.Config.MachineSpeedMultiplier, slow = mod.Config.WatchSlowDown;
@@ -2668,6 +2672,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the shift-click to burn checks threw " + e); }
             try { CheckCollectedClutter(); }
             catch (Exception e) { Check(false, "the picked-up clutter checks threw " + e); }
+            try { CheckDecimalEmc(); }
+            catch (Exception e) { Check(false, "the decimal EMC checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

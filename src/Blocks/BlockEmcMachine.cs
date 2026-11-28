@@ -7,7 +7,7 @@ namespace VintageE
     public interface IEmcAcceptor
     {
         /// <summary>Offers <paramref name="amount"/> EMC; returns how much was taken.</summary>
-        double AcceptEmc(double amount);
+        decimal AcceptEmc(decimal amount);
     }
 
     public interface IEmcInteractable

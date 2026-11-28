@@ -24,14 +24,14 @@ namespace VintageE
         public bool Full => Star != null && StoredEmc.Get(Star) >= StoredEmc.Capacity(Star);
 
         /// <summary>Moves up to <paramref name="available"/> EMC (whole EMC only) into the star; returns how much it took.</summary>
-        public double Charge(double available)
+        public decimal Charge(decimal available)
         {
-            if (Star == null || !(available >= 1)) return 0;
+            if (Star == null || available < 1) return 0;
             decimal stored = StoredEmc.Get(Star);
-            decimal move = System.Math.Min(decimal.Floor(EmcAmount.From(available)), StoredEmc.Capacity(Star) - stored);
+            decimal move = System.Math.Min(decimal.Floor(available), StoredEmc.Capacity(Star) - stored);
             if (move <= 0) return 0;
             StoredEmc.Set(Star, stored + move);
-            return (double)move;
+            return move;
         }
 
         /// <summary>A plain right-click (no sneak): a star in hand goes in, an empty hand takes it out. Returns true if handled (server side does the work).</summary>

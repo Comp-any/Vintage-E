@@ -23,23 +23,24 @@ namespace VintageE
     /// </summary>
     public class BEEnergyCollector : BlockEntity, IEmcInteractable, IStarHolder
     {
-        public double Stored;
+        /// <summary>EMC held, exact (1.27.0; a double before).</summary>
+        public decimal Stored;
         public StarHolder Star { get; } = new StarHolder();
         public FuelUpgrader Fuel { get; } = new FuelUpgrader();
-        public double Capacity => capacity;
+        public decimal Capacity => capacity;
         /// <summary>EMC a second in full sunlight, before the server's machine speed; and what it made on its last tick.</summary>
         public double RatePerSecond => ratePerSecond;
         public double CurrentRate => currentRate;
         double currentRate;
         double ratePerSecond = 4;
-        double capacity = 10000;
+        decimal capacity = 10000;
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
             JsonObject attrs = Block?.Attributes ?? api.World.BlockAccessor.GetBlock(Pos)?.Attributes;
             ratePerSecond = attrs?["emcPerSecond"].AsDouble(4) ?? 4;
-            capacity = attrs?["capacity"].AsDouble(10000) ?? 10000;
+            capacity = EmcTransfer.PerTick(attrs?["capacity"].AsDouble(10000) ?? 10000);
             if (api.Side == EnumAppSide.Server)
             {
                 RegisterGameTickListener(OnServerTick, 1000);
@@ -56,15 +57,15 @@ namespace VintageE
             double light = Math.Max(GameMath.Clamp(sun / (double)maxSun, 0, 1), cfg.CollectorDarkFactor);
             double rate = ratePerSecond * cfg.MachineSpeedMultiplier * light;
 
-            double before = Stored;
-            Stored = Math.Min(capacity, Stored + rate * dt);
+            decimal before = Stored;
+            Stored = Math.Min(capacity, EmcAmount.Add(Stored, EmcTransfer.PerTick(rate * dt)));
 
             // A Klein star inside is charged first, at the collector's own rate (so it still feeds its neighbours).
-            double charged = Star.Charge(Math.Min(Stored, Math.Max(1, ratePerSecond * cfg.MachineSpeedMultiplier) * dt));
+            decimal charged = Star.Charge(Math.Min(Stored, EmcTransfer.PerTick(Math.Max(1, ratePerSecond * cfg.MachineSpeedMultiplier) * dt)));
             if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
 
             // Then the fuel slot (ProjectE: upgrading fuel comes before feeding neighbours).
-            double spent = Fuel.Upgrade(Mod, Api.World, Stored);
+            decimal spent = Fuel.Upgrade(Mod, Api.World, Stored);
             if (spent > 0 || Fuel.Changed) { Stored -= spent; before = -1; Fuel.Changed = false; }
 
             // Feed neighbouring acceptors (condensers).
@@ -78,7 +79,7 @@ namespace VintageE
             }
             if (Stored < 0) Stored = 0;
 
-            if (Math.Abs(Stored - before) > 1e-6 || Math.Abs(rate - currentRate) > 1e-6)
+            if (Stored != before || Math.Abs(rate - currentRate) > 1e-6)
             {
                 currentRate = rate;
                 MarkDirty(false);
@@ -98,7 +99,7 @@ namespace VintageE
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use)) return true;
             if (Stored < 1) return true;
 
-            Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, Math.Floor(Stored));
+            Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, decimal.Floor(Stored));
             MarkDirty(false);
             Api.World.PlaySoundAt(new AssetLocation("game:sounds/effect/timeswitch"), Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5, null, true, 8, 0.4f);
             return true;
@@ -122,7 +123,7 @@ namespace VintageE
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.ToTreeAttributes(tree);
-            tree.SetDouble("emc", Stored);
+            EmcAmount.Write(tree, "emc", Stored);
             tree.SetDouble("rate", currentRate);
             Star.ToTree(tree);
             Fuel.ToTree(tree);
@@ -131,7 +132,7 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
+            Stored = EmcAmount.Read(tree, "emc");
             currentRate = EmcTransfer.Clean(tree.GetDouble("rate"));
             Star.FromTree(tree, worldAccessForResolve);
             Fuel.FromTree(tree, worldAccessForResolve);
@@ -140,7 +141,7 @@ namespace VintageE
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
         {
             base.GetBlockInfo(forPlayer, dsc);
-            dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Format(Stored), EmcFormat.Format(capacity)));
+            dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Total(Stored), EmcFormat.Total(capacity)));
             dsc.AppendLine(Lang.Get("vintagee:collector-rate", EmcFormat.Format(currentRate)));
             Star.Info(dsc);
             Fuel.Info(Api?.World, dsc);
@@ -192,14 +193,14 @@ namespace VintageE
         }
 
         /// <summary>Upgrades what it can with up to <paramref name="available"/> EMC; returns what it spent.</summary>
-        public double Upgrade(VintageEModSystem mod, IWorldAccessor world, double available)
+        public decimal Upgrade(VintageEModSystem mod, IWorldAccessor world, decimal available)
         {
             if (Input == null || mod == null) return 0;
             List<CollectibleObject> chain = Chain(mod, world);
             CollectibleObject target = TargetFor(mod, chain, Input.Collectible);
             if (target == null) return 0; // no longer on the list: it waits to be taken out
-            double cost = Math.Max(0, mod.Emc.GetValue(target) - mod.Emc.GetValue(Input.Collectible));
-            double spent = 0;
+            decimal cost = Math.Max(0m, EmcAmount.From(mod.Emc.GetValue(target)) - EmcAmount.From(mod.Emc.GetValue(Input.Collectible)));
+            decimal spent = 0;
             for (int n = 0; n < 64 && Input != null; n++)
             {
                 if (Output != null && (Output.Collectible != target || Output.StackSize >= Output.Collectible.MaxStackSize)) break;

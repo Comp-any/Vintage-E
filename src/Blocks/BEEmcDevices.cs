@@ -23,31 +23,33 @@ namespace VintageE
     /// </summary>
     public class BEAntimatterRelay : BlockEntity, IEmcAcceptor, IEmcInteractable, IStarHolder
     {
-        public double Stored;
+        /// <summary>EMC held, exact (1.27.0; a double before).</summary>
+        public decimal Stored;
         public StarHolder Star { get; } = new StarHolder();
         /// <summary>What waits in the burn slot.</summary>
         public ItemStack Burn;
         public const int BurnPerSecond = 20;
         const string BurnKey = "vintageeBurn";
-        double capacity = 100000, bonusPerSecond = 1, transferPerSecond = 64;
-        public double Capacity => capacity;
+        decimal capacity = 100000;
+        double bonusPerSecond = 1, transferPerSecond = 64;
+        public decimal Capacity => capacity;
         public double TransferPerSecond => transferPerSecond;
 
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
-            capacity = Block?.Attributes?["capacity"].AsDouble(100000) ?? 100000;
+            capacity = EmcTransfer.PerTick(Block?.Attributes?["capacity"].AsDouble(100000) ?? 100000);
             bonusPerSecond = Block?.Attributes?["bonusPerSecond"].AsDouble(1) ?? 1;
             transferPerSecond = Block?.Attributes?["transferPerSecond"].AsDouble(64) ?? 64;
             if (api.Side == EnumAppSide.Server) RegisterGameTickListener(OnServerTick, 1000);
         }
 
-        double Fill => capacity <= 0 ? 1 : Stored / capacity;
+        double Fill => capacity <= 0 ? 1 : (double)(Stored / capacity);
 
-        public double AcceptEmc(double amount)
+        public decimal AcceptEmc(decimal amount)
         {
             if (!EmcTransfer.Usable(amount)) return 0;
-            double take = Math.Min(amount, Math.Max(0, capacity - Stored));
+            decimal take = Math.Min(amount, Math.Max(0m, capacity - Stored));
             Stored += take;
             if (take > 0) MarkDirty(false);
             return take;
@@ -55,25 +57,26 @@ namespace VintageE
 
         void OnServerTick(float dt)
         {
-            double before = Stored;
+            decimal before = Stored;
             double speed = VintageEModSystem.Of(Api)?.Config.MachineSpeedMultiplier ?? 1;
-            if (Stored > 0) Stored = Math.Min(capacity, Stored + bonusPerSecond * speed * dt);
+            if (Stored > 0) Stored = Math.Min(capacity, EmcAmount.Add(Stored, EmcTransfer.PerTick(bonusPerSecond * speed * dt)));
             if (BurnSome(BurnPerSecond) > 0) before = -1;
-            double charged = Star.Charge(Math.Min(Stored, transferPerSecond * speed * dt)); // a Klein star inside is charged first, at the relay's rate
+            decimal perTick = EmcTransfer.PerTick(transferPerSecond * speed * dt);
+            decimal charged = Star.Charge(Math.Min(Stored, perTick)); // a Klein star inside is charged first, at the relay's rate
             if (charged > 0) { Stored -= charged; before = -1; } // so the sync below runs
 
-            double budget = Math.Min(Stored, transferPerSecond * speed * dt);
+            decimal budget = Math.Min(Stored, perTick);
             foreach (BlockFacing face in BlockFacing.ALLFACES)
             {
                 if (budget <= 0) break;
                 BlockEntity be = Api.World.BlockAccessor.GetBlockEntity(Pos.AddCopy(face));
                 if (!(be is IEmcAcceptor acceptor) || be is BEEnergyCollector) continue;
                 if (be is BEAntimatterRelay other && other.Fill >= Fill) continue; // flow downhill only
-                double moved = acceptor.AcceptEmc(budget);
+                decimal moved = acceptor.AcceptEmc(budget);
                 budget -= moved;
                 Stored -= moved;
             }
-            if (Math.Abs(Stored - before) > 1e-6) MarkDirty(false);
+            if (Stored != before) MarkDirty(false);
         }
 
         /// <summary>Burns up to <paramref name="max"/> items from the burn slot into the store, while they fit. Returns how many.</summary>
@@ -81,10 +84,10 @@ namespace VintageE
         {
             if (Burn == null) return 0;
             var mod = VintageEModSystem.Of(Api);
-            double each = mod?.Emc == null || mod.Emc.IsNoTransmute(Burn.Collectible) ? 0 : mod.Emc.GetValue(Burn);
+            decimal each = mod?.Emc == null || mod.Emc.IsNoTransmute(Burn.Collectible) ? 0 : EmcTransfer.PerTick(mod.Emc.GetValue(Burn));
             if (!EmcTransfer.Usable(each)) return 0;
             int n = 0;
-            while (Burn != null && n < max && Stored + each <= capacity)
+            while (Burn != null && n < max && EmcAmount.Add(Stored, each) <= capacity)
             {
                 Stored += each;
                 Burn.StackSize--;
@@ -134,7 +137,7 @@ namespace VintageE
             // collector, so a relay beside one gave out the same EMC and the setting stopped nobody.
             if (VintageEModSystem.Of(Api)?.Config?.CollectorsChargePlayers == false) return true;
             if (!Api.World.Claims.TryAccess(byPlayer, Pos, EnumBlockAccessFlags.Use) || Stored < 1) return true;
-            Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, Math.Floor(Stored));
+            Stored -= EmcTransfer.ToPlayerOrStar(byPlayer, decimal.Floor(Stored));
             MarkDirty(false);
             return true;
         }
@@ -154,7 +157,7 @@ namespace VintageE
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.ToTreeAttributes(tree);
-            tree.SetDouble("emc", Stored);
+            EmcAmount.Write(tree, "emc", Stored);
             Star.ToTree(tree);
             if (Burn != null) tree.SetItemstack(BurnKey, Burn); else tree.RemoveAttribute(BurnKey);
         }
@@ -162,7 +165,7 @@ namespace VintageE
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
-            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
+            Stored = EmcAmount.Read(tree, "emc");
             Star.FromTree(tree, worldAccessForResolve);
             Burn = tree.GetItemstack(BurnKey);
             if (Burn != null && !Burn.ResolveBlockOrItem(worldAccessForResolve)) Burn = null;
@@ -171,7 +174,7 @@ namespace VintageE
         public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
         {
             base.GetBlockInfo(forPlayer, dsc);
-            dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Format(Stored), EmcFormat.Format(capacity)));
+            dsc.AppendLine(Lang.Get("vintagee:collector-stored", EmcFormat.Total(Stored), EmcFormat.Total(capacity)));
             dsc.AppendLine(Lang.Get("vintagee:relay-bonus", EmcFormat.Format(bonusPerSecond), EmcFormat.Format(transferPerSecond)));
             Star.Info(dsc);
             if (Burn != null) dsc.AppendLine(Lang.Get("vintagee:relay-burn", Burn.StackSize, Burn.GetName()));
@@ -184,6 +187,15 @@ namespace VintageE
         /// <summary>An amount of EMC a machine can take: a real number above zero (not NaN, not infinite).</summary>
         public static bool Usable(double amount) => amount > 0 && !double.IsInfinity(amount);
 
+        /// <summary>An exact amount a machine can take: above zero (a decimal is never NaN or infinite).</summary>
+        public static bool Usable(decimal amount) => amount > 0;
+
+        /// <summary>
+        /// A rate times a tick's length (or a value from the table) as the exact amount a machine adds: NaN, an
+        /// infinity or a negative number is 0 (1.27.0; see <see cref="Clean"/> for why a NaN can turn up at all).
+        /// </summary>
+        public static decimal PerTick(double amount) => EmcAmount.Clean(EmcAmount.From(double.IsInfinity(amount) ? 0 : amount));
+
         /// <summary>
         /// Stored EMC as read back from a save: NaN, an infinity or a negative number becomes 0. A NaN in a setting
         /// a collector multiplies by ends up in its store, from there in every relay, condenser and furnace it
@@ -192,21 +204,21 @@ namespace VintageE
         public static double Clean(double stored) => double.IsNaN(stored) || double.IsInfinity(stored) || stored < 0 ? 0 : stored;
 
         /// <summary>Returns how much was moved.</summary>
-        public static double ToPlayerOrStar(IPlayer player, double amount)
+        public static decimal ToPlayerOrStar(IPlayer player, decimal amount)
         {
             if (amount <= 0) return 0;
             ItemSlot held = player.InventoryManager?.ActiveHotbarSlot;
             if (held?.Itemstack?.Collectible is IEmcStorageItem)
             {
                 decimal stored = StoredEmc.Get(held.Itemstack);
-                decimal move = Math.Min(EmcAmount.From(amount), StoredEmc.Capacity(held.Itemstack) - stored);
+                decimal move = Math.Min(amount, StoredEmc.Capacity(held.Itemstack) - stored);
                 if (move <= 0) return 0;
                 StoredEmc.Set(held.Itemstack, stored + move);
                 held.MarkDirty();
-                return (double)move;
+                return move;
             }
             if (held?.Empty == false) return 0;
-            PlayerEmc.AddEmc(player, amount);
+            PlayerEmc.AddEmcExact(player, amount);
             return amount;
         }
     }

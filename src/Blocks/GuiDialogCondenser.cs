@@ -75,8 +75,8 @@ namespace VintageE
             if (SingleComposer == null || be == null) return;
             double target = be.TargetValue;
             string text = target > 0
-                ? Lang.Get("vintagee:condenser-progress", EmcFormat.Format(be.Stored), EmcFormat.Format(target), (int)Math.Min(100, be.Stored / target * 100))
-                : Lang.Get("vintagee:condenser-notarget", EmcFormat.Format(be.Stored));
+                ? Lang.Get("vintagee:condenser-progress", EmcFormat.Total(be.Stored), EmcFormat.Format(target), (int)Math.Min(100, (double)be.Stored / target * 100))
+                : Lang.Get("vintagee:condenser-notarget", EmcFormat.Total(be.Stored));
             if (be.IncomingPerSecond > 0) text += "\n" + Lang.Get("vintagee:condenser-incoming", EmcFormat.Format(be.IncomingPerSecond));
             SingleComposer.GetDynamicText("info")?.SetNewText(text);
         }

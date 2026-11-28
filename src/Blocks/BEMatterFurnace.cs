@@ -135,11 +135,13 @@ namespace VintageE
             transformField.SetValue(r, t);
         }
 
-        public double AcceptEmc(double amount)
+        /// <summary>The furnace's own store is small (<see cref="EmcCapacity"/>) and stays a double; what it takes is exact.</summary>
+        public decimal AcceptEmc(decimal amount)
         {
             if (!EmcTransfer.Usable(amount)) return 0;
-            double take = Math.Min(amount, Math.Max(0, EmcCapacity - emcBuffer));
-            emcBuffer += take;
+            decimal take = Math.Min(amount, EmcTransfer.PerTick(Math.Max(0, EmcCapacity - emcBuffer)));
+            if (take <= 0) return 0;
+            emcBuffer = Math.Min(EmcCapacity, emcBuffer + (double)take);
             return take;
         }
 

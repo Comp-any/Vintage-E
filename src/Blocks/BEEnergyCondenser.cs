@@ -26,15 +26,17 @@ namespace VintageE
         CondenserInventory inventory;
         GuiDialogCondenser dialog;
 
-        public double Stored;
-        double capacity = 1000000;
-        public double Capacity => capacity;
+        /// <summary>EMC held, exact (1.27.0; a double before).</summary>
+        public decimal Stored;
+        decimal capacity = 1000000;
+        public decimal Capacity => capacity;
         double itemsPerSecond = 4;
         double outputsPerSecond = 1;
         double burnBudget, makeBudget;
         // EMC pushed in by collectors and relays: counted over a few seconds to show the rate, and synced to clients
         // at most once a second (the window and block info would otherwise show a stale amount).
-        double acceptedInWindow, syncedStored;
+        double acceptedInWindow;
+        decimal syncedStored;
         float windowSeconds;
         long lastSyncMs;
         public double IncomingPerSecond;
@@ -62,7 +64,7 @@ namespace VintageE
                         if (inventory[i].Itemstack != null) api.World.SpawnItemEntity(inventory[i].Itemstack, Pos.ToVec3d().Add(0.5, 1.1, 0.5));
                 inventory = resized;
             }
-            capacity = attrs?["capacity"].AsDouble(1000000) ?? 1000000;
+            capacity = EmcTransfer.PerTick(attrs?["capacity"].AsDouble(1000000) ?? 1000000);
             itemsPerSecond = attrs?["itemsPerSecond"].AsDouble(4) ?? 4;
             outputsPerSecond = attrs?["outputsPerSecond"].AsDouble(1) ?? 1;
 
@@ -153,11 +155,11 @@ namespace VintageE
             if (chargingStar && Stored >= 1)
             {
                 decimal had = StoredEmc.Get(target);
-                decimal move = Math.Min(decimal.Floor(EmcAmount.From(Stored)), StoredEmc.Capacity(target) - had);
+                decimal move = Math.Min(decimal.Floor(Stored), StoredEmc.Capacity(target) - had);
                 if (move > 0)
                 {
                     StoredEmc.Set(target, had + move);
-                    Stored -= (double)move;
+                    Stored -= move;
                     inventory[TargetSlot].MarkDirty();
                     changed = true;
                 }
@@ -184,26 +186,29 @@ namespace VintageE
                 // A Klein star is never burned: what it holds would be lost. Put it in the target slot to charge it.
                 if (stack.Collectible is IEmcStorageItem) continue;
                 if (mod.Config.ProtectContainersWithContents && StackContents.HasNestedStacks(stack) && mod.Emc.StackData.ModeOf(stack.Collectible) == StackDataMode.Item) continue;
-                double value = mod.Emc.IsNoTransmute(stack.Collectible) ? 0 : mod.BurnValue(stack);
-                if (value <= 0 || Stored + value > capacity) continue;
+                decimal value = mod.Emc.IsNoTransmute(stack.Collectible) ? 0 : EmcTransfer.PerTick(mod.BurnValue(stack));
+                if (value <= 0 || EmcAmount.Add(Stored, value) > capacity) continue;
 
-                int n = (int)Math.Min(Math.Floor(burnBudget), Math.Min(stack.StackSize, Math.Floor((capacity - Stored) / value)));
+                decimal room = decimal.Floor((capacity - Stored) / value);
+                int fits = room >= int.MaxValue ? int.MaxValue : (int)room;
+                int n = (int)Math.Min(Math.Floor(burnBudget), Math.Min(stack.StackSize, fits));
                 if (n <= 0) continue;
                 slot.TakeOut(n);
                 slot.MarkDirty();
-                Stored += value * n;
+                Stored = EmcAmount.Add(Stored, EmcAmount.Multiply(value, n));
                 burnBudget -= n;
                 changed = true;
             }
 
             // 2. Spend EMC on copies of the target.
-            if (targetValue > 0)
+            decimal targetExact = EmcTransfer.PerTick(targetValue);
+            if (targetExact > 0)
             {
                 makeBudget = Math.Min(makeBudget + outputsPerSecond * speed * dt, outputsPerSecond * speed * 2 + 1);
-                while (makeBudget >= 1 && Stored >= targetValue)
+                while (makeBudget >= 1 && Stored >= targetExact)
                 {
                     if (!Insert(copy.Clone())) break;
-                    Stored -= targetValue;
+                    Stored -= targetExact;
                     makeBudget -= 1;
                     changed = true;
                 }
@@ -226,7 +231,7 @@ namespace VintageE
                 windowSeconds = 0;
             }
             long now = Api.World.ElapsedMilliseconds;
-            if (changed || (Math.Abs(Stored - syncedStored) > 1e-6 && now - lastSyncMs >= 1000))
+            if (changed || (Stored != syncedStored && now - lastSyncMs >= 1000))
             {
                 syncedStored = Stored;
                 lastSyncMs = now;
@@ -303,13 +308,13 @@ namespace VintageE
             return false;
         }
 
-        public double AcceptEmc(double amount)
+        public decimal AcceptEmc(decimal amount)
         {
             if (!EmcTransfer.Usable(amount)) return 0;
-            double take = Math.Min(amount, capacity - Stored);
+            decimal take = Math.Min(amount, capacity - Stored);
             if (take <= 0) return 0;
             Stored += take;
-            acceptedInWindow += take;
+            acceptedInWindow += (double)take;
             return take;
         }
 
@@ -405,7 +410,7 @@ namespace VintageE
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.ToTreeAttributes(tree); // the inventory, under "inventory" as before
-            tree.SetDouble("emc", Stored);
+            EmcAmount.Write(tree, "emc", Stored);
             tree.SetDouble("incoming", IncomingPerSecond);
         }
 
@@ -413,7 +418,7 @@ namespace VintageE
         {
             base.FromTreeAttributes(tree, worldAccessForResolve);
             if (Api != null) inventory.AfterBlocksLoaded(Api.World);
-            Stored = EmcTransfer.Clean(tree.GetDouble("emc"));
+            Stored = EmcAmount.Read(tree, "emc");
             IncomingPerSecond = EmcTransfer.Clean(tree.GetDouble("incoming"));
             dialog?.UpdateInfo();
         }
@@ -422,7 +427,7 @@ namespace VintageE
         {
             // Not the container's own info (a "stored food perish speed" line); just what block behaviors add.
             foreach (var behavior in Behaviors) behavior.GetBlockInfo(forPlayer, dsc);
-            dsc.AppendLine(Lang.Get("vintagee:condenser-stored", EmcFormat.Format(Stored)));
+            dsc.AppendLine(Lang.Get("vintagee:condenser-stored", EmcFormat.Total(Stored)));
             if (IncomingPerSecond > 0) dsc.AppendLine(Lang.Get("vintagee:condenser-incoming", EmcFormat.Format(IncomingPerSecond)));
             ItemStack target = inventory[TargetSlot].Itemstack;
             if (target?.Collectible is IEmcStorageItem)

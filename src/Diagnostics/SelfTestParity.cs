@@ -273,19 +273,19 @@ namespace VintageE
                 if (collector != null && charcoal != null && chain.Count >= 2)
                 {
                     collector.Fuel.Input = new ItemStack(charcoal, 4);
-                    double spent = collector.Fuel.Upgrade(mod, sapi.World, 1e12);
+                    decimal spent = collector.Fuel.Upgrade(mod, sapi.World, 1_000_000_000_000m);
                     ItemStack top = collector.Fuel.Output;
                     Check(collector.Fuel.Input == null && top?.Collectible == chain[chain.Count - 1] && top.StackSize == 4 && spent > 0,
-                        $"the collector upgrades fuel to the best fuel ({top?.Collectible?.Code} x{top?.StackSize} for {EmcFormat.Format(spent)} EMC)");
+                        $"the collector upgrades fuel to the best fuel ({top?.Collectible?.Code} x{top?.StackSize} for {EmcFormat.Total(spent)} EMC)");
                     collector.Fuel.Output = null;
                     collector.Fuel.Lock = chain[1].Code.ToString();
                     collector.Fuel.Input = new ItemStack(charcoal, 2);
-                    collector.Fuel.Upgrade(mod, sapi.World, 1e12);
+                    collector.Fuel.Upgrade(mod, sapi.World, 1_000_000_000_000m);
                     Check(collector.Fuel.Output?.Collectible == chain[1], $"a locked collector stops at its lock ({collector.Fuel.Output?.Collectible?.Code})");
                     collector.Fuel.Output = null;
                     collector.Fuel.Input = new ItemStack(charcoal, 1);
                     collector.Fuel.Lock = null;
-                    double few = collector.Fuel.Upgrade(mod, sapi.World, 0.5);
+                    decimal few = collector.Fuel.Upgrade(mod, sapi.World, 0.5m);
                     Check(few == 0 && collector.Fuel.Input?.StackSize == 1, "a collector without the EMC for it waits");
                     collector.Fuel.Input = null;
                 }
@@ -294,11 +294,11 @@ namespace VintageE
                 Item stick = sapi.World.GetItem(new AssetLocation("game:stick"));
                 if (relay != null && stick != null)
                 {
-                    double each = mod.Emc.GetValue(new ItemStack(stick));
+                    decimal each = EmcAmount.From(mod.Emc.GetValue(new ItemStack(stick)));
                     relay.Stored = 0;
                     relay.Burn = new ItemStack(stick, 5);
                     int burned = relay.BurnSome(AntimatterBurn);
-                    Check(burned == 5 && relay.Burn == null && Math.Abs(relay.Stored - 5 * each) < 1e-6, $"the relay burns what's in its burn slot into its store ({burned}, {EmcFormat.Format(relay.Stored)} EMC)");
+                    Check(burned == 5 && relay.Burn == null && relay.Stored == 5 * each, $"the relay burns what's in its burn slot into its store, exactly ({burned}, {EmcFormat.Total(relay.Stored)} EMC)");
                 }
             }
 
