@@ -1,0 +1,32 @@
+28.11.2026 06:00:50 [Notification] Savegame ~/work/Vintage-E/Vintage-E/data/Saves/default.vcdbs loaded
+28.11.2026 06:00:50 [Notification]     ~/work/Vintage-E/Vintage-E/vs/Mods
+28.11.2026 06:00:50 [Notification]     ~/work/Vintage-E/Vintage-E/data/Mods
+28.11.2026 06:00:52 [Notification] Mods, sorted by dependency: game, vintagee, creative, survival
+28.11.2026 06:00:52 [Notification] External Origins in load order: modorigin@~/work/Vintage-E/Vintage-E/vs/assets/creative/, modorigin@~/work/Vintage-E/Vintage-E/vs/assets/survival/, mod@vintagee
+28.11.2026 06:00:52 [Notification] [vintagee] Vintage-E: matter tools: hooked the recipe ingredient checks, so they count as the game's tools in recipes.
+28.11.2026 06:00:52 [Notification] JsonPatch Loader: 17 patches total, successfully applied 17 patches, unmet conditions on 29 patches, no errors
+28.11.2026 06:01:02 [Notification] [vintagee] Loaded 140 EMC base value rules and 108 last-resort rules from 1 file(s): vintagee:config/vintagee-emc.json
+28.11.2026 06:01:02 [Notification] [vintagee] EMC: 6 compatibility file(s) not loaded: Butchering (butchering isn't loaded), Expanded Matter (em isn't loaded), From Golden Combs (fromgoldencombs isn't loaded), Primitive Survival (primitivesurvival isn't loaded), Wildcraft: Fruits and Nuts (wildcraftfruit isn't loaded), Wildcraft: Trees and Shrubs (wildcrafttree isn't loaded)
+28.11.2026 06:01:02 [Notification] [vintagee] Look: players get Original unless they pick their own (.vintagee).
+28.11.2026 06:01:02 [Notification] [vintagee] Crafting methods: Both (0 item properties and 0 recipes switched off).
+28.11.2026 06:01:02 [Notification] [vintagee] Original look on: 0 new models, swapped 259 textures on 139 blocks/items and 6 entity types.
+28.11.2026 06:01:02 [Notification] [vintagee] New look on: 67 new models, swapped 372 textures on 151 blocks/items and 2 entity types.
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ErrorReporter
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.WeatherSystemCommands
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ModSystemControlPoints
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ModSystemCatchCreature
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ModSystemCommandHandbook
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ModSystemCorpseReturnTeleporter
+28.11.2026 06:01:02 [Notification]         Vintagestory.GameContent.ModSystemClimateSpecificTraderTypes
+28.11.2026 06:01:02 [Notification]     Mod 'vintagee' (vintagee):
+28.11.2026 06:01:02 [Notification]         VintageE.VintageEModSystem
+28.11.2026 06:01:20 [Notification] [vintagee] EMC: 63 traders price 538 different items; 210 of them already have a value, giving 50.8 EMC per unit of trader currency (median).
+28.11.2026 06:01:20 [Notification] [vintagee] EMC mapped (server start) in 1112 ms: 16867 valued collectibles (2091 base, 10925 from recipes/processing, 1129 inferred backwards), 27701 conversions from 23 sources.
+28.11.2026 06:01:20 [Notification] [vintagee] EMC: items with no recipe path: 196 valued by relativeValues rules, 320 from trader prices, 468 from a variant that only looks or sits differently, 0 other mods' variants of base-game families, 0 as fuel, 0 as food, 100 guessed from other variants, 1638 from defaultValues, 0 got the configured FallbackValue.
+28.11.2026 06:01:20 [Notification] [vintagee] EMC: 262 blocks/items hold contents or keep a material (102 item only, 160 item + contents, 0 item price only); 60 have material-specific values.
+28.11.2026 06:01:20 [Notification] [vintagee] EMC coverage: 8270 of 8287 blocks/items in the creative inventory have a value (99.8%).
+28.11.2026 06:01:20 [Notification] [vintagee] EMC: 17 without a value, by family: game:figurehead (4), game:ingot (3), game:metalbit (3), game:metalplate (3), game:arrow (1), game:bonyremains (1), game:crushed (1), game:spear (1). Full list: /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-missing.csv. Give them values in ModConfig/vintagee.json (BaseValues) or a config/vintagee-emc.json asset.
+28.11.2026 06:01:20 [Notification] [vintagee] EMC check-up: 4 thing(s) worth fixing. /emc diagnose lists them with their fixes.
+28.11.2026 06:01:22 [Notification] [vintagee] EMC values written to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/emc-values.csv
+28.11.2026 06:01:22 [Notification] [vintagee] EMC: 1 value loops keep items from getting a value (each is only made from the next): game:ingot-platinum -> game:metalbit-platinum -> game:ingot-platinum. /emc loop lists them all.
+28.11.2026 06:01:22 [Notification] [vintagee] EMC mapping time: base values and lists 29 ms, reading recipes 316 ms, building the graph 33 ms, ratios and trader prices 29 ms, guesses (variants, defaults, fuel and food) 322 ms, guesses against recipes 15 ms, material-specific values 22 ms, coverage and missing items 29 ms, origins 22 ms, solving (8 solves, 56 rounds; relaxing 78 ms, inferring 70 ms) 216 ms, contents and materials table 70 ms, (after) value snapshot 77 ms, (after) coverage log and missing file 8 ms, (after) check-up 158 ms, (after) value files (DumpValuesOnStart) 1770 ms, (after) sending the table 1 ms.
