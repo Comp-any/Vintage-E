@@ -30,6 +30,20 @@ namespace VintageE
             try { return new BEMatterFurnace().ChuteInventory; } catch { return false; }
         }
 
+        /// <summary>Project Expansion's tiers (1.29.0): on, off, off but not taken out, or switched since the server started.</summary>
+        static void ExpansionLines(Ctx x)
+        {
+            if (ExpansionTiers.Error != null)
+            {
+                x.Problem(x.L("diag-mach-expansion-failed", ExpansionTiers.Error));
+                x.Explain(x.L("diag-mach-expansion-failed-why"));
+            }
+            else if (!ExpansionTiers.On) x.Info(x.L("diag-mach-expansion-off", ExpansionTiers.Removed));
+            else x.Info(x.L("diag-mach-expansion-on"));
+            if (x.Mod.Config != null && x.Mod.Config.Expansion != ExpansionTiers.On)
+                x.Warn(x.L("diag-mach-expansion-restart", x.Mod.Config.Expansion ? x.L("diag-on") : x.L("diag-off")));
+        }
+
         static void MachinesReport(Ctx x, EmcDiagnoseRequestPacket client)
         {
             EmcReport r = x.R;
@@ -45,6 +59,7 @@ namespace VintageE
             x.Info(x.L("diag-mach-table-chutes"));
             x.Explain(x.L("diag-mach-hopper-note"));
             if (Math.Abs(cfg.MachineSpeedMultiplier - 1) > 1e-9) x.Info(x.L("diag-mach-speed", cfg.MachineSpeedMultiplier));
+            ExpansionLines(x);
 
             r.Section(x.L("diag-mach-looked-title"));
             LookedAt(x, client);

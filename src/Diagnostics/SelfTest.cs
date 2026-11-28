@@ -2676,6 +2676,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the decimal EMC checks threw " + e); }
             try { CheckQuickWins(); }
             catch (Exception e) { Check(false, "the quick wins checks (EMC display, learned line, commands) threw " + e); }
+            try { CheckExpansionTiers(); }
+            catch (Exception e) { Check(false, "the Project Expansion tier checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

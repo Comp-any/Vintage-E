@@ -1,0 +1,239 @@
+{
+  "//": "Written by tools/gen_expansion.py. Read with vintagee-projecte-look.json (the Original look): Project Expansion's textures (MIT, see THIRD-PARTY-NOTICES.md) for its tiers. Stars use the same art in every look, so they aren't listed.",
+  "textures": {
+    "vintagee:block/energycollector-mk4-top": "vintagee:projecte/expansion/collector-magenta",
+    "vintagee:block/energycollector-mk4-side": "vintagee:projecte/expansion/collector-magenta",
+    "vintagee:block/antimatterrelay-mk4-top": "vintagee:projecte/expansion/relay-magenta",
+    "vintagee:block/antimatterrelay-mk4-side": "vintagee:projecte/expansion/relay-magenta",
+    "vintagee:item/magentamatter": "vintagee:projecte/expansion/matter-magenta",
+    "vintagee:block/matterblock-magenta": "vintagee:projecte/expansion/matterblock-magenta",
+    "vintagee:block/energycollector-mk5-top": "vintagee:projecte/expansion/collector-pink",
+    "vintagee:block/energycollector-mk5-side": "vintagee:projecte/expansion/collector-pink",
+    "vintagee:block/antimatterrelay-mk5-top": "vintagee:projecte/expansion/relay-pink",
+    "vintagee:block/antimatterrelay-mk5-side": "vintagee:projecte/expansion/relay-pink",
+    "vintagee:item/pinkmatter": "vintagee:projecte/expansion/matter-pink",
+    "vintagee:block/matterblock-pink": "vintagee:projecte/expansion/matterblock-pink",
+    "vintagee:block/energycollector-mk6-top": "vintagee:projecte/expansion/collector-purple",
+    "vintagee:block/energycollector-mk6-side": "vintagee:projecte/expansion/collector-purple",
+    "vintagee:block/antimatterrelay-mk6-top": "vintagee:projecte/expansion/relay-purple",
+    "vintagee:block/antimatterrelay-mk6-side": "vintagee:projecte/expansion/relay-purple",
+    "vintagee:item/purplematter": "vintagee:projecte/expansion/matter-purple",
+    "vintagee:block/matterblock-purple": "vintagee:projecte/expansion/matterblock-purple",
+    "vintagee:block/energycollector-mk7-top": "vintagee:projecte/expansion/collector-violet",
+    "vintagee:block/energycollector-mk7-side": "vintagee:projecte/expansion/collector-violet",
+    "vintagee:block/antimatterrelay-mk7-top": "vintagee:projecte/expansion/relay-violet",
+    "vintagee:block/antimatterrelay-mk7-side": "vintagee:projecte/expansion/relay-violet",
+    "vintagee:item/violetmatter": "vintagee:projecte/expansion/matter-violet",
+    "vintagee:block/matterblock-violet": "vintagee:projecte/expansion/matterblock-violet",
+    "vintagee:block/energycollector-mk8-top": "vintagee:projecte/expansion/collector-blue",
+    "vintagee:block/energycollector-mk8-side": "vintagee:projecte/expansion/collector-blue",
+    "vintagee:block/antimatterrelay-mk8-top": "vintagee:projecte/expansion/relay-blue",
+    "vintagee:block/antimatterrelay-mk8-side": "vintagee:projecte/expansion/relay-blue",
+    "vintagee:item/bluematter": "vintagee:projecte/expansion/matter-blue",
+    "vintagee:block/matterblock-blue": "vintagee:projecte/expansion/matterblock-blue",
+    "vintagee:block/energycollector-mk9-top": "vintagee:projecte/expansion/collector-cyan",
+    "vintagee:block/energycollector-mk9-side": "vintagee:projecte/expansion/collector-cyan",
+    "vintagee:block/antimatterrelay-mk9-top": "vintagee:projecte/expansion/relay-cyan",
+    "vintagee:block/antimatterrelay-mk9-side": "vintagee:projecte/expansion/relay-cyan",
+    "vintagee:item/cyanmatter": "vintagee:projecte/expansion/matter-cyan",
+    "vintagee:block/matterblock-cyan": "vintagee:projecte/expansion/matterblock-cyan",
+    "vintagee:block/energycollector-mk10-top": "vintagee:projecte/expansion/collector-green",
+    "vintagee:block/energycollector-mk10-side": "vintagee:projecte/expansion/collector-green",
+    "vintagee:block/antimatterrelay-mk10-top": "vintagee:projecte/expansion/relay-green",
+    "vintagee:block/antimatterrelay-mk10-side": "vintagee:projecte/expansion/relay-green",
+    "vintagee:item/greenmatter": "vintagee:projecte/expansion/matter-green",
+    "vintagee:block/matterblock-green": "vintagee:projecte/expansion/matterblock-green",
+    "vintagee:block/energycollector-mk11-top": "vintagee:projecte/expansion/collector-lime",
+    "vintagee:block/energycollector-mk11-side": "vintagee:projecte/expansion/collector-lime",
+    "vintagee:block/antimatterrelay-mk11-top": "vintagee:projecte/expansion/relay-lime",
+    "vintagee:block/antimatterrelay-mk11-side": "vintagee:projecte/expansion/relay-lime",
+    "vintagee:item/limematter": "vintagee:projecte/expansion/matter-lime",
+    "vintagee:block/matterblock-lime": "vintagee:projecte/expansion/matterblock-lime",
+    "vintagee:block/energycollector-mk12-top": "vintagee:projecte/expansion/collector-yellow",
+    "vintagee:block/energycollector-mk12-side": "vintagee:projecte/expansion/collector-yellow",
+    "vintagee:block/antimatterrelay-mk12-top": "vintagee:projecte/expansion/relay-yellow",
+    "vintagee:block/antimatterrelay-mk12-side": "vintagee:projecte/expansion/relay-yellow",
+    "vintagee:item/yellowmatter": "vintagee:projecte/expansion/matter-yellow",
+    "vintagee:block/matterblock-yellow": "vintagee:projecte/expansion/matterblock-yellow",
+    "vintagee:block/energycollector-mk13-top": "vintagee:projecte/expansion/collector-orange",
+    "vintagee:block/energycollector-mk13-side": "vintagee:projecte/expansion/collector-orange",
+    "vintagee:block/antimatterrelay-mk13-top": "vintagee:projecte/expansion/relay-orange",
+    "vintagee:block/antimatterrelay-mk13-side": "vintagee:projecte/expansion/relay-orange",
+    "vintagee:item/orangematter": "vintagee:projecte/expansion/matter-orange",
+    "vintagee:block/matterblock-orange": "vintagee:projecte/expansion/matterblock-orange",
+    "vintagee:block/energycollector-mk14-top": "vintagee:projecte/expansion/collector-white",
+    "vintagee:block/energycollector-mk14-side": "vintagee:projecte/expansion/collector-white",
+    "vintagee:block/antimatterrelay-mk14-top": "vintagee:projecte/expansion/relay-white",
+    "vintagee:block/antimatterrelay-mk14-side": "vintagee:projecte/expansion/relay-white",
+    "vintagee:item/whitematter": "vintagee:projecte/expansion/matter-white",
+    "vintagee:block/matterblock-white": "vintagee:projecte/expansion/matterblock-white",
+    "vintagee:block/energycollector-mk15-top": "vintagee:projecte/expansion/collector-fading",
+    "vintagee:block/energycollector-mk15-side": "vintagee:projecte/expansion/collector-fading",
+    "vintagee:block/antimatterrelay-mk15-top": "vintagee:projecte/expansion/relay-fading",
+    "vintagee:block/antimatterrelay-mk15-side": "vintagee:projecte/expansion/relay-fading",
+    "vintagee:item/fadingmatter": "vintagee:projecte/expansion/matter-fading",
+    "vintagee:block/matterblock-fading": "vintagee:projecte/expansion/matterblock-fading",
+    "vintagee:block/energycollector-mk16-top": "vintagee:projecte/expansion/collector-final",
+    "vintagee:block/energycollector-mk16-side": "vintagee:projecte/expansion/collector-final",
+    "vintagee:block/antimatterrelay-mk16-top": "vintagee:projecte/expansion/relay-final",
+    "vintagee:block/antimatterrelay-mk16-side": "vintagee:projecte/expansion/relay-final"
+  },
+  "overrides": [
+    {
+      "code": "vintagee:energycollector-mk4",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-magenta"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk4",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-magenta"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk5",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-pink"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk5",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-pink"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk6",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-purple"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk6",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-purple"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk7",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-violet"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk7",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-violet"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk8",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-blue"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk8",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-blue"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk9",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-cyan"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk9",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-cyan"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk10",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-green"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk10",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-green"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk11",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-lime"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk11",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-lime"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk12",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-yellow"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk12",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-yellow"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk13",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-orange"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk13",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-orange"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk14",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-white"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk14",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-white"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk15",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-fading"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk15",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-fading"
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk16",
+      "textures": {
+        "down": "vintagee:projecte/expansion/collector-final"
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk16",
+      "textures": {
+        "down": "vintagee:projecte/expansion/relay-final"
+      }
+    }
+  ]
+}

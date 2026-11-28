@@ -1,0 +1,162 @@
+{
+  "textureWidth": 16,
+  "textureHeight": 16,
+  "textures": {
+    "star": "vintagee:item/star-magnum-sphere"
+  },
+  "elements": [
+    {
+      "name": "vintageekleinstar",
+      "stepParentName": "UpperTorso",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        0,
+        0,
+        0
+      ],
+      "rotationOrigin": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        },
+        "east": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        },
+        "south": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        },
+        "west": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        },
+        "up": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        },
+        "down": {
+          "texture": "#star",
+          "uv": [
+            0,
+            0,
+            0.5,
+            0.5
+          ],
+          "enabled": false
+        }
+      },
+      "children": [
+        {
+          "name": "badge",
+          "from": [
+            -0.3,
+            1.5999999999999999,
+            1.8
+          ],
+          "to": [
+            0.05,
+            4.2,
+            4.4
+          ],
+          "faces": {
+            "north": {
+              "texture": "#star",
+              "uv": [
+                7,
+                7,
+                8,
+                8
+              ]
+            },
+            "east": {
+              "texture": "#star",
+              "uv": [
+                16,
+                0,
+                0,
+                16
+              ]
+            },
+            "south": {
+              "texture": "#star",
+              "uv": [
+                7,
+                7,
+                8,
+                8
+              ]
+            },
+            "west": {
+              "texture": "#star",
+              "uv": [
+                0,
+                0,
+                16,
+                16
+              ]
+            },
+            "up": {
+              "texture": "#star",
+              "uv": [
+                7,
+                7,
+                8,
+                8
+              ]
+            },
+            "down": {
+              "texture": "#star",
+              "uv": [
+                7,
+                7,
+                8,
+                8
+              ]
+            }
+          },
+          "glow": 30
+        }
+      ]
+    }
+  ]
+}

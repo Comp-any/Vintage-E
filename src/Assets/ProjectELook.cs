@@ -127,6 +127,29 @@ namespace VintageE
             }
 
             var files = new Dictionary<string, AssetLocation>(StringComparer.Ordinal);
+            var overrides = new List<Override>();
+            ReadMap(root, files, overrides);
+            // The Project Expansion tiers' entries (1.29.0) are in a companion file next to the map, written by
+            // tools/gen_expansion.py, so the tools that write the main maps never drop them.
+            string companion = CompanionOf(mapFile);
+            IAsset more = api.Assets.TryGet(new AssetLocation(VintageEModSystem.ModId, companion));
+            if (more != null)
+            {
+                try { ReadMap(JObject.Parse(more.ToText()), files, overrides); }
+                catch (Exception e) { logger.Error("Could not read {0}: {1}; the Project Expansion tiers keep Vintage-E's textures.", companion, e.Message); }
+            }
+
+            var loaded = new LookMap { Files = files, Overrides = overrides };
+            lock (mapCache) mapCache[cacheKey] = loaded;
+            return loaded;
+        }
+
+        /// <summary>The companion map next to a look map: config/vintagee-new-look.json → config/vintagee-new-look-expansion.json.</summary>
+        public static string CompanionOf(string mapFile) => mapFile.EndsWith(".json", StringComparison.Ordinal) ? mapFile.Substring(0, mapFile.Length - 5) + "-expansion.json" : mapFile + "-expansion";
+
+        /// <summary>Adds one look map's texture swaps and overrides to those read so far.</summary>
+        static void ReadMap(JObject root, Dictionary<string, AssetLocation> files, List<Override> overrides)
+        {
             if (root["textures"] is JObject textures)
             {
                 foreach (JProperty p in textures.Properties())
@@ -135,7 +158,6 @@ namespace VintageE
                     files[new AssetLocation(p.Name).ToString()] = new AssetLocation((string)p.Value);
                 }
             }
-            var overrides = new List<Override>();
             if (root["overrides"] is JArray arr)
             {
                 foreach (JToken t in arr)
@@ -164,10 +186,6 @@ namespace VintageE
                     overrides.Add(o);
                 }
             }
-
-            var loaded = new LookMap { Files = files, Overrides = overrides };
-            lock (mapCache) mapCache[cacheKey] = loaded;
-            return loaded;
         }
 
         /// <summary>

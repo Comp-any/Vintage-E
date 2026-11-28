@@ -3,28 +3,240 @@
   "class": "VintageEBlockEmcMachine",
   "entityClass": "VintageEEnergyCollector",
   "variantgroups": [
-    { "code": "tier", "states": [ "mk1", "mk2", "mk3" ] }
+    {
+      "code": "tier",
+      "states": [
+        "mk1",
+        "mk2",
+        "mk3",
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    }
   ],
-  "creativeinventory": { "general": [ "*" ], "mechanics": [ "*" ], "vintagee": [ "*" ] },
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "mechanics": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
   "blockmaterial": "Metal",
   "drawtype": "cube",
   "textures": {
-    "up": { "base": "block/energycollector-{tier}-top" },
-    "down": { "base": "block/transmutationtable-bottom" },
-    "north": { "base": "block/energycollector-{tier}-side" },
-    "east": { "base": "block/energycollector-{tier}-side" },
-    "south": { "base": "block/energycollector-{tier}-side" },
-    "west": { "base": "block/energycollector-{tier}-side" }
+    "up": {
+      "base": "block/energycollector-{tier}-top"
+    },
+    "down": {
+      "base": "block/transmutationtable-bottom"
+    },
+    "north": {
+      "base": "block/energycollector-{tier}-side"
+    },
+    "east": {
+      "base": "block/energycollector-{tier}-side"
+    },
+    "south": {
+      "base": "block/energycollector-{tier}-side"
+    },
+    "west": {
+      "base": "block/energycollector-{tier}-side"
+    }
   },
   "attributesByType": {
-    "*-mk1": { "emcPerSecond": 4, "capacity": 10000, "interactionHelp": "vintagee:blockhelp-collector", "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw" },
-    "*-mk2": { "emcPerSecond": 12, "capacity": 30000, "interactionHelp": "vintagee:blockhelp-collector", "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw" },
-    "*-mk3": { "emcPerSecond": 40, "capacity": 60000, "interactionHelp": "vintagee:blockhelp-collector", "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw" }
+    "*-mk1": {
+      "emcPerSecond": 4,
+      "capacity": 10000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk2": {
+      "emcPerSecond": 12,
+      "capacity": 30000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk3": {
+      "emcPerSecond": 40,
+      "capacity": 60000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk4": {
+      "emcPerSecond": 120,
+      "capacity": 180000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk5": {
+      "emcPerSecond": 400,
+      "capacity": 600000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk6": {
+      "emcPerSecond": 1200,
+      "capacity": 1800000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk7": {
+      "emcPerSecond": 4000,
+      "capacity": 6000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk8": {
+      "emcPerSecond": 12000,
+      "capacity": 18000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk9": {
+      "emcPerSecond": 40000,
+      "capacity": 60000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk10": {
+      "emcPerSecond": 120000,
+      "capacity": 180000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk11": {
+      "emcPerSecond": 400000,
+      "capacity": 600000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk12": {
+      "emcPerSecond": 1200000,
+      "capacity": 1800000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk13": {
+      "emcPerSecond": 4000000,
+      "capacity": 6000000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk14": {
+      "emcPerSecond": 12000000,
+      "capacity": 18000000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk15": {
+      "emcPerSecond": 40000000,
+      "capacity": 60000000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    },
+    "*-mk16": {
+      "emcPerSecond": 120000000,
+      "capacity": 180000000000,
+      "interactionHelp": "vintagee:blockhelp-collector",
+      "sneakInteractionHelp": "vintagee:blockhelp-collector-withdraw"
+    }
   },
   "lightHsvByType": {
-    "*-mk1": [ 8, 4, 6 ],
-    "*-mk2": [ 46, 4, 8 ],
-    "*-mk3": [ 0, 5, 10 ]
+    "*-mk1": [
+      8,
+      4,
+      6
+    ],
+    "*-mk2": [
+      46,
+      4,
+      8
+    ],
+    "*-mk3": [
+      0,
+      5,
+      10
+    ],
+    "*-mk4": [
+      52,
+      5,
+      10
+    ],
+    "*-mk5": [
+      58,
+      4,
+      10
+    ],
+    "*-mk6": [
+      49,
+      5,
+      11
+    ],
+    "*-mk7": [
+      46,
+      5,
+      11
+    ],
+    "*-mk8": [
+      40,
+      6,
+      11
+    ],
+    "*-mk9": [
+      32,
+      5,
+      12
+    ],
+    "*-mk10": [
+      21,
+      5,
+      12
+    ],
+    "*-mk11": [
+      16,
+      5,
+      12
+    ],
+    "*-mk12": [
+      10,
+      5,
+      13
+    ],
+    "*-mk13": [
+      5,
+      6,
+      13
+    ],
+    "*-mk14": [
+      0,
+      0,
+      13
+    ],
+    "*-mk15": [
+      0,
+      0,
+      14
+    ],
+    "*-mk16": [
+      8,
+      4,
+      14
+    ]
   },
   "resistance": 4,
   "requiredMiningTier": 2,

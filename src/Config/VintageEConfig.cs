@@ -138,6 +138,15 @@ namespace VintageE
         [System.ComponentModel.Description("How dark/red matter, alchemical fuels, the philosopher's stone, covalence dust and the iron band are made: \"Grid\" (the crafting grid only, as in ProjectE), \"Realistic\" (only the game's own ways: heating in a firepit or forge, the quern, the barrel, the anvil; cheaper) or \"Both\". EMC values follow the cheapest route that's on. Takes effect after a restart.")]
         public string CraftingMethods = CraftingRoutes.Both;
 
+        /// <summary>
+        /// Project Expansion's tiers (1.29.0): Energy Collectors and Anti-Matter Relays MK4 to MK16, magenta to fading
+        /// matter and their blocks, the Final Star Shard, and the Magnum, Colossal and Gargantuan stars. Off: none of them
+        /// exist on this server at all (no blocks, items, recipes or handbook pages); see <see cref="ExpansionTiers"/>.
+        /// Takes effect after a restart.
+        /// </summary>
+        [System.ComponentModel.Description("Project Expansion's tiers: Energy Collectors and Anti-Matter Relays MK4 to MK16, magenta to fading matter and their blocks, the Final Star Shard, and the Magnum, Colossal and Gargantuan stars. Off: none of them exist on this server at all (no blocks, items, recipes or handbook pages). Takes effect after a restart. Decide before players make any: switching it off in a world that already has these blocks and items loses them.")]
+        public bool Expansion = true;
+
         /// <summary>Fraction of output a collector keeps at night or underground (0 = nothing without sun).</summary>
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;

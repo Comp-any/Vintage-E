@@ -1,0 +1,136 @@
+{
+  "//": "Written by tools/gen_expansion.py. What the server setting Expansion takes out when it's off (ExpansionTiers.cs): these states of these block and item types, these whole files, and these recipe files.",
+  "states": {
+    "blocktypes/energycollector.json": {
+      "group": "tier",
+      "states": [
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    },
+    "blocktypes/antimatterrelay.json": {
+      "group": "tier",
+      "states": [
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
+      ]
+    },
+    "blocktypes/matterblock.json": {
+      "group": "type",
+      "states": [
+        "magenta",
+        "pink",
+        "purple",
+        "violet",
+        "blue",
+        "cyan",
+        "green",
+        "lime",
+        "yellow",
+        "orange",
+        "white",
+        "fading"
+      ]
+    },
+    "itemtypes/matter.json": {
+      "group": "type",
+      "states": [
+        "magenta",
+        "pink",
+        "purple",
+        "violet",
+        "blue",
+        "cyan",
+        "green",
+        "lime",
+        "yellow",
+        "orange",
+        "white",
+        "fading"
+      ]
+    }
+  },
+  "files": [
+    "itemtypes/star.json",
+    "itemtypes/finalstarshard.json"
+  ],
+  "recipes": [
+    "recipes/grid/expansion.json"
+  ],
+  "tiers": [
+    {
+      "mk": 4,
+      "matter": "magenta"
+    },
+    {
+      "mk": 5,
+      "matter": "pink"
+    },
+    {
+      "mk": 6,
+      "matter": "purple"
+    },
+    {
+      "mk": 7,
+      "matter": "violet"
+    },
+    {
+      "mk": 8,
+      "matter": "blue"
+    },
+    {
+      "mk": 9,
+      "matter": "cyan"
+    },
+    {
+      "mk": 10,
+      "matter": "green"
+    },
+    {
+      "mk": 11,
+      "matter": "lime"
+    },
+    {
+      "mk": 12,
+      "matter": "yellow"
+    },
+    {
+      "mk": 13,
+      "matter": "orange"
+    },
+    {
+      "mk": 14,
+      "matter": "white"
+    },
+    {
+      "mk": 15,
+      "matter": "fading"
+    },
+    {
+      "mk": 16,
+      "matter": "final"
+    }
+  ]
+}

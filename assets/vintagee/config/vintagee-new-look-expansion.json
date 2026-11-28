@@ -1,0 +1,2654 @@
+{
+  "//": "Written by tools/gen_expansion.py. Read with vintagee-new-look.json (the New look): the Project Expansion tiers' models, the same as MK1-3's with the game's metals and each tier's matter.",
+  "textures": {
+    "vintagee:block/matterblock-magenta": "vintagee:newlook/block/matterblock-magenta",
+    "vintagee:block/matterblock-pink": "vintagee:newlook/block/matterblock-pink",
+    "vintagee:block/matterblock-purple": "vintagee:newlook/block/matterblock-purple",
+    "vintagee:block/matterblock-violet": "vintagee:newlook/block/matterblock-violet",
+    "vintagee:block/matterblock-blue": "vintagee:newlook/block/matterblock-blue",
+    "vintagee:block/matterblock-cyan": "vintagee:newlook/block/matterblock-cyan",
+    "vintagee:block/matterblock-green": "vintagee:newlook/block/matterblock-green",
+    "vintagee:block/matterblock-lime": "vintagee:newlook/block/matterblock-lime",
+    "vintagee:block/matterblock-yellow": "vintagee:newlook/block/matterblock-yellow",
+    "vintagee:block/matterblock-orange": "vintagee:newlook/block/matterblock-orange",
+    "vintagee:block/matterblock-white": "vintagee:newlook/block/matterblock-white",
+    "vintagee:block/matterblock-fading": "vintagee:newlook/block/matterblock-fading"
+  },
+  "overrides": [
+    {
+      "code": "vintagee:energycollector-mk4",
+      "label": "collector mk4",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/magentamatter",
+        "glass": "vintagee:newlook/material/magentamatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk4",
+      "label": "relay mk4",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/magentamatter",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/magentamatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-magenta",
+      "label": "magenta matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/magentamatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk5",
+      "label": "collector mk5",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/pinkmatter",
+        "glass": "vintagee:newlook/material/pinkmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk5",
+      "label": "relay mk5",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/pinkmatter",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/pinkmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-pink",
+      "label": "pink matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/pinkmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk6",
+      "label": "collector mk6",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/purplematter",
+        "glass": "vintagee:newlook/material/purplematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk6",
+      "label": "relay mk6",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/purplematter",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/purplematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-purple",
+      "label": "purple matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/purplematter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk7",
+      "label": "collector mk7",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/violetmatter",
+        "glass": "vintagee:newlook/material/violetmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk7",
+      "label": "relay mk7",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/violetmatter",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/violetmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-violet",
+      "label": "violet matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/violetmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk8",
+      "label": "collector mk8",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/bluematter",
+        "glass": "vintagee:newlook/material/bluematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk8",
+      "label": "relay mk8",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/bluematter",
+        "metal": "game:block/metal/plate/platinum",
+        "glow": "vintagee:newlook/material/bluematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-blue",
+      "label": "blue matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/bluematter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk9",
+      "label": "collector mk9",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/cyanmatter",
+        "glass": "vintagee:newlook/material/cyanmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk9",
+      "label": "relay mk9",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/cyanmatter",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/cyanmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-cyan",
+      "label": "cyan matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/cyanmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk10",
+      "label": "collector mk10",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/greenmatter",
+        "glass": "vintagee:newlook/material/greenmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk10",
+      "label": "relay mk10",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/greenmatter",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/greenmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-green",
+      "label": "green matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/greenmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk11",
+      "label": "collector mk11",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/limematter",
+        "glass": "vintagee:newlook/material/limematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk11",
+      "label": "relay mk11",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/limematter",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/limematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-lime",
+      "label": "lime matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/limematter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk12",
+      "label": "collector mk12",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/yellowmatter",
+        "glass": "vintagee:newlook/material/yellowmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk12",
+      "label": "relay mk12",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/yellowmatter",
+        "metal": "game:block/metal/plate/electrum",
+        "glow": "vintagee:newlook/material/yellowmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-yellow",
+      "label": "yellow matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/yellowmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk13",
+      "label": "collector mk13",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/orangematter",
+        "glass": "vintagee:newlook/material/orangematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk13",
+      "label": "relay mk13",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/orangematter",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/orangematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-orange",
+      "label": "orange matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/orangematter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk14",
+      "label": "collector mk14",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/whitematter",
+        "glass": "vintagee:newlook/material/whitematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk14",
+      "label": "relay mk14",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/whitematter",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/whitematter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-white",
+      "label": "white matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/whitematter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk15",
+      "label": "collector mk15",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/fadingmatter",
+        "glass": "vintagee:newlook/material/fadingmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk15",
+      "label": "relay mk15",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/fadingmatter",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/fadingmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:matter-fading",
+      "label": "fading matter",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/orb",
+      "textures": {
+        "matter": "vintagee:newlook/material/fadingmatter"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 2.14
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.375,
+          "z": 0.5
+        },
+        "scale": 0.64
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.156,
+          "z": 0.5
+        },
+        "scale": 2.29
+      }
+    },
+    {
+      "code": "vintagee:energycollector-mk16",
+      "label": "collector mk16",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/energycollector",
+      "textures": {
+        "wood": "game:block/wood/planks/ebony1",
+        "frame": "game:block/wood/debarked/ebony",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/finalmatter",
+        "glass": "vintagee:newlook/material/finalmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:antimatterrelay-mk16",
+      "label": "relay mk16",
+      "kind": "block",
+      "shape": "vintagee:newlook/block/antimatterrelay",
+      "textures": {
+        "stone": "game:block/stone/polishedrock/granite",
+        "matter": "vintagee:newlook/material/finalmatter",
+        "metal": "game:block/metal/plate/titanium",
+        "glow": "vintagee:newlook/material/finalmatter"
+      },
+      "drawtype": "JSON",
+      "selectionbox": {
+        "x1": 0.0,
+        "y1": 0.0,
+        "z1": 0.0,
+        "x2": 1.0,
+        "y2": 1.0,
+        "z2": 1.0
+      },
+      "sideopaque": false,
+      "set": {
+        "LightAbsorption": 0
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-ein",
+      "label": "magnum star ein",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/quartz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-zwei",
+      "label": "magnum star zwei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/citrine"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-drei",
+      "label": "magnum star drei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/topaz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-vier",
+      "label": "magnum star vier",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/emerald"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-sphere",
+      "label": "magnum star sphere",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/sapphire"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-magnum-omega",
+      "label": "magnum star omega",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/platinum",
+        "gem": "game:block/stone/gem/amethyst"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-ein",
+      "label": "colossal star ein",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/quartz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-zwei",
+      "label": "colossal star zwei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/citrine"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-drei",
+      "label": "colossal star drei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/topaz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-vier",
+      "label": "colossal star vier",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/emerald"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-sphere",
+      "label": "colossal star sphere",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/sapphire"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-colossal-omega",
+      "label": "colossal star omega",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/amethyst"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-ein",
+      "label": "gargantuan star ein",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/quartz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-zwei",
+      "label": "gargantuan star zwei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/citrine"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-drei",
+      "label": "gargantuan star drei",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/topaz"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-vier",
+      "label": "gargantuan star vier",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/emerald"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-sphere",
+      "label": "gargantuan star sphere",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/sapphire"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:star-gargantuan-omega",
+      "label": "gargantuan star omega",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/titanium",
+        "gem": "game:block/stone/gem/amethyst"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    },
+    {
+      "code": "vintagee:finalstarshard",
+      "label": "final star shard",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/star",
+      "textures": {
+        "metal": "game:block/metal/plate/gold",
+        "gem": "game:block/stone/gem/diamond"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 1.5
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.438,
+          "z": 0.5
+        },
+        "scale": 0.45
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.5,
+          "y": 0.125,
+          "z": 0.5
+        },
+        "scale": 1.6
+      }
+    }
+  ]
+}

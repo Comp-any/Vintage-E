@@ -1,0 +1,2 @@
+168bcf2491b9fde679295fd412ad9c93fd3d93f1 2026-06-24
+DonovanDMC/ProjectExpansion, branch 1.21.1, src/main/resources/assets/projectexpansion/textures (MIT, see LICENSE)

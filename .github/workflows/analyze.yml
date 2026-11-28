@@ -36,6 +36,9 @@ on:
       doctor:
         description: Install Vintage Doctor too ("true"; the zip in tools/vendor/vintagedoctor), to test the EMC doctor being handed over to it
         default: "false"
+      expansion:
+        description: The server setting Expansion (Project Expansion's tiers); "false" tests the server with them switched off
+        default: "true"
 
 permissions:
   contents: write
@@ -53,6 +56,7 @@ jobs:
       EXTRA_MOD_URLS: ${{ inputs.extraModUrls || '' }}
       KEEP_ZIPS: ${{ inputs.keepZips || 'false' }}
       DOCTOR: ${{ inputs.doctor || 'false' }}
+      EXPANSION: ${{ inputs.expansion || 'true' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -147,7 +151,7 @@ jobs:
           done
           # A look other than the default, so the self-test can check it: ProjectE's originals for runs started by hand
           # (with ProjectE's sounds), New for pushes to ci/** (or set it with the "look" input). Both looks are checked either way, on copies.
-          echo "{ \"DumpValuesOnStart\": true, \"CacheEmcValues\": false, \"SelfTestOnStart\": true, \"Look\": \"${LOOK}\", \"ProjectESounds\": true }" > "$data/ModConfig/vintagee.json"
+          echo "{ \"DumpValuesOnStart\": true, \"CacheEmcValues\": false, \"SelfTestOnStart\": true, \"Look\": \"${LOOK}\", \"ProjectESounds\": true, \"Expansion\": ${EXPANSION} }" > "$data/ModConfig/vintagee.json"
           cat "$data/ModConfig/vintagee.json"
           cd "$VSDIR"
           dotnet VintagestoryServer.dll --dataPath "$data" > "$GITHUB_WORKSPACE/server-console.log" 2>&1 &

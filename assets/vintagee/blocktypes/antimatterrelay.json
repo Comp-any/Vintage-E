@@ -8,7 +8,20 @@
       "states": [
         "mk1",
         "mk2",
-        "mk3"
+        "mk3",
+        "mk4",
+        "mk5",
+        "mk6",
+        "mk7",
+        "mk8",
+        "mk9",
+        "mk10",
+        "mk11",
+        "mk12",
+        "mk13",
+        "mk14",
+        "mk15",
+        "mk16"
       ]
     }
   ],
@@ -63,6 +76,84 @@
       "bonusPerSecond": 10,
       "transferPerSecond": 640,
       "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk4": {
+      "capacity": 30000000,
+      "bonusPerSecond": 30,
+      "transferPerSecond": 1920,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk5": {
+      "capacity": 100000000,
+      "bonusPerSecond": 100,
+      "transferPerSecond": 6400,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk6": {
+      "capacity": 300000000,
+      "bonusPerSecond": 300,
+      "transferPerSecond": 19200,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk7": {
+      "capacity": 1000000000,
+      "bonusPerSecond": 1000,
+      "transferPerSecond": 64000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk8": {
+      "capacity": 3000000000,
+      "bonusPerSecond": 3000,
+      "transferPerSecond": 192000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk9": {
+      "capacity": 10000000000,
+      "bonusPerSecond": 10000,
+      "transferPerSecond": 640000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk10": {
+      "capacity": 30000000000,
+      "bonusPerSecond": 30000,
+      "transferPerSecond": 1920000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk11": {
+      "capacity": 100000000000,
+      "bonusPerSecond": 100000,
+      "transferPerSecond": 6400000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk12": {
+      "capacity": 300000000000,
+      "bonusPerSecond": 300000,
+      "transferPerSecond": 19200000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk13": {
+      "capacity": 1000000000000,
+      "bonusPerSecond": 1000000,
+      "transferPerSecond": 64000000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk14": {
+      "capacity": 3000000000000,
+      "bonusPerSecond": 3000000,
+      "transferPerSecond": 192000000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk15": {
+      "capacity": 10000000000000,
+      "bonusPerSecond": 10000000,
+      "transferPerSecond": 640000000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
+    },
+    "*-mk16": {
+      "capacity": 30000000000000,
+      "bonusPerSecond": 30000000,
+      "transferPerSecond": 1920000000,
+      "sneakInteractionHelp": "vintagee:blockhelp-relay-withdraw"
     }
   },
   "lightHsvByType": {
@@ -80,6 +171,71 @@
       0,
       5,
       8
+    ],
+    "*-mk4": [
+      52,
+      5,
+      8
+    ],
+    "*-mk5": [
+      58,
+      4,
+      8
+    ],
+    "*-mk6": [
+      49,
+      5,
+      9
+    ],
+    "*-mk7": [
+      46,
+      5,
+      9
+    ],
+    "*-mk8": [
+      40,
+      6,
+      9
+    ],
+    "*-mk9": [
+      32,
+      5,
+      10
+    ],
+    "*-mk10": [
+      21,
+      5,
+      10
+    ],
+    "*-mk11": [
+      16,
+      5,
+      10
+    ],
+    "*-mk12": [
+      10,
+      5,
+      11
+    ],
+    "*-mk13": [
+      5,
+      6,
+      11
+    ],
+    "*-mk14": [
+      0,
+      0,
+      11
+    ],
+    "*-mk15": [
+      0,
+      0,
+      12
+    ],
+    "*-mk16": [
+      8,
+      4,
+      12
     ]
   },
   "resistance": 6,

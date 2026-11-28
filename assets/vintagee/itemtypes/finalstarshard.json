@@ -1,0 +1,21 @@
+{
+  "code": "finalstarshard",
+  "maxstacksize": 64,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/finalstarshard"
+  },
+  "lightHsv": [
+    8,
+    4,
+    8
+  ],
+  "materialDensity": 3000
+}

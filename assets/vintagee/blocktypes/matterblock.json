@@ -1,22 +1,130 @@
 {
   "code": "matterblock",
   "variantgroups": [
-    { "code": "type", "states": [ "dark", "red" ] }
+    {
+      "code": "type",
+      "states": [
+        "dark",
+        "red",
+        "magenta",
+        "pink",
+        "purple",
+        "violet",
+        "blue",
+        "cyan",
+        "green",
+        "lime",
+        "yellow",
+        "orange",
+        "white",
+        "fading"
+      ]
+    }
   ],
-  "creativeinventory": { "general": [ "*" ], "construction": [ "*" ], "vintagee": [ "*" ] },
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "construction": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
   "blockmaterial": "Metal",
   "drawtype": "cube",
   "textures": {
-    "up": { "base": "block/matterblock-{type}" },
-    "down": { "base": "block/matterblock-{type}" },
-    "north": { "base": "block/matterblock-{type}" },
-    "east": { "base": "block/matterblock-{type}" },
-    "south": { "base": "block/matterblock-{type}" },
-    "west": { "base": "block/matterblock-{type}" }
+    "up": {
+      "base": "block/matterblock-{type}"
+    },
+    "down": {
+      "base": "block/matterblock-{type}"
+    },
+    "north": {
+      "base": "block/matterblock-{type}"
+    },
+    "east": {
+      "base": "block/matterblock-{type}"
+    },
+    "south": {
+      "base": "block/matterblock-{type}"
+    },
+    "west": {
+      "base": "block/matterblock-{type}"
+    }
   },
   "lightHsvByType": {
-    "*-dark": [ 48, 4, 5 ],
-    "*-red": [ 0, 5, 6 ]
+    "*-dark": [
+      48,
+      4,
+      5
+    ],
+    "*-red": [
+      0,
+      5,
+      6
+    ],
+    "*-magenta": [
+      52,
+      5,
+      6
+    ],
+    "*-pink": [
+      58,
+      4,
+      6
+    ],
+    "*-purple": [
+      49,
+      5,
+      6
+    ],
+    "*-violet": [
+      46,
+      5,
+      7
+    ],
+    "*-blue": [
+      40,
+      6,
+      7
+    ],
+    "*-cyan": [
+      32,
+      5,
+      7
+    ],
+    "*-green": [
+      21,
+      5,
+      7
+    ],
+    "*-lime": [
+      16,
+      5,
+      8
+    ],
+    "*-yellow": [
+      10,
+      5,
+      8
+    ],
+    "*-orange": [
+      5,
+      6,
+      8
+    ],
+    "*-white": [
+      0,
+      0,
+      8
+    ],
+    "*-fading": [
+      0,
+      0,
+      9
+    ]
   },
   "resistance": 12,
   "requiredMiningTier": 4,

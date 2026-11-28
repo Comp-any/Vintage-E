@@ -1,0 +1,239 @@
+{
+  "code": "star",
+  "class": "VintageEItemKleinStar",
+  "variantgroups": [
+    {
+      "code": "size",
+      "states": [
+        "magnum",
+        "colossal",
+        "gargantuan"
+      ]
+    },
+    {
+      "code": "tier",
+      "states": [
+        "ein",
+        "zwei",
+        "drei",
+        "vier",
+        "sphere",
+        "omega"
+      ]
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/star-{size}-{tier}"
+  },
+  "attributesByType": {
+    "*-magnum-ein": {
+      "capacity": 204800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-ein"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-ein"
+      }
+    },
+    "*-magnum-zwei": {
+      "capacity": 819200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-zwei"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-zwei"
+      }
+    },
+    "*-magnum-drei": {
+      "capacity": 3276800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-drei"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-drei"
+      }
+    },
+    "*-magnum-vier": {
+      "capacity": 13107200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-vier"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-vier"
+      }
+    },
+    "*-magnum-sphere": {
+      "capacity": 52428800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-sphere"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-sphere"
+      }
+    },
+    "*-magnum-omega": {
+      "capacity": 209715200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-magnum-omega"
+        },
+        "texturePrefixCode": "vintagee-star-magnum-omega"
+      }
+    },
+    "*-colossal-ein": {
+      "capacity": 838860800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-ein"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-ein"
+      }
+    },
+    "*-colossal-zwei": {
+      "capacity": 3355443200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-zwei"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-zwei"
+      }
+    },
+    "*-colossal-drei": {
+      "capacity": 13421772800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-drei"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-drei"
+      }
+    },
+    "*-colossal-vier": {
+      "capacity": 53687091200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-vier"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-vier"
+      }
+    },
+    "*-colossal-sphere": {
+      "capacity": 214748364800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-sphere"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-sphere"
+      }
+    },
+    "*-colossal-omega": {
+      "capacity": 858993459200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-colossal-omega"
+        },
+        "texturePrefixCode": "vintagee-star-colossal-omega"
+      }
+    },
+    "*-gargantuan-ein": {
+      "capacity": 3435973836800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-ein"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-ein"
+      }
+    },
+    "*-gargantuan-zwei": {
+      "capacity": 13743895347200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-zwei"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-zwei"
+      }
+    },
+    "*-gargantuan-drei": {
+      "capacity": 54975581388800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-drei"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-drei"
+      }
+    },
+    "*-gargantuan-vier": {
+      "capacity": 219902325555200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-vier"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-vier"
+      }
+    },
+    "*-gargantuan-sphere": {
+      "capacity": 879609302220800000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-sphere"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-sphere"
+      }
+    },
+    "*-gargantuan-omega": {
+      "capacity": 3518437208883200000,
+      "clothescategory": "emblem",
+      "attachableToEntity": {
+        "categoryCode": "emblem",
+        "attachedShape": {
+          "base": "vintagee:entity/worn/star-gargantuan-omega"
+        },
+        "texturePrefixCode": "vintagee-star-gargantuan-omega"
+      }
+    }
+  },
+  "storageFlags": 129,
+  "materialDensity": 3000
+}

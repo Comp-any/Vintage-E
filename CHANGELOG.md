@@ -2,6 +2,31 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.0 — 2026-11-28
+
+Project Expansion's tiers (a ProjectE add-on for Minecraft), with Vintage-E's own numbers and recipes.
+
+### Added
+- **Energy Collectors and Anti-Matter Relays MK4 to MK16**: Magenta, Pink, Purple, Violet, Blue, Cyan, Green, Lime, Yellow, Orange, White, Fading and Final.
+  - They continue MK1–3's numbers, so every two tiers is ×10. Collectors make 120 EMC a second at MK4, up to 120 million at MK16, and keep 1,500 seconds of it as MK3 does.
+  - Relays add 30 EMC a second at MK4 (up to 30 million) and pass on 1,920 a second (up to 1.92 billion), and hold as much as MK3's do for their rate.
+  - Everything else works as for MK1–3: the Klein star slot, the fuel slot, the burn slot, sneak + right-click to take the EMC.
+  - A collector is the one before it in glass with one of its tier's matter; a relay is the one before it with 4 of that matter and 4 obsidian. These are MK2's and MK3's own recipes.
+- **Magenta to Fading Matter, and their blocks.** Each matter is 3 of the one before between 6 aeternalis fuel, as red matter is, and 4 make a block.
+- **The Final Star Shard**, the Final tier's matter: 8 Colossal Star Omegas around 8 temporal gears. Project Expansion uses a nether star, which Vintage Story doesn't have.
+- **Magnum, Colossal and Gargantuan stars, Ein to Omega**: 18 stars from 204.8 million to 3.5 quintillion EMC. A Magnum Star Ein is 4 Klein Star Omegas, and each star after it is 4 of the one before. They keep their EMC when crafted, work everywhere Klein stars do, and can be worn in the emblem slot.
+- All of them have names, handbook pages, Vintage-E's creative tab, and all three looks:
+  - **Middle:** Vintage-E's own textures in each tier's colour.
+  - **New:** the MK1–3 models with the game's metals and each tier's matter.
+  - **Original:** Project Expansion's own textures.
+  - **Stars** use Project Expansion's star art in every look, as the Klein stars use ProjectE's (MIT; see THIRD-PARTY-NOTICES.md).
+- **The server setting `Expansion`** (on by default). Off, none of these blocks, items, recipes or handbook pages exist on the server at all: they're taken out before the game reads them.
+  - It takes effect after a restart.
+  - It's meant to be decided before any are made. Switching it off in a world that already has them loses those blocks and items.
+  - The doctor's machines page (`/emc diagnose machines`) says whether the tiers are on, and warns if the setting was changed since the server started.
+
+Not yet: the Final Star (Project Expansion's star that never runs out). Its recipe needs Final Power Flowers, which are a later step.
+
 ## 1.28.0 — 2026-11-28
 
 Three quality-of-life features from Project Expansion (a ProjectE add-on for Minecraft).

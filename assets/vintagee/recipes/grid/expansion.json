@@ -1,0 +1,1589 @@
+[
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-magenta"
+    },
+    "name": "vintagee:matter-magenta"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-magenta"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-magenta"
+    },
+    "name": "vintagee:matterblock-magenta"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-magenta"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-magenta",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-magenta-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-magenta"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-pink"
+    },
+    "name": "vintagee:matter-pink"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-pink"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-pink"
+    },
+    "name": "vintagee:matterblock-pink"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-pink"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-pink",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-pink-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-pink"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-purple"
+    },
+    "name": "vintagee:matter-purple"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-purple"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-purple"
+    },
+    "name": "vintagee:matterblock-purple"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-purple"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-purple",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-purple-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-purple"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-violet"
+    },
+    "name": "vintagee:matter-violet"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-violet"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-violet"
+    },
+    "name": "vintagee:matterblock-violet"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-violet"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-violet",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-violet-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-violet"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-blue"
+    },
+    "name": "vintagee:matter-blue"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-blue"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-blue"
+    },
+    "name": "vintagee:matterblock-blue"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-blue"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-blue",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-blue-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-blue"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-cyan"
+    },
+    "name": "vintagee:matter-cyan"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-cyan"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-cyan"
+    },
+    "name": "vintagee:matterblock-cyan"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-cyan"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-cyan",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-cyan-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-cyan"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-green"
+    },
+    "name": "vintagee:matter-green"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-green"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-green"
+    },
+    "name": "vintagee:matterblock-green"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-green"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-green",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-green-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-green"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-lime"
+    },
+    "name": "vintagee:matter-lime"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-lime"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-lime"
+    },
+    "name": "vintagee:matterblock-lime"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-lime"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-lime",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-lime-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-lime"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-yellow"
+    },
+    "name": "vintagee:matter-yellow"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-yellow"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-yellow"
+    },
+    "name": "vintagee:matterblock-yellow"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-yellow"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-yellow",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-yellow-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-yellow"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-orange"
+    },
+    "name": "vintagee:matter-orange"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-orange"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-orange"
+    },
+    "name": "vintagee:matterblock-orange"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-orange"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-orange",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-orange-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-orange"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-white"
+    },
+    "name": "vintagee:matter-white"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-white"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-white"
+    },
+    "name": "vintagee:matterblock-white"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-white"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-white",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-white-uncraft"
+  },
+  {
+    "ingredientPattern": "AAA,PPP,AAA",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "vintagee:alchemicalfuel-aeternalisfuel"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-white"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-fading"
+    },
+    "name": "vintagee:matter-fading"
+  },
+  {
+    "ingredientPattern": "PP,PP",
+    "ingredients": {
+      "P": {
+        "type": "item",
+        "code": "vintagee:matter-fading"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "block",
+      "code": "vintagee:matterblock-fading"
+    },
+    "name": "vintagee:matterblock-fading"
+  },
+  {
+    "ingredientPattern": "B",
+    "ingredients": {
+      "B": {
+        "type": "block",
+        "code": "vintagee:matterblock-fading"
+      }
+    },
+    "width": 1,
+    "height": 1,
+    "output": {
+      "type": "item",
+      "code": "vintagee:matter-fading",
+      "quantity": 4
+    },
+    "name": "vintagee:matterblock-fading-uncraft"
+  },
+  {
+    "ingredientPattern": "SSS,SGS,SSS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-omega"
+      },
+      "G": {
+        "type": "item",
+        "code": "game:gear-temporal",
+        "quantity": 8
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:finalstarshard"
+    },
+    "name": "vintagee:finalstarshard"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-magenta"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk3"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk4"
+    },
+    "name": "vintagee:collector-mk4"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-magenta"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk3"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk4"
+    },
+    "name": "vintagee:antimatterrelay-mk4"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-pink"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk4"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk5"
+    },
+    "name": "vintagee:collector-mk5"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-pink"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk4"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk5"
+    },
+    "name": "vintagee:antimatterrelay-mk5"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-purple"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk5"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk6"
+    },
+    "name": "vintagee:collector-mk6"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-purple"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk5"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk6"
+    },
+    "name": "vintagee:antimatterrelay-mk6"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-violet"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk6"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk7"
+    },
+    "name": "vintagee:collector-mk7"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-violet"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk6"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk7"
+    },
+    "name": "vintagee:antimatterrelay-mk7"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-blue"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk7"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk8"
+    },
+    "name": "vintagee:collector-mk8"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-blue"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk7"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk8"
+    },
+    "name": "vintagee:antimatterrelay-mk8"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-cyan"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk8"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk9"
+    },
+    "name": "vintagee:collector-mk9"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-cyan"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk8"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk9"
+    },
+    "name": "vintagee:antimatterrelay-mk9"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-green"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk9"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk10"
+    },
+    "name": "vintagee:collector-mk10"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-green"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk9"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk10"
+    },
+    "name": "vintagee:antimatterrelay-mk10"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-lime"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk10"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk11"
+    },
+    "name": "vintagee:collector-mk11"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-lime"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk10"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk11"
+    },
+    "name": "vintagee:antimatterrelay-mk11"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-yellow"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk11"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk12"
+    },
+    "name": "vintagee:collector-mk12"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-yellow"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk11"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk12"
+    },
+    "name": "vintagee:antimatterrelay-mk12"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-orange"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk12"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk13"
+    },
+    "name": "vintagee:collector-mk13"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-orange"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk12"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk13"
+    },
+    "name": "vintagee:antimatterrelay-mk13"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-white"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk13"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk14"
+    },
+    "name": "vintagee:collector-mk14"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-white"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk13"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk14"
+    },
+    "name": "vintagee:antimatterrelay-mk14"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-fading"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk14"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk15"
+    },
+    "name": "vintagee:collector-mk15"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:matter-fading"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk14"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk15"
+    },
+    "name": "vintagee:antimatterrelay-mk15"
+  },
+  {
+    "ingredientPattern": "GMG,GCG,GGG",
+    "ingredients": {
+      "G": {
+        "type": "block",
+        "code": "game:glass-*"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:finalstarshard"
+      },
+      "C": {
+        "type": "block",
+        "code": "vintagee:energycollector-mk15"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:energycollector-mk16"
+    },
+    "name": "vintagee:collector-mk16"
+  },
+  {
+    "ingredientPattern": "OMO,MXM,OMO",
+    "ingredients": {
+      "O": {
+        "type": "block",
+        "code": "game:rock-obsidian"
+      },
+      "M": {
+        "type": "item",
+        "code": "vintagee:finalstarshard"
+      },
+      "X": {
+        "type": "block",
+        "code": "vintagee:antimatterrelay-mk15"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "vintagee:antimatterrelay-mk16"
+    },
+    "name": "vintagee:antimatterrelay-mk16"
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:kleinstar-omega"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-ein"
+    },
+    "name": "vintagee:star-magnum-ein",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-ein"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-zwei"
+    },
+    "name": "vintagee:star-magnum-zwei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-zwei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-drei"
+    },
+    "name": "vintagee:star-magnum-drei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-drei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-vier"
+    },
+    "name": "vintagee:star-magnum-vier",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-vier"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-sphere"
+    },
+    "name": "vintagee:star-magnum-sphere",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-sphere"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-magnum-omega"
+    },
+    "name": "vintagee:star-magnum-omega",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-magnum-omega"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-ein"
+    },
+    "name": "vintagee:star-colossal-ein",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-ein"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-zwei"
+    },
+    "name": "vintagee:star-colossal-zwei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-zwei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-drei"
+    },
+    "name": "vintagee:star-colossal-drei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-drei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-vier"
+    },
+    "name": "vintagee:star-colossal-vier",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-vier"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-sphere"
+    },
+    "name": "vintagee:star-colossal-sphere",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-sphere"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-colossal-omega"
+    },
+    "name": "vintagee:star-colossal-omega",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-colossal-omega"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-ein"
+    },
+    "name": "vintagee:star-gargantuan-ein",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-gargantuan-ein"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-zwei"
+    },
+    "name": "vintagee:star-gargantuan-zwei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-gargantuan-zwei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-drei"
+    },
+    "name": "vintagee:star-gargantuan-drei",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-gargantuan-drei"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-vier"
+    },
+    "name": "vintagee:star-gargantuan-vier",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-gargantuan-vier"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-sphere"
+    },
+    "name": "vintagee:star-gargantuan-sphere",
+    "shapeless": true
+  },
+  {
+    "ingredientPattern": "SS,SS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:star-gargantuan-sphere"
+      }
+    },
+    "width": 2,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "vintagee:star-gargantuan-omega"
+    },
+    "name": "vintagee:star-gargantuan-omega",
+    "shapeless": true
+  }
+]
