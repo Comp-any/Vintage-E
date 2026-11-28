@@ -220,8 +220,8 @@ namespace VintageE
             var newFlower = nl?.Objects?.GetValueOrDefault("vintagee:powerflower-mk3") as Block;
             var newLink = nl?.Objects?.GetValueOrDefault("vintagee:emclink-mk2") as Block;
             Check(newFlower?.Shape?.Base?.ToString() == "vintagee:newlook/block/powerflower" && newLink?.Shape?.Base?.ToString() == "vintagee:newlook/block/energycondenser"
-                  && Swap(nl, "vintagee:powerflower-mk3#glow") == "game:block/stone/gem/ruby",
-                $"New look: flowers keep Project Expansion's model in the game's metals and gems, links the condenser's ({newFlower?.Shape?.Base}, {newLink?.Shape?.Base}, {Swap(nl, "vintagee:powerflower-mk3#glow") ?? "unchanged"})");
+                  && Swap(nl, "vintagee:powerflower-mk3#glow") == "game:block/stone/gem/ruby" && (!on || Swap(nl, "vintagee:compactsun#core") == "game:block/stone/gem/citrine"),
+                $"New look: flowers keep Project Expansion's model in the game's metals and gems, links the condenser's, the Compact Sun glows citrine ({newFlower?.Shape?.Base}, {newLink?.Shape?.Base}, {Swap(nl, "vintagee:powerflower-mk3#glow") ?? "unchanged"}, {Swap(nl, "vintagee:compactsun#core") ?? "unchanged"})");
         }
     }
 }

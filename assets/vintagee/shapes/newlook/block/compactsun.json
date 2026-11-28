@@ -3,7 +3,7 @@
  "textureHeight": 16,
  "textures": {
   "metal": "game:block/metal/plate/gold",
-  "core": "vintagee:newlook/material/finalmatter"
+  "core": "game:block/stone/gem/citrine"
  },
  "elements": [
   {

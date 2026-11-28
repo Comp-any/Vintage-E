@@ -30,7 +30,7 @@ More from Project Expansion: the machines that work for one player.
 - MK1–3 and the Matter Upgrader are always there. MK4 and up, the Final Star and the Compact Sun come with the `Expansion` setting, as the other Project Expansion tiers do.
 - All three looks:
   - **Middle:** the flower's cubes in the tier's colour; links are dark plates with a chain on the sides and a core on top.
-  - **New:** the flower in the game's metals and gems; links have the condenser's model in white marble; the sun is a gold cage round a glowing core; the Final Star has the Gargantuan star's three rings in gold.
+  - **New:** the flower in the game's metals and gems; links have the condenser's model in white marble; the sun is a gold cage round a glowing citrine core; the Final Star has the Gargantuan star's three rings in gold.
   - **Original:** Project Expansion's own textures and model.
 
 ### Changed

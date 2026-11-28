@@ -401,7 +401,7 @@ def textures_and_looks():
     flower = gn.save_shape("block/powerflower", gn.shape({"metal": plate("brass"), "glow": gem("citrine")}, nl))
     # The link: the condenser's model in white marble.
     condenser = f"{MOD}:newlook/block/energycondenser"
-    # The sun: a gold cage round a glowing core.
+    # The sun: a gold cage round a glowing citrine core (the game's bright golden-yellow gem).
     cage = [gn.box("core", (2.5, 2.5, 2.5), (13.5, 13.5, 13.5), "core", glow=255)]
     for ax in range(3):
         for a in (0, 14.5):
@@ -410,7 +410,7 @@ def textures_and_looks():
                 o1, o2 = [i for i in range(3) if i != ax]
                 f[o1], t[o1], f[o2], t[o2] = a, a + 1.5, b, b + 1.5
                 cage.append(gn.box(f"bar{ax}-{a}-{b}", tuple(f), tuple(t), "metal"))
-    sun = gn.save_shape("block/compactsun", gn.shape({"metal": plate("gold"), "core": newmat["final"]}, cage))
+    sun = gn.save_shape("block/compactsun", gn.shape({"metal": plate("gold"), "core": gem("citrine")}, cage))
 
     path = os.path.join(gx.ROOT, "config", "vintagee-new-look-expansion.json")
     new = json.load(open(path))
