@@ -47,6 +47,14 @@ namespace VintageE
         [System.ComponentModel.Description("Also work values out backwards from crafting: if a recipe's result has a value and only one of its ingredients doesn't, that ingredient is worth what's left over (e.g. a loot-only part used in a recipe). Uses the highest such value so nothing already valued gets cheaper. Needs InferValuesFromProcessing.")]
         public bool InferValuesFromCrafting = true;
 
+        /// <summary>
+        /// Let a cheaper recipe another mod adds lower a value Vintage-E sets itself (1.29.6): Vintage Engineering's
+        /// temporal forge makes a temporal gear for less than its 4,096. The base game's own recipes never do, and values
+        /// set in BaseValues/FixedValues, by an item's emcValue or by another mod's value file never change.
+        /// </summary>
+        [System.ComponentModel.Description("Let a cheaper recipe that another mod adds lower a value Vintage-E sets itself (a temporal gear made by Vintage Engineering's temporal forge, say). The base game's own recipes never do, and values you set here (BaseValues, FixedValues), an item's own emcValue or another mod's value file never change. Only recipes whose ingredients are valued from real recipes and base values count, not from guesses.")]
+        public bool ModRecipesLowerBaseValues = true;
+
         /// <summary>As a last resort, give anything still unvalued the value of its closest variant (e.g. the same ore in a different rock). Uses the highest sibling value, so it can't be exploited.</summary>
         [System.ComponentModel.Description("As a last resort, give anything still unvalued the value of its closest variant (e.g. the same ore in a different rock). Uses the highest sibling value, so it can't be exploited.")]
         public bool InferFromVariantSiblings = true;

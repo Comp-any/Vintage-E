@@ -2215,6 +2215,7 @@
   "diag-meth-absentmod": "{0} isn't loaded, so this recipe waits for it: nothing to fix",
   "diag-meth-optional": "{0} recipe(s) are for mods that aren't loaded ({1}); they are left out until those mods are, which is normal",
   "diag-meth-variantsof": "the mod with {0}",
+  "diag-meth-replacedbyown": "{0} is left out: {1} sends its own crafting methods ({2}), and a mod's own come before Vintage-E's file for it",
   "diag-meth-parseproblems": "{0} problem(s) in the documents themselves left something out:",
   "diag-meth-waitingmore": "and {0} more document(s) waiting for a mod that isn't loaded",
   "diag-meth-unit-unused": "(no recipe in use needs it)",

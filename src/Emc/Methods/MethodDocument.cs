@@ -55,7 +55,14 @@ namespace VintageE
         public List<MethodProblem> Problems = new List<MethodProblem>();
         /// <summary>The document as read, with the recipes its readers found, for the cache's fingerprint and "what changed".</summary>
         public string Canonical = "";
-        public bool Usable => Error == null && MissingMod == null;
+        /// <summary>Set on Vintage-E's own file for another mod when that mod sends its own document (a file of its own or from
+        /// its code): the mod's comes first, so this one is left out. The source of the mod's own document; null otherwise.</summary>
+        public string ReplacedBy;
+        /// <summary>The first mod it requires (for "a|b", the one that's loaded): the mod a file for another mod is for.</summary>
+        public string ForMod;
+        /// <summary>One of Vintage-E's own files for another mod (assets/vintagee/config/vintagee-methods/).</summary>
+        public bool StandIn => Route == "file" && Source != null && Source.StartsWith("assets/" + VintageEModSystem.ModId + "/", StringComparison.Ordinal);
+        public bool Usable => Error == null && MissingMod == null && ReplacedBy == null;
         public int RecipeCount => Methods.Sum(m => m.Recipes.Count);
     }
 
@@ -338,6 +345,7 @@ namespace VintageE
                 string[] alts = r.Split('|');
                 try { return alts.FirstOrDefault(a => sapi?.ModLoader.IsModEnabled(a) == true) ?? alts[0]; } catch { return alts[0]; }
             }).FirstOrDefault();
+            doc.ForMod = firstRequired?.Trim().ToLowerInvariant();
             string domainKey = Str(top["domain"])?.Trim().ToLowerInvariant();
             if (domainKey != null && !NameRule.IsMatch(domainKey)) { doc.Problems.Add(new MethodProblem { Path = "domain", Message = "\"domain\" must be a mod id (letters, digits, _ and -)" }); domainKey = null; }
             // Vintage-E's own files, and the server's, are for the mod they name (the domain, or the first mod they require).

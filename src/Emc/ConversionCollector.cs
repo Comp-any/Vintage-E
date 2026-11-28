@@ -268,6 +268,7 @@ namespace VintageE
                 OutputQuantity = RecipeOutputQuantity(recipe.RecipeOutput, output),
                 Kind = ConversionKind.Crafting,
                 Source = label,
+                FromMod = recipe.Name?.Domain,
                 OutputData = StackContents.HasNestedStacks(output) ? null : StackDataUtil.KeptData(output)
             };
             JsonObject recipeAttributes = (recipe as RecipeBase)?.Attributes;

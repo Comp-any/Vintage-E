@@ -201,11 +201,13 @@ namespace VintageE
             // theirs replaces a mod's with the same code (that's how a server owner changes a mod's numbers).
             var seenMethods = new Dictionary<string, MethodDoc>(StringComparer.Ordinal);
             var unitFrom = new Dictionary<string, MethodDoc>(StringComparer.Ordinal);
+            // An entry "a|b" is met when either mod is loaded.
+            string Missing(MethodDoc d) => d.RequiresMods.FirstOrDefault(id => !id.Split('|').Any(alt => sapi.ModLoader.IsModEnabled(alt.Trim())));
+            MarkReplaced(snap.Docs, Missing);
             foreach (MethodDoc doc in snap.Docs.OrderBy(d => d.FromServer ? 0 : 1).ToList())
             {
-                if (doc.Error != null) continue;
-                // An entry "a|b" is met when either mod is loaded.
-                doc.MissingMod = doc.RequiresMods.FirstOrDefault(id => !id.Split('|').Any(alt => sapi.ModLoader.IsModEnabled(alt.Trim())));
+                if (doc.Error != null || doc.ReplacedBy != null) continue;
+                doc.MissingMod = Missing(doc);
                 if (doc.MissingMod != null) continue;
                 foreach (MethodDef m in doc.Methods.ToList())
                 {
@@ -247,11 +249,28 @@ namespace VintageE
             {
                 var usable = g.Where(d => d.Usable).ToList();
                 int errors = g.Sum(d => d.Problems.Count(p => p.Error)), warnings = g.Sum(d => d.Problems.Count(p => !p.Error));
-                if (usable.Count == 0 && g.All(d => d.MissingMod != null)) { logger.VerboseDebug("EMC: crafting methods for {0} not used: the mod isn't loaded", g.Key); continue; }
+                foreach (MethodDoc d in g.Where(d => d.ReplacedBy != null)) logger.Notification("EMC: crafting methods: {0} is left out, since {1} sends its own ({2})", d.Source, g.Key, d.ReplacedBy);
+                if (usable.Count == 0 && g.All(d => d.MissingMod != null || d.ReplacedBy != null)) { logger.VerboseDebug("EMC: crafting methods for {0} not used: the mod isn't loaded", g.Key); continue; }
                 logger.Notification("EMC: crafting methods from {0}: {1} methods, {2} recipes ({3}){4}", g.Key, usable.Sum(d => d.Methods.Count), usable.Sum(d => d.RecipeCount),
                     string.Join(", ", g.Select(d => d.Route).Distinct()), errors + warnings > 0 ? "; " + errors + " problems, " + warnings + " warnings (/emc diagnose methods " + g.Key + ")" : "");
             }
             return snap;
+        }
+
+        /// <summary>
+        /// A mod's own document comes before Vintage-E's file for it: Vintage-E's steps aside (<see cref="MethodDoc.ReplacedBy"/>)
+        /// when the mod sends one that can be used (a file of its own under its asset domain, or one sent from its code under its
+        /// mod id: the file's "domain", or the first mod it requires),
+        /// whatever its methods are called. <paramref name="missing"/> gives a document's first required mod that isn't loaded.
+        /// </summary>
+        internal static void MarkReplaced(List<MethodDoc> docs, Func<MethodDoc, string> missing)
+        {
+            foreach (MethodDoc standIn in docs.Where(d => d.StandIn && d.Error == null))
+            {
+                MethodDoc own = docs.FirstOrDefault(d => !d.StandIn && !d.FromServer && d.Error == null && d.Methods.Count > 0 && missing(d) == null
+                    && (d.ModId == standIn.ModId || d.ModId == standIn.Domain || d.ModId == standIn.ForMod));
+                standIn.ReplacedBy = own?.Source;
+            }
         }
 
         /// <summary>Which loaded mod's code an exception came from, by the assemblies on its stack.</summary>

@@ -30,6 +30,11 @@ namespace VintageE
         public int TraderCount;
         /// <summary>Guessed values replaced by a recipe that makes the item for less (checked once every value is known).</summary>
         public int CheaperRecipeCount;
+        /// <summary>
+        /// Values Vintage-E sets itself that another mod's recipe makes for less, and were lowered to it (1.29.6,
+        /// ModRecipesLowerBaseValues): the item → its base value before, and the recipe.
+        /// </summary>
+        public Dictionary<CollectibleObject, (double was, Conversion by)> LoweredBase = new Dictionary<CollectibleObject, (double was, Conversion by)>();
         /// <summary>Items valued by "defaultValues" rules (nothing else could value them).</summary>
         public int DefaultCount;
         /// <summary>Items valued as fuel (burn heat × time) or food (satiety) because nothing else could value them.</summary>
@@ -196,6 +201,7 @@ namespace VintageE
             var index = new CollectibleIndex(sapi.World.Collectibles);
 
             Seed(index, report, out Dictionary<CollectibleObject, double> fixedValues, out HashSet<CollectibleObject> excluded);
+            HashSet<CollectibleObject> ownBase = config.ModRecipesLowerBaseValues ? OwnBaseValues(index, fixedValues) : new HashSet<CollectibleObject>();
             Lap(report, "base values and lists");
 
             // 3. Every way of making things, other mods' crafting methods included. Their extra costs (power, heat) are
@@ -518,7 +524,34 @@ namespace VintageE
                     if (RestsOn(conv, o, solver)) continue;
                     if (!cheaper.TryGetValue(o, out var best) || per.Value < best.per) cheaper[o] = (per.Value, conv);
                 }
-                if (cheaper.Count == 0 && dearer.Count == 0) break;
+                // A value Vintage-E sets itself (a temporal gear's 4,096) that a recipe another mod adds makes for less: once that
+                // mod is there, the recipe is the real price (1.29.6). The base game's own recipes never move one (its values
+                // are pegged against them), nor does a recipe resting on a guessed value somewhere down its chain, or on the
+                // item itself; values the server, an item's emcValue or another mod's value file set are never in ownBase.
+                var lowerBase = new Dictionary<CollectibleObject, (double per, Conversion conv)>();
+                if (ownBase.Count > 0)
+                    foreach (Conversion conv in collector.Conversions)
+                    {
+                        CollectibleObject o = conv.Output;
+                        if (o == null || conv.JointOutputs != null || !ownBase.Contains(o) || extra.ContainsKey(o) || currency.Contains(o) || !fixedValues.TryGetValue(o, out double baseValue)) continue;
+                        string from = RecipeMod(conv);
+                        if (from == null || from == "game" || from == VintageEModSystem.ModId) continue;
+                        double? per = ViableCostPer(conv, solver.Values);
+                        if (per == null || per.Value <= 0 || per.Value >= baseValue * 0.999) continue;
+                        if (RestsOn(conv, o, solver) || RestsOnGuess(conv, extra, solver)) continue;
+                        if (!lowerBase.TryGetValue(o, out var best) || per.Value < best.per) lowerBase[o] = (per.Value, conv);
+                    }
+                foreach (var kv in lowerBase)
+                {
+                    double oldValue = fixedValues[kv.Key];
+                    if (!report.LoweredBase.ContainsKey(kv.Key)) report.LoweredBase[kv.Key] = (oldValue, kv.Value.conv);
+                    else report.LoweredBase[kv.Key] = (report.LoweredBase[kv.Key].was, kv.Value.conv);
+                    fixedValues[kv.Key] = kv.Value.per;
+                    extraOrigin[kv.Key] = string.Format(System.Globalization.CultureInfo.InvariantCulture, "recipe from {0} ({1}), cheaper than its base value of {2:0.##}",
+                        RecipeMod(kv.Value.conv), kv.Value.conv.Source, report.LoweredBase[kv.Key].was);
+                    extraVia[kv.Key] = kv.Value.conv;
+                }
+                if (cheaper.Count == 0 && dearer.Count == 0 && lowerBase.Count == 0) break;
                 foreach (var kv in cheaper)
                 {
                     extraOrigin.TryGetValue(kv.Key, out string was);
@@ -739,6 +772,64 @@ namespace VintageE
                     cost -= rv * r.Value;
                 }
             return cost / conv.OutputQuantity;
+        }
+
+        /// <summary>
+        /// The values Vintage-E's own value files set (assets/vintagee/config/, not its compatibility files) that nothing
+        /// later replaced: another mod's value file, an item's emcValue, the server's BaseValues or FixedValues.
+        /// </summary>
+        HashSet<CollectibleObject> OwnBaseValues(CollectibleIndex index, Dictionary<CollectibleObject, double> fixedValues)
+        {
+            var own = new HashSet<CollectibleObject>();
+            if (config.DisableBuiltInBaseValues) return own;
+            foreach (EmcValueRule rule in rules.Values)
+            {
+                IEnumerable<CollectibleObject> matched = index.Match(rule.Pattern);
+                if (rule.Source.StartsWith(VintageEModSystem.ModId + ":", StringComparison.Ordinal)) own.UnionWith(matched);
+                else own.ExceptWith(matched);
+            }
+            foreach (CollectibleObject c in index.All)
+            {
+                JsonObject attr = c.Attributes?["emcValue"];
+                if (attr != null && attr.Exists) own.Remove(c);
+            }
+            foreach (string key in config.BaseValues.Keys.Concat(config.FixedValues.Keys)) own.ExceptWith(index.Match(key));
+            own.IntersectWith(fixedValues.Keys);
+            return own;
+        }
+
+        /// <summary>The mod a recipe comes from: its file's domain, the crafting method's mod, or for a one-input process
+        /// (smelting, grinding...) the mod of the item that declares it. Null when not known (the server's custom recipes).</summary>
+        static string RecipeMod(Conversion conv)
+        {
+            if (conv.Method?.Method != null) return conv.Method.Method.ModId;
+            if (conv.FromMod != null) return conv.FromMod;
+            if (conv.Kind == ConversionKind.Processing && conv.Inputs.Count == 1 && conv.Inputs[0].Choices.Length == 1) return conv.Inputs[0].Choices[0]?.Code?.Domain;
+            return null;
+        }
+
+        /// <summary>True when an ingredient of this recipe, or anything its value was worked out from (the solver's Via chain), has a guessed value.</summary>
+        static bool RestsOnGuess(Conversion conv, Dictionary<CollectibleObject, double> guessed, EmcSolver<CollectibleObject> solver)
+        {
+            var seen = new HashSet<CollectibleObject>();
+            var stack = new Stack<(CollectibleObject item, int depth)>();
+            foreach (ConversionInput input in conv.Inputs) foreach (CollectibleObject c in input.Choices) if (c != null) stack.Push((c, 0));
+            while (stack.Count > 0)
+            {
+                var (item, depth) = stack.Pop();
+                if (guessed.ContainsKey(item)) return true;
+                if (depth >= 12 || !seen.Add(item) || !solver.Via.TryGetValue(item, out object via)) continue;
+                if (via is EmcSolver<CollectibleObject>.Edge e)
+                {
+                    foreach (CollectibleObject[] choice in e.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                }
+                else if (via is EmcSolver<CollectibleObject>.JointEdge j)
+                {
+                    if (j.Input != null) stack.Push((j.Input, depth + 1));
+                    if (j.Choices != null) foreach (CollectibleObject[] choice in j.Choices) foreach (CollectibleObject c in choice) if (c != null) stack.Push((c, depth + 1));
+                }
+            }
+            return false;
         }
 
         /// <summary>True when any ingredient of this recipe got its value (through the solver's Via chain) from <paramref name="target"/>.</summary>

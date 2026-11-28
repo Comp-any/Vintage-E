@@ -23,6 +23,7 @@ namespace VintageE
             try { CheckMethodReaders(); } catch (Exception e) { Check(false, "methods: the reader checks threw " + e); }
             try { CheckMethodSolver(); } catch (Exception e) { Check(false, "methods: the solver checks threw " + e); }
             try { CheckMethodsLive(); } catch (Exception e) { Check(false, "methods: the live checks threw " + e); }
+            try { CheckModRecipeLowersBase(); } catch (Exception e) { Check(false, "methods: the base-value checks threw " + e); }
             try { DraftForUnseenMods(); } catch (Exception e) { Check(false, "methods: drafting for other mods threw " + e); }
         }
 
@@ -49,6 +50,56 @@ namespace VintageE
         }
 
         static MethodDoc ParseTest(string json) => MethodParser.Parse(json, "vintagee", "self-test", "file", null);
+
+        /// <summary>A recipe another mod sends (here under the base game's mod id "survival") that makes a temporal gear for less than its base value.</summary>
+        const string GearDocument = @"{ ""format"": 1, ""methods"": [ { ""code"": ""survival:selftest-gearpress"", ""name"": ""Self-test gear press"",
+            ""recipes"": [ { ""inputs"": [ { ""code"": ""game:ingot-copper"" } ], ""outputs"": [ { ""code"": ""game:gear-temporal"" } ], ""costs"": { ""emc"": 100 } } ] } ] }";
+
+        void OnGearCollect(string eventName, ref EnumHandling handling, IAttribute data)
+        {
+            if (data is ITreeAttribute tree) tree.SetString("survival", GearDocument);
+        }
+
+        /// <summary>1.29.6: a cheaper recipe from another mod lowers a value Vintage-E sets itself; ModRecipesLowerBaseValues off keeps it.</summary>
+        void CheckModRecipeLowersBase()
+        {
+            EmcMappingReport before = mod.LastReport;
+            if (before == null) { Check(false, "base values: EMC not mapped"); return; }
+            var values = before.Values.ToDictionary(kv => kv.Key, kv => kv.Value);
+            CollectibleObject gear = sapi.World.GetItem(new AssetLocation("game:gear-temporal"));
+            CollectibleObject copper = sapi.World.GetItem(new AssetLocation("game:ingot-copper"));
+            double gearBefore = gear != null && values.TryGetValue(gear, out double g0) ? g0 : 0;
+            Check(gear != null && copper != null && gearBefore >= 4096 - 0.01 && before.Origins.TryGetValue(gear, out string o0) && o0 == "base value",
+                "base values: the temporal gear starts at its base value (" + gearBefore + ")");
+            bool saved = mod.Config.ModRecipesLowerBaseValues;
+            EventBusListenerDelegate listener = OnGearCollect;
+            sapi.Event.RegisterEventBusListener(listener, 0.5, MethodRegistry.CollectEvent);
+            try
+            {
+                mod.Config.ModRecipesLowerBaseValues = true;
+                mod.CollectMethods("self-test: a mod's cheaper temporal gear");
+                EmcMappingReport report = mod.RecalculateEmc("self-test: a mod's cheaper temporal gear");
+                if (report == null) { Check(false, "base values: mapped with the mod's recipe"); return; }
+                double cu = report.Values.TryGetValue(copper, out double c1) ? c1 : 0, gv = report.Values.TryGetValue(gear, out double g1) ? g1 : 0;
+                report.Origins.TryGetValue(gear, out string origin);
+                Check(cu > 0 && Math.Abs(gv - (cu + 100)) < 0.01 && report.LoweredBase.ContainsKey(gear) && origin != null && origin.Contains("cheaper than its base value of 4096"),
+                    "base values: another mod's recipe that makes a temporal gear for less lowers it to that recipe's cost (" + gv + " = copper ingot " + cu + " + 100; " + origin + ")");
+                mod.Config.ModRecipesLowerBaseValues = false;
+                report = mod.RecalculateEmc("self-test: base values kept");
+                double kept = report != null && report.Values.TryGetValue(gear, out double g2) ? g2 : 0;
+                Check(Math.Abs(kept - gearBefore) < 0.01 && report.LoweredBase.Count == 0, "base values: with ModRecipesLowerBaseValues off the temporal gear keeps its base value (" + kept + ")");
+            }
+            finally
+            {
+                sapi.Event.UnregisterEventBusListener(listener);
+                mod.Config.ModRecipesLowerBaseValues = saved;
+                mod.CollectMethods("self-test: base values done");
+            }
+            EmcMappingReport after = mod.RecalculateEmc("self-test: the mod's recipe removed");
+            if (after == null) { Check(false, "base values: mapped again without the mod's recipe"); return; }
+            int changed = values.Count(kv => !after.Values.TryGetValue(kv.Key, out double v) || Math.Abs(v - kv.Value) > 1e-6) + after.Values.Keys.Count(k => !values.ContainsKey(k));
+            Check(changed == 0 && after.LoweredBase.Count == 0, "base values: without the mod's recipe every value is back as it was (" + changed + " differ, " + after.LoweredBase.Count + " lowered)");
+        }
 
         void CheckMethodParser()
         {
@@ -118,6 +169,24 @@ namespace VintageE
             Check(!rules.Problems.Any(p => p.Message.Contains("two inputs are named")) && rm != null && rm.Recipes.Any(rc => rc.Code == "dup") && rules.Problems.Any(p => p.Error && p.Message.Contains("more than 8 named inputs")),
                 "methods: two inputs with one name are kept (they're linked to one variant), and more than 8 names are refused");
             Check(rm != null && rm.Recipes.Any(rc => rc.Code == "toolonly"), "methods: a recipe with only a worn tool is kept (its wear is the cost)");
+
+            // A mod's own document comes before Vintage-E's file for it, whatever its methods are called; a document from another
+            // mod the file also needs (Butchering's needs A Culinary Artillery) doesn't count.
+            const string Gravel = @"""recipes"": [ { ""inputs"": [ { ""code"": ""game:stone-granite"" } ], ""outputs"": [ { ""code"": ""game:gravel-granite"" } ] } ]";
+            MethodDoc standIn = MethodParser.Parse(@"{ ""format"": 1, ""requiresMod"": ""survival"", ""domain"": ""survivalassets"", ""methods"": [ { ""code"": ""survivalassets:press"", " + Gravel + " } ] }",
+                "vintagee", "assets/vintagee/config/vintagee-methods/survival.json", "file", null);
+            MethodDoc pair = MethodParser.Parse(@"{ ""format"": 1, ""requiresMod"": [ ""essentials"", ""survival"" ], ""methods"": [ { ""code"": ""essentials:kneading"", " + Gravel + " } ] }",
+                "vintagee", "assets/vintagee/config/vintagee-methods/essentials.json", "file", null);
+            MethodDoc ownCode = MethodParser.Parse(@"{ ""format"": 1, ""methods"": [ { ""code"": ""mypress"", " + Gravel + " } ] }", "survival", "code (survival)", "code", null);
+            var replaceDocs = new List<MethodDoc> { standIn, pair, ownCode };
+            MethodRegistry.MarkReplaced(replaceDocs, dd => null);
+            Check(standIn.StandIn && standIn.ReplacedBy == "code (survival)" && !standIn.Usable && ownCode.ReplacedBy == null && ownCode.Usable && pair.ReplacedBy == null && pair.Usable,
+                "methods: a mod's own document (from its code) replaces Vintage-E's file for it, and not the file for a mod that only needs it (" + standIn.ReplacedBy + "; " + pair.ReplacedBy + ")");
+            MethodDoc ownFile = MethodParser.Parse(@"{ ""format"": 1, ""methods"": [ { ""code"": ""press"", " + Gravel + " } ] }", "survivalassets", "assets/survivalassets/config/vintagee-methods/press.json", "file", null);
+            MethodRegistry.MarkReplaced(new List<MethodDoc> { standIn, ownFile }, dd => null);
+            Check(standIn.ReplacedBy == ownFile.Source, "methods: a mod's own file under its asset domain replaces Vintage-E's file for it too (" + standIn.ReplacedBy + ")");
+            MethodRegistry.MarkReplaced(new List<MethodDoc> { standIn, ownFile }, dd => dd == ownFile ? "somemod" : null);
+            Check(standIn.ReplacedBy == null && standIn.Usable, "methods: a mod's own document that waits for a mod that isn't loaded doesn't replace Vintage-E's");
 
             // Numbers by variant, formulas, alternatives, "like", "steps", names with capitals, either-mod requirements, a domain.
             MethodDoc more = ParseTest(@"{ ""format"": 1, ""domain"": ""game"", ""requiresMod"": [ ""game"", ""nosuchmod|game"" ],

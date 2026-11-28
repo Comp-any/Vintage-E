@@ -45,6 +45,8 @@ namespace VintageE
         public Vintagestory.API.Datastructures.TreeAttribute OutputData;
         public ConversionKind Kind;
         public string Source;
+        /// <summary>The domain of the file a recipe was read from ("em" for em:recipes/grid/...), or null when not known.</summary>
+        public string FromMod;
 
         /// <summary>Set for a recipe another mod sent as a crafting method (see <see cref="MethodRegistry"/>): which one, and what it costs besides its ingredients.</summary>
         public MethodRef Method;

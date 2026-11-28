@@ -279,6 +279,17 @@ the method stays current when you add recipes:
   The same recipe read twice (the same text) counts once.
 - Your `{wildcard}` placeholders work as they are if the input reading the `*` has `"name": "wildcard"`.
 
+## When Vintage-E ships a file for your mod
+
+Vintage-E ships method files for some mods (Butchering, Vintage Engineering, C&N Jewelry, Fields of Salt). *1.29.6*: as soon
+as your mod sends its own document, a file in your assets or one sent from your code, Vintage-E's file for it is left out,
+whatever your methods are called, and the doctor says so. A server's own documents in `ModConfig/vintagee-methods/` still
+come before both.
+
+A recipe your mod adds may also lower a value Vintage-E sets itself (*1.29.6*, the server setting
+`ModRecipesLowerBaseValues`, on by default) when it makes the item for less, from ingredients valued by real recipes and
+base values rather than guesses.
+
 ## Checking what Vintage-E understood
 
 - `/emc diagnose methodcheck <yourmodid>`: every problem in your documents with its JSON path and a "did you mean", which

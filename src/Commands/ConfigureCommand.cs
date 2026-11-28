@@ -31,7 +31,7 @@ namespace VintageE
         /// <summary>Settings whose change means the EMC values must be worked out again.</summary>
         static readonly HashSet<string> Remaps = new HashSet<string>(StringComparer.Ordinal)
         {
-            "BaseValues", "FixedValues", "Blacklist", "Allow", "DisableBuiltInBaseValues", "InferValuesFromProcessing", "InferValuesFromCrafting",
+            "BaseValues", "FixedValues", "Blacklist", "Allow", "DisableBuiltInBaseValues", "InferValuesFromProcessing", "InferValuesFromCrafting", "ModRecipesLowerBaseValues",
             "InferFromVariantSiblings", "EstimateFuelAndFood", "UseTraderPrices", "FallbackValue", "TransitionEmcPerDay", "MaxMappingPasses", "FreeIngredients",
             "GrayList", "CustomRecipes", "DisabledCompat", "EnergyEmc", "ChargeMethodEnergy", "ChargeMethodHeat", "ChargeMethodWear", "MethodEmcPerSecond", "DisabledMethods"
         };

@@ -328,6 +328,7 @@ namespace VintageE
             foreach (MethodProblem p in snap.Problems) r.Add(p.ToString(), p.Error ? EmcLineStyle.Warn : EmcLineStyle.Note, 1);
             // Files for mods that aren't loaded (Vintage-E's own for other mods among them) are normal: a few by name, the rest counted.
             int waitShown = full ? 30 : 3;
+            foreach (MethodDoc d in docs.Where(d => d.ReplacedBy != null)) x.Note(x.L("diag-meth-replacedbyown", d.Source, ModName(x, d.ModId), d.ReplacedBy), 1);
             foreach (MethodDoc d in waiting.Take(waitShown)) x.Note(x.L("diag-meth-waitingmod", d.Source, d.MissingMod), 1);
             if (waiting.Count > waitShown) x.Note(x.L("diag-meth-waitingmore", waiting.Count - waitShown), 1);
             if (left > 0 || warnings > 0) x.Fix(x.L("diag-meth-docs-fix"));
@@ -853,6 +854,7 @@ namespace VintageE
                 {
                     if (d.Error != null) x.Warn(x.L("diag-meth-broken", d.Source, d.Error));
                     else if (d.MissingMod != null) x.Info(x.L("diag-meth-waitingmod", d.Source, d.MissingMod));
+                    else if (d.ReplacedBy != null) x.Info(x.L("diag-meth-replacedbyown", d.Source, ModName(x, d.ModId), d.ReplacedBy));
                     else x.Info(x.L("diag-methodcheck-doc", d.Source, d.Route, d.Format, d.Methods.Count, d.RecipeCount));
                 }
                 r.Add(Link(ActionMethodCheck, mod, x.L("diag-meth-check")), EmcLineStyle.Text, 1);
@@ -930,6 +932,7 @@ namespace VintageE
                 var jd = new JObject { ["source"] = d.Source, ["route"] = d.Route, ["format"] = d.Format, ["usable"] = d.Usable };
                 if (d.Error != null) jd["error"] = d.Error;
                 if (d.MissingMod != null) jd["waitingFor"] = d.MissingMod;
+                if (d.ReplacedBy != null) jd["replacedBy"] = d.ReplacedBy;
                 jd["problems"] = new JArray(d.Problems.Select(p => (JToken)new JObject { ["path"] = p.Path, ["message"] = p.Message, ["leftOut"] = p.Error }));
                 var jm = new JArray();
                 foreach (MethodDef m in d.Methods)
@@ -1009,6 +1012,7 @@ namespace VintageE
                 string head = x.L("diag-methodcheck-doc", d.Source, d.Route, d.Format, d.Methods.Count, d.RecipeCount);
                 if (d.Error != null) { x.Warn(head); r.Add(d.Error, EmcLineStyle.Warn, 1); continue; }
                 if (d.MissingMod != null) { x.Info(head); x.Note(x.L("diag-meth-waitingmod", d.Source, d.MissingMod), 1); continue; }
+                if (d.ReplacedBy != null) { x.Info(head); x.Note(x.L("diag-meth-replacedbyown", d.Source, ModName(x, d.ModId), d.ReplacedBy), 1); continue; }
                 int errs = d.Problems.Count(p => p.Error), warns = d.Problems.Count(p => !p.Error);
                 if (errs > 0) x.Warn(head + " " + x.L("diag-methodcheck-problems", errs, warns));
                 else if (warns > 0) x.Info(head + " " + x.L("diag-methodcheck-problems", errs, warns));
