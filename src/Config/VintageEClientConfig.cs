@@ -62,6 +62,19 @@ namespace VintageE
         /// <summary>The glow's colour, #RRGGBB.</summary>
         public string WatchGlowColor = "#66CCFF";
 
+        /// <summary>
+        /// Your EMC on screen, with how much it changed a second over the last ten seconds (1.28.0; Project Expansion's
+        /// EMC Display). Hidden while you have none.
+        /// </summary>
+        public bool EmcHud = true;
+        /// <summary>Where on screen: one of <see cref="Positions"/>.</summary>
+        public string EmcHudPosition = "TopLeft";
+        /// <summary>Moves it from there, in GUI pixels (right and down are positive).</summary>
+        public int EmcHudOffsetX = 10;
+        public int EmcHudOffsetY = 10;
+        /// <summary>A line under the EMC value of every block and item saying whether you've learned it for transmutation (1.28.0).</summary>
+        public bool LearnedTooltip = true;
+
         public static readonly string[] Positions = { "TopLeft", "TopCenter", "TopRight", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomCenter", "BottomRight" };
 
         public static VintageEClientConfig Load(ICoreClientAPI capi)
@@ -94,14 +107,29 @@ namespace VintageE
             WatchIconSize = GameMath.Clamp(WatchIconSize, 16, 128);
             WatchIconOffsetX = GameMath.Clamp(WatchIconOffsetX, -2000, 2000);
             WatchIconOffsetY = GameMath.Clamp(WatchIconOffsetY, -2000, 2000);
-            if (Array.FindIndex(Positions, p => p.Equals(WatchIconPosition ?? "", StringComparison.OrdinalIgnoreCase)) is int i && i >= 0) WatchIconPosition = Positions[i];
-            else WatchIconPosition = "TopRight";
+            WatchIconPosition = NormalizePosition(WatchIconPosition, "TopRight");
+            EmcHudPosition = NormalizePosition(EmcHudPosition, "TopLeft");
+            EmcHudOffsetX = GameMath.Clamp(EmcHudOffsetX, -2000, 2000);
+            EmcHudOffsetY = GameMath.Clamp(EmcHudOffsetY, -2000, 2000);
             if (!TryParseColor(WatchGlowColor, out _)) WatchGlowColor = "#66CCFF";
             WatchGlowColor = WatchGlowColor.Trim().ToUpperInvariant();
             if (!WatchGlowColor.StartsWith("#")) WatchGlowColor = "#" + WatchGlowColor;
         }
 
-        public EnumDialogArea Area => WatchIconPosition switch
+        /// <summary>One of <see cref="Positions"/> as written there (any case), or <paramref name="fallback"/>.</summary>
+        public static string NormalizePosition(string position, string fallback)
+        {
+            int i = Array.FindIndex(Positions, p => p.Equals((position ?? "").Trim(), StringComparison.OrdinalIgnoreCase));
+            return i >= 0 ? Positions[i] : fallback;
+        }
+
+        /// <summary>The watch icon's place on screen.</summary>
+        public EnumDialogArea Area => AreaOf(WatchIconPosition);
+
+        /// <summary>The EMC display's place on screen.</summary>
+        public EnumDialogArea EmcHudArea => AreaOf(EmcHudPosition);
+
+        public static EnumDialogArea AreaOf(string position) => position switch
         {
             "TopLeft" => EnumDialogArea.LeftTop,
             "TopCenter" => EnumDialogArea.CenterTop,

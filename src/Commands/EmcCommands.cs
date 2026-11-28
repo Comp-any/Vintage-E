@@ -26,7 +26,7 @@ namespace VintageE
     /// /emc learn           – (admin) learn the held item without burning it
     /// /emc diagnose [what] – (admin) why EMC isn't working: a check-up with questions, or the held item, a code, a mod id, "mods", "sporadic", "mapping"
     /// </summary>
-    public static class EmcCommands
+    public static partial class EmcCommands
     {
         public static void Register(VintageEModSystem mod, ICoreServerAPI sapi)
         {
@@ -160,34 +160,48 @@ namespace VintageE
                     .HandleWith(Safe(args => ChangeBalance(args, +1)))
                 .EndSubCommand()
                 .BeginSubCommand("learn")
-                    .RequiresPlayer()
-                    .WithDescription("Learn the held item without burning it (/emc learn or /emc learn hand)")
+                    .WithDescription("Learn the held item without burning it; admins: any block or item by code, for any online player (/emc learn [hand|<code>] [player])")
                     .RequiresPrivilege(Privilege.chat)
-                    .WithArgs(parsers.OptionalWordRange("what", "hand"))
-                    .HandleWith(Safe(args => LearnHeld(mod, args)))
+                    .WithArgs(parsers.OptionalWord("what"), new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(args => LearnCommand(mod, sapi, args)))
+                .EndSubCommand()
+                .BeginSubCommand("unlearn")
+                    .WithAlias("forget")
+                    .WithDescription("Forget the held item (or a block or item by code), as the table's Forget does; admins: for any online player (/emc unlearn [hand|<code>] [player])")
+                    .RequiresPrivilege(Privilege.chat)
+                    .WithArgs(parsers.OptionalWord("what"), new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(args => Unlearn(mod, sapi, args)))
+                .EndSubCommand()
+                .BeginSubCommand("knows")
+                    .WithDescription("Say whether you (admins: any online player) have learned the held item or a block or item by code (/emc knows [hand|<code>] [player])")
+                    .RequiresPrivilege(Privilege.chat)
+                    .WithArgs(parsers.OptionalWord("what"), new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(args => KnowsCommand(mod, sapi, args)))
+                .EndSubCommand()
+                .BeginSubCommand("balance")
+                    .WithAlias("bal", "get")
+                    .WithDescription("Show your personal EMC (admins: any online player's) and how much you have learned")
+                    .RequiresPrivilege(Privilege.chat)
+                    .WithArgs(new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(Balance))
+                .EndSubCommand()
+                .BeginSubCommand("knowledge")
+                    .WithDescription("Show how many things you (admins: any online player) have learned, and how many are exact versions")
+                    .RequiresPrivilege(Privilege.chat)
+                    .WithArgs(new OnlinePlayerArgParser("player", sapi, false))
+                    .HandleWith(Safe(args => Knowledge(mod, args)))
+                .EndSubCommand()
+                .BeginSubCommand("forgetall")
+                    .WithDescription("Forget everything an online player has learned (asks you to run it a second time first; can't be undone)")
+                    .RequiresPrivilege(Privilege.controlserver)
+                    .WithArgs(new OnlinePlayerArgParser("player", sapi, true))
+                    .HandleWith(Safe(args => ForgetAll(sapi, args)))
+                .EndSubCommand()
+                .BeginSubCommand("fuels")
+                    .WithDescription("List the fuels an Energy Collector's fuel slot upgrades, cheapest first, with their EMC values")
+                    .RequiresPrivilege(Privilege.chat)
+                    .HandleWith(Safe(args => Fuels(mod, sapi, args)))
                 .EndSubCommand();
-        }
-
-        /// <summary>
-        /// /emc learn [hand]: learns the held item without burning it. Players get the same checks as the table's Learn slot
-        /// (it needs a value and mustn't be on the no-transmute list); admins can learn anything they hold.
-        /// </summary>
-        static TextCommandResult LearnHeld(VintageEModSystem mod, TextCommandCallingArgs args)
-        {
-            string lang = args.LanguageCode;
-            IPlayer player = args.Caller.Player;
-            ItemStack held = player?.InventoryManager?.ActiveHotbarSlot?.Itemstack;
-            if (held == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-holdsomething"));
-            bool admin = args.Caller.HasPrivilege(Privilege.controlserver);
-            if (!admin && mod.Transmutation == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-notready"));
-            if (!admin && player is IServerPlayer sp && mod.Transmutation != null)
-            {
-                string error = mod.Transmutation.Learn(sp, held, out bool isNew, out string[] errArgs);
-                if (error != null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:error-" + error, errArgs ?? new string[0]));
-                return TextCommandResult.Success(Lang.GetL(lang, isNew ? "vintagee:learned" : "vintagee:error-alreadyknown", held.GetName()));
-            }
-            bool learned = PlayerEmc.Learn(player, KnowledgeKey(mod, held));
-            return TextCommandResult.Success(Lang.GetL(lang, learned ? "vintagee:learned" : "vintagee:error-alreadyknown", held.GetName()));
         }
 
         /// <summary>(usage, lang key of the description, admin only)</summary>
@@ -219,7 +233,13 @@ namespace VintageE
             ("/emc add <amount> [player]", "cmdhelp-add", true),
             ("/emc remove <amount> [player]", "cmdhelp-remove", true),
             ("/emc setemc <amount> [player]", "cmdhelp-setemc", true),
-            ("/emc learn [hand]", "cmdhelp-learn", false),
+            ("/emc learn [hand|<code>] [player]", "cmdhelp-learn", false),
+            ("/emc unlearn [hand|<code>] [player]", "cmdhelp-unlearn", false),
+            ("/emc knows [hand|<code>] [player]", "cmdhelp-knows", false),
+            ("/emc balance [player]", "cmdhelp-balance", false),
+            ("/emc knowledge [player]", "cmdhelp-knowledge", false),
+            ("/emc forgetall <player>", "cmdhelp-forgetall", true),
+            ("/emc fuels", "cmdhelp-fuels", false),
         };
 
         static TextCommandResult Help(TextCommandCallingArgs args)

@@ -2572,7 +2572,7 @@ namespace VintageE
             ClientConfig ??= VintageEClientConfig.Load(capi);
             lastLookSetting = ClientConfig?.Look;
             capi.ChatCommands.Create("vintagee")
-                .WithDescription("Vintage-E settings for this computer (the look of its blocks and items, how the Watch of Flowing Time shows it's on)")
+                .WithDescription("Vintage-E settings for this computer (the look of its blocks and items, how the Watch of Flowing Time shows it's on, the EMC display and the learned line on items)")
                 .HandleWith(_ =>
                 {
                     clientSettingsDialog?.TryClose();
@@ -2581,6 +2581,7 @@ namespace VintageE
                     return TextCommandResult.Success();
                 });
             capi.Event.LevelFinalize += () => watchHud = new HudWatchIndicator(capi, this);
+            capi.Event.LevelFinalize += () => emcHud = new HudEmcDisplay(capi, this); // your EMC on screen (1.28.0)
             // Ancient Armory on the server, but this computer's own copy of it gave the game no files (1.25.4): said in
             // this player's chat a few seconds after joining, below the server's own lines. See AncientArmoryCheck.
             capi.Event.LevelFinalize += () => capi.Event.RegisterCallback(Guard.Tick(Mod.Logger, "checking Ancient Armory's files on this computer", () =>
@@ -2874,6 +2875,7 @@ namespace VintageE
         /// <summary>Client: the watch's change to the world's time speed (0 = none), from the server.</summary>
         public float ClientWatchModifier { get; private set; }
         HudWatchIndicator watchHud;
+        HudEmcDisplay emcHud;
         GuiDialogClientSettings clientSettingsDialog;
         LoadedTexture watchGlowTexture;
         string watchGlowColor;
@@ -2889,6 +2891,7 @@ namespace VintageE
             if (clientSavePending == 0 && Capi != null)
                 clientSavePending = Capi.Event.RegisterCallback(_ => { clientSavePending = 0; try { ClientConfig?.Save(Capi); } catch (Exception e) { Mod.Logger.Warning("Vintage-E: could not save the client settings: {0}", e.Message); } }, 400);
             watchHud?.Update(true);
+            emcHud?.Update(true);
             string look = ClientConfig?.Look;
             if (look != null && lastLookSetting != null && look != lastLookSetting)
             {
@@ -3236,6 +3239,7 @@ namespace VintageE
             gemFilterDialog?.Dispose();
             missingDialog?.Dispose();
             watchHud?.Dispose();
+            emcHud?.Dispose();
             watchGlowTexture?.Dispose();
             windSound?.Stop();
             windSound?.Dispose();

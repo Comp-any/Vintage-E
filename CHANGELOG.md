@@ -2,6 +2,25 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.28.0 — 2026-11-28
+
+Three quality-of-life features from Project Expansion (a ProjectE add-on for Minecraft).
+
+### Added
+- **The EMC display: your EMC on screen**, with how much it changed a second over the last ten seconds (+12.5 EMC/s after burning, a falling number while you spend). It stays hidden while you have no EMC, so it doesn't get in the way of players who don't use it. Switch it off, or move it to another corner or edge (with an offset), in the new EMC column of the `.vintagee` window. It's on by default, in the top left. It shows the balance the server already sends your game, so it costs the server nothing.
+- **"Learned for transmutation" / "Not learned for transmutation yet" on items.** Every block and item with an EMC value now says, under its value, whether you have learned it. For things learned as an exact version (a filled container, a lantern of a particular metal, a clutter type) it asks about that version, the same entry burning it would add. It can be switched off in `.vintagee`.
+- **New commands:**
+  - `/emc balance [player]`: your EMC and how many things you have learned.
+  - `/emc knows [hand|<code>] [player]`: whether you have learned the held item, or a block or item by code.
+  - `/emc knowledge [player]`: how many things you have learned, and how many of those are exact versions (the ones `MaxExactKnowledge` limits).
+  - `/emc unlearn [hand|<code>] [player]`: forget one thing, as the table's Forget does.
+  - `/emc fuels`: the fuels an Energy Collector's fuel slot upgrades, cheapest first, with their values and what each step costs.
+  - `/emc forgetall <player>` (admins): forget everything a player has learned. It can't be undone, so it asks you to type it again within 30 seconds first, and tells the player.
+  - Everyone can use these on themselves. Another player, or `/emc learn` with a code, needs admin rights, as `/emc add` does. A player whose knowledge an admin changes is told so in chat.
+
+### Changed
+- `/emc learn` takes a block or item code and a player for admins, `/emc learn [hand|<code>] [player]`, so an admin can teach something without holding it, and from the console. Players still learn what they hold, with the same checks as the table's Learn slot.
+
 ## 1.27.1 — 2026-11-28
 
 ### Fixed

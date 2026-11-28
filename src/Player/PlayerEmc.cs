@@ -93,7 +93,7 @@ namespace VintageE
         {
             if (packet == null) return false;
             clientUid = playerUid;
-            if (packet.HasEmc) clientEmc = packet.Emc;
+            if (packet.HasEmc) { clientEmc = packet.Emc; ClientHasEmc = true; }
             string[] known = ApplyKnown(clientKnown, packet);
             bool changed = !ReferenceEquals(known, clientKnown);
             clientKnown = known;
@@ -452,8 +452,12 @@ namespace VintageE
         }
 
         /// <summary>A game client left its world: its player's numbers go with it.</summary>
+        /// <summary>The server has told this game its player's EMC since joining (the EMC display waits for it, 1.28.0).</summary>
+        public static bool ClientHasEmc { get; private set; }
+
         public static void ForgetClient()
         {
+            ClientHasEmc = false;
             clientEmc = 0m;
             clientKnown = Array.Empty<string>();
             clientUid = null;

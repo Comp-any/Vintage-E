@@ -13,6 +13,8 @@ namespace VintageE
     public class GuiDialogClientSettings : GuiDialog
     {
         const double Width = 420;
+        /// <summary>The EMC settings (1.28.0) sit in a second column, so the window doesn't grow taller than small screens.</summary>
+        const double Column2 = Width + 30;
         static readonly (string name, string hex)[] Colors =
         {
             ("sky", "#66CCFF"), ("gold", "#FFCC33"), ("green", "#66FF88"), ("purple", "#CC88FF"),
@@ -78,16 +80,40 @@ namespace VintageE
             string note = Lang.Get("vintagee:clientcfg-note");
             ElementBounds noteBounds = ElementBounds.Fixed(0, y, Width, GuiLayout.TextHeight(capi, detail, note, Width));
             y += noteBounds.fixedHeight + 8;
-            ElementBounds doneBounds = ElementBounds.Fixed(Width - 120, y, 120, 30);
+            ElementBounds doneBounds = ElementBounds.Fixed(Column2 + Width - 120, y, 120, 30);
+
+            // Second column: the EMC display and the learned line (1.28.0).
+            double y2 = 30;
+            ElementBounds emcHeading = ElementBounds.Fixed(Column2, y2, Width, 24);
+            y2 += 30;
+            ElementBounds hudSwitch = ElementBounds.Fixed(Column2, y2, 30, 30);
+            ElementBounds hudLabel = ElementBounds.Fixed(Column2 + 40, y2 + 5, Width - 40, 22);
+            y2 += 38;
+            ElementBounds hudPosLabel = ElementBounds.Fixed(Column2, y2 + 5, 120, 22);
+            ElementBounds hudPosDrop = ElementBounds.Fixed(Column2 + 130, y2, Width - 130, 30);
+            y2 += 38;
+            ElementBounds hudOffLabel = ElementBounds.Fixed(Column2, y2 + 5, 120, 22);
+            ElementBounds hudOffXLabel = ElementBounds.Fixed(Column2 + 130, y2 + 5, 20, 22);
+            ElementBounds hudOffX = ElementBounds.Fixed(Column2 + 150, y2, 100, 30);
+            ElementBounds hudOffYLabel = ElementBounds.Fixed(Column2 + 265, y2 + 5, 20, 22);
+            ElementBounds hudOffY = ElementBounds.Fixed(Column2 + 285, y2, 100, 30);
+            y2 += 40;
+            string hudNote = Lang.Get("vintagee:clientcfg-emchud-note");
+            ElementBounds hudNoteBounds = ElementBounds.Fixed(Column2, y2, Width, GuiLayout.TextHeight(capi, detail, hudNote, Width));
+            y2 += hudNoteBounds.fixedHeight + 14;
+            ElementBounds tipSwitch = ElementBounds.Fixed(Column2, y2, 30, 30);
+            ElementBounds tipLabel = ElementBounds.Fixed(Column2 + 40, y2 + 5, Width - 40, 22);
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
             bgBounds.BothSizing = ElementSizing.FitToChildren;
             bgBounds.WithChildren(lookHeading, lookDrop, lookNoteBounds, hotSwitch, hotLabel, hooksSwitch, hooksLabel, heading, iconSwitch, iconLabel, sizeLabel, sizeSlider, posLabel, posDrop, offLabel, offXLabel, offX, offYLabel, offY,
-                glowSwitch, glowLabel, colorLabel, colorDrop, colorText, noteBounds, doneBounds);
+                glowSwitch, glowLabel, colorLabel, colorDrop, colorText, noteBounds, doneBounds,
+                emcHeading, hudSwitch, hudLabel, hudPosLabel, hudPosDrop, hudOffLabel, hudOffXLabel, hudOffX, hudOffYLabel, hudOffY, hudNoteBounds, tipSwitch, tipLabel);
             ElementBounds dialogBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
 
             string[] posNames = VintageEClientConfig.Positions.Select(p => Lang.Get("vintagee:clientcfg-pos-" + p.ToLowerInvariant())).ToArray();
             int posIndex = Math.Max(0, Array.IndexOf(VintageEClientConfig.Positions, Cfg.WatchIconPosition));
+            int hudPosIndex = Math.Max(0, Array.IndexOf(VintageEClientConfig.Positions, Cfg.EmcHudPosition));
             string[] colorValues = Colors.Select(c => c.hex ?? "custom").ToArray();
             string[] colorNames = Colors.Select(c => Lang.Get("vintagee:clientcfg-color-" + c.name)).ToArray();
             int colorIndex = Array.FindIndex(Colors, c => c.hex != null && c.hex.Equals(Cfg.WatchGlowColor, StringComparison.OrdinalIgnoreCase));
@@ -128,6 +154,19 @@ namespace VintageE
                     .AddDropDown(colorValues, colorNames, colorIndex, OnColorPick, colorDrop, "colorpick")
                     .AddTextInput(colorText, OnColorTyped, label, "color")
                     .AddStaticText(note, detail, noteBounds)
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-emc"), CairoFont.WhiteSmallishText(), emcHeading)
+                    .AddSwitch(on => { if (!composing) { Cfg.EmcHud = on; Changed(); } }, hudSwitch, "emchud")
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-emchud"), label, hudLabel)
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-position"), label, hudPosLabel)
+                    .AddDropDown(VintageEClientConfig.Positions, posNames, hudPosIndex, (code, sel) => { if (!composing) { Cfg.EmcHudPosition = code; Changed(); } }, hudPosDrop, "emchudposition")
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-offset"), label, hudOffLabel)
+                    .AddStaticText("x", label, hudOffXLabel)
+                    .AddNumberInput(hudOffX, t => { if (!composing && int.TryParse(t, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n)) { Cfg.EmcHudOffsetX = n; Changed(); } }, label, "emchudoffx")
+                    .AddStaticText("y", label, hudOffYLabel)
+                    .AddNumberInput(hudOffY, t => { if (!composing && int.TryParse(t, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n)) { Cfg.EmcHudOffsetY = n; Changed(); } }, label, "emchudoffy")
+                    .AddStaticText(hudNote, detail, hudNoteBounds)
+                    .AddSwitch(on => { if (!composing) { Cfg.LearnedTooltip = on; Changed(); } }, tipSwitch, "learnedtip")
+                    .AddStaticText(Lang.Get("vintagee:clientcfg-learnedtip"), label, tipLabel)
                     .AddSmallButton(Lang.Get("vintagee:clientcfg-done"), () => TryClose(), doneBounds)
                 .EndChildElements()
                 .Compose();
@@ -140,6 +179,10 @@ namespace VintageE
             SingleComposer.GetNumberInput("offx").SetValue(Cfg.WatchIconOffsetX.ToString(CultureInfo.InvariantCulture));
             SingleComposer.GetNumberInput("offy").SetValue(Cfg.WatchIconOffsetY.ToString(CultureInfo.InvariantCulture));
             SingleComposer.GetTextInput("color").SetValue(Cfg.WatchGlowColor);
+            SingleComposer.GetSwitch("emchud").SetValue(Cfg.EmcHud);
+            SingleComposer.GetNumberInput("emchudoffx").SetValue(Cfg.EmcHudOffsetX.ToString(CultureInfo.InvariantCulture));
+            SingleComposer.GetNumberInput("emchudoffy").SetValue(Cfg.EmcHudOffsetY.ToString(CultureInfo.InvariantCulture));
+            SingleComposer.GetSwitch("learnedtip").SetValue(Cfg.LearnedTooltip);
             composing = false;
         }
 

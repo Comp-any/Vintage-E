@@ -12,7 +12,8 @@ using Vintagestory.GameContent;
 namespace VintageE
 {
     /// <summary>
-    /// Client-only behaviour attached to every block and item at load: adds "EMC: x" to the tooltip.
+    /// Client-only behaviour attached to every block and item at load: adds "EMC: x" to the tooltip, and (1.28.0) whether
+    /// you've learned it.
     /// Liquids are shown per litre (the game stores them as 100 small portions per litre, which made a litre of
     /// water look like 0.01), and containers show what their contents are worth.
     /// </summary>
@@ -69,6 +70,7 @@ namespace VintageE
                     }
                 }
                 if (mod.Emc.IsNoTransmute(stack.Collectible)) dsc.AppendLine(Lang.Get("vintagee:tooltip-notransmute"));
+                else if (mod.ClientConfig?.LearnedTooltip != false && LearnedLine(stack) is string learned) dsc.AppendLine(learned);
             }
 
             StackDataTable data = mod.Emc.StackData;
@@ -93,6 +95,24 @@ namespace VintageE
             }
         }
     
+        /// <summary>
+        /// "Learned for transmutation" or "Not learned for transmutation yet" (1.28.0, Project Expansion's learned
+        /// tooltip); null until the server has sent this game its knowledge, so it never says "not learned" too early.
+        /// </summary>
+        string LearnedLine(ItemStack stack)
+        {
+            IPlayer player = mod.Capi?.World?.Player;
+            if (player == null || !PlayerEmc.ClientHasEmc) return null;
+            return Lang.Get(Learned(mod, player, stack) ? "vintagee:tooltip-learned" : "vintagee:tooltip-notlearned");
+        }
+
+        /// <summary>
+        /// Whether the player has learned this stack the way the table learns it: the plain block or item, or exactly
+        /// this version for things that keep their contents or material (the same key a burn or the Learn slot adds).
+        /// </summary>
+        public static bool Learned(VintageEModSystem mod, IPlayer player, ItemStack stack)
+            => stack != null && PlayerEmc.Knows(player, EmcCommands.KnowledgeKey(mod, stack));
+
         // ------------------------------------------------------------ Arcane Tablet in the handbook (1.19.0)
 
         /// <summary>

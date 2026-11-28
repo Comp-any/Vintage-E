@@ -262,11 +262,17 @@ Value files can also hold:
 | `/emc compat` | admin | Open the list of compatibility files: whether each one's mod is loaded, whether it's switched off and how many items it valued, with a switch for each (saved as `DisabledCompat`; values are worked out again). `/emc compat disable\|enable <name>` switches one from the console |
 | `/emc recipe` | admin | Open the window of hand-written recipes: put the result and its ingredients in the slots (or type the recipe, e.g. `item:mymod:boat = 40 game:plank-* + 8 game:rope`), and edit or remove saved ones. `/emc recipe add\|remove <recipe>` and `/emc recipe list` from chat |
 | **Ctrl + K** over a block or item | admin | A small box with its EMC value and switches for the blacklist, the gray list and free ingredients: change any and press **Save**. Works on inventory slots, any window, the handbook's pictures and pages, the block you look at, or the held item. **Unpin** takes a value set by hand off. **Why this value?** opens the `/emc dump` window for it. Change the key in the game's controls |
-| `.vintagee` | everyone | This computer's settings: your look (New, Middle, Original or the server's default), whether a new look shows without rejoining, the look hooks, and the Watch of Flowing Time's icon (on/off, size, position) and glow (on/off, colour) |
+| `.vintagee` | everyone | This computer's settings: your look (New, Middle, Original or the server's default), whether a new look shows without rejoining, the look hooks, the Watch of Flowing Time's icon (on/off, size, position) and glow (on/off, colour), the EMC display (your EMC on screen with how much it changes a second: on/off, position) and the line on blocks and items saying whether you've learned them |
 | `/emc add <amount> [player]` | admin | Add personal EMC to a player (yourself if no name is given) |
 | `/emc remove <amount> [player]` | admin | Take personal EMC from a player (never below 0) |
 | `/emc setemc <amount> [player]` | admin | Set a player's personal EMC to an exact amount (yourself if no name is given) |
-| `/emc learn` (or `/emc learn hand`) | everyone | Learn the held item without burning it: anything the table could burn (admins: anything) |
+| `/emc learn [hand\|<code>] [player]` | everyone | Learn the held item without burning it: anything the table could burn. Admins: anything, by code too, for any online player |
+| `/emc unlearn [hand\|<code>] [player]` | everyone | Forget the held item (or a block or item by code), as the table's Forget does. Admins: for any online player |
+| `/emc knows [hand\|<code>] [player]` | everyone | Whether you have learned the held item (or a block or item by code). Admins: any online player |
+| `/emc balance [player]` | everyone | Your personal EMC and how many things you have learned. Admins: any online player's |
+| `/emc knowledge [player]` | everyone | How many things you have learned and how many are exact versions (against `MaxExactKnowledge`). Admins: any online player |
+| `/emc forgetall <player>` | admin | Forget everything a player has learned. Asks you to run it a second time within 30 seconds first; can't be undone |
+| `/emc fuels` | everyone | The fuels an Energy Collector's fuel slot upgrades, cheapest first, with their values and what each step costs |
 
 ## Recipes
 
