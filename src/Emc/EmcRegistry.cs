@@ -157,7 +157,7 @@ namespace VintageE
         public double PlainValue(ItemStack stack)
         {
             double v = GetValue(stack.Collectible);
-            if (stack.Collectible is IEmcStorageItem) v += StoredEmc.Get(stack); // Klein stars are worth what they hold
+            if (stack.Collectible is IEmcStorageItem) v += (double)StoredEmc.Get(stack); // Klein stars are worth what they hold
             return v;
         }
 
@@ -402,6 +402,24 @@ namespace VintageE
             if (v >= 1) return (Math.Floor(v * 100 + 1e-6) / 100).ToString(v >= 1000 ? "#,0.##" : "0.##", CultureInfo.InvariantCulture);
             return (Math.Floor(v * 1000 + 1e-6) / 1000).ToString("0.###", CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// <see cref="Format(double)"/> for an exact total (a balance, a Klein star): the same look, cut off at two
+        /// decimals (three below 1), with no rounding on the way. Named apart so calls with whole numbers stay clear.
+        /// </summary>
+        public static string Total(decimal v)
+        {
+            if (v >= 1)
+            {
+                // Past 10^24 the hundredths would overflow when scaled; whole EMC is all that shows there anyway.
+                decimal cut = v > 1e24m ? decimal.Truncate(v) : decimal.Floor(v * 100m) / 100m;
+                return cut.ToString(v >= 1000 ? "#,0.##" : "0.##", CultureInfo.InvariantCulture);
+            }
+            return (decimal.Floor(v * 1000m) / 1000m).ToString("0.###", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary><see cref="Short(double)"/> for an exact total: the full number below a million, a short form above.</summary>
+        public static string ShortTotal(decimal v) => v < 1_000_000m ? Total(v) : Short((double)v);
     }
 
     /// <summary>

@@ -233,7 +233,7 @@ namespace VintageE
             double targetValue = target == null || mod.Emc.IsNoTransmute(target) ? 0 : mod.Emc.GetValue(target);
             if (targetValue <= 0) return;
             double maxInput = gemSlot.Itemstack.Collectible.Attributes?["maxInputValue"].AsDouble(8) ?? 8;
-            double stored = StoredEmc.Get(gemSlot.Itemstack);
+            decimal stored = StoredEmc.Get(gemSlot.Itemstack), each = EmcAmount.From(targetValue);
             bool changed = false;
             foreach (ItemSlot slot in inventory)
             {
@@ -245,13 +245,13 @@ namespace VintageE
                 if (!GemFilter.Passes(gemSlot.Itemstack, c, Api.World)) continue;
                 double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
                 if (value <= 0 || value > maxInput) continue;
-                stored += value * stack.StackSize;
+                stored = EmcAmount.Add(stored, EmcAmount.From(value * stack.StackSize));
                 slot.Itemstack = null;
                 slot.MarkDirty();
                 changed = true;
             }
             int made = 0;
-            while (stored >= targetValue && made < 64)
+            while (stored >= each && made < 64)
             {
                 var source = new DummySlot(new ItemStack(target));
                 foreach (ItemSlot slot in inventory)
@@ -261,11 +261,11 @@ namespace VintageE
                     source.TryPutInto(Api.World, slot, 1);
                 }
                 if (!source.Empty) break; // the chest is full: the EMC stays on the gem
-                stored -= targetValue;
+                stored -= each;
                 made++;
                 changed = true;
             }
-            if (System.Math.Abs(stored - StoredEmc.Get(gemSlot.Itemstack)) > 1e-9) { StoredEmc.Set(gemSlot.Itemstack, stored); gemSlot.MarkDirty(); changed = true; }
+            if (stored != StoredEmc.Get(gemSlot.Itemstack)) { StoredEmc.Set(gemSlot.Itemstack, stored); gemSlot.MarkDirty(); changed = true; }
             if (changed) MarkDirty(false);
         }
     }

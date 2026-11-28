@@ -227,10 +227,10 @@ namespace VintageE
             if (!(mouse.Itemstack.Collectible is IEmcStorageItem)) { Fail(player, "charge-notstar", mouse.Itemstack.GetName()); return; }
             ItemStack star = mouse.Itemstack;
             if (star.StackSize != 1) { Fail(player, "star-onlyone", star.GetName()); return; }
-            double stored = StoredEmc.Get(star);
-            double move = empty ? -stored : Math.Min(PlayerEmc.GetEmc(player), StoredEmc.Capacity(star) - stored);
-            if (Math.Abs(move) < 1e-9) { Fail(player, empty ? "star-empty" : "star-full", star.GetName()); return; }
-            PlayerEmc.AddEmc(player, -move);
+            decimal stored = StoredEmc.Get(star);
+            decimal move = empty ? -stored : Math.Min(PlayerEmc.GetEmc(player), StoredEmc.Capacity(star) - stored);
+            if (move == 0) { Fail(player, empty ? "star-empty" : "star-full", star.GetName()); return; }
+            PlayerEmc.AddEmcExact(player, -move);
             StoredEmc.Set(star, stored + move);
             mouse.MarkDirty();
             sapi.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), player.Entity, null, true, 8, 0.6f);
@@ -367,7 +367,7 @@ namespace VintageE
                 return;
             }
 
-            double emc = PlayerEmc.GetEmc(player);
+            decimal emc = PlayerEmc.GetEmc(player), eachExact = EmcAmount.From(each);
             int maxStack = Math.Max(1, collectible.MaxStackSize);
             ItemSlot mouse = player.InventoryManager.MouseItemSlot;
 
@@ -388,11 +388,11 @@ namespace VintageE
                 if (want <= 0) return;
             }
 
-            int affordable = (int)Math.Min(int.MaxValue, Math.Floor(emc / each + 1e-9));
+            int affordable = eachExact <= 0 ? 0 : (int)Math.Min(int.MaxValue, decimal.Floor(emc / eachExact));
             int amount = Math.Min(want, affordable);
             if (amount <= 0)
             {
-                Fail(player, "notenoughemc", EmcFormat.Format(each), EmcFormat.Format(emc));
+                Fail(player, "notenoughemc", EmcFormat.Format(each), EmcFormat.Total(emc));
                 return;
             }
 
@@ -416,7 +416,7 @@ namespace VintageE
                 mouse.MarkDirty();
             }
 
-            PlayerEmc.SetEmc(player, emc - each * amount);
+            PlayerEmc.SetEmc(player, emc - eachExact * amount);
             mod.SendResult(player, Result(player, null));
         }
 

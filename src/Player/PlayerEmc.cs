@@ -53,9 +53,10 @@ namespace VintageE
             bool moved = false;
             if (watched.HasAttribute(EmcKey))
             {
-                double old = Sane(watched.GetDouble(EmcKey, 0)), now = Sane(own.GetDouble(EmcKey, 0));
-                own.SetDouble(EmcKey, now + old);
-                watched.RemoveAttribute(EmcKey);
+                // Before 1.21.1 the balance was a double in the watched attributes; it joins the exact one (1.27.0).
+                decimal old = EmcAmount.From(Sane(watched.GetDouble(EmcKey, 0)));
+                EmcAmount.Write(own, EmcKey, EmcAmount.Add(EmcAmount.Read(own, EmcKey), old));
+                EmcAmount.Remove(watched, EmcKey);
                 moved = true;
             }
             if (watched.HasAttribute(KnownKey))
@@ -80,7 +81,7 @@ namespace VintageE
 
         // ------------------------------------------------------------------ what a game client knows (its own player)
 
-        static double clientEmc;
+        static decimal clientEmc;
         static string[] clientKnown = Array.Empty<string>();
         /// <summary>Whose numbers the client holds (null: not told yet).</summary>
         static string clientUid;
@@ -153,7 +154,7 @@ namespace VintageE
             }
 
             /// <summary>The packet for the owner, from the server's numbers as they stand, and a clean slate.</summary>
-            public PlayerEmcPacket Take(double emc, string[] known)
+            public PlayerEmcPacket Take(decimal emc, string[] known)
             {
                 var packet = new PlayerEmcPacket();
                 if (Emc) { packet.HasEmc = true; packet.Emc = emc; }
@@ -223,23 +224,27 @@ namespace VintageE
 
         // ------------------------------------------------------------------ reading and changing
 
-        public static double GetEmc(IPlayer player)
+        /// <summary>The player's EMC, exact (see <see cref="EmcAmount"/>).</summary>
+        public static decimal GetEmc(IPlayer player)
         {
-            if (!OnServer(player)) return IsClientsOwn(player) ? clientEmc : 0;
-            return ServerTree(player)?.GetDouble(EmcKey, 0) ?? 0;
+            if (!OnServer(player)) return IsClientsOwn(player) ? clientEmc : 0m;
+            return EmcAmount.Read(ServerTree(player), EmcKey);
         }
 
-        public static void SetEmc(IPlayer player, double value)
+        public static void SetEmc(IPlayer player, decimal value)
         {
             if (!OnServer(player)) return; // a game client is told its numbers; it never sets them
             TreeAttribute tree = ServerTree(player);
             if (tree == null) return;
-            if (double.IsNaN(value) || value < 0) value = 0;
-            tree.SetDouble(EmcKey, value);
+            EmcAmount.Write(tree, EmcKey, value < 0 ? 0m : value);
             lock (pending) Changes(player).Emc = true;
         }
 
-        public static void AddEmc(IPlayer player, double amount) => SetEmc(player, GetEmc(player) + amount);
+        /// <summary>Adds (or, negative, takes) an amount worked out from item values or rates; never below 0.</summary>
+        public static void AddEmc(IPlayer player, double amount) => AddEmcExact(player, EmcAmount.From(amount));
+
+        /// <summary>Adds (or, negative, takes) an exact amount; never below 0, and stops at the largest decimal.</summary>
+        public static void AddEmcExact(IPlayer player, decimal amount) => SetEmc(player, EmcAmount.Add(GetEmc(player), amount));
 
         public static string[] GetKnown(IPlayer player)
         {
@@ -449,7 +454,7 @@ namespace VintageE
         /// <summary>A game client left its world: its player's numbers go with it.</summary>
         public static void ForgetClient()
         {
-            clientEmc = 0;
+            clientEmc = 0m;
             clientKnown = Array.Empty<string>();
             clientUid = null;
         }

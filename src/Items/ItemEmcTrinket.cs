@@ -457,7 +457,7 @@ namespace VintageE
             if (UsesDensityModes)
             {
                 CollectibleObject target = Resolve(world, DensityTargets[GameMath.Clamp(GetMode(stack), 0, DensityTargets.Length - 1)]);
-                if (target != null) dsc.AppendLine(Lang.Get("vintagee:density-target", target.GetHeldItemName(new ItemStack(target)), EmcFormat.Format(StoredEmc.Get(stack))));
+                if (target != null) dsc.AppendLine(Lang.Get("vintagee:density-target", target.GetHeldItemName(new ItemStack(target)), EmcFormat.Total(StoredEmc.Get(stack))));
                 string[] filter = TabletMagnet.GetFilter(stack);
                 int listed = filter.Count(f => f != null);
                 dsc.AppendLine(Lang.Get(GemFilter.Only(stack) ? "vintagee:density-filter-only" : listed == 0 ? "vintagee:density-filter-none" : "vintagee:density-filter-except", listed));

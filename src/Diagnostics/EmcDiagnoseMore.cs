@@ -474,7 +474,7 @@ namespace VintageE
             r.Add(x.L("diag-players-help"), EmcLineStyle.Note);
             foreach (IPlayer p in x.Sapi.World.AllOnlinePlayers ?? Array.Empty<IPlayer>())
             {
-                r.Add(Link(ActionPlayer, p.PlayerName, p.PlayerName) + ": " + x.L("diag-players-line", F(PlayerEmc.GetEmc(p)), PlayerEmc.GetKnown(p).Length, p.WorldData?.CurrentGameMode.ToString() ?? "?"));
+                r.Add(Link(ActionPlayer, p.PlayerName, p.PlayerName) + ": " + x.L("diag-players-line", EmcFormat.Total(PlayerEmc.GetEmc(p)), PlayerEmc.GetKnown(p).Length, p.WorldData?.CurrentGameMode.ToString() ?? "?"));
             }
             Back(x);
         }
@@ -495,7 +495,7 @@ namespace VintageE
             VintageEConfig cfg = x.Mod.Config;
             string[] known = PlayerEmc.GetKnown(p);
             int exact = PlayerEmc.CountExact(p);
-            r.Add(x.L("diag-player-emc", F(PlayerEmc.GetEmc(p))), EmcLineStyle.Text);
+            r.Add(x.L("diag-player-emc", EmcFormat.Total(PlayerEmc.GetEmc(p))), EmcLineStyle.Text);
             r.Add(x.L("diag-player-known", known.Length, exact, cfg.MaxExactKnowledge), exact >= cfg.MaxExactKnowledge ? EmcLineStyle.Warn : EmcLineStyle.Text);
             if (exact >= cfg.MaxExactKnowledge) x.Fix(x.L("diag-player-known-fix"));
             NotOffered(x, known);

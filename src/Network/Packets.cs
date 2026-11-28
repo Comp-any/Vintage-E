@@ -51,7 +51,8 @@ namespace VintageE
     [ProtoContract]
     public class PlayerEmcPacket
     {
-        [ProtoMember(1)] public double Emc;
+        /// <summary>Exact since 1.27.0 (a decimal; see <see cref="EmcAmount"/>).</summary>
+        [ProtoMember(1)] public decimal Emc;
         [ProtoMember(2)] public bool HasEmc;
         /// <summary>The whole knowledge list (only when <see cref="HasKnown"/>).</summary>
         [ProtoMember(3)] public string[] Known;
@@ -149,7 +150,7 @@ namespace VintageE
         [ProtoMember(2)] public string[] Args;
         [ProtoMember(3)] public string LearnedKey;
         /// <summary>The player's EMC after the action, so the window can show it before the entity's attributes sync.</summary>
-        [ProtoMember(4)] public double Emc;
+        [ProtoMember(4)] public decimal Emc;
         [ProtoMember(5)] public bool HasEmc;
         /// <summary>Every knowledge key this action added (the exact key and, when it applies, the plain one).</summary>
         [ProtoMember(6)] public string[] LearnedKeys;

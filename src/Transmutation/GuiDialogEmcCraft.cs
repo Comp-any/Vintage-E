@@ -226,7 +226,7 @@ namespace VintageE
 
         void UpdateEmc()
         {
-            SingleComposer?.GetDynamicText("emc")?.SetNewText(Lang.Get("vintagee:emccraft-emc", EmcFormat.Format(PlayerEmc.GetEmc(capi.World.Player))));
+            SingleComposer?.GetDynamicText("emc")?.SetNewText(Lang.Get("vintagee:emccraft-emc", EmcFormat.Total(PlayerEmc.GetEmc(capi.World.Player))));
         }
 
         public override void OnGuiOpened()

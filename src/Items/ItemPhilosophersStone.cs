@@ -146,7 +146,7 @@ namespace VintageE
                 {
                     if (player is IServerPlayer sp)
                     {
-                        sp.SendIngameError("vintagee-notenoughemc", Lang.GetL(sp.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(extra), EmcFormat.Format(EmcWallet.Balance(player))));
+                        sp.SendIngameError("vintagee-notenoughemc", Lang.GetL(sp.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(extra), EmcFormat.Total(EmcWallet.Balance(player))));
                     }
                     break;
                 }

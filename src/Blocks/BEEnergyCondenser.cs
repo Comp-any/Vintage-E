@@ -152,11 +152,12 @@ namespace VintageE
             bool chargingStar = target?.Collectible is IEmcStorageItem;
             if (chargingStar && Stored >= 1)
             {
-                double move = Math.Min(Math.Floor(Stored), StoredEmc.Capacity(target) - StoredEmc.Get(target));
+                decimal had = StoredEmc.Get(target);
+                decimal move = Math.Min(decimal.Floor(EmcAmount.From(Stored)), StoredEmc.Capacity(target) - had);
                 if (move > 0)
                 {
-                    StoredEmc.Set(target, StoredEmc.Get(target) + move);
-                    Stored -= move;
+                    StoredEmc.Set(target, had + move);
+                    Stored -= (double)move;
                     inventory[TargetSlot].MarkDirty();
                     changed = true;
                 }
@@ -426,7 +427,7 @@ namespace VintageE
             ItemStack target = inventory[TargetSlot].Itemstack;
             if (target?.Collectible is IEmcStorageItem)
             {
-                dsc.AppendLine(Lang.Get("vintagee:condenser-charging", target.GetName(), EmcFormat.Format(StoredEmc.Get(target)), EmcFormat.Format(StoredEmc.Capacity(target))));
+                dsc.AppendLine(Lang.Get("vintagee:condenser-charging", target.GetName(), EmcFormat.Total(StoredEmc.Get(target)), EmcFormat.Total(StoredEmc.Capacity(target))));
             }
             else if (target != null)
             {

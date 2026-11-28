@@ -31,20 +31,20 @@ namespace VintageE
             IPlayer player = (byEntity as EntityPlayer)?.Player;
             if (player == null || slot.Itemstack == null) return;
 
-            double stored = StoredEmc.Get(slot.Itemstack);
-            double capacity = GetCapacity(slot.Itemstack);
+            decimal stored = StoredEmc.Get(slot.Itemstack);
+            decimal capacity = StoredEmc.Capacity(slot.Itemstack);
             if (byEntity.Controls.Sneak)
             {
-                double move = Math.Min(PlayerEmc.GetEmc(player), capacity - stored);
+                decimal move = Math.Min(PlayerEmc.GetEmc(player), capacity - stored);
                 if (move <= 0) return;
-                PlayerEmc.AddEmc(player, -move);
+                PlayerEmc.AddEmcExact(player, -move);
                 StoredEmc.Set(slot.Itemstack, stored + move);
             }
             else
             {
                 if (stored <= 0) return;
-                PlayerEmc.AddEmc(player, stored);
-                StoredEmc.Set(slot.Itemstack, 0);
+                PlayerEmc.AddEmcExact(player, stored);
+                StoredEmc.Set(slot.Itemstack, 0m);
             }
             slot.MarkDirty();
             byEntity.World.PlaySoundAt(new AssetLocation("game:sounds/effect/latch"), byEntity, null, true, 8, 0.6f);
@@ -54,19 +54,19 @@ namespace VintageE
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             if (inSlot?.Itemstack == null) return;
-            dsc.AppendLine(Lang.Get("vintagee:kleinstar-stored", EmcFormat.Format(StoredEmc.Get(inSlot.Itemstack)), EmcFormat.Format(GetCapacity(inSlot.Itemstack))));
+            dsc.AppendLine(Lang.Get("vintagee:kleinstar-stored", EmcFormat.Total(StoredEmc.Get(inSlot.Itemstack)), EmcFormat.Format(GetCapacity(inSlot.Itemstack))));
         }
 
         public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, IRecipeBase byRecipe)
         {
             base.OnCreatedByCrafting(allInputslots, outputSlot, byRecipe);
             if (outputSlot?.Itemstack == null) return;
-            double sum = 0;
+            decimal sum = 0m;
             foreach (ItemSlot slot in allInputslots)
             {
-                if (slot?.Itemstack?.Collectible is IEmcStorageItem) sum += StoredEmc.Get(slot.Itemstack);
+                if (slot?.Itemstack?.Collectible is IEmcStorageItem) sum = EmcAmount.Add(sum, StoredEmc.Get(slot.Itemstack));
             }
-            StoredEmc.Set(outputSlot.Itemstack, Math.Min(sum, GetCapacity(outputSlot.Itemstack)));
+            StoredEmc.Set(outputSlot.Itemstack, Math.Min(sum, StoredEmc.Capacity(outputSlot.Itemstack)));
         }
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)

@@ -1763,8 +1763,8 @@ namespace VintageE
             var changes = new PlayerEmc.PendingChanges { Emc = true };
             changes.Note("i:game:flint", true);
             changes.Note("i:game:stick", false);
-            PlayerEmcPacket sent = changes.Take(12.5, new[] { "b:game:rock-granite", "i:game:flint" });
-            Check(sent.HasEmc && sent.Emc == 12.5 && !sent.HasKnown && sent.Known == null && sent.Learned?.Length == 1 && sent.Learned[0] == "i:game:flint"
+            PlayerEmcPacket sent = changes.Take(12.5m, new[] { "b:game:rock-granite", "i:game:flint" });
+            Check(sent.HasEmc && sent.Emc == 12.5m && !sent.HasKnown && sent.Known == null && sent.Learned?.Length == 1 && sent.Learned[0] == "i:game:flint"
                 && sent.Forgotten?.Length == 1 && sent.Forgotten[0] == "i:game:stick" && !changes.Any,
                 "a player's game is sent their new balance and just the keys learned and forgotten");
             changes.Note("i:game:flint", true);

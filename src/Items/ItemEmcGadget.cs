@@ -347,7 +347,7 @@ namespace VintageE
                     if (!Breakable(world, player, pos, block)) continue;
                     if (!EmcWallet.TryPay(player, costEach))
                     {
-                        Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(costEach), EmcFormat.Format(EmcWallet.Balance(player))));
+                        Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(costEach), EmcFormat.Total(EmcWallet.Balance(player))));
                         stop = true;
                         break;
                     }
@@ -384,7 +384,7 @@ namespace VintageE
             double cost = LensCost[charge] * (mod?.Config.TrinketCostMultiplier ?? 1);
             if (!EmcWallet.TryPay(player, cost))
             {
-                Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
+                Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Total(EmcWallet.Balance(player))));
                 return false;
             }
             if (EntityVintageEProjectile.Shoot(player, "lens", 36, shot => { shot.Radius = LensRadius[charge]; shot.Paid = cost; }) == null) return false;
@@ -461,7 +461,7 @@ namespace VintageE
                 if (diff > 0 && !EmcWallet.TryPay(player, diff * mult))
                 {
                     outOfEmc = true;
-                    Tell(player, Lang.GetL(lang, "vintagee:error-notenoughemc", EmcFormat.Format(diff * mult), EmcFormat.Format(EmcWallet.Balance(player))));
+                    Tell(player, Lang.GetL(lang, "vintagee:error-notenoughemc", EmcFormat.Format(diff * mult), EmcFormat.Total(EmcWallet.Balance(player))));
                     return false;
                 }
                 if (diff < 0) PlayerEmc.AddEmc(player, -diff);
@@ -579,7 +579,7 @@ namespace VintageE
             {
                 if (!EmcWallet.TryPay(player, cost))
                 {
-                    if (fired == 0 && !quiet) Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
+                    if (fired == 0 && !quiet) Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Total(EmcWallet.Balance(player))));
                     break;
                 }
                 if (EntityVintageEProjectile.Shoot(player, "arrow", 50, shot => shot.Damage = ArrowDamage, spread) == null) break;

@@ -21,16 +21,17 @@ namespace VintageE
         const string Key = "vintageeStar";
         public ItemStack Star;
 
-        public bool Full => Star != null && StoredEmc.Get(Star) >= StoredEmc.Capacity(Star) - 1e-6;
+        public bool Full => Star != null && StoredEmc.Get(Star) >= StoredEmc.Capacity(Star);
 
-        /// <summary>Moves up to <paramref name="available"/> EMC into the star; returns how much it took.</summary>
+        /// <summary>Moves up to <paramref name="available"/> EMC (whole EMC only) into the star; returns how much it took.</summary>
         public double Charge(double available)
         {
-            if (Star == null || available < 1) return 0;
-            double move = System.Math.Min(System.Math.Floor(available), StoredEmc.Capacity(Star) - StoredEmc.Get(Star));
+            if (Star == null || !(available >= 1)) return 0;
+            decimal stored = StoredEmc.Get(Star);
+            decimal move = System.Math.Min(decimal.Floor(EmcAmount.From(available)), StoredEmc.Capacity(Star) - stored);
             if (move <= 0) return 0;
-            StoredEmc.Set(Star, StoredEmc.Get(Star) + move);
-            return move;
+            StoredEmc.Set(Star, stored + move);
+            return (double)move;
         }
 
         /// <summary>A plain right-click (no sneak): a star in hand goes in, an empty hand takes it out. Returns true if handled (server side does the work).</summary>
@@ -78,7 +79,7 @@ namespace VintageE
         public void Info(StringBuilder dsc)
         {
             if (Star == null) return;
-            dsc.AppendLine(Lang.Get("vintagee:condenser-charging", Star.GetName(), EmcFormat.Format(StoredEmc.Get(Star)), EmcFormat.Format(StoredEmc.Capacity(Star))));
+            dsc.AppendLine(Lang.Get("vintagee:condenser-charging", Star.GetName(), EmcFormat.Total(StoredEmc.Get(Star)), EmcFormat.Total(StoredEmc.Capacity(Star))));
         }
     }
 }

@@ -320,7 +320,7 @@ namespace VintageE
             double own = plain;
             if (c is IEmcStorageItem)
             {
-                double stored = StoredEmc.Get(stack);
+                double stored = (double)StoredEmc.Get(stack);
                 own += stored;
                 r.Add(x.L("dumpgui-stored", F(stored), F(own)), EmcLineStyle.Text, 1);
             }

@@ -97,7 +97,7 @@ namespace VintageE
                 int items = 0;
                 if (grid != null) for (int i = 0; i < EmcCraft.GridSize * EmcCraft.GridSize; i++) if (grid[i]?.Itemstack != null) items++;
                 x.Info(grid == null ? x.L("diag-emccraft-grid-closed") : x.L("diag-emccraft-grid-open", items));
-                x.Info(x.L("diag-emccraft-known", PlayerEmc.GetKnown(x.Player).Length, EmcFormat.Format(PlayerEmc.GetEmc(x.Player))));
+                x.Info(x.L("diag-emccraft-known", PlayerEmc.GetKnown(x.Player).Length, EmcFormat.Total(PlayerEmc.GetEmc(x.Player))));
                 string last = x.Mod.EmcCrafting?.LastFill(x.Player);
                 x.Info(last == null ? x.L("diag-emccraft-lastfill-none") : x.L("diag-emccraft-lastfill", last));
             }

@@ -16,17 +16,17 @@ namespace VintageE
     {
         public const string AttributeKey = "vintageeStoredEmc";
 
-        public static double Get(ItemStack stack) => stack?.Attributes?.GetDouble(AttributeKey, 0) ?? 0;
+        /// <summary>The EMC in the stack, exact (see <see cref="EmcAmount"/>; a star from before 1.27.0 reads its double).</summary>
+        public static decimal Get(ItemStack stack) => stack?.Attributes == null ? 0m : EmcAmount.Read(stack.Attributes, AttributeKey);
 
-        public static void Set(ItemStack stack, double value)
+        public static void Set(ItemStack stack, decimal value)
         {
             if (stack == null) return;
-            if (double.IsNaN(value) || value < 0) value = 0;
-            if (value <= 0) stack.Attributes.RemoveAttribute(AttributeKey);
-            else stack.Attributes.SetDouble(AttributeKey, value);
+            if (value <= 0) EmcAmount.Remove(stack.Attributes, AttributeKey);
+            else EmcAmount.Write(stack.Attributes, AttributeKey, value);
         }
 
-        public static double Capacity(ItemStack stack) => (stack?.Collectible as IEmcStorageItem)?.GetCapacity(stack) ?? 0;
+        public static decimal Capacity(ItemStack stack) => EmcAmount.From((stack?.Collectible as IEmcStorageItem)?.GetCapacity(stack) ?? 0);
     }
 
     /// <summary>
@@ -53,24 +53,31 @@ namespace VintageE
             }
         }
 
-        public static double Balance(IPlayer player)
+        public static decimal Balance(IPlayer player)
         {
-            double total = PlayerEmc.GetEmc(player);
+            decimal total = PlayerEmc.GetEmc(player);
             foreach (ItemSlot slot in CarriedSlots(player))
             {
-                if (slot.Itemstack.Collectible is IEmcStorageItem) total += StoredEmc.Get(slot.Itemstack);
+                if (slot.Itemstack.Collectible is IEmcStorageItem) total = EmcAmount.Add(total, StoredEmc.Get(slot.Itemstack));
             }
             return total;
         }
 
-        /// <summary>Takes <paramref name="amount"/> EMC if the player has it all; otherwise takes nothing and returns false.</summary>
-        public static bool TryPay(IPlayer player, double amount)
+        /// <summary>Takes <paramref name="cost"/> EMC (worked out from item values or rates) if the player has it all; otherwise takes nothing and returns false.</summary>
+        public static bool TryPay(IPlayer player, double cost)
+        {
+            if (cost <= 0) return true;
+            if (double.IsNaN(cost) || double.IsInfinity(cost)) return false;
+            return TryPayExact(player, EmcAmount.From(cost));
+        }
+
+        /// <summary>Takes an exact amount if the player has it all; otherwise takes nothing and returns false.</summary>
+        public static bool TryPayExact(IPlayer player, decimal amount)
         {
             if (amount <= 0) return true;
-            if (double.IsNaN(amount) || double.IsInfinity(amount)) return false;
             if (player == null) return false;
 
-            double personal = PlayerEmc.GetEmc(player);
+            decimal personal = PlayerEmc.GetEmc(player);
             // Personal EMC covers it, as it nearly always does: nothing to take from Klein stars, so no need to go
             // through the inventory looking for them (twice: once to add them up, once to take from them).
             if (personal >= amount)
@@ -78,18 +85,18 @@ namespace VintageE
                 PlayerEmc.SetEmc(player, personal - amount);
                 return true;
             }
-            if (Balance(player) + 1e-9 < amount) return false;
-            double fromPersonal = Math.Min(personal, amount);
+            if (Balance(player) < amount) return false;
+            decimal fromPersonal = Math.Min(personal, amount);
             if (fromPersonal > 0) PlayerEmc.SetEmc(player, personal - fromPersonal);
-            double left = amount - fromPersonal;
+            decimal left = amount - fromPersonal;
 
             foreach (ItemSlot slot in CarriedSlots(player))
             {
-                if (left <= 1e-9) break;
+                if (left <= 0) break;
                 if (!(slot.Itemstack.Collectible is IEmcStorageItem)) continue;
-                double stored = StoredEmc.Get(slot.Itemstack);
+                decimal stored = StoredEmc.Get(slot.Itemstack);
                 if (stored <= 0) continue;
-                double take = Math.Min(stored, left);
+                decimal take = Math.Min(stored, left);
                 StoredEmc.Set(slot.Itemstack, stored - take);
                 slot.MarkDirty();
                 left -= take;

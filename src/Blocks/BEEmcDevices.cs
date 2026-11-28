@@ -196,14 +196,14 @@ namespace VintageE
         {
             if (amount <= 0) return 0;
             ItemSlot held = player.InventoryManager?.ActiveHotbarSlot;
-            if (held?.Itemstack?.Collectible is IEmcStorageItem star)
+            if (held?.Itemstack?.Collectible is IEmcStorageItem)
             {
-                double stored = StoredEmc.Get(held.Itemstack);
-                double move = Math.Min(amount, star.GetCapacity(held.Itemstack) - stored);
+                decimal stored = StoredEmc.Get(held.Itemstack);
+                decimal move = Math.Min(EmcAmount.From(amount), StoredEmc.Capacity(held.Itemstack) - stored);
                 if (move <= 0) return 0;
                 StoredEmc.Set(held.Itemstack, stored + move);
                 held.MarkDirty();
-                return move;
+                return (double)move;
             }
             if (held?.Empty == false) return 0;
             PlayerEmc.AddEmc(player, amount);

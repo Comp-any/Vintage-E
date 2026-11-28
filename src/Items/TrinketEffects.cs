@@ -193,7 +193,7 @@ namespace VintageE
         {
             double cost = Cost(baseCost);
             if (EmcWallet.TryPay(player, cost)) return true;
-            ItemEmcGadget.Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Format(EmcWallet.Balance(player))));
+            ItemEmcGadget.Tell(player, Lang.GetL(player.LanguageCode, "vintagee:error-notenoughemc", EmcFormat.Format(cost), EmcFormat.Total(EmcWallet.Balance(player))));
             return false;
         }
 
@@ -1115,7 +1115,7 @@ namespace VintageE
             if (targetValue <= 0) return;
             double maxInput = gemSlot.Itemstack.Collectible.Attributes?["maxInputValue"].AsDouble(8) ?? 8;
 
-            double stored = StoredEmc.Get(gemSlot.Itemstack);
+            decimal stored = StoredEmc.Get(gemSlot.Itemstack), each = EmcAmount.From(targetValue);
             var inv = player.InventoryManager;
             foreach (string name in new[] { GlobalConstants.hotBarInvClassName, GlobalConstants.backpackInvClassName })
             {
@@ -1131,16 +1131,16 @@ namespace VintageE
                     if (!GemFilter.Passes(gemSlot.Itemstack, c, sapi.World)) continue;
                     double value = mod.Emc.IsNoTransmute(c) ? 0 : mod.Emc.GetValue(stack);
                     if (value <= 0 || value > maxInput) continue;
-                    stored += value * stack.StackSize;
+                    stored = EmcAmount.Add(stored, EmcAmount.From(value * stack.StackSize));
                     slot.Itemstack = null;
                     slot.MarkDirty();
                 }
             }
 
             int made = 0;
-            while (stored >= targetValue && made < 64)
+            while (stored >= each && made < 64)
             {
-                stored -= targetValue;
+                stored -= each;
                 var stack = new ItemStack(target);
                 if (!inv.TryGiveItemstack(stack, true)) sapi.World.SpawnItemEntity(stack, player.Entity.Pos.XYZ);
                 made++;

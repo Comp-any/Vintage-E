@@ -249,7 +249,7 @@ namespace VintageE
                 }
                 string[] three = known.Take(300).ToArray();
                 long oneKey = WireBytes(new PlayerEmcPacket { Learned = new[] { three.Length > 0 ? three[three.Length - 1] : "i:game:stick" } });
-                long balance = WireBytes(new PlayerEmcPacket { HasEmc = true, Emc = 123456.78 });
+                long balance = WireBytes(new PlayerEmcPacket { HasEmc = true, Emc = 123456.78m });
                 return $"learning one item, knowing 300: before {Whole(three)} bytes to every player in view -> after {oneKey} bytes to the learner alone; knowing {known.Length}: before {Whole(known)} bytes -> after {oneKey}; "
                     + $"a change of balance: before an attribute update to every player in view on every change -> after {balance} bytes to the owner, at most once a tick";
             });

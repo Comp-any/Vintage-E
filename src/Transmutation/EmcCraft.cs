@@ -494,7 +494,8 @@ namespace VintageE
             // so the plan below sees the player's own tools wherever they ended up.
             Empty(player, grid, burnMadeTools: true);
 
-            double emc = PlayerEmc.GetEmc(player);
+            // Costs come from item values (double); the balance is compared in double too, and paid exactly below.
+            double emc = (double)PlayerEmc.GetEmc(player);
             string[] known = PlayerEmc.GetKnown(player);
             List<ItemSlot> carried = EmcWallet.CarriedSlots(player).ToList();
             (GridRecipe recipe, Plan plan, Plan clickedPlan, Plan cheapestUnaffordable) = Choose(player, clicked, known, carried, emc);
@@ -708,7 +709,7 @@ namespace VintageE
             string name = Lang.Get("vintagee:emccraft-button");
             try
             {
-                double emc = PlayerEmc.GetEmc(player);
+                double emc = (double)PlayerEmc.GetEmc(player);
                 var (_, plan, clickedPlan, tooDear) = Choose(player, recipe, PlayerEmc.GetKnown(player), EmcWallet.CarriedSlots(player).ToList(), emc);
                 if (plan != null) return Lang.Get("vintagee:emccraft-button-cost", name, EmcFormat.Format(plan.NetCost));
                 if (tooDear != null) return Lang.Get("vintagee:emccraft-button-dear", name, EmcFormat.Format(tooDear.NetCost), EmcFormat.Format(tooDear.Cost));

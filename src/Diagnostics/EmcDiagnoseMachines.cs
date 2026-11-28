@@ -186,7 +186,7 @@ namespace VintageE
         static void StarIn(Ctx x, StarHolder holder)
         {
             if (holder?.Star == null) return;
-            x.Info(x.L("diag-mach-star-in", holder.Star.GetName(), EmcFormat.Format(StoredEmc.Get(holder.Star)), EmcFormat.Format(StoredEmc.Capacity(holder.Star))));
+            x.Info(x.L("diag-mach-star-in", holder.Star.GetName(), EmcFormat.Total(StoredEmc.Get(holder.Star)), EmcFormat.Total(StoredEmc.Capacity(holder.Star))));
         }
 
         /// <summary>The tablet the magnet would use (the same one the window edits) and what it would do.</summary>
@@ -209,17 +209,18 @@ namespace VintageE
         {
             var stars = EmcWallet.CarriedSlots(x.Player).Where(s => s.Itemstack?.Collectible is IEmcStorageItem).Select(s => s.Itemstack).ToList();
             if (stars.Count == 0) { x.Info(x.L("diag-mach-stars-none")); return; }
-            double held = stars.Sum(s => StoredEmc.Get(s)), cap = stars.Sum(s => StoredEmc.Capacity(s));
-            x.Info(x.L("diag-mach-stars", stars.Count, EmcFormat.Format(held), EmcFormat.Format(cap)));
+            decimal held = stars.Aggregate(0m, (sum, s) => EmcAmount.Add(sum, StoredEmc.Get(s)));
+            decimal cap = stars.Aggregate(0m, (sum, s) => EmcAmount.Add(sum, StoredEmc.Capacity(s)));
+            x.Info(x.L("diag-mach-stars", stars.Count, EmcFormat.Total(held), EmcFormat.Total(cap)));
             x.Explain(x.L("diag-mach-stars-why"));
         }
 
         static void Trinkets(Ctx x)
         {
             var on = EmcWallet.CarriedSlots(x.Player).Where(s => s.Itemstack?.Collectible is ItemEmcTrinket && ItemEmcTrinket.IsActive(s.Itemstack)).Select(s => s.Itemstack.GetName()).ToList();
-            double balance = EmcWallet.Balance(x.Player);
+            decimal balance = EmcWallet.Balance(x.Player);
             if (on.Count == 0) x.Info(x.L("diag-mach-trinkets-none"));
-            else x.Info(x.L("diag-mach-trinkets", on.Count, string.Join(", ", on.Distinct()), EmcFormat.Format(balance)));
+            else x.Info(x.L("diag-mach-trinkets", on.Count, string.Join(", ", on.Distinct()), EmcFormat.Total(balance)));
             double mul = x.Mod.Config.TrinketCostMultiplier;
             if (Math.Abs(mul - 1) > 1e-9) x.Info(x.L("diag-mach-trinket-cost", mul));
             if (on.Count > 0 && balance <= 0) { x.Warn(x.L("diag-mach-trinkets-broke")); x.Explain(x.L("diag-mach-trinkets-broke-why")); }

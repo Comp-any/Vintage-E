@@ -94,7 +94,7 @@ namespace VintageE
         readonly string[] slotKeys = new string[MaxPerPage];
         string search = "";
         int page;
-        double shownEmc = -1;
+        decimal shownEmc = -1m;
         string[] shownKnown;
         int shownTableVersion = -1;
         string shownMagnet;
@@ -348,7 +348,7 @@ namespace VintageE
             // The knowledge array is replaced whenever it changes, so comparing the reference is enough.
             string[] known = PlayerEmc.GetKnown(player);
             if (!ReferenceEquals(known, shownKnown) || shownTableVersion != mod.TableVersion) Refresh(true);
-            else if (Math.Abs(EmcNow(player) - shownEmc) > 1e-9) Refresh(false);
+            else if (EmcNow(player) != shownEmc) Refresh(false);
             if (IsTablet) RefreshMagnet();
         }
 
@@ -359,7 +359,7 @@ namespace VintageE
         /// take a moment (sometimes seconds) to sync back, and the window shouldn't wait for them.
         /// </summary>
         readonly HashSet<string> pendingKnown = new HashSet<string>();
-        double? pendingEmc;
+        decimal? pendingEmc;
 
         public void OnServerResult(TransmuteResultPacket packet)
         {
@@ -385,12 +385,12 @@ namespace VintageE
             return merged.ToArray();
         }
 
-        double EmcNow(IPlayer player)
+        decimal EmcNow(IPlayer player)
         {
-            double synced = PlayerEmc.GetEmc(player);
+            decimal synced = PlayerEmc.GetEmc(player);
             if (pendingEmc == null) return synced;
             // Once the synced balance has caught up, the server's number is no longer needed.
-            if (Math.Abs(synced - pendingEmc.Value) < 1e-9) pendingEmc = null;
+            if (synced == pendingEmc.Value) pendingEmc = null;
             return pendingEmc ?? synced;
         }
 
@@ -422,7 +422,7 @@ namespace VintageE
         {
             if (SingleComposer == null) return;
             IPlayer player = capi.World.Player;
-            double emc = EmcNow(player);
+            decimal emc = EmcNow(player);
             string[] known = KnownNow(player);
 
             if (rebuildList)
@@ -456,9 +456,9 @@ namespace VintageE
             shownEmc = emc;
             // The full number while it fits; past that, a short form (1.23 billion) so the header stays readable.
             CairoFont emcFont = CairoFont.WhiteSmallishText();
-            string emcText = Lang.Get("vintagee:gui-emc", EmcFormat.Format(emc));
+            string emcText = Lang.Get("vintagee:gui-emc", EmcFormat.Total(emc));
             double scale = RuntimeEnv.GUIScale <= 0 ? 1 : RuntimeEnv.GUIScale;
-            if (emcFont.GetTextExtents(emcText).Width / scale > SingleComposer.GetDynamicText("emc").Bounds.fixedWidth - 4) emcText = Lang.Get("vintagee:gui-emc", EmcFormat.Short(emc));
+            if (emcFont.GetTextExtents(emcText).Width / scale > SingleComposer.GetDynamicText("emc").Bounds.fixedWidth - 4) emcText = Lang.Get("vintagee:gui-emc", EmcFormat.ShortTotal(emc));
             SingleComposer.GetDynamicText("emc").SetNewText(emcText);
             SingleComposer.GetDynamicText("known").SetNewText(Lang.Get("vintagee:gui-known", known.Length));
             SingleComposer.GetDynamicText("page").SetNewText((page + 1) + " / " + pages);

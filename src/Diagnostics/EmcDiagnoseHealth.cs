@@ -127,8 +127,8 @@ namespace VintageE
             foreach (IPlayer p in players)
             {
                 if (p?.Entity == null) continue;
-                double emc = PlayerEmc.GetEmc(p);
-                if (double.IsNaN(emc) || double.IsInfinity(emc) || emc < 0) problems.Add(x.L("diag-pdata-emc", p.PlayerName, emc.ToString(CultureInfo.InvariantCulture)));
+                decimal emc = PlayerEmc.GetEmc(p);
+                if (emc < 0) problems.Add(x.L("diag-pdata-emc", p.PlayerName, emc.ToString(CultureInfo.InvariantCulture)));
                 string[] known = PlayerEmc.GetKnown(p);
                 int dead = 0;
                 string firstDead = null;

@@ -246,20 +246,20 @@ namespace VintageE
             if (target == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-needplayer"));
             if (double.IsNaN(amount) || double.IsInfinity(amount) || amount <= 0) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-positive"));
 
-            double before = PlayerEmc.GetEmc(target);
-            double after = Math.Max(0, before + sign * amount);
+            decimal before = PlayerEmc.GetEmc(target);
+            decimal after = Math.Max(0m, EmcAmount.Add(before, sign * EmcAmount.From(amount)));
             PlayerEmc.SetEmc(target, after);
-            double changed = Math.Abs(after - before);
+            decimal changed = Math.Abs(after - before);
 
             if (target != args.Caller.Player && target is IServerPlayer sp)
             {
                 string who = args.Caller.Player?.PlayerName ?? "Server";
                 sp.SendMessage(GlobalConstants.GeneralChatGroup,
-                    Lang.GetL(sp.LanguageCode, sign > 0 ? "vintagee:cmd-emc-gotadded" : "vintagee:cmd-emc-gotremoved", who, EmcFormat.Format(changed), EmcFormat.Format(after)),
+                    Lang.GetL(sp.LanguageCode, sign > 0 ? "vintagee:cmd-emc-gotadded" : "vintagee:cmd-emc-gotremoved", who, EmcFormat.Total(changed), EmcFormat.Total(after)),
                     EnumChatType.Notification);
             }
             return TextCommandResult.Success(Lang.GetL(lang, sign > 0 ? "vintagee:cmd-emc-added" : "vintagee:cmd-emc-removed",
-                EmcFormat.Format(changed), target.PlayerName, EmcFormat.Format(after)));
+                EmcFormat.Total(changed), target.PlayerName, EmcFormat.Total(after)));
         }
 
         /// <summary>/emc setemc: sets a player's personal EMC to an exact amount (0 or more).</summary>
@@ -271,8 +271,8 @@ namespace VintageE
             if (target == null) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-needplayer"));
             if (double.IsNaN(amount) || double.IsInfinity(amount) || amount < 0) return TextCommandResult.Error(Lang.GetL(lang, "vintagee:cmd-emc-notnegative"));
 
-            double before = PlayerEmc.GetEmc(target);
-            PlayerEmc.SetEmc(target, amount);
+            decimal before = PlayerEmc.GetEmc(target);
+            PlayerEmc.SetEmc(target, EmcAmount.From(amount));
 
             if (target != args.Caller.Player && target is IServerPlayer sp)
             {
@@ -280,7 +280,7 @@ namespace VintageE
                 sp.SendMessage(GlobalConstants.GeneralChatGroup,
                     Lang.GetL(sp.LanguageCode, "vintagee:cmd-emc-gotset", who, EmcFormat.Format(amount)), EnumChatType.Notification);
             }
-            return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-emc-set", target.PlayerName, EmcFormat.Format(amount), EmcFormat.Format(before)));
+            return TextCommandResult.Success(Lang.GetL(lang, "vintagee:cmd-emc-set", target.PlayerName, EmcFormat.Format(amount), EmcFormat.Total(before)));
         }
 
         static TextCommandResult Info(VintageEModSystem mod, TextCommandCallingArgs args)
@@ -288,7 +288,7 @@ namespace VintageE
             IPlayer player = args.Caller.Player;
             if (player == null) return TextCommandResult.Error("Run this in game, or use /emc recalc or /emc dump from the console.");
             var sb = new StringBuilder();
-            sb.AppendLine(Lang.Get("vintagee:cmd-balance", EmcFormat.Format(PlayerEmc.GetEmc(player))));
+            sb.AppendLine(Lang.Get("vintagee:cmd-balance", EmcFormat.Total(PlayerEmc.GetEmc(player))));
             ItemStack held = player.InventoryManager.ActiveHotbarSlot?.Itemstack;
             if (held != null)
             {
