@@ -341,7 +341,13 @@ namespace VintageE
                     for (int dx = -1; dx <= 1; dx++)
                         for (int dz = -1; dz <= 1; dz++)
                             ba.SetBlock(0, new BlockPos(x + dx, lensY + dy, z + 12 + dz));
-                var lens = Fire("lens", new Vec3d(x + 0.5, lensY + 12, z + 12.5), p => p.Radius = 4);
+                // Nothing in the way (1.29.1): a creature wandering through the column set the charge off in mid-air, too
+                // high to break the ground counted (seen twice, in random worlds).
+                Vec3d lensFrom = new Vec3d(x + 0.5, lensY + 12, z + 12.5);
+                foreach (Entity creature in sapi.World.GetEntitiesAround(lensFrom.AddCopy(0, -6, 0), 4, 9, en => !(en is EntityPlayer) && !(en is EntityVintageEProjectile)))
+                    creature.Die(EnumDespawnReason.Removed);
+                EntityVintageEProjectile.LastLensEnd = null;
+                var lens = Fire("lens", lensFrom, p => p.Radius = 4);
                 // Well away from the furnaces: the water flows, and firepits go out in water.
                 var water = Fire("water", new Vec3d(x + 30.5, y + 8, z + 0.5), null);
                 var fire = Fire("fire", new Vec3d(x + 36.5, y + 8, z + 0.5), null);
@@ -362,8 +368,11 @@ namespace VintageE
                     {
                         Check(lens == null || !lens.Alive, "lens charge hit the ground and is gone");
                         int solidAfter = CountSolid(lensTarget, 2);
-                        if (lensInWater) Line($"  lens landed in water (fizzles there, like ProjectE's): {solidBefore} -> {solidAfter} solid");
-                        else Check(solidAfter < solidBefore, $"lens explosion broke blocks ({solidBefore} -> {solidAfter} solid around the impact)");
+                        string lensEnd = EntityVintageEProjectile.LastLensEnd ?? "no record";
+                        bool hitCreature = lensEnd.StartsWith("hit creature", StringComparison.Ordinal);
+                        if (lensInWater || lensEnd.StartsWith("fizzled", StringComparison.Ordinal)) Line($"  lens landed in water (fizzles there, like ProjectE's): {solidBefore} -> {solidAfter} solid ({lensEnd})");
+                        else if (hitCreature && solidAfter == solidBefore) Line($"  lens went off on a creature on the way down ({lensEnd}), above the ground counted: {solidBefore} -> {solidAfter} solid");
+                        else Check(solidAfter < solidBefore, $"lens explosion broke blocks ({solidBefore} -> {solidAfter} solid around the impact; the charge {lensEnd})");
                         Check(water == null || !water.Alive, "water shot landed");
                         Block placed = sapi.World.BlockAccessor.GetBlock(new BlockPos(x + 30, ba.GetTerrainMapheightAt(new BlockPos(x + 30, 0, z)) + 1, z), BlockLayersAccess.Fluid);
                         Line("  fluid where the water shot landed: " + (placed?.Code?.ToString() ?? "none"));

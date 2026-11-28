@@ -78,6 +78,8 @@ namespace VintageE
 
         /// <summary>What the last water or lava shot did at its end (for the self-test's report).</summary>
         public static string LastEnd;
+        /// <summary>Where the last lens charge ended and on what (1.29.1): the self-test says it when the blast broke nothing.</summary>
+        public static string LastLensEnd;
 
         string kind;
 
@@ -237,6 +239,7 @@ namespace VintageE
 
             if ((Kind == "lens" || Kind == "fire") && InWater(to))
             {
+                if (Kind == "lens") LastLensEnd = $"fizzled in water at {to.X:0},{to.Y:0},{to.Z:0}";
                 World.PlaySoundAt(new AssetLocation("game:sounds/effect/extinguish"), to.X, to.Y, to.Z, null, true, 16, 0.7f);
                 World.SpawnParticles(12, ColorUtil.ToRgba(180, 200, 200, 200), to.AddCopy(-0.3, 0, -0.3), to.AddCopy(0.3, 0.6, 0.3),
                     new Vec3f(-0.3f, 0.4f, -0.3f), new Vec3f(0.3f, 1f, 0.3f), 1.5f, -0.05f, 0.8f);
@@ -305,6 +308,7 @@ namespace VintageE
             switch (Kind)
             {
                 case "lens":
+                    LastLensEnd = $"hit creature {target?.Code} at {at.X:0},{at.Y:0},{at.Z:0}";
                     Explode(at);
                     break;
                 case "water":
@@ -396,6 +400,7 @@ namespace VintageE
             switch (Kind)
             {
                 case "lens":
+                    LastLensEnd = $"hit block {World.BlockAccessor.GetBlock(sel.Position)?.Code} at {sel.Position.X},{sel.Position.Y},{sel.Position.Z}";
                     Explode(at);
                     break;
                 case "water":
@@ -442,6 +447,7 @@ namespace VintageE
                 Paid = 0;
                 if (player != null && paid > 0) PlayerEmc.AddEmc(player, paid);
                 if (player is IServerPlayer sp) sp.SendIngameError("vintagee-blastclaim", Lang.GetL(sp.LanguageCode, "vintagee:error-blastclaim"));
+                if (Kind == "lens") LastLensEnd += " (no blast: a land claim)";
                 return;
             }
             ((ICoreServerAPI)Api).World.CreateExplosion(pos, EnumBlastType.RockBlast, radius, radius + 2, 1f, FiredByUid);
