@@ -1,0 +1,66 @@
+== The game (Vintage Story 1.22.7) ==
+✓ No crash reports: the game hasn't crashed on this side.
+✓ All 2 mod(s) loaded and started without the game reporting a problem.
+✓ No errors in the log this session.
+✓ 2 mod file(s) in 2 folder(s), nothing wrong with them.
+  Every file in 1 zip(s) was read to the end.
+✓ 4 config file(s) read without a problem.
+✓ The server keeps up: a tick every 33.1 ms (30 a second).
+  Last minute: average 33.1 ms, 95% under 34 ms, worst 34 ms (31 ticks).
+  Measure where the time goes (20 seconds) (/doctor fix doctor:profile 20)
+✓ 51 creatures and things loaded (0 items on the ground), 392 chunks, 0 player(s).
+  Most of: game:raccoon 21, game:chicken 13, game:hare 6, game:pig 4, game:fox 4
+  392 chunks loaded for 0 player(s).
+✓ Memory: the game holds 1.3 GB of the 15.6 GB it can use.
+  968.1 MB in the game's own objects; 12 full clean-ups so far; 4 processor threads.
+• Network: not watched long enough yet (1 s).
+  The network page (/doctor network)
+✓ 86.2 GB free where the world is saved.
+  The save file is 4 KB.
+✓ Nothing in this world comes from a mod that isn't installed.
+✓ Time runs at the normal pace.
+✓ Every block and item that needs code has it.
+✓ No mod tries to change a file that isn't there.
+✓ Every mod that has block and item files has them in the game.
+✓ No mod brings its own copy of a library the game or another mod already has.
+✓ No two mods replace the same file, and none replaces the game's own.
+✓ No recipe from a mod has the same ingredients as another recipe that makes something else (11449 crafting recipes looked at).
+✓ 6 JSON patches in 2 files, no two mods replacing the same thing.
+✓ Every mod's blocks and items have names.
+✓ No formatting tags out of place: no errors about them in the log, and none in the mods' texts.
+✓ No two mods change the same place in the game's code.
+• This is the first session the doctor has seen here, so there is nothing to compare with yet.
+  From now on it notes the mods and their versions at every start, and shows here what changed.
+Pick what matches; each opens a page that looks into just that.
+The game crashed (/doctor crash)
+The game is slow or stutters (/doctor perf)
+The connection is slow or uses a lot of data (/doctor network)
+A mod isn't working (/doctor mods)
+Something broke after I added or updated mods (/doctor changes)
+An item looks or acts wrong (hold it first) (/doctor item hand)
+The block I'm looking at looks or acts wrong (/doctor block)
+I can't craft something (/doctor craft hand)
+Show me what happened while the game started (/doctor startup)
+Show me every error and warning (/doctor log)
+Check my Mods folder and config files (/doctor files)
+Are any mods getting in each other's way? (/doctor clashes)
+Which mods change the game's code? (/doctor patches)
+Is my world all right? (/doctor world)
+Put together a report to post (/doctor bugreport)
+For mod authors: what mods told the doctor (/doctor api)
+
+== Vintage-E 1.29.3 ==
+• 1 mod(s) change the game's code in 4 place(s)
+  Vintage-E (4)
+  Mods patch the game's own code where it offers no other way in. It is normal, but it is also what breaks first when the game updates, and two mods patching the same place can get in each other's way.
+  All code patches (/doctor patches)
+⚠ The EMC check-up found 4 thing(s) worth fixing
+  The EMC check-up (/doctor emc)
+Something is wrong with EMC values (Vintage-E) (/doctor emc)
+Everything about Vintage-E (/doctor mod vintagee)
+
+== The other mods ==
+✓ 1 mod(s) have nothing against them
+  Vintage Doctor
+Every mod at a glance (/doctor mods)
+Every page is a command: /doctor crash, perf, mods, mod [mod id], log [mod id], startup, files, patches, changes, world, item [code], craft [code], bugreport [mod id], api. A fix: /doctor fix [id] [argument].
