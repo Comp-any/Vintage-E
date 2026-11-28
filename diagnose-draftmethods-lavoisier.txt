@@ -1,0 +1,45 @@
+== A crafting method file for Lavoisier (lavoisier) ==
+Drafted 1 method(s); read back, they make 0 recipe(s) with 1 problem(s)
+✓ Saved to /home/runner/work/Vintage-E/Vintage-E/data/ModData/vintagee/vintagee-methods-lavoisier.json
+  • recipes/alembic: no field looked like an ingredient: fill "inputs" by hand
+  • recipes/alembic: no field looked like a result: fill "outputs" by hand
+  • recipes/alembic: no energy cost is known: add "energy": { "unit": ..., "amount": ... } to "costs" if the machine uses power, and declare the unit
+  • recipes/alembic: fields not used (a tool, a die, a heat level, a second ingredient?): setup, ticksPerItem, liquidInput, liquidByproduct
+  methods[0].readers[0] (lavoisier:recipes/alembic/retort/waterwater.json[0]): the recipe has no "outputs" (or "oneOf"); it is left out
+  Check each // note and fix any field name that was guessed wrong, add the power each recipe uses, then put the file in assets/<modid>/config/vintagee-methods/ in the mod (or share it on Vintage-E's Mod DB page). After a restart, /emc diagnose methodcheck <modid> shows what Vintage-E reads from it.
+  A crafting method file would let Vintage-E read them: draft one, check it, and share it with the mod's author or on https://mods.vintagestory.at/show/mod/74355.
+
+== The file ==
+{
+  "//": "Drafted by /emc diagnose draftmethods on 2026-11-28 for Lavoisier (lavoisier) 1.3.4 with Vintage-E 1.29.4. Each method reads the mod's own recipe data; the field names were guessed, so check every \"//\" note, then put the file in assets/lavoisier/config/vintagee-methods/ (or share it on the Vintage-E Mod DB page). docs/crafting-methods.md describes the format.",
+  "format": 1,
+  "requiresMod": "lavoisier",
+  "methods": [
+    {
+      "//": "Drafted from the folder recipes/alembic (1 files). Check: no field looked like an ingredient: fill \"inputs\" by hand. Check: no field looked like a result: fill \"outputs\" by hand. Check: no energy cost is known: add \"energy\": { \"unit\": ..., \"amount\": ... } to \"costs\" if the machine uses power, and declare the unit. Check: fields not used (a tool, a die, a heat level, a second ingredient?): setup, ticksPerItem, liquidInput, liquidByproduct.",
+      "code": "lavoisier:alembic",
+      "name": "alembic",
+      "kind": "processing",
+      "readers": [
+        {
+          "from": "assets",
+          "folder": "recipes/alembic",
+          "domain": "lavoisier",
+          "recipe": {
+            "code": "$code",
+            "inputs": [],
+            "outputs": []
+          }
+        }
+      ]
+    }
+  ]
+}
+
+== What the guesses were made from (the first entry of each) ==
+recipes/alembic: {"code":"waterwaterforsoundeffect","setup":["alembicboilingflask","alembiccomponent-refluxvertical"],"ticksPerItem":1,"liquidInput":{"type":"item","code":"game:waterportion","stackSize":1},"liquidByproduct":{"type":"item","code":"game:waterportion","stackSize":1} }
+
+== Next ==
+Other mods' crafting methods: every recipe, what it uses and makes, its costs and their prices (/emc diagnose methods)
+Ask the mods for their crafting methods again (in the window)
+Back to the check-up (/emc diagnose)
