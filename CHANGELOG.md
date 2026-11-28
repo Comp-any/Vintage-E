@@ -2,6 +2,23 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.5 — 2026-11-29
+
+Values for other mods' own crafting methods.
+
+### Added
+- **Vintage Engineering:** its machines' recipes are read, so its gears, rods, wires, screws, plates, concrete, industrial glass, temporal steel, creosote, oil products and plastics get values.
+  - Covers the crusher, log splitter, sawmill, metal press, extruder, mixer, electric kiln, temporal forge, distillation tower, chemical plant, blast furnace and creosote oven.
+  - The sawmill's blades, the press's molds and the extruder's dies wear by 1 a craft, and that share of the tool is counted.
+  - Its power is priced very low (0.00005 EMC a unit): its solar panels and kinetic converter make power for free, so a priced power would let its big machines turn free power into EMC. A server can set its own price with `EnergyEmc`.
+  - Crude oil, which is pumped from wells, gets 32 EMC a litre (like the game's tar), so the oil chain has something to start from.
+- **C&N Jewelry:** gem cutting is read, so cut gems are valued from the rough gem they're cut from instead of being guessed.
+- **Fields of Salt:** the evaporation pond is listed as a way to make salt. Salt keeps its base value.
+- The server test can pick mods by Mod DB tag, leave some out and skip a first batch, retries a failed mod download, and uses a mod's newest 1.22 release when it has none marked for the exact game version.
+
+### Changed
+- **Crafting method files: two inputs with the same name are linked**, as in the game's own recipes. They take the same variant (the sand and the gravel of one rock), so a copy is made only for the variants both have. Before, such a recipe was left out.
+
 ## 1.29.4 — 2026-11-28
 
 Project Expansion's fuel tiers, a Storm Collector, and "Burn what I mine" for the matter tools' area actions.
