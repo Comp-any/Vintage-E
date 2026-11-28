@@ -3441,6 +3441,336 @@
         },
         "scale": 1.2
       }
+    },
+    {
+      "code": "vintagee:knowledgebook",
+      "label": "knowledge sharing book",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/book",
+      "textures": {
+        "leather": "game:block/leather/purple",
+        "paper": "game:block/cloth/paper/blank-small",
+        "metal": "game:block/metal/plate/silver",
+        "gem": "game:block/stone/gem/aquamarine"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 1.15
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 0.35
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.062,
+          "z": 0.562
+        },
+        "scale": 1.23
+      }
+    },
+    {
+      "code": "vintagee:alchemicalbook-basic",
+      "label": "basic alchemical book",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/book",
+      "textures": {
+        "leather": "game:block/leather/green",
+        "paper": "game:block/cloth/paper/blank-small",
+        "metal": "game:block/metal/plate/brass",
+        "gem": "game:block/stone/gem/emerald"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 1.15
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 0.35
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.062,
+          "z": 0.562
+        },
+        "scale": 1.23
+      }
+    },
+    {
+      "code": "vintagee:alchemicalbook-advanced",
+      "label": "advanced alchemical book",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/book",
+      "textures": {
+        "leather": "game:block/leather/red",
+        "paper": "game:block/cloth/paper/blank-small",
+        "metal": "game:block/metal/plate/silver",
+        "gem": "game:block/stone/gem/ruby"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 1.15
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 0.35
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.062,
+          "z": 0.562
+        },
+        "scale": 1.23
+      }
+    },
+    {
+      "code": "vintagee:alchemicalbook-master",
+      "label": "master alchemical book",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/book",
+      "textures": {
+        "leather": "game:block/leather/blue",
+        "paper": "game:block/cloth/paper/blank-small",
+        "metal": "game:block/metal/plate/gold",
+        "gem": "game:block/stone/gem/sapphire"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 1.15
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 0.35
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.062,
+          "z": 0.562
+        },
+        "scale": 1.23
+      }
+    },
+    {
+      "code": "vintagee:alchemicalbook-arcane",
+      "label": "arcane alchemical book",
+      "kind": "item",
+      "shape": "vintagee:newlook/item/book",
+      "textures": {
+        "leather": "game:block/leather/black",
+        "paper": "game:block/cloth/paper/blank-small",
+        "metal": "game:block/metal/plate/electrum",
+        "gem": "game:block/stone/gem/diamond"
+      },
+      "guiTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 150,
+          "y": 45,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 1.15
+      },
+      "tpHandTransform": {
+        "translation": {
+          "x": -0.8,
+          "y": -0.1,
+          "z": -0.7
+        },
+        "rotation": {
+          "x": 5,
+          "y": 82,
+          "z": 16
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.469,
+          "z": 0.562
+        },
+        "scale": 0.35
+      },
+      "groundTransform": {
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "origin": {
+          "x": 0.494,
+          "y": 0.062,
+          "z": 0.562
+        },
+        "scale": 1.23
+      }
     }
   ]
 }

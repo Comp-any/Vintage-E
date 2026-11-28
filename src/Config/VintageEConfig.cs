@@ -159,6 +159,14 @@ namespace VintageE
         [System.ComponentModel.Description("How many times more a Power Flower makes with a Compact Sun under it. A collector with a Compact Sun on top works at full light, times this.")]
         public int CompactSunBonus = 10;
 
+        /// <summary>Multiplies what the Alchemical Books charge a block of distance (1.29.3; Project Expansion's 1,000, 500, 100 and free).</summary>
+        [System.ComponentModel.Description("Multiplies what the Alchemical Books charge a block of distance: Project Expansion's 1,000 EMC (Basic), 500 (Advanced), 100 (Master) and nothing (Arcane).")]
+        public double AlchemicalBookCostMultiplier = 1.0;
+
+        /// <summary>Whether the Alchemical Books work during a temporal storm (1.29.3; off by default).</summary>
+        [System.ComponentModel.Description("Whether the Alchemical Books can teleport during a temporal storm. Off by default.")]
+        public bool AlchemicalBookInStorms = false;
+
         /// <summary>Fraction of output a collector keeps at night or underground (0 = nothing without sun).</summary>
         [System.ComponentModel.Description("Fraction of output a collector keeps at night or underground (0 = nothing without sun).")]
         public double CollectorDarkFactor = 0.0;
@@ -370,6 +378,7 @@ namespace VintageE
             if (Bad(PowerFlowerMultiplier) || PowerFlowerMultiplier < 0) PowerFlowerMultiplier = 1.0;
             if (Bad(EmcLinkLimitMultiplier) || EmcLinkLimitMultiplier < 0) EmcLinkLimitMultiplier = 1.0;
             CompactSunBonus = Math.Clamp(CompactSunBonus, 1, 1000);
+            if (Bad(AlchemicalBookCostMultiplier) || AlchemicalBookCostMultiplier < 0) AlchemicalBookCostMultiplier = 1.0;
             if (MaxMappingPasses < 4) MaxMappingPasses = 4;
             if (TableUseRange < 2) TableUseRange = 2;
             CraftingMethods = CraftingRoutes.Normalize(CraftingMethods);

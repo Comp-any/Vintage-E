@@ -483,7 +483,8 @@ def star_shapes():
 def manifest():
     dump("config/vintagee-expansion.json", {
         "//": "Written by tools/gen_expansion.py. What the server setting Expansion takes out when it's off (ExpansionTiers.cs): "
-              "these states of these block and item types, these whole files, and these recipe files.",
+              "these states of these block and item types, these whole files, and these recipe files; and recipesWhenOn, "
+              "what it takes out when it's on.",
         "states": {
             "blocktypes/energycollector.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
             "blocktypes/antimatterrelay.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
@@ -492,9 +493,14 @@ def manifest():
             # 1.29.2 (tools/gen_flowers.py): MK1-3 stay.
             "blocktypes/powerflower.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
             "blocktypes/emclink.json": {"group": "tier", "states": [f"mk{t[0]}" for t in TIERS]},
+            # 1.29.3 (tools/gen_books.py): the Basic Alchemical Book stays; the others are made from the bigger stars.
+            "itemtypes/alchemicalbook.json": {"group": "tier", "states": ["advanced", "master", "arcane"]},
         },
         "files": ["itemtypes/star.json", "itemtypes/finalstarshard.json", "itemtypes/finalstar.json", "blocktypes/compactsun.json"],
-        "recipes": ["recipes/grid/expansion.json", "recipes/grid/expansion-flowers.json"],
+        "recipes": ["recipes/grid/expansion.json", "recipes/grid/expansion-flowers.json", "recipes/grid/expansion-books.json"],
+        # Emptied while Expansion is ON: what stands in for things that only exist with it (1.29.3: the Knowledge
+        # Sharing Book with red matter instead of violet).
+        "recipesWhenOn": ["recipes/grid/books-noexpansion.json"],
         "tiers": [{"mk": t[0], "matter": t[1]} for t in TIERS],
     })
 
@@ -509,6 +515,9 @@ def main():
     # The flowers, links, sun, star and upgrader add to the look maps written above (1.29.2).
     import gen_flowers
     gen_flowers.main()
+    # The books (1.29.3), likewise.
+    import gen_books
+    gen_books.main()
     print(f"{len(TIERS)} tiers, {len(MATTERS)} matters, {len(STAR_SIZES) * len(STAR_TIERS)} stars, {len(rs)} recipes, "
           f"{len(entries)} language lines, {len(tex)} textures (plus the New look's matter)")
 

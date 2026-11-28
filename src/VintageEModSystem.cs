@@ -193,6 +193,9 @@ namespace VintageE
             api.RegisterBlockEntityClass("VintageEPowerFlower", typeof(BEPowerFlower));
             api.RegisterBlockEntityClass("VintageEEmcLink", typeof(BEEmcLink));
             api.RegisterItemClass("VintageEItemMatterUpgrader", typeof(ItemMatterUpgrader));
+            // 1.29.3: Project Expansion's books.
+            api.RegisterItemClass("VintageEItemKnowledgeBook", typeof(ItemKnowledgeBook));
+            api.RegisterItemClass("VintageEItemAlchemicalBook", typeof(ItemAlchemicalBook));
             api.RegisterEntityBehaviorClass(EntityBehaviorVintageE.Code, typeof(EntityBehaviorVintageE));
             api.RegisterEntity("VintageEProjectile", typeof(EntityVintageEProjectile));
 
@@ -221,7 +224,9 @@ namespace VintageE
                 .RegisterMessageType<EmcCompatSetPacket>()
                 .RegisterMessageType<EmcDiagnoseRequestPacket>()
                 .RegisterMessageType<EmcCraftPacket>()
-                .RegisterMessageType<PlayerEmcPacket>();
+                .RegisterMessageType<PlayerEmcPacket>()
+                .RegisterMessageType<AlchemicalBookRequestPacket>()
+                .RegisterMessageType<AlchemicalBookStatePacket>();
         }
 
         #region Server
@@ -674,6 +679,7 @@ namespace VintageE
             Step("services", () =>
             {
                 Transmutation = new TransmutationService(this, sapi);
+                TabletMining.Start(this, sapi); // "Burn what I mine" (1.29.3)
                 EmcCrafting = new EmcCraft(this, sapi);
                 Trinkets = new TrinketEffects(this, sapi);
                 ContainerRepair = new ContainerRepair(this, sapi);
@@ -696,6 +702,7 @@ namespace VintageE
                 serverChannel.SetMessageHandler<EmcCompatSetPacket>(Guard.FromPlayer<EmcCompatSetPacket>(Mod.Logger, OnCompatSetRequest));
                 serverChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(Guard.FromPlayer<EmcDiagnoseRequestPacket>(Mod.Logger, OnDiagnoseRequest));
                 serverChannel.SetMessageHandler<EmcCraftPacket>(Guard.FromPlayer<EmcCraftPacket>(Mod.Logger, (p, k) => EmcCrafting?.OnPacket(p, k)));
+                serverChannel.SetMessageHandler<AlchemicalBookRequestPacket>(Guard.FromPlayer<AlchemicalBookRequestPacket>(Mod.Logger, (p, k) => AlchemicalBooks.OnRequest(this, Sapi, p, k)));
             });
 
             // Every mod has registered its recipes by the time the game starts running, so map then. If another mod
@@ -2689,6 +2696,7 @@ namespace VintageE
             clientChannel.SetMessageHandler<EmcItemStatePacket>(Guard.FromServer<EmcItemStatePacket>(Mod.Logger, OnItemState));
             clientChannel.SetMessageHandler<EmcReportPacket>(Guard.FromServer<EmcReportPacket>(Mod.Logger, OnReport));
             clientChannel.SetMessageHandler<EmcCraftPacket>(Guard.FromServer<EmcCraftPacket>(Mod.Logger, OnEmcCraftContents));
+            clientChannel.SetMessageHandler<AlchemicalBookStatePacket>(Guard.FromServer<AlchemicalBookStatePacket>(Mod.Logger, p => GuiDialogAlchemicalBook.OnState(Capi, p)));
             // /emc diagnose typed in chat: the server asks this computer to send the request, so it carries this side's information.
             clientChannel.SetMessageHandler<EmcDiagnoseRequestPacket>(Guard.FromServer<EmcDiagnoseRequestPacket>(Mod.Logger, p => SendDiagnose(p?.Action ?? "", p?.Arg ?? "")));
 
@@ -2786,6 +2794,12 @@ namespace VintageE
         }
 
         public void SendTransmuteRequest(TransmuteRequestPacket packet) => clientChannel?.SendPacket(packet);
+
+        /// <summary>The Alchemical Book's window asks the server (1.29.3).</summary>
+        public void SendAlchemicalBookRequest(AlchemicalBookRequestPacket packet) => clientChannel?.SendPacket(packet);
+
+        /// <summary>The server answers the Alchemical Book's window (1.29.3).</summary>
+        public void SendAlchemicalBookState(IServerPlayer player, AlchemicalBookStatePacket packet) => serverChannel?.SendPacket(packet, player);
 
         public void SendEmcCraft(EmcCraftPacket packet) => clientChannel?.SendPacket(packet);
 
@@ -3240,6 +3254,7 @@ namespace VintageE
         public override void Dispose()
         {
             ShiftClickBurn.Forget(this);
+            if (Sapi != null) TabletMining.Stop();
             transmutationDialog?.Dispose();
             try { if (gemFilterDialog?.IsOpened() == true) gemFilterDialog.TryClose(); } catch { }
             gemFilterDialog?.Dispose();

@@ -1,0 +1,46 @@
+{
+  "code": "alchemicalbook",
+  "class": "VintageEItemAlchemicalBook",
+  "variantgroups": [
+    {
+      "code": "tier",
+      "states": [
+        "basic",
+        "advanced",
+        "master",
+        "arcane"
+      ]
+    }
+  ],
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/alchemicalbook-{tier}"
+  },
+  "materialDensity": 600,
+  "attributesByType": {
+    "*-basic": {
+      "emcPerBlock": 1000,
+      "canBind": false
+    },
+    "*-advanced": {
+      "emcPerBlock": 500,
+      "canBind": true
+    },
+    "*-master": {
+      "emcPerBlock": 100,
+      "canBind": true
+    },
+    "*-arcane": {
+      "emcPerBlock": 0,
+      "canBind": true
+    }
+  }
+}

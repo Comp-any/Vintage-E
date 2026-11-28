@@ -91,7 +91,9 @@ namespace VintageE
         /// the window is open): <see cref="TransmuteRequestPacket.SlotInv"/> and <see cref="TransmuteRequestPacket.Slot"/>
         /// name the slot, Key is the code of what the player saw in it (something else there by now is left alone).
         /// </summary>
-        BurnSlot = 12
+        BurnSlot = 12,
+        /// <summary>Tablet: switch "Burn what I mine" on or off (1.29.3).</summary>
+        MineBurn = 13
     }
 
     public enum EmcCraftAction
@@ -455,5 +457,57 @@ namespace VintageE
     {
         [ProtoMember(1)] public string Action;
         [ProtoMember(2)] public string Message;
+    }
+}
+
+namespace VintageE
+{
+    public enum AlchemicalBookAction
+    {
+        /// <summary>The window opened: send the places.</summary>
+        Open = 0,
+        /// <summary>Save where the player stands under Name.</summary>
+        Save = 1,
+        /// <summary>Delete the place called Name.</summary>
+        Delete = 2,
+        /// <summary>Teleport to the place called Name.</summary>
+        Go = 3,
+        /// <summary>Teleport back to where the player last went from.</summary>
+        Back = 4
+    }
+
+    /// <summary>Client → server: what the Alchemical Book's window asks for (1.29.3). The book is the one in the player's hand.</summary>
+    [ProtoContract]
+    public class AlchemicalBookRequestPacket
+    {
+        [ProtoMember(1)] public AlchemicalBookAction Action;
+        [ProtoMember(2)] public string Name;
+    }
+
+    /// <summary>Server → client: the book's places and what using them costs (1.29.3).</summary>
+    [ProtoContract]
+    public class AlchemicalBookStatePacket
+    {
+        [ProtoMember(1)] public string[] Names;
+        [ProtoMember(2)] public double[] X;
+        [ProtoMember(3)] public double[] Y;
+        [ProtoMember(4)] public double[] Z;
+        [ProtoMember(5)] public int[] Dim;
+        [ProtoMember(6)] public bool HasBack;
+        [ProtoMember(7)] public double BackX;
+        [ProtoMember(8)] public double BackY;
+        [ProtoMember(9)] public double BackZ;
+        [ProtoMember(10)] public int BackDim;
+        /// <summary>EMC a block, the server's multiplier included (0 in creative or for the Arcane book).</summary>
+        [ProtoMember(11)] public double PerBlock;
+        /// <summary>Who the book is bound to, or null when it keeps its own places.</summary>
+        [ProtoMember(12)] public string BoundTo;
+        /// <summary>What just happened (a success or the reason it didn't), already in the player's language; null for none.</summary>
+        [ProtoMember(13)] public string Message;
+        [ProtoMember(14)] public bool MessageIsError;
+        [ProtoMember(15)] public decimal Emc;
+        [ProtoMember(16)] public bool Storm;
+        /// <summary>Close the window (the player went somewhere, or put the book away).</summary>
+        [ProtoMember(17)] public bool Close;
     }
 }

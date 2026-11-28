@@ -1,0 +1,24 @@
+{
+  "code": "knowledgebook",
+  "class": "VintageEItemKnowledgeBook",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "general": [
+      "*"
+    ],
+    "vintagee": [
+      "*"
+    ]
+  },
+  "texture": {
+    "base": "item/knowledgebook"
+  },
+  "materialDensity": 600,
+  "attributes": {
+    "handbook": {
+      "groupBy": [
+        "knowledgebook"
+      ]
+    }
+  }
+}

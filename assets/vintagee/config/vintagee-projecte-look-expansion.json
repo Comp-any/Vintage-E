@@ -110,7 +110,12 @@
     "vintagee:block/emclink-mk16-top": "vintagee:projecte/expansion/emclink-final",
     "vintagee:block/emclink-mk16-side": "vintagee:projecte/expansion/emclink-final",
     "vintagee:block/compactsun": "vintagee:projecte/expansion/sun",
-    "vintagee:item/matterupgrader": "vintagee:projecte/expansion/matterupgrader"
+    "vintagee:item/matterupgrader": "vintagee:projecte/expansion/matterupgrader",
+    "vintagee:item/knowledgebook": "vintagee:projecte/expansion/book-knowledgebook",
+    "vintagee:item/alchemicalbook-basic": "vintagee:projecte/expansion/book-basic",
+    "vintagee:item/alchemicalbook-advanced": "vintagee:projecte/expansion/book-advanced",
+    "vintagee:item/alchemicalbook-master": "vintagee:projecte/expansion/book-master",
+    "vintagee:item/alchemicalbook-arcane": "vintagee:projecte/expansion/book-arcane"
   },
   "overrides": [
     {

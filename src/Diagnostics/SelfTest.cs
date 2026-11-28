@@ -2691,6 +2691,8 @@ namespace VintageE
             catch (Exception e) { Check(false, "the Project Expansion tier checks threw " + e); }
             try { CheckFlowersAndLinks(); }
             catch (Exception e) { Check(false, "the Power Flower, EMC Link and Matter Upgrader checks threw " + e); }
+            try { CheckBooks(); }
+            catch (Exception e) { Check(false, "the book and Burn what I mine checks threw " + e); }
             if (benchSite != null)
             {
                 try { Benchmarks.Run(mod, sapi, benchSite, Line); }

@@ -1,0 +1,102 @@
+[
+  {
+    "ingredientPattern": "VNV,VBV,VNV",
+    "ingredients": {
+      "V": {
+        "type": "item",
+        "code": "vintagee:matter-violet"
+      },
+      "N": {
+        "type": "item",
+        "code": "game:gear-temporal",
+        "quantity": 8
+      },
+      "B": {
+        "type": "item",
+        "code": "game:book-normal-*"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:knowledgebook"
+    },
+    "name": "vintagee:knowledgebook"
+  },
+  {
+    "ingredientPattern": "EOE,OBO,EOE",
+    "ingredients": {
+      "E": {
+        "type": "item",
+        "code": "vintagee:star-magnum-ein"
+      },
+      "O": {
+        "type": "item",
+        "code": "vintagee:star-magnum-omega"
+      },
+      "B": {
+        "type": "item",
+        "code": "vintagee:alchemicalbook-basic"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalbook-advanced"
+    },
+    "name": "vintagee:alchemicalbook-advanced",
+    "copyAttributesFrom": "B"
+  },
+  {
+    "ingredientPattern": "EOE,OBO,EOE",
+    "ingredients": {
+      "E": {
+        "type": "item",
+        "code": "vintagee:star-colossal-ein"
+      },
+      "O": {
+        "type": "item",
+        "code": "vintagee:star-colossal-omega"
+      },
+      "B": {
+        "type": "item",
+        "code": "vintagee:alchemicalbook-advanced"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalbook-master"
+    },
+    "name": "vintagee:alchemicalbook-master",
+    "copyAttributesFrom": "B"
+  },
+  {
+    "ingredientPattern": "SFS,FBF,SFS",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "vintagee:finalstarshard"
+      },
+      "F": {
+        "type": "item",
+        "code": "vintagee:finalstar"
+      },
+      "B": {
+        "type": "item",
+        "code": "vintagee:alchemicalbook-master"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalbook-arcane"
+    },
+    "name": "vintagee:alchemicalbook-arcane",
+    "copyAttributesFrom": "B"
+  }
+]

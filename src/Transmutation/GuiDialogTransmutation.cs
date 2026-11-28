@@ -102,6 +102,8 @@ namespace VintageE
         bool composedExclude;
         /// <summary>Whether the window was drawn with a magnet in the tablet: the filter is only shown with one (1.26.3).</summary>
         bool composedMagnet;
+        /// <summary>Whether the window was drawn with "Burn what I mine" ticked (1.29.3).</summary>
+        bool composedMine;
         long tickListener;
 
         bool IsTablet => tablePos == null;
@@ -155,6 +157,10 @@ namespace VintageE
             composedArcane = arcane;
             // The filter (its mode button and its slots) is for a magnet: without one in the tablet it isn't shown.
             bool hasMagnet = IsTablet && TabletMagnet.GetMagnet(tabletNow, capi.World) != null;
+            // "Burn what I mine" (1.29.3) uses the same filter, so the filter shows for it too.
+            bool mineOn = IsTablet && TabletMining.On(tabletNow);
+            bool showFilter = hasMagnet || mineOn;
+            composedMine = mineOn;
 
             // The three long explanations. They are folded away behind the Help button until the player clicks it.
             double leftWidth = width - 3 * slot - 80;
@@ -173,7 +179,8 @@ namespace VintageE
             ElementBounds emcBounds = null, knownBounds = null, helpButtonBounds = null, burnHintBounds = null, burnSlotBounds = null, burnLabelBounds = null,
                 learnSlotBounds = null, learnLabelBounds = null, chargeSlotBounds = null, chargeLabelBounds = null, searchBounds = null, sortBounds = null, gridBounds = null,
                 prevBounds = null, pageBounds = null, nextBounds = null, helpBounds = null, craftBounds = null,
-                magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null;
+                magnetTitleBounds = null, modeBounds = null, magnetSlotBounds = null, magnetHintBounds = null, filterLabelBounds = null, filterBounds = null,
+                mineBounds = null;
 
             // Lays the window out with the explanations shown or not and that many rows of known items; returns its height.
             double Layout(bool showHelp, int gridRows)
@@ -232,7 +239,9 @@ namespace VintageE
                         fy = y + 34 + Math.Max(slot, labelHeightNarrow) + 6;
                     }
                     filterBounds = ElementStdBounds.SlotGrid(EnumDialogArea.None, 0, fy, TabletMagnet.FilterSlots, 1);
-                    bottom = hasMagnet ? fy + slot : fy - 4;
+                    bottom = showFilter ? fy + slot : fy - 4;
+                    mineBounds = ElementBounds.Fixed(0, bottom + 8, 320, 28);
+                    bottom += 40;
                 }
                 // The frame around it, and a little air above and below so it clears the screen's edges.
                 return bottom + 2 * GuiStyle.ElementToDialogPadding + 24;
@@ -249,7 +258,8 @@ namespace VintageE
             if (IsTablet)
             {
                 children.AddRange(new[] { magnetTitleBounds, magnetSlotBounds, filterLabelBounds });
-                if (hasMagnet) { children.Add(modeBounds); children.Add(filterBounds); }
+                if (showFilter) { children.Add(modeBounds); children.Add(filterBounds); }
+                children.Add(mineBounds);
                 if (helpShown) children.Add(magnetHintBounds);
             }
 
@@ -299,11 +309,13 @@ namespace VintageE
                 composedExclude = TabletMagnet.Excludes(tabletNow);
                 composedMagnet = hasMagnet;
                 composer.AddStaticText(Lang.Get("vintagee:magnet-title"), CairoFont.WhiteSmallishText(), magnetTitleBounds);
-                if (hasMagnet) composer.AddSmallButton(Lang.Get(composedExclude ? "vintagee:magnet-mode-except" : "vintagee:magnet-mode-only"), OnMagnetMode, modeBounds, EnumButtonStyle.Small, "magnetmode");
+                if (showFilter) composer.AddSmallButton(Lang.Get(composedExclude ? "vintagee:magnet-mode-except" : "vintagee:magnet-mode-only"), OnMagnetMode, modeBounds, EnumButtonStyle.Small, "magnetmode");
                 composer.AddItemSlotGrid(magnetInv, OnSlotPacket, 1, magnetSlotBounds, "magnetslot");
                 if (helpShown) composer.AddStaticText(magnetHint, detail, magnetHintBounds);
                 composer.AddDynamicText("", detail, filterLabelBounds, "filterlabel");
-                if (hasMagnet) composer.AddItemSlotGrid(filterInv, OnSlotPacket, TabletMagnet.FilterSlots, filterBounds, "filtergrid");
+                if (showFilter) composer.AddItemSlotGrid(filterInv, OnSlotPacket, TabletMagnet.FilterSlots, filterBounds, "filtergrid");
+                composer.AddSmallButton(Lang.Get(mineOn ? "vintagee:mine-on" : "vintagee:mine-off"), OnMineToggle, mineBounds, EnumButtonStyle.Small, "minebutton");
+                composer.AddHoverText(Lang.Get("vintagee:mine-hint"), CairoFont.WhiteSmallText(), 400, mineBounds.FlatCopy(), "minetip");
             }
             SingleComposer = composer.EndChildElements().Compose();
 
@@ -488,7 +500,7 @@ namespace VintageE
             ItemStack magnet = TabletMagnet.GetMagnet(tablet, capi.World);
             string[] filter = TabletMagnet.GetFilter(tablet);
             bool exclude = TabletMagnet.Excludes(tablet);
-            string signature = (magnet?.Collectible.Code.ToString() ?? "-") + "|" + exclude + "|" + string.Join(",", filter);
+            string signature = (magnet?.Collectible.Code.ToString() ?? "-") + "|" + exclude + "|" + TabletMining.On(tablet) + "|" + string.Join(",", filter);
             if (!force && signature == shownMagnet) return;
             shownMagnet = signature;
 
@@ -500,7 +512,7 @@ namespace VintageE
                 if (c != null) { try { shown = new ItemStack(c); } catch { /* no icon */ } }
                 filterInv[i].Itemstack = shown;
             }
-            if (exclude != composedExclude || (magnet != null) != composedMagnet || TabletLayout.Arcane(tablet) != composedArcane)
+            if (exclude != composedExclude || (magnet != null) != composedMagnet || TabletLayout.Arcane(tablet) != composedArcane || TabletMining.On(tablet) != composedMine)
             {
                 // The button's label is drawn when composing, so draw the window again with the other label, a frame
                 // later: this can run from the search box's own text-changed callback.
@@ -539,6 +551,12 @@ namespace VintageE
         {
             page++;
             Refresh(false);
+            return true;
+        }
+
+        bool OnMineToggle()
+        {
+            mod.SendTransmuteRequest(new TransmuteRequestPacket { Action = TransmuteAction.MineBurn, TabletInv = openedInv, TabletSlot = openedSlot + 1 });
             return true;
         }
 

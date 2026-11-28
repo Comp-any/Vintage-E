@@ -1,0 +1,35 @@
+[
+  {
+    "ingredientPattern": "HRH,EBP,HRH",
+    "ingredients": {
+      "H": {
+        "type": "item",
+        "code": "vintagee:covalencedust-high"
+      },
+      "R": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "E": {
+        "type": "item",
+        "code": "game:gear-temporal"
+      },
+      "B": {
+        "type": "item",
+        "code": "game:book-normal-*"
+      },
+      "P": {
+        "type": "item",
+        "code": "vintagee:philosophersstone",
+        "consume": false
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:alchemicalbook-basic"
+    },
+    "name": "vintagee:alchemicalbook-basic"
+  }
+]

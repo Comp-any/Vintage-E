@@ -1,0 +1,27 @@
+[
+  {
+    "ingredientPattern": "VNV,VBV,VNV",
+    "ingredients": {
+      "V": {
+        "type": "item",
+        "code": "vintagee:matter-red"
+      },
+      "N": {
+        "type": "item",
+        "code": "game:gear-temporal",
+        "quantity": 8
+      },
+      "B": {
+        "type": "item",
+        "code": "game:book-normal-*"
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "vintagee:knowledgebook"
+    },
+    "name": "vintagee:knowledgebook"
+  }
+]

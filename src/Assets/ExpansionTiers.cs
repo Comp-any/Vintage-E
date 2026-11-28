@@ -45,7 +45,20 @@ namespace VintageE
             catch { /* only for the doctor and players' games */ }
             if (on)
             {
-                Mod.Logger.Notification("Expansion: Project Expansion's tiers are on.");
+                // What only stands in while the tiers are off (1.29.3: the Knowledge Sharing Book with red matter) goes.
+                try
+                {
+                    IAsset manifest = api.Assets.TryGet(new AssetLocation(VintageEModSystem.ModId, ManifestFile));
+                    int standIns = manifest == null ? 0 : StripWhenOn(JObject.Parse(manifest.ToText()),
+                        path => api.Assets.TryGet(new AssetLocation(VintageEModSystem.ModId, path))?.ToText(),
+                        (path, text) => api.Assets.TryGet(new AssetLocation(VintageEModSystem.ModId, path)).Data = Encoding.UTF8.GetBytes(text));
+                    Mod.Logger.Notification("Expansion: Project Expansion's tiers are on ({0} stand-in recipes for when they're off taken out).", standIns);
+                }
+                catch (Exception e)
+                {
+                    Error = e.Message;
+                    Mod.Logger.Error("Expansion is on, but the recipes meant for when it's off could not be taken out: {0}", e);
+                }
                 return;
             }
             try
@@ -93,6 +106,20 @@ namespace VintageE
                 removed++;
             }
             foreach (string path in (manifest["recipes"] as JArray)?.Values<string>() ?? Enumerable.Empty<string>())
+            {
+                string text = read(path);
+                if (text == null) continue;
+                removed += (JToken.Parse(text) as JArray)?.Count ?? 0;
+                write(path, "[]");
+            }
+            return removed;
+        }
+
+        /// <summary>With the tiers on: empties the recipe files listed under recipesWhenOn (stand-ins for when they're off). Returns how many recipes.</summary>
+        public static int StripWhenOn(JObject manifest, System.Func<string, string> read, System.Action<string, string> write)
+        {
+            int removed = 0;
+            foreach (string path in (manifest["recipesWhenOn"] as JArray)?.Values<string>() ?? Enumerable.Empty<string>())
             {
                 string text = read(path);
                 if (text == null) continue;

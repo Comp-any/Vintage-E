@@ -2,6 +2,43 @@
 
 All notable changes to Vintage-E. Each GitHub release uses its section from this file as its release notes.
 
+## 1.29.3 — 2026-11-28
+
+Project Expansion's books, and its Alchemical Collection as a switch on the tablet.
+
+### Added
+- **The Knowledge Sharing Book.**
+  - Sneak + right-click to write everything you've learned into it, then give it to another player. When they right-click it, they learn everything you had learned, and the book is used up.
+  - If you're in the game when they read it, they learn what you know now. If you're away, they learn what you knew when you last wrote a book. (Project Expansion's book only works while its writer is online.)
+  - Exact versions (a filled bucket, a gold shield) count against the reader's limit of exact things learned, as usual; past it, they're left out and the reader is told how many.
+  - A book that teaches nothing new isn't used up.
+  - Recipe (Project Expansion's): violet matter, a book, and 8 temporal gears in place of each nether star. While Project Expansion's tiers are off, red matter takes the violet matter's place, so the book is always there.
+- **The Basic, Advanced, Master and Arcane Alchemical Books.**
+  - Right-click to open a window of places:
+    - Type a name and press **Save here** to save where you stand.
+    - **Go** to a saved place, paid from your EMC (and Klein stars): Project Expansion's 1,000 EMC a block of distance for the Basic book, 500 for the Advanced, 100 for the Master, nothing for the Arcane.
+    - **Back** takes you to where you last went from.
+  - The places are listed nearest first, with how far each is and what going costs.
+  - The Advanced, Master and Arcane books can be bound to you with sneak + right-click. Your places are then kept with you, not in the book, so all your bound books share them, and only you can use them. Sneak + right-click again to unbind it.
+  - They don't work during a temporal storm (the server can allow it), nor between dimensions. Creative players go for free.
+  - Recipes (Project Expansion's):
+    - **Basic:** high covalence dust, red matter, a book, the philosopher's stone (which you keep) and a temporal gear in place of the ender pearl.
+    - **Advanced:** the Basic book between Magnum Star Eins and Omegas.
+    - **Master:** the Advanced book between Colossal stars.
+    - **Arcane:** the Master book between Final Stars and Final Star Shards.
+  - A better book keeps the places of the one it was made from.
+  - The Basic book is always there; the others come with the `Expansion` setting, as the stars they're made from do.
+- **"Burn what I mine" on the Transmutation Tablet.** A switch under the magnet. While you carry a tablet with it on:
+  - What drops from the blocks you break is burned into your EMC and learned. That includes what your matter tools break around the block, and the logs from trees your axe fells.
+  - It goes through the magnet's filter (only these, or all except these; with nothing in the filter, everything that has a value). The filter shows when the switch is on, even with no magnet in the tablet.
+  - What spills out of a container you break is never burned.
+- **Settings:** `AlchemicalBookCostMultiplier` (1) and `AlchemicalBookInStorms` (off).
+- **The doctor's machines page** says who has "Burn what I mine" on. If the hook that keeps containers' contents safe couldn't be put in place, it says so, with a copy button: the switch then does nothing.
+- All three looks:
+  - **Middle:** books in Project Expansion's colours.
+  - **New:** the Tome of Knowledge's book in the game's purple, green, red, blue and black leather with metal fittings and gems.
+  - **Original:** Project Expansion's own sprites.
+
 ## 1.29.2 — 2026-11-28
 
 More from Project Expansion: the machines that work for one player.

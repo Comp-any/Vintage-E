@@ -148,6 +148,10 @@ namespace VintageE
             "vintageeArcanaOff", "vintageeStoredEmc", "vintageeStoredEmc" + EmcAmount.Suffix, "vintageeSpeedBase",
             // A broken Power Flower or EMC Link carries the EMC it held for its owner (1.29.2).
             OwnedMachine.HeldKey, OwnedMachine.HeldKey + EmcAmount.Suffix,
+            // What's written in a Knowledge Sharing Book, an Alchemical Book's places and owner (1.29.3): a copy made from
+            // EMC is a blank book.
+            ItemKnowledgeBook.OwnerKey, ItemKnowledgeBook.OwnerNameKey, ItemKnowledgeBook.CountKey,
+            ItemAlchemicalBook.PlacesKey, ItemAlchemicalBook.BoundKey, ItemAlchemicalBook.BoundNameKey,
             // States that change on their own or with use, found by the self-test's scan (1.18.4): a crate's lid open or
             // shut, a populated skep ready to harvest, a locust nest's import flag.
             "lidState", "harvestable", "spawnOnlyAfterImport",

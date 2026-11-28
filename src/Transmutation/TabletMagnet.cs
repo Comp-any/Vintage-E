@@ -175,6 +175,10 @@ namespace VintageE
                     tablet.Attributes.SetBool(ExcludeKey, !Excludes(tablet));
                     tabletSlot.MarkDirty();
                     break;
+                case TransmuteAction.MineBurn:
+                    tablet.Attributes.SetBool(TabletMining.Key, !TabletMining.On(tablet));
+                    tabletSlot.MarkDirty();
+                    break;
             }
         }
 

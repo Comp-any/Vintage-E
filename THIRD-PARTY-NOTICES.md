@@ -53,7 +53,9 @@ add-on by DonovanDMC. These files are Project Expansion's own artwork, used unde
   the EMC Link, Compact Sun and Matter Upgrader textures and the MK1–3 collector and relay textures in
   `assets/vintagee/textures/projecte/expansion/` (Original look); and the Power Flower's model,
   `assets/vintagee/shapes/block/powerflower.json`, ported from Project Expansion's
-  `models/block/power_flower/base.json` (also the base of the New look's version of it).
+  `models/block/power_flower/base.json` (also the base of the New look's version of it);
+- since 1.29.3 (copied by `tools/gen_books.py`): the Knowledge Sharing Book and Alchemical Book textures in
+  `assets/vintagee/textures/projecte/expansion/book-*.png` (Original look).
 
 Where Project Expansion's texture is animated, the first frame is used (Vintage Story doesn't play Minecraft's texture
 animations). Project Expansion credits its matter block textures to 32polaris.

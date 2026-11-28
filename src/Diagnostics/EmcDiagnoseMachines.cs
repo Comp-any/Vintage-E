@@ -45,6 +45,19 @@ namespace VintageE
                 x.Warn(x.L("diag-mach-expansion-restart", x.Mod.Config.Expansion ? x.L("diag-on") : x.L("diag-off")));
         }
 
+        /// <summary>"Burn what I mine" (1.29.3): who has it on, and whether its safety hook is in place.</summary>
+        static void MiningLines(Ctx x)
+        {
+            if (!TabletMining.Patched)
+            {
+                x.Problem(x.L("diag-mach-mining-nohook", TabletMining.Error ?? "?"));
+                x.Explain(x.L("diag-mach-mining-nohook-why"));
+                return;
+            }
+            var users = TabletMining.Users(x.Sapi);
+            x.Info(users.Count == 0 ? x.L("diag-mach-mining-none") : x.L("diag-mach-mining-users", string.Join(", ", users), TabletMining.Burned));
+        }
+
         static void MachinesReport(Ctx x, EmcDiagnoseRequestPacket client)
         {
             EmcReport r = x.R;
@@ -61,6 +74,7 @@ namespace VintageE
             x.Explain(x.L("diag-mach-hopper-note"));
             if (Math.Abs(cfg.MachineSpeedMultiplier - 1) > 1e-9) x.Info(x.L("diag-mach-speed", cfg.MachineSpeedMultiplier));
             ExpansionLines(x);
+            MiningLines(x);
 
             r.Section(x.L("diag-mach-looked-title"));
             LookedAt(x, client);

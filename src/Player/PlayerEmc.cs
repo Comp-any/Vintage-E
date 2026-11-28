@@ -443,6 +443,14 @@ namespace VintageE
             return n;
         }
 
+        /// <summary>Whether a known key counts against MaxExactKnowledge, as <see cref="CountExact"/> counts (1.29.3).</summary>
+        public static bool CountsAsExact(IWorldAccessor world, string key)
+        {
+            if (!IsExact(key) || world == null) return false;
+            CollectibleObject c = Resolve(world, key);
+            return c != null && !NeedsDataCached(c, world);
+        }
+
         static readonly Dictionary<CollectibleObject, bool> needsData = new Dictionary<CollectibleObject, bool>();
         /// <summary>Forgets the typed-block answers (they hold a world's collectibles; called when a world ends).</summary>
         public static void ForgetWorld()

@@ -61,6 +61,7 @@ namespace VintageE
                 case TransmuteAction.MagnetSwap:
                 case TransmuteAction.MagnetFilter:
                 case TransmuteAction.MagnetMode:
+                case TransmuteAction.MineBurn:
                     TabletMagnet.OnRequest(mod, player, req, (code, args) => Fail(player, code, args));
                     break;
             }
