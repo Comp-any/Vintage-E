@@ -1,0 +1,26 @@
+== Dark Matter ==
+Code vintagee:matter-dark, from Vintage-E (vintagee).
+✓ It has a value: 328 EMC.
+  From: Self-test press (Vintage-E): 1 game:ingot-copper (+200 energy) -> 1 vintagee:matter-dark
+The server knows this item's value. If your game shows none:
+The tooltip needs Vintage-E on your side too, in the same version as the server. A game that joined while a remap was running gets the new values when it finishes; rejoining always fetches them.
+
+== Other mods' crafting methods ==
+Made by Self-test press (Vintage-E (vintagee)):
+  dark: 1 Copper ingot (game:ingot-copper) + 100 test power → 1 Dark Matter (vintagee:matter-dark) = 328 EMC each
+    Used: this is where the value comes from.
+    100 test power of power at 2 EMC each = 200 (price: vintagee's suggested price)
+Made by Self-test press (Vintage-E (vintagee)):
+  heated: 1 Copper ingot (game:ingot-copper) + 10000 °C·s + 50000 EMC → 1 Dark Matter (vintagee:matter-dark) = 50,133.97 EMC each
+    Not used: Dark Matter (vintagee:matter-dark) 328 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+200 energy) -> 1 vintagee:matter-dark
+    10000 °C·s of heat at 0.000597 EMC each = 5.97 (price: the median of 5 reference fuels' value per °C·s (charcoal, coke, ore-lignite, …))
+    50,000 EMC that the recipe itself costs
+  vintagee:selftest-press/typo would make it, but isn't used: nothing has the code game:ingot-coper
+
+== Next ==
+The full story of its value: Dark Matter (vintagee:matter-dark)
+Trace its value down to the raw materials (/emc diagnose trace vintagee:matter-dark)
+Everything from Vintage-E (vintagee) (/emc diagnose mod vintagee)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

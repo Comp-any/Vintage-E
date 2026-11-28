@@ -1,0 +1,69 @@
+== What the last mapping changed ==
+The mapping of 2026-11-28 13:33 compared with the current one (2026-11-28 13:33).
+✓ The same 55 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  4 values now come through those mods' methods
+3 items gained a value, 0 lost theirs, 1476 changed.
+
+== Changed value (1476), by family ==
+  boricalchemy:fractional_distiller_raw (264): Fractional Distiller (Undistilled Wood) (boricalchemy:fractional_distiller_raw-firewood-blue) 1,223.6 → 899.6
+    grid: 1 boricalchemy:fractional_distiller_empty-2-blue + 32 boricalchemy:sawdust -> 1 boricalchemy:fractional_distiller_raw-firewood-blue
+  boricalchemy:fractional_distiller_fired (264): Fractional Distiller (Distilled Wood) (boricalchemy:fractional_distiller_fired-firewood-blue) 1,223.6 → 899.6
+    smelting/firing/cooking: 1 boricalchemy:fractional_distiller_raw-firewood-blue -> 1 boricalchemy:fractional_distiller_fired-firewood-blue
+  boricalchemy:fractional_distiller_empty (110): Fractional Distiller with One Beaker (boricalchemy:fractional_distiller_empty-1-blue) 1,090.2 → 766.2
+    grid: 1 boricalchemy:fractional_distiller_base-0 + 1 boricalchemy:beaker-blue-fired -> 1 boricalchemy:fractional_distiller_empty-1-blue
+  usefulstuff:omnichute (57): Bendy Chute (usefulstuff:omnichute-ns) 278.82 → 260.42
+    grid: 1 game:chutesection-copper + 1 game:gear-rusty + 1 game:chutesection-copper -> 1 usefulstuff:omnichute-ns
+  boricalchemy:couch_mid (48): Couch (Centre) (boricalchemy:couch_mid-south-plain) 295.04 → 187.04
+    grid: 1 grassroots:gr-hemp-cloth-plain + 1 grassroots:gr-hemp-cloth-plain + 1 grassroots:gr-hemp-cloth-plain + 1 game:plank-aged (or 13 more) + 1 boricalchemy:wire-copper (or 2 more) + 1 game:plank-aged (or 13 more) -> 1 boricalchemy:couch_mid-south-plain
+  boricalchemy:couch_left (48): Couch (Left) (boricalchemy:couch_left-south-plain) 302.44 → 194.44
+    grid: 1 grassroots:gr-hemp-cloth-plain + 1 game:plank-aged (or 13 more) + 1 grassroots:gr-hemp-cloth-plain + 1 grassroots:gr-hemp-cloth-plain + 1 game:plank-aged (or 13 more) + 1 boricalchemy:wire-copper (or 2 more) + 1 game:plank-aged (or 13 more) -> 1 boricalchemy:couch_left-south-plain
+  boricalchemy:couch_right (48): Couch (Right) (boricalchemy:couch_right-south-plain) 302.44 → 194.44
+    grid: 1 grassroots:gr-hemp-cloth-plain + 1 grassroots:gr-hemp-cloth-plain + 1 grassroots:gr-hemp-cloth-plain + 1 game:plank-aged (or 13 more) + 1 game:plank-aged (or 13 more) + 1 boricalchemy:wire-copper (or 2 more) + 1 game:plank-aged (or 13 more) -> 1 boricalchemy:couch_right-south-plain
+  boricalchemy:gascontainer (31): Gas Container (Air) (boricalchemy:gascontainer-air) 67.9 → 40.9
+    grid: 2 game:metalbit-copper + 1 game:glass-plain + 1 game:metalplate-copper + 2 boricalchemy:rubberseal -> 4 boricalchemy:gascontainer-air
+  game:chute (28): Elbow Chute (game:chute-elbow-down-east) 256 → 237.6
+    grid: 1 game:chutesection-copper + 1 game:chutesection-copper -> 1 game:chute-elbow-down-east
+  panningmachine:panningmachine (20): Panning Machine (panningmachine:panningmachine-allclasses-iron-north) 1,132.8 → 790.41
+    same as its variant panningmachine:panningmachine-north (differs in: side)
+  vintagee:antimatterrelay (16): Anti-Matter Relay MK3 (vintagee:antimatterrelay-mk3) 208,914.7 → 4,058.7
+    grid: 1 game:rock-obsidian + 1 vintagee:matter-red + 1 game:rock-obsidian + 1 vintagee:matter-red + 1 vintagee:antimatterrelay-mk2 + 1 vintagee:matter-red + 1 game:rock-obsidian + 1 vintagee:matter-red + 1 game:rock-obsidian -> 1 vintagee:antimatterrelay-mk3
+  vintagee:emclink (16): EMC Link MK3 (Red) (vintagee:emclink-mk3) 219,189 → 15,101
+    grid: 1 vintagee:covalencedust-low + 1 vintagee:covalencedust-medium + 1 vintagee:covalencedust-high + 1 vintagee:matter-red + 1 vintagee:emclink-mk2 + 1 vintagee:matter-red + 1 vintagee:covalencedust-high + 1 vintagee:covalencedust-medium + 1 vintagee:covalencedust-low -> 1 vintagee:emclink-mk3
+  vintagee:powerflower (16): Power Flower MK3 (Red) (vintagee:powerflower-mk3) 2,413,838.5 → 112,582.5
+    grid: 9 vintagee:energycollector-mk3 + 1 vintagee:emclink-mk3 + 9 vintagee:energycollector-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 -> 1 vintagee:powerflower-mk3
+  vintagee:energycollector (15): Energy Collector MK3 (vintagee:energycollector-mk3) 52,286.7 → 4,062.7
+    grid: 1 game:glass-plain (or 22 more) + 1 vintagee:matter-red + 1 game:glass-plain (or 22 more) + 1 game:glass-plain (or 22 more) + 1 vintagee:energycollector-mk2 + 1 game:glass-plain (or 22 more) + 1 game:glass-plain (or 22 more) + 1 game:glass-plain (or 22 more) + 1 game:glass-plain (or 22 more) -> 1 vintagee:energycollector-mk3
+  vintagee:trinket (15): Body Stone (vintagee:trinket-bodystone) 73,920 → 1,392
+    grid: 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb -> 1 vintagee:trinket-bodystone
+  vintagee:matter (14): Red Matter (vintagee:matter-red) 36,864 → 600
+    Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+  vintagee:matterblock (14): Red Matter Block (vintagee:matterblock-red) 147,456 → 2,400
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red -> 1 vintagee:matterblock-red
+  vintagee:mattertool (14): Red Matter Shears (vintagee:mattertool-red-shears) 98,304 → 1,856
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:mattertool-dark-shears -> 1 vintagee:mattertool-red-shears
+  abyssaldepths:divingsuit (12): Copper diving helmet (abyssaldepths:divingsuit-head-blue-mk1) 2,230.5 → 1,582.5
+    same as its variant abyssaldepths:divingsuit-head-plain-mk1 (differs in: color)
+  vintagee:alchemicalbagdark (12): Dark Matter Alchemical Bag (plain) (vintagee:alchemicalbagdark-plain) 58,830.9 → 10,990.9
+    grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:alchemicalbag-plain + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:alchemicalbagdark-plain
+  vintagee:alchemicalbagred (12): Red Matter Alchemical Bag (plain) (vintagee:alchemicalbagred-plain) 206,286.9 → 13,390.9
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:alchemicalbagdark-plain + 1 vintagee:matter-red + 1 vintagee:matter-red -> 1 vintagee:alchemicalbagred-plain
+  game:armor (12): Plate helmet (Tin bronze) (game:armor-head-plate-tinbronze) 7.02 → 851
+    grid: 1 game:leather-normal-plain + 1 game:metalplate-tinbronze + 1 game:leather-normal-plain + 1 game:metalplate-tinbronze + 1 game:armor-head-chain-tinbronze + 1 game:metalplate-tinbronze -> 1 game:armor-head-plate-tinbronze
+  game:lantern (12): lantern-large-up (game:lantern-large-up) 87.93 → 88.08
+    grid: 2 game:glassslab-plain-down-free + 1 game:candle + 2 game:glassslab-plain-down-free + 4 game:metalnailsandstrips-bismuthbronze + 1 game:metalplate-bismuthbronze + 4 game:metalnailsandstrips-bismuthbronze -> 1 game:lantern-large-up
+  game:metalsheet (12): Tin bronze sheet (game:metalsheet-tinbronze-down) 0.343 → 281.66
+    grid: 1 game:metalplate-tinbronze + 2 game:metalnailsandstrips-tinbronze -> 1 game:metalsheet-tinbronze-down
+  wwaymarkers:buoylantern (12): A birch wood lantern buoy (wwaymarkers:buoylantern-birch) 147.77 → 147.85
+    grid: 1 game:lantern-small-up (or 11 more) + 2 game:plank-birch + 1 game:resin + 2 game:plank-birch + 1 game:fat + 1 game:rope + 1 game:stone-meteorite-iron (or 24 more) -> 1 wwaymarkers:buoylantern-birch
+
+== Gained a value (3), by family ==
+  boricalchemy:glassflaskphosphorustrichloride (1): Jug of Phosphorus Trichloride (boricalchemy:glassflaskphosphorustrichloride) 14.65
+  boricalchemy:glassflaskphosphoroxychloride (1): Jug of Phosphorus Oxychloride (boricalchemy:glassflaskphosphoroxychloride) 10.3
+  boricalchemy:glassflaskphosphoruspentachloride (1): Jug of Phosphorus Pentachloride (boricalchemy:glassflaskphosphoruspentachloride) 41.92
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)

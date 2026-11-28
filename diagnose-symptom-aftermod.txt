@@ -1,0 +1,21 @@
+== Values changed or vanished after I added or updated a mod ==
+Another mod's recipes and patches feed into the mapping. These show what it changed, and where it comes through.
+• Other mods' patches: 22 mods patch things the mapper reads:
+  Steep and Brew (steepandbrew) (/emc diagnose mod steepandbrew): 240 recipe patches, 4 patches to how items are processed (ground storage, squeezing, burning, drying)
+  DairyPlus (dairyplus) (/emc diagnose mod dairyplus): 239 recipe patches
+  UraniumExpanded (uraniumexpanded) (/emc diagnose mod uraniumexpanded): 176 recipe patches, 26 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Boric Alchemy (boricalchemy) (/emc diagnose mod boricalchemy): 119 recipe patches, 32 patches to how items are processed (ground storage, squeezing, burning, drying), 1 patches to Vintage-E's own files
+  VSInstrumentsRedux (vsinstrumentsredux) (/emc diagnose mod vsinstrumentsredux): 95 recipe patches
+  Easy Building (easybuilding) (/emc diagnose mod easybuilding): 85 recipe patches
+  WOO Fantasy Additions (woofantasy) (/emc diagnose mod woofantasy): 74 recipe patches
+  improved_metallurgy (/emc diagnose mod improved_metallurgy): 16 recipe patches, 43 patches to how items are processed (ground storage, squeezing, burning, drying)
+  Such patches are normal and usually fine. They matter when a value looks wrong: a mod that adds an output to a process (Primitive Survival's fish eggs, say) changes what the input is worth, and a patch to Vintage-E's own files overrides its values outright.
+Which other mods change recipes, processing or values (/emc diagnose patches)
+✓ Server log: no Vintage-E errors or warnings.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+What changed since the previous mapping (/emc diagnose changes)
+Everything from one mod has no value (/emc diagnose mods)
+
+== Next ==
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)

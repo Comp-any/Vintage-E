@@ -1,0 +1,65 @@
+== Health: the game, the files, the players, and values that moved ==
+Checks around the mapping rather than of it. Each line says what it looked at; open one for what it means and what to do.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 470 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+  A player's EMC and learned items are stored with the player, so only online players can be checked. Run this while players are on.
+• Value swings: no earlier mapping to compare with yet.
+⚠ Solver: 19 item(s) have a recipe whose ingredients all have values, yet got no value.
+  The mapper saw the recipe and every ingredient is valued, so only the solver itself stopped the output: the item sits in a value loop it couldn't settle, or its value came out below the smallest the solver keeps (a recipe that gives back far more than it takes, like a block uncrafted into shingles, drives it there).
+  Jug of Phosphorus Trichloride (boricalchemy:glassflaskphosphorustrichloride) ← grid: 1x boricalchemy:glassflaskphospherus + 1x boricalchemy:gascontainer-chlorine + 1x boricalchemy:gascontainer-chlorine (came out below the floor, or the recipe was skipped)
+  Debarker disc (immersivewoodworking:debarkerdisc) ← grid: 1x [54 options] + 1x [34 options] + 1x [54 options] (came out below the floor, or the recipe was skipped)
+  Solid Edhelthim (woofantasy:edhelthim) ← RecipeRegistrySystem.BarrelRecipes: 1000x woofantasy:edhelthimportion + 1x woofantasy:reagent-fourthieves (came out below the floor, or the recipe was skipped)
+  Abyssalite Ingot (game:ingot-abyssalite) ← smelting/firing/cooking: 1x game:metalnailsandstrips-abyssalite (in a loop)
+  Petrified Darkness Ingot (game:ingot-petrifieddarkness) ← smelting/firing/cooking: 1x game:metalnailsandstrips-petrifieddarkness (in a loop)
+  Prime Materia Infused Metal Ingot (game:ingot-primemateriametal) ← smelting/firing/cooking: 1x game:metalnailsandstrips-primemateriametal (in a loop)
+  Growing bell pepper (justthepepper:crop-pepperbell-1) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-2) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-3) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-4) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-5) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-6) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-7) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-8) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-9) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-10) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-11) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-12) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  Growing bell pepper (justthepepper:crop-pepperbell-13) ← block drops: 1.0000000116860974E-07x justthepepper:seeds-pepperbell (came out below the floor, or the recipe was skipped)
+  → Pin the item at what its ingredients add up to (the trace shows them), and include the list in a bug report: this is exactly the kind of case the solver should handle.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 44 value(s) were copied from a look-alike variant in a family that doesn't agree (color (33), stage (8), wood (2), rock (1)).
+  When nothing makes an item, the mapper copies the value of a variant that differs only in look (a copyAcross group). That's safe when the family agrees. Here the family's own-valued members disagree by more than half, so the copy took whichever member came first, and the item may be worth a lot more or less than it says. An attribute behind many of these (growth stage, age, state) isn't look-only at all and belongs in neverAcross.
+  color: 33 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 1,203.1 ← Calcium Fluoride Glass (game:glass-calfluoride); the family runs from Glass (game:glass-plain) 3.69 to Calcium Fluoride Glass (game:glass-calfluoride) 1,203.1
+    Orange-brown aged book (game:book-aged-orangebrown) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Orange aged book (game:book-aged-orange) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Dark green aged book (game:book-aged-darkgreen) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Dark gray aged book (game:book-aged-darkgray) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Cherry red aged book (game:book-aged-cherryred) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Brick red aged book (game:book-aged-brickred) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Dark olive aged book (game:book-aged-darkolive) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Dark beige aged book (game:book-aged-darkbeige) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    Olive aged book (game:book-aged-olive) 78.24 ← Gray book (game:book-normal-gray); the family runs from Brick red book (game:book-normal-brickred) 20.9 to Gray book (game:book-normal-gray) 48.65
+    ... and 23 more
+  stage: 8 copied value(s), e.g.
+    Hindu Kush (Indica) - Ready to Harvest (grassroots:crop-hindukush-8) 83.68 ← Hindu Kush (Indica) - Nearly Ready (grassroots:crop-hindukush-7); the family runs from Growing Hindu Kush (Indica) (grassroots:crop-hindukush-1) 30.43 to Hindu Kush (Indica) - Nearly Ready (grassroots:crop-hindukush-7) 83.68
+    Red Congo (Sativa) - Ready to Harvest (grassroots:crop-redcongo-8) 83.68 ← Red Congo (Sativa) - Nearly Ready (grassroots:crop-redcongo-7); the family runs from Growing Red Congo (Sativa) (grassroots:crop-redcongo-1) 30.43 to Red Congo (Sativa) - Nearly Ready (grassroots:crop-redcongo-7) 83.68
+    Mazar-i-Sharif (Indica) - Ready to Harvest (grassroots:crop-mazarisharif-8) 83.68 ← Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:crop-mazarisharif-7); the family runs from Growing Mazar-i-Sharif (Indica) (grassroots:crop-mazarisharif-1) 30.43 to Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:crop-mazarisharif-7) 83.68
+    Acapulco Gold (Sativa) - Ready to Harvest (grassroots:crop-acapulcogold-8) 83.68 ← Acapulco Gold (Sativa) - Nearly Ready (grassroots:crop-acapulcogold-7); the family runs from Growing Acapulco Gold (Sativa) (grassroots:crop-acapulcogold-1) 30.43 to Acapulco Gold (Sativa) - Nearly Ready (grassroots:crop-acapulcogold-7) 83.68
+    Hindu Kush (Indica) - Ready to Harvest (grassroots:adapted-hindukush-8) 83.68 ← Hindu Kush (Indica) - Nearly Ready (grassroots:adapted-hindukush-7); the family runs from Growing Hindu Kush (Indica) (grassroots:adapted-hindukush-1) 30.43 to Hindu Kush (Indica) - Nearly Ready (grassroots:adapted-hindukush-7) 83.68
+    Red Congo (Sativa) - Ready to Harvest (grassroots:adapted-redcongo-8) 83.68 ← Red Congo (Sativa) - Nearly Ready (grassroots:adapted-redcongo-7); the family runs from Growing Red Congo (Sativa) (grassroots:adapted-redcongo-1) 30.43 to Red Congo (Sativa) - Nearly Ready (grassroots:adapted-redcongo-7) 83.68
+    Mazar-i-Sharif (Indica) - Ready to Harvest (grassroots:adapted-mazarisharif-8) 83.68 ← Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:adapted-mazarisharif-7); the family runs from Growing Mazar-i-Sharif (Indica) (grassroots:adapted-mazarisharif-1) 30.43 to Mazar-i-Sharif (Indica) - Nearly Ready (grassroots:adapted-mazarisharif-7) 83.68
+    Acapulco Gold (Sativa) - Ready to Harvest (grassroots:adapted-acapulcogold-8) 83.68 ← Acapulco Gold (Sativa) - Nearly Ready (grassroots:adapted-acapulcogold-7); the family runs from Growing Acapulco Gold (Sativa) (grassroots:adapted-acapulcogold-1) 30.43 to Acapulco Gold (Sativa) - Nearly Ready (grassroots:adapted-acapulcogold-7) 83.68
+  wood: 2 copied value(s), e.g.
+    Support beam (Rotten wood) (game:supportbeam-rotten) 2.17 ← Support beam (Very aged wood) (game:supportbeam-veryaged); the family runs from Support beam (Aged) (game:supportbeam-aged) 0.175 to Support beam (Very aged wood) (game:supportbeam-veryaged) 2.17
+    Support beam (Very rotten wood) (game:supportbeam-veryrotten) 2.17 ← Support beam (Very aged wood) (game:supportbeam-veryaged); the family runs from Support beam (Aged) (game:supportbeam-aged) 0.175 to Support beam (Very aged wood) (game:supportbeam-veryaged) 2.17
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  → Check the item's trace and pin it if the copy is wrong. For an attribute with many entries, add it to neverAcross in the value file (variantGuessing) so the guesser uses the family's middle value instead.
+
+== Next ==
+Deeper checks: free EMC, blocked recipes, containers, metal tiers, table size, skipped recipes, compatibility drift, duplicates (/emc diagnose checks)
+Back to the check-up (/emc diagnose)

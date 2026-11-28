@@ -1,0 +1,101 @@
+== Vintage Story (game) ==
+8641 of its 8699 blocks and items have a value (99.3%); 648 are blacklisted on purpose (creative, technical or story items).
+
+== Why the rest has no value ==
+⚠ 9 items: nothing the mapper can read makes them.
+  They're found in the world, dropped by creatures, bought from traders, or made by a machine or process Vintage-E doesn't know. The mapper only works values out from recipes, so raw materials like these have to be given a value.
+    figurehead (4): figurehead-eidolon (game:figurehead-eidolon), figurehead-erel (game:figurehead-erel), figurehead-seamonster (game:figurehead-seamonster), ...
+    arrow (1): Short erel feather stem (game:arrow-erel)
+    spear (1): Long erel feather stem (game:spear-generic-erel)
+    schematic (1): Glider schematic (game:schematic-glider)
+    bonyremains (1): Bony Cow Skull (game:bonyremains-cowskull-up)
+    stonepathfullblock (1): Stone path (game:stonepathfullblock)
+  → Hold one and run /emc set <value>, or add it to BaseValues in ModConfig/vintagee.json. Everything made from it then gets a value by itself.
+  → Start with the families above: one value for a raw material fixes everything made from it.
+⚠ 29 items have a recipe, but every recipe needs an ingredient that has no value.
+  Give the ingredients a value and these follow by themselves. The ingredients holding back the most items:
+    Edhelthim 'Ingot' (game:ingot-edhelthim): 5 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-edhelthim)
+    Star Tear Metal Ingot (game:ingot-startearmetal): 4 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-startearmetal)
+    Abyssalite Ingot (game:ingot-abyssalite): 3 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-abyssalite)
+    Petrified Darkness Ingot (game:ingot-petrifieddarkness): 3 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-petrifieddarkness)
+    Prime Materia Infused Metal Ingot (game:ingot-primemateriametal): 3 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-primemateriametal)
+    Star Tear Metal Plate (game:metalplate-startearmetal): 2 item(s) wait on it. (waiting on its own ingredients)  why? (/emc diagnose item game:metalplate-startearmetal)
+    Copper-Beryllium Alloy Ingot (game:ingot-copperberyllium): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-copperberyllium)
+    Beryllium Ingot (game:ingot-beryllium): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-beryllium)
+    Neodymium Ingot (game:ingot-neodymium): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-neodymium)
+    Lanthanum Ingot (game:ingot-lanthanum): 1 item(s) wait on it. (in a value loop)  why? (/emc diagnose item game:ingot-lanthanum)
+  → Click an ingredient's 'why?' to follow the chain down to the raw material that needs a value.
+⚠ 20 items sit in value loops (10 loops).
+  → Give one item in each loop a value by hand (hold it and run /emc set <value>, or add it to BaseValues in the settings). The rest of the loop follows. /emc loop lists every loop with its recipes.
+Pin all 57 missing items that have a suggested value, and remap (in the window)
+
+== Next steps ==
+These are base-game items Vintage-E doesn't value yet. That's for Vintage-E to add, so it's worth reporting:
+  Post a comment on the Vintage-E Mod DB page: https://mods.vintagestory.at/show/mod/74355
+    Suggested text: "Vintage-E 1.29.4: these base-game items have no value: game:arrow-erel, game:spear-generic-erel, game:schematic-glider, game:bonyremains-cowskull-up, game:stonepathfullblock, game:figurehead-eidolon, game:figurehead-erel, game:figurehead-seamonster, game:figurehead-thunderlord"
+  Put together a bug report to post (/emc diagnose bugreport)
+
+== Every missing item (58) ==
+Click an item for the full story of its value, or 'why?' for the short answer.
+  Short erel feather stem (game:arrow-erel)  why? (/emc diagnose item game:arrow-erel)
+  Bony Cow Skull (game:bonyremains-cowskull-up)  why? (/emc diagnose item game:bonyremains-cowskull-up)
+  figurehead-eidolon (game:figurehead-eidolon)  why? (/emc diagnose item game:figurehead-eidolon)
+  figurehead-erel (game:figurehead-erel)  why? (/emc diagnose item game:figurehead-erel)
+  figurehead-seamonster (game:figurehead-seamonster)  why? (/emc diagnose item game:figurehead-seamonster)
+  figurehead-thunderlord (game:figurehead-thunderlord)  why? (/emc diagnose item game:figurehead-thunderlord)
+  Abyssalite Ingot (game:ingot-abyssalite)  why? (/emc diagnose item game:ingot-abyssalite)
+  Beryllium Ingot (game:ingot-beryllium)  why? (/emc diagnose item game:ingot-beryllium)
+  Cerium Ingot (game:ingot-cerium)  why? (/emc diagnose item game:ingot-cerium)
+  Copper-Beryllium Alloy Ingot (game:ingot-copperberyllium)  why? (/emc diagnose item game:ingot-copperberyllium)
+  Edhelthim 'Ingot' (game:ingot-edhelthim)  why? (/emc diagnose item game:ingot-edhelthim)
+  Lanthanum Ingot (game:ingot-lanthanum)  why? (/emc diagnose item game:ingot-lanthanum)
+  Neodymium Ingot (game:ingot-neodymium)  why? (/emc diagnose item game:ingot-neodymium)
+  Petrified Darkness Ingot (game:ingot-petrifieddarkness)  why? (/emc diagnose item game:ingot-petrifieddarkness)
+  Prime Materia Infused Metal Ingot (game:ingot-primemateriametal)  why? (/emc diagnose item game:ingot-primemateriametal)
+  Star Tear Metal Ingot (game:ingot-startearmetal)  why? (/emc diagnose item game:ingot-startearmetal)
+  Abyssalite Nugget (game:metalbit-abyssalite)  why? (/emc diagnose item game:metalbit-abyssalite)
+  Beryllium Bits (game:metalbit-beryllium)  why? (/emc diagnose item game:metalbit-beryllium)
+  Cerium Bits (game:metalbit-cerium)  why? (/emc diagnose item game:metalbit-cerium)
+  Copper-Beryllium Alloy Bits (game:metalbit-copperberyllium)  why? (/emc diagnose item game:metalbit-copperberyllium)
+  Edhelthim Metal Nugget (game:metalbit-edhelthim)  why? (/emc diagnose item game:metalbit-edhelthim)
+  Lanthanum Bits (game:metalbit-lanthanum)  why? (/emc diagnose item game:metalbit-lanthanum)
+  Neodymium Bits (game:metalbit-neodymium)  why? (/emc diagnose item game:metalbit-neodymium)
+  Petrified Darkness Nugget (game:metalbit-petrifieddarkness)  why? (/emc diagnose item game:metalbit-petrifieddarkness)
+  Prime Materia Infused Metal Nugget (game:metalbit-primemateriametal)  why? (/emc diagnose item game:metalbit-primemateriametal)
+  Star Tear Metal Nugget (game:metalbit-startearmetal)  why? (/emc diagnose item game:metalbit-startearmetal)
+  Abyssalite Block (game:metalblock-new-riveted-abyssalite)  why? (/emc diagnose item game:metalblock-new-riveted-abyssalite)
+  Reinforced Edhelthim Block (game:metalblock-new-riveted-edhelthim)  why? (/emc diagnose item game:metalblock-new-riveted-edhelthim)
+  Refined Petrified Darkness Block (game:metalblock-new-riveted-petrifieddarkness)  why? (/emc diagnose item game:metalblock-new-riveted-petrifieddarkness)
+  Prime Materia Infused Metal Block (game:metalblock-new-riveted-primemateriametal)  why? (/emc diagnose item game:metalblock-new-riveted-primemateriametal)
+  Star Tear Metal Block (game:metalblock-new-riveted-startearmetal)  why? (/emc diagnose item game:metalblock-new-riveted-startearmetal)
+  Abyssalite Chain (game:metalchain-abyssalite)  why? (/emc diagnose item game:metalchain-abyssalite)
+  Edhelthim Metal Chain (game:metalchain-edhelthim)  why? (/emc diagnose item game:metalchain-edhelthim)
+  Petrified Darkness Chain (game:metalchain-petrifieddarkness)  why? (/emc diagnose item game:metalchain-petrifieddarkness)
+  Prime Materia Infused Metal Chain (game:metalchain-primemateriametal)  why? (/emc diagnose item game:metalchain-primemateriametal)
+  Star Tear Metal Chain (game:metalchain-startearmetal)  why? (/emc diagnose item game:metalchain-startearmetal)
+  Edhelthim Metal Lamellae (game:metallamellae-edhelthim)  why? (/emc diagnose item game:metallamellae-edhelthim)
+  Edhelthim Metal Nails and Strips (game:metalnailsandstrips-edhelthim)  why? (/emc diagnose item game:metalnailsandstrips-edhelthim)
+  Star Tear Metal Nails and Strips (game:metalnailsandstrips-startearmetal)  why? (/emc diagnose item game:metalnailsandstrips-startearmetal)
+  Abyssalite Plate (game:metalplate-abyssalite)  why? (/emc diagnose item game:metalplate-abyssalite)
+  Beryllium Plate (game:metalplate-beryllium)  why? (/emc diagnose item game:metalplate-beryllium)
+  Cerium Plate (game:metalplate-cerium)  why? (/emc diagnose item game:metalplate-cerium)
+  Copper-Beryllium Alloy Plate (game:metalplate-copperberyllium)  why? (/emc diagnose item game:metalplate-copperberyllium)
+  Edhelthim Metal Plate (game:metalplate-edhelthim)  why? (/emc diagnose item game:metalplate-edhelthim)
+  Lanthanum Plate (game:metalplate-lanthanum)  why? (/emc diagnose item game:metalplate-lanthanum)
+  Neodymium Plate (game:metalplate-neodymium)  why? (/emc diagnose item game:metalplate-neodymium)
+  Petrified Darkness Plate (game:metalplate-petrifieddarkness)  why? (/emc diagnose item game:metalplate-petrifieddarkness)
+  Prime Materia Infused Metal Plate (game:metalplate-primemateriametal)  why? (/emc diagnose item game:metalplate-primemateriametal)
+  Star Tear Metal Plate (game:metalplate-startearmetal)  why? (/emc diagnose item game:metalplate-startearmetal)
+  Abyssalite Scales (game:metalscale-abyssalite)  why? (/emc diagnose item game:metalscale-abyssalite)
+  Edhelthim Metal Scales (game:metalscale-edhelthim)  why? (/emc diagnose item game:metalscale-edhelthim)
+  Petrified Darkness Scales (game:metalscale-petrifieddarkness)  why? (/emc diagnose item game:metalscale-petrifieddarkness)
+  Prime Materia Infused Metal Scales (game:metalscale-primemateriametal)  why? (/emc diagnose item game:metalscale-primemateriametal)
+  Star Tear Metal Scales (game:metalscale-startearmetal)  why? (/emc diagnose item game:metalscale-startearmetal)
+  Star Tear Metal Sheet (game:metalsheet-startearmetal-down)  why? (/emc diagnose item game:metalsheet-startearmetal-down)
+  Glider schematic (game:schematic-glider)  why? (/emc diagnose item game:schematic-glider)
+  Long erel feather stem (game:spear-generic-erel)  why? (/emc diagnose item game:spear-generic-erel)
+  Stone path (game:stonepathfullblock)  why? (/emc diagnose item game:stonepathfullblock)
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

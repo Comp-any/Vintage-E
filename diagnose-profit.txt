@@ -1,0 +1,192 @@
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 60 items can be made for less than they're worth (10 of them by processing):
+  Earthy brown ceramic crucible (game:crucible-blue-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-blue + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-blue-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-blue-fired)
+  Fireclay ceramic crucible (game:crucible-fire-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-fire + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-fire-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-fire-fired)
+  Black ceramic crucible (game:crucible-black-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-black + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-black-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-black-fired)
+  Brown ceramic crucible (game:crucible-brown-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-brown + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-brown-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-brown-fired)
+  Cream ceramic crucible (game:crucible-cream-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-cream + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-cream-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-cream-fired)
+  Earthy orange ceramic crucible (game:crucible-earthyorange-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-earthyorange + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-earthyorange-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-earthyorange-fired)
+  Gray ceramic crucible (game:crucible-gray-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-gray + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-gray-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-gray-fired)
+  Orange ceramic crucible (game:crucible-orange-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-orange + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-orange-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-orange-fired)
+  Red ceramic crucible (game:crucible-red-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-red + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-red-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-red-fired)
+  Tan ceramic crucible (game:crucible-tan-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-tan + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-tan-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-tan-fired)
+  Rough Emerald (game:gem-emerald-rough): worth 8,192, costs 104.58: 8,087.41 free each time
+    grid: 1 boricalchemy:autoclave_full_emerald -> 4 game:gem-emerald-rough (returns boricalchemy:autoclave_empty)
+    Trace its value down to the raw materials (/emc diagnose trace game:gem-emerald-rough)
+  Gas Container (Neon) (boricalchemy:gascontainer-neon): worth 82.13, costs -4150.032: 4,232.16 free each time
+    grid: 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute -> 1 boricalchemy:gascontainer-neon (returns boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air)
+    Ingredients whose value is a guess or a trader price: Gas Container (Dilute Neon) (boricalchemy:gascontainer-neon_dilute) 82.13
+    Trace its value down to the raw materials (/emc diagnose trace boricalchemy:gascontainer-neon)
+  Gas Container (Xenon) (boricalchemy:gascontainer-xenon): worth 82.13, costs -4150.032: 4,232.16 free each time
+    grid: 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute + 1 boricalchemy:gascontainer-xenon_dilute -> 1 boricalchemy:gascontainer-xenon (returns boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air)
+    Ingredients whose value is a guess or a trader price: Gas Container (Dilute Xenon) (boricalchemy:gascontainer-xenon_dilute) 82.13
+    Trace its value down to the raw materials (/emc diagnose trace boricalchemy:gascontainer-xenon)
+  Gas Container (Krypton) (boricalchemy:gascontainer-krypton): worth 82.13, costs -4150.032: 4,232.16 free each time
+    grid: 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute + 1 boricalchemy:gascontainer-krypton_dilute -> 1 boricalchemy:gascontainer-krypton (returns boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air)
+    Ingredients whose value is a guess or a trader price: Gas Container (Dilute Krypton) (boricalchemy:gascontainer-krypton_dilute) 82.13
+    Trace its value down to the raw materials (/emc diagnose trace boricalchemy:gascontainer-krypton)
+  Rough Peridot (game:gem-olivine_peridot-rough): worth 4,096, costs 61.22: 4,034.77 free each time
+    grid: 1 boricalchemy:autoclave_full_peridot -> 4 game:gem-olivine_peridot-rough (returns boricalchemy:autoclave_empty)
+    Trace its value down to the raw materials (/emc diagnose trace game:gem-olivine_peridot-rough)
+  Gold ingot (game:ingot-gold): worth 4,096, costs 2,048: 2,048 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 1 game:metalchain-gold -> 2 game:ingot-gold (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-gold)
+  Nugget (Native gold) (game:nugget-nativegold): worth 1,433.6, costs 9.6: 1,424 free each time
+    grid: 4 boricalchemy:crushedgold -> 14 game:nugget-nativegold (and 4 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-nativegold)
+  Bluefire Metal Lamellae (game:metallamellae-bluefiremetal): worth 1,286.9, costs 0.628: 1,286.27 free each time
+    casting (tool molds): 1 game:ingot-bluefiremetal -> 1 game:metallamellae-bluefiremetal (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metallamellae-bluefiremetal)
+  Fleshmetal Lamellae (game:metallamellae-fleshmetal): worth 1,163.6, costs 1.13: 1,162.46 free each time
+    casting (tool molds): 1 game:ingot-fleshmetal -> 1 game:metallamellae-fleshmetal (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metallamellae-fleshmetal)
+  Nickel bits (game:metalbit-nickel): worth 979.62, costs -3: 982.62 free each time
+    grid: 1 boricalchemy:gascontainer-empty -> 60 game:metalbit-nickel (returns boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-nickel)
+  Clear quartz (game:clearquartz): worth 1,024, costs 54.29: 969.7 free each time
+    grid: 1 boricalchemy:autoclave_full_clearquartz -> 16 game:clearquartz (returns boricalchemy:autoclave_empty)
+    Trace its value down to the raw materials (/emc diagnose trace game:clearquartz)
+  Rose quartz (game:rosequartz): worth 2,048, costs 1,102.4: 945.59 free each time
+    grid: 1 boricalchemy:autoclave_full_rose -> 16 game:rosequartz (returns boricalchemy:autoclave_empty)
+    Trace its value down to the raw materials (/emc diagnose trace game:rosequartz)
+  Zinc bits (game:metalbit-zinc): worth 768, costs -3: 771 free each time
+    grid: 1 boricalchemy:gascontainer-empty -> 60 game:metalbit-zinc (returns boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-zinc)
+  Plaque (game:plaque-fancy-steel-wall-east): worth 680.8, costs 0.656: 680.14 free each time
+    placement state: 1 game:plaque-fancy-steel-wall-north -> 1 game:plaque-fancy-steel-wall-east
+    Trace its value down to the raw materials (/emc diagnose trace game:plaque-fancy-steel-wall-east)
+  Plaque (game:plaque-fancy-steel-wall-south): worth 680.8, costs 0.656: 680.14 free each time
+    placement state: 1 game:plaque-fancy-steel-wall-north -> 1 game:plaque-fancy-steel-wall-south
+    Trace its value down to the raw materials (/emc diagnose trace game:plaque-fancy-steel-wall-south)
+  Plaque (game:plaque-fancy-steel-wall-west): worth 680.8, costs 0.656: 680.14 free each time
+    placement state: 1 game:plaque-fancy-steel-wall-north -> 1 game:plaque-fancy-steel-wall-west
+    Trace its value down to the raw materials (/emc diagnose trace game:plaque-fancy-steel-wall-west)
+  Gas Container (Argon) (boricalchemy:gascontainer-argon): worth 81.63, costs -486.331: 567.96 free each time
+    grid: 1 boricalchemy:gascontainer-argon_dilute + 1 boricalchemy:gascontainer-argon_dilute + 1 boricalchemy:gascontainer-argon_dilute + 1 boricalchemy:gascontainer-argon_dilute -> 1 boricalchemy:gascontainer-argon (returns boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air)
+    Ingredients whose value is a guess or a trader price: Gas Container (Dilute Argon) (boricalchemy:gascontainer-argon_dilute) 82.13
+    Trace its value down to the raw materials (/emc diagnose trace boricalchemy:gascontainer-argon)
+  Silver ingot (game:ingot-silver): worth 1,024, costs 512: 512 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 1 game:metalchain-silver -> 2 game:ingot-silver (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-silver)
+  Lead bits (game:metalbit-lead): worth 330.95, costs -108.897: 439.85 free each time
+    grid: 1 boricalchemy:chemicaljug -> 50 game:metalbit-lead (returns boricalchemy:glassflasknitricacid) (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-lead)
+  Blood Bronze Lamellae (game:metallamellae-bloodbronze): worth 391.12, costs 0.191: 390.93 free each time
+    casting (tool molds): 1 game:ingot-bloodbronze -> 1 game:metallamellae-bloodbronze (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metallamellae-bloodbronze)
+  Tin bits (game:metalbit-tin): worth 382.29, costs -3: 385.29 free each time
+    grid: 1 boricalchemy:gascontainer-empty -> 60 game:metalbit-tin (returns boricalchemy:gascontainer-chlorine)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-tin)
+  Chromium bits (game:metalbit-chromium): worth 320, costs -21.28: 341.28 free each time
+    grid: 1 boricalchemy:chemicaljug -> 40 game:metalbit-chromium (returns boricalchemy:glassflasksulfuricacid)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-chromium)
+  Iron bits (game:metalbit-iron): worth 196.93, costs -108.897: 305.82 free each time
+    grid: 1 boricalchemy:chemicaljug -> 50 game:metalbit-iron (returns boricalchemy:glassflasknitricacid) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-iron)
+  Copper bits (game:metalbit-copper): worth 160, costs -108.897: 268.89 free each time
+    grid: 1 boricalchemy:chemicaljug -> 50 game:metalbit-copper (returns boricalchemy:glassflasknitricacid) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metalbit-copper)
+  Iron ingot (game:ingot-iron): worth 512, costs 256: 256 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 1 game:metalchain-iron -> 2 game:ingot-iron (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-iron)
+  Meteoric iron ingot (game:ingot-meteoriciron): worth 384, costs 192: 192 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 20 game:metalbit-meteoriciron -> 1 game:ingot-meteoriciron
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-meteoriciron)
+  Transport Pipe (Item) (vinteng:pipenew-item): worth 179.2, costs 0.137: 179.06 free each time
+    RecipeRegistrySystem.SmithingRecipes: 1 game:ingot-tinbronze -> 1 vinteng:pipenew-item (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace vinteng:pipenew-item)
+  Iron bloom (game:ironbloom): worth 256, costs 78.77: 177.22 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 20 game:crushed-iron -> 1 game:ironbloom
+    Trace its value down to the raw materials (/emc diagnose trace game:ironbloom)
+  Nugget (Hematite) (game:nugget-hematite): worth 179.2, costs 15.75: 163.44 free each time
+    grid: 4 game:crushed-iron -> 14 game:nugget-hematite
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-hematite)
+  Rancid Sap (woofantasy:rancidsapportion): worth 278.23, costs 117.63: 160.6 free each time (processing: smelting, grinding, drying...)
+    fruit press: 1 woofantasy:woodmash-rotcursed -> 1000 woofantasy:rancidsapportion + 1 woofantasy:pressedmash-rotcursed
+    Trace its value down to the raw materials (/emc diagnose trace woofantasy:rancidsapportion)
+  Tin ingot (game:ingot-tin): worth 256, costs 127.43: 128.57 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 20 game:metalbit-tin -> 1 game:ingot-tin (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-tin)
+  Saltpeter (game:saltpeter): worth 128, costs 0: 128 free each time
+    grid: 1 boricalchemy:basinsolutionnoice -> 8 game:saltpeter (returns boricalchemy:basinempty) (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:saltpeter)
+  Copper ingot (game:ingot-copper): worth 256, costs 128: 128 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 1 game:metalchain-copper -> 2 game:ingot-copper (and 3 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-copper)
+  Smoky quartz (game:smokyquartz): worth 128, costs 4: 123.99 free each time
+    grid: 1 boricalchemy:artificial-quartz-smoky -> 1 game:smokyquartz
+    Trace its value down to the raw materials (/emc diagnose trace game:smokyquartz)
+  Amethyst (game:amethyst): worth 128, costs 4.01: 123.98 free each time
+    grid: 1 boricalchemy:artificial-quartz-amethyst -> 1 game:amethyst
+    Trace its value down to the raw materials (/emc diagnose trace game:amethyst)
+  Nugget (Cassiterite) (game:nugget-cassiterite): worth 179.2, costs 68.26: 110.93 free each time
+    grid: 4 game:crushed-cassiterite -> 14 game:nugget-cassiterite
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-cassiterite)
+  Nugget (Galena) (game:nugget-galena): worth 134.4, costs 38.4: 96 free each time
+    grid: 4 game:crushed-galena -> 14 game:nugget-galena
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-galena)
+  Embroidered fur pants (game:clothes-lowerbody-embroideredfur): worth 60.59, costs -27.109: 87.7 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:cloth-white + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:sewingkit -> 1 game:clothes-lowerbody-embroideredfur (returns game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium) (and 3 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-lowerbody-embroideredfur)
+  Arctic fisher pants (game:clothes-lowerbody-arcticfisher): worth 45.84, costs -27.109: 72.95 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:cloth-blue + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:sewingkit -> 1 game:clothes-lowerbody-arcticfisher (returns game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium) (and 3 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-lowerbody-arcticfisher)
+  Arctic hunter shirt (game:clothes-upperbody-arctichunter): worth 36.21, costs -32.725: 68.94 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:cloth-red + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) -> 1 game:clothes-upperbody-arctichunter (returns game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium) (and 3 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-upperbody-arctichunter)
+  Arctic hunter pants (game:clothes-lowerbody-arctichunter): worth 37.02, costs -31.917: 68.94 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 grassroots:gr-hemp-cloth-red + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 grassroots:gr-hemp-twine + 1 grassroots:gr-hemp-twine -> 1 game:clothes-lowerbody-arctichunter (returns game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium) (and 3 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-lowerbody-arctichunter)
+  Nugget (Chromite) (game:nugget-chromite): worth 112, costs 48: 64 free each time
+    grid: 4 game:crushed-chromite -> 14 game:nugget-chromite
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-chromite)
+  Lead ingot (game:ingot-lead): worth 192, costs 132.38: 59.61 free each time (processing: smelting, grinding, drying...)
+    smelting/firing/cooking: 20 game:metalbit-lead -> 1 game:ingot-lead (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:ingot-lead)
+  Fur wrap (game:clothes-shoulder-furwrap): worth 19.17, costs -32.529: 51.7 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) + 1 game:hide-pelt-bear-brown-complete (or 4 more) -> 1 game:clothes-shoulder-furwrap (returns game:hide-pelt-medium, game:hide-pelt-medium, game:hide-pelt-medium) (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-shoulder-furwrap)
+  Hemp hurd (grassroots:gr-hemp-hurd): worth 109.33, costs 64: 45.33 free each time (processing: smelting, grinding, drying...)
+    ground-storage processing: 1 grassroots:gr-hemp-stalk -> 4 grassroots:gr-hemp-hurd + 2 grassroots:gr-hemp-fibers
+    Trace its value down to the raw materials (/emc diagnose trace grassroots:gr-hemp-hurd)
+  Nugget (Native copper) (game:nugget-nativecopper): worth 89.6, costs 51.2: 38.4 free each time
+    grid: 4 boricalchemy:crushedcopper -> 14 game:nugget-nativecopper
+    Trace its value down to the raw materials (/emc diagnose trace game:nugget-nativecopper)
+  Raw hide (Huge) (game:hide-raw-huge): worth 80, costs 48: 32 free each time
+    grid: 1 game:clothes-lowerbody-raw-hide-trousers -> 1 game:hide-raw-huge
+    Trace its value down to the raw materials (/emc diagnose trace game:hide-raw-huge)
+  Fire clay (game:clay-fire): worth 56, costs 34.66: 21.33 free each time
+    grid: 1 game:clay-red + 1 game:clay-red + 1 game:clay-red + 1 game:clay-red + 1 game:powder-flint + 1 game:clay-red + 1 game:clay-red + 1 game:clay-red + 1 game:clay-red -> 14 game:clay-fire (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clay-fire)
+  Balefire Amalgam Lamellae (game:metallamellae-balefireamalgam): worth 20.57, costs 0.02: 20.55 free each time
+    casting (tool molds): 1 game:ingot-balefireamalgam -> 1 game:metallamellae-balefireamalgam (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:metallamellae-balefireamalgam)
+  Fur lined vest (game:clothes-upperbodyover-furlinedvest): worth 15.07, costs -2.16: 17.23 free each time
+    grid: 1 game:hide-pelt-bear-brown-complete (or 4 more) + 3 game:leather-normal-plain -> 1 game:clothes-upperbodyover-furlinedvest (returns game:hide-pelt-medium) (and 1 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:clothes-upperbodyover-furlinedvest)
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)

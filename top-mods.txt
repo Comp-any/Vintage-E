@@ -1,0 +1,329 @@
+Top 45 content mods by downloads for game 1.22.7 (plus 18 libraries after them); asked for: 45 tags=crafting,technology,food,cooking,magic,agriculture,farming exclude=betterruins,carryon,primitivesurvival,chiseltools,butchering,foodshelves,fromgoldencombs,alchemy,millwright,stonebakeoven,prospecttogether,rpvoicechat,purposefulstorage,tailorsdelight,bloodtrail,vsroofing,hydrateordiedrate,bricklayers,knapster,vinconomy,tankardsandgoblets,pantherinae,capreolinae,realsmoke,rustboundmagic,sortablestorage,caninae,noticeboard,wool,coinage,bettertraders,xskillsfork,dressmakers,fagreenwich,watersheds,footprints,machairodontinae,wildcraftfruit,elephantidae,translocatorengineeringredux,cbr,sirenia,rhinocerotidae,plainsandvalleys,fagothic,aldiclasses,molds,casuariidae,racialequality,koboldrdx,em,wildcrafttree,herbarium skip=45
+
+skip  betterruins                   1253549  excluded
+skip  primitivesurvival             1024284  excluded
+skip  overhaullib                    899548  tagged library
+skip  aculinaryartillery             840389  tagged library
+skip  expandedfoods                  816077  no release for 1.22.7
+skip  vsimgui                        754457  a known library id
+skip  configlib                      729273  a known library id
+skip  butchering                     695792  excluded
+skip  commonlib                      635476  tagged library
+skip  fromgoldencombs                603299  excluded
+skip  em                             600844  tagged library
+skip  alchemy                        570547  excluded
+skip  petai                          553926  tagged library
+skip  playermodellib                 540729  a known library id
+skip  attributerenderinglibrary      521792  tagged library
+skip  stonebakeoven                  475916  excluded
+skip  stonequarry                    456991  no release for 1.22.7
+skip  rpvoicechat                    424195  excluded
+skip  xlib                           397743  tagged library
+skip  tailorsdelight                 369581  excluded
+skip  smithingplus                   360995  no release for 1.22.7
+skip  vsroofing                      343098  excluded
+skip  betterfirepit                  340224  no release for 1.22.7
+skip  hydrateordiedrate              332228  excluded
+skip  knapster                       322975  excluded
+skip  jsonpatcheslib                 321943  a known library id
+skip  bricklayers                    321285  excluded
+skip  jaunt                          316648  tagged library
+skip  wildfarmingrevival             293687  no release for 1.22.7
+skip  vinconomy                      293264  excluded
+skip  tankardsandgoblets             272669  excluded
+skip  pantherinae                    270234  excluded
+skip  genelib                        269893  tagged library
+skip  capreolinae                    268881  excluded
+skip  walkingstick                   267038  in an earlier batch
+skip  rustboundmagic                 258773  excluded
+skip  tabletopgames                  256988  in an earlier batch
+skip  herbarium                      251878  tagged library
+skip  caninae                        245690  excluded
+skip  wool                           239191  excluded
+skip  coinage                        236318  excluded
+skip  toolsmith                      236036  in an earlier batch
+skip  overhaulliblegacycompat        235117  sounds like a library: lib
+skip  dressmakers                    227320  excluded
+skip  instruments                    220419  no release for 1.22.7
+skip  bovinae                        213126  in an earlier batch
+skip  elephantidae                   209444  excluded
+skip  machairodontinae               208966  excluded
+skip  xlibfork                       208733  tagged library
+skip  wildcraftfruit                 207468  excluded
+skip  shearlib                       200294  tagged library
+skip  translocatorengineeringredux   197006  excluded
+skip  rhinocerotidae                 193021  excluded
+skip  sirenia                        192752  excluded
+skip  extrainfo                      192710  no release for 1.22.7
+skip  aldiclasses                    189226  excluded
+skip  molds                          187732  excluded
+skip  PipeLeaf                       187441  no release for 1.22.7
+skip  hpspinningwheel                181021  no release for 1.22.7
+skip  casuariidae                    178991  excluded
+skip  claywheel                      177953  no release for 1.22.7
+skip  ancienttools                   177262  no release for 1.22.7
+skip  windchimes                     170762  in an earlier batch
+skip  medievalexpansionpatch         168947  no release for 1.22.7
+skip  feverstonewilds                163041  in an earlier batch
+skip  thecritterpack                 153674  no release for 1.22.7
+skip  spyglass                       153434  no release for 1.22.7
+skip  woodenfortifications           149861  in an earlier batch
+skip  canjewelry                     149687  in an earlier batch
+skip  medievalexpansion              148621  no release for 1.22.7
+skip  apelanterns                    148402  in an earlier batch
+skip  moreanimals                    145716  in an earlier batch
+skip  envelopes                      145524  in an earlier batch
+skip  substrate                      145018  no release for 1.22.7
+skip  dinornithidae                  144734  in an earlier batch
+skip  cervinae                       141213  in an earlier batch
+skip  awearablelight                 140976  no release for 1.22.7
+skip  long-term_food                 134914  no release for 1.22.7
+skip  floralzonescaribbeanregion     134581  in an earlier batch
+skip  manidae                        134556  in an earlier batch
+skip  apegrapes                      133652  no release for 1.22.7
+skip  felinae                        132388  in an earlier batch
+skip  spheniscidae                   132210  in an earlier batch
+skip  joyofsailing                   128180  sounds like a library: library
+skip  electricalprogressivebasics    127439  in an earlier batch
+skip  floralzonescaperegion          127342  in an earlier batch
+skip  slowtox                        127284  in an earlier batch
+skip  krpgenchantment                126146  in an earlier batch
+skip  floralzoneseastasiaticregion   125736  in an earlier batch
+skip  floralzonescentralaustralianregion   124943  in an earlier batch
+skip  decor                          124856  no release for 1.22.7
+skip  electricalprogressivecore      124643  tagged library
+skip  floralzonesmediterraneanregion   124583  in an earlier batch
+skip  electricalprogressiveqol       122546  in an earlier batch
+skip  floralzonesneozeylandicregion   120697  in an earlier batch
+skip  carryonlib                     119755  tagged library
+skip  heraldry                       117030  no release for 1.22.7
+skip  wildcrafttree                  116287  excluded
+skip  efmealsmodule                  115942  no release for 1.22.7
+skip  metalpots                      111588  in an earlier batch
+skip  floralzonescosmopolitanregion   108414  in an earlier batch
+skip  vanvar                         102546  no release for 1.22.7
+skip  materialneeds                  101738  no release for 1.22.7
+skip  autoconfiglib                   99665  a known library id
+skip  vombatidae                      99504  in an earlier batch
+skip  arthursjournal                  98792  in an earlier batch
+skip  lupinerace                      98059  sounds like a library: Lib
+skip  vsairshipmod                    97768  in an earlier batch
+skip  iniidae                         96329  in an earlier batch
+skip  efchefstricks                   94668  no release for 1.22.7
+skip  chelonioidea                    93355  in an earlier batch
+skip  viveriidae                      90177  no release for 1.22.7
+skip  helvehammerext                  87325  no release for 1.22.7
+skip  medievalarchitecture            86101  in an earlier batch
+skip  clothierheirloomsmod            85824  no release for 1.22.7
+skip  meiolaniidae                    85280  in an earlier batch
+skip  Spear-Expantion-by-Kanahaku     85084  no release for 1.22.7
+skip  vsquest                         83631  tagged library
+skip  diversediets                    82583  in an earlier batch
+skip  flags                           82326  no release for 1.22.7
+skip  saltandsands                    77355  no release for 1.22.7
+skip  eternalstew                     74333  in an earlier batch
+skip  firewoodtosticks                73453  no release for 1.22.7
+skip  wildcraft                       72714  no release for 1.22.7
+skip  gourmand                        72384  in an earlier batch
+skip  canmarket                       72078  no release for 1.22.7
+skip  workbenchexpansion              71717  no release for 1.22.7
+skip  qptech                          70276  no release for 1.22.7
+skip  canoemode                       69535  no release for 1.22.7
+skip  electricalprogressiveequipment    68670  in an earlier batch
+skip  vintageskavenrat                66857  sounds like a library: Lib
+skip  thylacinidae                    65396  in an earlier batch
+skip  maketeaforked                   65298  in an earlier batch
+skip  vichnybackpack                  64364  no release for 1.22.7
+skip  vintageengineering              64274  tagged library
+skip  postsandbeams                   63860  no release for 1.22.7
+skip  FendragonBCS                    62133  no release for 1.22.7
+skip  fieldsofsalt                    61123  in an earlier batch
+skip  ndlmushroomgrowth               61089  in an earlier batch
+skip  algernonsterrainsampler         58941  tagged library
+skip  sandwich                        58136  in an earlier batch
+skip  bettersticks                    58118  no release for 1.22.7
+skip  immersivewoodchopping           58045  no release for 1.22.7
+skip  sticksfromfirewoodmallow        57986  in an earlier batch
+take  abyssaldepths                   57984  Abyssal Depths [Clothing, Cosmetics, Ocean, Sea, Technology, Underwater]
+take  ndlwoodentorchholder            57691  NDL Wooden Torch Holders [Crafting, QoL, Simplification, Utility]
+take  grassroots                      57474  Grassroots [Crafting, Farming, Fun, QoL, Worldgen]
+skip  metalrecovery                   57319  no release for 1.22.7
+skip  torchholdersmithingplus         57179  no release for 1.22.7
+take  panningmachine                  56083  Panning Machine [Accessibility, Addon, Automation, Construction, Crafting, Economy, Immersive, mechanics, Panning, QoL, Technology, User Experience, Utility]
+take  shadehouse                      54912  Shadehouse [Building, Decoration, Farming, Fruit Trees, Survival]
+skip  stonequarryforked               54627  no release for 1.22.7
+take  wwaymarkers                     54533  Wilderlands Waymarkers [Technology]
+skip  immersiveorecrush               53931  no release for 1.22.7
+skip  mycodiversity                   53823  no release for 1.22.7
+skip  electricity                     52453  no release for 1.22.7
+take  immersivewoodworking            52333  Immersive Woodworking [Automation, Crafting, Gameplay, Immersive, Woodworking]
+skip  indappledgroves                 52285  no release for 1.22.7
+skip  viescraftmachines               52173  no release for 1.22.7
+skip  morebanners                     51800  no release for 1.22.7
+skip  wildcraftherb                   50733  no release for 1.22.7
+skip  ithaniacannedgoods              49231  no release for 1.22.7
+take  electricalprogressiveindustry    48895  Electrical Progressive: Industry [Technology]
+skip  tpnet                           48417  no release for 1.22.7
+skip  moreroads                       48072  no release for 1.22.7
+skip  tprunes                         47702  no release for 1.22.7
+skip  foundrymod                      47513  no release for 1.22.7
+take  craftablecompanion              46895  Craftable Companion [Creatures, QoL, Storage, Technology, Travel & Exploration, Utility]
+skip  apeflowerpots                   46777  no release for 1.22.7
+take  usefulstuff17                   45875  Still Useful Stuff [Technology]
+skip  expandedmolds                   45691  no release for 1.22.7
+take  aldiclassesadvancedfeatures     45080  Aldi's and Salty's [Advanced PATCH] [Cosmetics, Crafting, Other, QoL, Storage, Tweak, Utility]
+skip  naturalfertilizer               45061  no release for 1.22.7
+skip  fluffydreg                      44986  sounds like a library: Lib
+skip  stonerailings                   44685  no release for 1.22.7
+skip  meteoricsteel                   44598  no release for 1.22.7
+skip  captureanimals                  44587  no release for 1.22.7
+skip  lavoisier                       43866  tagged library
+skip  ABCSReborn                      42550  no release for 1.22.7
+take  bdcrop                          42458  Biodiversity: Crops [Biodiversity, Farming, Flora, Food, Worldgen]
+skip  biodiversity                    41914  tagged library
+skip  wildcrafttrees                  41855  no release for 1.22.7
+skip  justanarrowheadmold             41091  no release for 1.22.7
+take  boricalchemy                    41003  Boric Alchemy [Collectables, Crafting, Decoration, Food, Fuel, Fun, Furniture, Glass, Immersion, Medieval, QoL, Resin, Roleplay, Structures, Technology, Tweak, Utility, Weapons, Woodworking]
+take  uraniumexpanded                 40560  Uranium Expanded (Metals and Tools) [Crafting, Tweak, Weapons, Worldgen]
+skip  maketea                         40531  no release for 1.22.7
+skip  metaltongs                      40400  no release for 1.22.7
+skip  hideandfabric                   40332  no release for 1.22.7
+skip  beehivekiln                     40106  no release for 1.22.7
+skip  apewindows                      39995  no release for 1.22.7
+skip  coreofarts                      39968  tagged library
+skip  theworkingclasses               39438  no release for 1.22.7
+take  chickenfeed                     39194  Chicken Feed [Crafting, Creatures, Food, QoL]
+skip  censership                      38768  no release for 1.22.7
+take  steepandbrew                    38303  Steep and Brew [Drink, Food]
+take  vsinstrumentsredux              38237  VS Instruments Redux [Audio, Fun, Immersion, Music, Realism, Technology]
+take  foragersgamble                  37609  Forager's Gamble [Flora, Food, Other, Tweak]
+skip  rustandrailroads                37465  no release for 1.22.7
+skip  earlychiseling                  37304  no release for 1.22.7
+skip  bdorchard                       37161  no release for 1.22.7
+skip  moremolds                       37118  no release for 1.22.7
+skip  insanitylib                     36618  tagged library
+take  scoopofjammod                   35432  Scoop of Jam [Crafting, Food, QoL]
+take  improvedmetallurgy              35417  Improved Metallurgy [Crafting, Gameplay, Metal, Sea, Smithing]
+skip  colorfulcandles                 35400  no release for 1.22.7
+skip  facore                          35330  sounds like a library: Core mod
+skip  leadroof                        35078  no release for 1.22.7
+take  realisticwater                  35048  Realistic Water [Farming, Immersion, Realism]
+take  rlldtco0001                     34938  CompostTweak [Crafting, Gameplay, Mechanic, QoL, Simplification, Tweak, Utility]
+skip  chemistrylib                    34934  tagged library
+skip  simplefootstepsredux            34882  no release for 1.22.7
+skip  snowshoes                       34835  no release for 1.22.7
+skip  kilnshelves                     34802  no release for 1.22.7
+take  ndlflowergrowth                 34789  NDL ExpandedGrowth (Flower Growth Module) [Crafting, QoL, Tweak, Utility, Worldgen]
+skip  extendedcreation                34604  no release for 1.22.7
+skip  clayworks                       34463  no release for 1.22.7
+skip  artofgrowing                    34048  no release for 1.22.7
+skip  moreclasses                     34012  no release for 1.22.7
+skip  racialability                   33615  no release for 1.22.7
+take  repairablelocust                33186  Pal's Enhanced Locusts [Creatures, Mining, Overhaul, QoL, Technology, Travel & Exploration, Tweak, Utility]
+skip  gloomeclasses                   33046  no release for 1.22.7
+skip  glassmaking                     32913  tagged library
+skip  nailsmold                       32415  no release for 1.22.7
+skip  bixo                            32346  sounds like a library: Lib
+skip  foodpreferences                 32048  no release for 1.22.7
+skip  hardcorewaterforked             31747  no release for 1.22.7
+skip  cancrops                        31628  no release for 1.22.7
+take  axleinblocks                    31494  Axle in blocks [Crafting, Technology]
+skip  claycasting                     31358  no release for 1.22.7
+take  ndltreegrowth                   31306  NDL ExpandedGrowth (Tree Growth Module) [Crafting, QoL, Tweak, Utility, Worldgen]
+skip  usefulstuff                     31007  no release for 1.22.7
+skip  betterjonasdevicesfixed         30913  no release for 1.22.7
+take  dairyplus                       30879  Dairy Plus [Code, Food, Immersive]
+skip  millwrightvawtaddon             30018  no release for 1.22.7
+skip  brickmold                       29924  no release for 1.22.7
+skip  upgradablestorage               29766  no release for 1.22.7
+skip  vanillavarnished                29616  no release for 1.22.7
+skip  heatretention                   29542  no release for 1.22.7
+skip  acorns                          29383  no release for 1.22.7
+skip  castaway                        29365  no release for 1.22.7
+skip  jonasboat                       29324  no release for 1.22.7
+take  thievery                        29172  Thievery [Crafting, Other, Tweak, Worldgen]
+skip  pewter                          29009  no release for 1.22.7
+skip  tstools                         28798  no release for 1.22.7
+skip  wildfarming                     28373  no release for 1.22.7
+skip  fieldsofgold                    28276  no release for 1.22.7
+skip  stweaponpacka                   28022  no release for 1.22.7
+take  bookbinders                     27615  Bookbinders [Crafting]
+skip  necessaries                     27265  no release for 1.22.7
+skip  liquidcontainers                26697  no release for 1.22.7
+skip  theartofpie                     26187  no release for 1.22.7
+skip  backpackpackplus                26148  no release for 1.22.7
+skip  viesblocks                      26010  no release for 1.22.7
+skip  walkableentities                25695  sounds like a library: framework
+skip  rhadditions                     25654  no release for 1.22.7
+skip  artofcooking                    25592  no release for 1.22.7
+skip  fuelbriquettes                  25476  no release for 1.22.7
+skip  th3expansion                    25453  no release for 1.22.7
+take  justthepepper                   25364  Just The Pepper [Food]
+skip  explosive                       25358  no release for 1.22.7
+take  vanillamoremolds                25324  Vanilla More Molds 2.2.0 [Crafting, QoL, Simplification, Technology, Utility]
+skip  betterjonasdevices              25246  no release for 1.22.7
+skip  electricityaddon                24890  no release for 1.22.7
+skip  exlib                           24589  tagged library
+take  decoclockrevival                24496  Decoclocks revival [Cosmetics, Crafting, QoL]
+skip  pigfeed                         24496  no release for 1.22.7
+skip  lizardfolkpm                    24370  sounds like a library: lib
+skip  furniturelibrary                24278  tagged library
+take  ppex                            24231  Pipes and Power Expanded [Automation, Construction, Crafting, Gameplay, Immersive, Mechanic, Technology]
+skip  hardcorewater                   24229  no release for 1.22.7
+skip  vsinstrumentsexpansiona         24202  sounds like a library: core mod
+skip  danacancook                     24200  no release for 1.22.7
+take  smex                            24182  Steelmaking Expanded [Construction, Crafting, Gameplay, Immersive, Metal, Smithing, Technology]
+skip  immersivewoodsawing             24158  no release for 1.22.7
+skip  rangedweapons                   24142  no release for 1.22.7
+take  wearandtear                     24065  Wear And Tear [QoL, Technology, Tweak]
+skip  simpletailoring                 23925  no release for 1.22.7
+skip  litbrig                         23774  no release for 1.22.7
+take  obsidiancraft                   23559  Obsidiancraft [Crafting, QoL, Weapons]
+skip  cannibalism                     23424  no release for 1.22.7
+skip  wildfarmingfork                 23261  no release for 1.22.7
+skip  newworldcrops                   23082  no release for 1.22.7
+skip  plumpkins                       22787  no release for 1.22.7
+skip  steamandpower                   22650  no release for 1.22.7
+skip  configureeverything             22290  no release for 1.22.7
+skip  NavarlioCustoms                 22269  no release for 1.22.7
+skip  effectlib                       22109  tagged library
+skip  coffee                          22048  no release for 1.22.7
+skip  effectshud                      21902  tagged library
+skip  TemporalTechnology              21832  no release for 1.22.7
+skip  CutTheFat                       21755  no release for 1.22.7
+skip  cookie12000stickbeam            21669  no release for 1.22.7
+skip  augplantlib                     21663  tagged library
+skip  progressionframework            21539  sounds like a library: Framework
+skip  paxel                           21405  no release for 1.22.7
+take  easybuilding                    21337  Easy Building [Bonus, Building, Code, Crafting, Difficulty, Fun, Other, Tweak]
+skip  spawnersapi                     21304  tagged library
+take  leaflitter                      21282  Leaf Litter [Addon, Ancient Tools, Behavior, Biodiversity, Building, Compatibility, Decoration, Farming, Foliage, Fun, Immersion, Immersive, Leaves, mechanics, Realism, Spooky, Survival, Terrain, Tools, Tweak, User Experience, Visual]
+skip  stillnecessaries                21262  no release for 1.22.7
+skip  moremeadoptions                 21232  no release for 1.22.7
+skip  vintagebirbs                    21036  sounds like a library: lib
+skip  koboldcomforts                  20857  no release for 1.22.7
+take  yangtransport                   20824  Yang's Transport Tycoon [Crafting, Economy, mechanics, Mounts, QoL, Technology, Transportation, Travel & Exploration, Utility, Vehicle]
+skip  rustyshell                      20823  no release for 1.22.7
+skip  Beamium                         20788  no release for 1.22.7
+skip  somedisassemblyrequired         20761  no release for 1.22.7
+skip  mcrate                          20676  no release for 1.22.7
+take  rustyshellfork                  20568  Rusty Shell Fork [Technology, Weapons]
+skip  gui                             20553  tagged library
+skip  simplealchemy                   20491  no release for 1.22.7
+skip  xrowboat                        20344  no release for 1.22.7
+skip  tonwexp-neue                    20310  no release for 1.22.7
+skip  rope-bridges                    20241  no release for 1.22.7
+skip  locustmod                       20213  no release for 1.22.7
+skip  roadworks                       20083  no release for 1.22.7
+skip  bushmeatrecipe                  20059  no release for 1.22.7
+skip  woodbarrels                     19994  no release for 1.22.7
+skip  movelikekaji                    19867  tagged library
+take  novelty                         19845  Novelty! [Food, Other]
+take  itemrarity                      19778  Item Rarity [Crafting, Tweak, Utility]
+skip  workbenchexpansionpatch         19671  no release for 1.22.7
+take  woofantasy                      19641  WOO Fantasy Additions [Crafting, Fantasy, Metal, Tools, Weapons]
+take  dumbwaiter                      19631  Dumbwaiter [mechanics, Technology]
+skip  advancedarrowheads              19579  no release for 1.22.7
+take  riftworks                       19361  Riftworks [Crafting, Storage, Technology, Utility]
+
+libraries added: configlib, em, petai, playermodellib, attributerenderinglibrary, jsonpatcheslib, jaunt, genelib, herbarium, overhaulliblegacycompat, xlibfork, shearlib, electricalprogressivecore, autoconfiglib, vintageskavenrat, vintageengineering, algernonsterrainsampler, fluffydreg

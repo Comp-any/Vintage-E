@@ -1,0 +1,164 @@
+== Deeper checks ==
+Checks of the values themselves and of how the server behaves, not just of what's missing.
+
+== Recipes that make EMC out of nothing ==
+If a recipe's output is worth more than its ingredients, a player can craft it and burn it for free EMC, over and over. The mapper prevents this for values it works out itself; trader prices, guesses, fallback values and pins can break that guarantee.
+⚠ 60 items can be made for less than they're worth (10 of them by processing):
+  Earthy brown ceramic crucible (game:crucible-blue-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-blue + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-blue-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-blue-fired)
+  Fireclay ceramic crucible (game:crucible-fire-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-fire + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-fire-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-fire-fired)
+  Black ceramic crucible (game:crucible-black-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-black + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-black-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-black-fired)
+  Brown ceramic crucible (game:crucible-brown-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-brown + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-brown-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-brown-fired)
+  Cream ceramic crucible (game:crucible-cream-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-cream + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-cream-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-cream-fired)
+  Earthy orange ceramic crucible (game:crucible-earthyorange-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-earthyorange + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-earthyorange-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-earthyorange-fired)
+  Gray ceramic crucible (game:crucible-gray-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-gray + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-gray-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-gray-fired)
+  Orange ceramic crucible (game:crucible-orange-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-orange + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-orange-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-orange-fired)
+  Red ceramic crucible (game:crucible-red-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-red + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-red-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-red-fired)
+  Tan ceramic crucible (game:crucible-tan-fired): worth 16, costs -32431: 32,447 free each time
+    grid: 1 boricalchemy:hotalchemycrucible-salt-tan + 1 boricalchemy:gascontainer-empty -> 1 game:crucible-tan-fired (returns boricalchemy:sodiummetal, boricalchemy:gascontainer-chlorine) (and 2 more recipes with the same output)
+    Trace its value down to the raw materials (/emc diagnose trace game:crucible-tan-fired)
+  Rough Emerald (game:gem-emerald-rough): worth 8,192, costs 104.58: 8,087.41 free each time
+    grid: 1 boricalchemy:autoclave_full_emerald -> 4 game:gem-emerald-rough (returns boricalchemy:autoclave_empty)
+    Trace its value down to the raw materials (/emc diagnose trace game:gem-emerald-rough)
+  Gas Container (Neon) (boricalchemy:gascontainer-neon): worth 82.13, costs -4150.032: 4,232.16 free each time
+    grid: 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute + 1 boricalchemy:gascontainer-neon_dilute -> 1 boricalchemy:gascontainer-neon (returns boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air, boricalchemy:gascontainer-air)
+    Ingredients whose value is a guess or a trader price: Gas Container (Dilute Neon) (boricalchemy:gascontainer-neon_dilute) 82.13
+    Trace its value down to the raw materials (/emc diagnose trace boricalchemy:gascontainer-neon)
+  ... and 48 more
+  → Raise the ingredient that's too cheap (usually the one whose value is a guess or a trader price) with /emc set, or pin the output at what its ingredients cost. The trace shows the whole chain.
+  Every recipe that gives more EMC than it costs (/emc diagnose profit)
+
+== Blacklisted ingredients holding recipes back ==
+⚠ 13 blacklisted items are the only thing 21 recipes wait for:
+  A blacklisted item has no value, so no recipe that needs it can value its output. Often that's right (a creative-only part). When the blacklist entry is a mistake, allowing the item values everything made from it.
+  Star Tear Metal Work Item (game:workitem-startearmetal): 3 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Abyssalite Work Item (game:workitem-abyssalite): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Petrified Darkness Work Item (game:workitem-petrifieddarkness): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Prime Materia Infused Metal Work Item (game:workitem-primemateriametal): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Edhelthim Metal Work Item (game:workitem-edhelthim): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work item (Stainless steel) (game:workitem-stainlesssteel): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  game:item-workitem-castiron (game:workitem-castiron): 2 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work Item (Beryllium) (game:workitem-beryllium): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work Item (Neodymium) (game:workitem-neodymium): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work Item (Lanthanum) (game:workitem-lanthanum): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Work Item (Cerium) (game:workitem-cerium): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:workitem-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Terminus teleporter thanatos coupling (game:returndeath-returndeath1): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:returndeath-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  Terminus teleporter transpressor (game:returndeath-returndeath2): 1 recipe(s) wait on it. (Vintage-E's value files: 'game:returndeath-*')
+    Allow it (take it off the blacklist) and remap (in the window)  Give it a value... (/emc set, holding it)
+  → Allow the item (or give it a value) if players can really get it. Leave it if it's creative-only or a story item.
+
+== Containers that give their contents away ==
+✓ No container is set to 'item price' while it holds contents.
+
+== Metal tiers out of order ==
+⚠ 41 families are worth more in a cheaper metal than in a dearer one:
+  The order is this server's own: the metals ranked by what their ingot is worth (copper, the bronzes, iron, meteoric iron, steel, with the gold-bearing black bronze wherever its ingot lands). A family where the cheaper metal's version is worth more usually lost an ingredient in one recipe, or took a guessed value in the other.
+  Bismuth bronze anvil (game:anvil-bismuthbronze) 121.57 > Steel anvil (game:anvil-steel) 3.28
+    casting (tool molds): 9 game:ingot-bismuthbronze + 1 game:toolmold-blue-fired-anvil -> 1 game:anvil-bismuthbronze
+  Electrum bits (game:metalbit-electrum) 64 > Gold bits (game:metalbit-gold) 2.4
+    grid: 1 game:ingot-electrum -> 20 game:metalbit-electrum
+  Small Silver Cake (boricalchemy:metalcake-silver-small) 348 > Small Golden Cake (boricalchemy:metalcake-gold-small) 48
+    RecipeRegistrySystem.CookingRecipes: 1 boricalchemy:cyanidesilver + 1 boricalchemy:zincpowder -> 1 boricalchemy:metalcake-silver-small
+  Silver Chloride (boricalchemy:solidchloride-silver) 74.61 > Gold Chloride (boricalchemy:solidchloride-gold) 11.34
+    RecipeRegistrySystem.CookingRecipes: 50 game:acid-full-sulfuric + 2 boricalchemy:chlorargyrite + 1 boricalchemy:zincpowder -> 2 boricalchemy:solidchloride-silver
+  Lead block (game:metalblock-new-plain-lead) 1,536 > Cupronickel block (game:metalblock-new-plain-cupronickel) 423.83
+    grid: 1 game:metalplate-lead + 1 game:metalplate-lead + 1 game:metalplate-lead + 1 game:metalplate-lead -> 1 game:metalblock-new-plain-lead
+  Lead solder bits (game:metalbit-leadsolder) 11.2 > Iron bits (game:metalbit-iron) 3.93
+    grid: 1 game:ingot-leadsolder -> 20 game:metalbit-leadsolder
+  Chromium Sulfate (boricalchemy:solidsulfate-chromium) 49.44 > Lead Sulfate (boricalchemy:solidsulfate-lead) 22.32
+    RecipeRegistrySystem.CookingRecipes: 100 game:sulfate-full-chromite -> 1 boricalchemy:solidsulfate-chromium
+  Silver solder bits (game:metalbit-silversolder) 18.56 > Meteoric iron bits (game:metalbit-meteoriciron) 9.6
+    grid: 1 game:ingot-silversolder -> 20 game:metalbit-silversolder
+  Chromium Chloride (boricalchemy:solidchloride-chromium) 20.36 > Iron Chloride (boricalchemy:solidchloride-iron) 10.83
+    RecipeRegistrySystem.CookingRecipes: 10 boricalchemy:chromiumchloride -> 1 boricalchemy:solidchloride-chromium
+  Lead Nitrate (boricalchemy:solidnitrate-lead) 20.29 > Iron Nitrate (boricalchemy:solidnitrate-iron) 13.16
+    RecipeRegistrySystem.CookingRecipes: 10 boricalchemy:leadnitrate -> 1 boricalchemy:solidnitrate-lead
+  Lead sheet (game:metalsheet-lead-down) 384 > Platinum sheet (game:metalsheet-platinum-down) 256
+    relativeValues rule: 1 x game:metalplate-lead
+  Lead sheet (game:metalsheet-lead-north) 384 > Platinum sheet (game:metalsheet-platinum-north) 256
+    placement state: 1 game:metalsheet-lead-down -> 1 game:metalsheet-lead-north
+  Lead sheet (game:metalsheet-lead-east) 384 > Platinum sheet (game:metalsheet-platinum-east) 256
+    placement state: 1 game:metalsheet-lead-down -> 1 game:metalsheet-lead-east
+  Lead sheet (game:metalsheet-lead-south) 384 > Platinum sheet (game:metalsheet-platinum-south) 256
+    placement state: 1 game:metalsheet-lead-down -> 1 game:metalsheet-lead-south
+  Lead sheet (game:metalsheet-lead-west) 384 > Platinum sheet (game:metalsheet-platinum-west) 256
+    placement state: 1 game:metalsheet-lead-down -> 1 game:metalsheet-lead-west
+  Lead sheet (game:metalsheet-lead-up) 384 > Platinum sheet (game:metalsheet-platinum-up) 256
+    placement state: 1 game:metalsheet-lead-down -> 1 game:metalsheet-lead-up
+  Titanium block (riveted) (game:metalblock-new-riveted-titanium) 512 > Brass block (riveted) (game:metalblock-new-riveted-brass) 345.6
+    default value (game:metalblock-*)
+  Lead Sulfate (boricalchemy:solidsulfate-lead) 22.32 > Iron Sulfate (boricalchemy:solidsulfate-iron) 15.19
+    RecipeRegistrySystem.CookingRecipes: 10 boricalchemy:leadsulfate -> 1 boricalchemy:solidsulfate-lead
+  Molybdochalkos bits (game:metalbit-molybdochalkos) 9.28 > Lead bits (game:metalbit-lead) 6.61
+    grid: 1 thievery:key-aged -> 20 game:metalbit-molybdochalkos
+  Large Silver Cake (boricalchemy:metalcake-silver-big) 358.4 > Large Golden Cake (boricalchemy:metalcake-gold-big) 264.84
+    worked backwards from pulverizer crushing: 1 boricalchemy:metalcake-silver-big -> 28 game:metalbit-silver
+  → Open the dearer one's trace: the odd ingredient is in there. A wrong value for a metal itself is fixed in the settings (BaseValues).
+
+== How long and how often the mapping runs ==
+Last mapping at 13:33:18 (server start): 10119 ms 
+✓ 1 mappings this session, none unusually slow or frequent.
+
+== The EMC table sent to players ==
+✓ Table size: the table sent to each player is 470 KB (32129 values, 1461 material-specific).
+
+== Tooltips that crashed ==
+Needs your game's details: click a question in the window.
+
+== Skipped recipes ==
+Skipped recipes: 1 the mapper couldn't read:
+  Items made only by a skipped recipe stay without a value. An ingredient code that matches nothing is almost always the other mod's recipe naming an item that was renamed or removed.
+  the ingredient ... matches no block or item (1)
+    grid: rustyshell:recipes/grid/shot.json -> rustyshell:shot-12pdr-round-common-stone (the ingredient 'game:rock-*' matches no block or item)
+  Every skipped recipe and why (/emc diagnose skipped)
+  → A missing ingredient is the other mod's to fix (tell its author the recipe name). Items that lost their only recipe this way can be pinned meanwhile.
+
+== Compatibility files and their mods ==
+Expanded Matter (the mod is at 3.8.3): 21 entries match nothing in this version of the mod. Harmless, and every raw material is covered.
+  matches nothing: em:powdered-ore-lapislazuli
+  matches nothing: em:powdered-ore-cinnabar
+  matches nothing: em:powdered-metal-titanium
+  matches nothing: em:ash-*
+  matches nothing: em:ash-organic-sludge
+  matches nothing: em:gypsum*
+  matches nothing: em:soda*
+  matches nothing: em:lye*
+
+== Values defined twice ==
+✓ Values defined twice: none with different numbers.
+
+== Next ==
+Health checks: game version, files, join cost, players, value swings, solver, traders, variants (/emc diagnose health)
+What your settings and your mods change against a fresh install (maps twice more) (/emc diagnose baseline)
+Every recipe that gives more EMC than it costs (/emc diagnose profit)
+Every skipped recipe and why (/emc diagnose skipped)
+Back to the check-up (/emc diagnose)

@@ -1,0 +1,12 @@
+== What other mods did at start-up ==
+• Other mods: 12 were skipped by the game because something they need isn't installed: aldiclassesadvancedfeatures (needs aldiclasses@*), autoconfiglib (needs configlib (Dependency 'configlib_1.13.2.zip' (configlib) has dependency errors itself)), bdcrop (needs biodiversity@1.1.4), configlib (needs vsimgui@1.2.0), electricalprogressiveindustry (needs electricalprogressivebasics@3.1.0), fluffydreg (needs playermodellib@1.18.3 (Dependency 'playermodellib_1.25.0.zip' (playermodellib) has dependency errors itself)), playermodellib (needs overhaullib@2.0.10), ppex (needs exlib@0.8.4), vintageskavenrat (needs playermodellib@* (Dependency 'playermodellib_1.25.0.zip' (playermodellib) has dependency errors itself)), smex (needs exlib@0.8.4, ppex@0.7.1 (Dependency 'ppex_0.7.1.zip' (ppex) has dependency errors itself)), wearandtear (needs insanitylib@2.1.0), yangtransport (needs collisionflowfields@1.2.1, evilinteractionrangehack@6.9.0, integratedmodmanager@1.1.4)
+  The game leaves these mods out entirely, so this doesn't break Vintage-E, but their items and recipes don't exist in this world and can't have values.
+  → Install what they need from the Mod DB (the name after 'needs' is a mod id), or remove them.
+• Other mods: 3 JSON patch(es) failed to apply (by mod: em (3)).
+  Not Vintage-E's doing: the game reports each patch that didn't fit. The items those patches change may be missing or odd, and their values with them. The mod's author can fix the patch.
+• Other mods: 36 recipe(s) or drop(s) name items that don't exist (by mod of the missing item: game (23), armory (9), decoclockrevival (4)).
+  The game ignores those recipes, so Vintage-E can't learn from them. Usually the mod named expects another mod, or an older version of one, to be installed.
+
+== Next ==
+Everything from one mod has no value (/emc diagnose mods)
+Back to the check-up (/emc diagnose)
