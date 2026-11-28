@@ -1,0 +1,84 @@
+Vintage-E 1.29.5 on Vintage Story v1.22.7 (Stable), dedicated server, 0 online, 2026-11-28 14:02
+
+== Mods (4) ==
+canjewelry 0.8.2, fieldsofsalt 1.3.0, vintagee 1.29.5, vintageengineering 0.6.2
+
+== Diagnosis ==
+✓ EMC mapped: 17747 values, worked out in 470 ms.
+  8849 of the 8870 blocks and items in the creative inventory have a value (99.8%).
+== Check-up ==
+✓ Settings file: no values, pins or list entries of your own in ModConfig/vintagee.json, so nothing there can be mistyped.
+✓ Value files: 2 loaded, giving 2091 raw materials a base value.
+  7 rules in the value files match nothing here. That's normal when the mod a rule is for isn't loaded.
+✓ Compatibility files: 1 active, valuing 1 items.
+  Vintage Engineering 1
+  Files waiting for a mod that isn't loaded: Butchering, Expanded Matter, From Golden Combs, Primitive Survival, Wildcraft: Fruits and Nuts, Wildcraft: Trees and Shrubs. Nothing to do.
+✓ Mod coverage: every mod that adds items (5) has values for at least three quarters of them.
+✓ Value loops: none.
+• Items without a value: 21 (17 that nothing makes, 4 waiting on an ingredient, 0 in loops).
+  game:figurehead 4 e.g. game:figurehead-eidolon; game:ingot 2 e.g. game:ingot-stainlesssteel; game:metalbit 2 e.g. game:metalbit-stainlesssteel; game:metalplate 2 e.g. game:metalplate-stainlesssteel; vinteng:temporalmatrix 2 e.g. vinteng:temporalmatrix-matrix; vinteng:vecncprogram 2 e.g. vinteng:vecncprogram-grid-blank; game:arrow 1 e.g. game:arrow-erel; game:bonyremains 1 e.g. game:bonyremains-cowskull-up; game:crushed 1 e.g. game:crushed-peridotite; game:spear 1 e.g. game:spear-generic-erel; vinteng:crudeoil 1 e.g. vinteng:crudeoil-still-7; vinteng:crudeoilwell 1 e.g. vinteng:crudeoilwell; vinteng:vembtemporalforge 1 e.g. vinteng:vembtemporalforge-incomplete-north
+• Mapping statistics: 31514 recipes and processes from 37 sources.
+  11685 values from recipes and processing, 1151 priced from a recipe that uses them, 177 from fixed ratios, 310 from trader prices, 694 copied from a look-alike variant, 1639 fallback values, 0 estimated as fuel or food.
+⚠ Free EMC: 4 items can be made for less than they're worth (the worst gives 3,471.19 free per craft).
+⚠ Blacklist: 4 blacklisted items hold back 20 recipes.
+⚠ Metal tiers: 10 tool or armour families out of order.
+✓ Game version: 1.22.7, the version this build of Vintage-E was tested on.
+✓ Files: the mod can write to its data, cache and settings folders.
+✓ Join cost: the EMC table is 428 KB and took 0 ms to send last time.
+✓ World time: runs at the normal speed; no Watch of Flowing Time is on.
+• Players: nobody is online to check.
+✓ Value swings: no value moved tenfold since the last mapping with the same mods.
+✓ Solver: every recipe whose ingredients all have values gave its output one.
+✓ Trader prices: no item is priced from a trader above what a recipe for it costs.
+⚠ Variants: 19 value(s) were copied from a look-alike variant in a family that doesn't agree (color (17), rock (1), model (1)).
+  color: 17 copied value(s), e.g.
+    Vintage glass (game:glass-vintage) 256 ← Smoky glass (game:glass-smoky); the family runs from Green glass (game:glass-green) 13.77 to Smoky glass (game:glass-smoky) 256
+    Orange-brown aged book (game:book-aged-orangebrown) 586.88 ← Cherry red book (game:book-normal-cherryred); the family runs from Brick red book (game:book-normal-brickred) 246.4 to Cherry red book (game:book-normal-cherryred) 586.88
+    Orange aged book (game:book-aged-orange) 586.88 ← Cherry red book (game:book-normal-cherryred); the family runs from Brick red book (game:book-normal-brickred) 246.4 to Cherry red book (game:book-normal-cherryred) 586.88
+    ... and 14 more
+  rock: 1 copied value(s), e.g.
+    Snownade (game:snowball-beenade) 192 ← Meteoric Stone in snowball (game:snowball-meteorite-iron); the family runs from Snowball (game:snowball-snow) 0.25 to Meteoric Stone in snowball (game:snowball-meteorite-iron) 192
+  model: 1 copied value(s), e.g.
+    Small piece of driftwood (game:flotsam-driftwood-4) 24 ← Large piece of driftwood (game:flotsam-driftwood-3); the family runs from Driftwood (game:flotsam-driftwood-1) 8 to Large piece of driftwood (game:flotsam-driftwood-3) 24
+✓ Other mods: nothing went wrong at start-up.
+== Other mods' crafting methods ==
+✓ Crafting methods: 3 mod(s) send them (3 by file, 0 by code): 14 methods, 99 recipes
+  C&N Jewelry (canjewelry): file, format 1: 1 methods, 12 recipes (0 problem(s) that left something out, 0 warning(s))  look check
+  Fields of Salt (fieldsofsalt): file, format 1: 1 methods, 1 recipes (0 problem(s) that left something out, 0 warning(s))  look check
+  vinteng: file, format 1: 12 methods, 86 recipes (0 problem(s) that left something out, 0 warning(s))  look check
+  assets/vintagee/config/vintagee-methods/butchering.json waits for butchering, which isn't loaded
+✓ Recipes: 99 read, 30 giving something its value, 0 left out, 0 switched off
+✓ Power prices: 1 energy unit(s) in use, each with a price (1 listed)
+  vinteng:power (Vintage Engineering power): 0.00005 EMC a unit, from vinteng's suggested price
+  Heat costs 0.0006154 EMC per °C·s (the median of 5 reference fuels' value per °C·s (charcoal, coke, ore-lignite, …)).
+✓ Free power: none of the 22 powered recipe(s) in use makes more than 1 EMC a second from power alone (the most is 0.75)
+• Costs that count: 30 recipe(s) give something its value, 55 are beaten by a cheaper way, 14 make something whose value is set
+  Gem cutting (C&N Jewelry) (canjewelry:gemcutting): 6 used, 0 beaten, 0 waiting, 6 set  look
+  Evaporation pond (Fields of Salt) (fieldsofsalt:evaporationpond): 0 used, 0 beaten, 0 waiting, 1 set  look
+  Crusher (Vintage Engineering) (vinteng:crusher): 1 used, 1 beaten, 0 waiting, 0 set  look
+  Log splitter (Vintage Engineering) (vinteng:logsplitter): 0 used, 0 beaten, 0 waiting, 3 set  look
+  Sawmill (Vintage Engineering) (vinteng:sawmill): 0 used, 15 beaten, 0 waiting, 0 set  look
+  Metal press (Vintage Engineering) (vinteng:metalpress): 3 used, 5 beaten, 0 waiting, 0 set  look
+  Extruder (Vintage Engineering) (vinteng:extruder): 2 used, 8 beaten, 0 waiting, 0 set  look
+  Mixer (Vintage Engineering) (vinteng:mixer): 12 used, 13 beaten, 0 waiting, 0 set  look
+  Electric kiln (Vintage Engineering) (vinteng:kiln): 1 used, 2 beaten, 0 waiting, 0 set  look
+  Temporal forge (Vintage Engineering) (vinteng:temporalforge): 1 used, 0 beaten, 0 waiting, 1 set  look
+  Distillation tower (Vintage Engineering) (vinteng:distillation): 1 used, 9 beaten, 0 waiting, 0 set  look
+  Chemical plant (Vintage Engineering) (vinteng:chemicalplant): 1 used, 2 beaten, 0 waiting, 0 set  look
+  Blast furnace (Vintage Engineering) (vinteng:blastfurnace): 1 used, 0 beaten, 0 waiting, 0 set  look
+  Creosote oven (Vintage Engineering) (vinteng:creosoteoven): 1 used, 0 beaten, 0 waiting, 3 set  look
+== Other mods changing recipes and items ==
+• Other mods' patches: 2 mods patch things the mapper reads:
+  C&N Jewelry (canjewelry): 20 recipe patches
+  vinteng: 1 processing patches
+== Values out of line with their family ==
+⚠ Values out of line: 3 sit more than 8x from the middle of their family, each priced from a recipe that uses it:
+  game:powder-borax 2.5 (family 32) ← BarrelRecipes: 500 game:waterportion + 2 game:powder-borax → 500 game:dilutedboraxportion
+  game:treeseed-redwood 460 (family 46) ← block drops: 0.002 game:treeseed-redwood + 0.02 game:stick → 1 game:leaves-grown-redwood
+  vinteng:metalgear-gold 3,993.7 (family 499.17) ← Metal press (Vintage Engineering) (vinteng): 1 game:metalplate-gold + 0 vinteng:vepressmold-gear-titanium (+0.025 energy) → 1 vinteng:metalgear-gold + 1 game:metalbit-gold
+
+== Server log (Vintage-E errors and warnings, addresses and ids removed) ==
+(none)
+
+== ModConfig/vintagee.json (settings that differ from the defaults) ==
+CacheEmcValues=false, DumpValuesOnStart=true, CollectorFuelsVersion=1, SelfTestOnStart=true, ProjectESounds=true

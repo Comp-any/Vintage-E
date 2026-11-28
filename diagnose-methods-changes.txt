@@ -1,0 +1,64 @@
+== What the last mapping changed ==
+The mapping of 2026-11-28 14:00 compared with the current one (2026-11-28 14:00).
+✓ The same 7 mods were loaded for both mappings.
+⚠ Other mods' crafting methods changed since the mapping before:
+  Vintage-E (vintagee) sends crafting methods now  look (/emc diagnose methods vintagee)
+  5 values now come through those mods' methods
+0 items gained a value, 0 lost theirs, 1417 changed.
+
+== Changed value (1417), by family ==
+  game:clothes (230): Bronze gem necklace (game:clothes-neck-bronze-gem-necklace) 70.4 → 10
+    worked backwards from grid: 1 game:clothes-neck-bronze-gem-necklace -> 10 game:metalbit-tinbronze
+  game:painting (72): Painting (Cow) (game:painting-cow-north) 503.58 → 493.71
+    trader price: 9.14 x 54 EMC per gear
+  game:door (70): 2 by 4 gate (Aged) (game:door-2x4gate-aged) 405.33 → 135.33
+    grid: 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 4 game:plank-aged + 10 game:metalnailsandstrips-tinbronze -> 1 game:door-2x4gate-aged
+  game:glassslab (55): Blue glass slab (game:glassslab-blue-down-free) 8.03 → 7.87
+    grid: 1 game:glass-blue -> 2 game:glassslab-blue-down-free
+  game:plaque (52): Tin bronze plaque (game:plaque-fancy-tinbronze-wall-north) 313.6 → 45
+    grid: 1 game:metalplate-tinbronze + 1 game:metalnailsandstrips-bismuth (or 13 more) -> 1 game:plaque-fancy-tinbronze-wall-north
+  game:wirerelay (48): Wire Relay (HV) (game:wirerelay-hvpower-up) 10.88 → 10.75
+    guessed: the middle value of its 2 valued variants that differ in type (game:wirerelay-lvpower-up)
+  game:armor (42): Chain head armor (Tin bronze) (game:armor-head-chain-tinbronze) 844.8 → 120
+    grid: 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze + 1 game:metalchain-tinbronze -> 1 game:armor-head-chain-tinbronze
+  game:crystal (42): Small olivine crystal (variant 1) (game:crystal-olivine-small1-up) 10.32 → 10.12
+    worked backwards from grid: 1 game:crystal-olivine-small1-up -> 3 game:ore-olivine
+  game:hoovedwearables (35): Elk medallion (Trident) (game:hoovedwearables-face-face13) 113.6 → 53.2
+    grid: 1 game:leather-normal-plain + 1 game:metalnailsandstrips-tinbronze + 1 game:metalnailsandstrips-tinbronze -> 1 game:hoovedwearables-face-face13
+  game:chute (28): Elbow Chute (game:chute-elbow-down-east) 256 → 237.6
+    grid: 1 game:chutesection-copper + 1 game:chutesection-copper -> 1 game:chute-elbow-down-east
+  game:tileslab (22): Red ceramic tile slab (blue center accent) (game:tileslab-2x2-center-red-down-free) 34.62 → 33.95
+    grid: 1 game:claytile-fired-center-red + 1 game:mortar + 1 game:claytile-fired-center-red + 1 game:claytile-fired-center-red + 1 game:claytile-fired-center-red + 1 game:claytile-fired-center-red -> 4 game:tileslab-2x2-center-red-down-free
+  game:ore (17): Cinnabar (game:ore-cinnabar) 165.24 → 162
+    trader price: 3 x 54 EMC per gear
+  game:book (17): Orange-brown aged book (game:book-aged-orangebrown) 586.88 → 580.4
+    same as its variant game:book-normal-cherryred (differs in: color)
+  vintagee:energycollector (16): Energy Collector MK3 (vintagee:energycollector-mk3) 52,458.1 → 4,229.5
+    grid: 1 game:glass-plain (or 10 more) + 1 vintagee:matter-red + 1 game:glass-plain (or 10 more) + 1 game:glass-plain (or 10 more) + 1 vintagee:energycollector-mk2 + 1 game:glass-plain (or 10 more) + 1 game:glass-plain (or 10 more) + 1 game:glass-plain (or 10 more) + 1 game:glass-plain (or 10 more) -> 1 vintagee:energycollector-mk3
+  vintagee:antimatterrelay (16): Anti-Matter Relay MK3 (vintagee:antimatterrelay-mk3) 208,924.8 → 4,068.5
+    grid: 1 game:rock-obsidian + 1 vintagee:matter-red + 1 game:rock-obsidian + 1 vintagee:matter-red + 1 vintagee:antimatterrelay-mk2 + 1 vintagee:matter-red + 1 game:rock-obsidian + 1 vintagee:matter-red + 1 game:rock-obsidian -> 1 vintagee:antimatterrelay-mk3
+  vintagee:emclink (16): EMC Link MK3 (Red) (vintagee:emclink-mk3) 219,189 → 15,101
+    grid: 1 vintagee:covalencedust-low + 1 vintagee:covalencedust-medium + 1 vintagee:covalencedust-high + 1 vintagee:matter-red + 1 vintagee:emclink-mk2 + 1 vintagee:matter-red + 1 vintagee:covalencedust-high + 1 vintagee:covalencedust-medium + 1 vintagee:covalencedust-low -> 1 vintagee:emclink-mk3
+  vintagee:powerflower (16): Power Flower MK3 (Red) (vintagee:powerflower-mk3) 2,416,983.2 → 115,643
+    grid: 9 vintagee:energycollector-mk3 + 1 vintagee:emclink-mk3 + 9 vintagee:energycollector-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 + 1 vintagee:antimatterrelay-mk3 -> 1 vintagee:powerflower-mk3
+  vintagee:trinket (15): Body Stone (vintagee:trinket-bodystone) 73,920 → 1,392
+    grid: 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 game:honeycomb + 1 game:honeycomb + 1 game:honeycomb -> 1 vintagee:trinket-bodystone
+  vintagee:matter (14): Red Matter (vintagee:matter-red) 36,864 → 600
+    Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+  vintagee:matterblock (14): Red Matter Block (vintagee:matterblock-red) 147,456 → 2,400
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:matter-red -> 1 vintagee:matterblock-red
+  vintagee:mattertool (14): Red Matter Shears (vintagee:mattertool-red-shears) 98,304 → 1,856
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:mattertool-dark-shears -> 1 vintagee:mattertool-red-shears
+  game:looseores (14): Cinnabar bits (game:looseores-cinnabar-andesite-free) 165.24 → 162
+    block drops: 1 game:ore-cinnabar -> 1 game:looseores-cinnabar-andesite-free
+  game:burnedplanks (12): Scorched narrow planks (game:burnedplanks-narrow-scorched-ud) 24.09 → 23.62
+    trader price: 0.44 x 54 EMC per gear
+  vintagee:alchemicalbagdark (12): Dark Matter Alchemical Bag (plain) (vintagee:alchemicalbagdark-plain) 61,382.8 → 13,542.8
+    grid: 1 vintagee:matter-dark + 1 vintagee:matter-dark + 1 vintagee:alchemicalbag-plain + 1 vintagee:matter-dark + 1 vintagee:matter-dark -> 1 vintagee:alchemicalbagdark-plain
+  vintagee:alchemicalbagred (12): Red Matter Alchemical Bag (plain) (vintagee:alchemicalbagred-plain) 208,838.8 → 15,942.8
+    grid: 1 vintagee:matter-red + 1 vintagee:matter-red + 1 vintagee:alchemicalbagdark-plain + 1 vintagee:matter-red + 1 vintagee:matter-red -> 1 vintagee:alchemicalbagred-plain
+
+== Next ==
+The line under each item says where its current value comes from. A pin (/emc set), a settings change, a compatibility file switched on or off, or a mod added between the two mappings is the usual cause.
+Which values other mods change (maps once more without them) (/emc diagnose clean)
+Back to the check-up (/emc diagnose)

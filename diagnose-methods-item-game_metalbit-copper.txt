@@ -1,0 +1,45 @@
+== Copper bits ==
+Code game:metalbit-copper, from Vintage Story (game).
+✓ It has a value: 3.7 EMC.
+  From: ?
+The server knows this item's value. If your game shows none:
+The tooltip needs Vintage-E on your side too, in the same version as the server. A game that joined while a remap was running gets the new values when it finishes; rejoining always fetches them.
+
+== Other mods' crafting methods ==
+Made by Metal press (Vintage Engineering) (vinteng):
+  basic-metal-gears (read from vinteng:recipes/vemetalpress/metal-gears.json[0]): 1 Copper plate (game:metalplate-copper) + 0.0025 Gear Mold (vinteng:vepressmold-gear-tinbronze) (tool wear) + 250 Vintage Engineering power → 1 Copper Gear (vinteng:metalgear-copper) + 1 Copper bits (game:metalbit-copper) = 148.11 EMC a run
+    Not used: Copper Gear (vinteng:metalgear-copper) 144.35 comes from a cheaper way: Metal press (Vintage Engineering) (vinteng): 1 game:metalplate-copper + 0 vinteng:vepressmold-gear-titanium (+0.025 energy) -> 1 vinteng:metalgear-copper + 1 game:metalbit-copper
+    250 Vintage Engineering power of power at 0.00005 EMC each = 0.012 (price: vinteng's suggested price)
+Made by Metal press (Vintage Engineering) (vinteng):
+  advanced-metal-gears (read from vinteng:recipes/vemetalpress/metal-gears.json[1]) (4 copies: one per variant or tool): 1 Copper plate (game:metalplate-copper) + 0.0001 Gear Mold (vinteng:vepressmold-gear-titanium) (tool wear) + 500 Vintage Engineering power → 1 Copper Gear (vinteng:metalgear-copper) + 1 Copper bits (game:metalbit-copper) = 148.05 EMC a run
+    Used: this is where the value comes from.
+    500 Vintage Engineering power of power at 0.00005 EMC each = 0.025 (price: vinteng's suggested price)
+Made by Self-test press (Vintage-E (vintagee)):
+  split: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 5 Copper bits (game:metalbit-copper) + 1 Nugget (Native copper) (game:nugget-nativecopper) = 50,128 EMC a run
+    Not needed: Copper bits (game:metalbit-copper) 3.7 has a set value (?), which no recipe changes
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  byproduct: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Red Matter (vintagee:matter-red) + 2 Copper bits (game:metalbit-copper) = 50,120.6 EMC each
+    Not used: Red Matter (vintagee:matter-red) 600 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  weighted: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Copper bits (game:metalbit-copper) + 1 Nugget (Native copper) (game:nugget-nativecopper) = 50,128 EMC a run
+    Not needed: Copper bits (game:metalbit-copper) 3.7 has a set value (?), which no recipe changes
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  nowait: 1 Copper ingot (game:ingot-copper) + 50000 EMC → 1 Red Matter (vintagee:matter-red) + 1 Copper bits (game:metalbit-copper) = 50,124.3 EMC each
+    Not used: Red Matter (vintagee:matter-red) 600 comes from a cheaper way: Self-test press (Vintage-E): 1 game:ingot-copper (+22 emc) -> 0.25 vintagee:matter-red
+    50,000 EMC that the recipe itself costs
+Made by Self-test press (Vintage-E (vintagee)):
+  linked: 1 Copper ingot (game:ingot-copper) + 1 Copper plate (game:metalplate-copper) + 1000000000 EMC → 1 Copper bits (game:metalbit-copper) = 1,000,000,276 EMC each
+    Not needed: Copper bits (game:metalbit-copper) 3.7 has a set value (?), which no recipe changes
+    1,000,000,000 EMC that the recipe itself costs
+  vintagee:selftest-press/absentvariants would make it, but isn't used: none of the variants game:ingot-* allows (unobtainium, mithril) exists
+
+== Next ==
+The full story of its value: Copper bits (game:metalbit-copper)
+Trace its value down to the raw materials (/emc diagnose trace game:metalbit-copper)
+Everything from Vintage Story (game) (/emc diagnose mod game)
+Values come and go, or differ between stacks or players (/emc diagnose sporadic)
+Describe what's happening (step by step) (/emc diagnose symptom)
+Back to the check-up (/emc diagnose)
